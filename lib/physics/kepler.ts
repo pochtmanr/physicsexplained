@@ -93,3 +93,31 @@ export function orbitPosition(input: OrbitPositionInput): OrbitPosition {
   const y = r * Math.sin(theta);
   return { r, theta, x, y };
 }
+
+export interface SweptAreaInput {
+  /** Start time */
+  t1: number;
+  /** End time */
+  t2: number;
+  /** Semi-major axis */
+  a: number;
+  /** Eccentricity in [0, 1) */
+  e: number;
+  /** Orbital period */
+  T: number;
+}
+
+/**
+ * Area swept by the radius vector between times t1 and t2 on a Keplerian
+ * orbit with semi-major axis a, eccentricity e, period T.
+ *
+ * Kepler's 2nd law: the area is linear in elapsed time, equal to
+ *   (pi * a * b) * (t2 - t1) / T
+ * where b = a * sqrt(1 - e^2) is the semi-minor axis.
+ */
+export function sweptArea(input: SweptAreaInput): number {
+  const { t1, t2, a, e, T } = input;
+  const b = a * Math.sqrt(1 - e * e);
+  const totalArea = Math.PI * a * b;
+  return (totalArea * (t2 - t1)) / T;
+}
