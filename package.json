@@ -11,16 +11,33 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@chenglou/pretext": "^0.0.5",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.2.3",
+    "@types/mdx": "^2.0.13",
+    "clsx": "^2.1.1",
+    "jsxgraph": "^1.12.2",
+    "katex": "^0.16.45",
+    "mathjs": "^15.2.0",
+    "motion": "^12.38.0",
     "next": "15.0.3",
+    "odex": "3.0.0-rc.4",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.2",
+    "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "20.11.0",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
+    "@vitest/ui": "^4.1.4",
+    "jsdom": "^29.0.2",
     "tailwindcss": "^4.2.2",
-    "typescript": "5.6.3"
+    "typescript": "5.6.3",
+    "vitest": "^4.1.4"
   }
 }
