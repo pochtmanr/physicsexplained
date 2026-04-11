@@ -47,3 +47,49 @@ export function solveKepler(
   }
   return E;
 }
+
+export interface OrbitPositionInput {
+  /** Time in same units as T */
+  t: number;
+  /** Semi-major axis (any unit) */
+  a: number;
+  /** Eccentricity in [0, 1) */
+  e: number;
+  /** Orbital period in same units as t */
+  T: number;
+}
+
+export interface OrbitPosition {
+  /** Radial distance from focus (perihelion at t=0) */
+  r: number;
+  /** True anomaly (angle from perihelion, radians) */
+  theta: number;
+  /** Cartesian x in the orbital plane (perihelion along +x) */
+  x: number;
+  /** Cartesian y in the orbital plane */
+  y: number;
+}
+
+/**
+ * Compute Cartesian position on a Keplerian orbit at time t.
+ * The focus containing the attracting body sits at the origin.
+ * At t=0 the body is at perihelion (r = a(1-e), along +x).
+ */
+export function orbitPosition(input: OrbitPositionInput): OrbitPosition {
+  const { t, a, e, T } = input;
+  // Mean anomaly advances linearly with time: M = 2*pi*(t/T)
+  const M = (2 * Math.PI * t) / T;
+  // Solve Kepler's equation for the eccentric anomaly E
+  const E = solveKepler(M, e);
+  // True anomaly theta from eccentric anomaly via the standard formula
+  const theta = 2 * Math.atan2(
+    Math.sqrt(1 + e) * Math.sin(E / 2),
+    Math.sqrt(1 - e) * Math.cos(E / 2),
+  );
+  // Radial distance
+  const r = a * (1 - e * Math.cos(E));
+  // Cartesian (perihelion along +x)
+  const x = r * Math.cos(theta);
+  const y = r * Math.sin(theta);
+  return { r, theta, x, y };
+}
