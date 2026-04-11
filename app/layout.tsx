@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
+import { GridBackground } from "@/components/layout/grid-background";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <GridBackground />
+        <div className="relative z-10">{children}</div>
+      </body>
     </html>
   );
 }
