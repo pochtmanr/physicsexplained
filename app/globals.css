@@ -1,8 +1,57 @@
 @import "tailwindcss";
 @import "katex/dist/katex.min.css";
 
+@theme {
+  /* Background */
+  --color-bg-0: #05070A;
+  --color-bg-1: #0B0F16;
+  --color-bg-2: #121826;
+
+  /* Foreground */
+  --color-fg-0: #E6EDF7;
+  --color-fg-1: #9FB0C8;
+  --color-fg-2: #5B6B86;
+  --color-fg-3: #2A3448;
+
+  /* Accents */
+  --color-cyan: #5BE9FF;
+  --color-magenta: #FF4FD8;
+  --color-amber: #F5C451;
+
+  /* Semantic */
+  --color-grid: rgba(91, 233, 255, 0.08);
+  --color-glow: rgba(91, 233, 255, 0.35);
+
+  /* Fonts (wired to next/font variables from layout.tsx) */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  /* Motion tokens (exposed for JS consumers) */
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 600ms;
+}
+
 html,
 body {
-  background: #05070A;
-  color: #E6EDF7;
+  background: var(--color-bg-0);
+  color: var(--color-fg-0);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+/* Links default to cyan with subtle glow on hover */
+a {
+  color: var(--color-cyan);
+  text-decoration: none;
+  transition: text-shadow var(--duration-fast) ease;
+}
+
+a:hover {
+  text-shadow: 0 0 12px var(--color-glow);
+}
+
+/* KaTeX output should inherit our foreground color */
+.katex {
+  color: var(--color-fg-0);
 }
