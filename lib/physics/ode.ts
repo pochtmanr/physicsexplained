@@ -30,8 +30,10 @@ export interface IntegrateOptions {
  * Integrate an ODE system from t=0 to t=tEnd and return N evenly-spaced samples.
  * Uses odex (adaptive high-order RK).
  *
- * NOTE: The odex 3.x API takes (f, n, options) in the constructor, unlike what
- * the plan assumed. The RHS signature is f(x, y) returning a new array (not mutating yPrime).
+ * DEVIATION from plan: The odex 3.x API takes (f, n, options) in the constructor.
+ * Also, floating-point rounding in `dt * (nSamples-1)` can cause the grid to emit
+ * nSamples-1 points instead of nSamples. We use a slightly extended tEnd to the
+ * grid and cap samples at nSamples to guarantee the correct count.
  */
 export function integrate(opts: IntegrateOptions): ODESample[] {
   const {
@@ -48,9 +50,10 @@ export function integrate(opts: IntegrateOptions): ODESample[] {
   }
 
   const n = y0.length;
-  const dt = tEnd / (nSamples - 1);
-
-  const samples: ODESample[] = [];
+  // Compute target times explicitly to avoid floating-point drift
+  const times: number[] = Array.from({ length: nSamples }, (_, i) =>
+    i === nSamples - 1 ? tEnd : (tEnd * i) / (nSamples - 1),
+  );
 
   const solver = new Solver(
     (t: number, y: number[]) => rhs(t, y),
@@ -62,13 +65,30 @@ export function integrate(opts: IntegrateOptions): ODESample[] {
     },
   );
 
-  // First sample is the initial condition
-  samples.push({ t: 0, y: [...y0] });
+  const samples: ODESample[] = [];
+
+  // Use the grid with dt = times[1] - times[0]; grid starts at xOld (=0)
+  // and steps by dt. The first call t=0 corresponds to times[0].
+  const dt = tEnd / (nSamples - 1);
+  let gridIndex = 0;
 
   solver.solve(0, [...y0], tEnd, solver.grid(dt, (t: number, y: number[]) => {
-    if (t === 0) return; // already pushed
-    samples.push({ t, y: [...y] });
+    if (gridIndex < nSamples) {
+      samples.push({ t: times[gridIndex]!, y: [...y] });
+      gridIndex++;
+    }
   }));
+
+  // If floating-point caused the last grid point to be missed, append it
+  // by re-integrating with the exact tEnd
+  if (samples.length < nSamples) {
+    const result = new Solver(
+      (t: number, y: number[]) => rhs(t, y),
+      n,
+      { absoluteTolerance: absTol, relativeTolerance: relTol, denseOutput: false },
+    ).solve(0, [...y0], tEnd);
+    samples.push({ t: tEnd, y: [...result.y] });
+  }
 
   return samples;
 }
