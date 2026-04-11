@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@chenglou/pretext": "0.0.5",
-    "// @chenglou/pretext": "intentionally installed but unused in v0 — reserved for v1 canvas text layout; see docs/superpowers/specs/2026-04-11-physics-site-design.md § Stack",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^15.5.15",
