@@ -158,9 +158,13 @@ export function EllipseConstruction({
         className="jxgbox"
         style={{ width, height, backgroundColor: "transparent" }}
       />
-      <div className="font-mono text-xs text-[var(--color-fg-1)]">
-        |PF₁| = {readout.d1.toFixed(3)} · |PF₂| = {readout.d2.toFixed(3)} · sum ={" "}
-        {(readout.d1 + readout.d2).toFixed(3)}
+      <div
+        className="flex flex-wrap justify-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-fg-1)]"
+        style={{ maxWidth: width }}
+      >
+        <span>|PF₁| = {readout.d1.toFixed(3)}</span>
+        <span>|PF₂| = {readout.d2.toFixed(3)}</span>
+        <span>sum = {(readout.d1 + readout.d2).toFixed(3)}</span>
       </div>
     </div>
   );

@@ -21,7 +21,9 @@ export function SceneCard({ caption, children, hud, className }: SceneCardProps)
         </figcaption>
       )}
       <div className="relative overflow-hidden rounded-md border border-[var(--color-fg-3)] bg-[var(--color-bg-1)]">
-        {children}
+        <div className="overflow-x-auto overflow-y-hidden [-webkit-overflow-scrolling:touch] [scrollbar-width:thin]">
+          <div className="mx-auto w-max">{children}</div>
+        </div>
         {hud && (
           <div className="pointer-events-none absolute bottom-3 right-3">
             {hud}

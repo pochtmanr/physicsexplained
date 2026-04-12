@@ -21,7 +21,7 @@ export function TopicHeader({
       <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
         {eyebrow}
       </div>
-      <h1 className="mb-6 text-6xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] md:text-7xl">
+      <h1 className="mb-6 text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] break-words md:text-6xl">
         {title}
       </h1>
       {subtitle && (

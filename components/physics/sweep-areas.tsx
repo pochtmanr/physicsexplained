@@ -169,10 +169,19 @@ export function SweepAreas({
       <div ref={containerRef} style={{ width, height }}>
         <canvas ref={canvasRef} style={{ width, height }} className="block" />
       </div>
-      <div className="font-mono text-xs text-[var(--color-fg-1)]">
-        {areas.length === 0
-          ? "watching orbit…"
-          : areas.map((A, i) => `A${i + 1} = ${A.toFixed(3)}`).join("  ·  ")}
+      <div
+        className="flex flex-wrap justify-center gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-fg-1)]"
+        style={{ maxWidth: width }}
+      >
+        {areas.length === 0 ? (
+          <span>watching orbit…</span>
+        ) : (
+          areas.map((A, i) => (
+            <span key={i}>
+              A{i + 1} = {A.toFixed(3)}
+            </span>
+          ))
+        )}
       </div>
     </div>
   );

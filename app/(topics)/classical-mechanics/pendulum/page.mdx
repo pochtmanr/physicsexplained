@@ -143,22 +143,27 @@ There's no closed-form elementary solution. You can write it down in terms of el
 
 How much does it slow? For a pendulum at 10°, the true period is less than 0.2% longer than the small-angle prediction — completely negligible. At 40°, the difference is about 3%. At 80°, it's nearly 15%. The approximation breaks gently at first, then all at once.
 
-<SceneCard caption="FIG.05 — small vs large angle">
-  <div className="grid grid-cols-2 gap-6">
-    <div>
-      <div className="mb-2 text-center font-mono text-xs uppercase text-[var(--color-fg-2)]">
-        10° · T ≈ 2.20 s
-      </div>
-      <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={280} height={320} />
-    </div>
-    <div>
-      <div className="mb-2 text-center font-mono text-xs uppercase text-[var(--color-magenta)]">
-        80° · T ≈ 2.52 s
-      </div>
-      <PendulumScene theta0={(80 * Math.PI) / 180} length={1.2} width={280} height={320} exact />
-    </div>
+<div className="-mx-6 my-16 md:-mx-16">
+<div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0">
+
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.05a — 10° · T ≈ 2.20 s (small-angle)">
+  <div className="flex h-80 items-center justify-center">
+    <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={280} height={320} />
   </div>
 </SceneCard>
+</div>
+
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.05b — 80° · T ≈ 2.52 s (exact)">
+  <div className="flex h-80 items-center justify-center">
+    <PendulumScene theta0={(80 * Math.PI) / 180} length={1.2} width={280} height={320} exact />
+  </div>
+</SceneCard>
+</div>
+
+</div>
+</div>
 
 Watch carefully. The small-angle pendulum on the left keeps perfect time. The large-angle pendulum on the right slowly falls behind.
 
