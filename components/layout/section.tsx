@@ -15,7 +15,7 @@ export function Section({ index, title, children, className }: SectionProps) {
   return (
     <section className={clsx("mb-24", className)}>
       <div className="mb-4 flex items-baseline gap-4">
-        <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+        <span className="font-display text-3xl font-semibold tracking-tight text-[var(--color-cyan)] md:text-4xl">
           § {indexStr}
         </span>
         <h2 className="text-3xl font-semibold text-[var(--color-fg-0)]">

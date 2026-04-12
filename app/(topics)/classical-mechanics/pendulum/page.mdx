@@ -1,0 +1,177 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { HUD } from "@/components/layout/hud";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { PendulumScene } from "@/components/physics/pendulum-scene";
+import { PhasePortrait } from "@/components/physics/phase-portrait";
+
+<main className="mx-auto max-w-[720px] px-6 pb-32">
+
+<TopicHeader
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
+  title="THE PENDULUM"
+  subtitle="Why every clock that ever ticked ticked the same way."
+/>
+
+<Section index={1} title="The question">
+
+In 1583, a bored nineteen-year-old sat in Pisa cathedral watching a bronze chandelier sway above his head. The breeze coming through the open doors nudged it this way and that. Sometimes it swung in a wide arc; sometimes it settled into a small one.
+
+Galileo timed the swings against his own pulse. No matter how wide the chandelier swung, each full cycle took the same amount of time.
+
+He had just discovered something that would define physics for four centuries.
+
+What he had noticed was **isochronism**: the property of oscillating with a constant period regardless of amplitude. It seemed almost too convenient to be real. It wasn't intuitive — you might expect a larger swing to take longer. But the chandelier didn't care about your expectations.
+
+This observation led, within a generation, to the pendulum clock — the first timekeeper accurate enough to measure longitude at sea and to synchronize scientific experiments across continents. All from watching a lamp swing in a breeze.
+
+</Section>
+
+<Section index={2} title="The restoring force">
+
+A pendulum, at rest, hangs straight down. If you pull it aside and let go, gravity pulls it back toward straight-down. The further you pull, the harder gravity tugs. That relationship — the force scales with the displacement — is the heart of the story.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">F = −kx</span>
+</EquationBlock>
+
+Read it out loud: "force equals negative stiffness times displacement." The minus sign is the whole point — the force always pushes back toward zero.
+
+This kind of force — proportional to displacement, directed back toward equilibrium — is called a **restoring force**. It doesn't just describe pendulums. It describes every spring, every plucked string, every atom in a solid vibrating about its equilibrium position. The equation is the same everywhere. Only the constants change.
+
+<SceneCard caption="FIG.01 — the pendulum">
+  <div className="flex h-80 items-center justify-center">
+    <PendulumScene theta0={0.3} length={1.2} />
+  </div>
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="The rhythm">
+
+The thing Galileo heard in his pulse had a name: the **period**, the time it takes the pendulum to complete one full swing and return. For a small-angle pendulum of length L, that time works out to:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">T = 2π √(L / g)</span>
+</EquationBlock>
+
+Notice what's not in that equation: the mass of the bob, the initial amplitude, the color of the string. Only the length matters.
+
+A one-meter pendulum has a period of about two seconds. A four-meter pendulum has a period of four seconds — double the length, double the period? No: double the period requires four times the length. The square root is the tell. This is why tall grandfather clocks tick slowly and small pocket watches tick fast.
+
+The bar below the pendulum marks one complete cycle. Watch the timeline fill. That duration is the period, and it doesn't change no matter how you start the pendulum.
+
+<SceneCard caption="FIG.02 — one full period">
+  <div className="flex h-96 items-center justify-center">
+    <PendulumScene theta0={0.25} length={1.2} showTimer />
+  </div>
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="The surprise">
+
+Here is the thing that blew Galileo's mind, and should blow ours. Take three pendulums. Give them different masses. Pull them to different angles — one gentle, one moderate, one wild. Let them go.
+
+Watch what happens.
+
+<div className="-mx-6 my-16 md:-mx-32">
+<div className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-3 md:overflow-visible md:px-0 md:pb-0">
+
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.03a — 1 kg · 10°">
+  <div className="flex h-80 items-center justify-center">
+    <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={260} height={300} />
+  </div>
+</SceneCard>
+</div>
+
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.03b — 3 kg · 25°">
+  <div className="flex h-80 items-center justify-center">
+    <PendulumScene theta0={(25 * Math.PI) / 180} length={1.2} width={260} height={300} bobRadius={14} />
+  </div>
+</SceneCard>
+</div>
+
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.03c — 10 kg · 40°">
+  <div className="flex h-80 items-center justify-center">
+    <PendulumScene theta0={(40 * Math.PI) / 180} length={1.2} width={260} height={300} bobRadius={18} />
+  </div>
+</SceneCard>
+</div>
+
+</div>
+</div>
+
+Different masses. Different amplitudes. Same length. And they swing in perfect lockstep, crossing the center at exactly the same moment, swing after swing after swing.
+
+The period depends only on L and g. Galileo saw it in a chandelier in 1583. Isaac Newton explained it, eighty years later.
+
+</Section>
+
+<Section index={5} title="The shape of motion">
+
+If you plot a pendulum's position and velocity against each other, the motion draws a perfect circle (well — an ellipse, if the units disagree). Every swing retraces the same curve, over and over.
+
+This curve has a name. It's called a **phase portrait**, and it's the shape of every oscillator that ever existed.
+
+Read this diagram as follows: the horizontal axis is the angle — how far the bob has swung from center. The vertical axis is angular velocity — how fast it's moving. When the pendulum passes through the center, the angle is zero but the speed is maximum. At the extremes, speed is zero but the angle is at its peak. That trade-off — position and velocity never both at zero at the same time — is what keeps the pendulum going. Energy sloshes back and forth between position and motion, forever, and the orbit in phase space is the footprint of that exchange.
+
+<SceneCard caption="FIG.04 — phase portrait">
+  <div className="flex h-96 items-center justify-center">
+    <PhasePortrait theta0={0.3} length={1.2} />
+  </div>
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Where it breaks">
+
+All of this rests on one quiet assumption: that the angle is small. Small enough that sin θ ≈ θ. Below maybe fifteen degrees, the approximation is invisible. But pull the pendulum up past forty-five degrees, past sixty, past seventy, and the symmetry starts to fail.
+
+The full equation — the honest one — is this:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">θ″ = −(g/L) · sin θ</span>
+</EquationBlock>
+
+There's no closed-form elementary solution. You can write it down in terms of elliptic integrals, but there's no simple expression involving sines and cosines. At large angles, the period stretches with amplitude. The clock slows down.
+
+How much does it slow? For a pendulum at 10°, the true period is less than 0.2% longer than the small-angle prediction — completely negligible. At 40°, the difference is about 3%. At 80°, it's nearly 15%. The approximation breaks gently at first, then all at once.
+
+<SceneCard caption="FIG.05 — small vs large angle">
+  <div className="grid grid-cols-2 gap-6">
+    <div>
+      <div className="mb-2 text-center font-mono text-xs uppercase text-[var(--color-fg-2)]">
+        10° · T ≈ 2.20 s
+      </div>
+      <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={280} height={320} />
+    </div>
+    <div>
+      <div className="mb-2 text-center font-mono text-xs uppercase text-[var(--color-magenta)]">
+        80° · T ≈ 2.52 s
+      </div>
+      <PendulumScene theta0={(80 * Math.PI) / 180} length={1.2} width={280} height={320} exact />
+    </div>
+  </div>
+</SceneCard>
+
+Watch carefully. The small-angle pendulum on the left keeps perfect time. The large-angle pendulum on the right slowly falls behind.
+
+</Section>
+
+<Section index={7} title="Why it matters">
+
+This equation — the simple harmonic oscillator — is everywhere. Every clock pendulum, every spring, every LC circuit, every vibrating string, every tuning fork, every atom in a crystal, every mode of every quantum field. All of it reduces to "force proportional to displacement, back toward zero."
+
+Galileo found it in a chandelier. Huygens turned it into a clock in 1656. Foucault used it to prove the Earth rotates in 1851. It's the mathematical seed of every wave in the universe.
+
+And it isn't the only thing that repeats.
+
+</Section>
+
+</main>

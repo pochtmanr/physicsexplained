@@ -6,6 +6,20 @@ import rehypeKatex from "rehype-katex";
 const nextConfig = {
   reactStrictMode: true,
   pageExtensions: ["ts", "tsx", "mdx"],
+  async redirects() {
+    return [
+      {
+        source: "/harmonic-motion",
+        destination: "/classical-mechanics/pendulum",
+        permanent: true,
+      },
+      {
+        source: "/kepler",
+        destination: "/classical-mechanics/kepler",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 const withMDX = createMDX({

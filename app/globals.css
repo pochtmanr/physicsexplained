@@ -2,34 +2,59 @@
 @import "katex/dist/katex.min.css";
 
 @theme {
-  /* Background */
-  --color-bg-0: #05070A;
-  --color-bg-1: #0B0F16;
-  --color-bg-2: #121826;
-
-  /* Foreground */
-  --color-fg-0: #E6EDF7;
-  --color-fg-1: #9FB0C8;
-  --color-fg-2: #5B6B86;
-  --color-fg-3: #2A3448;
-
-  /* Accents */
-  --color-cyan: #5BE9FF;
-  --color-magenta: #FF4FD8;
+  /* Accents (shared across themes) */
   --color-amber: #F5C451;
-
-  /* Semantic */
-  --color-grid: rgba(91, 233, 255, 0.08);
-  --color-glow: rgba(91, 233, 255, 0.35);
 
   /* Fonts (wired to next/font variables from layout.tsx) */
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
 
   /* Motion tokens (exposed for JS consumers) */
   --duration-fast: 180ms;
   --duration-base: 320ms;
   --duration-slow: 600ms;
+}
+
+/* Default (dark) theme — applies when no data-theme or data-theme="dark" */
+:root,
+[data-theme="dark"] {
+  --color-bg-0: #05070A;
+  --color-bg-1: #0B0F16;
+  --color-bg-2: #121826;
+
+  --color-fg-0: #E6EDF7;
+  --color-fg-1: #9FB0C8;
+  --color-fg-2: #5B6B86;
+  --color-fg-3: #2A3448;
+
+  --color-cyan: #5BE9FF;
+  --color-magenta: #FF4FD8;
+
+  --color-grid: rgba(91, 233, 255, 0.08);
+  --color-glow: rgba(91, 233, 255, 0.35);
+
+  color-scheme: dark;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --color-bg-0: #F7F9FC;
+  --color-bg-1: #FFFFFF;
+  --color-bg-2: #EEF2F8;
+
+  --color-fg-0: #0A0E14;
+  --color-fg-1: #334155;
+  --color-fg-2: #64748B;
+  --color-fg-3: #CBD5E1;
+
+  --color-cyan: #0891B2;
+  --color-magenta: #C026D3;
+
+  --color-grid: rgba(8, 145, 178, 0.08);
+  --color-glow: rgba(8, 145, 178, 0.35);
+
+  color-scheme: light;
 }
 
 html,
@@ -38,6 +63,9 @@ body {
   color: var(--color-fg-0);
   font-size: 18px;
   line-height: 1.65;
+  transition:
+    background-color var(--duration-base) ease,
+    color var(--duration-base) ease;
 }
 
 /* Links default to cyan with subtle glow on hover */

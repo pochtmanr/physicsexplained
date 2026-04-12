@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { EllipseConstruction } from "@/components/physics/ellipse-construction";
+import { SweepAreas } from "@/components/physics/sweep-areas";
+import { HarmonyTable } from "@/components/physics/harmony-table";
+import { InverseSquareScene } from "@/components/physics/inverse-square-scene";
+
+<main className="mx-auto max-w-[720px] px-6 pb-32">
+
+<TopicHeader
+  eyebrow="§ 02 · CLASSICAL MECHANICS"
+  title="THE LAWS OF PLANETS"
+  subtitle="How a German astronomer broke the sky open with three sentences."
+/>
+
+<Section index={1} title="Before Kepler">
+
+For fifteen hundred years, astronomers believed the heavens ran on perfect circles. Ptolemy, writing in the second century, built an elaborate machine of circles-on-circles — epicycles — to make his predictions line up with reality. Copernicus, in 1543, put the sun in the middle instead of the Earth. He kept the circles.
+
+Then Johannes Kepler, working from the astonishingly careful observations of Tycho Brahe, gave up on circles altogether. He tried everything else he could think of. After eight years of calculation, he landed on the truth.
+
+Orbits are ellipses.
+
+</Section>
+
+<Section index={2} title="First law — planets move on ellipses">
+
+An ellipse is a stretched circle with two special points inside it, called **foci**. What makes an ellipse an ellipse is that if you pick any point on the curve and draw lines to each focus, the two lengths always add to the same number.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">r(θ) = a(1 − e²) / (1 + e · cos θ)</span>
+</EquationBlock>
+
+The number `a` is the semi-major axis — the long radius. The number `e` is the eccentricity — how "squished" the ellipse is, from zero (perfect circle) to almost one (nearly flat). Every planet's orbit is one of these shapes, with the sun sitting at one of the two foci.
+
+<SceneCard caption="FIG.01 — the ellipse">
+  <div className="flex h-[420px] items-center justify-center">
+    <EllipseConstruction a={1} e={0.5} />
+  </div>
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Second law — equal areas in equal times">
+
+Kepler noticed something else: planets don't move at constant speed. They move faster when they're closer to the sun, and slower when they're far away.
+
+But the *area* swept by the line from the sun to the planet, per unit of time — that stays the same.
+
+Watch it happen.
+
+<SceneCard caption="FIG.02 — equal areas, equal times">
+  <div className="flex items-center justify-center">
+    <SweepAreas a={1} e={0.6} T={18} wedges={6} />
+  </div>
+</SceneCard>
+
+The wedges look wildly different. Some are long and thin, some are fat and round. And yet the readout below says they're all the same area, to three decimal places.
+
+That is Kepler's second law. It doesn't look like it should be true. It is.
+
+</Section>
+
+<Section index={4} title="Third law — the harmony of the worlds">
+
+For every planet orbiting the sun, there is a single number that comes out the same.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">T² = (4π² / GM) · a³</span>
+</EquationBlock>
+
+In plain English: the square of the orbital period, divided by the cube of the semi-major axis, is the same for every body orbiting the same star. Kepler called this the "harmony of the worlds."
+
+<SceneCard caption="FIG.03 — the harmony">
+  <div className="flex items-center justify-center">
+    <HarmonyTable />
+  </div>
+</SceneCard>
+
+Look at the rightmost column. Mercury, Earth, Mars, Jupiter — four worlds with nothing in common except that they orbit the same star — and the ratio `T² / a³` lines up to three decimal places. That's not curve-fitting. That's a law of nature, hiding in plain sight for every astronomer who ever looked up.
+
+</Section>
+
+<Section index={5} title="What Newton saw">
+
+Kepler *described* the laws. He never explained them. That job was left to Isaac Newton, who realized — eighty years later — that if you assume a single force pulling the planet toward the sun, with magnitude proportional to one over the distance squared, you get every one of Kepler's three laws for free.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">F = G · M · m / r²</span>
+</EquationBlock>
+
+The further the planet is from the sun, the weaker the pull — but it weakens fast, as the square of the distance. When the planet swings close, the force balloons. When it drifts far, the force barely tugs.
+
+<SceneCard caption="FIG.04 — the inverse square in action">
+  <div className="flex h-[440px] items-center justify-center">
+    <InverseSquareScene a={1} e={0.5} T={16} />
+  </div>
+</SceneCard>
+
+The arrow shows how hard gravity pulls. Watch it grow as the planet dives toward perihelion, and shrink as it coasts out to aphelion.
+
+</Section>
+
+<Section index={6} title="Why it matters">
+
+Every artificial satellite in orbit around Earth obeys Kepler's laws. Every rocket we've ever sent to another planet used them to plan its trajectory. When Le Verrier predicted the existence of Neptune in 1846, based on perturbations in the orbit of Uranus, he used Kepler. When we find exoplanets today by watching stars wobble, we're using Kepler. When LIGO detects gravitational waves from merging black holes, the orbital decay is Kepler's laws, generalized to Einstein's gravity.
+
+Three sentences from a half-blind mystic in 1609. Still running the universe.
+
+</Section>
+
+</main>
