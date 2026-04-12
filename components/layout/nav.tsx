@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { User, BookOpen } from "lucide-react";
 import { NavBranchMenu } from "./nav-branch-menu";
-import { NavBreadcrumbs } from "./nav-breadcrumbs";
 import { ThemeToggle } from "./theme-toggle";
+import { SearchTrigger } from "@/components/search/search-trigger";
+import { SearchCommand } from "@/components/search/search-command";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
 export function Nav() {
@@ -19,18 +21,28 @@ export function Nav() {
             <span className="text-[var(--color-fg-0)] font-semibold">Physics.</span>
             <span className="text-[var(--color-cyan)] font-semibold">explained</span>
           </Link>
-          <div className="hidden md:flex">
-            <NavBreadcrumbs />
-          </div>
         </div>
-        <div className="flex items-center gap-3 md:gap-6">
+        <div className="flex items-center gap-2 md:gap-3">
           <NavBranchMenu />
+          <Link
+            href="/physicists"
+            className="hidden items-center gap-2 border border-[var(--color-fg-3)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] md:inline-flex md:px-3"
+          >
+            <User aria-hidden="true" size={14} strokeWidth={1.5} />
+            <span className="hidden md:inline">PHYSICISTS</span>
+          </Link>
+          <Link
+            href="/dictionary"
+            className="hidden items-center gap-2 border border-[var(--color-fg-3)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] md:inline-flex md:px-3"
+          >
+            <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
+            <span className="hidden md:inline">DICTIONARY</span>
+          </Link>
+          <SearchTrigger />
           <ThemeToggle />
-          <div className="hidden font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)] md:block">
-            v0.5
-          </div>
         </div>
       </div>
+      <SearchCommand />
     </nav>
   );
 }

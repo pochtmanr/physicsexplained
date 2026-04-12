@@ -1,8 +1,10 @@
 import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
+import { CookieBanner } from "@/components/layout/cookie-banner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -51,6 +53,8 @@ export default function RootLayout({
           <div className="flex-1">{children}</div>
           <Footer />
         </div>
+        <Analytics />
+        <CookieBanner />
       </body>
     </html>
   );
