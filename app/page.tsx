@@ -1,5 +1,4 @@
 import { HeroSection } from "@/components/sections/hero-section";
-import { SourcesSection } from "@/components/sections/sources-section";
 import { BranchesSection } from "@/components/sections/branches-section";
 import { PhysicistsSection } from "@/components/sections/physicists-section";
 import { FeaturedTopicSection } from "@/components/sections/featured-topic-section";
@@ -25,7 +24,6 @@ export default function HomePage() {
   return (
     <main className="pb-32">
       <HeroSection />
-      <SourcesSection />
       <BranchesSection />
       <PhysicistsSection />
       <FeaturedTopicSection />
