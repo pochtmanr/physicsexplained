@@ -68,18 +68,31 @@ body {
     color var(--duration-base) ease;
 }
 
-/* Links default to cyan with subtle glow on hover */
-a {
+/* Links default to cyan with subtle glow on hover.
+   The :not(.nav-link) keeps the rule from fighting Tailwind
+   text-color utilities on styled anchor buttons in the nav/footer. */
+a:not(.nav-link) {
   color: var(--color-cyan);
   text-decoration: none;
   transition: text-shadow var(--duration-fast) ease;
 }
 
-a:hover {
+a:not(.nav-link):hover {
   text-shadow: 0 0 12px var(--color-glow);
+}
+
+/* Tighter paragraph spacing in prose sections */
+.prose p + p {
+  margin-top: 0.5em;
 }
 
 /* KaTeX output should inherit our foreground color */
 .katex {
   color: var(--color-fg-0);
+}
+
+/* Hover-card fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

@@ -16,7 +16,7 @@ const LEGAL_LINKS = [
 ] as const;
 
 const navLinkClass =
-  "inline-flex items-center gap-2 border border-[var(--color-fg-3)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]";
+  "nav-link inline-flex items-center gap-2 border border-[var(--color-fg-3)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]";
 
 export function Footer() {
   return (
