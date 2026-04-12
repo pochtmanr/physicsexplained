@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { GitBranch, User, BookOpen } from "lucide-react";
+import { Logo } from "./logo";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 
@@ -23,13 +24,16 @@ export function Footer() {
     <footer className="border-t border-[var(--color-fg-3)]/40 mt-32">
       <div className={`${WIDE_CONTAINER} py-16`}>
         {/* Logo */}
-        <Link href="/" className="inline-block font-display text-xl">
-          <span className="text-[var(--color-fg-0)] font-semibold">
-            Physics.
-          </span>
-          <span className="text-[var(--color-cyan)] font-semibold">
-            explained
-          </span>
+        <Link href="/" className="inline-flex items-center gap-2.5 font-display text-xl">
+          <Logo className="h-8 w-auto" />
+          <div>
+            <span className="text-[var(--color-fg-0)] font-semibold">
+              Physics.
+            </span>
+            <span className="text-[var(--color-cyan)] font-semibold">
+              explained
+            </span>
+          </div>
         </Link>
 
         {/* Nav + Newsletter row */}

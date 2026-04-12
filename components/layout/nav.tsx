@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { User, BookOpen } from "lucide-react";
+import { Logo } from "./logo";
 import { NavBranchMenu } from "./nav-branch-menu";
 import { ThemeToggle } from "./theme-toggle";
 import { SearchTrigger } from "@/components/search/search-trigger";
@@ -16,10 +17,13 @@ export function Nav() {
           <Link
             href="/"
             aria-label="Physics.explained — home"
-            className="font-display text-base leading-none tracking-tight whitespace-nowrap md:text-lg"
+            className="inline-flex items-center gap-2.5 font-display text-base leading-none tracking-tight whitespace-nowrap md:text-lg"
           >
-            <span className="text-[var(--color-fg-0)] font-semibold">Physics.</span>
-            <span className="text-[var(--color-cyan)] font-semibold">explained</span>
+            <Logo className="h-7 w-auto md:h-8" />
+            <div>
+              <span className="text-[var(--color-fg-0)] font-semibold">Physics.</span>
+              <span className="text-[var(--color-cyan)] font-semibold">explained</span>
+            </div>
           </Link>
         </div>
         <div className="flex items-center gap-2 md:gap-3">

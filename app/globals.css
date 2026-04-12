@@ -68,6 +68,14 @@ body {
     color var(--duration-base) ease;
 }
 
+/* Source logos — monochrome via CSS filter, theme-aware */
+.source-logo img {
+  filter: brightness(0) invert(1);
+}
+[data-theme="light"] .source-logo img {
+  filter: brightness(0);
+}
+
 /* Links default to cyan with subtle glow on hover.
    The :not(.nav-link) keeps the rule from fighting Tailwind
    text-color utilities on styled anchor buttons in the nav/footer. */
