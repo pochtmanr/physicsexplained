@@ -14,7 +14,7 @@ export function BranchesSection() {
       <p className="mt-6 max-w-[50ch] text-[var(--color-fg-1)]">
         Start with what exists. The rest is on the way.
       </p>
-      <div className="mt-12 grid grid-cols-1 gap-0 md:grid-cols-2 [&>*]:-mt-px [&>*]:-ml-px">
+      <div className="mt-12 grid grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3 [&>*]:-mt-px [&>*]:-ml-px">
         {BRANCHES.map((b) => (
           <BranchCard key={b.slug} branch={b} />
         ))}
