@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { GitBranch } from "lucide-react";
 import { BRANCHES } from "@/lib/content/branches";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
@@ -48,9 +49,11 @@ export function NavBranchMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] hover:text-[var(--color-cyan)] transition-colors duration-[180ms] ease-out"
+        className="flex items-center gap-2 border border-[var(--color-fg-3)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] md:px-3"
       >
-        BRANCHES {"\u25BE"}
+        <GitBranch aria-hidden="true" size={14} strokeWidth={1.5} />
+        <span className="hidden md:inline">BRANCHES</span>
+        <span className="text-[10px] leading-none">{"\u25BE"}</span>
       </button>
 
       {/* Mega panel — absolutely positioned inside the <nav> (sticky) so it

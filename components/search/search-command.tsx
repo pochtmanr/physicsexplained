@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, X, ArrowRight, BookOpen, User, Atom, FlaskConical } from "lucide-react";
+import { Search, X, ArrowRight, BookOpen, User, GitBranch, Atom } from "lucide-react";
 import { BRANCHES } from "@/lib/content/branches";
 import { PHYSICISTS } from "@/lib/content/physicists";
 import { GLOSSARY } from "@/lib/content/glossary";
@@ -73,8 +73,8 @@ const ALL_RESULTS = buildIndex();
 /* ------------------------------------------------------------------ */
 
 const CATEGORY_META: Record<ResultCategory, { label: string; icon: typeof Search }> = {
-  branch:     { label: "Branches",    icon: Atom },
-  topic:      { label: "Topics",      icon: FlaskConical },
+  branch:     { label: "Branches",    icon: GitBranch },
+  topic:      { label: "Topics",      icon: Atom },
   physicist:  { label: "Physicists",  icon: User },
   dictionary: { label: "Dictionary",  icon: BookOpen },
 };
