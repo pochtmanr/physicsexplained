@@ -47,7 +47,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       },
     ],
     relatedTopics: [
-      { branchSlug: "classical-mechanics", topicSlug: "pendulum" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
     ],
   },
   {
@@ -108,7 +108,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       },
     ],
     relatedTopics: [
-      { branchSlug: "classical-mechanics", topicSlug: "pendulum" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
       { branchSlug: "classical-mechanics", topicSlug: "kepler" },
     ],
   },
@@ -157,7 +157,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       },
     ],
     relatedTopics: [
-      { branchSlug: "classical-mechanics", topicSlug: "pendulum" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
     ],
   },
   {
@@ -209,7 +209,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       },
     ],
     relatedTopics: [
-      { branchSlug: "classical-mechanics", topicSlug: "pendulum" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
     ],
   },
   {
