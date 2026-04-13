@@ -32,7 +32,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     eyebrow: "FIG.03 · OSCILLATIONS",
     subtitle: "The equation that runs half of physics.",
     readingMinutes: 12,
-    status: "draft",
+    status: "live",
     module: "oscillations",
   },
   {
