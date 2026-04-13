@@ -23,7 +23,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     eyebrow: "FIG.02 · OSCILLATIONS",
     subtitle: "What the pendulum hides when you stop making approximations.",
     readingMinutes: 12,
-    status: "draft",
+    status: "live",
     module: "oscillations",
   },
   {

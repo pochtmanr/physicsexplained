@@ -1,0 +1,204 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { PendulumScene } from "@/components/physics/pendulum-scene";
+import { TaylorExpansionScene } from "@/components/physics/taylor-expansion-scene";
+import { EnergyDiagramScene } from "@/components/physics/energy-diagram-scene";
+import { SeparatrixScene } from "@/components/physics/separatrix-scene";
+import { PeriodVsAmplitudeScene } from "@/components/physics/period-vs-amplitude-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Adrien-Marie Legendre", href: "/physicists/adrien-marie-legendre" },
+  { type: "term", label: "Elliptic Integral", href: "/dictionary/elliptic-integral" },
+  { type: "term", label: "Separatrix", href: "/dictionary/separatrix" },
+  { type: "term", label: "Libration", href: "/dictionary/libration" },
+  { type: "term", label: "Potential Well", href: "/dictionary/potential-well" },
+  { type: "term", label: "Nonlinear Dynamics", href: "/dictionary/nonlinear-dynamics" },
+]}>
+
+
+<TopicHeader
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
+  title="BEYOND SMALL ANGLES"
+  subtitle="What the pendulum hides when you stop making approximations."
+/>
+
+<Section index={1} title="Where the trick fails">
+
+In FIG.01 we made a quiet deal with the devil. We replaced sin θ with θ and pretended the difference didn't matter. For small swings, it doesn't. But "small" is a smaller neighborhood than most people think.
+
+Write out the Taylor expansion of sin θ around zero:
+
+<Callout variant="math">
+sin θ = θ − θ³/6 + θ⁵/120 − θ⁷/5040 + …
+</Callout>
+
+The first term is the small-angle approximation. Everything else is what we threw away. At 5° (0.087 rad), the cubic correction is 0.01% of the linear term — invisible. At 15°, it climbs to about 1%. At 30° (0.524 rad), the cubic term θ³/6 contributes 4.5% of the linear term. You can feel it starting to pull.
+
+Now push harder. At 90°, sin(π/2) = 1, but the linear approximation gives π/2 ≈ 1.571 — a 57% error. The approximation doesn't just drift; it breaks. The small-angle world is a tiny patch around equilibrium, and the moment you step outside it, the physics changes.
+
+<SceneCard caption="FIG.02a — Taylor approximations of sin θ">
+  <TaylorExpansionScene />
+</SceneCard>
+
+The figure above shows sin θ alongside its first few Taylor polynomials. Near zero they overlap perfectly. Move past about 30° and they peel apart, each successive approximation holding on a little longer before it too diverges. The full sine curve rolls over and comes back down. The polynomials just keep climbing.
+
+</Section>
+
+<Section index={2} title="The real equation">
+
+With the approximation removed, the pendulum equation reveals its true face:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">θ″ = −(g / L) sin θ</span>
+</EquationBlock>
+
+That sin θ changes everything. The equation is now **nonlinear** — the restoring torque is not proportional to the displacement but to its sine. No combination of sines and cosines solves it exactly. There is no closed-form solution in elementary functions. You must either integrate numerically or reach for the machinery of <Term slug="elliptic-integral">elliptic integrals</Term>.
+
+What does nonlinearity look like in practice? Start two identical pendulums from different angles — one at 10°, one at 80°. In the small-angle world, both would swing with the same period, just different amplitudes. In reality, the large-angle pendulum is slower. Its period is longer. The two fall out of sync within a few cycles, and the gap only grows.
+
+<div className="-mx-6 my-16 md:-mx-16">
+<div className="flex gap-1 overflow-x-auto snap-x snap-mandatory px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 [&_figure]:my-0 [&_figure]:w-full">
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.02b — 10° · small-angle">
+  <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={280} height={320} />
+</SceneCard>
+</div>
+<div className="w-[82%] flex-none snap-center md:w-auto">
+<SceneCard caption="FIG.02c — 80° · exact">
+  <PendulumScene theta0={(80 * Math.PI) / 180} length={1.2} width={280} height={320} exact />
+</SceneCard>
+</div>
+</div>
+</div>
+
+Watch them side by side. The small-angle pendulum ticks away at T₀ = 2π√(L/g), metronomic and unbothered. The 80° pendulum lingers at the top of its arc, fighting gravity at a flatter angle, and each swing takes measurably longer. After ten cycles the two are visibly out of phase. <PhysicistLink slug="galileo-galilei">Galileo</PhysicistLink>'s isochronism was always an approximation — a brilliant one, good enough for clocks, but an approximation nonetheless.
+
+</Section>
+
+<Section index={3} title="Energy tells the story">
+
+Force equations are vectors — they have magnitude, direction, and they change at every point along the path. Energy is a scalar. One number. And for a conservative system like the frictionless pendulum, that number never changes.
+
+The kinetic energy of the bob:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">T = ½ m L² θ̇²</span>
+</EquationBlock>
+
+The potential energy, measured from the lowest point:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">U = m g L (1 − cos θ)</span>
+</EquationBlock>
+
+Their sum E = T + U is constant. At the bottom of the swing, all the energy is kinetic — the bob is moving fastest and the potential is zero. At the turning points, the bob stops momentarily and all the energy is potential. Between these extremes, energy sloshes back and forth, but the total never wavers.
+
+This is more powerful than it looks. Instead of solving a differential equation, you can read the entire motion off a single energy conservation law. One scalar governs everything: how fast the bob moves at any angle, where it turns around, whether it oscillates or spins over the top.
+
+<SceneCard caption="FIG.02d — the potential well">
+  <EnergyDiagramScene length={1.2} theta0={0.8} />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="The potential well">
+
+Plot U(θ) = mgL(1 − cos θ) and you see a landscape. Near the bottom — near θ = 0 — the curve is a parabola. This is the harmonic regime, where cos θ ≈ 1 − θ²/2 and the potential looks like a spring: U ≈ ½mgLθ². Everything is simple here. The oscillations are sinusoidal, the period is constant, and physics students sleep well at night.
+
+But zoom out. The parabola flattens. The walls of the <Term slug="potential-well">potential well</Term> stop rising and roll over into a cosine. The potential repeats every 2π — there is another minimum at ±2π, and another, and another, like a corrugated landscape stretching out in both directions.
+
+The total energy E determines what the pendulum can do. There are three qualitatively different regimes:
+
+<Callout variant="intuition">
+**E &lt; 2mgL** — The bob doesn't have enough energy to reach the top. It oscillates back and forth inside the well, bouncing between two turning points. This is **<Term slug="libration">libration</Term>** — the ordinary swinging motion you expect from a pendulum.
+
+**E &gt; 2mgL** — The bob has more than enough energy to clear the top. It doesn't turn around — it keeps going, whipping over the pivot in continuous rotation. The pendulum has become a wheel.
+
+**E = 2mgL exactly** — The razor's edge. The bob asymptotically approaches the top, slowing down but never quite arriving. In the phase portrait, this critical energy level traces a special curve called the **<Term slug="separatrix">separatrix</Term>**. It divides the phase space into regions of fundamentally different motion.
+</Callout>
+
+The separatrix is unstable. No real pendulum will ever sit on it — the slightest perturbation kicks it into libration or rotation. But mathematically, it is the skeleton of the phase portrait, the boundary that organizes all possible motions into two families.
+
+</Section>
+
+<Section index={5} title="The full phase portrait">
+
+Now plot every possible motion at once. The horizontal axis is angle θ; the vertical axis is angular velocity θ̇. Each initial condition — each choice of starting angle and starting velocity — traces a curve in this plane.
+
+At low energy, the curves are small loops near the origin. These are the gentle oscillations, the nearly circular orbits of the harmonic approximation. They look like ellipses, and in the small-angle limit they are exactly that.
+
+Increase the energy and the loops grow, but they distort. The sides flatten, the tops and bottoms stretch. The motion spends more time near the turning points — the bob lingers at the top of its arc where gravity barely pulls, and whips through the bottom where the restoring force is strongest.
+
+At E = 2mgL, the loops pinch together into a figure-eight that passes through the points (±π, 0). This is the <Term slug="separatrix">separatrix</Term>. It represents the motion of a pendulum that takes infinite time to reach the inverted position, asymptotically approaching but never arriving.
+
+Above the separatrix, the curves are no longer closed. They are wavy horizontal bands — the pendulum rotates continuously, speeding up at the bottom and slowing at the top but never reversing. Clockwise rotations run above the separatrix; counterclockwise below.
+
+<SceneCard caption="FIG.02e — phase portrait with separatrix">
+  <SeparatrixScene />
+</SceneCard>
+
+Every curve in this portrait is a complete history of the pendulum. Pick a point, follow the curve, and you know the angle and velocity at every moment, past and future. The portrait is a map of all possible pendulum motions — and the separatrix is the coastline that divides the continent of oscillation from the ocean of rotation.
+
+</Section>
+
+<Section index={6} title="The exact period">
+
+For the linear pendulum, the period is T₀ = 2π√(L/g) — clean, constant, and independent of amplitude. For the real pendulum, the period depends on how far you pull it. The exact expression involves the complete <Term slug="elliptic-integral">elliptic integral</Term> of the first kind:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-lg">T(θ₀) = 4 √(L / g) · K(sin(θ₀ / 2))</span>
+</EquationBlock>
+
+K is not an elementary function — it cannot be written in terms of polynomials, exponentials, or trigonometric functions. It was studied extensively by <PhysicistLink slug="adrien-marie-legendre">Legendre</PhysicistLink> in the late eighteenth century and belongs to a family of special functions that arise whenever you try to compute the arc length of an ellipse (hence the name).
+
+As θ₀ → 0, sin(θ₀/2) → 0, and K(0) = π/2. The formula recovers T₀ = 2π√(L/g) — the harmonic result, as it must. As θ₀ → π, sin(θ₀/2) → 1, and K(1) → ∞. The period diverges. A pendulum released from just below the vertical takes arbitrarily long to complete a swing, spending most of its time creeping through the neighborhood of the unstable equilibrium.
+
+<Callout variant="math">
+| θ₀     | T / T₀  |
+|--------|---------|
+| 10°    | 1.0019  |
+| 30°    | 1.0174  |
+| 45°    | 1.0400  |
+| 60°    | 1.0732  |
+| 90°    | 1.1803  |
+| 120°   | 1.3729  |
+| 150°   | 1.7622  |
+| 170°   | 2.7681  |
+| 179°   | 5.243   |
+</Callout>
+
+At 10° the period is essentially T₀. At 90° it has stretched by 18%. At 170°, it has nearly tripled. The divergence as θ₀ → 180° is logarithmic — it goes to infinity, but slowly.
+
+<SceneCard caption="FIG.02f — period stretches with amplitude">
+  <PeriodVsAmplitudeScene />
+</SceneCard>
+
+This is why <PhysicistLink slug="christiaan-huygens">Huygens</PhysicistLink> needed cycloidal cheeks on his pendulum clocks. Without them, a clock pendulum swinging through even a modest arc of a few degrees would gain or lose measurable time. The elliptic integral is the price of honesty — the cost of keeping sin θ instead of replacing it with θ.
+
+</Section>
+
+<Section index={7} title="Why nonlinearity matters">
+
+The simple pendulum is the first nonlinear system most physicists meet. It will not be the last.
+
+Almost everything in nature is nonlinear. The linear equations we love — Hooke's law, the wave equation, Ohm's law — are approximations, valid near equilibrium, in some small-angle limit of reality. Step outside that limit and the world changes character.
+
+The double pendulum — two rods hinged together — is deterministic but chaotic. Its motion is exquisitely sensitive to initial conditions: two nearly identical starting states diverge exponentially, making long-term prediction impossible. Chaos is a direct consequence of nonlinearity.
+
+Solitons — nonlinear waves in shallow water, fiber optics, and plasma — hold their shape over enormous distances because nonlinear steepening exactly balances dispersive spreading. They exist only because the governing equations are nonlinear.
+
+<PhysicistLink slug="isaac-newton">Newton</PhysicistLink>'s law of gravity is linear in the test-mass limit, but general relativity — the full theory — is deeply nonlinear. Spacetime curvature sources more curvature. This is why gravitational waves interact with themselves and why the two-body problem in general relativity has no exact solution.
+
+The pendulum teaches you to see this. The small-angle world is comfortable, solvable, and wrong past a certain point. The real equation is harder, richer, and closer to the truth. Every nonlinear system — from weather to turbulence to the beating heart — carries the same lesson: the approximation is where you start. The full equation is where the physics lives.
+
+But even the linear oscillator has more to teach when you add the real world — friction and driving forces. That is FIG.03.
+
+</Section>
+
+</TopicPageLayout>
