@@ -1,4 +1,5 @@
 import { g_SI } from "./constants";
+import { completeEllipticK } from "./elliptic";
 
 /**
  * Small-angle pendulum. Assumes sin(theta) ≈ theta.
@@ -85,24 +86,6 @@ export function largeAngleSolve(input: LargeAngleInput): PendulumSample[] {
     theta: s.y[0]!,
     thetaDot: s.y[1]!,
   }));
-}
-
-/**
- * Complete elliptic integral of the first kind K(k) using the
- * arithmetic-geometric mean. k is the modulus (NOT the parameter m = k^2).
- * Converges to full double precision in ~10 iterations.
- */
-function completeEllipticK(k: number): number {
-  let a = 1;
-  let b = Math.sqrt(1 - k * k);
-  for (let i = 0; i < 20; i++) {
-    const aNext = (a + b) / 2;
-    const bNext = Math.sqrt(a * b);
-    if (Math.abs(a - b) < 1e-15) break;
-    a = aNext;
-    b = bNext;
-  }
-  return Math.PI / (2 * a);
 }
 
 /**
