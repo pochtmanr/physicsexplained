@@ -205,6 +205,160 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "kepler" },
     ],
   },
+  {
+    slug: "tautochrone",
+    term: "tautochrone",
+    category: "concept",
+    shortDefinition:
+      "Curve where descent time is independent of starting point; the cycloid.",
+    description:
+      "The tautochrone problem asks: is there a curve along which a frictionless bead, released from any height, always reaches the bottom in exactly the same time? The answer is the cycloid — the curve traced by a point on the rim of a rolling wheel.\n\nThe result is counterintuitive. A bead released near the top of a cycloid has farther to travel, but the steepness of the upper portion accelerates it so sharply that it arrives at the bottom at precisely the same instant as a bead released from a point barely above it. The two effects — longer path and greater acceleration — cancel exactly, for any starting point.\n\nHuygens recognised the practical value immediately. An ordinary pendulum is only approximately isochronous; its period stretches as the amplitude grows. But if the bob is constrained to swing along a cycloidal arc — by wrapping the string around cycloidal cheeks at the pivot — the oscillation becomes perfectly isochronous at every amplitude. He built clocks on this principle and published the proof in Horologium Oscillatorium.",
+    history:
+      "Christiaan Huygens proved in Horologium Oscillatorium (1673) that the cycloid is the tautochrone curve. The proof was a landmark in the early calculus of curves and led directly to the theory of evolutes.",
+    visualization: "cycloid",
+    relatedPhysicists: ["christiaan-huygens"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
+    ],
+  },
+  {
+    slug: "cycloid",
+    term: "cycloid",
+    category: "concept",
+    shortDefinition:
+      "Curve traced by a point on a rolling circle; solves both tautochrone and brachistochrone.",
+    description:
+      "A cycloid is the path traced by a point on the rim of a circle as it rolls along a straight line without slipping. In parametric form, x = r(t − sin t) and y = r(1 − cos t), where r is the radius of the rolling circle and t is the angle through which it has turned.\n\nThe cycloid has two remarkable physical properties. First, it is the tautochrone: a frictionless bead sliding down a cycloidal track reaches the bottom in the same time regardless of where it starts. Second, it is the brachistochrone: of all smooth curves connecting two points at different heights, the cycloid is the one along which a bead under gravity descends in the least time. Johann Bernoulli posed the brachistochrone challenge in 1696; Newton, Leibniz, l'Hôpital, and Jakob Bernoulli all solved it.\n\nThese properties made the cycloid central to seventeenth- and eighteenth-century mathematics and directly influenced the development of the calculus of variations.",
+    relatedPhysicists: ["christiaan-huygens"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
+    ],
+  },
+  {
+    slug: "elliptic-integral",
+    term: "elliptic integral",
+    category: "concept",
+    shortDefinition:
+      "Integral involving square root of cubic/quartic polynomial; gives the exact period of a large-angle pendulum.",
+    description:
+      "An elliptic integral is an integral of the form ∫R(t, √P(t)) dt, where P(t) is a polynomial of degree three or four and R is a rational function. These integrals cannot, in general, be evaluated in terms of elementary functions — they define genuinely new transcendental quantities.\n\nThe complete elliptic integral of the first kind, K(k), appears whenever you write down the exact period of a pendulum swinging through a finite angle. The standard result is T = 4√(l/g) · K(sin(θ₀/2)), where θ₀ is the maximum angle. For small angles K reduces to π/2, recovering the familiar T = 2π√(l/g). For large angles K grows without bound as θ₀ approaches π, meaning the period stretches toward infinity as the pendulum nears the top.\n\nK(k) can be computed efficiently using the arithmetic-geometric mean (AGM): iterate aₙ₊₁ = (aₙ + bₙ)/2 and bₙ₊₁ = √(aₙbₙ) starting from a₀ = 1, b₀ = √(1 − k²). The sequences converge quadratically to a common limit M, and K(k) = π/(2M). This makes numerical evaluation fast and precise.",
+    relatedPhysicists: ["adrien-marie-legendre"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "separatrix",
+    term: "separatrix",
+    category: "concept",
+    shortDefinition:
+      "Phase-space boundary between qualitatively different motions.",
+    description:
+      "A separatrix is a curve in phase space that divides regions of qualitatively different behaviour. Cross it, and the system does something fundamentally different — not just more or less of the same thing.\n\nFor a simple pendulum, the separatrix is the figure-eight curve in the (θ, ω) phase plane that passes through the unstable equilibrium at θ = ±π. Inside the loops, the pendulum oscillates back and forth — this is libration. Outside the loops, the pendulum has enough energy to swing over the top and keep rotating in one direction. On the separatrix itself, the pendulum takes infinite time to asymptotically approach the vertical, never quite reaching it.\n\nThe energy on the separatrix equals exactly mgl — the potential energy at the top. Any trajectory with less energy is trapped inside; any trajectory with more escapes into rotation. The separatrix is the watershed between two fundamentally different kinds of motion.",
+    visualization: "separatrix",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "libration",
+    term: "libration",
+    category: "concept",
+    shortDefinition:
+      "Bounded oscillation within a potential well, as opposed to full rotation.",
+    description:
+      "Libration is the back-and-forth oscillation of a system that remains trapped within a potential well, never accumulating enough energy to escape over the barrier. The pendulum swinging left and right without going over the top is librating.\n\nThe term comes from the Latin libra, a balance — the same root as the zodiac sign. In celestial mechanics it describes the apparent rocking of the Moon that lets us see slightly more than half its surface over time. In the phase portrait of a pendulum, libration orbits are the closed loops inside the separatrix: the system rocks back and forth, periodically reversing direction.\n\nLibration contrasts with rotation, where the system has enough energy to pass over the potential barrier and keep going in the same angular direction indefinitely. The boundary between the two regimes is the separatrix.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "nonlinear-dynamics",
+    term: "nonlinear dynamics",
+    category: "concept",
+    shortDefinition:
+      "Study of systems where output is not proportional to input; chaos, solitons, turbulence.",
+    description:
+      "A system is nonlinear when its response is not proportional to its input. Double the push, and you do not get double the result — you might get three times as much, or half, or something qualitatively different. Most of physics is nonlinear. The linear systems that fill introductory textbooks are approximations, valid near equilibrium and nowhere else.\n\nThe simple pendulum is the gentlest entry point into nonlinear dynamics. At small angles the restoring force is proportional to displacement, and the motion is a pure sinusoid. But push harder and the sin θ in the equation of motion can no longer be replaced by θ. The period starts to depend on amplitude. The phase portrait develops a separatrix. Push harder still and the pendulum rotates rather than oscillates — a qualitative change that no linear model can produce.\n\nNonlinear dynamics encompasses chaos (sensitive dependence on initial conditions), solitons (stable wave packets), bifurcations (sudden qualitative changes in behaviour), and turbulence (the unsolved problem). The pendulum, being exactly solvable, is where most physicists meet nonlinearity for the first time.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "potential-well",
+    term: "potential well",
+    category: "concept",
+    shortDefinition:
+      "Region of potential energy that traps a system; shape determines oscillation character.",
+    description:
+      "A potential well is a dip in the potential energy landscape where a system can be trapped. Think of a marble in a bowl: it rolls back and forth, always returning to the bottom. The shape of the bowl determines the character of the oscillation.\n\nFor a pendulum, the potential energy is U(θ) = mgl(1 − cos θ). Near the bottom this looks like a parabola — U ≈ ½mglθ² — and the motion is simple harmonic. But farther out the well flattens and the walls eventually curve over into the next period of the cosine. The departures from the parabolic approximation are what make the large-angle pendulum nonlinear.\n\nEvery stable equilibrium in physics sits at the bottom of a potential well. The quadratic approximation near the minimum always gives simple harmonic motion. The interesting physics — anharmonicity, amplitude-dependent frequency, chaos — comes from the higher-order terms in the shape of the well.",
+    visualization: "energy-diagram",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "damping",
+    term: "damping",
+    category: "concept",
+    shortDefinition:
+      "Energy dissipation causing oscillation amplitude to decay exponentially.",
+    description:
+      "Damping is the process by which an oscillating system loses energy to its environment, causing the amplitude of oscillation to decrease over time. In the simplest model, the damping force is proportional to velocity: F = −γv, where γ is the damping coefficient. The amplitude then decays exponentially as e^(−γt/2m).\n\nThree regimes emerge depending on the ratio of damping to stiffness. In the underdamped case, the system oscillates with gradually shrinking amplitude — a struck tuning fork, a plucked guitar string, a pendulum in air. In the critically damped case, the system returns to equilibrium as fast as possible without oscillating — this is what door closers and car shock absorbers aim for. In the overdamped case, the system creeps back to rest sluggishly, without any oscillation at all — like a pendulum immersed in honey.\n\nNo real oscillator is perfectly undamped. Air resistance, friction at the pivot, internal flexing of the material — something always drains energy. The question is only how fast.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
+  {
+    slug: "q-factor",
+    term: "quality factor",
+    category: "concept",
+    shortDefinition:
+      "Quality factor Q = ω₀/γ; number of oscillations before energy drops to 1/e.",
+    description:
+      "The quality factor Q of an oscillator is a dimensionless number that measures how slowly it loses energy relative to how fast it oscillates. Formally, Q = ω₀/γ, where ω₀ is the natural angular frequency and γ is the damping rate. Equivalently, Q is roughly the number of oscillations the system completes before its energy falls to 1/e (about 37%) of its initial value.\n\nA high Q means the oscillator rings for a long time. A tuning fork has Q around 1,000 — it sustains a clear tone for many seconds. A quartz crystal oscillator in a wristwatch has Q around 10⁵, which is why it keeps such good time. Atomic clocks reach Q values of 10¹⁰ or more. A low Q means rapid energy loss: a pendulum swinging in water might have Q of 5 or 10.\n\nQ also controls the sharpness of resonance. A high-Q oscillator responds intensely but only within a very narrow band of driving frequencies. A low-Q oscillator responds more broadly but less dramatically. This tradeoff between selectivity and bandwidth runs through all of oscillator physics, from radio receivers to laser cavities.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
+  {
+    slug: "resonance",
+    term: "resonance",
+    category: "phenomenon",
+    shortDefinition:
+      "Amplitude peak when driving frequency matches natural frequency.",
+    description:
+      "Resonance occurs when a periodic driving force is applied to an oscillator at or near its natural frequency. The system absorbs energy efficiently, and the amplitude builds up to a peak limited only by damping. At exact resonance, the driving force is always in phase with the velocity, so every push adds energy.\n\nThe phenomenon is everywhere. A child on a swing learns resonance intuitively — push at the right moment and the arc grows. A wine glass shatters when a singer hits its natural frequency. The Tacoma Narrows Bridge collapsed in 1940 when wind vortices drove it at a resonant mode. MRI scanners use resonance to flip nuclear spins at precisely the right radio frequency.\n\nMathematically, the steady-state amplitude of a driven, damped oscillator is A(ω) = F₀/m / √((ω₀² − ω²)² + γ²ω²). The peak occurs near ω = ω₀ and its height is proportional to Q. Sharper peak, narrower bandwidth, more selective response — the same tradeoff that defines Q.",
+    visualization: "resonance-curve",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
+  {
+    slug: "normal-modes",
+    term: "normal modes",
+    category: "concept",
+    shortDefinition:
+      "Independent oscillation patterns of a coupled system; any motion is their superposition.",
+    description:
+      "Normal modes are the independent oscillation patterns of a system with more than one degree of freedom. In each normal mode, every part of the system oscillates at the same frequency and passes through equilibrium at the same time. Any motion of the system, no matter how complicated, can be written as a sum of its normal modes.\n\nThe simplest example is two identical pendulums connected by a spring. The system has two normal modes. In one, both pendulums swing together in the same direction at the same frequency — the spring never stretches. In the other, they swing in opposite directions, stretching and compressing the spring, at a higher frequency. If you start one pendulum swinging and hold the other still, the energy sloshes back and forth between them — a phenomenon called beating — because you have excited both normal modes simultaneously and they drift in and out of phase.\n\nNormal-mode analysis extends to any number of coupled oscillators: molecules, crystal lattices, vibrating strings, drumheads. It is the bridge between the physics of one oscillator and the physics of waves.",
+    visualization: "coupled-pendulum",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
+  {
+    slug: "beats",
+    term: "beats",
+    category: "phenomenon",
+    shortDefinition:
+      "Amplitude modulation from superposition of two close frequencies; f_beat = |f₁ − f₂|.",
+    description:
+      "Beats are the slow, periodic rise and fall of amplitude that occurs when two oscillations of nearly equal frequency are superimposed. If two signals have frequencies f₁ and f₂, their sum oscillates at the average frequency (f₁ + f₂)/2 with an envelope that pulses at the beat frequency |f₁ − f₂|.\n\nMusicians use beats constantly. When tuning a guitar string against a reference tone, you hear a pulsing wah-wah-wah that slows down as the two frequencies approach each other and vanishes when they match. Piano tuners listen for beats between strings that are supposed to sound the same note.\n\nIn coupled pendulums, beats appear as energy transfer. Start one pendulum swinging and the other still; the first gradually stops while the second picks up the motion, then the process reverses. The beat frequency is the difference between the two normal-mode frequencies of the coupled system. The phenomenon is the time-domain signature of two close spectral lines — the same mathematics appears in quantum mechanics, radio engineering, and acoustics.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

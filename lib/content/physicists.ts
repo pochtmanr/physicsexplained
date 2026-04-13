@@ -459,6 +459,185 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "kepler" },
     ],
   },
+  {
+    slug: "pierre-bouguer",
+    name: "Pierre Bouguer",
+    shortName: "Bouguer",
+    born: "1698",
+    died: "1758",
+    nationality: "French",
+    oneLiner:
+      "Took pendulums up the Andes and measured how gravity changes with altitude.",
+    image: storageUrl("physicists/pierre-bouguer.avif"),
+    bio: "Pierre Bouguer was born in 1698 in Le Croisic, Brittany, the son of a royal hydrographer. He showed mathematical ability early: when his father died in 1714, the sixteen-year-old was appointed to succeed him as professor of hydrography. He won prizes from the Académie des Sciences for work on ship masting and the observation of stars near the horizon, and was elected to the Académie in 1731.\n\nIn 1735 the Académie sent two expeditions to measure the shape of the Earth — one to Lapland, one to the equator. Bouguer joined the equatorial mission to Peru (modern Ecuador), led by Charles Marie de La Condamine. The expedition lasted nearly a decade and was plagued by illness, disputes, and the murder of one member. Despite the difficulties, Bouguer made the first systematic gravity measurements at different altitudes, swinging pendulums at sea level and on the slopes of Chimborazo and Pichincha. He found that gravity decreased with altitude, as expected, but by less than a simple inverse-square law would predict — because the mass of the mountain beneath him was pulling upward. The correction he devised, now called the Bouguer anomaly, remains a standard tool in geophysics and mineral exploration.\n\nBouguer also founded photometry. His Essai d'optique sur la gradation de la lumière (1729) was the first work to measure the intensity of light quantitatively. He established that light attenuates exponentially as it passes through a transparent medium — the law now known as the Beer-Bouguer law (or Beer-Lambert law). He invented the first photometer and used it to compare the brightness of the Sun and Moon. These measurements made him the first person to put numbers on how bright things are.",
+    contributions: [
+      "founded photometry and invented the first photometer (1729)",
+      "established the exponential attenuation of light (Beer-Bouguer law)",
+      "first systematic gravity measurements at altitude using pendulums",
+      "Bouguer anomaly — gravity correction for terrain mass",
+      "measured the gravitational attraction of mountains",
+    ],
+    majorWorks: [
+      {
+        title: "Essai d'optique sur la gradation de la lumière",
+        year: "1729",
+        description:
+          "The founding work of photometry. Established the exponential law of light absorption in transparent media and introduced methods for comparing the brightness of celestial bodies.",
+      },
+      {
+        title: "La Figure de la Terre",
+        year: "1749",
+        description:
+          "Account of the geodesic expedition to Peru, including Bouguer's gravity measurements at different altitudes, the deflection of a plumb line near mountains, and the first formulation of what is now the Bouguer anomaly.",
+      },
+      {
+        title: "Traité du navire, de sa construction et de ses mouvemens",
+        year: "1746",
+        description:
+          "A comprehensive treatise on naval architecture and ship stability. Introduced the concept of the metacenter — the point that determines whether a ship will right itself or capsize — laying the foundations of naval engineering.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
+    ],
+  },
+  {
+    slug: "adrien-marie-legendre",
+    name: "Adrien-Marie Legendre",
+    shortName: "Legendre",
+    born: "1752",
+    died: "1833",
+    nationality: "French",
+    oneLiner:
+      "Classified the integrals that no one could solve and gave them his name.",
+    image: storageUrl("physicists/adrien-marie-legendre.avif"),
+    bio: "Adrien-Marie Legendre was born in Paris in 1752 into a wealthy family and studied at the Collège Mazarin, where he was taught by the abbé Joseph-François Marie. He showed early talent in mathematics and physics, and by his mid-twenties was teaching at the École Militaire.\n\nLegendre's most lasting contribution is his systematic study of elliptic integrals — the integrals that arise whenever you try to compute the arc length of an ellipse, the exact period of a pendulum at finite amplitude, or the motion of a body under a central force that is not exactly inverse-square. These integrals cannot be expressed in terms of elementary functions, and before Legendre no one had organised them. Over forty years he classified them into three canonical forms (now called elliptic integrals of the first, second, and third kind), computed extensive numerical tables, and developed reduction formulas that let any elliptic integral be expressed in terms of the canonical three. His three-volume Traité des fonctions elliptiques (1825-1828) was the definitive reference until Abel and Jacobi inverted the problem and created the theory of elliptic functions.\n\nLegendre also introduced the Legendre polynomials — solutions to Laplace's equation in spherical coordinates — which are indispensable in electrostatics, gravitational theory, and quantum mechanics. He made foundational contributions to number theory, including the law of quadratic reciprocity (which he conjectured and partially proved before Gauss gave the first complete proof). In 1805 he published the first clear statement of the method of least squares for fitting data, a technique that remains the backbone of experimental science and statistics.\n\nHe lost his fortune in the French Revolution and his pension under the Restoration, but continued working into his late seventies. He died in Paris in 1833, largely eclipsed by younger rivals but having built the tools they all used.",
+    contributions: [
+      "classified elliptic integrals into three canonical forms",
+      "introduced Legendre polynomials for spherical problems",
+      "first published the method of least squares (1805)",
+      "contributions to number theory and quadratic reciprocity",
+      "extensive numerical tables of elliptic integrals",
+    ],
+    majorWorks: [
+      {
+        title: "Traité des fonctions elliptiques",
+        year: "1825–1828",
+        description:
+          "Three-volume treatise that systematically classified elliptic integrals into three canonical forms and provided reduction formulas and numerical tables. The definitive reference on the subject until the work of Abel and Jacobi.",
+      },
+      {
+        title: "Essai sur la théorie des nombres",
+        year: "1798",
+        description:
+          "The first textbook devoted entirely to number theory. Stated the law of quadratic reciprocity, introduced the Legendre symbol, and conjectured the prime number theorem.",
+      },
+      {
+        title: "Nouvelles méthodes pour la détermination des orbites des comètes",
+        year: "1805",
+        description:
+          "Contained the first published account of the method of least squares, applied to the problem of fitting orbital data. The technique became fundamental to all experimental science.",
+      },
+      {
+        title: "Exercices de calcul intégral",
+        year: "1811–1817",
+        description:
+          "Three volumes developing the theory of elliptic integrals and Euler integrals (beta and gamma functions). Introduced much of the notation and classification still used today.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "nikola-tesla",
+    name: "Nikola Tesla",
+    shortName: "Tesla",
+    born: "1856",
+    died: "1943",
+    nationality: "Serbian-American",
+    oneLiner:
+      "Harnessed alternating current and made resonance light up the world.",
+    image: storageUrl("physicists/nikola-tesla.avif"),
+    bio: "Nikola Tesla was born in 1856 in Smiljan, in the Military Frontier of the Austrian Empire (modern Croatia), the son of a Serbian Orthodox priest. He studied engineering in Graz and physics in Prague, then worked for the Continental Edison Company in Paris before emigrating to the United States in 1884 with four cents in his pocket and a letter of introduction to Thomas Edison.\n\nTesla's central insight was that alternating current — current that reverses direction many times per second — could be generated, transmitted, and converted to mechanical work far more efficiently than Edison's direct current. In 1887-1888 he designed the polyphase AC induction motor and the system of generators, transformers, and transmission lines needed to deliver AC power over long distances. George Westinghouse bought his patents, and the ensuing 'War of Currents' against Edison ended decisively in AC's favour when Westinghouse and Tesla lit the 1893 World's Columbian Exposition in Chicago and built the first large-scale hydroelectric plant at Niagara Falls in 1895.\n\nTesla was obsessed with resonance. His Tesla coil — a resonant transformer circuit invented in 1891 — produced spectacular high-voltage, high-frequency discharges and became the basis for early radio transmission, neon lighting, and X-ray imaging. He understood that every electrical and mechanical system has a natural frequency, and that driving it at that frequency could produce enormous amplification. He claimed, probably with some exaggeration, to have cracked the plaster of buildings near his Houston Street laboratory by tuning a small mechanical oscillator to the building's resonant frequency.\n\nIn his later years Tesla grew increasingly isolated. He announced plans for a wireless energy transmission system, a particle-beam weapon, and other inventions that he never completed. He died alone in a New York hotel room in January 1943. The SI unit of magnetic flux density — the tesla — bears his name.",
+    contributions: [
+      "polyphase alternating current power system",
+      "AC induction motor (1887-1888)",
+      "Tesla coil — resonant transformer for high-voltage, high-frequency current (1891)",
+      "pioneering work in radio transmission",
+      "rotating magnetic field principle",
+    ],
+    majorWorks: [
+      {
+        title: "A New System of Alternate Current Motors and Transformers",
+        year: "1888",
+        description:
+          "Lecture delivered to the American Institute of Electrical Engineers presenting the polyphase AC induction motor and the complete system for AC power generation and distribution. The paper that launched the AC revolution.",
+      },
+      {
+        title: "Experiments with Alternate Currents of High Potential and High Frequency",
+        year: "1892",
+        description:
+          "Lecture delivered in London and Paris demonstrating the Tesla coil and wireless energy transfer. Showed phosphorescent lighting, high-frequency heating, and resonant circuits to packed audiences of scientists.",
+      },
+      {
+        title: "On Light and Other High Frequency Phenomena",
+        year: "1893",
+        description:
+          "Lecture to the Franklin Institute describing experiments with high-frequency currents, wireless transmission, and the relationship between electromagnetic waves and light. Anticipated several developments in radio technology.",
+      },
+      {
+        title: "Colorado Springs Notes, 1899-1900",
+        year: "1899–1900",
+        description:
+          "Laboratory journal from Tesla's experiments in Colorado Springs, where he built the largest Tesla coil ever constructed, produced artificial lightning, and claimed to detect signals from other planets. Published posthumously in 1978.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
+  {
+    slug: "jules-lissajous",
+    name: "Jules Antoine Lissajous",
+    shortName: "Lissajous",
+    born: "1822",
+    died: "1880",
+    nationality: "French",
+    oneLiner:
+      "Pointed light at vibrating mirrors and drew the curves that bear his name.",
+    image: storageUrl("physicists/jules-lissajous.avif"),
+    bio: "Jules Antoine Lissajous was born in Versailles in 1822 and studied at the École Normale Supérieure in Paris. He spent his career as a professor of physics in Paris, first at the Lycée Saint-Louis and later at other institutions, working primarily on acoustics and the physics of vibration.\n\nLissajous's principal contribution was the development of an optical method for studying vibrations. In 1855 he attached small mirrors to the prongs of tuning forks, bounced a beam of light off them, and projected the result onto a screen. When two forks vibrate at right angles, the reflected spot traces out the looping, interlocking curves now called Lissajous figures. The shape of the curve depends on the ratio of the two frequencies and their relative phase: a 1:1 ratio produces an ellipse, 1:2 produces a figure-eight, and more complex ratios produce increasingly intricate but perfectly regular patterns.\n\nThe method was more than a visual curiosity. Before electronic instruments existed, Lissajous figures provided the most precise way to compare frequencies. If the two tuning forks are slightly detuned, the figure slowly rotates or deforms, making even small frequency differences visible. This technique was used for decades in acoustics laboratories and instrument calibration. The same mathematics describes any pair of coupled oscillations — two pendulums, two electrical circuits, two modes of a vibrating plate — and Lissajous figures remain a standard diagnostic tool on oscilloscopes.\n\nLissajous was awarded the Lacaze Prize by the Académie des Sciences in 1873 for his work on the optical observation of vibrations. He died in Plombières-les-Bains in 1880. His figures appear in every physics textbook that covers oscillations, and the mathematics behind them — superposition of sinusoidal motions at right angles — is one of the cleanest illustrations of how simple ingredients produce complex, beautiful patterns.",
+    contributions: [
+      "invented optical method for visualising vibrations using mirrors on tuning forks (1855)",
+      "Lissajous figures — curves from superposition of perpendicular oscillations",
+      "precision frequency comparison technique used before electronic instruments",
+      "contributions to experimental acoustics",
+    ],
+    majorWorks: [
+      {
+        title: "Mémoire sur l'étude optique des mouvements vibratoires",
+        year: "1857",
+        description:
+          "Presented to the Académie des Sciences. Described the mirror-and-tuning-fork apparatus for producing Lissajous figures and demonstrated how frequency ratios and phase differences determine the shape of the resulting curves.",
+      },
+      {
+        title: "Sur la position des nœuds dans les lames qui vibrent transversalement",
+        year: "1850",
+        description:
+          "Lissajous's doctoral thesis on the transverse vibration of bars. Studied the positions of nodal lines and laid the groundwork for his later optical methods.",
+      },
+      {
+        title: "Note sur un moyen nouveau de mettre en évidence le mouvement vibratoire des corps",
+        year: "1855",
+        description:
+          "First public description of the optical method for observing vibrations. Demonstrated that a beam of light reflected from a vibrating mirror traces the waveform of the vibration on a distant screen.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {
