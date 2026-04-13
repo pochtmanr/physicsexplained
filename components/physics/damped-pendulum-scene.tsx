@@ -21,7 +21,7 @@ export function DampedPendulumScene({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
-  const [gamma, setGamma] = useState(1.0);
+  const [gamma, setGamma] = useState(0.3);
 
   const traceRef = useRef<Array<{ t: number; x: number }>>([]);
 
@@ -155,7 +155,7 @@ export function DampedPendulumScene({
   });
 
   return (
-    <div ref={containerRef} style={{ width }} className="mx-auto">
+    <div ref={containerRef} style={{ width }} className="mx-auto pb-4">
       <canvas
         ref={canvasRef}
         style={{ width, height }}
@@ -168,8 +168,8 @@ export function DampedPendulumScene({
         <input
           type="range"
           min={0}
-          max={8}
-          step={0.1}
+          max={2}
+          step={0.05}
           value={gamma}
           onChange={(e) => {
             setGamma(parseFloat(e.target.value));

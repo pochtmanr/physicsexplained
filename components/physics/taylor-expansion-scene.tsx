@@ -146,7 +146,7 @@ export function TaylorExpansionScene({
   const displayOrder = currentIdx >= 0 ? ORDERS[currentIdx]! : ORDERS[ORDERS.length - 1]!;
 
   return (
-    <div className="mx-auto flex flex-col items-center gap-2" style={{ width }}>
+    <div className="mx-auto flex flex-col items-center gap-2 pb-4" style={{ width }}>
       <div
         ref={containerRef}
         className="jxgbox"

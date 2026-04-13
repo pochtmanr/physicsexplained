@@ -147,7 +147,7 @@ export function CoupledPendulumScene({
   ];
 
   return (
-    <div ref={containerRef} style={{ width }} className="mx-auto">
+    <div ref={containerRef} style={{ width }} className="mx-auto pb-4">
       <canvas
         ref={canvasRef}
         style={{ width, height }}

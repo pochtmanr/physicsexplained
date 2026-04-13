@@ -109,7 +109,7 @@ export function ResonanceCurveScene({
   }, [Q]);
 
   return (
-    <div style={{ width }} className="mx-auto">
+    <div style={{ width }} className="mx-auto pb-4">
       <div
         ref={containerRef}
         className="jxgbox"
