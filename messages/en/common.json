@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "Physics.explained",
+    "physicists": "Physicists",
+    "dictionary": "Dictionary",
+    "homeAriaLabel": "Physics.explained — home"
+  },
+  "footer": {
+    "branches": "Branches",
+    "physicists": "Physicists",
+    "dictionary": "Dictionary",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
+    "copyright": "© 2026 Simnetiq Ltd",
+    "starOnGithub": "Star on GitHub",
+    "newsletterHeading": "Stay in the loop",
+    "newsletterPlaceholder": "you@example.com",
+    "newsletterSubmit": "Subscribe",
+    "newsletterSubmitting": "..."
+  },
+  "cookieBanner": {
+    "message": "This site uses localStorage for your theme preference. No tracking cookies.",
+    "linkText": "Cookie policy",
+    "accept": "Accept"
+  },
+  "aside": {
+    "physicists": "Physicists",
+    "topics": "Topics",
+    "terms": "Terms"
+  },
+  "backLinks": {
+    "dictionary": "← Dictionary",
+    "physicists": "← All physicists"
+  },
+  "theme": {
+    "dark": "DARK",
+    "light": "LIGHT",
+    "initial": "THEME",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "pages": {
+    "dictionary": {
+      "eyebrow": "§ DICTIONARY",
+      "title": "THE VOCABULARY",
+      "subtitle": "Instruments, concepts, and phenomena — the shared vocabulary of the site.",
+      "stats": "{total} TERMS · {categories} CATEGORIES",
+      "categoryLabels": {
+        "instrument": "INSTRUMENTS",
+        "concept": "CONCEPTS",
+        "phenomenon": "PHENOMENA",
+        "unit": "UNITS"
+      },
+      "categorySingular": {
+        "instrument": "INSTRUMENT",
+        "concept": "CONCEPT",
+        "phenomenon": "PHENOMENON",
+        "unit": "UNIT"
+      },
+      "linkLabel": "DICTIONARY",
+      "sectionDefinition": "Definition",
+      "sectionHistory": "History",
+      "interactive": "Interactive: {term}",
+      "illustrationAlt": "Illustration of {term}",
+      "backLink": "← Dictionary"
+    },
+    "physicists": {
+      "eyebrow": "§ PHYSICISTS",
+      "eyebrowSingular": "PHYSICIST",
+      "title": "THE PEOPLE",
+      "subtitle": "Brief profiles of the physicists whose work appears across the site.",
+      "stats": "{count} PROFILES · {centuries} CENTURIES",
+      "centuryHeader": "§ {label} · {count}",
+      "centuryAncient": "Ancient",
+      "centuryFormat": "{n}{suffix} CENTURY",
+      "suffixSt": "st",
+      "suffixNd": "nd",
+      "suffixRd": "rd",
+      "suffixTh": "th",
+      "sectionBiography": "Biography",
+      "sectionContributions": "Contributions",
+      "sectionMajorWorks": "Major works",
+      "sectionRelatedTopics": "Related topics",
+      "backLink": "← All physicists",
+      "portraitAlt": "Portrait of {name}",
+      "nationalities": {
+        "British": "British",
+        "Danish": "Danish",
+        "Dutch": "Dutch",
+        "English": "English",
+        "French": "French",
+        "German": "German",
+        "Greco-Roman": "Greco-Roman",
+        "Italian": "Italian",
+        "Italian-French": "Italian-French",
+        "Polish": "Polish",
+        "Serbian-American": "Serbian-American"
+      }
+    }
+  },
+  "search": {
+    "triggerText": "SEARCH",
+    "triggerLabel": "Search (Cmd+K)",
+    "dialogLabel": "Search",
+    "placeholder": "Search topics, physicists, dictionary...",
+    "emptyInitial": "Start typing to search...",
+    "emptyNoResults": "No results for \"{query}\"",
+    "closeLabel": "Close search",
+    "hintNavigate": "navigate",
+    "hintOpen": "open",
+    "hintClose": "close",
+    "categoryBranch": "Branches",
+    "categoryTopic": "Topics",
+    "categoryPhysicist": "Physicists",
+    "categoryDictionary": "Dictionary"
+  }
+}

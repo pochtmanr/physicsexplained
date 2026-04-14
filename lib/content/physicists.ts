@@ -638,6 +638,150 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
     ],
   },
+  {
+    slug: "henry-cavendish",
+    name: "Henry Cavendish",
+    shortName: "Cavendish",
+    born: "1731",
+    died: "1810",
+    nationality: "British",
+    oneLiner:
+      "Weighed the Earth in his garden shed with a torsion balance and two lead balls.",
+    image: storageUrl("physicists/henry-cavendish.avif"),
+    bio: "Henry Cavendish was born into one of England's wealthiest aristocratic families and spent his entire fortune on science. Painfully shy — contemporary accounts describe him as barely able to speak to anyone, especially women — he communicated almost entirely through written notes, even with servants in his own house.\n\nDespite his reclusiveness, Cavendish was one of the most precise experimenters who ever lived. In 1798, at the age of 67, he performed what is now called the Cavendish experiment: using a torsion balance designed by John Michell (who died before completing the work), he measured the tiny gravitational attraction between lead spheres. The apparatus was so sensitive that he had to observe it by telescope through a window to avoid disturbing it with his body heat.\n\nFrom the measured force, the known masses, and the geometry, Cavendish extracted the density of the Earth — 5.448 times that of water, remarkably close to the modern value of 5.515. This was equivalent to determining the gravitational constant G, though Cavendish himself never expressed it that way. With G and the known value of surface gravity g, Newton's law gives Earth's mass: M = gR²/G. The man who weighed the Earth did it with lead balls, a wire, and extraordinary patience.\n\nCavendish also independently discovered what we now call Coulomb's law of electrostatics, Ohm's law of resistance, Richter's law of chemical equivalents, and the composition of water — but published almost none of it. His unpublished papers, edited by Maxwell a century later, revealed decades of discoveries that others would eventually rediscover and receive credit for.",
+    contributions: [
+      "measured the gravitational constant G (Cavendish experiment, 1798)",
+      "determined the density of the Earth to within 1% of the modern value",
+      "independently discovered Coulomb's law of electrostatics",
+      "determined the composition of water and atmospheric air",
+      "pioneered precise electrical measurements decades before Ohm and Faraday",
+    ],
+    majorWorks: [
+      {
+        title: "Experiments to Determine the Density of the Earth",
+        year: "1798",
+        description:
+          "Published in Philosophical Transactions, this paper described the torsion balance experiment that measured the gravitational attraction between known masses. The result — Earth's mean density is 5.448 times that of water — was the first precise determination of a fundamental constant of nature.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "universal-gravitation" },
+    ],
+  },
+  {
+    slug: "joseph-louis-lagrange",
+    name: "Joseph-Louis Lagrange",
+    shortName: "Lagrange",
+    born: "1736",
+    died: "1813",
+    nationality: "Italian-French",
+    oneLiner:
+      "Rewrote mechanics without a single diagram and found the five points where gravity stands still.",
+    image: storageUrl("physicists/joseph-louis-lagrange.avif"),
+    bio: "Giuseppe Luigi Lagrangia — later Joseph-Louis Lagrange — was born in Turin and spent his career in Berlin and Paris, becoming one of the greatest mathematicians in history. His masterwork, Mécanique analytique (1788), reformulated all of Newtonian mechanics using pure algebra and calculus, without a single geometric figure. He was reportedly proud of this: the preface announces that the reader will find no diagrams in the entire book.\n\nLagrange's reformulation replaced Newton's forces with a single scalar function — the Lagrangian L = T − V (kinetic minus potential energy) — and derived all equations of motion from a variational principle: the true path between two points is the one that makes the action integral stationary. This approach handles constraints, curved coordinates, and coupled systems with an elegance that Newton's vector forces cannot match.\n\nIn 1772, while studying the three-body problem, Lagrange discovered that there are exactly five points (now called Lagrange points) where a small body can remain in equilibrium relative to two larger orbiting bodies. Three lie on the line connecting the two bodies; two form equilateral triangles. The triangular points (L4 and L5) are stable — a prediction confirmed in 1906 when the first Trojan asteroid was discovered at Jupiter's L4 point.\n\nLagrange survived the French Revolution (unlike his friend Lavoisier), served on the commission that created the metric system, and taught at the École Polytechnique until his death in 1813. His analytical mechanics remains the foundation of theoretical physics: every path from classical mechanics to quantum field theory passes through the Lagrangian.",
+    contributions: [
+      "reformulated mechanics using the Lagrangian L = T − V (Mécanique analytique, 1788)",
+      "discovered the five Lagrange points in the three-body problem (1772)",
+      "developed the calculus of variations",
+      "contributed to number theory (Lagrange's four-square theorem)",
+      "helped create the metric system during the French Revolution",
+    ],
+    majorWorks: [
+      {
+        title: "Mécanique analytique",
+        year: "1788",
+        description:
+          "The first comprehensive treatise on mechanics using purely analytical methods. Replaced geometric reasoning with the calculus of variations and introduced generalised coordinates, transforming mechanics from a branch of geometry into a branch of analysis.",
+      },
+      {
+        title: "Essai sur le problème des trois corps",
+        year: "1772",
+        description:
+          "Analytical treatment of the restricted three-body problem. Discovered the five equilibrium points (Lagrange points) and proved the stability of the triangular points L4 and L5.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "tides-and-three-body" },
+    ],
+  },
+  {
+    slug: "henri-poincare",
+    name: "Henri Poincaré",
+    shortName: "Poincaré",
+    born: "1854",
+    died: "1912",
+    nationality: "French",
+    oneLiner:
+      "Tried to solve the three-body problem, failed, and discovered chaos instead.",
+    image: storageUrl("physicists/henri-poincare.avif"),
+    bio: "Jules Henri Poincaré was the last mathematician who could claim mastery of the entire field. He made foundational contributions to topology, complex analysis, celestial mechanics, number theory, and the philosophy of science — often creating entirely new branches of mathematics to solve the problems he encountered.\n\nIn 1887, King Oscar II of Sweden offered a prize for a solution to the n-body problem: prove that the solar system is stable. Poincaré submitted a brilliant memoir on the restricted three-body problem. He proved that no general closed-form solution exists, but went further: he showed that certain orbits exhibit what we now call sensitive dependence on initial conditions — infinitesimally close starting points diverge exponentially. This was the birth of chaos theory, though the word would not be coined for another eighty years.\n\nThe story has a famous twist: Poincaré's original prize-winning memoir contained an error. When his colleague Lars Edvard Phragmén found it during preparation for publication, Poincaré realised the error was more interesting than the original result. The corrected version — which he paid to have reprinted at a cost exceeding the prize money — contained the first description of homoclinic tangles, the geometric structures that make chaotic systems chaotic.\n\nPoincaré also came within a whisker of special relativity (deriving the Lorentz transformations independently of Einstein), laid the groundwork for algebraic topology, and wrote popular science books that are still read today. He died suddenly in 1912 at the height of his powers.",
+    contributions: [
+      "discovered deterministic chaos in the three-body problem (1890)",
+      "founded algebraic topology (Analysis Situs, 1895)",
+      "independently derived the Lorentz transformations (1905)",
+      "proved the non-existence of general solutions to the three-body problem",
+      "introduced the concept of homoclinic orbits and their tangles",
+    ],
+    majorWorks: [
+      {
+        title: "Les méthodes nouvelles de la mécanique céleste",
+        year: "1892–1899",
+        description:
+          "Three-volume treatise on celestial mechanics. Introduced qualitative methods for studying differential equations, discovered homoclinic orbits, and laid the mathematical foundations for chaos theory.",
+      },
+      {
+        title: "Sur le problème des trois corps et les équations de la dynamique",
+        year: "1890",
+        description:
+          "The corrected prize memoir for King Oscar II. Demonstrated sensitive dependence on initial conditions in the restricted three-body problem — the first rigorous result in what would become chaos theory.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "tides-and-three-body" },
+    ],
+  },
+  {
+    slug: "nicole-oresme",
+    name: "Nicole Oresme",
+    shortName: "Oresme",
+    born: "c. 1320",
+    died: "1382",
+    nationality: "French",
+    oneLiner:
+      "Drew the first graph of motion three centuries before anyone else thought to.",
+    image: storageUrl("physicists/nicole-oresme.avif"),
+    bio: "Nicole Oresme was born in Normandy around 1320 and educated at the University of Paris, where he later became a master of theology and eventually bishop of Lisieux. He spent most of his life as a churchman and royal counsellor to Charles V of France, for whom he translated Aristotle's Ethics, Politics, and On the Heavens into Middle French — inventing new vocabulary as he went, and helping to turn French into a language capable of discussing science.\n\nHis scientific legacy rests on a single, extraordinary idea. In a treatise titled Tractatus de configurationibus qualitatum et motuum, written around 1350, he proposed that any quantity that varies — speed, temperature, intensity of any kind — could be represented as a geometric figure. A horizontal line stood for time or extension; a vertical line at each point stood for the value of the quantity at that moment; the area under the curve was the total effect. This is the graph, in the modern sense. Oresme was the first person to draw one.\n\nUsing this method he proved what is now called the Merton mean-speed theorem: a body undergoing uniform acceleration from rest covers the same distance in a given time as a body moving at the average of the initial and final speeds. The proof is a triangle whose area equals that of a rectangle of half the height — a geometric argument that anticipates, by nearly three hundred years, the integral of v(t) = at used to derive Galileo's s = ½at².\n\nOresme also argued — against Aristotle and most of his contemporaries — that the Earth's daily rotation was more plausible than a rotating heaven, offered a proto-relativity argument for why we cannot feel the motion, and discussed the possibility of other worlds. He pulled back from fully endorsing heliocentrism out of theological caution, but the reasoning was centuries ahead of its time.\n\nHe died in 1382 as bishop of Lisieux. His manuscripts sat largely unread until the nineteenth century, when historians of science rediscovered them and realised that a medieval French bishop had invented the Cartesian graph and glimpsed the mathematics of uniform acceleration before Galileo was born.",
+    contributions: [
+      "invented the graphical representation of varying quantities (c. 1350)",
+      "first geometric proof of the Merton mean-speed theorem",
+      "anticipated the kinematic result s = ½at² for uniform acceleration",
+      "argued for the plausibility of a rotating Earth",
+      "translated Aristotle into French, expanding the scientific vocabulary of the language",
+    ],
+    majorWorks: [
+      {
+        title: "Tractatus de configurationibus qualitatum et motuum",
+        year: "c. 1350",
+        description:
+          "The birthplace of the graph. Oresme represents variable quantities as geometric figures — the horizontal axis for extension in time or space, the vertical for intensity — and proves the mean-speed theorem by computing an area.",
+      },
+      {
+        title: "Livre du ciel et du monde",
+        year: "1377",
+        description:
+          "A French-language commentary on Aristotle's De Caelo, written for Charles V. Contains Oresme's careful argument that the Earth may rotate on its axis and a thoughtful rebuttal of the classical objections to terrestrial motion.",
+      },
+      {
+        title: "De proportionibus proportionum",
+        year: "c. 1360",
+        description:
+          "A treatise on ratios of ratios — effectively an early study of irrational exponents. Oresme argues that the ratios of celestial motions are almost certainly irrational, undermining astrological prediction.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "motion-in-a-straight-line" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {
@@ -646,4 +790,43 @@ export function getPhysicist(slug: string): Physicist | undefined {
 
 export function getAllPhysicists(): readonly Physicist[] {
   return PHYSICISTS;
+}
+
+type PhysicistMessage = Partial<
+  Pick<
+    Physicist,
+    "name" | "shortName" | "oneLiner" | "bio" | "contributions" | "majorWorks"
+  >
+>;
+
+function mergePhysicist(base: Physicist, loc: PhysicistMessage): Physicist {
+  return {
+    ...base,
+    name: loc.name ?? base.name,
+    shortName: loc.shortName ?? base.shortName,
+    oneLiner: loc.oneLiner ?? base.oneLiner,
+    bio: loc.bio ?? base.bio,
+    contributions: loc.contributions ?? base.contributions,
+    majorWorks: loc.majorWorks ?? base.majorWorks,
+  };
+}
+
+async function getPhysicistMessages(): Promise<Record<string, PhysicistMessage>> {
+  const { getMessages } = await import("next-intl/server");
+  const messages = (await getMessages()) as { physicists?: Record<string, PhysicistMessage> };
+  return messages.physicists ?? {};
+}
+
+export async function getLocalizedPhysicist(
+  slug: string,
+): Promise<Physicist | undefined> {
+  const base = getPhysicist(slug);
+  if (!base) return undefined;
+  const all = await getPhysicistMessages();
+  return mergePhysicist(base, all[slug] ?? {});
+}
+
+export async function getAllLocalizedPhysicists(): Promise<readonly Physicist[]> {
+  const all = await getPhysicistMessages();
+  return PHYSICISTS.map((p) => mergePhysicist(p, all[p.slug] ?? {}));
 }

@@ -1,24 +1,30 @@
 import Link from "next/link";
-import { getAllPhysicists } from "@/lib/content/physicists";
+import { getMessages, getTranslations } from "next-intl/server";
+import { getAllLocalizedPhysicists } from "@/lib/content/physicists";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
-export function PhysicistsSection() {
-  const physicists = getAllPhysicists();
+export async function PhysicistsSection() {
+  const t = await getTranslations("home.physicists");
+  const physicists = await getAllLocalizedPhysicists();
   const preview = physicists.slice(0, 6);
+  const messages = (await getMessages()) as {
+    common?: { pages?: { physicists?: { nationalities?: Record<string, string> } } };
+  };
+  const nationalityMap =
+    messages.common?.pages?.physicists?.nationalities ?? {};
 
   return (
     <section id="physicists" className={`${WIDE_CONTAINER} mt-32 md:mt-48`}>
       <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
-        § PHYSICISTS
+        {t("tag")}
       </div>
       <h2 className="mt-4 text-4xl md:text-5xl font-bold uppercase tracking-tight text-[var(--color-fg-0)]">
-        The people behind the laws.
+        {t("title")}
       </h2>
       <p className="mt-6 max-w-[50ch] text-[var(--color-fg-1)]">
-        Galileo timed a chandelier against his pulse. Kepler ground eight years
-        into the motion of Mars. The site&rsquo;s cast, in brief.
+        {t("subtitle")}
       </p>
-      <div className="mt-12 grid grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3 [&>*]:-mt-px [&>*]:-ml-px">
+      <div className="mt-12 grid grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
         {preview.map((p) => (
           <Link
             key={p.slug}
@@ -31,7 +37,7 @@ export function PhysicistsSection() {
               </div>
               <span
                 aria-hidden="true"
-                className="inline-flex h-5 w-5 items-center justify-center text-base leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)]"
+                className="inline-flex h-5 w-5 items-center justify-center text-base leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
               >
                 →
               </span>
@@ -44,7 +50,7 @@ export function PhysicistsSection() {
             </p>
             <div className="mt-auto pt-4">
               <span className="inline-block border border-[var(--color-fg-3)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-fg-2)] transition-colors group-hover:border-[var(--color-cyan)] group-hover:text-[var(--color-cyan)]">
-                {p.nationality}
+                {nationalityMap[p.nationality] ?? p.nationality}
               </span>
             </div>
           </Link>
@@ -56,7 +62,10 @@ export function PhysicistsSection() {
             href="/physicists"
             className="inline-flex items-center gap-2 border border-[var(--color-fg-3)] px-6 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
           >
-            See all {physicists.length} physicists →
+            {t("viewAll", { count: physicists.length })}{" "}
+            <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+              →
+            </span>
           </Link>
         </div>
       )}

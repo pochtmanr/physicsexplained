@@ -1,0 +1,118 @@
+{
+  "nav": {
+    "home": "Physics.explained",
+    "physicists": "פיזיקאים",
+    "dictionary": "מילון",
+    "homeAriaLabel": "Physics.explained — דף הבית"
+  },
+  "footer": {
+    "branches": "ענפים",
+    "physicists": "פיזיקאים",
+    "dictionary": "מילון",
+    "privacyPolicy": "מדיניות פרטיות",
+    "termsOfService": "תנאי שימוש",
+    "cookiePolicy": "מדיניות עוגיות",
+    "copyright": "© 2026 Simnetiq Ltd",
+    "starOnGithub": "לכוכב בגיטהאב",
+    "newsletterHeading": "הישארו מעודכנים",
+    "newsletterPlaceholder": "you@example.com",
+    "newsletterSubmit": "הרשמה",
+    "newsletterSubmitting": "..."
+  },
+  "cookieBanner": {
+    "message": "האתר משתמש ב-localStorage לשמירת העדפת ערכת הצבעים בלבד. אין עוגיות מעקב.",
+    "linkText": "מדיניות עוגיות",
+    "accept": "הסכמה"
+  },
+  "aside": {
+    "physicists": "פיזיקאים",
+    "topics": "נושאים",
+    "terms": "מונחים"
+  },
+  "backLinks": {
+    "dictionary": "מילון →",
+    "physicists": "כל הפיזיקאים →"
+  },
+  "theme": {
+    "dark": "כהה",
+    "light": "בהיר",
+    "initial": "ערכה",
+    "switchToLight": "מעבר למצב בהיר",
+    "switchToDark": "מעבר למצב כהה"
+  },
+  "pages": {
+    "dictionary": {
+      "eyebrow": "§ מילון",
+      "title": "אוצר המילים",
+      "subtitle": "מכשירים, מושגים ותופעות — אוצר המילים המשותף של האתר.",
+      "stats": "{total} מונחים · {categories} קטגוריות",
+      "categoryLabels": {
+        "instrument": "מכשירים",
+        "concept": "מושגים",
+        "phenomenon": "תופעות",
+        "unit": "יחידות"
+      },
+      "categorySingular": {
+        "instrument": "מכשיר",
+        "concept": "מושג",
+        "phenomenon": "תופעה",
+        "unit": "יחידה"
+      },
+      "linkLabel": "מילון",
+      "sectionDefinition": "הגדרה",
+      "sectionHistory": "היסטוריה",
+      "interactive": "אינטראקטיבי: {term}",
+      "illustrationAlt": "איור של {term}",
+      "backLink": "מילון →"
+    },
+    "physicists": {
+      "eyebrow": "§ פיזיקאים",
+      "eyebrowSingular": "פיזיקאי",
+      "title": "האנשים",
+      "subtitle": "פרופילים קצרים של הפיזיקאים שעבודתם מופיעה ברחבי האתר.",
+      "stats": "{count} פרופילים · {centuries} מאות",
+      "centuryHeader": "§ {label} · {count}",
+      "centuryAncient": "עת עתיקה",
+      "centuryFormat": "המאה ה-{n}",
+      "suffixSt": "",
+      "suffixNd": "",
+      "suffixRd": "",
+      "suffixTh": "",
+      "sectionBiography": "ביוגרפיה",
+      "sectionContributions": "תרומות",
+      "sectionMajorWorks": "יצירות מרכזיות",
+      "sectionRelatedTopics": "נושאים קשורים",
+      "backLink": "כל הפיזיקאים →",
+      "portraitAlt": "דיוקן של {name}",
+      "nationalities": {
+        "British": "בריטי",
+        "Danish": "דני",
+        "Dutch": "הולנדי",
+        "English": "אנגלי",
+        "French": "צרפתי",
+        "German": "גרמני",
+        "Greco-Roman": "יווני-רומי",
+        "Italian": "איטלקי",
+        "Italian-French": "איטלקי-צרפתי",
+        "Polish": "פולני",
+        "Serbian-American": "סרבי-אמריקני"
+      }
+    }
+  },
+  "search": {
+    "triggerText": "חיפוש",
+    "triggerLabel": "חיפוש (Cmd+K)",
+    "dialogLabel": "חיפוש",
+    "placeholder": "חיפוש נושאים, פיזיקאים, מילון...",
+    "emptyInitial": "התחילו להקליד כדי לחפש...",
+    "emptyNoResults": "אין תוצאות עבור \"{query}\"",
+    "closeLabel": "סגירת חיפוש",
+    "hintNavigate": "ניווט",
+    "hintOpen": "פתיחה",
+    "hintClose": "סגירה",
+    "categoryBranch": "ענפים",
+    "categoryTopic": "נושאים",
+    "categoryPhysicist": "פיזיקאים",
+    "categoryDictionary": "מילון"
+  }
+}
