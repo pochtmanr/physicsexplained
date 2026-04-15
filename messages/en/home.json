@@ -1,0 +1,287 @@
+{
+  "hero": {
+    "tag": "PHYSICS · V0.5 · CLASSICAL MECHANICS LIVE",
+    "titleLead": "The most incomprehensible thing about the universe is that",
+    "titleHighlight": "it is comprehensible.",
+    "subtitle": "Physics isn't just formulas. It's the language the universe speaks. We made it visible.",
+    "ctaPrimary": "Start with classical mechanics",
+    "ctaSecondary": "Or browse all six branches",
+    "figLabel": "FIG.01 · THE EPICYCLE"
+  },
+  "branches": {
+    "tag": "§ BRANCHES",
+    "sectionTitle": "Six branches of physics.",
+    "sectionSubtitle": "Start with what exists. The rest is on the way.",
+    "menuLabel": "BRANCHES",
+    "menuStats": "{total} total · {live} live",
+    "topicsCount": "{count} TOPICS",
+    "comingSoon": "COMING SOON",
+    "items": {
+      "classical-mechanics": {
+        "title": "CLASSICAL MECHANICS",
+        "subtitle": "The physics of cannonballs, planets, and pendulums.",
+        "description": "Newton's legacy: forces, motion, and the machinery of the everyday world. Pendulums that keep perfect time, planets that sweep out equal areas, cannonballs that trace parabolas. The math is three hundred years old and still runs the world you live in."
+      },
+      "electromagnetism": {
+        "title": "ELECTROMAGNETISM",
+        "subtitle": "Light, charge, and the field that holds the world together.",
+        "description": "Maxwell's four equations — the most important four lines in physics — unify electricity, magnetism, and light into a single field theory. Every radio, screen, wire, and star depends on them."
+      },
+      "thermodynamics": {
+        "title": "THERMODYNAMICS",
+        "subtitle": "Heat, entropy, and why time moves forward.",
+        "description": "Energy flows one way. Entropy only grows. Out of these two facts come steam engines, refrigerators, the arrow of time, and the heat death of the universe. Thermodynamics is the part of physics that feels most like philosophy."
+      },
+      "relativity": {
+        "title": "RELATIVITY",
+        "subtitle": "The weirdness that hides at the edges of speed.",
+        "description": "Space bends. Time stretches. Mass and energy are the same thing. Einstein's special and general relativity rewrote geometry itself — and predicted everything from GPS corrections to black holes."
+      },
+      "quantum": {
+        "title": "QUANTUM MECHANICS",
+        "subtitle": "The rules the universe actually runs on.",
+        "description": "At small enough scales, the world stops behaving like a world. Particles are waves, measurements disturb reality, and probabilities replace certainties. Every transistor, laser, and MRI machine runs on quantum mechanics."
+      },
+      "modern-physics": {
+        "title": "MODERN PHYSICS",
+        "subtitle": "From the nucleus to the Standard Model and beyond.",
+        "description": "Where quantum mechanics meets relativity, and where physics meets its open frontier. Particle physics, nuclear physics, cosmology, and the questions we still can't answer about what the universe is made of."
+      }
+    }
+  },
+  "topics": {
+    "items": {
+      "the-simple-pendulum": {
+        "title": "THE SIMPLE PENDULUM",
+        "subtitle": "Why every clock that ever ticked ticked the same way.",
+        "eyebrow": "FIG.13 · OSCILLATIONS"
+      },
+      "beyond-small-angles": {
+        "title": "BEYOND SMALL ANGLES",
+        "subtitle": "What the pendulum hides when you stop making approximations.",
+        "eyebrow": "FIG.14 · OSCILLATIONS"
+      },
+      "oscillators-everywhere": {
+        "title": "OSCILLATORS EVERYWHERE",
+        "subtitle": "The equation that runs half of physics.",
+        "eyebrow": "FIG.15 · OSCILLATIONS"
+      },
+      "kepler": {
+        "title": "THE LAWS OF PLANETS",
+        "subtitle": "How a German astronomer broke the sky open with three sentences.",
+        "eyebrow": "FIG.20 · ORBITAL MECHANICS"
+      },
+      "universal-gravitation": {
+        "title": "UNIVERSAL GRAVITATION",
+        "subtitle": "The force that holds the Moon is the force that drops the apple.",
+        "eyebrow": "FIG.21 · ORBITAL MECHANICS"
+      },
+      "energy-in-orbit": {
+        "title": "ENERGY IN ORBIT",
+        "subtitle": "One equation tells you the speed at every point in space.",
+        "eyebrow": "FIG.22 · ORBITAL MECHANICS"
+      },
+      "tides-and-three-body": {
+        "title": "TIDES AND THE THREE-BODY PROBLEM",
+        "subtitle": "When gravity gets complicated, the universe gets interesting.",
+        "eyebrow": "FIG.23 · ORBITAL MECHANICS"
+      },
+      "motion-in-a-straight-line": {
+        "title": "MOTION IN A STRAIGHT LINE",
+        "subtitle": "Position, velocity, acceleration — the three questions that gave physics its language.",
+        "eyebrow": "FIG.01 · KINEMATICS & NEWTON"
+      },
+      "vectors-and-projectile-motion": {
+        "title": "VECTORS AND PROJECTILE MOTION",
+        "subtitle": "How Galileo split one hard problem into two easy ones — and why a cannonball traces a parabola.",
+        "eyebrow": "FIG.02 · KINEMATICS & NEWTON"
+      },
+      "newtons-three-laws": {
+        "title": "NEWTON'S THREE LAWS",
+        "subtitle": "The three sentences that still run the world.",
+        "eyebrow": "FIG.03 · KINEMATICS & NEWTON"
+      },
+      "friction-and-drag": {
+        "title": "FRICTION AND DRAG",
+        "subtitle": "The forces that quietly take the energy away — and, in doing so, run half of everyday physics.",
+        "eyebrow": "FIG.04 · KINEMATICS & NEWTON"
+      },
+      "energy-and-work": {
+        "title": "ENERGY AND WORK",
+        "subtitle": "Work, kinetic energy, and potential energy.",
+        "eyebrow": "FIG.05 · CONSERVATION LAWS"
+      },
+      "momentum-and-collisions": {
+        "title": "MOMENTUM AND COLLISIONS",
+        "subtitle": "Elastic, inelastic, and the center of mass.",
+        "eyebrow": "FIG.06 · CONSERVATION LAWS"
+      },
+      "angular-momentum": {
+        "title": "ANGULAR MOMENTUM",
+        "subtitle": "Spinning skaters and bicycle wheels.",
+        "eyebrow": "FIG.07 · CONSERVATION LAWS"
+      },
+      "noethers-theorem": {
+        "title": "NOETHER'S THEOREM",
+        "subtitle": "Symmetry and conservation are the same thing.",
+        "eyebrow": "FIG.08 · CONSERVATION LAWS"
+      },
+      "torque-and-rotational-dynamics": {
+        "title": "TORQUE AND ROTATIONAL DYNAMICS",
+        "subtitle": "Forces that turn instead of push.",
+        "eyebrow": "FIG.09 · ROTATION & RIGID BODIES"
+      },
+      "moment-of-inertia": {
+        "title": "MOMENT OF INERTIA",
+        "subtitle": "Why a hollow sphere rolls slower than a solid one.",
+        "eyebrow": "FIG.10 · ROTATION & RIGID BODIES"
+      },
+      "gyroscopes-and-precession": {
+        "title": "GYROSCOPES AND PRECESSION",
+        "subtitle": "Why a top doesn't fall.",
+        "eyebrow": "FIG.11 · ROTATION & RIGID BODIES"
+      },
+      "the-wobbling-earth": {
+        "title": "THE WOBBLING EARTH",
+        "subtitle": "Precession, nutation, and the long memory of the planet.",
+        "eyebrow": "FIG.12 · ROTATION & RIGID BODIES"
+      },
+      "the-wave-equation": {
+        "title": "THE WAVE EQUATION",
+        "subtitle": "The equation that runs every wave there is.",
+        "eyebrow": "FIG.16 · WAVES"
+      },
+      "standing-waves-and-modes": {
+        "title": "STANDING WAVES AND MODES",
+        "subtitle": "Why guitar strings only sing certain notes.",
+        "eyebrow": "FIG.17 · WAVES"
+      },
+      "doppler-and-shock-waves": {
+        "title": "DOPPLER AND SHOCK WAVES",
+        "subtitle": "What changes when the source moves.",
+        "eyebrow": "FIG.18 · WAVES"
+      },
+      "dispersion-and-group-velocity": {
+        "title": "DISPERSION AND GROUP VELOCITY",
+        "subtitle": "When different frequencies travel at different speeds.",
+        "eyebrow": "FIG.19 · WAVES"
+      },
+      "pressure-and-buoyancy": {
+        "title": "PRESSURE AND BUOYANCY",
+        "subtitle": "Why some things float.",
+        "eyebrow": "FIG.24 · FLUIDS"
+      },
+      "bernoullis-principle": {
+        "title": "BERNOULLI'S PRINCIPLE",
+        "subtitle": "Faster fluids push less.",
+        "eyebrow": "FIG.25 · FLUIDS"
+      },
+      "viscosity-and-reynolds-number": {
+        "title": "VISCOSITY AND REYNOLDS NUMBER",
+        "subtitle": "Honey, water, and the line between them.",
+        "eyebrow": "FIG.26 · FLUIDS"
+      },
+      "turbulence": {
+        "title": "TURBULENCE",
+        "subtitle": "The last unsolved problem of classical physics.",
+        "eyebrow": "FIG.27 · FLUIDS"
+      },
+      "the-principle-of-least-action": {
+        "title": "THE PRINCIPLE OF LEAST ACTION",
+        "subtitle": "Nature picks the laziest path.",
+        "eyebrow": "FIG.28 · LAGRANGIAN & HAMILTONIAN"
+      },
+      "the-lagrangian": {
+        "title": "THE LAGRANGIAN",
+        "subtitle": "Mechanics rewritten as energy minus energy.",
+        "eyebrow": "FIG.29 · LAGRANGIAN & HAMILTONIAN"
+      },
+      "the-hamiltonian": {
+        "title": "THE HAMILTONIAN",
+        "subtitle": "Position and momentum, two halves of the same thing.",
+        "eyebrow": "FIG.30 · LAGRANGIAN & HAMILTONIAN"
+      },
+      "phase-space": {
+        "title": "PHASE SPACE",
+        "subtitle": "The space where every possible motion lives.",
+        "eyebrow": "FIG.31 · LAGRANGIAN & HAMILTONIAN"
+      }
+    },
+    "meta": {
+      "readingTime": "READING TIME · ~{minutes} MIN",
+      "topicsTotal": "{count} TOPICS · ~{minutes} MIN TOTAL READING",
+      "statusInDevelopment": "STATUS · IN DEVELOPMENT",
+      "previous": "Previous",
+      "next": "Next",
+      "moduleHeading": "MODULE {index} · {title}"
+    },
+    "modules": {
+      "kinematics-newton": "KINEMATICS & NEWTON",
+      "conservation-laws": "CONSERVATION LAWS",
+      "rotation-rigid-bodies": "ROTATION & RIGID BODIES",
+      "oscillations": "OSCILLATIONS",
+      "waves": "WAVES",
+      "orbital-mechanics": "ORBITAL MECHANICS",
+      "fluids": "FLUIDS",
+      "lagrangian-hamiltonian": "LAGRANGIAN & HAMILTONIAN"
+    }
+  },
+  "emailSignup": {
+    "eyebrow": "GET NOTIFIED",
+    "body": "Enter your email and we'll ping you once this branch is live. No spam, no tracking, unsubscribe in one click.",
+    "placeholder": "your@email.com",
+    "submit": "→ Notify me",
+    "submitting": "Sending…",
+    "status": {
+      "missingBranch": "Missing branch reference.",
+      "invalidEmail": "Please enter a valid email.",
+      "alreadySignedUp": "You're already on the list — we'll email you when this branch goes live.",
+      "error": "Something went wrong. Please try again.",
+      "success": "Thanks — we'll email you when this branch goes live."
+    }
+  },
+  "physicists": {
+    "tag": "§ PHYSICISTS",
+    "title": "The people behind the laws.",
+    "subtitle": "Galileo timed a chandelier against his pulse. Kepler ground eight years into the motion of Mars. The site's cast, in brief.",
+    "viewAll": "See all {count} physicists"
+  },
+  "featured": {
+    "tag": "§ FEATURED",
+    "title": "Start here: The Pendulum.",
+    "body1": "The pendulum is the first serious toy physics ever gave us. It was how Galileo discovered that time could be measured by motion, and how three hundred years of clocks kept pace with the turning of the Earth.",
+    "body2": "Its motion looks simple — a bob swinging back and forth — but hiding inside that swing is the most important equation in all of oscillations. Pull it out, and you get music, lasers, bridges, and the guts of quantum mechanics.",
+    "meta": "5 MIN READ · 5 LIVE FIGURES · CLASSICAL MECHANICS",
+    "cta": "Read the pendulum"
+  },
+  "dictionary": {
+    "tag": "§ DICTIONARY",
+    "title": "The shared vocabulary.",
+    "subtitle": "Instruments, concepts, phenomena, and units — the words that keep coming back across every chapter.",
+    "viewAll": "See all {count} terms"
+  },
+  "philosophy": {
+    "tag": "§ HOW WE TEACH",
+    "title": "Three rules for every topic.",
+    "rules": [
+      {
+        "label": "01 · ACCURACY",
+        "title": "Real math, not cartoons.",
+        "body": "Every animation is driven by a unit-tested physics solver — odex for ODEs, Newton-Raphson for Kepler's equation, analytic solutions where they exist. If a number appears on screen, it's correct to at least three decimals."
+      },
+      {
+        "label": "02 · INTUITION",
+        "title": "Feel it before you prove it.",
+        "body": "We show you the idea first, with moving pictures, and the math second. No formulas without a picture. No picture without the math underneath."
+      },
+      {
+        "label": "03 · OPEN",
+        "title": "Free and open source.",
+        "body": "Every line of code, every equation, every solver — open source. Fork it, embed it, improve it. Society gets smarter when physics gets easier."
+      }
+    ]
+  },
+  "sources": {
+    "heading": "Sources & references"
+  }
+}

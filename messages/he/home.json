@@ -1,0 +1,287 @@
+{
+  "hero": {
+    "tag": "פיזיקה · גרסה 0.5 · מכניקה קלאסית פעילה",
+    "titleLead": "הדבר הבלתי־מובן ביותר ביקום הוא",
+    "titleHighlight": "שניתן להבינו.",
+    "subtitle": "הפיזיקה איננה רק נוסחאות. היא השפה שבה היקום מדבר. הפכנו אותה לנראית.",
+    "ctaPrimary": "להתחיל במכניקה קלאסית",
+    "ctaSecondary": "או לעיין בכל ששת הענפים",
+    "figLabel": "איור 01 · האפיציקל"
+  },
+  "branches": {
+    "tag": "§ ענפים",
+    "sectionTitle": "ששת הענפים של הפיזיקה.",
+    "sectionSubtitle": "התחילו במה שכבר קיים. השאר בדרך.",
+    "menuLabel": "ענפים",
+    "menuStats": "{total} סה\"כ · {live} פעילים",
+    "topicsCount": "{count} נושאים",
+    "comingSoon": "בקרוב",
+    "items": {
+      "classical-mechanics": {
+        "title": "מכניקה קלאסית",
+        "subtitle": "הפיזיקה של כדורי תותח, כוכבי לכת ומטוטלות.",
+        "description": "המורשת של ניוטון: כוחות, תנועה, והמנגנון של העולם היומיומי. מטוטלות ששומרות על זמן מושלם, כוכבי לכת שסורקים שטחים שווים, וכדורי תותח שמתווים פרבולות. המתמטיקה בת שלוש מאות שנה ועדיין מפעילה את העולם שבו אתם חיים."
+      },
+      "electromagnetism": {
+        "title": "אלקטרומגנטיות",
+        "subtitle": "אור, מטען, והשדה שמחזיק את העולם יחד.",
+        "description": "ארבע משוואות מקסוול — ארבע השורות החשובות ביותר בפיזיקה — מאחדות את החשמל, המגנטיות והאור לכדי תורת שדה אחת. כל רדיו, מסך, חוט וכוכב תלוי בהן."
+      },
+      "thermodynamics": {
+        "title": "תרמודינמיקה",
+        "subtitle": "חום, אנטרופיה, ולמה הזמן נע קדימה.",
+        "description": "האנרגיה זורמת בכיוון אחד. האנטרופיה רק גדלה. משתי העובדות הללו נובעות מכונות קיטור, מקררים, חץ הזמן ומות החום של היקום. התרמודינמיקה היא החלק בפיזיקה שמרגיש הכי קרוב לפילוסופיה."
+      },
+      "relativity": {
+        "title": "תורת היחסות",
+        "subtitle": "המוזרויות שמסתתרות בקצות המהירות.",
+        "description": "המרחב מתעקם. הזמן נמתח. המסה והאנרגיה הן אותו הדבר. תורת היחסות הפרטית והכללית של איינשטיין כתבה מחדש את הגאומטריה עצמה — וחזתה הכול, מתיקוני GPS ועד חורים שחורים."
+      },
+      "quantum": {
+        "title": "מכניקת הקוונטים",
+        "subtitle": "הכללים שלפיהם היקום באמת פועל.",
+        "description": "בקנה מידה קטן מספיק, העולם מפסיק להתנהג כמו עולם. חלקיקים הם גלים, מדידות מפריעות למציאות, והסתברויות מחליפות ודאויות. כל טרנזיסטור, לייזר ומכשיר MRI פועלים על פי מכניקת הקוונטים."
+      },
+      "modern-physics": {
+        "title": "פיזיקה מודרנית",
+        "subtitle": "מהגרעין למודל הסטנדרטי ומעבר לכך.",
+        "description": "היכן שמכניקת הקוונטים נפגשת עם תורת היחסות, והיכן שהפיזיקה נפגשת עם החזית הפתוחה שלה. פיזיקת חלקיקים, פיזיקה גרעינית, קוסמולוגיה, והשאלות שעדיין אין לנו תשובה עליהן לגבי ממה עשוי היקום."
+      }
+    }
+  },
+  "topics": {
+    "items": {
+      "the-simple-pendulum": {
+        "title": "המטוטלת הפשוטה",
+        "subtitle": "למה כל שעון שאי פעם תקתק תקתק באותה הדרך.",
+        "eyebrow": "איור 13 · תנודות"
+      },
+      "beyond-small-angles": {
+        "title": "מעבר לזוויות קטנות",
+        "subtitle": "מה המטוטלת מסתירה כשמפסיקים לעשות קירובים.",
+        "eyebrow": "איור 14 · תנודות"
+      },
+      "oscillators-everywhere": {
+        "title": "מתנדים בכל מקום",
+        "subtitle": "המשוואה שמפעילה חצי מהפיזיקה.",
+        "eyebrow": "איור 15 · תנודות"
+      },
+      "kepler": {
+        "title": "חוקי כוכבי הלכת",
+        "subtitle": "כיצד אסטרונום גרמני פיצח את השמיים בשלושה משפטים.",
+        "eyebrow": "איור 20 · מכניקת מסלולים"
+      },
+      "universal-gravitation": {
+        "title": "הכבידה האוניברסלית",
+        "subtitle": "הכוח שמחזיק את הירח הוא הכוח שמפיל את התפוח.",
+        "eyebrow": "איור 21 · מכניקת מסלולים"
+      },
+      "energy-in-orbit": {
+        "title": "אנרגיה במסלול",
+        "subtitle": "משוואה אחת אומרת לכם את המהירות בכל נקודה במרחב.",
+        "eyebrow": "איור 22 · מכניקת מסלולים"
+      },
+      "tides-and-three-body": {
+        "title": "גאות ושפל ובעיית שלושת הגופים",
+        "subtitle": "כשהכבידה הופכת מסובכת, היקום הופך למעניין.",
+        "eyebrow": "איור 23 · מכניקת מסלולים"
+      },
+      "motion-in-a-straight-line": {
+        "title": "תנועה בקו ישר",
+        "subtitle": "מיקום, מהירות, תאוצה — שלוש השאלות שנתנו לפיזיקה את שפתה.",
+        "eyebrow": "איור 01 · קינמטיקה וניוטון"
+      },
+      "vectors-and-projectile-motion": {
+        "title": "וקטורים ותנועת קליע",
+        "subtitle": "כיצד פיצל גלילאו בעיה קשה אחת לשתי בעיות קלות — ומדוע פגז תותח משרטט פרבולה.",
+        "eyebrow": "איור 02 · קינמטיקה וניוטון"
+      },
+      "newtons-three-laws": {
+        "title": "שלושת חוקי ניוטון",
+        "subtitle": "אינרציה, כוח ותגובה — שלושת המשפטים שעדיין מנהלים את העולם.",
+        "eyebrow": "איור 03 · קינמטיקה וניוטון"
+      },
+      "friction-and-drag": {
+        "title": "חיכוך וגרר",
+        "subtitle": "הכוחות שגוזלים בחשאי את האנרגיה — ובכך מפעילים את מחציתה של הפיזיקה היומיומית.",
+        "eyebrow": "איור 04 · קינמטיקה וניוטון"
+      },
+      "energy-and-work": {
+        "title": "ENERGY AND WORK",
+        "subtitle": "Work, kinetic energy, and potential energy.",
+        "eyebrow": "FIG.05 · CONSERVATION LAWS"
+      },
+      "momentum-and-collisions": {
+        "title": "MOMENTUM AND COLLISIONS",
+        "subtitle": "Elastic, inelastic, and the center of mass.",
+        "eyebrow": "FIG.06 · CONSERVATION LAWS"
+      },
+      "angular-momentum": {
+        "title": "ANGULAR MOMENTUM",
+        "subtitle": "Spinning skaters and bicycle wheels.",
+        "eyebrow": "FIG.07 · CONSERVATION LAWS"
+      },
+      "noethers-theorem": {
+        "title": "NOETHER'S THEOREM",
+        "subtitle": "Symmetry and conservation are the same thing.",
+        "eyebrow": "FIG.08 · CONSERVATION LAWS"
+      },
+      "torque-and-rotational-dynamics": {
+        "title": "TORQUE AND ROTATIONAL DYNAMICS",
+        "subtitle": "Forces that turn instead of push.",
+        "eyebrow": "FIG.09 · ROTATION & RIGID BODIES"
+      },
+      "moment-of-inertia": {
+        "title": "MOMENT OF INERTIA",
+        "subtitle": "Why a hollow sphere rolls slower than a solid one.",
+        "eyebrow": "FIG.10 · ROTATION & RIGID BODIES"
+      },
+      "gyroscopes-and-precession": {
+        "title": "GYROSCOPES AND PRECESSION",
+        "subtitle": "Why a top doesn't fall.",
+        "eyebrow": "FIG.11 · ROTATION & RIGID BODIES"
+      },
+      "the-wobbling-earth": {
+        "title": "THE WOBBLING EARTH",
+        "subtitle": "Precession, nutation, and the long memory of the planet.",
+        "eyebrow": "FIG.12 · ROTATION & RIGID BODIES"
+      },
+      "the-wave-equation": {
+        "title": "THE WAVE EQUATION",
+        "subtitle": "The equation that runs every wave there is.",
+        "eyebrow": "FIG.16 · WAVES"
+      },
+      "standing-waves-and-modes": {
+        "title": "STANDING WAVES AND MODES",
+        "subtitle": "Why guitar strings only sing certain notes.",
+        "eyebrow": "FIG.17 · WAVES"
+      },
+      "doppler-and-shock-waves": {
+        "title": "DOPPLER AND SHOCK WAVES",
+        "subtitle": "What changes when the source moves.",
+        "eyebrow": "FIG.18 · WAVES"
+      },
+      "dispersion-and-group-velocity": {
+        "title": "DISPERSION AND GROUP VELOCITY",
+        "subtitle": "When different frequencies travel at different speeds.",
+        "eyebrow": "FIG.19 · WAVES"
+      },
+      "pressure-and-buoyancy": {
+        "title": "PRESSURE AND BUOYANCY",
+        "subtitle": "Why some things float.",
+        "eyebrow": "FIG.24 · FLUIDS"
+      },
+      "bernoullis-principle": {
+        "title": "BERNOULLI'S PRINCIPLE",
+        "subtitle": "Faster fluids push less.",
+        "eyebrow": "FIG.25 · FLUIDS"
+      },
+      "viscosity-and-reynolds-number": {
+        "title": "VISCOSITY AND REYNOLDS NUMBER",
+        "subtitle": "Honey, water, and the line between them.",
+        "eyebrow": "FIG.26 · FLUIDS"
+      },
+      "turbulence": {
+        "title": "TURBULENCE",
+        "subtitle": "The last unsolved problem of classical physics.",
+        "eyebrow": "FIG.27 · FLUIDS"
+      },
+      "the-principle-of-least-action": {
+        "title": "THE PRINCIPLE OF LEAST ACTION",
+        "subtitle": "Nature picks the laziest path.",
+        "eyebrow": "FIG.28 · LAGRANGIAN & HAMILTONIAN"
+      },
+      "the-lagrangian": {
+        "title": "THE LAGRANGIAN",
+        "subtitle": "Mechanics rewritten as energy minus energy.",
+        "eyebrow": "FIG.29 · LAGRANGIAN & HAMILTONIAN"
+      },
+      "the-hamiltonian": {
+        "title": "THE HAMILTONIAN",
+        "subtitle": "Position and momentum, two halves of the same thing.",
+        "eyebrow": "FIG.30 · LAGRANGIAN & HAMILTONIAN"
+      },
+      "phase-space": {
+        "title": "PHASE SPACE",
+        "subtitle": "The space where every possible motion lives.",
+        "eyebrow": "FIG.31 · LAGRANGIAN & HAMILTONIAN"
+      }
+    },
+    "meta": {
+      "readingTime": "זמן קריאה · ~{minutes} דקות",
+      "topicsTotal": "{count} נושאים · ~{minutes} דקות קריאה סה\"כ",
+      "statusInDevelopment": "סטטוס · בפיתוח",
+      "previous": "הקודם",
+      "next": "הבא",
+      "moduleHeading": "מודול {index} · {title}"
+    },
+    "modules": {
+      "kinematics-newton": "קינמטיקה ונוטון",
+      "conservation-laws": "חוקי שימור",
+      "rotation-rigid-bodies": "סיבוב וגופים קשיחים",
+      "oscillations": "תנודות",
+      "waves": "גלים",
+      "orbital-mechanics": "מכניקת מסלולים",
+      "fluids": "זורמים",
+      "lagrangian-hamiltonian": "לגראנז׳יאן והמילטוניאן"
+    }
+  },
+  "emailSignup": {
+    "eyebrow": "קבלו עדכון",
+    "body": "השאירו כתובת אימייל ונעדכן אתכם כשהענף הזה יהיה פעיל. ללא ספאם, ללא מעקב, ניתן לבטל את המינוי בלחיצה אחת.",
+    "placeholder": "your@email.com",
+    "submit": "← עדכנו אותי",
+    "submitting": "שולח…",
+    "status": {
+      "missingBranch": "חסרה הפניה לענף.",
+      "invalidEmail": "אנא הזינו כתובת אימייל תקינה.",
+      "alreadySignedUp": "אתם כבר ברשימה — נשלח לכם אימייל כשהענף הזה יעלה לאוויר.",
+      "error": "משהו השתבש. אנא נסו שוב.",
+      "success": "תודה — נשלח לכם אימייל כשהענף הזה יעלה לאוויר."
+    }
+  },
+  "physicists": {
+    "tag": "§ פיזיקאים",
+    "title": "האנשים שמאחורי החוקים.",
+    "subtitle": "גלילאו תזמן נברשת כנגד הדופק שלו. קפלר השקיע שמונה שנים בתנועת מאדים. צוות השחקנים של האתר, בקצרה.",
+    "viewAll": "לכל {count} הפיזיקאים"
+  },
+  "featured": {
+    "tag": "§ מומלץ",
+    "title": "התחילו כאן: המטוטלת.",
+    "body1": "המטוטלת היא צעצוע הפיזיקה הרציני הראשון שקיבלנו אי פעם. כך גלילאו גילה שניתן למדוד את הזמן באמצעות תנועה, וכך במשך שלוש מאות שנים שעונים הדביקו את סיבוב כדור הארץ.",
+    "body2": "התנועה שלה נראית פשוטה — משקולת מתנדנדת הלוך ושוב — אך בתוך הנדנוד הזה מסתתרת המשוואה החשובה ביותר בכל תחום התנודות. חלצו אותה, ותקבלו מוזיקה, לייזרים, גשרים, ואת ליבת מכניקת הקוונטים.",
+    "meta": "5 דקות קריאה · 5 איורים חיים · מכניקה קלאסית",
+    "cta": "לקרוא על המטוטלת"
+  },
+  "dictionary": {
+    "tag": "§ מילון",
+    "title": "אוצר המילים המשותף.",
+    "subtitle": "מכשירים, מושגים, תופעות ויחידות — המילים שחוזרות לאורך כל פרק.",
+    "viewAll": "לכל {count} המונחים"
+  },
+  "philosophy": {
+    "tag": "§ איך אנחנו מלמדים",
+    "title": "שלושה כללים לכל נושא.",
+    "rules": [
+      {
+        "label": "01 · ACCURACY",
+        "title": "מתמטיקה אמיתית, לא קריקטורות.",
+        "body": "כל אנימציה מונעת על ידי פותר פיזיקלי מבוקר ביחידות — odex למשוואות דיפרנציאליות רגילות, ניוטון-רפסון למשוואת קפלר, פתרונות אנליטיים היכן שהם קיימים. אם מספר מופיע על המסך, הוא מדויק לפחות לשלוש ספרות אחרי הנקודה."
+      },
+      {
+        "label": "02 · INTUITION",
+        "title": "להרגיש לפני שמוכיחים.",
+        "body": "אנחנו מראים לכם קודם את הרעיון, עם תמונות נעות, ואת המתמטיקה אחר כך. בלי נוסחאות בלי תמונה. בלי תמונה בלי המתמטיקה שמתחת."
+      },
+      {
+        "label": "03 · OPEN",
+        "title": "חינמי וקוד פתוח.",
+        "body": "כל שורת קוד, כל משוואה, כל פותר — קוד פתוח. בצעו fork, הטמיעו, שפרו. החברה נעשית חכמה יותר כשהפיזיקה נעשית קלה יותר."
+      }
+    ]
+  },
+  "sources": {
+    "heading": "מקורות והפניות"
+  }
+}

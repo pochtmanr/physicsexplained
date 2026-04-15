@@ -1,0 +1,47 @@
+{
+  "hero": {
+    "tag": "PHYSICS · V0.5 · CLASSICAL MECHANICS LIVE",
+    "titleLead": "Самое непостижимое во Вселенной —",
+    "titleHighlight": "что её можно постичь.",
+    "subtitle": "From pendulums to planets — real physics, real simulations, no videos.",
+    "ctaPrimary": "Start with classical mechanics →",
+    "ctaSecondary": "Or browse all six branches ↓",
+    "figLabel": "РИС.01 · ЭПИЦИКЛ"
+  },
+  "branches": {
+    "tag": "§ BRANCHES"
+  },
+  "physicists": {
+    "tag": "§ PHYSICISTS",
+    "title": "The people behind the laws.",
+    "subtitle": "Galileo timed a chandelier against his pulse. Kepler ground eight years into the motion of Mars. The site's cast, in brief.",
+    "viewAll": "All physicists →"
+  },
+  "featured": {
+    "tag": "§ FEATURED",
+    "title": "Start here: The Pendulum.",
+    "body1": "The pendulum is the first serious toy physics ever gave us. It was how Galileo discovered that time could be measured by motion, and how three hundred years of clocks kept pace with the turning of the Earth.",
+    "body2": "Its motion looks simple — a bob swinging back and forth — but hiding inside that swing is the most important equation in all of oscillations. Pull it out, and you get music, lasers, bridges, and the guts of quantum mechanics."
+  },
+  "philosophy": {
+    "tag": "§ HOW WE TEACH",
+    "title": "Three rules for every topic.",
+    "rules": [
+      {
+        "label": "01 · ACCURACY",
+        "title": "Real math, not cartoons.",
+        "body": "Every animation is driven by a unit-tested physics solver — odex for ODEs, Newton-Raphson for Kepler's equation, analytic solutions where they exist. If a number appears on screen, it's correct to at least three decimals."
+      },
+      {
+        "label": "02 · INTUITION",
+        "title": "Feel it before you prove it.",
+        "body": "We show you the idea first, with moving pictures, and the math second. No formulas without a picture. No picture without the math underneath."
+      },
+      {
+        "label": "03 · OPEN",
+        "title": "Free and open source.",
+        "body": "Every line of code, every equation, every solver — open source. Fork it, embed it, improve it. Society gets smarter when physics gets easier."
+      }
+    ]
+  }
+}

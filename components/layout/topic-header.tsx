@@ -1,8 +1,9 @@
 import clsx from "clsx";
+import type { ReactNode } from "react";
 
 export interface TopicHeaderProps {
   /** Section number label, e.g. "§ 01 · CLASSICAL MECHANICS" */
-  eyebrow: string;
+  eyebrow: ReactNode;
   /** Big title, e.g. "THE PENDULUM" */
   title: string;
   /** Optional italic/plain subtitle below the title */
@@ -17,7 +18,7 @@ export function TopicHeader({
   className,
 }: TopicHeaderProps) {
   return (
-    <header className={clsx("mt-16 mb-24", className)}>
+    <header className={clsx("mt-16 mb-12", className)}>
       <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
         {eyebrow}
       </div>
@@ -25,7 +26,7 @@ export function TopicHeader({
         {title}
       </h1>
       {subtitle && (
-        <p className="max-w-[36ch] text-xl italic text-[var(--color-fg-1)]">
+        <p className="text-xl italic text-[var(--color-fg-1)]">
           {subtitle}
         </p>
       )}
