@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import type { Topic } from "@/lib/content/types";
 
 interface TopicCardProps {
@@ -6,7 +7,19 @@ interface TopicCardProps {
   topic: Topic;
 }
 
-export function TopicCard({ branchSlug, topic }: TopicCardProps) {
+export async function TopicCard({ branchSlug, topic }: TopicCardProps) {
+  const tTopics = await getTranslations("home.topics");
+  const tMeta = await getTranslations("home.topics.meta");
+
+  const items = tTopics.raw("items") as Record<
+    string,
+    { title?: string; subtitle?: string; eyebrow?: string } | undefined
+  >;
+  const item = items[topic.slug];
+  const title = item?.title ?? topic.title;
+  const subtitle = item?.subtitle ?? topic.subtitle;
+  const eyebrow = item?.eyebrow ?? topic.eyebrow;
+
   return (
     <Link
       href={`/${branchSlug}/${topic.slug}`}
@@ -15,11 +28,11 @@ export function TopicCard({ branchSlug, topic }: TopicCardProps) {
       {/* Top row: eyebrow + arrow */}
       <div className="flex items-start justify-between">
         <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
-          {topic.eyebrow}
+          {eyebrow}
         </div>
         <span
           aria-hidden="true"
-          className="inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)]"
+          className="inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
         >
           →
         </span>
@@ -27,14 +40,16 @@ export function TopicCard({ branchSlug, topic }: TopicCardProps) {
 
       {/* Title + subtitle */}
       <h3 className="mt-6 text-2xl md:text-3xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
-        {topic.title}
+        {title}
       </h3>
-      <p className="mt-3 text-[var(--color-fg-1)]">{topic.subtitle}</p>
+      <p className="mt-3 text-[var(--color-fg-1)]">{subtitle}</p>
 
       {/* Bottom meta — pinned to bottom */}
-      <div className="mt-auto pt-10 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
-        READING TIME · ~{topic.readingMinutes} MIN
-      </div>
+      {topic.readingMinutes > 0 && (
+        <div className="mt-auto pt-10 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+          {tMeta("readingTime", { minutes: topic.readingMinutes })}
+        </div>
+      )}
     </Link>
   );
 }

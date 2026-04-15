@@ -17,14 +17,16 @@ export function EquationBlock({ id, children, className }: EquationBlockProps) {
   return (
     <div
       className={clsx(
-        "my-8 flex items-center gap-6 border-l-2 border-[var(--color-cyan)] bg-[var(--color-bg-1)] px-6 py-5",
+        "my-8 border-l-2 border-[var(--color-cyan)] bg-[var(--color-bg-1)] px-3 py-4 sm:px-6 sm:py-5",
         className,
       )}
     >
-      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+      <div className="mb-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
         {id}
       </div>
-      <div className="flex-1 text-[var(--color-fg-0)]">{children}</div>
+      <div className="overflow-x-auto text-[var(--color-fg-0)] [-webkit-overflow-scrolling:touch] [scrollbar-width:thin]">
+        {children}
+      </div>
     </div>
   );
 }

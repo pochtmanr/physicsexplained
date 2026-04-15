@@ -18,21 +18,37 @@ function taylorSin(x: number, order: number): number {
 const ORDERS = [1, 3, 5, 7] as const;
 const ORDER_COLORS = ["#5BE9FF", "#4ADE80", "#FACC15", "#FF6B6B"] as const;
 
-export interface TaylorExpansionSceneProps {
-  width?: number;
-  height?: number;
-}
+const RATIO = 0.75;
+const MAX_HEIGHT = 360;
 
-export function TaylorExpansionScene({
-  width = 480,
-  height = 360,
-}: TaylorExpansionSceneProps) {
+export function TaylorExpansionScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
   const jxgRef = useRef<JXG | null>(null);
   const curvesRef = useRef<any[]>([]);
+  const jxgBoxRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
   const [maxOrder, setMaxOrder] = useState(1);
+  const [size, setSize] = useState({ width: 480, height: 360 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -41,12 +57,12 @@ export function TaylorExpansionScene({
       const JXG = (await import("jsxgraph")).default;
       jxgRef.current = JXG as unknown as JXG;
 
-      if (cancelled || !containerRef.current) return;
-      if (!containerRef.current.id) {
-        containerRef.current.id = `taylor-${Math.random().toString(36).slice(2)}`;
+      if (cancelled || !jxgBoxRef.current) return;
+      if (!jxgBoxRef.current.id) {
+        jxgBoxRef.current.id = `taylor-${Math.random().toString(36).slice(2)}`;
       }
 
-      const board = JXG.JSXGraph.initBoard(containerRef.current.id, {
+      const board = JXG.JSXGraph.initBoard(jxgBoxRef.current.id, {
         boundingbox: [-0.5, 2.5, 4, -2.5],
         axis: true,
         showNavigation: false,
@@ -146,11 +162,12 @@ export function TaylorExpansionScene({
   const displayOrder = currentIdx >= 0 ? ORDERS[currentIdx]! : ORDERS[ORDERS.length - 1]!;
 
   return (
-    <div className="mx-auto flex flex-col items-center gap-2 pb-4" style={{ width }}>
+    <div ref={containerRef} className="w-full pb-4">
+      <div className="flex flex-col items-center gap-2">
       <div
-        ref={containerRef}
+        ref={jxgBoxRef}
         className="jxgbox"
-        style={{ width, height, backgroundColor: "transparent" }}
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
       />
       <div className="flex items-center gap-3">
         <button
@@ -178,6 +195,7 @@ export function TaylorExpansionScene({
         >
           + term
         </button>
+      </div>
       </div>
     </div>
   );

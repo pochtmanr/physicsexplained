@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   coupledBeats,
   coupledMode1,
@@ -9,21 +9,34 @@ import {
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
+const RATIO = 0.75;
+const MAX_HEIGHT = 360;
+
 type CoupledMode = "beats" | "mode1" | "mode2";
 
-export interface CoupledPendulumSceneProps {
-  width?: number;
-  height?: number;
-}
-
-export function CoupledPendulumScene({
-  width = 480,
-  height = 360,
-}: CoupledPendulumSceneProps) {
+export function CoupledPendulumScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
   const [mode, setMode] = useState<CoupledMode>("beats");
+  const [size, setSize] = useState({ width: 480, height: 360 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
+  const { width, height } = size;
 
   const omega0 = 2.5;
   const omegaC = 1.2;
@@ -147,7 +160,7 @@ export function CoupledPendulumScene({
   ];
 
   return (
-    <div ref={containerRef} style={{ width }} className="mx-auto pb-4">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
         style={{ width, height }}

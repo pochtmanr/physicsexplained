@@ -1,0 +1,166 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ProjectileScene } from "@/components/physics/projectile-scene";
+import { VectorAdditionScene } from "@/components/physics/vector-addition-scene";
+import { MonkeyHunterScene } from "@/components/physics/monkey-hunter-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Evangelista Torricelli", href: "/physicists/evangelista-torricelli" },
+  { type: "term", label: "Vector", href: "/dictionary/vector" },
+  { type: "term", label: "Projectile Motion", href: "/dictionary/projectile-motion" },
+  { type: "term", label: "Parabola", href: "/dictionary/parabola" },
+  { type: "term", label: "Range", href: "/dictionary/range" },
+  { type: "term", label: "Monkey and the Hunter", href: "/dictionary/monkey-and-hunter" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.02 · KINEMATICS & NEWTON"
+  title="VECTORS AND PROJECTILE MOTION"
+  subtitle="How Galileo split one hard problem into two easy ones — and why a cannonball traces a parabola."
+/>
+
+<Section index={1} title="Two motions at once">
+
+A cannonball leaves a cannon. It arcs up, curves over, falls. Ask any Renaissance gunner what path it draws and you would get a dozen different answers: a straight line that suddenly bends, a triangle, a half-circle tilted on its side. Tartaglia in 1537 drew a diagram showing an uphill segment, then a curved middle, then a downhill plunge — three separate motions stitched together. Nobody could agree on the shape.
+
+In his last book, *Two New Sciences* (1638), <PhysicistLink slug="galileo-galilei">Galileo</PhysicistLink> settled it with a single idea. He imagined a ball rolled horizontally off the edge of a table. Another ball, at the same height, dropped straight down at the same instant. The rolling ball moves sideways and also falls; the dropped ball only falls. If you listen for the thud, they land at the same moment.
+
+The horizontal motion does not slow the vertical motion, and the vertical motion does not slow the horizontal. The two directions ignore each other. A ball falling while also moving sideways is simply a ball falling, plus a ball moving sideways, with the two answers stacked on top of each other.
+
+That is the whole trick. One hard two-dimensional problem becomes two easy one-dimensional problems. Vertical: free fall, which we already solved in FIG.01. Horizontal: constant velocity, because (in vacuum) no force acts sideways. Solve each separately, then glue them back together, and you have the complete motion.
+
+Galileo pushed the reasoning to its conclusion: the combined path is an exact parabola. It is the first trajectory in the history of physics that was written down as an equation rather than sketched from guesswork.
+
+</Section>
+
+<Section index={2} title="Vectors">
+
+To stack motions in two directions, we need a compact language for quantities that have both a size and a direction. That language is the **<Term slug="vector">vector</Term>**.
+
+A vector is an arrow. It has a length — its *magnitude* — and it points somewhere. You write it as a pair of numbers, one for each axis: **v** = (vₓ, v_y). The magnitude is the length of the arrow, |**v**| = √(vₓ² + v_y²), recovered from Pythagoras. The direction is whatever angle the arrow makes with the horizontal.
+
+Two operations do almost all the work. The first is **addition**: to add two vectors, place them tip-to-tail. Start at the origin, draw the first arrow, then from its tip draw the second. The resultant is the arrow from the starting point to the final tip. Equivalently, add the components: (aₓ + bₓ, a_y + b_y). Order does not matter. If you drew the parallelogram instead, the resultant is the diagonal.
+
+The second is **projection onto axes** — breaking a single vector into components. An arrow of length v at angle θ above the horizontal has horizontal component v·cosθ and vertical component v·sinθ. Projection is just addition in reverse: any vector is the sum of its horizontal and vertical pieces.
+
+<SceneCard caption="FIG.02a — drag the two vectors; watch the resultant" className="w-full">
+  <VectorAdditionScene />
+</SceneCard>
+
+That is most of the notation we need. Velocity is a vector, acceleration is a vector, position is a vector. The kinematic equations from FIG.01 survive the move to two dimensions almost unchanged, so long as each equation is read component by component.
+
+</Section>
+
+<Section index={3} title="The parabola">
+
+Fire a ball from the origin with speed v at angle θ above the horizontal. Decompose the velocity into components once, at the moment of launch: vₓ = v·cosθ, v_y = v·sinθ.
+
+Now solve each axis separately. The horizontal axis has no force acting on it — we are ignoring air for the moment — so the horizontal velocity stays constant. The vertical axis has gravity pulling down at g, so the vertical velocity decreases linearly with time and the vertical position follows the familiar free-fall quadratic.
+
+<EquationBlock id="EQ.01">
+<div className="font-mono text-lg">x(t) = v·cosθ · t</div>
+<div className="font-mono text-lg">y(t) = v·sinθ · t − ½·g·t²</div>
+</EquationBlock>
+
+Two equations, one for each axis. Eliminate t from the first (t = x / (v·cosθ)) and substitute into the second:
+
+<EquationBlock id="EQ.02">
+<div className="font-mono text-lg">y(x) = x·tanθ − (g / (2·v²·cos²θ)) · x²</div>
+</EquationBlock>
+
+That is quadratic in x. The shape of the trajectory is a parabola — the same conic section Apollonius of Perga had studied in the third century BCE for purely geometric reasons, now turning up as the flight path of a cannonball. The coefficient of x² is negative, so the parabola opens downward.
+
+<SceneCard caption="FIG.02b — angle, speed, and the arc" className="w-full">
+  <ProjectileScene />
+</SceneCard>
+
+Slide the angle and the speed. The horizontal velocity (green arrow) stays fixed while the ball is in flight. The vertical velocity (purple arrow) starts positive, shrinks to zero at the peak, flips sign, and grows negative. The ball keeps moving sideways the whole time — the horizontal motion is oblivious to what gravity is doing on the other axis.
+
+</Section>
+
+<Section index={4} title="Range, height, time of flight">
+
+Three numbers summarise a projectile's flight. How long is it in the air? How high does it get? How far does it travel before landing?
+
+The time of flight is whatever value of t makes y return to zero. From y(t) = v·sinθ·t − ½g·t², the non-trivial solution is:
+
+<EquationBlock id="EQ.03">
+<div className="font-mono text-lg">T = 2·v·sinθ / g</div>
+</EquationBlock>
+
+The peak height is reached halfway through the flight, when the vertical velocity crosses zero:
+
+<EquationBlock id="EQ.04">
+<div className="font-mono text-lg">H = (v·sinθ)² / (2g)</div>
+</EquationBlock>
+
+And the range — the horizontal distance travelled before the ball returns to launch height — is the horizontal velocity times the time of flight:
+
+<EquationBlock id="EQ.05">
+<div className="font-mono text-lg">R = v² · sin(2θ) / g</div>
+</EquationBlock>
+
+The trigonometric identity 2·sinθ·cosθ = sin(2θ) folds the answer into a single sine. And sin(2θ) is maximised when 2θ = 90°, so the **<Term slug="range">range</Term>** peaks at **θ = 45°**, with R_max = v²/g. Raise the angle, you trade horizontal speed for airtime; lower it, you trade airtime for speed; at 45° the two effects balance.
+
+<Callout variant="math">
+Two angles give the same range (as long as they are not 45° themselves): θ and 90° − θ. A ball fired at 30° lands at exactly the same spot as one fired at 60° with the same speed. The low shot arrives quickly and flat; the high shot hangs in the air and drops nearly straight down. Artillery manuals from the seventeenth century onward exploited this pair explicitly — choose the flat trajectory to hit a fortification wall, or the high one to drop a shell behind it.
+</Callout>
+
+<PhysicistLink slug="evangelista-torricelli">Evangelista Torricelli</PhysicistLink>, Galileo's last student and assistant, compiled the first serious tables of projectile ranges in his *Opera Geometrica* (1644). He also noticed something geometrically beautiful: if you fire at every angle with the same speed, the family of parabolas is bounded by another parabola — the *envelope*, or *safety parabola*. Anything outside it cannot be reached; anything inside it can be reached by two different angles; anything exactly on it can be reached only by firing at 45° relative to the line to the target. It was the first enveloping curve anyone had written down.
+
+</Section>
+
+<Section index={5} title="The monkey and the hunter">
+
+Here is a demonstration that every physics teacher loves because the answer is almost counterintuitive until you have seen it.
+
+A monkey hangs from a branch in a tree. A hunter stands some distance away on level ground, raises a dart gun, and aims directly at the monkey — line-of-sight, straight along the arrow from the muzzle to the animal. The monkey, being cleverer than average, watches for the trigger. The moment the hunter fires, the monkey releases its grip and starts to fall.
+
+Does the dart miss high, because it drops under gravity too? Miss low? Hit? And does the answer depend on how hard the hunter fired?
+
+The dart leaves with some speed v along the line pointing at the monkey. Decompose into components: the horizontal component carries the dart toward the monkey's x-coordinate at a steady rate, and the vertical component carries it upward at whatever slope the line of sight had. Then gravity pulls the dart down at g.
+
+But gravity also pulls the monkey down at g. Starting from the same instant, with the same acceleration, they fall together. Whatever vertical distance the dart has dropped below its straight-line aim, the monkey has dropped by exactly the same amount. The two trajectories meet — as long as the dart's horizontal motion reaches the monkey's x-coordinate before either hits the ground.
+
+<SceneCard caption="FIG.02c — monkey and hunter" className="w-full">
+  <MonkeyHunterScene />
+</SceneCard>
+
+The speed of the dart changes *when* they meet, not whether. A slow dart takes longer, so both of them have fallen further by the time the dart arrives — but they have fallen by the same amount, so they still meet. A fast dart barely has time to fall at all, and they meet near the original branch. Drop the speed too low and the dart just strikes the ground before getting there, and the monkey hits the ground first anyway. The geometry is exact above the ground; below, both simulations end.
+
+The point of the demo is not that it is a good way to hunt monkeys. It is that free fall is shared. Gravity treats the dart and the monkey identically — a consequence of the same equivalence we saw in FIG.01 with the feather and the hammer. Two bodies released into free fall from different heights with different horizontal velocities are, as far as their vertical motion is concerned, in the same boat.
+
+</Section>
+
+<Section index={6} title="Air changes everything">
+
+Real projectiles do not follow parabolas. A baseball thrown hard, a bullet, a ping-pong ball across a room, a javelin, a frisbee — none of them trace the clean conic section the equations promise. The culprit is the air.
+
+Move through air, and the air pushes back. The force is called **drag**, and it grows with speed: slow objects feel a gentle linear resistance, fast ones feel a much harsher quadratic one. For a baseball travelling at forty metres per second the drag force is comparable to gravity, and the trajectory becomes markedly asymmetric — the descent is steeper than the ascent, and the range is slashed by a factor of two or more.
+
+The optimal launch angle also shifts. In a vacuum the best angle is 45°; for a drag-heavy projectile like a baseball, the optimum drops to somewhere around 35°. A shot-putter's "correct" angle sits lower still — closer to 30° — because the release height is already above the landing height, and the geometry rewards a flatter throw.
+
+<PhysicistLink slug="isaac-newton">Newton</PhysicistLink>, writing in Book II of the *Principia* (1687), made the first serious attempt at resisted motion. He tabulated the trajectories of projectiles moving through media of various densities and derived an early form of the quadratic drag law. The results were qualitatively right and numerically crude; a real theory of aerodynamic drag would not appear until the nineteenth century with Stokes, Reynolds, and the invention of fluid mechanics as a quantitative science.
+
+We will revisit all of this in FIG.04. For the rest of this topic, the air is switched off.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We have extended the kinematic language from one axis to two. Position is a vector. Velocity is a vector. Acceleration is a vector. The kinematic equations hold componentwise. And a single clean force — gravity, pulling straight down with the same constant g on everything — produces a parabolic path that can be decomposed, understood, and optimised without any calculus more advanced than the algebra we already had.
+
+Notice what we have *not* done. We have not explained why objects accelerate at all. We have described motion — kinematics — without asking about causes. What is it, physically, that makes a ball curve downward instead of shooting off in a straight line? What makes any object's velocity change from one instant to the next?
+
+The answer is **force**, and the rules it obeys are the most reused laws in all of science. A twenty-three-year-old Cambridge student, sent home during a plague year in 1666, worked them out in a farmhouse in Lincolnshire. That is FIG.03.
+
+</Section>
+
+</TopicPageLayout>

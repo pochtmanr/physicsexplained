@@ -1,5 +1,6 @@
 "use server";
 
+import { getTranslations } from "next-intl/server";
 import { getServerSupabase } from "@/lib/supabase/server";
 
 export interface SignupResult {
@@ -13,14 +14,15 @@ export async function signupForBranchUpdates(
   _prevState: SignupResult | null,
   formData: FormData,
 ): Promise<SignupResult> {
+  const t = await getTranslations("home.emailSignup.status");
   const branchSlug = String(formData.get("branchSlug") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
 
   if (!branchSlug || branchSlug.length > 80) {
-    return { ok: false, message: "Missing branch reference." };
+    return { ok: false, message: t("missingBranch") };
   }
   if (!EMAIL_RE.test(email) || email.length > 320) {
-    return { ok: false, message: "Please enter a valid email." };
+    return { ok: false, message: t("invalidEmail") };
   }
 
   const supabase = getServerSupabase();
@@ -32,17 +34,11 @@ export async function signupForBranchUpdates(
   if (error) {
     // 23505 = unique_violation on (email, branch_slug)
     if (error.code === "23505") {
-      return {
-        ok: true,
-        message: "You're already on the list — we'll email you when this branch goes live.",
-      };
+      return { ok: true, message: t("alreadySignedUp") };
     }
     console.error("[email-signup] insert failed:", error);
-    return { ok: false, message: "Something went wrong. Please try again." };
+    return { ok: false, message: t("error") };
   }
 
-  return {
-    ok: true,
-    message: "Thanks — we'll email you when this branch goes live.",
-  };
+  return { ok: true, message: t("success") };
 }

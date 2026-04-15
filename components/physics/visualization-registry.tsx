@@ -114,6 +114,206 @@ const CoupledPendulumScene = dynamic(
   { ssr: false },
 );
 
+const BeatsScene = dynamic(
+  () =>
+    import("@/components/physics/beats-scene").then((m) => ({
+      default: m.BeatsScene,
+    })),
+  { ssr: false },
+);
+
+const DampedPendulumScene = dynamic(
+  () =>
+    import("@/components/physics/damped-pendulum-scene").then((m) => ({
+      default: m.DampedPendulumScene,
+    })),
+  { ssr: false },
+);
+
+const ShellTheoremScene = dynamic(
+  () =>
+    import("@/components/physics/shell-theorem-scene").then((m) => ({
+      default: m.ShellTheoremScene,
+    })),
+  { ssr: false },
+);
+
+const GravityFieldScene = dynamic(
+  () =>
+    import("@/components/physics/gravity-field-scene").then((m) => ({
+      default: m.GravityFieldScene,
+    })),
+  { ssr: false },
+);
+
+const CavendishScene = dynamic(
+  () =>
+    import("@/components/physics/cavendish-scene").then((m) => ({
+      default: m.CavendishScene,
+    })),
+  { ssr: false },
+);
+
+const GravPotentialScene = dynamic(
+  () =>
+    import("@/components/physics/grav-potential-scene").then((m) => ({
+      default: m.GravPotentialScene,
+    })),
+  { ssr: false },
+);
+
+const VisVivaScene = dynamic(
+  () =>
+    import("@/components/physics/vis-viva-scene").then((m) => ({
+      default: m.VisVivaScene,
+    })),
+  { ssr: false },
+);
+
+const OrbitEnergyScene = dynamic(
+  () =>
+    import("@/components/physics/orbit-energy-scene").then((m) => ({
+      default: m.OrbitEnergyScene,
+    })),
+  { ssr: false },
+);
+
+const HohmannScene = dynamic(
+  () =>
+    import("@/components/physics/hohmann-scene").then((m) => ({
+      default: m.HohmannScene,
+    })),
+  { ssr: false },
+);
+
+const TidalForceScene = dynamic(
+  () =>
+    import("@/components/physics/tidal-force-scene").then((m) => ({
+      default: m.TidalForceScene,
+    })),
+  { ssr: false },
+);
+
+const RocheLimitScene = dynamic(
+  () =>
+    import("@/components/physics/roche-limit-scene").then((m) => ({
+      default: m.RocheLimitScene,
+    })),
+  { ssr: false },
+);
+
+const LagrangePointsScene = dynamic(
+  () =>
+    import("@/components/physics/lagrange-points-scene").then((m) => ({
+      default: m.LagrangePointsScene,
+    })),
+  { ssr: false },
+);
+
+const InclinedPlaneScene = dynamic(
+  () =>
+    import("@/components/physics/inclined-plane-scene").then((m) => ({
+      default: m.InclinedPlaneScene,
+    })),
+  { ssr: false },
+);
+
+const TangentZoomScene = dynamic(
+  () =>
+    import("@/components/physics/tangent-zoom-scene").then((m) => ({
+      default: m.TangentZoomScene,
+    })),
+  { ssr: false },
+);
+
+const FreeFallScene = dynamic(
+  () =>
+    import("@/components/physics/free-fall-scene").then((m) => ({
+      default: m.FreeFallScene,
+    })),
+  { ssr: false },
+);
+
+const KinematicsGraphScene = dynamic(
+  () =>
+    import("@/components/physics/kinematics-graph-scene").then((m) => ({
+      default: m.KinematicsGraphScene,
+    })),
+  { ssr: false },
+);
+
+const FirstLawScene = dynamic(
+  () =>
+    import("@/components/physics/first-law-scene").then((m) => ({
+      default: m.FirstLawScene,
+    })),
+  { ssr: false },
+);
+
+const FMaScene = dynamic(
+  () =>
+    import("@/components/physics/f-ma-scene").then((m) => ({
+      default: m.FMaScene,
+    })),
+  { ssr: false },
+);
+
+const ActionReactionScene = dynamic(
+  () =>
+    import("@/components/physics/action-reaction-scene").then((m) => ({
+      default: m.ActionReactionScene,
+    })),
+  { ssr: false },
+);
+
+const ProjectileScene = dynamic(
+  () =>
+    import("@/components/physics/projectile-scene").then((m) => ({
+      default: m.ProjectileScene,
+    })),
+  { ssr: false },
+);
+
+const VectorAdditionScene = dynamic(
+  () =>
+    import("@/components/physics/vector-addition-scene").then((m) => ({
+      default: m.VectorAdditionScene,
+    })),
+  { ssr: false },
+);
+
+const MonkeyHunterScene = dynamic(
+  () =>
+    import("@/components/physics/monkey-hunter-scene").then((m) => ({
+      default: m.MonkeyHunterScene,
+    })),
+  { ssr: false },
+);
+
+const FrictionRampScene = dynamic(
+  () =>
+    import("@/components/physics/friction-ramp-scene").then((m) => ({
+      default: m.FrictionRampScene,
+    })),
+  { ssr: false },
+);
+
+const TerminalVelocityScene = dynamic(
+  () =>
+    import("@/components/physics/terminal-velocity-scene").then((m) => ({
+      default: m.TerminalVelocityScene,
+    })),
+  { ssr: false },
+);
+
+const DragRegimesScene = dynamic(
+  () =>
+    import("@/components/physics/drag-regimes-scene").then((m) => ({
+      default: m.DragRegimesScene,
+    })),
+  { ssr: false },
+);
+
 const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "ellipse-construction": EllipseConstruction,
   "phase-portrait": () => <PhasePortrait theta0={0.5} length={1.5} />,
@@ -129,6 +329,31 @@ const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "energy-diagram": () => <EnergyDiagramScene />,
   "resonance-curve": () => <ResonanceCurveScene />,
   "coupled-pendulum": () => <CoupledPendulumScene />,
+  "damped-pendulum": () => <DampedPendulumScene />,
+  "beats": () => <BeatsScene />,
+  "shell-theorem": () => <ShellTheoremScene />,
+  "gravity-field": () => <GravityFieldScene />,
+  "cavendish": () => <CavendishScene />,
+  "grav-potential": () => <GravPotentialScene />,
+  "vis-viva": () => <VisVivaScene />,
+  "orbit-energy": () => <OrbitEnergyScene />,
+  "hohmann": () => <HohmannScene />,
+  "tidal-force": () => <TidalForceScene />,
+  "roche-limit": () => <RocheLimitScene />,
+  "lagrange-points": () => <LagrangePointsScene />,
+  "inclined-plane": InclinedPlaneScene,
+  "tangent-zoom": TangentZoomScene,
+  "free-fall": FreeFallScene,
+  "kinematics-graph": KinematicsGraphScene,
+  "first-law": FirstLawScene,
+  "f-ma": FMaScene,
+  "action-reaction": ActionReactionScene,
+  "projectile": ProjectileScene,
+  "vector-addition": VectorAdditionScene,
+  "monkey-hunter": MonkeyHunterScene,
+  "friction-ramp": FrictionRampScene,
+  "terminal-velocity": TerminalVelocityScene,
+  "drag-regimes": DragRegimesScene,
 };
 
 export function Visualization({ vizKey }: { vizKey: string }) {

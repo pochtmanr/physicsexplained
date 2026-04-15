@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X, ArrowRight, BookOpen, User, GitBranch, Atom } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { BRANCHES } from "@/lib/content/branches";
 import { PHYSICISTS } from "@/lib/content/physicists";
 import { GLOSSARY } from "@/lib/content/glossary";
@@ -72,11 +73,18 @@ const ALL_RESULTS = buildIndex();
 /*  Category metadata                                                  */
 /* ------------------------------------------------------------------ */
 
-const CATEGORY_META: Record<ResultCategory, { label: string; icon: typeof Search }> = {
-  branch:     { label: "Branches",    icon: GitBranch },
-  topic:      { label: "Topics",      icon: Atom },
-  physicist:  { label: "Physicists",  icon: User },
-  dictionary: { label: "Dictionary",  icon: BookOpen },
+const CATEGORY_ICONS: Record<ResultCategory, typeof Search> = {
+  branch: GitBranch,
+  topic: Atom,
+  physicist: User,
+  dictionary: BookOpen,
+};
+
+const CATEGORY_LABEL_KEYS: Record<ResultCategory, string> = {
+  branch: "categoryBranch",
+  topic: "categoryTopic",
+  physicist: "categoryPhysicist",
+  dictionary: "categoryDictionary",
 };
 
 const CATEGORY_ORDER: ResultCategory[] = ["branch", "topic", "physicist", "dictionary"];
@@ -86,6 +94,7 @@ const CATEGORY_ORDER: ResultCategory[] = ["branch", "topic", "physicist", "dicti
 /* ------------------------------------------------------------------ */
 
 export function SearchCommand() {
+  const t = useTranslations("common.search");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(0);
@@ -224,7 +233,7 @@ export function SearchCommand() {
       {/* Dialog */}
       <div
         role="dialog"
-        aria-label="Search"
+        aria-label={t("dialogLabel")}
         className="relative w-full max-w-xl mx-4 border border-[var(--color-fg-3)] bg-[var(--color-bg-0)] shadow-2xl"
         onKeyDown={handleKeyDown}
       >
@@ -241,13 +250,13 @@ export function SearchCommand() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search topics, physicists, dictionary..."
+            placeholder={t("placeholder")}
             className="flex-1 bg-transparent font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] outline-none"
           />
           <button
             type="button"
             onClick={() => setOpen(false)}
-            aria-label="Close search"
+            aria-label={t("closeLabel")}
             className="shrink-0 text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-fg-0)]"
           >
             <X size={16} strokeWidth={1.5} />
@@ -258,26 +267,26 @@ export function SearchCommand() {
         <div ref={listRef} className="max-h-[60vh] overflow-y-auto py-2">
           {query.trim() && filtered.length === 0 && (
             <p className="px-4 py-8 text-center font-mono text-xs text-[var(--color-fg-2)]">
-              No results for &ldquo;{query}&rdquo;
+              {t("emptyNoResults", { query })}
             </p>
           )}
 
           {!query.trim() && (
             <p className="px-4 py-8 text-center font-mono text-xs text-[var(--color-fg-2)]">
-              Start typing to search...
+              {t("emptyInitial")}
             </p>
           )}
 
           {grouped.map((group) => {
-            const meta = CATEGORY_META[group.category];
-            const Icon = meta.icon;
+            const Icon = CATEGORY_ICONS[group.category];
+            const label = t(CATEGORY_LABEL_KEYS[group.category]);
             return (
               <div key={group.category}>
                 {/* Category header */}
                 <div className="flex items-center gap-2 px-4 pt-3 pb-1">
                   <Icon size={12} strokeWidth={1.5} className="text-[var(--color-fg-2)]" aria-hidden="true" />
                   <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-fg-2)]">
-                    {meta.label}
+                    {label}
                   </span>
                 </div>
 
@@ -293,7 +302,7 @@ export function SearchCommand() {
                       data-active={isActive}
                       onClick={() => navigate(result)}
                       onMouseEnter={() => setActiveIndex(idx)}
-                      className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+                      className={`flex w-full items-center gap-3 px-4 py-2.5 text-start transition-colors ${
                         isActive
                           ? "bg-[var(--color-bg-1)] text-[var(--color-cyan)]"
                           : "text-[var(--color-fg-1)] hover:bg-[var(--color-bg-1)]"
@@ -311,7 +320,7 @@ export function SearchCommand() {
                         <ArrowRight
                           size={14}
                           strokeWidth={1.5}
-                          className="shrink-0 text-[var(--color-cyan)]"
+                          className="shrink-0 text-[var(--color-cyan)] rtl:-scale-x-100"
                           aria-hidden="true"
                         />
                       )}
@@ -327,14 +336,14 @@ export function SearchCommand() {
         <div className="flex items-center justify-between border-t border-[var(--color-fg-3)] px-4 py-2">
           <div className="flex items-center gap-3">
             <span className="font-mono text-[10px] text-[var(--color-fg-2)]">
-              <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">↑↓</kbd> navigate
+              <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">↑↓</kbd> {t("hintNavigate")}
             </span>
             <span className="font-mono text-[10px] text-[var(--color-fg-2)]">
-              <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">↵</kbd> open
+              <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">↵</kbd> {t("hintOpen")}
             </span>
           </div>
           <span className="font-mono text-[10px] text-[var(--color-fg-2)]">
-            <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">esc</kbd> close
+            <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">esc</kbd> {t("hintClose")}
           </span>
         </div>
       </div>

@@ -69,6 +69,10 @@ export type GlossaryCategory =
   | "unit"
   | "phenomenon";
 
+export interface GlossaryImage {
+  src: string;
+}
+
 export interface GlossaryTerm {
   slug: string;
   term: string;
@@ -78,6 +82,7 @@ export interface GlossaryTerm {
   history?: string;
   visualization?: string;
   illustration?: string;
+  images?: readonly GlossaryImage[];
   relatedPhysicists?: readonly string[];
   relatedTopics?: readonly TopicRef[];
 }

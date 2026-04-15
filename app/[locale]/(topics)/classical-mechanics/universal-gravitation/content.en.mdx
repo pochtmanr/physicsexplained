@@ -1,0 +1,163 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ShellTheoremScene } from "@/components/physics/shell-theorem-scene";
+import { GravityFieldScene } from "@/components/physics/gravity-field-scene";
+import { CavendishScene } from "@/components/physics/cavendish-scene";
+import { GravPotentialScene } from "@/components/physics/grav-potential-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Johannes Kepler", href: "/physicists/johannes-kepler" },
+  { type: "physicist", label: "Urbain Le Verrier", href: "/physicists/urbain-le-verrier" },
+  { type: "physicist", label: "Pierre Bouguer", href: "/physicists/pierre-bouguer" },
+  { type: "term", label: "Inverse Square Law", href: "/dictionary/inverse-square-law" },
+  { type: "term", label: "Ellipse", href: "/dictionary/ellipse" },
+  { type: "term", label: "Semi-major Axis", href: "/dictionary/semi-major-axis" },
+]}>
+
+<TopicHeader
+  eyebrow="§ 02 · CLASSICAL MECHANICS"
+  title="UNIVERSAL GRAVITATION"
+  subtitle="The force that holds the Moon is the force that drops the apple."
+/>
+
+<Section index={1} title="The apple and the Moon">
+
+In 1665, plague shut Cambridge and sent <PhysicistLink slug="isaac-newton">Isaac Newton</PhysicistLink> home to Woolsthorpe. There, sometime between the orchard and the night sky, he asked a question no one had thought to ask: is the force that pulls an apple to the ground the same force that keeps the Moon from flying off in a straight line?
+
+The test was straightforward. The Moon orbits at roughly 60 Earth radii. If gravity obeys an <Term slug="inverse-square-law">inverse-square law</Term>, then the acceleration at the Moon's distance should be the surface value divided by 60 squared:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">g_Moon = g / 60² = 9.8 / 3600 ≈ 0.0027 m/s²</span>
+</EquationBlock>
+
+The Moon's centripetal acceleration can be computed independently from its orbital radius and period. The orbital radius is about 3.84 x 10⁸ m, the period about 27.3 days. Plug in a = 4π²r/T² and you get 0.0027 m/s². The numbers matched. The same force that makes an apple fall curves the Moon's path.
+
+This was the moment terrestrial and celestial physics unified. Before Newton, the heavens had their own rules — crystalline spheres, divine movers, a physics of perfection separate from the messy world below. After Newton, there was one physics.
+
+</Section>
+
+<Section index={2} title="The inverse-square law">
+
+Why does gravity weaken as 1/r²? There is a geometric argument so clean it almost constitutes a proof on its own. Imagine a point source radiating force equally in all directions. At distance r, that force spreads over a sphere of area 4πr². Double the distance and the same force spreads over four times the area. The intensity — force per unit area — drops as 1/r².
+
+But Newton did more than offer intuition. He proved that <PhysicistLink slug="johannes-kepler">Kepler</PhysicistLink>'s third law — T² proportional to a³ — requires exactly an inverse-square force. The derivation is short enough to follow in full.
+
+For a circular orbit of radius r, the centripetal acceleration is:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">a = v² / r = (2πr / T)² / r = 4π²r / T²</span>
+</EquationBlock>
+
+Now apply Kepler's third law: T² = k · r³ for some constant k. Substituting:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">a = 4π² / (k · r²) ∝ 1/r²</span>
+</EquationBlock>
+
+There it is. The harmonic law forces the acceleration — and therefore the force, by Newton's second law — to fall off as the square of the distance. Not the cube, not the first power. Exactly the square. Kepler's meticulous astronomy, distilled through Newton's mechanics, yields the law of gravity.
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">F = G · M · m / r²</span>
+</EquationBlock>
+
+<SceneCard caption="FIG.01 — the shell theorem" className="w-full">
+  <ShellTheoremScene />
+</SceneCard>
+
+Drag the test particle inside and outside the shell. Outside, the force arrow grows as 1/r² — the shell acts as if all its mass were concentrated at the centre. Inside, the force vanishes completely. This is Newton's shell theorem in action.
+
+</Section>
+
+<Section index={3} title="The shell theorem">
+
+The shell theorem is the result that made universal gravitation a workable theory. Without it, computing the gravitational pull of a planet-sized sphere would require summing contributions from every atom. With it, you can treat the Earth as a point mass sitting at its centre.
+
+Newton's proof appears in the *Principia*, Book I, Proposition 71. The argument is geometric: consider a thin spherical shell of uniform density. Pick any external point P. For every small patch of mass on the near side of the shell, there is a corresponding patch on the far side such that their gravitational pulls on P, resolved along the line from P to the centre, exactly combine as if the total mass sat at the centre.
+
+For a point inside the shell, the logic is even more elegant. Any cone of directions from the interior point intersects the shell in two caps. The nearer cap is closer but subtends a smaller area; the farther cap is more distant but larger. The two effects cancel perfectly. Net force: zero.
+
+This took Newton roughly twenty years to prove with the rigour he demanded — he had the physical insight by the mid-1660s but delayed publishing the *Principia* until 1687 in part because the shell theorem resisted easy demonstration. When he finally cracked it, he wrote to Edmond Halley that the result was "worthy of the trouble."
+
+<SceneCard caption="FIG.02 — gravitational field" className="w-full">
+  <GravityFieldScene />
+</SceneCard>
+
+Slide the second mass from zero upward and watch the field distort. With a single mass the arrows point radially inward — pure inverse-square. Add a second mass and you see the field warp: a saddle point appears between the two bodies where their pulls cancel. This is the gravitational analogue of electric field superposition.
+
+</Section>
+
+<Section index={4} title="Weighing the Earth — the Cavendish experiment">
+
+Newton's law contains a proportionality constant, G. Newton never measured it. For over a century after the *Principia*, no one could — the gravitational force between laboratory-scale objects is absurdly small.
+
+In 1798, Henry Cavendish succeeded. His apparatus: a horizontal wooden rod, about six feet long, with a small lead ball (0.73 kg) at each end, suspended from the ceiling by a thin metal wire. Near each small ball he placed a large lead sphere (158 kg). The gravitational attraction between the small and large masses twisted the wire by a tiny angle — Cavendish measured it using a light beam reflected from a mirror attached to the rod.
+
+From the twist angle, the torsion constant of the wire, and the known masses and geometry, Cavendish extracted the force. From the force and Newton's law, he extracted G.
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">G = 6.674 × 10⁻¹¹ m³ kg⁻¹ s⁻²</span>
+</EquationBlock>
+
+And once you have G, you have the mass of the Earth. Surface gravity g = GM/R², so:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-lg">M = g · R² / G ≈ 5.97 × 10²⁴ kg</span>
+</EquationBlock>
+
+Cavendish never described it this way — his paper's title was "Experiments to determine the Density of the Earth" — but posterity remembers him as the man who weighed the Earth.
+
+<SceneCard caption="FIG.03 — the Cavendish torsion balance" className="w-full">
+  <CavendishScene />
+</SceneCard>
+
+Move the slider to change the large mass. Watch the arm twist in response. The readout shows the measured twist angle, G, and the implied mass of the Earth. The twist is tiny — Cavendish's actual deflection was about 0.16 degrees — but it sufficed to pin down the most elusive constant in classical physics.
+
+</Section>
+
+<Section index={5} title="The gravitational field">
+
+Newton formulated gravity as a force between two bodies. The field formulation, developed later, is more powerful: assign to every point in space a vector g(r) representing the gravitational acceleration a test mass would experience there.
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-lg">g(r) = −GM / r² · r̂</span>
+</EquationBlock>
+
+The gravitational potential is the scalar field whose gradient gives the force field:
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-lg">Φ(r) = −GM / r</span>
+</EquationBlock>
+
+The potential energy of a mass m in this field is U = mΦ = −GMm/r. The minus sign is not a convention — it encodes the physics of bound states. Set the zero of potential at infinity. A particle at finite r has negative potential energy, meaning you must *add* energy to free it. The more negative Φ, the more tightly bound the particle.
+
+Escape velocity follows immediately: set total energy E = KE + PE = ½mv² − GMm/r = 0 and solve for v. At Earth's surface:
+
+<EquationBlock id="EQ.09">
+  <span className="font-mono text-lg">v_escape = √(2GM/R) ≈ 11.2 km/s</span>
+</EquationBlock>
+
+<SceneCard caption="FIG.04 — gravitational potential well" className="w-full">
+  <GravPotentialScene />
+</SceneCard>
+
+Drag the particle along the potential curve. The magenta bar shows kinetic energy — the gap between total energy (the red dashed line) and the potential. Slide the total energy slider upward toward zero and watch the particle become unbound. At E = 0, it has exactly escape energy. Above zero, it flies free.
+
+</Section>
+
+<Section index={6} title="Why it matters">
+
+Universal gravitation gave humanity its first predictive theory of the cosmos. Within a century of the *Principia*, Euler and Lagrange had computed the perturbations of Jupiter and Saturn. Halley had predicted the return of his comet. Laplace had demonstrated the long-term stability of the solar system (or so he thought).
+
+The theory's most spectacular triumph came in 1846. <PhysicistLink slug="urbain-le-verrier">Urbain Le Verrier</PhysicistLink>, working from unexplained wobbles in the orbit of Uranus, calculated where an unseen planet must be. He sent his prediction to the Berlin Observatory. Johann Galle pointed the telescope that night and found Neptune within one degree of the predicted position. A planet discovered by mathematics alone — by gravity.
+
+Today, universal gravitation underpins tidal prediction, satellite orbit design, GPS clock corrections (Newtonian gravity contributes the dominant term; general relativity adds a small correction), asteroid deflection planning, and the modelling of galaxy clusters. Gravitational lensing — the bending of light by massive objects — was first predicted by Newton's theory (he got the deflection angle wrong by a factor of two; Einstein fixed it), and is now a primary tool in observational cosmology.
+
+Newton's law is not the last word. It breaks down at high speeds, strong fields, and cosmological scales — that is Einstein's territory. But for the vast majority of gravitational physics that humans will ever encounter, from falling apples to orbiting spacecraft, the inverse-square law is exact, complete, and beautiful.
+
+</Section>
+
+</TopicPageLayout>

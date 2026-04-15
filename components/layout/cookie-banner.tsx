@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const STORAGE_KEY = "physics-cookie-consent";
 
 export function CookieBanner() {
+  const t = useTranslations("common.cookieBanner");
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -39,20 +41,19 @@ export function CookieBanner() {
     >
       <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-4 px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <p className="text-sm text-[var(--color-fg-1)]">
-          This site uses localStorage for your theme preference. No tracking
-          cookies.{" "}
+          {t("message")}{" "}
           <Link
             href="/cookies"
             className="text-[var(--color-cyan)] underline underline-offset-2"
           >
-            Cookie policy
+            {t("linkText")}
           </Link>
         </p>
         <button
           onClick={accept}
           className="shrink-0 cursor-pointer border border-[var(--color-cyan)] bg-[var(--color-cyan)]/10 px-5 py-2 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-cyan)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--color-cyan)]/20 hover:shadow-[0_0_12px_var(--color-glow)]"
         >
-          Accept
+          {t("accept")}
         </button>
       </div>
     </div>

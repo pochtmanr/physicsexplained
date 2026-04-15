@@ -15,11 +15,97 @@ import { SceneCard } from "@/components/layout/scene-card";
 import { Visualization } from "@/components/physics/visualization-registry";
 import { RichText } from "@/components/content/rich-text";
 
+const IMAGE_MARKER_RE = /^\[\[image:(\d+)\]\]$/;
+
+function ProseImage({
+  src,
+  caption,
+  fallbackAlt,
+}: {
+  src: string;
+  caption?: string;
+  fallbackAlt: string;
+}) {
+  return (
+    <figure className="not-prose my-8 flex flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)]">
+      <div className="aspect-[16/10] w-full overflow-hidden bg-[var(--color-bg-2)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={caption ?? fallbackAlt}
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </div>
+      {caption && (
+        <figcaption className="border-t border-[var(--color-fg-3)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
+function ProseBlock({
+  block,
+  idx,
+  images,
+  captions,
+  fallbackAlt,
+}: {
+  block: string;
+  idx: number;
+  images: readonly { src: string }[];
+  captions: string[];
+  fallbackAlt: string;
+}) {
+  const imgMatch = block.match(IMAGE_MARKER_RE);
+  if (imgMatch) {
+    const i = parseInt(imgMatch[1], 10);
+    const img = images[i];
+    if (!img) return null;
+    return (
+      <ProseImage
+        key={idx}
+        src={img.src}
+        caption={captions[i]}
+        fallbackAlt={fallbackAlt}
+      />
+    );
+  }
+  if (block.startsWith("### ")) {
+    return (
+      <h4
+        key={idx}
+        className="mt-8 mb-3 text-lg font-semibold uppercase tracking-tight text-[var(--color-fg-0)]"
+      >
+        <RichText text={block.slice(4)} />
+      </h4>
+    );
+  }
+  if (block.startsWith("## ")) {
+    return (
+      <h3
+        key={idx}
+        className="mt-12 mb-4 text-xl md:text-2xl font-semibold tracking-tight text-[var(--color-fg-0)]"
+      >
+        <RichText text={block.slice(3)} />
+      </h3>
+    );
+  }
+  return (
+    <p key={idx}>
+      <RichText text={block} />
+    </p>
+  );
+}
+
 type GlossaryMessage = {
   term?: string;
   shortDefinition?: string;
   description?: string;
   history?: string;
+  imageCaptions?: string[];
 };
 
 export function generateStaticParams() {
@@ -94,6 +180,20 @@ export default async function DictionaryTermPage({
 
   const hasViz = !!term.visualization;
   const hasIllustration = !!term.illustration;
+  const images = term.images ?? [];
+  const captions = localized.imageCaptions ?? [];
+  const fallbackAlt = t("illustrationAlt", { term: displayTerm });
+
+  const allBlocks = [...definitionParagraphs, ...historyParagraphs];
+  const inlineImageIndices = new Set<number>();
+  for (const b of allBlocks) {
+    const m = b.match(IMAGE_MARKER_RE);
+    if (m) inlineImageIndices.add(parseInt(m[1], 10));
+  }
+  const ungalleriedImages = images
+    .map((img, i) => ({ img, i }))
+    .filter(({ i }) => !inlineImageIndices.has(i));
+  const showGallery = inlineImageIndices.size === 0 && images.length > 0;
 
   let sectionIdx = 0;
 
@@ -122,7 +222,13 @@ export default async function DictionaryTermPage({
       />
 
       <Section index={++sectionIdx} title={t("sectionDefinition")}>
-        <p><RichText text={definitionParagraphs[0]} /></p>
+        <ProseBlock
+          block={definitionParagraphs[0]}
+          idx={0}
+          images={images}
+          captions={captions}
+          fallbackAlt={fallbackAlt}
+        />
 
         {hasViz && (
           <SceneCard caption={t("interactive", { term: displayTerm })} className="w-full">
@@ -145,16 +251,59 @@ export default async function DictionaryTermPage({
           </SceneCard>
         )}
 
+        {showGallery && (
+          <div className="not-prose grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {ungalleriedImages.map(({ img, i }) => {
+              const caption = captions[i];
+              return (
+                <figure
+                  key={img.src}
+                  className="flex flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)]"
+                >
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-2)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={img.src}
+                      alt={caption ?? fallbackAlt}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  {caption && (
+                    <figcaption className="border-t border-[var(--color-fg-3)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+                      {caption}
+                    </figcaption>
+                  )}
+                </figure>
+              );
+            })}
+          </div>
+        )}
+
         {definitionParagraphs.length > 1 &&
           definitionParagraphs.slice(1).map((para, i) => (
-            <p key={i}><RichText text={para} /></p>
+            <ProseBlock
+              key={i + 1}
+              block={para}
+              idx={i + 1}
+              images={images}
+              captions={captions}
+              fallbackAlt={fallbackAlt}
+            />
           ))}
       </Section>
 
       {historyParagraphs.length > 0 && (
         <Section index={++sectionIdx} title={t("sectionHistory")}>
           {historyParagraphs.map((para, i) => (
-            <p key={i}><RichText text={para} /></p>
+            <ProseBlock
+              key={i}
+              block={para}
+              idx={i}
+              images={images}
+              captions={captions}
+              fallbackAlt={fallbackAlt}
+            />
           ))}
         </Section>
       )}

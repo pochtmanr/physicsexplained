@@ -1,0 +1,147 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { TidalForceScene } from "@/components/physics/tidal-force-scene";
+import { RocheLimitScene } from "@/components/physics/roche-limit-scene";
+import { LagrangePointsScene } from "@/components/physics/lagrange-points-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Joseph-Louis Lagrange", href: "/physicists/joseph-louis-lagrange" },
+  { type: "physicist", label: "Henri Poincar\u00e9", href: "/physicists/henri-poincare" },
+  { type: "physicist", label: "\u00c9douard Roche", href: "/physicists/edouard-roche" },
+  { type: "term", label: "Inverse Square Law", href: "/dictionary/inverse-square-law" },
+  { type: "term", label: "Lagrange Points", href: "/dictionary/lagrange-points" },
+  { type: "term", label: "Roche Limit", href: "/dictionary/roche-limit" },
+  { type: "term", label: "Tidal Force", href: "/dictionary/tidal-force" },
+]}>
+
+<TopicHeader
+  eyebrow="\u00a7 02 \u00b7 CLASSICAL MECHANICS"
+  title="TIDES AND THE THREE-BODY PROBLEM"
+  subtitle="When gravity gets complicated, the universe gets interesting."
+/>
+
+<Section index={1} title="Tidal forces">
+
+Gravity is not uniform. The Moon pulls harder on the near side of the Earth than on the far side, because gravitational force falls off as the square of the distance. The *difference* in gravitational acceleration across a body is the tidal force, and it does something deceptively simple: it stretches the body along the line to the attractor, and squeezes it in the perpendicular direction.
+
+Here is why. Consider a body of diameter *d* at distance *r* from a mass *M*. The gravitational acceleration at the near edge is *GM/(r - d/2)*^2, and at the far edge it is *GM/(r + d/2)*^2. The difference, to first order in *d/r*, is:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">a_tidal \u2248 2GMd / r\u00b3</span>
+</EquationBlock>
+
+That *r*^3 in the denominator is the key. Tidal forces fall off much faster than gravity itself. Move twice as far away and the tidal force drops by a factor of eight, not four. This is why the Moon, despite being far less massive than the Sun, raises *larger* tides on Earth's oceans. The Moon is so much closer that its steeper gravitational gradient more than compensates for its smaller mass. In fact, the Sun's tidal force on Earth is only about 44% of the Moon's.
+
+Why two bulges, not one? If the Moon simply pulled the ocean toward it, you would expect a single bulge on the near side. But the tidal force is a *differential* force. On the near side, the ocean is pulled harder than Earth's center, so it bulges toward the Moon. On the far side, Earth's center is pulled harder than the ocean, so the ocean is effectively *left behind* -- it bulges away from the Moon. The net result is two bulges, one on each side, separated by 180 degrees. Earth rotates through both bulges every day, which is why most coastlines experience two high tides per day.
+
+When the Sun and Moon align -- at new and full moons -- their tidal forces add up. These are **spring tides**, roughly 40% stronger than average. When they pull at right angles (first and third quarter), their forces partially cancel: **neap tides**, roughly 40% weaker.
+
+<SceneCard caption="FIG.01 \u2014 tidal force vectors" className="w-full">
+  <TidalForceScene />
+</SceneCard>
+
+Drag the slider to move the Moon closer. Watch the arrows grow -- not linearly, but as the cube of the inverse distance. At close range, the stretching becomes violent.
+
+</Section>
+
+<Section index={2} title="Tidal locking">
+
+The tidal bulge that Earth raises on the Moon is not perfectly aligned with the Earth-Moon line. Because the Moon once rotated faster than it orbited, friction between the bulge and the Moon's interior created a torque that gradually slowed the Moon's rotation. Over hundreds of millions of years, this torque did its work: the Moon's rotation period now exactly matches its orbital period. We always see the same face.
+
+This is **tidal locking**, and it is the rule rather than the exception. Nearly every large moon in the solar system is tidally locked to its planet: the four Galilean moons of Jupiter, Titan, Triton, the major moons of Uranus. The process is inevitable for any body close enough to its host for tidal friction to have time to act.
+
+The angular momentum lost by the Moon's spin had to go somewhere. It went into the orbit. As the Moon slowed down, it moved outward. This is still happening: laser ranging experiments (bouncing photons off retroreflectors left by the Apollo astronauts) show the Moon receding at 3.8 centimeters per year. Angular momentum conservation demands it.
+
+And the process works in reverse, too. The Moon's tidal bulge on Earth -- the ocean tides themselves -- creates a torque that is slowing Earth's rotation. The length of the day is increasing by about 2.3 milliseconds per century. Four hundred million years ago, a day was only 22 hours long.
+
+The endpoint is mutual locking: Pluto and its moon Charon have already reached it. They keep the same faces toward each other at all times, locked in a gravitational embrace that will never change.
+
+</Section>
+
+<Section index={3} title="The Roche limit">
+
+If tidal forces stretch a moon, and tidal forces grow as the moon spirals closer, there must be a distance at which the tidal force exceeds the moon's own self-gravity. Beyond that point, the moon cannot hold itself together.
+
+This critical distance is the **Roche limit**, named after the French astronomer Edouard Roche, who derived it in 1848. For a fluid body (one held together only by gravity, not material strength):
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">d_Roche \u2248 2.44 \u00b7 R_planet \u00b7 (\u03c1_planet / \u03c1_moon)^(1/3)</span>
+</EquationBlock>
+
+For equal densities, the Roche limit sits at about 2.44 planetary radii from the center. Any closer and the moon is torn apart.
+
+Saturn's rings exist inside Saturn's Roche limit. They are either the remains of a moon that wandered too close, or -- more likely, given recent Cassini data -- material that was *never able* to coalesce into a moon because tidal forces prevented accretion. Either way, the rings are a monument to the Roche limit: trillions of icy fragments orbiting in a region where gravity forbids them from coming together.
+
+Comet Shoemaker-Levy 9 provided a spectacular demonstration. In July 1992, the comet passed within Jupiter's Roche limit and was ripped into a chain of 21 fragments. Two years later, those fragments slammed into Jupiter one after another, leaving Earth-sized impact scars visible through backyard telescopes.
+
+<SceneCard caption="FIG.02 \u2014 the Roche limit" className="w-full">
+  <RocheLimitScene />
+</SceneCard>
+
+Slide the moon inward. Watch it stretch, then shatter. Past the dashed line, self-gravity loses the war.
+
+</Section>
+
+<Section index={4} title="Lagrange points">
+
+Consider a simpler version of the three-body problem: two massive bodies in circular orbit around their common center of mass, and one test particle of negligible mass. This is the **restricted three-body problem**, and it was solved -- in a limited sense -- by <PhysicistLink slug="isaac-newton">Newton</PhysicistLink>'s great successor, Joseph-Louis Lagrange, in 1772.
+
+In the rotating reference frame (the frame that spins with the two massive bodies so they appear stationary), there are exactly five points where the gravitational forces and the centrifugal force balance. A test particle placed at any of these points, with zero velocity in the rotating frame, will remain stationary.
+
+**L1** sits between the two bodies. Here the gravitational pull of the larger body, reduced by the smaller body's pull, exactly matches the centrifugal force. The SOHO solar observatory lives near the Sun-Earth L1, staring at the Sun with an uninterrupted view.
+
+**L2** lies beyond the smaller body, on the far side from the larger one. The James Webb Space Telescope orbits the Sun-Earth L2, 1.5 million kilometers from Earth, in permanent shadow -- ideal for infrared astronomy.
+
+**L3** is on the opposite side of the larger body from the smaller one. Science fiction loves L3 as a hiding place for a counter-Earth, but in reality it is unstable and empty.
+
+L1, L2, and L3 are all **unstable equilibria** -- saddle points in the effective potential. A particle nudged slightly will drift away. Spacecraft at L1 and L2 use small station-keeping burns to stay put.
+
+**L4** and **L5** are the surprises. They sit at the vertices of equilateral triangles formed with the two massive bodies -- 60 degrees ahead and 60 degrees behind the smaller body in its orbit. They are *stable*. Not because they are potential minima (they are actually potential maxima), but because the Coriolis force in the rotating frame curves the trajectory of any drifting particle back into a loop around the Lagrange point. The stability is dynamical, not static.
+
+Jupiter's L4 and L5 points are crowded with **Trojan asteroids** -- over 13,000 catalogued as of 2024. Some are hundreds of kilometers across. In 2021, NASA launched the Lucy mission to visit them. Earth, Mars, and Neptune have their own Trojans too, though far fewer.
+
+<SceneCard caption="FIG.03 \u2014 Lagrange points in the rotating frame" className="w-full">
+  <LagrangePointsScene />
+</SceneCard>
+
+The background shows the effective potential in the co-rotating frame. Blue regions are deep gravitational wells (Sun and Earth). Red-tinged ridges are the high-potential barriers. L4 and L5, marked in cyan, are dynamically stable despite sitting on top of the potential landscape.
+
+</Section>
+
+<Section index={5} title="The edge of chaos">
+
+The restricted three-body problem has those five elegant equilibrium points. But the *general* three-body problem -- three bodies of arbitrary mass, with arbitrary initial conditions -- has no closed-form solution. This is not a matter of insufficient cleverness. Henri Poincar\u00e9 proved in 1890 that the general problem is fundamentally unsolvable in terms of known functions.
+
+The story of that proof is one of the great dramas of mathematics. In 1887, King Oscar II of Sweden offered a prize for a solution to the *n*-body problem. Poincare submitted a brilliant paper on the three-body case and won. But while the paper was being printed, a colleague found an error. Poincare, mortified, recalled the entire print run at his own expense -- it cost him more than the prize money -- and spent months fixing the argument.
+
+What he found, in fixing the error, was far more important than a solution would have been. He discovered that the three-body problem exhibits what we now call **deterministic chaos**: the equations are perfectly deterministic, but solutions are exquisitely sensitive to initial conditions. Change the starting position of one body by a millionth of a percent, and after enough time the trajectories diverge exponentially. Prediction becomes impossible beyond a finite horizon, not because of randomness, but because of the geometry of the solution space.
+
+This was the birth of chaos theory, a century before the word existed.
+
+The solar system itself is chaotic. In 1989, Jacques Laskar showed through massive numerical integrations that the orbits of the inner planets (Mercury through Mars) are chaotic on timescales of about five million years. We cannot predict the precise positions of the planets beyond that horizon. Mercury has a small but nonzero probability of being ejected from the solar system or colliding with Venus within the next five billion years.
+
+Saturn's moon Hyperion is a more immediate example. It tumbles chaotically as it orbits -- not spinning smoothly like most moons, but rotating unpredictably, its orientation essentially random from one orbit to the next. Tidal forces from Saturn try to lock it, but its potato-like shape and eccentric orbit frustrate the process. It is a chaotic rotator in the most literal sense.
+
+The three-body problem is deterministic. It is simple to state. And it is, for practical purposes, unsolvable. That tension -- between the clarity of the laws and the wildness of their consequences -- is one of the deepest lessons in physics.
+
+</Section>
+
+<Section index={6} title="Why it matters">
+
+Tidal forces shaped our planet. The twice-daily churning of the oceans drives nutrients through coastal ecosystems. Tidal pools -- periodically flooded, periodically drained -- may have been the nurseries where life first crawled onto land. The Moon's tidal influence stabilized Earth's axial tilt, preventing the wild climatic swings that would have made complex life far more difficult.
+
+Lagrange points are becoming humanity's outposts. SOHO watches the Sun from L1. The James Webb Space Telescope peers at the first galaxies from L2. ESA's Gaia spacecraft, also at L2, has mapped the positions and velocities of nearly two billion stars. Future plans include space stations and fuel depots at Earth-Moon Lagrange points -- waypoints for deeper exploration.
+
+The Roche limit explains why some worlds have rings and others don't. It tells engineers where to park a spacecraft and where not to send a fragile probe. It sets the inner boundary of every moon system in the solar system.
+
+And the three-body problem teaches something that no amount of computation can fix: that simple, exact, deterministic equations can produce behavior that is, for all practical purposes, unpredictable. Classical mechanics -- the most precise and successful physical theory ever written -- meets its own limits right here. Not in quantum mechanics. Not in relativity. In the gravitational dance of three ordinary masses.
+
+This is where the story gets interesting. Not because the laws break down, but because they reveal a richness that no one expected.
+
+</Section>
+
+</TopicPageLayout>

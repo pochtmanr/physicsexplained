@@ -57,8 +57,14 @@
   color-scheme: light;
 }
 
+/* Invert dictionary SVG illustrations on light theme (designed for dark bg) */
+[data-theme="light"] .dictionary-illustration {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 html,
 body {
+  overflow-x: clip;
   background: var(--color-bg-0);
   color: var(--color-fg-0);
   font-size: 18px;
@@ -66,6 +72,22 @@ body {
   transition:
     background-color var(--duration-base) ease,
     color var(--duration-base) ease;
+}
+
+/* Hebrew font stack — Inter/Archive Grotesk don't cover Hebrew glyphs.
+   Fall back to native Hebrew fonts until a dedicated webfont is added. */
+html[lang="he"] body {
+  font-family:
+    "Heebo", "Assistant", "Arial Hebrew", "Segoe UI Hebrew",
+    system-ui, -apple-system, sans-serif;
+}
+
+/* KaTeX math must stay LTR even inside RTL documents — equations read
+   left-to-right universally. */
+html[dir="rtl"] .katex,
+html[dir="rtl"] .katex-display {
+  direction: ltr;
+  text-align: left;
 }
 
 /* Source logos — monochrome via CSS filter, theme-aware */
@@ -94,9 +116,56 @@ a:not(.nav-link):hover {
   margin-top: 0.5em;
 }
 
-/* KaTeX output should inherit our foreground color */
+/* KaTeX output should inherit our foreground color and scale on mobile */
 .katex {
   color: var(--color-fg-0);
+}
+
+@media (max-width: 480px) {
+  .katex {
+    font-size: 0.9em;
+  }
+}
+
+/* Tables inside callouts and prose */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+table th,
+table td {
+  padding: 0.4rem 0.75rem;
+  text-align: start;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-fg-3);
+}
+
+table th {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-fg-2);
+}
+
+table td {
+  color: var(--color-fg-1);
+}
+
+table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 480px) {
+  table {
+    font-size: 0.7rem;
+  }
+  table th,
+  table td {
+    padding: 0.3rem 0.5rem;
+  }
 }
 
 /* Hover-card fade-in */

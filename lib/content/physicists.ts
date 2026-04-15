@@ -782,6 +782,186 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "motion-in-a-straight-line" },
     ],
   },
+  {
+    slug: "robert-hooke",
+    name: "Robert Hooke",
+    shortName: "Hooke",
+    born: "1635",
+    died: "1703",
+    nationality: "English",
+    oneLiner:
+      "The Royal Society's polymath curator — springs, cells, and a bitter rivalry with Newton.",
+    image: storageUrl("physicists/robert-hooke.avif"),
+    bio: "Robert Hooke was born on the Isle of Wight in 1635, the son of a curate. A sickly child, he taught himself mechanical drawing and model-making, and went up to Christ Church, Oxford, as a servitor — earning his keep doing chores for wealthier students. There he fell in with the circle of experimental philosophers around John Wilkins and Robert Boyle, for whom he built the air pump used in the famous vacuum experiments. It was the apprenticeship of his life.\n\nWhen the Royal Society was founded in 1660, Hooke became its first Curator of Experiments — a salaried position that required him to produce three or four new demonstrations at every weekly meeting. For the next forty years he did exactly that, across an astonishing range of fields. He improved the compound microscope and published Micrographia (1665), whose folding plates of fleas, louse grips, and cork tissue were the first widely read scientific drawings made with a lens. In that book he coined the word 'cell' for the box-like structures he saw in cork. He formulated what is now called Hooke's law — that the restoring force of a spring is proportional to its displacement — and published it in 1678 in the anagrammatic form ceiiinosssttuv, which unscrambles to ut tensio, sic vis (as the extension, so the force).\n\nHe was the City of London's Surveyor after the Great Fire of 1666, working alongside his friend Christopher Wren to rebuild the capital. He designed churches, the Royal College of Physicians, and the Monument to the Great Fire itself — which doubles, by Hooke's intent, as a vertical telescope and a zenith sector for astronomical experiments.\n\nAnd then there was the quarrel with Newton. Hooke had been writing to Newton since the 1670s, claiming — with some justification — that he had glimpsed the inverse-square law of gravitation before Newton did. In letters of 1679–1680 he posed the right question: assuming an inverse-square attraction toward the Sun, what shape would a planet's orbit take? He could not prove the answer was an ellipse. Newton could. When the Principia appeared in 1687, Hooke demanded public credit; Newton grudgingly added a brief acknowledgement and then, in private, cultivated a deep and durable hatred. After Hooke's death in 1703, Newton — then President of the Royal Society — is said to have had the only portrait of Hooke removed. No authenticated image of him survives. The loss is a twist of scientific history that still rankles: the man who named the cell, built Wren's London, and wrote Hooke's law has no face.\n\nHooke remained, to the end, a genuine rival to Newton in range if not in depth. He lacked Newton's mathematical power but had an intuitive reach that often put him first to the right question. In an age of specialists he was the last of the great generalists — the Royal Society's inexhaustible experimenter, the man to whom every new phenomenon in the London of the Restoration was eventually brought.",
+    contributions: [
+      "formulated Hooke's law of elasticity (1678) — F = −kx",
+      "coined the word 'cell' in biology (Micrographia, 1665)",
+      "advanced the compound microscope and published the first great microscopy book",
+      "proposed an inverse-square law of gravitational attraction in correspondence with Newton (1679)",
+      "designed the City of London with Christopher Wren after the Great Fire of 1666",
+      "built the air pump used by Boyle in the vacuum experiments",
+      "was the first Curator of Experiments at the Royal Society",
+    ],
+    majorWorks: [
+      {
+        title: "Micrographia",
+        year: "1665",
+        description:
+          "The first great book of microscopy. Folding plates of fleas, louse grips, fossils, and cork tissue — where Hooke named the box-like structures 'cells', giving biology its foundational word.",
+      },
+      {
+        title: "De Potentia Restitutiva, or of Spring",
+        year: "1678",
+        description:
+          "The publication of Hooke's law of elasticity — ut tensio, sic vis. Contains applications to springs, watch balances, and the theory of sound.",
+      },
+      {
+        title: "An Attempt to Prove the Motion of the Earth from Observations",
+        year: "1674",
+        description:
+          "A short lecture in which Hooke states the programme of universal gravitation: all celestial bodies attract each other with a force that diminishes with distance, and planetary motion results from this attraction combined with inertia.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "newtons-three-laws" },
+      { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+    ],
+  },
+  {
+    slug: "evangelista-torricelli",
+    name: "Evangelista Torricelli",
+    shortName: "Torricelli",
+    born: "1608",
+    died: "1647",
+    nationality: "Italian",
+    oneLiner:
+      "Galileo's last student — invented the barometer, discovered atmospheric pressure, and wrote the first projectile tables.",
+    image: storageUrl("physicists/evangelista-torricelli.avif"),
+    bio: "Evangelista Torricelli was born in Faenza in 1608 and orphaned young. A Jesuit uncle arranged for him to study mathematics under Benedetto Castelli, one of Galileo's former pupils, and by the late 1630s Torricelli was working through Galileo's Two New Sciences and writing mathematical commentaries that eventually reached Galileo himself. In October 1641 he moved to Arcetri to serve as Galileo's assistant, secretary, and amanuensis during the old man's final, blind months. Galileo died three months later, and Torricelli was appointed to succeed him as court mathematician to the Grand Duke of Tuscany.\n\nHis most famous experiment came in 1643. Using a glass tube sealed at one end and filled with mercury, Torricelli inverted it into a dish and showed that the mercury column settled to roughly 76 centimetres above the reservoir. Above the column, in the closed top of the tube, was a region of empty space — the first sustained vacuum produced deliberately in the laboratory. The column's height measured the weight of the atmosphere pressing down on the open dish. He had invented the barometer and demonstrated atmospheric pressure in one stroke. The unit of pressure one millimetre of mercury is still called a torr in his honour.\n\nHis Opera Geometrica (1644) ran to several hundred pages of geometry, mechanics, and fluid statics. Two results stand out. First, Torricelli's law on fluid efflux: a liquid draining from a small hole in a tank leaves with the same speed it would have acquired by falling freely from the liquid's surface, v = √(2gh). Second, his systematic study of projectile trajectories: extending Galileo's parabolic theory, he compiled the first serious tables of ranges for different launch speeds and angles, and proved that the family of all parabolic trajectories at a given speed is bounded above by another parabola — the 'safety parabola' or enveloping curve, outside which no shot can reach no matter how you aim. It was the first enveloping curve in the history of mathematics.\n\nTorricelli also contributed to the early calculus of indivisibles, deriving the volume of the hyperbolic solid now called Gabriel's horn — a surface of revolution with finite volume but infinite surface area, the first rigorous paradox of infinity in integration. He died abruptly of typhoid fever in October 1647, aged thirty-nine. His collected papers were published posthumously and remained an important reference for Pascal, Huygens, and Newton.",
+    contributions: [
+      "invented the mercury barometer and demonstrated atmospheric pressure (1643)",
+      "produced the first sustained laboratory vacuum (the 'Torricellian vacuum')",
+      "formulated Torricelli's law: v = √(2gh) for fluid efflux from a tank",
+      "compiled the first systematic projectile range tables (Opera Geometrica, 1644)",
+      "discovered the safety parabola — the enveloping curve of projectile trajectories",
+      "early work on the method of indivisibles and the volume of Gabriel's horn",
+    ],
+    majorWorks: [
+      {
+        title: "Opera Geometrica",
+        year: "1644",
+        description:
+          "A three-part treatise covering conic sections, the motion of projectiles, and the geometry of solids. Extended Galileo's parabolic theory of trajectories, introduced the safety parabola, and presented Torricelli's law on the efflux of liquids.",
+      },
+      {
+        title: "De Motu Gravium",
+        year: "1641",
+        description:
+          "The earliest of Torricelli's major works on mechanics, completed before he joined Galileo in Arcetri. Works through the kinematics of falling bodies and lays the foundations for the later projectile-range analysis.",
+      },
+      {
+        title: "Lezioni Accademiche",
+        year: "published 1715",
+        description:
+          "Posthumous collection of academic lectures covering wind, sound, the vacuum, and the nature of pressure. Contains the clearest contemporary exposition of the barometric experiment.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "vectors-and-projectile-motion" },
+    ],
+  },
+  {
+    slug: "guillaume-amontons",
+    name: "Guillaume Amontons",
+    shortName: "Amontons",
+    born: "1663",
+    died: "1705",
+    nationality: "French",
+    oneLiner:
+      "Deaf instrument-maker who distilled the chaos of friction into two clean laws.",
+    image: storageUrl("physicists/guillaume-amontons.avif"),
+    bio: "Guillaume Amontons was born in Paris in 1663 and lost most of his hearing in his teens from a serious illness. He declined medical treatment that might have restored it — he reasoned that he now had fewer distractions and could concentrate better on his studies. He had no formal university training. What he had was a pair of very good hands, a sharp experimental eye, and a determination to make real physics out of tangible objects.\n\nHe spent his short life in Paris as a private instrument-maker and a Royal Academy of Sciences correspondent. He designed and built hygrometers, barometers, thermometers, and optical telegraphs. In 1699 he delivered his most famous paper to the Academy — De la résistance causée dans les machines — in which he measured the friction between greased and ungreased surfaces of every combination he could contrive. Out of those measurements he drew two startlingly simple rules: the friction force is proportional to the load pressing the surfaces together, and it is independent of the area of contact. A third, closely related observation — that the force is roughly independent of sliding speed — was added later and is sometimes called the third of Amontons' laws.\n\nHis laws were not entirely new. Leonardo da Vinci had written them down in his notebooks around 1500, but those notebooks stayed in private hands for centuries and had no influence on anyone. Amontons is the one who published, argued for his results in front of the Academy, and convinced the rest of European science that something so messy as rubbing surfaces could be captured in two lines of arithmetic.\n\nHe also designed an air thermometer in 1702 that used the change in pressure of a fixed volume of gas as a temperature signal — effectively a constant-volume gas thermometer — and in working with it he came within a whisker of noticing absolute zero: he observed that the pressure extrapolated linearly to zero at a particular low temperature. Amontons died in 1705 at the age of 42, probably from the same condition that had cost him his hearing, leaving only a handful of published memoirs behind. Two of them still run every undergraduate friction problem in the world.",
+    contributions: [
+      "formulated the classical laws of friction (1699): F ∝ N and F independent of contact area",
+      "demonstrated that kinetic friction is roughly independent of sliding speed",
+      "designed the air thermometer (1702), anticipating absolute zero",
+      "invented an optical telegraph using windmill arms and telescopes",
+      "built some of the most accurate barometers and hygrometers of his time",
+    ],
+    majorWorks: [
+      {
+        title: "De la résistance causée dans les machines",
+        year: "1699",
+        description:
+          "Memoir to the Royal Academy of Sciences in Paris presenting what are now called Amontons' laws of friction. Reported careful measurements across materials showing that friction depends on load but not on contact area, and laid the experimental foundation for tribology.",
+      },
+      {
+        title: "Moyen de substituer commodément l'action du feu à la force des hommes et des chevaux",
+        year: "1699",
+        description:
+          "An early proposal to use the expansive force of heated air as a source of mechanical work — essentially a design for a hot-air engine, predating practical heat engines by a century.",
+      },
+      {
+        title: "Le thermomètre universel",
+        year: "1702",
+        description:
+          "Description of a constant-volume air thermometer. Amontons observed that the pressure of a fixed volume of air appeared to extrapolate linearly to zero at a particular low temperature — one of the first hints of what would later become absolute zero.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "friction-and-drag" },
+    ],
+  },
+  {
+    slug: "george-gabriel-stokes",
+    name: "George Gabriel Stokes",
+    shortName: "Stokes",
+    born: "1819",
+    died: "1903",
+    nationality: "Irish",
+    oneLiner:
+      "Worked out how slow-moving spheres disturb a fluid, and handed physics half of tribology and all of Brownian-motion analysis.",
+    image: storageUrl("physicists/george-gabriel-stokes.avif"),
+    bio: "George Gabriel Stokes was born in Skreen, County Sligo, in 1819, the son of a Church of Ireland rector. He read mathematics at Pembroke College, Cambridge, where he was Senior Wrangler in 1841 — the top-ranked student in the Mathematical Tripos. He spent the rest of his working life in Cambridge: elected a Fellow of Pembroke, appointed Lucasian Professor of Mathematics in 1849 (the chair Newton had held), and Master of Pembroke from 1902 until his death. He held the Lucasian chair for fifty-four years — the longest tenure in its history.\n\nStokes worked on almost everything in mathematical physics that moved, flowed, or vibrated. He formulated the Navier-Stokes equations (with Claude-Louis Navier) that govern viscous fluid motion. He proved Stokes' theorem, relating a surface integral of curl to a line integral around its boundary — a foundational result in vector calculus and the mathematical backbone of Maxwell's electromagnetism. He gave the first correct explanation of fluorescence, coining the term, and formulated Stokes' shift — the observation that fluorescent light has a longer wavelength than the exciting light. He studied the diffraction of light, the polarisation of sunlight scattered by the sky, and the spectroscopic structure of sunlight.\n\nHis most-cited result today is Stokes' law of viscous drag, published in 1851 in On the effect of the internal friction of fluids on the motion of pendulums. Working out how a slow, steady sphere disturbs the surrounding fluid, he derived F = 6πηrv — the drag force on a sphere at low Reynolds number. It looks like a small technical result. It turned out to be the key to Millikan's measurement of the electron charge, Perrin's determination of Avogadro's number, the sedimentation theory of colloids, the Einstein-Stokes relation between viscosity and diffusion, and every modern calculation of low-Reynolds-number swimming — from bacteria to microfluidic chips.\n\nStokes was a devout Anglican, served three terms as a Conservative Member of Parliament for Cambridge University, and was created a baronet in 1889 by Queen Victoria. He was President of the Royal Society from 1885 to 1890 and Master of the Mint briefly. His output — more than 140 papers, mostly in the 1840s and 1850s — dominates the transition of mathematical physics from geometry to continuum analysis. He died in Cambridge in 1903, aged 83, and is buried in Mill Road Cemetery.",
+    contributions: [
+      "derived Stokes' law for viscous drag on a sphere (1851)",
+      "co-formulated the Navier-Stokes equations of fluid motion",
+      "proved Stokes' theorem in vector calculus",
+      "explained fluorescence and introduced the term (1852)",
+      "first correct analysis of the polarisation of sunlight",
+      "studied pendulum motion in resistant media — the original motivation for Stokes' law",
+      "contributed foundational work on optics, diffraction, and spectroscopy",
+    ],
+    majorWorks: [
+      {
+        title: "On the theories of the internal friction of fluids in motion, and of the equilibrium and motion of elastic solids",
+        year: "1845",
+        description:
+          "Published derivation of what are now called the Navier-Stokes equations for a Newtonian viscous fluid, starting from molecular considerations and a carefully justified stress tensor.",
+      },
+      {
+        title: "On the effect of the internal friction of fluids on the motion of pendulums",
+        year: "1851",
+        description:
+          "The paper containing Stokes' law: F = 6πηrv for the drag on a sphere at low Reynolds number. Applied the result to correct the periods of pendulums swinging in air and became, a century later, the cornerstone of low-Reynolds-number hydrodynamics.",
+      },
+      {
+        title: "On the change of refrangibility of light",
+        year: "1852",
+        description:
+          "Introduced the term fluorescence and gave the first correct physical explanation: incident ultraviolet light is absorbed and re-emitted at longer wavelengths. Contained what is now called Stokes' shift.",
+      },
+      {
+        title: "On the dynamical theory of diffraction",
+        year: "1849",
+        description:
+          "A mathematically rigorous treatment of the diffraction of light, incorporating polarisation and transverse-wave character, and clarifying the role of the elastic-ether hypothesis then prevalent.",
+      },
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "friction-and-drag" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

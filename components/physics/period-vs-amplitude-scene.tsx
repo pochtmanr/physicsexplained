@@ -1,15 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { periodRatio } from "@/lib/physics/elliptic";
 
 type JXG = typeof import("jsxgraph");
 
-export interface PeriodVsAmplitudeSceneProps {
-  width?: number;
-  height?: number;
-}
+const RATIO = 0.75;
+const MAX_HEIGHT = 360;
 
 const ANNOTATIONS: Array<{ deg: number; label: string }> = [
   { deg: 15, label: "+0.5%" },
@@ -18,14 +16,32 @@ const ANNOTATIONS: Array<{ deg: number; label: string }> = [
   { deg: 150, label: "+76%" },
 ];
 
-export function PeriodVsAmplitudeScene({
-  width = 480,
-  height = 360,
-}: PeriodVsAmplitudeSceneProps) {
+export function PeriodVsAmplitudeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const jxgBoxRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
   const jxgRef = useRef<JXG | null>(null);
   const colors = useThemeColors();
+  const [size, setSize] = useState({ width: 480, height: 360 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -34,12 +50,12 @@ export function PeriodVsAmplitudeScene({
       const JXG = (await import("jsxgraph")).default;
       jxgRef.current = JXG as unknown as JXG;
 
-      if (cancelled || !containerRef.current) return;
-      if (!containerRef.current.id) {
-        containerRef.current.id = `period-amp-${Math.random().toString(36).slice(2)}`;
+      if (cancelled || !jxgBoxRef.current) return;
+      if (!jxgBoxRef.current.id) {
+        jxgBoxRef.current.id = `period-amp-${Math.random().toString(36).slice(2)}`;
       }
 
-      const board = JXG.JSXGraph.initBoard(containerRef.current.id, {
+      const board = JXG.JSXGraph.initBoard(jxgBoxRef.current.id, {
         boundingbox: [-10, 5.5, 185, 0.8],
         axis: true,
         showNavigation: false,
@@ -127,10 +143,12 @@ export function PeriodVsAmplitudeScene({
   }, [colors]);
 
   return (
-    <div
-      ref={containerRef}
-      className="jxgbox mx-auto"
-      style={{ width, height, backgroundColor: "transparent" }}
-    />
+    <div ref={containerRef} className="w-full pb-4">
+      <div
+        ref={jxgBoxRef}
+        className="jxgbox"
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
+      />
+    </div>
   );
 }

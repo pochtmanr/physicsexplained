@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { orbitPosition, sweptArea } from "@/lib/physics/kepler";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
+import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 export interface SweepAreasProps {
   /** Semi-major axis */
@@ -13,8 +14,6 @@ export interface SweepAreasProps {
   T?: number;
   /** Number of wedges */
   wedges?: number;
-  width?: number;
-  height?: number;
 }
 
 interface FrozenWedge {
@@ -29,8 +28,6 @@ export function SweepAreas({
   e = 0.6,
   T = 18,
   wedges = 6,
-  width = 640,
-  height = 440,
 }: SweepAreasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,15 +36,23 @@ export function SweepAreas({
   const currentWedgeRef = useRef<Array<{ x: number; y: number; px: number; py: number }>>([]);
   const cycleStartRef = useRef<number>(0);
   const [areas, setAreas] = useState<number[]>([]);
+  const [size, setSize] = useState({ width: 640, height: 440 });
+  const colors = useThemeColors();
 
-  // Map sim (x,y) to canvas (px, py); sun at canvas center
-  const scale = Math.min(width, height) / (2.6 * a);
-  const cx = width / 2;
-  const cy = height / 2;
-  const toCanvas = (x: number, y: number) => ({
-    x: cx + x * scale,
-    y: cy - y * scale,
-  });
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          setSize({ width: w, height: Math.min(w * 0.65, 440) });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -56,12 +61,22 @@ export function SweepAreas({
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
+      const { width, height } = size;
       const dpr = window.devicePixelRatio || 1;
       if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
+
+      // Map sim (x,y) to canvas (px, py); sun at canvas center
+      const scale = Math.min(width, height) / (2.6 * a);
+      const cx = width / 2;
+      const cy = height / 2;
+      const toCanvas = (x: number, y: number) => ({
+        x: cx + x * scale,
+        y: cy - y * scale,
+      });
 
       // Time within current orbit
       const tCycle = t - cycleStartRef.current;
@@ -157,7 +172,7 @@ export function SweepAreas({
       ctx.shadowBlur = 0;
 
       // Planet
-      ctx.fillStyle = "#E6EDF7";
+      ctx.fillStyle = colors.fg0;
       ctx.beginPath();
       ctx.arc(pc.x, pc.y, 6, 0, Math.PI * 2);
       ctx.fill();
@@ -165,13 +180,10 @@ export function SweepAreas({
   });
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div ref={containerRef} style={{ width, height }}>
-        <canvas ref={canvasRef} style={{ width, height }} className="block" />
-      </div>
+    <div ref={containerRef} className="w-full pb-4">
+      <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
       <div
-        className="flex flex-wrap justify-center gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-fg-1)]"
-        style={{ maxWidth: width }}
+        className="flex flex-wrap justify-center gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-fg-1)] mt-4"
       >
         {areas.length === 0 ? (
           <span>watching orbit…</span>

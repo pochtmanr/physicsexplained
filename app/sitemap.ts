@@ -3,7 +3,7 @@ import { BRANCHES } from "@/lib/content/branches";
 import { PHYSICISTS } from "@/lib/content/physicists";
 import { GLOSSARY } from "@/lib/content/glossary";
 
-const BASE = "https://physics.explained.dev";
+const BASE = "https://physics.it.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString();

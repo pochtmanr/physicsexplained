@@ -1,0 +1,183 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { FrictionRampScene } from "@/components/physics/friction-ramp-scene";
+import { TerminalVelocityScene } from "@/components/physics/terminal-velocity-scene";
+import { DragRegimesScene } from "@/components/physics/drag-regimes-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Guillaume Amontons", href: "/physicists/guillaume-amontons" },
+  { type: "physicist", label: "George Gabriel Stokes", href: "/physicists/george-gabriel-stokes" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Friction", href: "/dictionary/friction" },
+  { type: "term", label: "Static Friction", href: "/dictionary/static-friction" },
+  { type: "term", label: "Kinetic Friction", href: "/dictionary/kinetic-friction" },
+  { type: "term", label: "Drag", href: "/dictionary/drag" },
+  { type: "term", label: "Terminal Velocity", href: "/dictionary/terminal-velocity" },
+  { type: "term", label: "Stokes' Law", href: "/dictionary/stokes-law" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.04 · KINEMATICS & NEWTON"
+  title="FRICTION AND DRAG"
+  subtitle="The forces that quietly take the energy away — and, in doing so, run half of everyday physics."
+/>
+
+<Section index={1} title="Where does the energy go?">
+
+A hockey puck, struck hard, slides the length of a rink and stops. A car rolls, brakes, stops. A spinning coin wobbles on a table for a few seconds and settles. In every case the motion ends. The kinetic energy the puck started with — a definite, calculable number of joules — is no longer anywhere to be seen.
+
+Energy doesn't vanish. That is the one rule the universe is strictest about. So where does it go?
+
+It goes into heat. Run your hand quickly across a tabletop and you feel the answer — friction warms the surfaces in contact. At the microscopic level the two materials are a forest of jagged asperities; when they slide, the asperities bend, snap, weld briefly, and tear free, and each of those little events pours a tiny amount of energy into the thermal jiggling of the atoms involved. The same story plays out for a puck on ice, a book on a desk, or a skydiver pushing through air. Friction is the name for the mechanism. It is not one single force — it is a whole family of them, solids rubbing on solids, solids moving through fluids, fluids flowing past themselves. What they share is an instinct to resist motion and a habit of turning useful energy into heat.
+
+This topic is about the two biggest members of the family. **<Term slug="friction">Friction</Term>** proper — between solid surfaces in contact — behaves in a way that has been known since around 1500 and written down with unreasonable simplicity by a seventeenth-century French instrument-maker. **<Term slug="drag">Drag</Term>** — between a solid and the fluid it moves through — is more subtle and splits into two very different regimes depending on how fast the object is moving. Together they decide whether a car rolls or stops, whether a sphere drops like a stone or drifts like a leaf, and whether a falling skydiver reaches 60 m/s or 200.
+
+</Section>
+
+<Section index={2} title="Static and kinetic friction">
+
+Push gently on a heavy book. It does not move. Push a little harder. Still nothing. Push harder still, and at some point — suddenly — it gives, and starts sliding. Once it is moving you can slack off the push and it keeps going, with noticeably less effort than it took to break it free.
+
+Two regimes. Two coefficients.
+
+**<Term slug="static-friction">Static friction</Term>** is the force the surface musters to hold the book in place while it's still. It is not a fixed number — it is however much is needed to cancel whatever you are applying, up to a ceiling. That ceiling is μ_s times the normal force pressing the two surfaces together. Push with less than μ_s·N and nothing happens. Push with more and static friction is overwhelmed, and the book breaks loose.
+
+**<Term slug="kinetic-friction">Kinetic friction</Term>** takes over the instant it starts sliding. Its value is μ_k·N, and it does not depend on speed — at least not in the simple textbook model. It is what slows a moving block. Crucially, μ_k is smaller than μ_s. Once you have broken static contact, the surfaces need less force to keep sliding than they did to start. Every mover knows this in their hands: the first shove of a stuck crate is the hardest.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">F_s ≤ μ_s · N     (static, up to the limit)</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">F_k = μ_k · N     (kinetic, while sliding)</span>
+</EquationBlock>
+
+<Callout variant="intuition">
+Why is μ_s > μ_k? Microscopically, stationary surfaces settle into each other — asperities interlock, cold-weld, and the two materials start behaving almost like a single piece. Setting them in motion requires tearing those junctions apart all at once. Once in motion, the surfaces bounce across each other's high points and never have time to settle in again. Less intimate contact, less grip.
+</Callout>
+
+These two laws were written down in 1699 by <PhysicistLink slug="guillaume-amontons">Guillaume Amontons</PhysicistLink>, an instrument-maker in Paris who lost most of his hearing as a teenager and spent his career testing mechanical things with extraordinary care. He measured friction across every combination of materials he could get his hands on and noticed something that felt wrong: the friction force did not depend on how big the contact patch was. A wide block and a narrow block of the same weight were equally hard to drag. It was the *weight* that mattered, not the surface area. That is the first, and still the most surprising, of what we now call Amontons' laws. Leonardo had observed the same thing two centuries earlier in his notebooks, but those never left his drawer. Amontons is the one who made it stick.
+
+</Section>
+
+<Section index={3} title="The inclined plane, restored">
+
+Back in FIG.01 we rolled a ball down a frictionless ramp and extracted an acceleration of g·sinθ. That was a useful fiction. A real block on a real ramp has friction, and the ramp becomes a beautiful, visible argument between two competing tendencies.
+
+On a slope of angle θ, the weight splits into two components: a pull along the slope of magnitude m·g·sinθ, trying to drag the block downhill, and a push perpendicular to the slope of magnitude m·g·cosθ, which is the normal force the surface has to provide. The maximum static-friction force the surface can exert is μ_s times that normal force — so μ_s·m·g·cosθ is the ceiling.
+
+The block stays put when the downhill pull is less than the ceiling:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">m·g·sinθ ≤ μ_s · m·g·cosθ</span>
+</EquationBlock>
+
+The m·g cancels and, with a bit of tidying:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">tan θ ≤ μ_s</span>
+</EquationBlock>
+
+That is the whole result. The critical angle at which any surface starts to let go is simply the arctangent of its static-friction coefficient. Tilt a wooden board holding a wooden block and note the angle at which the block begins to slide — you have measured μ_s directly, without any scale or spring. Forensic engineers use exactly this to characterise road surfaces: tip a tyre-weighted sled on a long hinge and read off the angle.
+
+<SceneCard caption="FIG.04a — slide threshold on an inclined plane" className="w-full">
+  <FrictionRampScene />
+</SceneCard>
+
+Drag the μ slider up and the critical angle climbs with it (the dashed cyan line marks where the block will just start to slip). Tilt past that line and the block breaks loose — and it then accelerates at g(sinθ − μ_k cosθ), the residual gravity after kinetic friction has taken its cut. On a gentle slope with enough friction, a block might sit there forever. On a steep enough slope, nothing can hold it.
+
+</Section>
+
+<Section index={4} title="Drag I — the slow, viscous regime">
+
+Friction between solid surfaces is one problem. Friction between a solid and a fluid is another, and it is stranger.
+
+Drop a ball-bearing into a jar of glycerine. It sinks, slowly, at a steady speed. Drop a dust mote through still air and watch it drift down in almost exactly the same way — very slow, very steady, no visible accelerating rush. Both objects are in a regime where the fluid has time to flow smoothly around them, layer by layer, without tearing into turbulent eddies. We call it **laminar flow**, and in it the drag force is beautifully simple: proportional to velocity.
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">F_drag = b · v   (linear / Stokes regime)</span>
+</EquationBlock>
+
+For a sphere specifically, the coefficient b has a precise form due to <PhysicistLink slug="george-gabriel-stokes">George Gabriel Stokes</PhysicistLink>, an Irish-born mathematician at Cambridge who in 1851 worked out exactly how a slow-moving ball disturbs the fluid around it. The result — **<Term slug="stokes-law">Stokes' law</Term>** — is:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">F = 6 π η r v</span>
+</EquationBlock>
+
+η is the dynamic viscosity of the fluid (a tiny number for air, a much bigger one for honey). r is the sphere's radius. The rest is constants. The whole drag force is just proportional to velocity — double the speed, double the force.
+
+This form has a remarkable consequence: a ball dropped in a viscous fluid does not accelerate forever. Gravity pulls down with force m·g, and drag pushes up with force b·v. The two cancel when the ball reaches a speed v_t for which m·g = b·v_t. That is **<Term slug="terminal-velocity">terminal velocity</Term>**:
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-base">v_t = m·g / b</span>
+</EquationBlock>
+
+Once the ball reaches v_t it stops accelerating. Net force is zero, so by Newton's second law it coasts at constant speed — forever, or until it hits the bottom of the jar. The approach to v_t is not sudden: starting from rest, the velocity climbs along an exponential curve with time constant τ = m/b, reaching about 63% of v_t after one τ, 95% after three, 99% after five. The shape is the same exponential approach that runs RC circuits and cooling coffee.
+
+<SceneCard caption="FIG.04b — exponential approach to terminal velocity" className="w-full">
+  <TerminalVelocityScene />
+</SceneCard>
+
+Turn the drag slider up — thicker fluid, lower v_t, the trace flattens off sooner. Turn it down — the fluid gets thin, v_t climbs, and on the way there the curve looks almost like a straight line of free fall. In the limit b → 0 you recover plain Galilean gravity: v = g·t, never saturating.
+
+</Section>
+
+<Section index={5} title="Drag II — the fast, quadratic regime">
+
+Stokes' law is exact for slow motion in a viscous fluid. The moment you speed up, it stops being true. Drag on a cyclist, a car, a baseball, a skydiver, a passenger jet — none of these follow F = b·v. They follow
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-base">F_drag = ½ · ρ · C_d · A · v²   (quadratic regime)</span>
+</EquationBlock>
+
+— drag proportional to the *square* of the velocity. ρ is the fluid density, A is the cross-sectional area the object presents to the flow, and C_d is a dimensionless "drag coefficient" that rolls up all the messy dependence on shape (about 0.04 for a well-designed aerofoil, about 1.1 for a flat disk facing the flow).
+
+Physically the two regimes are doing different things. In the slow regime the object drags the fluid along with it — viscosity is what costs energy. In the fast regime the object has to shove fluid mass out of the way, and it leaves a wake of turbulent eddies behind it. The kinetic energy carried off by those eddies is where the drag work goes, and it scales as ½ρv² per unit volume — hence the v² in the force.
+
+The switch between the two regimes is controlled by a single dimensionless number: the Reynolds number, Re = ρ·v·L / η, which measures the ratio of inertial to viscous effects. At small Re, viscosity dominates and we are in the Stokes regime. At large Re, inertia dominates and we are in the quadratic regime. The crossover sits near Re ≈ 1 for a sphere. A grain of pollen in still air has Re ≈ 10⁻³ — very firmly Stokes. A baseball in flight has Re ≈ 10⁵ — very firmly quadratic. The transition between them is where real-world fluid dynamics gets interesting, and it is the topic that will return in Module 7.
+
+<SceneCard caption="FIG.04c — the two regimes on one log-log plot" className="w-full">
+  <DragRegimesScene />
+</SceneCard>
+
+Plot drag force against velocity on log-log axes and the two regimes become straight lines. Stokes (slope 1) dominates on the left. Newton (slope 2) takes over on the right. The total force — what a real object actually feels — follows the larger of the two, with a smooth bend where they meet. Move the sliders to shift the balance: a denser fluid boosts the quadratic term; a more viscous fluid boosts the linear. The knee between them is the qualitative mark of the Reynolds-number transition.
+
+<Callout variant="math">
+Quadratic drag also has a terminal velocity, but the derivation is different. Setting m·g = ½ρC_d A v_t² and solving gives v_t = √(2mg / ρC_d A). For a 90 kg skydiver in air (ρ ≈ 1.2 kg/m³) in a flat belly-down posture (A ≈ 0.7 m², C_d ≈ 1) this works out to about 54 m/s — consistent with the measured 55–60 m/s free-fall speed.
+</Callout>
+
+<PhysicistLink slug="isaac-newton">Newton</PhysicistLink> had already written down an early form of the quadratic law in the *Principia*, in Book II, which is wholly devoted to the motion of bodies through resisting media. He deduced, correctly, that air resistance should scale as the density of the medium, the cross-section of the body, and the square of the velocity. He had the physical picture right: the body hits a column of fluid in unit time whose mass is ρAv, and imparts to it a speed of order v — so the momentum transfer per unit time, which is the force, goes as ρAv². The modern factor of ½ C_d is a twentieth-century refinement to handle shape and the wake structure. The essential dependence — v² — is Newton's.
+
+</Section>
+
+<Section index={6} title="Friction, in praise of">
+
+We have spent this topic treating friction as a nuisance — the thing that stops motion, warms tables, and wastes the energy of hockey pucks. That is one way to see it. The other is that friction is what makes everything possible.
+
+Walk across a floor. What is propelling you? Push your foot backward against the ground and the ground pushes your foot forward — that is Newton's third law in action, but it only works because there is friction between your shoe and the floor. Strip the friction away — stand on wet ice, or in a sock on a polished wooden floor — and the attempt fails. Your foot slips. No forward motion. Astronauts on the Moon look comical partly because the regolith has very little cohesion and they slide more than they walk.
+
+Every object you are not currently holding is held in place by static friction. The book on the shelf is trying, in a small way, to fall off — the tiny pushes of air currents, the vibrations of the building, the slight tilt of the shelf — and static friction is what keeps it there. The same is true of the books stacked on the floor. The rug under the table. The screws in the wall. Without static friction the world would not stay put.
+
+Writing with a pencil relies on friction. The pencil tip scrapes thin layers of graphite off against the paper — friction's wear-and-tear is exactly the mechanism of the mark. Brakes rely on friction. Tyres rely on it — a car corners because the rubber grips the road; a bald tyre in the rain doesn't grip, and you skid. Bow strings on violins. The grip of a hand. Shoelaces holding a knot. Velcro. Climbing. All friction.
+
+If you want to really appreciate friction, look at what we do when we don't want it. A magnetic-levitation train hovers a fingernail above the track and can go faster than any wheeled train because there is no rolling friction. An ice skate liquefies a tiny layer of ice under the blade, reducing friction by an order of magnitude, and the skater glides. A ball bearing converts sliding friction into rolling friction, which is smaller by a factor of ten or more. Lubrication — oil, grease, graphite — is the whole art of putting something slippery between two surfaces so they roll past each other on a film instead of grinding. Every piece of machinery is an engineering negotiation between the friction we want (where we touch the world) and the friction we don't (everywhere a part has to move against another).
+
+</Section>
+
+<Section index={7} title="Forward">
+
+Energy left the hockey puck and became heat. Energy left the ball-bearing in the glycerine and became heat. Energy left the falling skydiver and stirred up a turbulent wake that eventually became heat in the air. The accounting keeps working — but every time, the final destination is the same, and the converted energy is a lot less useful than it was when it started.
+
+This is a loose end. Newtonian mechanics, as we have done it so far, has conservation built into it for idealised situations — closed orbits, lossless pendulums, perfect collisions — but reality is full of friction, and in reality things do not return to where they started with the energy they started with. The accounting has to move up a level. We need a general statement that survives the presence of dissipative forces: something that tells us what stays constant even when individual bodies are losing the energy they had.
+
+That statement is **conservation of energy** in its broadest form — kinetic, potential, thermal, chemical, radiated, all lumped together as a single budget the universe keeps. In the next module we will introduce the budget properly: work, kinetic energy, potential energy, and the conservation law that ties them together. Friction and drag will turn out to be not exceptions to the rule but examples of it — every joule lost to heat is a joule that the budget knows exactly where to put.
+
+The hockey puck's energy is not gone. It is just not hockey puck any more.
+
+</Section>
+
+</TopicPageLayout>

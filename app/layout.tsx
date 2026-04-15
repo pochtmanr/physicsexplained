@@ -2,9 +2,8 @@ import "./globals.css";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
-import { Nav } from "@/components/layout/nav";
-import { Footer } from "@/components/layout/footer";
-import { CookieBanner } from "@/components/layout/cookie-banner";
+import { getLocale } from "next-intl/server";
+import { getDirection } from "@/i18n/config";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,19 +26,31 @@ const archiveGrotesk = localFont({
 export const metadata = {
   title: "physics",
   description: "Visual-first physics explainers.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 // Runs before hydration to prevent a flash of the wrong theme.
 const noFlashScript = `(function(){try{var t=localStorage.getItem('physics-theme');if(t!=='light'&&t!=='dark'){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const dir = getDirection(locale);
+
   return (
     <html
-      lang="en"
+      lang={locale}
+      dir={dir}
       data-theme="dark"
       className={`${inter.variable} ${jetbrainsMono.variable} ${archiveGrotesk.variable}`}
       suppressHydrationWarning
@@ -48,13 +59,8 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
       </head>
       <body className="font-sans antialiased">
-        <div className="flex min-h-screen flex-col">
-          <Nav />
-          <div className="flex-1">{children}</div>
-          <Footer />
-        </div>
+        {children}
         <Analytics />
-        <CookieBanner />
       </body>
     </html>
   );

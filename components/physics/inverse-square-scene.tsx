@@ -1,27 +1,41 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { orbitPosition } from "@/lib/physics/kepler";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
+import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 export interface InverseSquareSceneProps {
   a?: number;
   e?: number;
   T?: number;
-  width?: number;
-  height?: number;
 }
 
 export function InverseSquareScene({
   a = 1,
   e = 0.5,
   T = 16,
-  width = 600,
-  height = 400,
 }: InverseSquareSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [readout, setReadout] = useState({ r: 0, F: 0 });
+  const [size, setSize] = useState({ width: 600, height: 400 });
+  const colors = useThemeColors();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          setSize({ width: w, height: Math.min(w * 0.65, 400) });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -30,11 +44,12 @@ export function InverseSquareScene({
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
+      const { width, height } = size;
       const dpr = window.devicePixelRatio || 1;
       if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
       const p = orbitPosition({ t, a, e, T });
@@ -69,7 +84,7 @@ export function InverseSquareScene({
       ctx.shadowBlur = 0;
 
       // Planet
-      ctx.fillStyle = "#E6EDF7";
+      ctx.fillStyle = colors.fg0;
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, Math.PI * 2);
       ctx.fill();
@@ -114,9 +129,9 @@ export function InverseSquareScene({
   });
 
   return (
-    <div className="relative" style={{ width, height }} ref={containerRef}>
-      <canvas ref={canvasRef} style={{ width, height }} className="block" />
-      <div className="pointer-events-none absolute bottom-3 right-3 rounded-sm border border-[var(--color-fg-3)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm">
+    <div ref={containerRef} className="w-full pb-4 relative">
+      <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
+      <div className="pointer-events-none absolute bottom-7 right-3 rounded-sm border border-[var(--color-fg-3)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm">
         r = {readout.r.toFixed(2)} AU · F = {readout.F.toFixed(2)}
       </div>
     </div>

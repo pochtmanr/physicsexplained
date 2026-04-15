@@ -1,25 +1,43 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+
+const RATIO = 0.6;
+const MAX_HEIGHT = 300;
 
 export interface EnergyDiagramSceneProps {
   length?: number;
   theta0?: number;
-  width?: number;
-  height?: number;
 }
 
 export function EnergyDiagramScene({
   length = 1,
   theta0 = 0.5,
-  width = 480,
-  height = 300,
 }: EnergyDiagramSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const sizeRef = useRef({ width: 480, height: 300 });
+  const [size, setSize] = useState({ width: 480, height: 300 });
   const colors = useThemeColors();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          sizeRef.current = { width: w, height: h };
+          setSize({ width: w, height: h });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   // Normalized: U(theta) = 1 - cos(theta), total E = 1 - cos(theta0)
   const E = 1 - Math.cos(theta0);
@@ -33,11 +51,13 @@ export function EnergyDiagramScene({
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
 
+      const { width, height } = sizeRef.current;
+
       const dpr = window.devicePixelRatio || 1;
       if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
       ctx.clearRect(0, 0, width, height);
@@ -142,8 +162,8 @@ export function EnergyDiagramScene({
   });
 
   return (
-    <div ref={containerRef} style={{ width, height }} className="mx-auto">
-      <canvas ref={canvasRef} style={{ width, height }} className="block" />
+    <div ref={containerRef} className="w-full pb-4">
+      <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
     </div>
   );
 }

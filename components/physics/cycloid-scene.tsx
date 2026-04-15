@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import {
@@ -8,29 +8,46 @@ import {
   generatingPoint,
 } from "@/lib/physics/cycloid";
 
+const RATIO = 0.5;
+const MAX_HEIGHT = 300;
+
 export interface CycloidSceneProps {
-  width?: number;
-  height?: number;
   radius?: number;
 }
 
 export function CycloidScene({
-  width = 480,
-  height = 300,
   radius = 50,
 }: CycloidSceneProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const colors = useThemeColors();
   const trailRef = useRef<Array<{ x: number; y: number }>>([]);
+  const [size, setSize] = useState({ width: 480, height: 300 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          setSize({ width: w, height: h });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useAnimationFrame({
-    elementRef: containerRef,
+    elementRef: canvasRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
+      const { width, height } = size;
 
       // Handle HiDPI
       const dpr = window.devicePixelRatio || 1;
@@ -117,8 +134,8 @@ export function CycloidScene({
   });
 
   return (
-    <div ref={containerRef} style={{ width, height }} className="mx-auto">
-      <canvas ref={canvasRef} style={{ width, height }} className="block" />
+    <div ref={containerRef} className="w-full pb-4">
+      <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
     </div>
   );
 }

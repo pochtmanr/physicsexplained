@@ -42,7 +42,7 @@ The first term is the small-angle approximation. Everything else is what we thre
 
 Now push harder. At 90°, sin(π/2) = 1, but the linear approximation gives π/2 ≈ 1.571 — a 57% error. The approximation doesn't just drift; it breaks. The small-angle world is a tiny patch around equilibrium, and the moment you step outside it, the physics changes.
 
-<SceneCard caption="FIG.02a — Taylor approximations of sin θ">
+<SceneCard caption="FIG.02a — Taylor approximations of sin θ" className="w-full">
   <TaylorExpansionScene />
 </SceneCard>
 
@@ -66,12 +66,12 @@ What does nonlinearity look like in practice? Start two identical pendulums from
 <div className="flex gap-1 overflow-x-auto snap-x snap-mandatory px-6 pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:grid md:grid-cols-2 md:overflow-visible md:px-0 md:pb-0 [&_figure]:my-0 [&_figure]:w-full">
 <div className="w-[82%] flex-none snap-center md:w-auto">
 <SceneCard caption="FIG.02b — 10° · small-angle">
-  <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={280} height={320} />
+  <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} />
 </SceneCard>
 </div>
 <div className="w-[82%] flex-none snap-center md:w-auto">
 <SceneCard caption="FIG.02c — 80° · exact">
-  <PendulumScene theta0={(80 * Math.PI) / 180} length={1.2} width={280} height={320} exact />
+  <PendulumScene theta0={(80 * Math.PI) / 180} length={1.2} exact />
 </SceneCard>
 </div>
 </div>
@@ -101,7 +101,7 @@ Their sum E = T + U is constant. At the bottom of the swing, all the energy is k
 
 This is more powerful than it looks. Instead of solving a differential equation, you can read the entire motion off a single energy conservation law. One scalar governs everything: how fast the bob moves at any angle, where it turns around, whether it oscillates or spins over the top.
 
-<SceneCard caption="FIG.02d — the potential well">
+<SceneCard caption="FIG.02d — the potential well" className="w-full">
   <EnergyDiagramScene length={1.2} theta0={0.8} />
 </SceneCard>
 
@@ -139,7 +139,7 @@ At E = 2mgL, the loops pinch together into a figure-eight that passes through th
 
 Above the separatrix, the curves are no longer closed. They are wavy horizontal bands — the pendulum rotates continuously, speeding up at the bottom and slowing at the top but never reversing. Clockwise rotations run above the separatrix; counterclockwise below.
 
-<SceneCard caption="FIG.02e — phase portrait with separatrix">
+<SceneCard caption="FIG.02e — phase portrait with separatrix" className="w-full">
   <SeparatrixScene />
 </SceneCard>
 
@@ -160,22 +160,29 @@ K is not an elementary function — it cannot be written in terms of polynomials
 As θ₀ → 0, sin(θ₀/2) → 0, and K(0) = π/2. The formula recovers T₀ = 2π√(L/g) — the harmonic result, as it must. As θ₀ → π, sin(θ₀/2) → 1, and K(1) → ∞. The period diverges. A pendulum released from just below the vertical takes arbitrarily long to complete a swing, spending most of its time creeping through the neighborhood of the unstable equilibrium.
 
 <Callout variant="math">
-| θ₀     | T / T₀  |
-|--------|---------|
-| 10°    | 1.0019  |
-| 30°    | 1.0174  |
-| 45°    | 1.0400  |
-| 60°    | 1.0732  |
-| 90°    | 1.1803  |
-| 120°   | 1.3729  |
-| 150°   | 1.7622  |
-| 170°   | 2.7681  |
-| 179°   | 5.243   |
+<div className="overflow-x-auto -mx-2">
+<table>
+  <thead>
+    <tr><th>θ₀</th><th>T / T₀</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>10°</td><td>1.0019</td></tr>
+    <tr><td>30°</td><td>1.0174</td></tr>
+    <tr><td>45°</td><td>1.0400</td></tr>
+    <tr><td>60°</td><td>1.0732</td></tr>
+    <tr><td>90°</td><td>1.1803</td></tr>
+    <tr><td>120°</td><td>1.3729</td></tr>
+    <tr><td>150°</td><td>1.7622</td></tr>
+    <tr><td>170°</td><td>2.7681</td></tr>
+    <tr><td>179°</td><td>5.243</td></tr>
+  </tbody>
+</table>
+</div>
 </Callout>
 
 At 10° the period is essentially T₀. At 90° it has stretched by 18%. At 170°, it has nearly tripled. The divergence as θ₀ → 180° is logarithmic — it goes to infinity, but slowly.
 
-<SceneCard caption="FIG.02f — period stretches with amplitude">
+<SceneCard caption="FIG.02f — period stretches with amplitude" className="w-full">
   <PeriodVsAmplitudeScene />
 </SceneCard>
 

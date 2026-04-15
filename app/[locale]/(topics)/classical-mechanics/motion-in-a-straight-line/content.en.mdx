@@ -1,0 +1,142 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { InclinedPlaneScene } from "@/components/physics/inclined-plane-scene";
+import { TangentZoomScene } from "@/components/physics/tangent-zoom-scene";
+import { FreeFallScene } from "@/components/physics/free-fall-scene";
+import { KinematicsGraphScene } from "@/components/physics/kinematics-graph-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Nicole Oresme", href: "/physicists/nicole-oresme" },
+  { type: "term", label: "Velocity", href: "/dictionary/velocity" },
+  { type: "term", label: "Acceleration", href: "/dictionary/acceleration" },
+  { type: "term", label: "Free Fall", href: "/dictionary/free-fall" },
+  { type: "term", label: "Kinematic Equations", href: "/dictionary/kinematic-equations" },
+  { type: "term", label: "Derivative", href: "/dictionary/derivative" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.01 · KINEMATICS & NEWTON"
+  title="MOTION IN A STRAIGHT LINE"
+  subtitle="Position, velocity, acceleration — the three questions that gave physics its language."
+/>
+
+<Section index={1} title="The ramp">
+
+In the summer of 1604, <PhysicistLink slug="galileo-galilei">Galileo</PhysicistLink> had a problem. He wanted to know how a falling body moves — not philosophically, but precisely. How far does it drop in the first second? The second? The third? The question sounds simple. In 1604, no instrument in Europe could answer it. Water clocks drifted by the minute. Pendulums had not yet been built into clocks. A stone dropped from a tower hits the ground in under two seconds, and nobody could time two seconds to anything better than a good guess.
+
+So Galileo tilted the problem. Instead of dropping a ball, he rolled one down a long, grooved inclined plane. A gentle tilt of the board diluted gravity enough that the ball took whole seconds to reach the bottom — slow enough that a careful experimenter could track it by singing, or by counting heartbeats, or by catching the weight of water flowing from a vessel into a pan. He marked where the ball was at equal time intervals and measured the distances.
+
+What he found, after years of careful trials, was beautiful. In the first interval the ball covered some unit of distance. In the second, three units. In the third, five. Then seven, then nine — the odd numbers, exactly. Added up, the total distance after n intervals was n² units: 1, 4, 9, 16, 25. Distance grows as the square of time.
+
+<SceneCard caption="FIG.01a — Galileo's ramp and the odd-number rule" className="w-full">
+  <InclinedPlaneScene />
+</SceneCard>
+
+This was the first quantitative law of motion. Aristotle had taught for two thousand years that heavier bodies fall faster than lighter ones, and that a body in motion slows down unless pushed. Both claims are false, and Galileo's ramp was the first experiment precise enough to show it. The ball did not settle into a steady speed. It was still speeding up at the bottom of the ramp, exactly as much as at the top. Something about motion was constant — but it wasn't the speed.
+
+</Section>
+
+<Section index={2} title="Position, velocity, acceleration">
+
+To describe how something moves along a line, you need three numbers. The first is **position**: where is it right now? Call it x(t). The second is **<Term slug="velocity">velocity</Term>**: how fast is the position changing? The third is **<Term slug="acceleration">acceleration</Term>**: how fast is the velocity changing?
+
+Put more sharply: velocity is the rate of change of position, and acceleration is the rate of change of velocity.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">v = dx/dt</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">a = dv/dt</span>
+</EquationBlock>
+
+That notation — the <Term slug="derivative">derivative</Term> — was still sixty years away when Galileo did his experiments. He had to say the same thing in words and pictures, and it took him a lifetime. <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> and Leibniz would later invent the mathematics that lets us write it in two lines.
+
+On the ramp, Galileo had discovered that acceleration — not velocity — was constant. A ball rolling down a plane has its velocity going up steadily, second after second. The acceleration is the same number at every moment. That single fact, that the second thing in the chain is what's fixed when gravity pulls, is the whole point of his experiment.
+
+</Section>
+
+<Section index={3} title="What a slope really means">
+
+If `v = dx/dt`, then velocity is the slope of a position-versus-time graph at a given instant. But an instant has no duration. How do you take the slope of a curve at a single point?
+
+The trick is to take the slope of a line through two nearby points — a **secant** — and then slide the two points together. Imagine a curve. Pick any point on it. Pick a second point a little further along. Draw the straight line through both. That line's slope is the average rate of change between them. Now slide the second point closer to the first. The secant rotates. Closer still. Closer. In the limit, the two points merge and the secant becomes the **tangent** — a single line that just kisses the curve at one point, without crossing it. The slope of that tangent is the instantaneous velocity.
+
+<SceneCard caption="FIG.01b — from secant to tangent" className="w-full">
+  <TangentZoomScene />
+</SceneCard>
+
+Shrink Δt toward zero. Watch the secant line swing, closer and closer, until it lines up with the curve at the chosen point. That rotation, that convergence, is the physical content of a <Term slug="derivative">derivative</Term>. The number it lands on is the velocity at that instant.
+
+Nicole <PhysicistLink slug="nicole-oresme">Oresme</PhysicistLink>, a French bishop writing in the 1350s — three hundred years before Newton — had already sketched this idea on parchment. He drew the first graphs of motion in history: time on the horizontal axis, velocity on the vertical, the shape of the curve telling the whole story. He could not do calculus, but he did something nearly as powerful — he computed areas.
+
+</Section>
+
+<Section index={4} title="Uniform acceleration">
+
+Suppose acceleration is constant — the ramp case, or any body in free fall near the Earth's surface. Then velocity grows linearly with time, and position grows quadratically. Three algebraic relations — the **<Term slug="kinematic-equations">kinematic equations</Term>** — tie everything together.
+
+<Callout variant="math">
+<div>v = v₀ + a·t</div>
+<div>x = x₀ + v₀·t + ½·a·t²</div>
+<div>v² = v₀² + 2·a·(x − x₀)</div>
+</Callout>
+
+The first is obvious: start at v₀, add `a` per second, after t seconds you're going `v₀ + at`.
+
+The second is where the mysterious `½` shows up. Where does it come from? Draw the v(t) graph. It's a straight line starting at v₀ and climbing with slope a. The distance covered in time t is the area under that line — and that area is a trapezoid, or equivalently a rectangle plus a triangle. The rectangle has area `v₀·t` (the constant-velocity part). The triangle has base t and height `a·t`, so its area is `½·a·t²`. Add them and you get the full formula. The ½ is the area of a triangle, not some arbitrary calculus constant. This was Oresme's insight in the fourteenth century, and it is exactly right.
+
+The third equation has no time in it at all. It says: given where you started, where you are now, and the acceleration, you know the final speed directly. This is the work-energy theorem in algebraic disguise — we will meet it again in FIG.05.
+
+</Section>
+
+<Section index={5} title="Everything falls the same">
+
+Near the surface of the Earth, every object in free fall has the same acceleration downward: g ≈ 9.81 m/s². A bowling ball and a marble. A hammer and a feather. Mass does not appear in the kinematic equations for a falling body — not because we rounded it off, but because it literally cancels.
+
+The reason is subtle and deep. Gravity pulls on an object with a force proportional to its mass: `F = m·g`. Newton's second law says the acceleration is the force divided by the mass: `a = F/m = m·g/m = g`. The two masses are the same number, and they cancel. This is the equivalence principle, and Einstein would later build general relativity on top of it.
+
+On Earth, air resistance hides the truth. A feather drifts, a parachute glides, a piece of paper flutters sideways. That is not gravity disagreeing with itself — it is the air pushing back. Strip the air away and the physics becomes visible. In the experiment below, toggle the air on and off and watch what happens.
+
+<SceneCard caption="FIG.01c — feather and hammer" className="w-full">
+  <FreeFallScene />
+</SceneCard>
+
+On August 2, 1971, astronaut David Scott stood on the surface of the Moon near the end of the Apollo 15 mission. He held a geologist's hammer in one gloved hand and a falcon feather in the other. He released them at the same instant, on live television, in front of an audience of half a billion people. They hit the lunar dust at the same moment. "How about that?" Scott said. "Mr. Galileo was correct in his findings."
+
+The Moon has essentially no atmosphere. Free fall, stripped of everything but gravity, is the same for everything. Galileo had been right for 367 years, and it took a Saturn V rocket to prove him right on camera.
+
+</Section>
+
+<Section index={6} title="The graph is the physics">
+
+Here is the compact claim: a single x(t) graph tells you everything about one-dimensional motion. Height is position. Slope is velocity. Curvature is acceleration. If you can read the graph, you know the motion.
+
+<SceneCard caption="FIG.01d — position, velocity, acceleration from one motion" className="w-full">
+  <KinematicsGraphScene />
+</SceneCard>
+
+Move the sliders. The top graph is x(t) — a parabola when acceleration is non-zero, a straight line when it is zero. Below it, v(t) is the slope of x(t) at every point. Below that, a(t) is the slope of v(t), which is constant because we chose a constant acceleration. The ball at the top moves in real time along a 1D track, its position synchronised to x(t). Every fact about this motion is encoded in the top panel; the two panels below are just the first and second derivatives, stacked for inspection.
+
+Oresme was the first person to draw a graph of a moving thing. He used it to prove what we now call the mean-speed theorem: a body accelerating uniformly from rest covers the same distance in a given time as a body moving at the average of its initial and final speeds. The proof is a diagram. A triangle and a rectangle of the same area. No symbols. That is what a graph is — a geometric instrument for seeing the integral. Galileo, three centuries later, used the same kind of reasoning to derive `x = ½·a·t²` for a ball rolling from rest. The graph came first. The algebra came later.
+
+</Section>
+
+<Section index={7} title="The straight line was a lie">
+
+Everything we have done so far lives on a single number line. Position is one number. Velocity is one number. Acceleration is one number. Real motion is not like this. A ball thrown across a field has a horizontal position and a vertical position. A planet orbiting the Sun traces a curve that bends back on itself. A bullet tumbles through the air in three dimensions, spinning, rising, falling, drifting sideways with the wind.
+
+The one-dimensional case is the skeleton. It is where we learn to see position, velocity, and acceleration as three different questions about the same moving thing. The answers, in one dimension, are just signed numbers. In two dimensions, they become vectors — objects with both a magnitude and a direction. The kinematic equations survive almost unchanged, but each one has to be read componentwise.
+
+That is where FIG.02 begins.
+
+</Section>
+
+</TopicPageLayout>

@@ -1,0 +1,165 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { VisVivaScene } from "@/components/physics/vis-viva-scene";
+import { OrbitEnergyScene } from "@/components/physics/orbit-energy-scene";
+import { HohmannScene } from "@/components/physics/hohmann-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Johannes Kepler", href: "/physicists/johannes-kepler" },
+  { type: "physicist", label: "Walter Hohmann", href: "/physicists/walter-hohmann" },
+  { type: "term", label: "Vis Viva", href: "/dictionary/vis-viva" },
+  { type: "term", label: "Escape Velocity", href: "/dictionary/escape-velocity" },
+  { type: "term", label: "Semi-major Axis", href: "/dictionary/semi-major-axis" },
+  { type: "term", label: "Eccentricity", href: "/dictionary/eccentricity" },
+  { type: "term", label: "Hohmann Transfer", href: "/dictionary/hohmann-transfer" },
+  { type: "term", label: "Gravity Assist", href: "/dictionary/gravity-assist" },
+]}>
+
+<TopicHeader
+  eyebrow="§ 02 · CLASSICAL MECHANICS"
+  title="ENERGY IN ORBIT"
+  subtitle="One equation tells you the speed at every point in space."
+/>
+
+<Section index={1} title="The vis-viva equation">
+
+A planet moves through a gravitational field. It has kinetic energy, because it moves. It has gravitational potential energy, because the sun pulls on it. And the total — kinetic plus potential — never changes.
+
+Start from these two conservation laws. Energy is conserved: ½mv² - GMm/r = constant. Angular momentum is conserved: L = mr²(dθ/dt) = constant. Work through the algebra — eliminate the angular terms, use the geometry of the ellipse — and you arrive at a single formula that encodes everything about orbital speed:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">v² = GM(2/r − 1/a)</span>
+</EquationBlock>
+
+This is the **<Term slug="vis-viva">vis-viva equation</Term>**. It says: give me the distance r from the central body and the <Term slug="semi-major-axis">semi-major axis</Term> a of the orbit, and I will tell you the speed. No angles, no time, no differential equations. Just r and a.
+
+When the orbit is circular, r = a everywhere, so the equation collapses to v² = GM/r — the familiar circular orbital velocity. When the orbit is elliptical, the planet speeds up as it falls inward (r shrinks, 2/r grows) and slows down as it climbs outward. The total energy, -GMm/(2a), stays fixed throughout. What changes is the split between kinetic and potential.
+
+The name "vis viva" — living force — comes from Leibniz, who in the 1680s argued that the true measure of motion is mv², not the Cartesian momentum mv. He was half-right: what matters for orbital dynamics is ½mv², but the insight that motion carries a scalar quantity proportional to speed squared was Leibniz's, and the name stuck.
+
+Watch it in action. As the planet swings through perihelion, kinetic energy surges and potential energy plunges. At aphelion the reverse. The total never wavers.
+
+<SceneCard caption="FIG.01 — energy along the orbit" className="w-full">
+  <VisVivaScene a={1} e={0.5} T={16} />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Bound and unbound">
+
+The total energy of a Keplerian orbit is:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">E = −GMm / (2a)</span>
+</EquationBlock>
+
+For an ellipse, a is positive and finite, so E is negative. A negative total energy means the body is **bound** — it doesn't have enough kinetic energy to escape the gravitational well. It will loop forever.
+
+But what if you give the body more speed? As you increase the launch velocity, the orbit stretches. The semi-major axis a grows. The energy E = -GMm/(2a) creeps toward zero. At the critical threshold, a goes to infinity — the orbit is no longer an ellipse but a **parabola**. Total energy: exactly zero. The body reaches infinity with zero velocity remaining. It escapes, but only barely.
+
+Push beyond that, and E becomes positive. Now the trajectory is a **hyperbola** — an open curve. The body arrives from infinity, swings past the attracting mass, and departs to infinity again with speed to spare. An asteroid on a hyperbolic orbit around the Sun has E > 0 and will never return. 'Oumuamua, the first confirmed interstellar visitor detected in 2017, followed just such a trajectory.
+
+The <Term slug="eccentricity">eccentricity</Term> tells the story: e < 1 is an ellipse, e = 1 is a parabola, e > 1 is a hyperbola. Drag the slider and watch the orbit morph between these three regimes.
+
+<SceneCard caption="FIG.02 — orbit type vs. energy" className="w-full">
+  <OrbitEnergyScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Escape velocity">
+
+Set E = 0 in the vis-viva equation — the threshold between bound and unbound. That gives v² = 2GM/r, or:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">v_esc = √(2GM / r)</span>
+</EquationBlock>
+
+This is the **<Term slug="escape-velocity">escape velocity</Term>**: the minimum speed needed to leave a gravitational field forever, starting from distance r. A few things worth noting.
+
+First, it depends only on r, not on direction. A bullet fired horizontally at escape velocity traces a parabola that never returns, just as surely as one fired straight up. The parabola is a very different shape from a radial trajectory, but both reach infinity.
+
+Second, escape velocity is exactly √2 times the circular orbital velocity at the same radius. To go from a circular orbit to escape, you need to increase your speed by a factor of about 1.414 — a 41% boost.
+
+Third, the numbers are large. For the surface of the Earth, v_esc ≈ 11.2 km/s — about 33 times the speed of sound. For Jupiter, 59.5 km/s. For the Sun, 618 km/s.
+
+<Callout variant="math">
+<div className="overflow-x-auto -mx-2">
+<table>
+  <thead>
+    <tr><th>Body</th><th>Radius</th><th>v_esc</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Moon</td><td>1,737 km</td><td>2.38 km/s</td></tr>
+    <tr><td>Earth</td><td>6,371 km</td><td>11.2 km/s</td></tr>
+    <tr><td>Jupiter</td><td>69,911 km</td><td>59.5 km/s</td></tr>
+    <tr><td>Sun</td><td>695,700 km</td><td>618 km/s</td></tr>
+  </tbody>
+</table>
+</div>
+</Callout>
+
+There is a subtlety at the scale of the solar system. The escape velocity from the Sun at Earth's orbital distance (1 AU) is about 42.1 km/s. But Earth itself is already orbiting at 29.8 km/s. If you launch a probe in the direction of Earth's motion, you get that 29.8 km/s for free. You only need to supply the difference: roughly 12.3 km/s beyond Earth's orbital speed (plus the 11.2 km/s to escape Earth's own gravity well). Every interplanetary mission budget starts with this arithmetic.
+
+</Section>
+
+<Section index={4} title="Hohmann transfers">
+
+Suppose you are in a low circular orbit and you want to reach a higher one. You could fire your engines continuously, but that burns enormous fuel. There is a more elegant solution, published in 1925 by Walter Hohmann — an architect from Essen, not an aerospace engineer — in a slim book called *Die Erreichbarkeit der Himmelskörper* (The Attainability of Celestial Bodies).
+
+The <Term slug="hohmann-transfer">Hohmann transfer</Term> uses exactly two burns and three orbits:
+
+**Burn 1 — at periapsis of the inner orbit.** Apply vis-viva twice: once for the circular orbit (v₁ = √(GM/r₁)) and once for the transfer ellipse at the same point (v_t1 = √(GM(2/r₁ - 1/a_t)), where a_t = (r₁ + r₂)/2). The difference Δv₁ = v_t1 - v₁ is the first burn.
+
+**Coast.** The spacecraft follows the transfer ellipse — half an elliptical orbit — from periapsis (inner circle) to apoapsis (outer circle). No fuel expended.
+
+**Burn 2 — at apoapsis of the transfer ellipse.** The spacecraft arrives at the outer orbit's radius but too slowly for a circular orbit there. A second burn Δv₂ = v₂ - v_t2 circularizes it.
+
+Total cost: Δv = Δv₁ + Δv₂. This is the fuel-optimal two-impulse transfer between coplanar circular orbits.
+
+Example: from low Earth orbit (r₁ ≈ 6,571 km, altitude 200 km) to geostationary orbit (r₂ ≈ 42,164 km). The transfer ellipse has semi-major axis a_t = 24,367 km. Vis-viva gives Δv₁ ≈ 2.46 km/s and Δv₂ ≈ 1.48 km/s, for a total of about 3.94 km/s. The coast takes about 5 hours and 16 minutes — half the period of the transfer ellipse.
+
+<SceneCard caption="FIG.03 — Hohmann transfer orbit" className="w-full">
+  <HohmannScene />
+</SceneCard>
+
+Every geostationary satellite ever launched used a variant of this maneuver. The mathematics is pure vis-viva.
+
+</Section>
+
+<Section index={5} title="Gravity assists">
+
+There is a way to change a spacecraft's velocity without burning any fuel at all: fly close to a planet and let its gravity do the work.
+
+In the planet's reference frame, the encounter looks like elastic scattering. The spacecraft enters the planet's gravitational sphere of influence at some speed, swings around on a hyperbolic arc, and exits at the same speed — just deflected in direction. No energy is gained or lost relative to the planet.
+
+But switch to the Sun's reference frame, and the picture changes. The planet is moving. If the spacecraft swings behind the planet (relative to the planet's orbital motion), it exits the encounter moving faster in the Sun's frame — it has stolen a tiny fraction of the planet's orbital kinetic energy. If it swings in front, it exits slower, donating energy to the planet.
+
+The energy transfer is real. The planet slows down by an immeasurably small amount (its mass is enormous compared to the spacecraft). The spacecraft gains or loses kilometers per second.
+
+Voyager 2 is the canonical example. Launched in 1977 on a trajectory that would not have reached Neptune with any rocket then available, it used <Term slug="gravity-assist">gravity assists</Term> at Jupiter (1979), Saturn (1981), and Uranus (1986) to reach Neptune in 1989. Each flyby bent the trajectory and boosted the speed. Without those assists, reaching Neptune would have required either a much larger rocket or a flight time measured in decades.
+
+The geometry is delicate. The 1977 launch window exploited a planetary alignment that occurs roughly once every 175 years — Jupiter, Saturn, Uranus, and Neptune all on the same side of the Sun. Gary Flandro, a summer intern at JPL in 1965, was the one who noticed the alignment and proposed the "Grand Tour."
+
+Modern missions use gravity assists routinely. Cassini flew past Venus twice, Earth once, and Jupiter once before reaching Saturn. MESSENGER looped past Earth once, Venus twice, and Mercury three times before entering orbit around Mercury. Each flyby was a vis-viva calculation solved backward: given the desired exit velocity, what approach trajectory is needed?
+
+</Section>
+
+<Section index={6} title="Why it matters">
+
+The vis-viva equation is the master equation of spaceflight. Every mission design begins with it. How much Δv do we need to reach Mars? Vis-viva. What speed does a satellite need at a given altitude to maintain orbit? Vis-viva. Can we reach the outer planets without a prohibitively large rocket? Vis-viva, combined with gravity assists.
+
+SpaceX's Starship, if it reaches its design goals, will put roughly 100 tonnes into low Earth orbit. From there, reaching Mars requires a Hohmann-like transfer — two burns, one equation. The total Δv from LEO to Mars transfer orbit is about 3.6 km/s. The entry, descent, and landing at Mars is handled by aerodynamics, but getting onto the right trajectory is pure orbital mechanics.
+
+The Artemis program sends astronauts to lunar orbit using a near-rectilinear halo orbit — exotic geometry, but the energy budget is still computed from vis-viva. The James Webb Space Telescope sits at the Sun-Earth L2 point, 1.5 million km from Earth, on a trajectory whose Δv cost was calculated from the same equation <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> would have recognized.
+
+Orbital mechanics is energy accounting in a gravitational field. One equation, written in the language of kinetic and potential energy, tells you what is possible and what it costs. Everything else — the mission planning, the trajectory optimization, the launch windows — is annotation.
+
+</Section>
+
+</TopicPageLayout>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
+import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 export interface EllipseConstructionProps {
   /** Semi-major axis */
@@ -10,23 +11,41 @@ export interface EllipseConstructionProps {
   e?: number;
   /** Orbit period in wall-time seconds for the tracer */
   T?: number;
-  width?: number;
-  height?: number;
 }
 
 export function EllipseConstruction({
   a = 1,
   e = 0.5,
   T = 12,
-  width = 620,
-  height = 380,
 }: EllipseConstructionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const jxgboxRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
+  const [size, setSize] = useState({ width: 600, height: 380 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * 0.6, 380);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
   const ptRef = useRef<any>(null);
   const seg1Ref = useRef<any>(null);
   const seg2Ref = useRef<any>(null);
   const jxgRef = useRef<any>(null);
+  const colors = useThemeColors();
 
   const [readout, setReadout] = useState({ d1: 0, d2: 0 });
 
@@ -36,16 +55,16 @@ export function EllipseConstruction({
       const JXG = (await import("jsxgraph")).default;
       jxgRef.current = JXG;
 
-      if (cancelled || !containerRef.current) return;
-      if (!containerRef.current.id) {
-        containerRef.current.id = `ellipse-${Math.random().toString(36).slice(2)}`;
+      if (cancelled || !jxgboxRef.current) return;
+      if (!jxgboxRef.current.id) {
+        jxgboxRef.current.id = `ellipse-${Math.random().toString(36).slice(2)}`;
       }
 
       const c = a * e;
       const b = a * Math.sqrt(1 - e * e);
       const pad = 1.3;
 
-      const board = JXG.JSXGraph.initBoard(containerRef.current.id, {
+      const board = JXG.JSXGraph.initBoard(jxgboxRef.current.id, {
         boundingbox: [-a * pad - c, b * pad, a * pad - c, -b * pad],
         axis: false,
         showNavigation: false,
@@ -76,7 +95,7 @@ export function EllipseConstruction({
         label: {
           offset: [8, 8],
           fontSize: 12,
-          strokeColor: "#9FB0C8",
+          strokeColor: colors.fg1,
           cssClass: "font-mono",
         },
       });
@@ -84,12 +103,12 @@ export function EllipseConstruction({
         name: "F₂",
         fixed: true,
         size: 4,
-        fillColor: "#5B6B86",
-        strokeColor: "#5B6B86",
+        fillColor: colors.fg2,
+        strokeColor: colors.fg2,
         label: {
           offset: [8, 8],
           fontSize: 12,
-          strokeColor: "#9FB0C8",
+          strokeColor: colors.fg1,
           cssClass: "font-mono",
         },
       });
@@ -99,10 +118,10 @@ export function EllipseConstruction({
         name: "P",
         fixed: true,
         size: 5,
-        fillColor: "#E6EDF7",
-        strokeColor: "#E6EDF7",
+        fillColor: colors.fg0,
+        strokeColor: colors.fg0,
         showInfobox: false,
-        label: { fontSize: 12, strokeColor: "#E6EDF7" },
+        label: { fontSize: 12, strokeColor: colors.fg0 },
       });
 
       const seg1 = board.create(
@@ -113,7 +132,7 @@ export function EllipseConstruction({
       const seg2 = board.create(
         "segment",
         [[-2 * c, 0], pt],
-        { strokeColor: "#5B6B86", strokeWidth: 1.5 },
+        { strokeColor: colors.fg2, strokeWidth: 1.5 },
       );
 
       boardRef.current = board;
@@ -131,7 +150,7 @@ export function EllipseConstruction({
         }
       }
     };
-  }, [a, e]);
+  }, [a, e, colors]);
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -152,15 +171,14 @@ export function EllipseConstruction({
   });
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div ref={containerRef} className="w-full pb-4">
       <div
-        ref={containerRef}
+        ref={jxgboxRef}
         className="jxgbox"
-        style={{ width, height, backgroundColor: "transparent" }}
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
       />
       <div
-        className="flex flex-wrap justify-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-fg-1)]"
-        style={{ maxWidth: width }}
+        className="flex flex-wrap justify-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-fg-1)] mt-3"
       >
         <span>|PF₁| = {readout.d1.toFixed(3)}</span>
         <span>|PF₂| = {readout.d2.toFixed(3)}</span>

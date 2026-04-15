@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
 interface Source {
@@ -19,11 +20,13 @@ const SOURCES: readonly Source[] = [
 
 const TEXT_SOURCES = ["HyperPhysics"] as const;
 
-export function SourcesSection() {
+export async function SourcesSection() {
+  const t = await getTranslations("home.sources");
+
   return (
     <section className={`${WIDE_CONTAINER} mt-20 md:mt-28`}>
       <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)] text-center">
-        Sources & references
+        {t("heading")}
       </div>
       <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14">
         {SOURCES.map((s) => (

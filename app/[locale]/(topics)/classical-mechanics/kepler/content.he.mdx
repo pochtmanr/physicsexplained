@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { EllipseConstruction } from "@/components/physics/ellipse-construction";
+import { SweepAreas } from "@/components/physics/sweep-areas";
+import { HarmonyTable } from "@/components/physics/harmony-table";
+import { InverseSquareScene } from "@/components/physics/inverse-square-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "יוהנס קפלר", href: "/physicists/johannes-kepler" },
+  { type: "physicist", label: "טיכו ברהה", href: "/physicists/tycho-brahe" },
+  { type: "physicist", label: "ניקולאוס קופרניקוס", href: "/physicists/nicolaus-copernicus" },
+  { type: "physicist", label: "אייזק ניוטון", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "קלאודיוס תלמי", href: "/physicists/claudius-ptolemy" },
+  { type: "physicist", label: "אורבן לה־ורייה", href: "/physicists/urbain-le-verrier" },
+  { type: "term", label: "אפיציקל", href: "/dictionary/epicycle" },
+  { type: "term", label: "אליפסה", href: "/dictionary/ellipse" },
+  { type: "term", label: "מוקד (מוקדים)", href: "/dictionary/focus" },
+  { type: "term", label: "חצי הציר הגדול", href: "/dictionary/semi-major-axis" },
+  { type: "term", label: "אקסצנטריות", href: "/dictionary/eccentricity" },
+  { type: "term", label: "חוק הריבוע ההפוך", href: "/dictionary/inverse-square-law" },
+]}>
+
+<TopicHeader
+  eyebrow="§ 02 · מכניקה קלאסית"
+  title="חוקי כוכבי הלכת"
+  subtitle="איך אסטרונום גרמני פיצח את השמים בשלושה משפטים."
+/>
+
+<Section index={1} title="לפני קפלר">
+
+במשך אלף וחמש מאות שנים האמינו האסטרונומים שהשמים פועלים על מעגלים מושלמים. <PhysicistLink slug="claudius-ptolemy">תלמי</PhysicistLink>, שכתב במאה השנייה, בנה מכונה משוכללת של מעגלים־על־מעגלים — <Term slug="epicycle">אפיציקלים</Term> — כדי שהתחזיות שלו יתיישבו עם המציאות. <PhysicistLink slug="nicolaus-copernicus">קופרניקוס</PhysicistLink>, ב־1543, שם את השמש במרכז במקום את כדור הארץ. את המעגלים הוא שמר.
+
+אז <PhysicistLink slug="johannes-kepler">יוהנס קפלר</PhysicistLink>, שעבד מתוך התצפיות המדויקות להפליא של <PhysicistLink slug="tycho-brahe">טיכו ברהה</PhysicistLink>, ויתר על המעגלים כליל. הוא ניסה כל דבר אחר שרק יכול היה להעלות בדעתו. אחרי שמונה שנים של חישובים, הוא נחת על האמת.
+
+מסלולים הם אליפסות.
+
+</Section>
+
+<Section index={2} title="החוק הראשון — כוכבי לכת נעים על אליפסות">
+
+<Term slug="ellipse">אליפסה</Term> היא מעגל מתוח שיש בתוכו שתי נקודות מיוחדות, הנקראות **<Term slug="focus">מוקדים</Term>**. מה שהופך אליפסה לאליפסה הוא שאם בוחרים נקודה כלשהי על העקומה ומותחים קווים לכל אחד מהמוקדים, סכום שני האורכים תמיד מצטבר לאותו המספר.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">r(θ) = a(1 − e²) / (1 + e · cos θ)</span>
+</EquationBlock>
+
+המספר `a` הוא <Term slug="semi-major-axis">חצי הציר הגדול</Term> — הרדיוס הארוך. המספר `e` הוא <Term slug="eccentricity">האקסצנטריות</Term> — כמה האליפסה "מעוכה", מאפס (מעגל מושלם) ועד כמעט אחד (כמעט שטוחה). מסלולו של כל כוכב לכת הוא אחת מהצורות הללו, כשהשמש יושבת באחד משני המוקדים.
+
+<SceneCard caption="FIG.01 — האליפסה" className="w-full">
+  <EllipseConstruction a={1} e={0.5} />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="החוק השני — שטחים שווים בזמנים שווים">
+
+קפלר שם לב לעוד דבר: כוכבי לכת לא נעים במהירות קבועה. הם נעים מהר יותר כשהם קרובים לשמש, ולאט יותר כשהם רחוקים.
+
+אבל ה*שטח* שסורק הקו בין השמש לכוכב הלכת, ליחידת זמן — זה נשאר קבוע.
+
+הביטו בזה קורה.
+
+<SceneCard caption="FIG.02 — שטחים שווים, זמנים שווים" className="w-full">
+  <SweepAreas a={1} e={0.6} T={18} wedges={6} />
+</SceneCard>
+
+הטריזים נראים שונים לחלוטין. חלקם ארוכים ודקים, חלקם שמנים ועגולים. ובכל זאת הקריאה למטה אומרת ששטחם זהה, עד שלוש ספרות אחרי הנקודה העשרונית.
+
+זהו חוקו השני של קפלר. הוא לא נראה כאילו הוא אמור להיות נכון. אבל הוא כן.
+
+</Section>
+
+<Section index={4} title="החוק השלישי — הרמוניית העולמות">
+
+עבור כל כוכב לכת המקיף את השמש, ישנו מספר יחיד שיוצא זהה.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">T² = (4π² / GM) · a³</span>
+</EquationBlock>
+
+בעברית פשוטה: ריבוע המחזור המסלולי, חלקי החזקה השלישית של חצי הציר הגדול, זהה עבור כל גוף המקיף את אותו הכוכב. קפלר קרא לזה "הרמוניית העולמות."
+
+<SceneCard caption="FIG.03 — ההרמוניה" className="w-full">
+  <HarmonyTable />
+</SceneCard>
+
+הביטו בעמודה הימנית ביותר. מרקורי, כדור הארץ, מאדים, צדק — ארבעה עולמות שאין ביניהם שום מן המשותף פרט לכך שהם מקיפים את אותו הכוכב — והיחס `T² / a³` מתיישר עד שלוש ספרות אחרי הנקודה העשרונית. זו איננה התאמת עקומה. זהו חוק טבע, שהתחבא לעין כול מול כל אסטרונום שאי־פעם הרים את מבטו לשמים.
+
+</Section>
+
+<Section index={5} title="מה שראה ניוטון">
+
+קפלר *תיאר* את החוקים. הוא מעולם לא הסביר אותם. המשימה הזו נותרה ל<PhysicistLink slug="isaac-newton">אייזק ניוטון</PhysicistLink>, שהבין — שמונים שנה מאוחר יותר — שאם מניחים כוח יחיד המושך את כוכב הלכת אל השמש, שגודלו פרופורציונלי ל<Term slug="inverse-square-law">אחד חלקי המרחק בריבוע</Term>, מקבלים את כל שלושת חוקי קפלר בחינם.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">F = G · M · m / r²</span>
+</EquationBlock>
+
+ככל שכוכב הלכת רחוק יותר מהשמש, המשיכה חלשה יותר — אבל היא נחלשת במהירות, כריבוע המרחק. כשהכוכב מתנדנד קרוב, הכוח מתנפח. כשהוא נסחף רחוק, הכוח בקושי מושך.
+
+<SceneCard caption="FIG.04 — הריבוע ההפוך בפעולה" className="w-full">
+  <InverseSquareScene a={1} e={0.5} T={16} />
+</SceneCard>
+
+החץ מראה בכמה חוזק הגרביטציה מושכת. ראו כיצד הוא גדל כשכוכב הלכת צולל לעבר פריהליון, ומתכווץ כשהוא מחליק החוצה לאפוהליון.
+
+</Section>
+
+<Section index={6} title="מדוע זה חשוב">
+
+כל לוויין מלאכותי במסלול סביב כדור הארץ מציית לחוקיו של <PhysicistLink slug="johannes-kepler">קפלר</PhysicistLink>. כל טיל ששלחנו אי־פעם לכוכב לכת אחר השתמש בהם כדי לתכנן את מסלולו. כש<PhysicistLink slug="urbain-le-verrier">לה־ורייה</PhysicistLink> חזה את קיומו של נפטון ב־1846, בהתבסס על הפרעות במסלולו של אורנוס, הוא השתמש בקפלר. כשאנחנו מגלים כוכבי לכת חוץ־שמשיים היום על ידי צפייה בנדנוד של כוכבים, אנחנו משתמשים בקפלר. כש־LIGO מגלה גלי כבידה ממיזוג חורים שחורים, דעיכת המסלול היא חוקיו של קפלר, מוכללים לגרביטציה של איינשטיין.
+
+שלושה משפטים ממיסטיקן חצי־עיוור מ־1609. עדיין מנהלים את היקום.
+
+</Section>
+
+</TopicPageLayout>

@@ -1,23 +1,39 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 type JXG = typeof import("jsxgraph");
 
-export interface SmallAngleSceneProps {
-  width?: number;
-  height?: number;
-}
+const RATIO = 0.5;
+const MAX_HEIGHT = 280;
 
-export function SmallAngleScene({
-  width = 480,
-  height = 360,
-}: SmallAngleSceneProps) {
+export function SmallAngleScene() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const jxgBoxRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
   const jxgRef = useRef<JXG | null>(null);
   const colors = useThemeColors();
+  const [size, setSize] = useState({ width: 480, height: 280 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,12 +42,12 @@ export function SmallAngleScene({
       const JXG = (await import("jsxgraph")).default;
       jxgRef.current = JXG as unknown as JXG;
 
-      if (cancelled || !containerRef.current) return;
-      if (!containerRef.current.id) {
-        containerRef.current.id = `small-angle-${Math.random().toString(36).slice(2)}`;
+      if (cancelled || !jxgBoxRef.current) return;
+      if (!jxgBoxRef.current.id) {
+        jxgBoxRef.current.id = `small-angle-${Math.random().toString(36).slice(2)}`;
       }
 
-      const board = JXG.JSXGraph.initBoard(containerRef.current.id, {
+      const board = JXG.JSXGraph.initBoard(jxgBoxRef.current.id, {
         boundingbox: [-0.3, 1.5, Math.PI + 0.3, -1.5],
         axis: true,
         showNavigation: false,
@@ -154,10 +170,12 @@ export function SmallAngleScene({
   }, [colors]);
 
   return (
-    <div
-      ref={containerRef}
-      className="jxgbox mx-auto"
-      style={{ width, height, backgroundColor: "transparent" }}
-    />
+    <div ref={containerRef} className="w-full pb-4">
+      <div
+        ref={jxgBoxRef}
+        className="jxgbox"
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
+      />
+    </div>
   );
 }

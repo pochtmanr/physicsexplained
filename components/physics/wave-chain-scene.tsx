@@ -1,22 +1,35 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
-export interface WaveChainSceneProps {
-  width?: number;
-  height?: number;
-}
+const RATIO = 0.6;
+const MAX_HEIGHT = 300;
 
-export function WaveChainScene({
-  width = 480,
-  height = 300,
-}: WaveChainSceneProps) {
+export function WaveChainScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
   const [N, setN] = useState(10);
+  const [size, setSize] = useState({ width: 480, height: 300 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
+  const { width, height } = size;
 
   const omega0 = 3;
   const Amp = 0.8;
@@ -133,7 +146,7 @@ export function WaveChainScene({
   });
 
   return (
-    <div ref={containerRef} style={{ width }} className="mx-auto pb-4">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
         style={{ width, height }}

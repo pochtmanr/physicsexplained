@@ -6,21 +6,37 @@ import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 type JXG = typeof import("jsxgraph");
 
-export interface ResonanceCurveSceneProps {
-  width?: number;
-  height?: number;
-}
+const RATIO = 0.75;
+const MAX_HEIGHT = 360;
 
-export function ResonanceCurveScene({
-  width = 480,
-  height = 360,
-}: ResonanceCurveSceneProps) {
+export function ResonanceCurveScene() {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
   const curveRef = useRef<any>(null);
   const jxgRef = useRef<JXG | null>(null);
   const colors = useThemeColors();
   const [Q, setQ] = useState(10);
+  const [size, setSize] = useState({ width: 480, height: 360 });
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(wrapper);
+    return () => ro.disconnect();
+  }, []);
 
   // Initialize JSXGraph board
   useEffect(() => {
@@ -109,11 +125,11 @@ export function ResonanceCurveScene({
   }, [Q]);
 
   return (
-    <div style={{ width }} className="mx-auto pb-4">
+    <div ref={wrapperRef} className="w-full pb-4">
       <div
         ref={containerRef}
         className="jxgbox"
-        style={{ width, height, backgroundColor: "transparent" }}
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
       />
       <div className="mt-2 flex items-center gap-3 px-2">
         <label className="text-sm text-[var(--color-fg-2)]">Q</label>

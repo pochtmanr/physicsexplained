@@ -1,0 +1,31 @@
+{
+  "nav": {
+    "home": "Physics.explained",
+    "physicists": "Physicists",
+    "dictionary": "Dictionary",
+    "homeAriaLabel": "Physics.explained — home"
+  },
+  "footer": {
+    "branches": "Branches",
+    "physicists": "Physicists",
+    "dictionary": "Dictionary",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "cookiePolicy": "Cookie Policy",
+    "copyright": "© 2026 Simnetiq Ltd"
+  },
+  "cookieBanner": {
+    "message": "This site uses localStorage for your theme preference. No tracking cookies.",
+    "linkText": "Cookie policy",
+    "accept": "Accept"
+  },
+  "aside": {
+    "physicists": "Physicists",
+    "topics": "Topics",
+    "terms": "Terms"
+  },
+  "backLinks": {
+    "dictionary": "← Dictionary",
+    "physicists": "← All physicists"
+  }
+}

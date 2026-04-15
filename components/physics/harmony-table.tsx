@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 const PLANETS = [
   { name: "Mercury", a: 0.387, T: 0.2408 },
@@ -10,9 +11,31 @@ const PLANETS = [
 ] as const;
 
 export function HarmonyTable() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const plotRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
   const jxgRef = useRef<any>(null);
+  const [size, setSize] = useState({ width: 560, height: 360 });
+  const colors = useThemeColors();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * 0.65, 360);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -30,8 +53,26 @@ export function HarmonyTable() {
         showNavigation: false,
         showCopyright: false,
         defaultAxes: {
-          x: { name: "log₁₀ a (AU)", withLabel: true, strokeColor: "#5B6B86" },
-          y: { name: "log₁₀ T (yr)", withLabel: true, strokeColor: "#5B6B86" },
+          x: {
+            name: "log₁₀ a (AU)",
+            withLabel: true,
+            strokeColor: colors.fg2,
+            label: { strokeColor: colors.fg2 },
+            ticks: {
+              strokeColor: colors.fg3,
+              label: { strokeColor: colors.fg2 },
+            },
+          },
+          y: {
+            name: "log₁₀ T (yr)",
+            withLabel: true,
+            strokeColor: colors.fg2,
+            label: { strokeColor: colors.fg2 },
+            ticks: {
+              strokeColor: colors.fg3,
+              label: { strokeColor: colors.fg2 },
+            },
+          },
         },
       });
 
@@ -55,7 +96,7 @@ export function HarmonyTable() {
           label: {
             offset: [8, 8],
             fontSize: 11,
-            strokeColor: "#9FB0C8",
+            strokeColor: colors.fg1,
             cssClass: "font-mono",
           },
         });
@@ -73,10 +114,10 @@ export function HarmonyTable() {
         }
       }
     };
-  }, []);
+  }, [colors]);
 
   return (
-    <div className="flex flex-col gap-8">
+    <div ref={containerRef} className="w-full pb-4">
       <table className="w-full border-collapse font-mono text-sm">
         <thead>
           <tr className="border-b border-[var(--color-fg-3)]">
@@ -120,8 +161,8 @@ export function HarmonyTable() {
 
       <div
         ref={plotRef}
-        className="jxgbox mx-auto"
-        style={{ width: 560, height: 360, backgroundColor: "transparent" }}
+        className="jxgbox mt-8"
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
       />
     </div>
   );

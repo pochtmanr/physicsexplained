@@ -13,7 +13,7 @@ export interface SectionProps {
 export function Section({ index, title, children, className }: SectionProps) {
   const indexStr = String(index).padStart(2, "0");
   return (
-    <section className={clsx("mb-24", className)}>
+    <section className={clsx("mb-12", className)}>
       <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
           §&#8239;{indexStr}

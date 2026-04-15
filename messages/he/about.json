@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "About · physics",
+    "description": "About Physics.explained — a visual-first reader's guide to the classical and modern worlds."
+  },
+  "header": {
+    "tag": "§ 00 · ABOUT",
+    "title": "WHO WE ARE",
+    "subtitle": "A small studio building a visual, honest reader's guide to physics."
+  },
+  "idea": {
+    "number": "§\u202F01",
+    "title": "The idea",
+    "p1": "Most physics writing either drowns you in equations or waves its hands until the math disappears. Neither works. We wanted a third option — explanations where the pictures do the heavy lifting, the equations show up only where they earn their keep, and every animation is physically accurate.",
+    "p2": "Every scene on this site is a real simulation. Not a video, not a loop — the pendulums actually swing under θ″ = −(g/L)·sin θ, the orbits actually obey Kepler's laws. If you can see it, you can trust it."
+  },
+  "studio": {
+    "number": "§\u202F02",
+    "title": "The studio",
+    "p1": "Physics.explained is made by Simnetiq Ltd, a small independent studio working on tools and writing at the edge of science, design, and code.",
+    "p2": "The project is open source under MIT. No tracking, no ads, no paywall. If you want to fund more branches, corrections, or translations — say hi below."
+  },
+  "contact": {
+    "number": "§\u202F03",
+    "title": "Contact",
+    "subtitle": "Spotted an error? Have a branch you'd like to see next? Want to collaborate? Drop us a line.",
+    "directLabel": "DIRECT",
+    "elsewhereLabel": "ELSEWHERE"
+  }
+}

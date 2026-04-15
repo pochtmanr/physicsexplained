@@ -1,0 +1,153 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FirstLawScene } from "@/components/physics/first-law-scene";
+import { FMaScene } from "@/components/physics/f-ma-scene";
+import { ActionReactionScene } from "@/components/physics/action-reaction-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "physicist", label: "Robert Hooke", href: "/physicists/robert-hooke" },
+  { type: "term", label: "Inertia", href: "/dictionary/inertia" },
+  { type: "term", label: "Mass", href: "/dictionary/mass" },
+  { type: "term", label: "Force", href: "/dictionary/force" },
+  { type: "term", label: "Newton's Laws of Motion", href: "/dictionary/newtons-laws-of-motion" },
+  { type: "term", label: "Inertial Frame", href: "/dictionary/inertial-frame" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.03 · KINEMATICS & NEWTON"
+  title="NEWTON'S THREE LAWS"
+  subtitle="Inertia, force, and reaction — the three sentences that still run the world."
+/>
+
+<Section index={1} title="The first law">
+
+In the summer of 1665 the plague reached Cambridge. The university closed. <PhysicistLink slug="isaac-newton">Isaac Newton</PhysicistLink>, twenty-two years old and a year out of his bachelor's degree, rode home to his mother's farm at Woolsthorpe in Lincolnshire and stayed there for most of the next two years. In that quiet, empty house he invented the calculus, worked out the composition of white light with a prism, and began the chain of reasoning that would become universal gravitation. He told almost no one. When he wrote it up twenty-two years later in the *Philosophiæ Naturalis Principia Mathematica* — the *Principia* — the book opened with three sentences that replaced two thousand years of physics.
+
+The first of them is a statement about what happens when nothing happens.
+
+<Callout variant="math">
+Every body continues in its state of rest, or of uniform motion in a straight line, unless acted upon by a force.
+</Callout>
+
+A body at rest stays at rest. A body in motion keeps moving — in a straight line, at constant speed — forever, unless something pushes on it. This sounds obvious now. It was not obvious. Aristotle had taught for two thousand years that motion required a continuous cause: a cart needs horses, an arrow needs the air pushing it from behind, a stone falls because it seeks its natural place at the centre of the world. Stop pushing, and the cart stops. The intuition was excellent for carts; it was wrong about everything else.
+
+<PhysicistLink slug="galileo-galilei">Galileo</PhysicistLink> was the first to see past it. He rolled balls along polished planes and noticed that the smoother the surface, the further they rolled. Extrapolate to perfect smoothness — no friction at all — and the ball would never stop. Motion is not what needs explaining. The *slowing down* is. It took Newton to turn that observation into a first principle.
+
+<SceneCard caption="FIG.03a — a block coasting with friction" className="w-full">
+  <FirstLawScene />
+</SceneCard>
+
+Push the friction slider to zero. The block, once moving, carries on forever. Every tick of friction you add is a force on the block, and the block decelerates exactly as much as that force dictates. The universe has no preference for rest — only for uniform motion in a straight line.
+
+</Section>
+
+<Section index={2} title="The second law">
+
+The first law says what happens without force. The second says what happens with it.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">F = m·a</span>
+</EquationBlock>
+
+The force on a body equals the body's <Term slug="mass">mass</Term> times the <Term slug="acceleration">acceleration</Term> it produces. Push something, and it accelerates. Push harder, it accelerates harder. Push the same way on something heavier, it accelerates less. Three letters, one equals sign, and a book of the rest of physics flows out.
+
+What *is* mass? The second law is also its definition. Mass is the number that tells you how stubborn a body is — how much push you need to get a given change in velocity. A bowling ball and a tennis ball feel the same in your hand while they are still. Push them, and you discover the difference. Mass is the resistance to acceleration. It is the quantitative measure of <Term slug="inertia">inertia</Term>.
+
+What is force? Anything that pushes or pulls. Gravity is a force. The normal force from the ground is a force. Friction is a force. Tension in a rope is a force. The second law does not care where the force comes from; it only tells you what the force does once it is there. In Newton's original wording the equation read `F = dp/dt` — force is the rate of change of momentum, where momentum `p = m·v`. For constant mass the two forms are identical. For a rocket burning off fuel, or a raindrop accumulating water, the momentum form is the correct one.
+
+<SceneCard caption="FIG.03b — F = ma in real time" className="w-full">
+  <FMaScene />
+</SceneCard>
+
+Move the force slider. The acceleration is exactly F/m — you can read it off the screen. Move the mass slider. Heavier means slower. The arrow at the ball's right is the force; the length of its motion over time is the integral of that force divided by the mass. The physics really does fit on a single line.
+
+Newton's second law is the most reused equation in the history of science. Drop a ball: `a = g`. Stretch a spring by x: `a = −(k/m)·x`, the simple harmonic oscillator. Fire a rocket: `a = F_thrust / m_remaining`. Every differential equation of motion in classical mechanics starts here.
+
+</Section>
+
+<Section index={3} title="The third law">
+
+The third law is the quietest and the strangest.
+
+<Callout variant="math">
+For every action there is an equal and opposite reaction.
+</Callout>
+
+Forces always come in pairs. If A pushes on B, then B pushes back on A with a force exactly equal in magnitude and exactly opposite in direction. There is no such thing as a solitary force. A hand pressing on a wall feels the wall pressing on it. A rocket engine throws hot gas downward and the gas throws the rocket upward. A swimmer pushes water backward; the water pushes the swimmer forward. A bird's wing pushes air down; the air pushes the bird up. Walking is a third-law phenomenon: your foot pushes the ground backward, and the ground pushes you forward. Without that reaction, your feet would spin in place — as they do on ice.
+
+<SceneCard caption="FIG.03c — two skaters pushing off" className="w-full">
+  <ActionReactionScene />
+</SceneCard>
+
+Two ice skaters at rest on a frictionless pond. They plant hands and push. The force the left skater exerts on the right is exactly equal in magnitude to the force the right exerts on the left. But their masses may differ. The second law then demands that after the push, the velocities are inversely proportional to the masses: `m_A · v_A = −m_B · v_B`. A heavy skater barely moves; a light one flies off. This is momentum conservation, falling out of the third law before Module 2 has formally named it.
+
+A common confusion is worth killing now. The "equal and opposite" pair of the third law acts on two *different* bodies — one force on A, one on B. The Earth pulls on a falling apple; the apple pulls back on the Earth. Both forces are real. The apple accelerates toward the Earth at 9.8 m/s²; the Earth accelerates toward the apple at an unimaginably tiny rate, because its mass is astronomical. Neither force cancels the other, because they act on different things.
+
+</Section>
+
+<Section index={4} title="Inertial frames">
+
+Newton's laws do not hold in every frame of reference. They hold in frames that are not themselves accelerating.
+
+Stand in a train that moves at a steady hundred kilometres per hour along a perfectly straight track. Pour coffee. The coffee goes into the cup the same way it does in your kitchen. Juggle tennis balls. They arc and return the same way they do on a lawn. From inside, there is no experiment you can do with balls or coffee or pendulums that will tell you whether the train is moving at all. This is the **principle of Galilean relativity**, and it is a direct consequence of the first law: if uniform motion feels like rest, then the laws of physics cannot depend on how fast the frame is moving, as long as it is moving uniformly.
+
+Now let the train brake sharply. Your coffee lurches forward. A ball on the floor rolls. You, and the coffee, feel a force pulling you toward the front of the car, even though nothing is pushing you. That pseudo-force is the signature of a non-<Term slug="inertial-frame">inertial frame</Term> — a frame that is accelerating. Newton's laws, applied naively inside such a frame, would make you conclude that phantoms were pulling on things. The repair is easy: the laws only hold in frames that move uniformly. Call those frames *inertial*. Any frame moving at constant velocity relative to an inertial frame is also inertial. Frames that are rotating or accelerating are not.
+
+The surface of the Earth is approximately inertial for most experiments, but not exactly — it rotates once a day. Careful experiments reveal the Coriolis and centrifugal pseudo-forces that come from treating the rotating Earth as if it were inertial. Foucault's pendulum, swinging in the Panthéon in 1851, made the rotation directly visible: the plane of its swing rotates with the sky because the ground underneath rotates with the Earth.
+
+Einstein would later push this idea to its limit. Special relativity, in 1905, kept Galileo's observation — that the laws of physics are the same in every inertial frame — and added the insistence that the speed of light is the same in every inertial frame. General relativity, in 1915, went further still: gravity itself becomes the curvature of spacetime, and a freely falling body is in an inertial frame. Newton's first law, in its modern form, says that a body left alone follows a straight line in spacetime.
+
+</Section>
+
+<Section index={5} title="Woolsthorpe, 1666">
+
+The apple story is half-myth. Newton told it himself, late in life, to William Stukeley in the garden at Woolsthorpe in 1726. He said he had been sitting under an apple tree when one fell, and he began to wonder why the apple fell straight down toward the centre of the Earth rather than sideways. That wondering — so the story goes — led to universal gravitation. There probably was an apple. There was no apple-on-the-head. And the real insight was subtler.
+
+What Newton grasped in the plague years was that the same force that pulls the apple down also holds the Moon in its orbit. The Moon is falling — continuously, toward the Earth — but its sideways motion is fast enough that the Earth curves away underneath it at the same rate. It falls and never lands. The brilliant move was quantitative: if you assume gravity weakens as the inverse square of distance, then the acceleration of the Moon at its orbital radius, compared to the acceleration of an apple at the surface of the Earth, should match the ratio you can compute from the Moon's orbital period. Newton did the sum. It worked, roughly — close enough, given his poor value for the Earth's radius, that he knew he was right.
+
+He did not publish. For twenty years the calculation sat in a drawer. Then in 1684 the astronomer Edmond Halley — the one the comet is named for — rode to Cambridge with a question he had been arguing about with Christopher Wren and <PhysicistLink slug="robert-hooke">Robert Hooke</PhysicistLink>. Assume an inverse-square attraction toward the Sun: what shape would the planets' orbits take? Newton answered, almost offhandedly, *an ellipse, I have calculated it*. Halley pressed him for the proof, returned three months later to find nine pages of *De Motu Corporum in Gyrum*, and spent the next three years coaxing the full *Principia* out of him at his own expense.
+
+Hooke believed he had reached the inverse-square law first, and from 1679 had been writing to Newton claiming it. He may well have glimpsed it — his intuition was extraordinary — but he could not prove the ellipse followed from it. Newton could, and did. The quarrel between them grew bitter, and when the *Principia* appeared in 1687 Hooke's contribution was acknowledged only grudgingly. Newton outlived him by twenty-four years and is said to have had the only portrait of Hooke removed from the Royal Society.
+
+The real work of Woolsthorpe, then, was not a moment of insight but two years of patient calculation. Newton at twenty-three already knew more than any living person about how motion worked — he had invented the mathematics he needed to describe it, and he had proved, in private, that a single force law could account for both the Moon and the apple. The *Principia* is the delayed announcement of a discovery made in a quiet farmhouse during a pandemic.
+
+</Section>
+
+<Section index={6} title="What the laws do not say">
+
+The three laws tell you what forces *do*. They do not tell you what forces *are*.
+
+Given a force, Newton's second law lets you compute the motion. Given two bodies moving in certain ways, the second law lets you deduce the force that must have been acting. What the laws never do is specify, ahead of time, which forces exist in the world. That has to come from elsewhere — from direct measurement, from theory, from experiment.
+
+Newton supplied the first great example himself: universal gravitation. Every pair of masses attracts each other with a force proportional to both masses and inversely proportional to the square of the distance between them. This is not a deduction from the three laws. It is an additional physical law, discovered by Newton, that tells you what specific force to put into `F = m·a` when gravity is acting.
+
+Other force laws came later. Coulomb's law for electric charges: inverse-square, like gravity, but signed. Hooke's own law for springs: `F = −k·x`, a restoring force. The friction laws of Amontons: `F_friction = μ · N`, where N is the normal force pressing surfaces together. Stokes' law for viscous drag: `F = −6π·μ·r·v` for a slow sphere in a fluid. Each of these is an empirical discovery that slots into Newton's framework as the right-hand side of the second law for a particular situation. FIG.04 will bring friction and drag back, with their full machinery.
+
+<Callout variant="intuition">
+Think of Newton's laws as a calculational scaffold. They tell you how to combine forces into motion. The forces themselves — gravity, electromagnetism, the strong and weak nuclear forces — have to be discovered and written down separately.
+</Callout>
+
+This modesty is the laws' greatest strength. They do not pretend to know everything. They tell you *what to do* once you know the force. Over three centuries the list of known forces has been rewritten many times — Maxwell's equations replaced Coulomb's law; general relativity replaced Newton's gravity at extreme energies; the Standard Model added the nuclear forces — but the second law, in its momentum form, survived each upheaval. When quantum mechanics arrived in the 1920s it did not overturn `F = dp/dt`; it turned both sides into operators and kept going.
+
+</Section>
+
+<Section index={7} title="What comes next">
+
+The three laws, for all their power, work best when you know the forces. There is another way to do mechanics — one that does not require you to enumerate forces at all, and that will dominate Module 2.
+
+Push a ball up a ramp and watch it roll back down. Newton's way: calculate the component of gravity along the ramp, write `F = m·a`, integrate. The other way: notice that the ball's kinetic energy at the bottom equals the gravitational potential energy it had at the top, and read off the speed directly. No forces, no time. Just energy, in and out.
+
+That is the conservation law of energy, and it is Newton's three laws restated without forces. Momentum conservation, which we saw falling out of the third law in the skater scene, is the same trick for a different quantity. Conservation of angular momentum handles rotation. Emmy Noether would prove in 1915 that every conservation law corresponds to a symmetry of the universe — time-translation for energy, space-translation for momentum, rotational symmetry for angular momentum — and that is where Module 2 is headed.
+
+Before that, though, we have a debt to pay. Newton's laws as stated assume you can identify every force acting on a body. In the real world two forces are conspicuously missing from our ideal diagrams: the friction that stopped the block in FIG.03a, and the air resistance that slows falling objects. FIG.04 puts both of them back.
+
+</Section>
+
+</TopicPageLayout>

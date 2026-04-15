@@ -1,29 +1,47 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dampedFree, qualityFactor } from "@/lib/physics/damped-oscillator";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
+const RATIO = 0.85;
+const MAX_HEIGHT = 420;
+
 export interface DampedPendulumSceneProps {
   theta0?: number;
   length?: number;
-  width?: number;
-  height?: number;
 }
 
 export function DampedPendulumScene({
   theta0 = 0.4,
   length = 1.2,
-  width = 480,
-  height = 420,
 }: DampedPendulumSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
   const [gamma, setGamma] = useState(0.3);
+  const [size, setSize] = useState({ width: 480, height: 420 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
+
+  const { width, height } = size;
 
   const traceRef = useRef<Array<{ t: number; x: number }>>([]);
+  const t0Ref = useRef(0);
 
   const omega0 = Math.sqrt(9.80665 / length);
 
@@ -42,14 +60,16 @@ export function DampedPendulumScene({
         ctx.scale(dpr, dpr);
       }
 
+      if (t0Ref.current < 0) t0Ref.current = t;
       const params = { omega0, gamma };
-      const x = dampedFree(t, theta0, params);
+      const tLocal = t - t0Ref.current;
+      const x = dampedFree(tLocal, theta0, params);
 
       // Update trace
-      traceRef.current.push({ t, x });
+      traceRef.current.push({ t: tLocal, x });
       const traceWindow = 6;
       traceRef.current = traceRef.current.filter(
-        (p) => p.t > t - traceWindow,
+        (p) => p.t > tLocal - traceWindow,
       );
 
       ctx.clearRect(0, 0, width, height);
@@ -110,12 +130,12 @@ export function DampedPendulumScene({
       for (const sign of [1, -1]) {
         ctx.beginPath();
         for (let i = 0; i <= envSteps; i++) {
-          const tSample = t - traceWindow + (traceWindow * i) / envSteps;
+          const tSample = tLocal - traceWindow + (traceWindow * i) / envSteps;
           if (tSample < 0) continue;
           const envVal =
             sign * theta0 * Math.exp((-gamma * tSample) / 2);
           const px =
-            traceLeft + (traceW * (tSample - (t - traceWindow))) / traceWindow;
+            traceLeft + (traceW * (tSample - (tLocal - traceWindow))) / traceWindow;
           const py = traceMid - (envVal / theta0) * (traceH / 2) * 0.9;
           if (i === 0 || tSample - traceWindow + traceWindow < 0.01) {
             ctx.moveTo(px, py);
@@ -134,7 +154,7 @@ export function DampedPendulumScene({
       let started = false;
       for (const p of traceRef.current) {
         const px =
-          traceLeft + (traceW * (p.t - (t - traceWindow))) / traceWindow;
+          traceLeft + (traceW * (p.t - (tLocal - traceWindow))) / traceWindow;
         const py = traceMid - (p.x / theta0) * (traceH / 2) * 0.9;
         if (!started) {
           ctx.moveTo(px, py);
@@ -155,7 +175,7 @@ export function DampedPendulumScene({
   });
 
   return (
-    <div ref={containerRef} style={{ width }} className="mx-auto pb-4">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
         style={{ width, height }}
@@ -174,6 +194,7 @@ export function DampedPendulumScene({
           onChange={(e) => {
             setGamma(parseFloat(e.target.value));
             traceRef.current = [];
+            t0Ref.current = -1; // mark for reset on next frame
           }}
           className="flex-1 accent-[#5BE9FF]"
         />

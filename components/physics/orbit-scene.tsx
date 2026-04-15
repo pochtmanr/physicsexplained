@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { orbitPosition } from "@/lib/physics/kepler";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
+import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 export interface OrbitSceneProps {
   /** Semi-major axis in display units */
@@ -27,6 +28,7 @@ export function OrbitScene({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const trailRef = useRef<Array<{ x: number; y: number; age: number }>>([]);
+  const colors = useThemeColors();
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -99,7 +101,7 @@ export function OrbitScene({
       }
 
       // Draw planet
-      ctx.fillStyle = "#E6EDF7";
+      ctx.fillStyle = colors.fg0;
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, Math.PI * 2);
       ctx.fill();

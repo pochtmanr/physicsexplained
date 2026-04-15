@@ -1,0 +1,124 @@
+{
+  "tag": "Legal",
+  "lastUpdated": "Last updated: 12 April 2026",
+  "privacy": {
+    "title": "Privacy Policy",
+    "meta": {
+      "title": "Privacy Policy — physics.explained",
+      "description": "How physics.explained handles your data."
+    },
+    "whoWeAre": {
+      "title": "Who we are",
+      "body": "physics.explained is operated by Simnetiq Ltd, a company registered in the United Kingdom. This policy explains what data we collect, how we use it, and your rights under the UK GDPR and EU GDPR."
+    },
+    "whatWeCollect": {
+      "title": "What we collect",
+      "themePreference": "Theme preference — stored in your browser's localStorage as physics-theme. Never sent to any server.",
+      "analytics": "Anonymous page-view analytics — provided by Vercel Analytics. This service collects anonymous, aggregated page-view data. It does not use cookies, does not track individuals, and is GDPR-compliant by design.",
+      "contactForm": "Contact form submissions — if you use the contact form, your name, email address, and message are stored in our Supabase database so we can respond to your inquiry.",
+      "newsletter": "Newsletter subscriptions — if you sign up for our newsletter, your email address is stored in our Supabase database to send you updates about new content."
+    },
+    "whatWeDoNotCollect": {
+      "title": "What we do not collect",
+      "body": "We do not use advertising networks, third-party trackers, social media widgets, fingerprinting, or any form of cross-site tracking. We do not sell, rent, or share your data with third parties."
+    },
+    "dataStorage": {
+      "title": "Data storage",
+      "body": "Contact form submissions and newsletter email addresses are stored in Supabase (hosted in the EU). Data is retained until you request its deletion."
+    },
+    "yourRights": {
+      "title": "Your rights",
+      "body": "Under the UK GDPR and EU GDPR, you have the right to access, correct, or delete any personal data we hold about you. You may also withdraw consent for newsletter emails at any time.",
+      "contact": "To exercise any of these rights, contact us via the About & Contact page."
+    },
+    "changes": {
+      "title": "Changes to this policy",
+      "body": "We may update this policy from time to time. Changes will be posted on this page with an updated date."
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "meta": {
+      "title": "Terms of Service — physics.explained",
+      "description": "Terms of use for physics.explained."
+    },
+    "aboutTheSite": {
+      "title": "About the site",
+      "body": "physics.explained is an educational website operated by Simnetiq Ltd, a company registered in the United Kingdom. The site provides visual physics explainers, interactive simulations, and educational content."
+    },
+    "educationalPurpose": {
+      "title": "Educational purpose",
+      "body": "All content on this site is provided for educational purposes only. The physics simulations, visualisations, and explanations are designed to help you understand concepts — they are approximations and teaching aids, not professional engineering or scientific tools. Do not rely on them for safety-critical calculations or professional work."
+    },
+    "contentAccuracy": {
+      "title": "Content accuracy",
+      "body": "We strive for accuracy in all explanations and simulations. However, all content is provided \"as is\" without warranty of any kind, express or implied. Simnetiq Ltd is not liable for any errors, omissions, or inaccuracies in the content, nor for any decisions made based on the information presented."
+    },
+    "openSourceLicence": {
+      "title": "Open-source licence",
+      "body": "The source code of physics.explained is released under the MIT Licence. You are free to use, copy, modify, and distribute the code in accordance with the licence terms. The educational content (text, diagrams, and explanations) remains the intellectual property of Simnetiq Ltd unless otherwise stated."
+    },
+    "acceptableUse": {
+      "title": "Acceptable use",
+      "body": "You agree not to misuse the site or its services. This includes attempting to interfere with the site's operation, submitting abusive content through contact forms, or using automated systems to scrape content at scale."
+    },
+    "limitationOfLiability": {
+      "title": "Limitation of liability",
+      "body": "To the fullest extent permitted by law, Simnetiq Ltd shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of this site."
+    },
+    "governingLaw": {
+      "title": "Governing law",
+      "body": "These terms are governed by the laws of England and Wales. Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales."
+    },
+    "changes": {
+      "title": "Changes to these terms",
+      "body": "We may update these terms from time to time. Changes will be posted on this page with an updated date. Continued use of the site constitutes acceptance of the revised terms."
+    }
+  },
+  "cookies": {
+    "title": "Cookie Policy",
+    "meta": {
+      "title": "Cookie Policy — physics.explained",
+      "description": "How physics.explained uses cookies and localStorage."
+    },
+    "shortVersion": {
+      "title": "The short version",
+      "body": "physics.explained does not set any cookies. We use browser localStorage for two things: remembering your theme preference and whether you have seen this consent notice. That is it."
+    },
+    "localStorageItems": {
+      "title": "localStorage items",
+      "tableHeaders": {
+        "key": "Key",
+        "purpose": "Purpose",
+        "values": "Values"
+      },
+      "physicsTheme": {
+        "key": "physics-theme",
+        "purpose": "Remembers your dark/light theme choice",
+        "values": "\"dark\" or \"light\""
+      },
+      "cookieConsent": {
+        "key": "physics-cookie-consent",
+        "purpose": "Records that you have acknowledged this notice",
+        "values": "\"accepted\""
+      },
+      "note": "These values never leave your browser. They are not sent to any server or third party."
+    },
+    "analytics": {
+      "title": "Analytics",
+      "body": "We use Vercel Analytics, which collects anonymous, aggregated page-view data. Vercel Analytics does not use cookies, does not store personal identifiers, and is privacy-friendly by design. No consent is required for this type of analytics under GDPR/PECR because no personal data is processed."
+    },
+    "thirdPartyCookies": {
+      "title": "Third-party cookies",
+      "body": "None. We do not embed advertising, social media widgets, or any third-party services that set cookies."
+    },
+    "howToClear": {
+      "title": "How to clear localStorage",
+      "intro": "You can remove these items at any time through your browser settings:",
+      "chrome": "Chrome: Settings → Privacy and Security → Site Settings → View permissions and data stored across sites → find this site → Clear data",
+      "firefox": "Firefox: Settings → Privacy & Security → Cookies and Site Data → Manage Data → find this site → Remove",
+      "safari": "Safari: Settings → Privacy → Manage Website Data → find this site → Remove",
+      "devConsole": "Developer console: Open DevTools (F12), go to the Console tab, and run localStorage.clear()"
+    }
+  }
+}

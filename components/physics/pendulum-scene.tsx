@@ -1,19 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { smallAngleTheta, smallAnglePeriod } from "@/lib/physics/pendulum";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
+import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 export interface PendulumSceneProps {
   /** Initial amplitude in radians (small-angle mode holds for <~0.3) */
   theta0: number;
   /** Pendulum length in meters */
   length: number;
-  /** Canvas width in px */
-  width?: number;
-  /** Canvas height in px */
-  height?: number;
   /** Bob radius in px */
   bobRadius?: number;
   /** Called every frame with the current state for a HUD overlay */
@@ -27,8 +24,6 @@ export interface PendulumSceneProps {
 export function PendulumScene({
   theta0,
   length,
-  width = 480,
-  height = 360,
   bobRadius = 10,
   onState,
   showTimer = false,
@@ -36,7 +31,24 @@ export function PendulumScene({
 }: PendulumSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState({ width: 480, height: 360 });
   const reducedMotion = useReducedMotion();
+  const colors = useThemeColors();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          setSize({ width: w, height: Math.min(w * 0.75, 360) });
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   // Trail buffer: array of recent bob positions with timestamps for fading
   const trailRef = useRef<Array<{ x: number; y: number; age: number }>>([]);
@@ -80,6 +92,7 @@ export function PendulumScene({
       if (!ctx) return;
 
       // Handle HiDPI
+      const { width, height } = size;
       const dpr = window.devicePixelRatio || 1;
       if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
         canvas.width = width * dpr;
@@ -143,7 +156,7 @@ export function PendulumScene({
       }
 
       // Draw rod
-      ctx.strokeStyle = "#E6EDF7";
+      ctx.strokeStyle = colors.fg0;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(pivotX, pivotY);
@@ -151,7 +164,7 @@ export function PendulumScene({
       ctx.stroke();
 
       // Draw pivot dot
-      ctx.fillStyle = "#5B6B86";
+      ctx.fillStyle = colors.fg2;
       ctx.beginPath();
       ctx.arc(pivotX, pivotY, 3, 0, Math.PI * 2);
       ctx.fill();
@@ -172,7 +185,7 @@ export function PendulumScene({
         const barWidth = barRight - barLeft;
 
         // Draw background bar
-        ctx.strokeStyle = "#2A3448";
+        ctx.strokeStyle = colors.fg3;
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.moveTo(barLeft, barY);
@@ -209,14 +222,10 @@ export function PendulumScene({
   });
 
   return (
-    <div
-      ref={containerRef}
-      style={{ width, height }}
-      className="mx-auto"
-    >
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
-        style={{ width, height }}
+        style={{ width: size.width, height: size.height }}
         className="block"
       />
     </div>

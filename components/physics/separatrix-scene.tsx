@@ -1,23 +1,39 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 
 type JXG = typeof import("jsxgraph");
 
-export interface SeparatrixSceneProps {
-  width?: number;
-  height?: number;
-}
+const RATIO = 0.8;
+const MAX_HEIGHT = 400;
 
-export function SeparatrixScene({
-  width = 480,
-  height = 400,
-}: SeparatrixSceneProps) {
+export function SeparatrixScene() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const jxgBoxRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<any>(null);
   const jxgRef = useRef<JXG | null>(null);
   const colors = useThemeColors();
+  const [size, setSize] = useState({ width: 480, height: 400 });
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const w = entry.contentRect.width;
+        if (w > 0) {
+          const h = Math.min(w * RATIO, MAX_HEIGHT);
+          setSize({ width: w, height: h });
+          if (boardRef.current) {
+            boardRef.current.resizeContainer(w, h);
+          }
+        }
+      }
+    });
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -26,12 +42,12 @@ export function SeparatrixScene({
       const JXG = (await import("jsxgraph")).default;
       jxgRef.current = JXG as unknown as JXG;
 
-      if (cancelled || !containerRef.current) return;
-      if (!containerRef.current.id) {
-        containerRef.current.id = `separatrix-${Math.random().toString(36).slice(2)}`;
+      if (cancelled || !jxgBoxRef.current) return;
+      if (!jxgBoxRef.current.id) {
+        jxgBoxRef.current.id = `separatrix-${Math.random().toString(36).slice(2)}`;
       }
 
-      const board = JXG.JSXGraph.initBoard(containerRef.current.id, {
+      const board = JXG.JSXGraph.initBoard(jxgBoxRef.current.id, {
         boundingbox: [-Math.PI - 0.3, 4.8, Math.PI + 0.3, -4.8],
         axis: true,
         showNavigation: false,
@@ -150,10 +166,12 @@ export function SeparatrixScene({
   }, [colors]);
 
   return (
-    <div
-      ref={containerRef}
-      className="jxgbox mx-auto"
-      style={{ width, height, backgroundColor: "transparent" }}
-    />
+    <div ref={containerRef} className="w-full pb-4">
+      <div
+        ref={jxgBoxRef}
+        className="jxgbox"
+        style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
+      />
+    </div>
   );
 }

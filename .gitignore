@@ -1,5 +1,8 @@
 # dependencies
 node_modules
+
+# MCP config (contains secrets)
+.mcp.json
 .pnp
 .pnp.*
 .yarn/*

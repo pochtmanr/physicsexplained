@@ -51,7 +51,7 @@ Read it out loud: "force equals negative stiffness times displacement." The minu
 
 This kind of force — proportional to displacement, directed back toward equilibrium — is called a **<Term slug="restoring-force">restoring force</Term>**. It doesn't just describe pendulums. It describes every spring, every plucked string, every atom in a solid vibrating about its equilibrium position. The equation is the same everywhere. Only the constants change.
 
-<SceneCard caption="FIG.01 — the pendulum">
+<SceneCard caption="FIG.01 — the pendulum" className="w-full">
   <PendulumScene theta0={0.3} length={1.2} />
 </SceneCard>
 
@@ -87,7 +87,7 @@ A one-meter pendulum has a period of about two seconds. A four-meter pendulum ha
 
 The bar below the pendulum marks one complete cycle. Watch the timeline fill. That duration is the period, and it doesn't change no matter how you start the pendulum.
 
-<SceneCard caption="FIG.02 — one full period">
+<SceneCard caption="FIG.02 — one full period" className="w-full">
   <PendulumScene theta0={0.25} length={1.2} showTimer />
 </SceneCard>
 
@@ -104,19 +104,19 @@ Watch what happens.
 
 <div className="w-[82%] flex-none snap-center md:w-auto">
 <SceneCard caption="FIG.03a — 1 kg · 10°">
-  <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} width={260} height={300} />
+  <PendulumScene theta0={(10 * Math.PI) / 180} length={1.2} />
 </SceneCard>
 </div>
 
 <div className="w-[82%] flex-none snap-center md:w-auto">
 <SceneCard caption="FIG.03b — 3 kg · 25°">
-  <PendulumScene theta0={(25 * Math.PI) / 180} length={1.2} width={260} height={300} bobRadius={14} />
+  <PendulumScene theta0={(25 * Math.PI) / 180} length={1.2} bobRadius={14} />
 </SceneCard>
 </div>
 
 <div className="w-[82%] flex-none snap-center md:w-auto">
 <SceneCard caption="FIG.03c — 10 kg · 40°">
-  <PendulumScene theta0={(40 * Math.PI) / 180} length={1.2} width={260} height={300} bobRadius={18} />
+  <PendulumScene theta0={(40 * Math.PI) / 180} length={1.2} bobRadius={18} />
 </SceneCard>
 </div>
 
@@ -151,7 +151,7 @@ This curve has a name. It's called a **<Term slug="phase-portrait">phase portrai
 
 Read this diagram as follows: the horizontal axis is the angle — how far the bob has swung from center. The vertical axis is angular velocity — how fast it's moving. When the pendulum passes through the center, the angle is zero but the speed is maximum. At the extremes, speed is zero but the angle is at its peak. That trade-off — position and velocity never both at zero at the same time — is what keeps the pendulum going. Energy sloshes back and forth between position and motion, forever, and the orbit in phase space is the footprint of that exchange.
 
-<SceneCard caption="FIG.04 — phase portrait">
+<SceneCard caption="FIG.04 — phase portrait" className="w-full">
   <PhasePortrait theta0={0.3} length={1.2} />
 </SceneCard>
 

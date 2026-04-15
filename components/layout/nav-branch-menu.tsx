@@ -1,15 +1,32 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { GitBranch } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { BRANCHES } from "@/lib/content/branches";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
 export function NavBranchMenu() {
+  const t = useTranslations("home.branches");
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const items = useMemo(
+    () =>
+      t.raw("items") as Record<
+        string,
+        { title: string; subtitle: string } | undefined
+      >,
+    [t],
+  );
+
+  const stats = useMemo(() => {
+    const total = BRANCHES.length;
+    const live = BRANCHES.filter((b) => b.status === "live").length;
+    return { total, live };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -52,7 +69,7 @@ export function NavBranchMenu() {
         className="flex items-center gap-2 border border-[var(--color-fg-3)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] md:px-3"
       >
         <GitBranch aria-hidden="true" size={14} strokeWidth={1.5} />
-        <span className="hidden md:inline">BRANCHES</span>
+        <span className="hidden md:inline">{t("menuLabel")}</span>
         <span className="text-[10px] leading-none">{"\u25BE"}</span>
       </button>
 
@@ -61,7 +78,7 @@ export function NavBranchMenu() {
       <div
         role="menu"
         aria-hidden={!open}
-        className={`absolute inset-x-0 top-full z-30 max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain border-b border-[var(--color-fg-3)]/40 bg-[var(--color-bg-0)]/95 backdrop-blur-sm shadow-2xl transition-all duration-[200ms] ease-out ${
+        className={`absolute inset-x-0 top-full z-30 max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain border-b border-[var(--color-fg-3)]/40 bg-[var(--color-bg-0)] shadow-[0_16px_32px_-8px_rgb(0_0_0_/_0.25)] transition-all duration-[200ms] ease-out ${
           open
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-1 pointer-events-none"
@@ -70,15 +87,18 @@ export function NavBranchMenu() {
         <div className={`${WIDE_CONTAINER} py-6 md:py-10`}>
           <div className="mb-6 flex items-center justify-between">
             <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
-              § BRANCHES
+              {t("tag")}
             </div>
             <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-2)]">
-              6 total · 1 live
+              {t("menuStats", stats)}
             </div>
           </div>
-          <ul className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-3 [&>li]:-mt-px [&>li]:-ml-px">
+          <ul className="grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-3 [&>li]:-mt-px [&>li]:-ms-px">
             {BRANCHES.map((b) => {
               const isComingSoon = b.status === "coming-soon";
+              const item = items[b.slug];
+              const title = item?.title ?? b.title;
+              const subtitle = item?.subtitle ?? b.subtitle;
               return (
                 <li key={b.slug}>
                   <Link
@@ -93,7 +113,7 @@ export function NavBranchMenu() {
                       </div>
                       <span
                         aria-hidden="true"
-                        className="inline-flex h-5 w-5 items-center justify-center text-base leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)]"
+                        className="inline-flex h-5 w-5 items-center justify-center text-base leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 rtl:-scale-x-100 rtl:group-hover:rotate-45 group-hover:text-[var(--color-cyan)]"
                       >
                         →
                       </span>
@@ -105,19 +125,19 @@ export function NavBranchMenu() {
                           : "text-[var(--color-fg-0)]"
                       }`}
                     >
-                      {b.title}
+                      {title}
                     </div>
                     <p className="mt-1.5 hidden text-xs leading-snug text-[var(--color-fg-2)] md:block">
-                      {b.subtitle}
+                      {subtitle}
                     </p>
                     <div className="mt-auto hidden pt-4 md:block">
                       {isComingSoon ? (
                         <span className="inline-block border border-[var(--color-magenta)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-magenta)]">
-                          COMING SOON
+                          {t("comingSoon")}
                         </span>
                       ) : (
                         <span className="inline-block border border-[var(--color-cyan)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-cyan)]">
-                          {b.topics.length} TOPICS
+                          {t("topicsCount", { count: b.topics.length })}
                         </span>
                       )}
                     </div>
