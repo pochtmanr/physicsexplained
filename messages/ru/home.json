@@ -1,8 +1,8 @@
 {
   "hero": {
-    "tag": "PHYSICS · V0.5 · CLASSICAL MECHANICS LIVE",
-    "titleLead": "Самое непостижимое во Вселенной —",
-    "titleHighlight": "что её можно постичь.",
+    "tag": "physics.it.com · V0.5",
+    "titleLead": "Если я видел дальше других, то лишь потому, что стоял",
+    "titleHighlight": "на плечах гигантов.",
     "subtitle": "From pendulums to planets — real physics, real simulations, no videos.",
     "ctaPrimary": "Start with classical mechanics →",
     "ctaSecondary": "Or browse all six branches ↓",
@@ -35,12 +35,14 @@
       {
         "label": "02 · INTUITION",
         "title": "Feel it before you prove it.",
-        "body": "We show you the idea first, with moving pictures, and the math second. No formulas without a picture. No picture without the math underneath."
+        "body": "We show you the idea first, with moving pictures, and the math second. No formulas without a picture. No picture without the math underneath.",
+        "cta": "Изучить три закона Ньютона"
       },
       {
         "label": "03 · OPEN",
         "title": "Free and open source.",
-        "body": "Every line of code, every equation, every solver — open source. Fork it, embed it, improve it. Society gets smarter when physics gets easier."
+        "body": "Every line of code, every equation, every solver — open source. Fork it, embed it, improve it. Society gets smarter when physics gets easier.",
+        "cta": "Звезда на GitHub — оценить проект"
       }
     ]
   }

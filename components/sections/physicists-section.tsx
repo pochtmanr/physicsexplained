@@ -1,62 +1,52 @@
 import Link from "next/link";
-import { getMessages, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { getAllLocalizedPhysicists } from "@/lib/content/physicists";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
 export async function PhysicistsSection() {
   const t = await getTranslations("home.physicists");
   const physicists = await getAllLocalizedPhysicists();
-  const preview = physicists.slice(0, 6);
-  const messages = (await getMessages()) as {
-    common?: { pages?: { physicists?: { nationalities?: Record<string, string> } } };
-  };
-  const nationalityMap =
-    messages.common?.pages?.physicists?.nationalities ?? {};
+  const preview = physicists.slice(0, 8);
 
   return (
     <section id="physicists" className={`${WIDE_CONTAINER} mt-32 md:mt-48`}>
       <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
         {t("tag")}
       </div>
-      <h2 className="mt-4 text-4xl md:text-5xl font-bold uppercase tracking-tight text-[var(--color-fg-0)]">
+      <h2 className="mt-4 text-3xl md:text-4xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
         {t("title")}
       </h2>
-      <p className="mt-6 max-w-[50ch] text-[var(--color-fg-1)]">
+      <p className="mt-6 text-sm md:text-xl text-[var(--color-fg-1)] max-w-[48ch]">
         {t("subtitle")}
       </p>
-      <div className="mt-12 grid grid-cols-1 gap-0 sm:grid-cols-2 md:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
+      <div className="mt-12 grid grid-cols-2 gap-0 sm:grid-cols-3 md:grid-cols-4 [&>*]:-mt-px [&>*]:-ms-px">
         {preview.map((p) => (
           <Link
             key={p.slug}
             href={`/physicists/${p.slug}`}
-            className="group relative flex h-full min-h-[180px] flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-5 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)] md:min-h-[220px] md:p-6"
+            className="group relative flex h-full min-h-[120px] flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-4 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)] md:min-h-[140px]"
           >
             <div className="flex items-start justify-between">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-cyan)]">
+              <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--color-cyan)]">
                 {p.born}&ndash;{p.died}
-              </div>
+              </span>
               <span
                 aria-hidden="true"
-                className="inline-flex h-5 w-5 items-center justify-center text-base leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
+                className="inline-flex h-4 w-4 items-center justify-center text-xs leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
               >
                 →
               </span>
             </div>
-            <div className="mt-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)] md:text-sm">
+            <div className="mt-2 font-mono text-[11px] uppercase tracking-wider text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)] md:text-xs">
               {p.shortName}
             </div>
-            <p className="mt-2 text-xs leading-snug text-[var(--color-fg-2)] md:text-sm">
+            <p className="mt-1.5 text-[10px] leading-snug text-[var(--color-fg-2)] md:text-[11px] line-clamp-2">
               {p.oneLiner}
             </p>
-            <div className="mt-auto pt-4">
-              <span className="inline-block border border-[var(--color-fg-3)] px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-[var(--color-fg-2)] transition-colors group-hover:border-[var(--color-cyan)] group-hover:text-[var(--color-cyan)]">
-                {nationalityMap[p.nationality] ?? p.nationality}
-              </span>
-            </div>
           </Link>
         ))}
       </div>
-      {physicists.length > 6 && (
+      {physicists.length > 8 && (
         <div className="mt-10 flex justify-center">
           <Link
             href="/physicists"

@@ -50,8 +50,14 @@ export default async function BranchPage({
       <BranchHero branch={branch} />
       {branch.status === "live" ? (
         <div className="mt-16 grid grid-cols-1 gap-0 md:grid-cols-2 [&>*]:-mt-px [&>*]:-ms-px">
-          {branch.topics.map((t) => (
-            <TopicCard key={t.slug} branchSlug={branch.slug} topic={t} />
+          {branch.topics.map((t, i) => (
+            <TopicCard
+              key={t.slug}
+              branchSlug={branch.slug}
+              topic={t}
+              tintIndex={i}
+              tintTotal={branch.topics.length}
+            />
           ))}
         </div>
       ) : (

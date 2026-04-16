@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { Topic } from "@/lib/content/types";
@@ -5,9 +6,21 @@ import type { Topic } from "@/lib/content/types";
 interface TopicCardProps {
   branchSlug: string;
   topic: Topic;
+  tintIndex?: number;
+  tintTotal?: number;
 }
 
-export async function TopicCard({ branchSlug, topic }: TopicCardProps) {
+function extractFigNumber(eyebrow: string): string {
+  const match = eyebrow.match(/FIG\.(\d+)/i);
+  return match ? match[1] : "";
+}
+
+export async function TopicCard({
+  branchSlug,
+  topic,
+  tintIndex,
+  tintTotal,
+}: TopicCardProps) {
   const tTopics = await getTranslations("home.topics");
   const tMeta = await getTranslations("home.topics.meta");
 
@@ -20,13 +33,57 @@ export async function TopicCard({ branchSlug, topic }: TopicCardProps) {
   const subtitle = item?.subtitle ?? topic.subtitle;
   const eyebrow = item?.eyebrow ?? topic.eyebrow;
 
+  // Graded depth — each card sinks a little deeper than the one before it.
+  const position = tintIndex ?? 0;
+  const total = Math.max(1, (tintTotal ?? 3) - 1);
+  const progress = Math.min(1, position / total);
+  const darkPct = Math.round(progress * 65);
+  const cyanPct = 2 + progress * 5;
+  const gridOpacity = 0.45 + progress * 0.5;
+
+  const background = `color-mix(in srgb, var(--color-cyan) ${cyanPct}%, color-mix(in srgb, var(--color-bg-0) ${darkPct}%, var(--color-bg-1)))`;
+
+  const style = {
+    background,
+    "--card-grid-opacity": String(gridOpacity),
+  } as CSSProperties;
+
+  const number = extractFigNumber(eyebrow);
+
   return (
     <Link
       href={`/${branchSlug}/${topic.slug}`}
-      className="group relative flex h-full min-h-[260px] flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-8 md:p-10 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)]"
+      className="group relative flex h-full min-h-[220px] md:min-h-[260px] flex-col overflow-hidden border border-[var(--color-fg-3)] p-6 md:p-8 transition-[border-color,box-shadow] duration-[280ms] ease-out hover:z-10 hover:border-[var(--color-cyan)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)]"
+      style={style}
     >
+      {/* Grid wash — density grows with card depth */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          opacity: "var(--card-grid-opacity)",
+          maskImage:
+            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 70%)",
+          WebkitMaskImage:
+            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Giant watermark numeral */}
+      {number ? (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[168px] leading-none font-bold text-[var(--color-cyan)] opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2"
+        >
+          {number}
+        </span>
+      ) : null}
+
       {/* Top row: eyebrow + arrow */}
-      <div className="flex items-start justify-between">
+      <div className="relative flex items-start justify-between">
         <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
           {eyebrow}
         </div>
@@ -39,14 +96,16 @@ export async function TopicCard({ branchSlug, topic }: TopicCardProps) {
       </div>
 
       {/* Title + subtitle */}
-      <h3 className="mt-6 text-2xl md:text-3xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+      <h3 className="relative mt-5 text-xl md:text-2xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
         {title}
       </h3>
-      <p className="mt-3 text-[var(--color-fg-1)]">{subtitle}</p>
+      <p className="relative mt-3 text-sm md:text-base text-[var(--color-fg-1)]">
+        {subtitle}
+      </p>
 
       {/* Bottom meta — pinned to bottom */}
       {topic.readingMinutes > 0 && (
-        <div className="mt-auto pt-10 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+        <div className="relative mt-auto pt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
           {tMeta("readingTime", { minutes: topic.readingMinutes })}
         </div>
       )}

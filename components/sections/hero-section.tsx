@@ -15,7 +15,7 @@ export async function HeroSection() {
           <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
             {t("tag")}
           </div>
-          <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
+          <h1 className="mt-6 text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
             {t("titleLead")}{" "}
             <span className="font-display font-semibold italic text-[var(--color-cyan)]">
               {t("titleHighlight")}

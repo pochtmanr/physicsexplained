@@ -1,8 +1,8 @@
 {
   "hero": {
-    "tag": "PHYSICS · V0.5 · CLASSICAL MECHANICS LIVE",
-    "titleLead": "The most incomprehensible thing about the universe is that",
-    "titleHighlight": "it is comprehensible.",
+    "tag": "physics.it.com · V0.5",
+    "titleLead": "If I have seen further, it is by standing on the",
+    "titleHighlight": "shoulders of giants.",
     "subtitle": "Physics isn't just formulas. It's the language the universe speaks. We made it visible.",
     "ctaPrimary": "Start with classical mechanics",
     "ctaSecondary": "Or browse all six branches",
@@ -272,12 +272,14 @@
       {
         "label": "02 · INTUITION",
         "title": "Feel it before you prove it.",
-        "body": "We show you the idea first, with moving pictures, and the math second. No formulas without a picture. No picture without the math underneath."
+        "body": "We show you the idea first, with moving pictures, and the math second. No formulas without a picture. No picture without the math underneath.",
+        "cta": "Explore Newton's three laws"
       },
       {
         "label": "03 · OPEN",
         "title": "Free and open source.",
-        "body": "Every line of code, every equation, every solver — open source. Fork it, embed it, improve it. Society gets smarter when physics gets easier."
+        "body": "Every line of code, every equation, every solver — open source. Fork it, embed it, improve it. Society gets smarter when physics gets easier.",
+        "cta": "Star on GitHub — rate the project"
       }
     ]
   },

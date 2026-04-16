@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import type { Branch } from "@/lib/content/types";
@@ -5,17 +6,41 @@ import type { Branch } from "@/lib/content/types";
 interface BranchCardProps {
   branch: Branch;
   className?: string;
+  tintIndex?: number;
+  tintTotal?: number;
 }
 
-export async function BranchCard({ branch, className }: BranchCardProps) {
+export async function BranchCard({
+  branch,
+  className,
+  tintIndex,
+  tintTotal,
+}: BranchCardProps) {
   const t = await getTranslations("home.branches");
   const isLive = branch.status === "live";
 
+  // Graded depth — the card sinks a little deeper the further down the list
+  // it sits, matching the "three rules" cards on the homepage.
+  const position = tintIndex ?? Math.max(0, branch.index - 1);
+  const total = Math.max(1, (tintTotal ?? 6) - 1);
+  const progress = Math.min(1, position / total);
+  const darkPct = Math.round(progress * 75);
+  const cyanPct = 2 + progress * 6;
+  const gridOpacity = 0.45 + progress * 0.55;
+
+  const accent = isLive ? "var(--color-cyan)" : "var(--color-magenta)";
+  const background = `color-mix(in srgb, ${accent} ${cyanPct}%, color-mix(in srgb, var(--color-bg-0) ${darkPct}%, var(--color-bg-1)))`;
+
+  const style = {
+    background,
+    "--card-grid-opacity": String(gridOpacity),
+  } as CSSProperties;
+
   const baseClass =
-    "group relative flex h-full min-h-[260px] flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-8 md:p-10 transition-colors duration-[180ms] hover:z-10";
+    "group relative flex h-full min-h-[240px] md:min-h-[280px] flex-col overflow-hidden border border-[var(--color-fg-3)] p-6 md:p-8 transition-[border-color,box-shadow] duration-[280ms] ease-out hover:z-10";
   const hoverBorder = isLive
-    ? "hover:border-[var(--color-cyan)]"
-    : "hover:border-[var(--color-magenta)]";
+    ? "hover:border-[var(--color-cyan)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)]"
+    : "hover:border-[var(--color-magenta)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-magenta)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-magenta)_45%,transparent)]";
 
   const titleHover = isLive
     ? "group-hover:text-[var(--color-cyan)]"
@@ -41,13 +66,42 @@ export async function BranchCard({ branch, className }: BranchCardProps) {
   const title = item?.title ?? branch.title;
   const subtitle = item?.subtitle ?? branch.subtitle;
 
+  const number = String(branch.index).padStart(2, "0");
+
   return (
     <Link
       href={`/${branch.slug}`}
       className={[baseClass, hoverBorder, className].filter(Boolean).join(" ")}
+      style={style}
     >
+      {/* Grid wash — density grows with card depth */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          backgroundImage:
+            "linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          opacity: "var(--card-grid-opacity)",
+          maskImage:
+            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 70%)",
+          WebkitMaskImage:
+            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 70%)",
+        }}
+      />
+
+      {/* Giant watermark numeral */}
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[176px] leading-none font-bold opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2 ${
+          isLive ? "text-[var(--color-cyan)]" : "text-[var(--color-magenta)]"
+        }`}
+      >
+        {number}
+      </span>
+
       {/* Top row: eyebrow + arrow */}
-      <div className="flex items-start justify-between">
+      <div className="relative flex items-start justify-between">
         <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
           {branch.eyebrow}
         </div>
@@ -61,14 +115,16 @@ export async function BranchCard({ branch, className }: BranchCardProps) {
 
       {/* Title + subtitle */}
       <h3
-        className={`mt-6 text-2xl md:text-3xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors ${titleHover}`}
+        className={`relative mt-5 text-xl md:text-2xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors ${titleHover}`}
       >
         {title}
       </h3>
-      <p className="mt-3 text-[var(--color-fg-1)]">{subtitle}</p>
+      <p className="relative mt-3 text-sm md:text-base text-[var(--color-fg-1)]">
+        {subtitle}
+      </p>
 
       {/* Bottom pill — pinned to bottom so cards align regardless of title length */}
-      <div className="mt-auto pt-10">
+      <div className="relative mt-auto pt-8">
         <span className={pillClass}>{pillLabel}</span>
       </div>
     </Link>

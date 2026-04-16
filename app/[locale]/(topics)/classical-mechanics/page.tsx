@@ -61,8 +61,14 @@ export default async function ClassicalMechanicsPage({
               })}
             </h2>
             <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
-              {moduleTops.map((t) => (
-                <TopicCard key={t.slug} branchSlug={branch.slug} topic={t} />
+              {moduleTops.map((t, i) => (
+                <TopicCard
+                  key={t.slug}
+                  branchSlug={branch.slug}
+                  topic={t}
+                  tintIndex={i}
+                  tintTotal={moduleTops.length}
+                />
               ))}
             </div>
           </section>

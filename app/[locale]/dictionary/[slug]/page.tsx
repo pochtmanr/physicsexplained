@@ -245,7 +245,7 @@ export default async function DictionaryTermPage({
                 alt={t("illustrationAlt", { term: displayTerm })}
                 width={560}
                 height={360}
-                className="h-auto max-w-full dictionary-illustration"
+                className={`h-auto max-w-full${term.illustration!.endsWith(".svg") ? " dictionary-illustration" : ""}`}
               />
             </div>
           </SceneCard>
