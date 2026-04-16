@@ -7,6 +7,8 @@ import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { locales, getDirection } from "@/i18n/config";
 import { BRANCHES } from "@/lib/content/branches";
+import { Logo } from "./logo";
+import { WIDE_CONTAINER } from "@/lib/layout";
 
 const STORAGE_KEY = "physics-theme";
 type Theme = "dark" | "light";
@@ -112,10 +114,34 @@ export function MobileNav() {
 
       <div
         aria-hidden={!open}
-        className={`fixed inset-0 top-[var(--nav-height,65px)] z-40 md:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain transition-opacity duration-[180ms] ${
+        className={`fixed inset-0 z-50 md:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain transition-opacity duration-[180ms] ${
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
+        <div className="sticky top-0 z-10 border-b border-[var(--color-fg-3)]/40 bg-[var(--color-bg-0)]">
+          <div className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-4`}>
+            <Link
+              href="/"
+              onClick={close}
+              aria-label={tNav("homeAriaLabel")}
+              className="inline-flex items-center gap-2.5 font-display text-base leading-none tracking-tight whitespace-nowrap"
+            >
+              <Logo className="h-5 w-auto" />
+              <div>
+                <span className="text-[var(--color-fg-0)] font-semibold">Physics.</span>
+                <span className="text-[var(--color-cyan)] font-semibold">explained</span>
+              </div>
+            </Link>
+            <button
+              type="button"
+              onClick={close}
+              aria-label="Close menu"
+              className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-3)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+            >
+              <X aria-hidden="true" size={18} strokeWidth={1.5} />
+            </button>
+          </div>
+        </div>
         <div className="mx-auto w-full max-w-[640px] px-6 py-8">
           <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan)]">
             {tBranches("tag")}
