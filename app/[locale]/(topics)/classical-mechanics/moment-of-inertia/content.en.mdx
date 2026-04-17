@@ -1,18 +1,152 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { RampRaceScene } from "@/components/physics/ramp-race-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Jacob Steiner", href: "/physicists/jacob-steiner" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Moment of Inertia", href: "/dictionary/moment-of-inertia" },
+  { type: "term", label: "Parallel Axis Theorem", href: "/dictionary/parallel-axis-theorem" },
+  { type: "term", label: "Radius of Gyration", href: "/dictionary/radius-of-gyration" },
+  { type: "term", label: "Principal Axes", href: "/dictionary/principal-axes" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.10 · ROTATION & RIGID BODIES"
   title="MOMENT OF INERTIA"
-  subtitle="Why a hollow sphere rolls slower than a solid one."
+  subtitle="What mass becomes when you spin it."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="Why a hollow sphere loses the race">
 
-TODO: write the opening.
+Set a solid sphere and a hollow sphere of the same mass and radius at the top of a ramp, and let go. The solid sphere reaches the bottom first. Every time. This is not a trick of materials — both are rolling without slipping, both are under the same gravity, both start with the same potential energy. And yet one wins.
+
+The reason is moment of inertia. Both bodies convert their initial m·g·h of gravitational potential energy into motion. But "motion" includes two flavours: the translational KE of the center of mass (½·m·v²) and the rotational KE of the body about its center (½·I·ω²). The no-slip condition ties v to ω by v = ω·R, so ½·I·ω² = ½·(I/R²)·v². The total KE is
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">KE = ½·m·v² · (1 + I/(m·R²))</span>
+</EquationBlock>
+
+The factor I/(m·R²) is pure geometry — it's what we'll call the rolling coefficient. For a solid sphere it's 2/5; for a hollow sphere 2/3. Same mass, same radius, same energy budget — but the hollow sphere has to stash proportionally more of its KE in rotation, leaving less for translation, so its center of mass ends up moving slower.
+
+That is this topic in miniature: **<Term slug="moment-of-inertia">moment of inertia</Term>** is what decides how mass distributes its rotational effort, and how it distributes it depends on where the mass sits relative to the axis.
+
+<SceneCard caption="FIG.10a — rolling race with differing moments of inertia" className="w-full">
+  <RampRaceScene />
+</SceneCard>
+
+Five bodies, same mass, same radius, same ramp. The sliding block (red) doesn't rotate at all, so every joule of PE becomes translational KE — it wins. A solid sphere (2/5) is second. The thin hoop (1) is last: all its mass is at maximum radius, so I = m·R², and it spends half its KE on rotation. The ordering is strict: small rolling coefficient → fast; large rolling coefficient → slow. None of the bodies care about their total mass (the m cancels out of the acceleration), only about how that mass is distributed.
+
+</Section>
+
+<Section index={2} title="The integral form">
+
+For a continuous rigid body, moment of inertia about an axis is
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">I = ∫ r² dm</span>
+</EquationBlock>
+
+where r is the perpendicular distance from each mass element dm to the axis. The r² is what makes everything interesting. Double the distance from the axis and the contribution to I goes up by four. So moving mass from near the axis to far away costs you dearly — moment-of-inertia-wise.
+
+A few key results for bodies about their axis of symmetry:
+
+- **Thin rod, length L, mass m, about its centre:** I = (1/12)·m·L². About one end: I = (1/3)·m·L².
+- **Thin ring, radius R, mass m, about its axis:** I = m·R². All the mass is at maximum radius.
+- **Solid disk, radius R, mass m, about its axis:** I = ½·m·R². The average of r² over a uniform disk works out to R²/2.
+- **Solid sphere, radius R, mass m, about any diameter:** I = (2/5)·m·R².
+- **Hollow spherical shell, radius R, mass m:** I = (2/3)·m·R². All the mass is at R, but it's still distributed over the sphere's surface at varying polar angle, so I is a bit less than the hoop's.
+- **Rectangular plate, width a × length b, mass m, axis perpendicular through centre:** I = (1/12)·m·(a² + b²).
+
+Each one is an integral. The sphere's 2/5 comes from integrating r²·dm in spherical coordinates for a uniform density ρ = m/(4πR³/3); the factor drops out after two pages of algebra. The factor 1/12 for a rod is from integrating x² from −L/2 to L/2 with a constant mass per length. The results are tabulated in engineering handbooks precisely because these integrals come up all the time and nobody wants to redo them.
+
+</Section>
+
+<Section index={3} title="The parallel-axis theorem">
+
+Bodies don't always rotate about axes through their center of mass. A pendulum swings about its pivot; a wheel may spin about a point off its axle. How does I depend on the choice of axis?
+
+The answer is the **<Term slug="parallel-axis-theorem">parallel-axis theorem</Term>**, proved by the Swiss geometer <PhysicistLink slug="jacob-steiner">Jacob Steiner</PhysicistLink> in the 1840s (and so sometimes called Steiner's theorem): the moment of inertia about any axis equals the moment of inertia about the parallel axis through the center of mass, plus M·d² for the parallel displacement d.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">I = I_CM + M · d²</span>
+</EquationBlock>
+
+It is astonishingly useful. A thin rod of mass m and length L has I_CM = m·L²/12 about its centre. About one end (d = L/2), the parallel-axis theorem gives I = m·L²/12 + m·(L/2)² = m·L²/3. That is the formula you need for a rod swinging as a pendulum from one end — and you get it from the centre-of-mass result in one line, without having to redo the integral.
+
+The theorem is a direct consequence of the definition of the center of mass: the first moment of the mass distribution about the CM is zero, so when you expand ∫(r − d)² dm = ∫r² dm − 2·d·∫r dm + ∫d² dm, the middle term vanishes, and you're left with I_CM plus a pure translational piece M·d². The arithmetic is clean; the conceptual payoff is enormous.
+
+<Callout variant="math">
+There is a sibling theorem — the perpendicular-axis theorem — that applies specifically to flat laminar bodies: for a flat plate lying in the x-y plane, I_z = I_x + I_y. The moments of inertia about the two in-plane axes sum to the moment of inertia about the axis perpendicular to the plate. For a circular disk of radius R this gives I_axis = 2·I_diameter, and so I_diameter = ¼·m·R² (compared with I_axis = ½·m·R²). These theorems turn the short list of fundamental integrals into a much larger table of results.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The radius of gyration">
+
+For every rigid body and axis pair, there exists a single distance k — the **<Term slug="radius-of-gyration">radius of gyration</Term>** — such that
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">I = m · k²</span>
+</EquationBlock>
+
+Equivalently, k = √(I/m). It is the distance from the axis at which a point mass of the body's total mass would produce the same moment of inertia as the actual distributed body.
+
+For a solid sphere, k = R·√(2/5) ≈ 0.632·R. For a hollow sphere, k = R·√(2/3) ≈ 0.816·R. For a hoop, k = R exactly. The radius of gyration is a compact single-number description of how spread-out a body's mass is — useful shorthand in engineering for comparing flywheels, rotors, and structural beams. Two beams with the same mass but different k will deflect differently in bending; two flywheels with the same mass but different k will store different amounts of rotational energy at the same ω.
+
+The radius of gyration is also a useful abstraction when you want to treat an extended body like a point particle. For a body rolling without slipping, the total KE is ½·m·v²·(1 + k²/R²). All the complicated details of the body's shape are bundled into a single number, k/R, the ratio of the radius of gyration to the outer radius.
+
+</Section>
+
+<Section index={5} title="Principal axes and the inertia tensor">
+
+Everything so far has been about rotation about a single fixed axis. For rotation about an arbitrary axis of a three-dimensional body, I is not a single number but a rank-2 tensor — the **inertia tensor** — with nine components:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">I_ij = ∫ (r² · δ_ij − x_i · x_j) dm</span>
+</EquationBlock>
+
+Given an angular velocity vector ω, the angular momentum vector is L = I·ω — meaning L may not be parallel to ω. That's the striking generalisation: in general, spinning a 3-D body about an arbitrary axis produces angular momentum pointing in a different direction from the spin. You can feel this: spin a book about its long axis and it's smooth; spin it about its short axis and it's smooth; spin it about the intermediate axis and it wobbles wildly. The wobble is the body's response to the mismatch between ω and L.
+
+For every rigid body there are three special directions called the **<Term slug="principal-axes">principal axes</Term>** — mutually perpendicular, fixed in the body — about which I is diagonal. Spin the body about a principal axis and L is parallel to ω; there is no wobble. The three diagonal entries of the inertia tensor in the principal frame are called the principal moments of inertia, often written I_1, I_2, I_3. For symmetric bodies (cube, sphere, cylinder) the principal axes line up with the obvious symmetry directions. For asymmetric bodies they are harder to find, but they always exist.
+
+This is the business end of rigid-body dynamics. The Euler equations (1750s) — which we met briefly in the angular-momentum topic — are the rotational analogue of F = m·a written in terms of the principal moments, and they govern every spinning top, wobbling tennis racket, and tumbling Hubble Space Telescope. They are the tool we will use in FIG.11 to understand why gyroscopes behave the way they do, and in FIG.12 to explain why the Earth itself wobbles on its axis.
+
+</Section>
+
+<Section index={6} title="Where it appears">
+
+Moment of inertia is everywhere in engineering and physics.
+
+**Flywheels.** A flywheel stores rotational kinetic energy ½·I·ω². For a given ω, bigger I means more stored energy. For a given stored energy, bigger I means lower ω, which reduces bearing stresses. Flywheel-battery engineers push mass out to the rim and use carbon-fibre rotors that can survive high tip speeds — a hundred-metres-per-second rim velocity is typical. A 100 kg cylinder flywheel 1 m in diameter at 10,000 rpm stores about 6 kWh — enough to run a hot water heater for a few hours.
+
+**Engines.** A reciprocating engine's crankshaft has a large flywheel bolted to one end. Its purpose is to smooth out the torque pulses from the cylinders: combustion in cylinder 1 delivers a huge torque impulse, then nothing, then cylinder 2, then nothing. A heavy flywheel averages all this out and keeps the crankshaft's angular velocity nearly constant between power strokes. Without it, the engine would lurch instead of spin.
+
+**Sports equipment.** A baseball bat with a long "sweet spot" has its moment of inertia designed around the bat's swing pivot (wrist or handle): too much I and the swing is sluggish; too little and the bat's response to off-centre hits is jarring. Golf clubs, tennis racquets, and hockey sticks are all sold partly on the basis of their MOI characteristics ("balance point", "polar moment") because feel in the hand depends on the ratio of I to the grip torque the player can apply.
+
+**Biomechanics.** A runner bends their knees to reduce the moment of inertia of the leg about the hip. A diver tucks into a ball to decrease I and increase angular velocity. A tightrope walker extends a long balancing pole horizontally to dramatically increase the I of their system about the tightrope, so any pitching torque from a stumble produces only a small angular acceleration — giving them time to correct.
+
+**Astronomy.** A star collapses into a neutron star 20 km across. I drops by a factor of about 10¹⁰; conservation of L forces ω up by the same factor; a 30-day rotation becomes a millisecond spin. These are pulsars. A planet's moment of inertia ratio I/(m·R²) can be measured from its polar flattening and its nutation period; Mars's ratio (about 0.366) is lower than Earth's (0.330), reflecting subtle differences in interior mass distribution.
+
+Every place rotation happens, moment of inertia is the quantity that controls it. Learn the integrals once and you have half the toolkit for rigid-body mechanics for life.
+
+</Section>
+
+<Section index={7} title="Forward">
+
+We now have:
+- **The integral** I = ∫r² dm defining moment of inertia.
+- **Table of standard shapes**: rod, ring, disk, sphere, shell, plate.
+- **Parallel-axis theorem** for shifting the reference axis.
+- **Radius of gyration** as a single-number shorthand.
+- **Inertia tensor and principal axes** for arbitrary 3-D rotation.
+
+That is enough to tackle the strangest consequences of rotation. A gyroscope does not fall when pushed; it precesses. A spinning top stands up. The Earth's rotation axis itself moves on two different timescales — a 26,000-year precession and a 433-day wobble. These are consequences of τ = I·α applied to bodies with non-trivial inertia tensors, and they are our subjects for the next two topics. FIG.11 is gyroscopes; FIG.12 is the Earth itself.
 
 </Section>
 

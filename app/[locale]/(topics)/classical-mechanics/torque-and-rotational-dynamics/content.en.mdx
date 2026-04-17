@@ -1,18 +1,143 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TorqueLeverScene } from "@/components/physics/torque-lever-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Archimedes", href: "/physicists/archimedes" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Torque", href: "/dictionary/torque" },
+  { type: "term", label: "Moment Arm", href: "/dictionary/moment-arm" },
+  { type: "term", label: "Lever", href: "/dictionary/lever" },
+  { type: "term", label: "Static Equilibrium", href: "/dictionary/static-equilibrium" },
+  { type: "term", label: "Angular Acceleration", href: "/dictionary/angular-acceleration" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.09 · ROTATION & RIGID BODIES"
   title="TORQUE AND ROTATIONAL DYNAMICS"
-  subtitle="Forces that turn instead of push."
+  subtitle="Forces that turn instead of push — and the geometry that decides how much they turn."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="Why rotation is different">
 
-TODO: write the opening.
+Classical mechanics so far has been the mechanics of particles: point masses moving along lines and curves, each with a definite position, velocity, and acceleration. Real objects have size. A wrench, a planet, a rolling wheel, a spinning disk, a human body — none of these are points. When a force acts on an extended body, the body doesn't just translate. It rotates.
+
+A block on a frictionless floor, pushed dead-centre, slides. Pushed at the corner, it spins. The difference is not the force — it's the same in both cases — it's *where* the force is applied. That information is lost the moment you reduce the block to its center of mass. To describe the rotation you need a new kind of quantity: torque, the rotational analogue of force, which carries both the magnitude of the force *and* information about the leverage with which it is applied.
+
+This topic introduces torque properly, derives the rotational version of Newton's second law, and gets ready for the next three topics — moment of inertia, gyroscopes, and the wobbling Earth — all of which live and die by these equations. By the time this section is over the phrase "rotational analogue of" will stop being a metaphor and start being a calculation you can do.
+
+</Section>
+
+<Section index={2} title="Torque — leverage made precise">
+
+**<Term slug="torque">Torque</Term>** is a simple idea dressed in vector notation. A force F applied at a point r from a chosen pivot tends to rotate the body about the pivot. How much? That depends not just on F but on the geometry: how far from the pivot the force is applied, and the angle between the two.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">τ = r × F       |τ| = r · F · sin θ</span>
+</EquationBlock>
+
+The cross product ensures that only the component of F perpendicular to r contributes. A force pointing directly along the lever arm does zero torque — it tries to slide the lever through the pivot rather than rotate around it. A force perpendicular to the arm delivers the full F·r. At any intermediate angle you get F·r·sin θ.
+
+The quantity r·sin θ is called the **<Term slug="moment-arm">moment arm</Term>** of the force: it is the perpendicular distance from the line of the force to the pivot. Torque is then force times moment arm. This is the practical formulation: if you can eyeball the perpendicular distance between a force's line of action and the pivot, you can read off the torque directly. A door closer near the hinge has a short moment arm and delivers little torque. The same closer near the handle has a long arm and delivers much more.
+
+Torque is a vector, pointing along the rotation axis, direction set by the right-hand rule. For planar problems (all forces in one plane) this collapses to a signed scalar: counter-clockwise rotations positive, clockwise negative. The units are newton-metres — which are dimensionally the same as joules, but torque and energy are not the same quantity, and the overlap is a bookkeeping coincidence.
+
+<SceneCard caption="FIG.09a — balance of torques on a lever" className="w-full">
+  <TorqueLeverScene />
+</SceneCard>
+
+Adjust the masses and their distances from the pivot and watch the lever tip. The condition for balance is m_L·r_L = m_R·r_R — equal torques about the pivot, opposite signs. Double the left arm and the left mass can be halved and the rod still balances. That is the lever law, known to <PhysicistLink slug="archimedes">Archimedes</PhysicistLink> in the third century BCE and captured in his famous boast: "Give me a place to stand, and I shall move the Earth."
+
+</Section>
+
+<Section index={3} title="Archimedes and the lever">
+
+Archimedes's *On the Equilibrium of Planes*, probably written around 250 BCE, gives the first rigorous proof of the law of the lever. His argument is geometric: two unequal weights on opposite sides of a fulcrum balance when their distances from the fulcrum are inversely proportional to their masses. It is the oldest statement of a mechanical law in essentially the form we still use.
+
+The power of the lever is that it trades distance for force. To lift a 500 kg stone against gravity, you need to apply 5000 N upward. If you cannot muster 5000 N yourself, the lever rearranges the geometry: pivot the stone over a fulcrum, stand at the far end of a long pole, and use your 500 N of force applied at 10 times the distance of the stone from the fulcrum. The torques balance — your 500 N × 10 m matches the stone's 5000 N × 1 m — and the stone lifts. You have to move your end ten metres for every metre the stone rises, but you could not have done the job at all without the lever. Mechanical advantage is a pure consequence of the geometry of torques.
+
+The principle runs through almost all pre-industrial technology: the wheelbarrow (a class-2 lever with the load between pivot and effort), the claw hammer (a class-1 lever for pulling nails), the human forearm (a class-3 lever pivoting at the elbow), scissors (paired class-1 levers), pliers, bolt cutters, tweezers, fishing rods. Each trades force for distance or distance for force, according to the ratio of moment arms.
+
+<Callout variant="intuition">
+One way to internalise torque: imagine trying to close a door by pushing on it. Push near the hinge and it barely moves; push near the handle and it swings easily. The force you apply is the same; what changes is the moment arm. Your muscles don't get stronger when you move to the handle — geometry does the work of amplification.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Static equilibrium">
+
+A body in **<Term slug="static-equilibrium">static equilibrium</Term>** is one that is not accelerating *and* not angularly accelerating. For an extended body this means two conditions must hold simultaneously:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">Σ F = 0     (no linear acceleration)</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">Σ τ = 0     (no angular acceleration, about any point)</span>
+</EquationBlock>
+
+Both are non-trivial. A body with Σ F = 0 but Σ τ ≠ 0 will not translate but will start to rotate. A body with Σ τ = 0 but Σ F ≠ 0 will translate without rotating. Only when both sums vanish is the body truly stationary.
+
+The torques in the second equation are computed about some pivot — but *which* pivot? A surprising and useful fact: if Σ F = 0, the net torque is the same about every point. So for a body already in force equilibrium, you can choose any convenient pivot when checking rotational equilibrium. Engineers often pick a point that happens to be where one of the unknown forces acts, so that force drops out of the torque equation and the remaining unknowns are easier to solve.
+
+This pair of conditions is the engineer's tool for analysing static structures. A bridge, a ladder against a wall, a crane with a load, a human standing on one leg, a weighing scale — all are solved by writing down the forces and torques and insisting both sums vanish. The mathematics is sometimes a large simultaneous system of equations, but the structure is always just Σ F = 0 and Σ τ = 0.
+
+</Section>
+
+<Section index={5} title="Newton's second law for rotation">
+
+For a single rigid body rotating about a fixed axis, the rotational analogue of F = m·a is:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">τ = I · α</span>
+</EquationBlock>
+
+where τ is the net external torque about the axis, I is the moment of inertia about that axis, and α = d²θ/dt² is the angular acceleration. The units work out: N·m = (kg·m²)·(rad/s²). Just as F = m·a says force is mass times linear acceleration, τ = I·α says torque is rotational-mass times angular acceleration.
+
+The proof is short. For a point mass at radius r from the axis, F = m·a gives F_perp = m·a_perp = m·r·α. Multiplying by r gives r·F_perp = (m·r²)·α, which is τ = I·α. Summing over all particles in a rigid body preserves the form — both sides are additive — and you get the rigid-body version above.
+
+Three classes of problem run on this equation:
+
+- **A disk spun up by a motor.** A constant torque τ₀ applied to a disk with moment of inertia I makes it angularly accelerate at α = τ₀/I. Integrating: ω(t) = τ₀·t/I; θ(t) = ½·(τ₀/I)·t². The bigger the moment of inertia, the slower the spin-up.
+
+- **A pulley with a hanging mass.** A rope over a pulley, a mass m on one end, the pulley of moment of inertia I. The tension T pulls down on one side of the pulley (torque T·R about the centre), while gravity on the hanging mass gives m·g − T = m·a (linear acceleration of the mass) and T·R = I·α = I·a/R (rotation of the pulley). Two equations, two unknowns, clean algebra.
+
+- **A rolling wheel.** A disk rolling without slipping on a surface, with force applied at the axle, has to obey both F = m·a_CM (translation) and τ = I·α (rotation about the CM), linked by the rolling constraint a_CM = α·R. This is how a car's wheel converts engine torque into forward motion, and why rolling resistance scales with the moment of inertia.
+
+</Section>
+
+<Section index={6} title="Rolling without slipping">
+
+A wheel rolling cleanly on a road is doing two things at once: its center of mass is translating forward, and its body is rotating about that center. The **no-slip condition** ties the two together:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">v_CM = ω · R     (rolling without slipping)</span>
+</EquationBlock>
+
+where R is the wheel's radius and ω its angular velocity. The point of the tyre in contact with the road is instantaneously at rest — that's what "no slip" means — and the rest of the wheel is doing a combination of rotation and translation.
+
+Differentiating gives a_CM = α·R, linking linear and angular acceleration. For a rolling wheel of mass m and moment of inertia I pushed by a force F at the centre, the combined analysis gives
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">a_CM = F / (m + I/R²)</span>
+</EquationBlock>
+
+— less than the F/m you'd get for a non-rotating block, because some of the force goes into spinning the wheel up rather than shoving its center forward. For a solid disk (I = ½·m·R²) this gives a = (2/3)·F/m; for a hollow hoop (I = m·R²) it gives a = ½·F/m. The hoop is harder to accelerate even at the same mass — its moment of inertia is twice as large because all the mass sits at maximum radius.
+
+This is why, on a ramp, a solid ball rolls down faster than a hollow sphere of the same mass and radius: the solid ball has lower I, so more of its gravitational PE becomes translational KE and less is stuck in rotational KE. It is also why flywheel energy storage favors hollow cylindrical flywheels — the same mass stores more rotational energy for a given ω, because I is larger. Designing a wheel is a choice between "easy to spin up" (small I, concentrate mass near axis) and "stores lots of rotational energy" (large I, concentrate mass at rim). There is no single best answer; it depends on what the wheel is for.
+
+</Section>
+
+<Section index={7} title="Forward">
+
+We now have a workable framework for rigid-body rotation: torque plays the role of force, moment of inertia plays the role of mass, angular acceleration plays the role of linear acceleration, and τ = I·α is the rotational F = m·a. Static equilibrium requires both Σ F = 0 and Σ τ = 0. Rolling ties linear and rotational motion through v_CM = ω·R.
+
+Notice that I — the moment of inertia — keeps appearing in every formula, but we haven't looked at it carefully. Why is a solid disk's moment of inertia ½·m·r² while a hoop's is m·r²? Why does a sphere rolling down a ramp behave differently from a cylinder? Why does a pendulum's period depend on how far its pivot sits from its center of mass? These are all questions about how mass distributes itself relative to an axis, and they are the subject of the next topic. In FIG.10 we'll build the full moment-of-inertia toolkit: integrals for standard shapes, the parallel-axis theorem, and the principal axes of a general rigid body. After that, torque-and-mass-distribution analysis is a calculational skill rather than a pedagogical trick.
 
 </Section>
 

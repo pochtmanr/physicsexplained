@@ -1,18 +1,120 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { GyroscopeScene } from "@/components/physics/gyroscope-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Léon Foucault", href: "/physicists/leon-foucault" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Elmer Sperry", href: "/physicists/elmer-sperry" },
+  { type: "term", label: "Gyroscope", href: "/dictionary/gyroscope" },
+  { type: "term", label: "Precession", href: "/dictionary/precession" },
+  { type: "term", label: "Nutation", href: "/dictionary/nutation" },
+  { type: "term", label: "Euler Angles", href: "/dictionary/euler-angles" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.11 · ROTATION & RIGID BODIES"
   title="GYROSCOPES AND PRECESSION"
-  subtitle="Why a top doesn't fall."
+  subtitle="Why a spinning top doesn't fall — and why physics intuition, on first encounter, protests."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="The top that refuses to fall">
 
-TODO: write the opening.
+Take a toy top. Not spinning, you balance it delicately on its point, then let go. It falls over in a fraction of a second — a standard gravitational topple, the kind every pendulum and ladder and unstable stack obeys. Spin it up to a few thousand rpm and try again. Now it stands up on its point for tens of seconds, sometimes minutes. Its axis tilts slightly under gravity, but instead of falling further, the whole axis traces out a slow cone — the top precesses.
+
+This is bizarre on first encounter. Physics class taught you that gravity pulls things down, and objects in unstable equilibrium topple. Yet a spinning top seems to override this. It does not override it. It merely routes the response to gravity through angular momentum in a way that produces circular motion of the axis rather than an irreversible fall.
+
+This topic is that routing, explained. By the end of it, a top that precesses will seem as natural as a pendulum that swings. A **<Term slug="gyroscope">gyroscope</Term>** — a spinning mass on a gimbal or a free pivot — will be a calculable thing rather than a curiosity. And you will understand why every airliner, ship, and satellite has one or three of them somewhere onboard.
+
+</Section>
+
+<Section index={2} title="The τ = dL/dt argument">
+
+Consider a simple gyroscope: a heavy disk spinning rapidly about a horizontal arm, supported at one end by a pivot. The disk has angular momentum L pointing horizontally along its spin axis — by convention, out along the arm away from the pivot. Gravity pulls down on the disk; the pivot pushes up; the pair is a torque about the pivot, of magnitude m·g·r (with r the horizontal distance from pivot to disk), pointing *horizontally*, perpendicular to both the vertical and to the arm.
+
+Newton's rotational law: τ = dL/dt. The torque is horizontal, perpendicular to L. So dL/dt is horizontal, perpendicular to L. That is, L does not change in magnitude — it changes in direction, sweeping around the vertical in a horizontal circle. The arm, being rigid to the disk, sweeps with it. The gyroscope **precesses**.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">τ = dL/dt        |τ| = m·g·r        |L| = I·ω_spin</span>
+</EquationBlock>
+
+The precession angular velocity Ω satisfies τ = Ω × L in magnitude, so |Ω|·|L| = |τ|:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">Ω = m·g·r / (I·ω_spin)</span>
+</EquationBlock>
+
+Two features of this formula are worth staring at. First, Ω is *inversely* proportional to ω_spin. Spin the gyroscope faster and it precesses more slowly — a fast gyroscope is visibly more sluggish about tilting over than a slow one. Stop the spin entirely and the formula diverges: Ω → ∞ means the disk just falls, as expected. Second, Ω does not depend on how far the axis is tilted away from vertical; the precession rate is independent of angle, as long as gravity has a component of torque.
+
+<SceneCard caption="FIG.11a — a gyroscope precessing about its pivot" className="w-full">
+  <GyroscopeScene />
+</SceneCard>
+
+Slide the spin rate up and the precession visibly slows. Slide it down and the precession speeds up — to the limit where a slow enough top would just fall. The gyroscope's secret is that its rapid spin locks in a large L, and a fixed torque can only rotate a large vector slowly.
+
+</Section>
+
+<Section index={3} title="Intuition — why horizontal torque becomes horizontal rotation">
+
+The formal derivation is clean, but physical intuition can trail it by hours. Here is a way to get the vector picture in your head.
+
+Think of L as an arrow in space. A torque τ is perpendicular to it. In one small time dt, τ·dt is a small perpendicular increment added to the tip of L. The arrow's length is unchanged (you added at right angles), but its direction has rotated by a small angle dφ = (τ·dt)/|L|. Keep adding perpendicular increments at every moment and the arrow rotates steadily in a circle.
+
+Compare a linear analogy: a planet in orbit. Gravity is a centripetal force — perpendicular to the velocity — and its effect is not to change the *magnitude* of the velocity, only its direction. The planet orbits in a circle (for a circular orbit). That is the linear-momentum analogue: perpendicular force rotates the velocity vector. In the rotational case, perpendicular torque rotates the angular-momentum vector. The angular-momentum vector happens to be *rigidly attached to the body's spin axis*, so rotating L in space carries the whole axis with it.
+
+Once you have this picture, the gyroscope's refusal to fall stops being weird. It is still being pulled down by gravity; gravity is still exerting a torque; the torque is still changing L. The only difference from a non-spinning body is that L was *already non-zero and horizontal*. Adding a horizontal perpendicular dL rotates L horizontally — it does not reduce it. The body stays tilted, but rotates around the vertical. No fall.
+
+<Callout variant="intuition">
+A sometimes useful mechanical image: imagine L as a broomstick being nudged sideways at one end. If it had no spin, the nudge would tip the broomstick over. But with rapid spin, the broomstick is no longer a rigid thing that tips — it is a massive, already-oriented vector that can only change direction, not magnitude, in response to a perpendicular nudge. That change-of-direction is precession.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Nutation — the wobble underneath">
+
+Real gyroscopes don't precess perfectly smoothly. Look carefully at a toy top and you'll see small oscillations superimposed on the steady precession — the tip of the axis wobbles up and down as it traces its circle. This is **<Term slug="nutation">nutation</Term>**, and it is a genuine consequence of the Euler equations for a rigid body.
+
+The steady-precession solution I derived above is an approximation — it assumes the top was already precessing when you let it go. In reality, a top that is released from rest at some tilt begins to fall first, which feeds angular momentum along the horizontal direction and sets up the precession. The interplay produces a nutational oscillation at a frequency ω_nut ≈ ω_spin·I_axial/I_transverse — much faster than the precession itself. The tip of the axis traces a cycloid-like curve, looping gently between two latitudes.
+
+Nutation is also the word used for real-world astronomical phenomena: the Earth's rotation axis, in addition to its 26,000-year precession, oscillates with an 18.6-year period (among others) due to precise torque variations from the Moon's orbit. The same mathematics applies — rigid-body dynamics — whether the body is a spinning toy or a spinning planet. We'll say more about astronomical nutation in FIG.12.
+
+The amplitude of the nutation depends on initial conditions. A top that is given a careful initial push tangent to its steady-precession circle nutates very little. A top that is simply released from rest at an angle nutates visibly.
+
+</Section>
+
+<Section index={5} title="Bicycles, footballs, and falling cats">
+
+Once the formula τ = dL/dt and the idea of perpendicular torque rotating the angular-momentum vector are in hand, a lot of everyday mechanical curiosities become calculable.
+
+**Bicycles.** A bicycle wheel at speed has angular momentum along its axle. If the bike starts to tip over to the left, gravity exerts a torque that would flip the wheel's axle into the ground. But by τ = dL/dt, this torque rotates L horizontally — which means the wheel *steers itself to the left*. The bike turns into the fall, which generates a centrifugal counter-torque, which straightens the bike up. The rider does very little steering; the gyroscopic self-correction of the spinning wheel is half the stability of a moving bicycle. A stationary bike has no L, no gyroscopic correction, and falls over.
+
+**Footballs and rifled bullets.** A spiralling football is stable in flight because its angular momentum along the spin axis is large. Air currents that would tilt it merely precess it slightly, and the ball keeps its nose-first orientation. A bullet fired from a rifled barrel is the same idea: the barrel's grooves spin the bullet, giving it angular momentum along its flight direction, and the bullet's aerodynamic stability depends on it. A spin-stabilised bullet hits nose-first even after a thousand metres of flight through gusty air.
+
+**Frisbees.** The reason a frisbee glides is its angular momentum: the spin stabilises its orientation against the torques that air currents try to apply. Without the spin, a frisbee would tumble like any other flat plate tossed into the air. The same principle stabilises discus throws, weight-throw events in Scottish games, and the rotation of satellites in space.
+
+**Falling cats.** A falling cat does not have angular momentum (no torque lifted it). It cannot rotate as a rigid body, because that would require L to change. Instead it contorts: it changes the shape of its body by bending at the waist, which changes the moment of inertia of different sections. Front half rotates one way, back half the other, both with opposing L. The total is zero throughout. But because the front and back have different I at different moments, the rotational angles do not cancel, and the cat ends up net-rotated through some angle by the time the contortion ends. A cat that begins upside-down and ends right-side up has used internal shape change to redistribute I without ever having net angular momentum. It is a profound demonstration that rigidity — not just L — matters for how a body rotates.
+
+</Section>
+
+<Section index={6} title="Navigation — the gyroscope becomes useful">
+
+The gyroscope was made a scientific instrument by <PhysicistLink slug="leon-foucault">Léon Foucault</PhysicistLink> in 1852, who used a fast-spinning flywheel suspended on gimbals to visibly demonstrate the Earth's rotation (the axis of the freely-suspended spinning disk maintains its orientation in space, and so the Earth's rotation beneath it becomes directly visible over a few hours). Foucault coined the name gyroscope — from Greek *gyros* (circle) and *skopein* (to see).
+
+In the early twentieth century <PhysicistLink slug="elmer-sperry">Elmer Sperry</PhysicistLink> and his competitors turned this laboratory curiosity into the central instrument of navigation. A gyrocompass — a rapidly spinning disk whose axis is constrained by geometry and gravity to settle pointing toward true (not magnetic) north — replaced the magnetic compass on most large ships during the first half of the century. The gyrocompass immune to iron in the hull and to magnetic anomalies; it points at the actual geographic pole; it works through electrical noise and at the magnetic poles themselves.
+
+In aviation, the attitude indicator (artificial horizon), directional gyro, and turn coordinator are all gyroscopic instruments. They tell the pilot the aircraft's orientation by holding a fast-spinning reference vector while the aircraft rotates around it. Modern aircraft increasingly use ring laser gyroscopes or fibre-optic gyroscopes — same physics, no mechanical parts, measured by the Sagnac effect — but the concept is identical. Inertial navigation systems on missiles, submarines, and spacecraft track position by integrating the rotations and accelerations measured by orthogonal sets of gyroscopes and accelerometers. For submerged submarines this is the primary navigation means — GPS doesn't work underwater.
+
+Even the Hubble Space Telescope, the James Webb, and every other modern orbiter uses control-moment gyroscopes or reaction wheels to change orientation without firing propellant. These are the same τ = dL/dt devices as a toy top; they are just very precise, very durable, and very expensive. Foucault's 1852 demonstration tool became, in a century, the backbone of how vehicles on and off the Earth know which way they are pointing.
+
+</Section>
+
+<Section index={7} title="Forward">
+
+The Euler equations governing rigid-body rotation with general inertia tensors produce one more striking consequence: a body tumbling freely in space, without any external torque, can still exhibit complex behaviour if its rotation axis is not aligned with one of its principal axes of inertia. The Earth itself is such a body. Its spin axis is close to — but not exactly at — its principal axis of inertia, and the resulting wobble has a 433-day period and is a few metres in amplitude at the surface. It is called the Chandler wobble, and it was not predicted until <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> had worked out rigid-body dynamics in the 1750s. There is no astronomical torque responsible for it — the Earth just isn't rotating about one of its principal axes. In the next and final topic of this module we'll work through the Chandler wobble, the astronomical precession of the equinoxes, and the tidal torques that drive both.
 
 </Section>
 

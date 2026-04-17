@@ -1,18 +1,149 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { SkaterSpinScene } from "@/components/physics/skater-spin-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Johannes Kepler", href: "/physicists/johannes-kepler" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Angular Momentum", href: "/dictionary/angular-momentum" },
+  { type: "term", label: "Torque", href: "/dictionary/torque" },
+  { type: "term", label: "Moment of Inertia", href: "/dictionary/moment-of-inertia" },
+  { type: "term", label: "Centripetal Force", href: "/dictionary/centripetal-force" },
+  { type: "term", label: "Precession", href: "/dictionary/precession" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.07 · CONSERVATION LAWS"
   title="ANGULAR MOMENTUM"
-  subtitle="Spinning skaters and bicycle wheels."
+  subtitle="The quantity that makes skaters speed up, planets sweep out equal areas, and pulsars keep time."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="The rotational ledger">
 
-TODO: write the opening.
+We have two ledgers now. Energy tracks things that can become kinetic — heat, height, spring tension. Momentum tracks mass times velocity and will not let a closed system shift its total motion without external help. This topic adds a third ledger, one that is exactly as fundamental: **<Term slug="angular-momentum">angular momentum</Term>**.
+
+The shortest way to introduce it is to say: angular momentum is what momentum turns into when you swap straight lines for circles. Where linear momentum is mass × velocity, angular momentum for a point particle is
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">L = r × p = m · r × v</span>
+</EquationBlock>
+
+where r is the position vector from a chosen origin and × is the cross product. For a point mass moving in a circle at radius r with tangential speed v, this simplifies to L = m·r·v, pointing along the axis of the circle by the right-hand rule.
+
+For an extended rigid body rotating at angular velocity ω about an axis, the same sum over all the constituent bits gives
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">L = I · ω</span>
+</EquationBlock>
+
+where I is the **<Term slug="moment-of-inertia">moment of inertia</Term>** — mass-weighted by distance from the axis squared. For a solid disk of mass m and radius r, I = ½·m·r²; for a thin hoop of the same mass and radius, I = m·r². We will unpack I in detail in FIG.10. For now, take it on trust: I is the rotational analogue of mass, L is the rotational analogue of momentum, and ω is the rotational analogue of velocity.
+
+The conservation law is, as you'd guess:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">L_total (before) = L_total (after)      if external τ = 0</span>
+</EquationBlock>
+
+where τ is torque — the rotational analogue of force, which we'll treat formally in FIG.09. Change the distribution of mass of a spinning system without applying external torque, and ω must change to keep the product I·ω constant. That single sentence explains figure skaters, diving boards, neutron stars, and why cats land on their feet.
+
+</Section>
+
+<Section index={2} title="Skaters">
+
+Stand a figure skater on the ice with their arms extended horizontally, and spin them at some modest rate — two or three rotations per second. Now they pull their arms in to their chest. They dramatically speed up. Observers unprepared for it always look surprised; the effect is big and visible.
+
+What happened? Their total mass didn't change — same skater, same limbs. No external torque acted (the ice is effectively frictionless for small-angle twisting around a vertical axis). So angular momentum must be conserved: I_before · ω_before = I_after · ω_after.
+
+But by pulling the arms in, the skater changed I. All that mass in the arms was sitting at large r — m·r² in the moment-of-inertia sum. Pull it closer to the axis and r drops; each arm mass contributes m·r'² with a smaller r'. If the arms retract from roughly 70 cm to roughly 20 cm from the axis, the arm contribution to I drops by a factor of (70/20)² ≈ 12. Because I dropped by, say, a factor of 2 to 3 overall (the torso still contributes), ω must climb by the same factor. Three rotations per second becomes eight or nine.
+
+<SceneCard caption="FIG.07a — angular momentum of a spinning skater" className="w-full">
+  <SkaterSpinScene />
+</SceneCard>
+
+Slide the arms in and ω rockets up while L stays exactly flat. But notice the other number at top: the rotational kinetic energy ½·I·ω² does *not* stay flat. Because L = I·ω is conserved and KE = ½·I·ω² = L²/(2I), shrinking I increases KE. Where did that energy come from? The skater did work pulling their arms in against the centrifugal force the rotating limbs felt. That work — supplied by muscles in the shoulders — became extra rotational kinetic energy. When they extend their arms again, their muscles have to do *negative* work against the rotation, and the energy flows back out.
+
+This is the first of several places where angular momentum and rotational KE don't quite behave the way you'd expect. They are two separate conserved-or-not-conserved quantities, and they tell you different things.
+
+</Section>
+
+<Section index={3} title="Kepler's second law">
+
+In 1609, <PhysicistLink slug="johannes-kepler">Kepler</PhysicistLink> announced three laws about the motions of the planets. The first said they move on ellipses. The third related period squared to semi-major axis cubed. These two get the most attention. But it is the **second** that was the real computational breakthrough, and it is a statement of angular-momentum conservation written a century before angular momentum was named.
+
+Kepler's second law says: *a line joining a planet to the Sun sweeps out equal areas in equal times*. Equivalently, the rate at which the planet sweeps out area, dA/dt, is constant along the orbit — regardless of where in the orbit the planet is.
+
+The algebra takes three lines. In polar coordinates around the Sun, a small patch of area is dA = ½·r²·dθ. Differentiate:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">dA/dt = ½ · r² · dθ/dt = ½ · r · v_tan</span>
+</EquationBlock>
+
+where v_tan = r·dθ/dt is the tangential velocity. Multiply the right side by m/m:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">dA/dt = L / (2·m)</span>
+</EquationBlock>
+
+with L = m·r·v_tan the angular momentum about the Sun. So "equal areas in equal times" is saying dA/dt = constant, which is saying L/(2m) = constant, which is saying L is constant. Kepler's second law is pure angular-momentum conservation — which it has to be, because gravity on the planet points straight at the Sun, and a central force exerts zero torque about the centre, so L about the Sun doesn't change. The beauty of Newtonian mechanics is that this result emerges without any of Kepler's laborious computation: it is a one-line consequence of the central-force structure.
+
+Kepler did not have this derivation. He got his law by staring at Tycho Brahe's data on Mars for a decade and noticing that Mars moved faster near perihelion and slower near aphelion, in exactly the pattern "equal areas in equal times" would require. It was an empirical discovery from tables of numbers. That Newton could later derive it from first principles was one of the *Principia*'s most forceful arguments that the heavens and the everyday mechanics of falling apples obeyed a single law.
+
+</Section>
+
+<Section index={4} title="Pulsars, collapsing stars, and diving boards">
+
+Angular momentum conservation scales to any size. The consequences at extreme sizes are spectacular.
+
+**Pulsars.** A star roughly the mass of the Sun, 10⁶ km across, rotating once a month, collapses at the end of its life into a neutron star — 20 km across, same total mass, same total angular momentum. The moment of inertia I ~ m·R² drops by a factor of (10⁶/10)² = 10¹⁰. Angular velocity therefore multiplies by 10¹⁰. A 30-day rotation becomes a 0.03-second rotation. That is a pulsar, spinning tens to hundreds of times per second. Radio pulses from pulsars are the most stable clocks in the universe — exactly because angular-momentum conservation left them no choice but to spin that fast, that steadily.
+
+**Black-hole accretion.** Gas falling onto a black hole rarely does so straight. It almost always has some small amount of angular momentum relative to the hole. As gas falls inward, r shrinks, so v must rise to keep L = m·r·v conserved. The result is an accretion disk — a flattened, fast-rotating structure where the gas can only spiral inward slowly, because it has to shed angular momentum (through viscous torques) before gravity can pull it further in. Angular momentum is the single reason black holes eat slowly instead of all at once.
+
+**Diving boards and tumbling bodies.** A diver who leaves the platform with a certain angular momentum about their center of mass must retain that L until they hit the water — no external torques act on them mid-flight. But they can change I by tucking in (arms to chest, knees to chest) or extending (full pike). Tucked, I is small and ω is fast — the diver spins quickly. Extended, I is large and ω slow — they appear to pause mid-rotation. An accomplished diver makes three somersaults in a tuck, opens to kill the rotation, and enters the water in a straight line. It is choreography built entirely on I·ω = constant.
+
+<Callout variant="intuition">
+Cats landing on their feet use a subtler version of the same trick. A falling cat begins with zero angular momentum (no torque lifted it). It cannot simply "rotate" — that would create L from nothing. Instead it bends at the waist, rotates its front half one way while its back half rotates the other way. The two Ls cancel. But because the front and back have different I at different moments, the two rotations are not equal in angle — and the cat ends up inverted relative to its start. The cat exploits the fact that L = 0 does not forbid clever internal reconfiguration. Gymnasts use the same trick to twist in mid-air.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Torque — when angular momentum is not conserved">
+
+Angular momentum is conserved when the external torque on a system is zero. When there is a net torque, angular momentum changes, and the analogue of F = dp/dt is:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">τ = dL/dt</span>
+</EquationBlock>
+
+— torque equals the rate of change of angular momentum. Torque is force applied with leverage. For a force F applied at a point r from the pivot:
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-base">τ = r × F   →  |τ| = r · F · sin θ</span>
+</EquationBlock>
+
+where θ is the angle between the two. A wrench that is 30 cm long, pulled perpendicular with 100 N of force, generates 30 N·m of torque. The same 100 N pulled parallel to the wrench generates zero torque. Leverage is simply the geometry of sin θ: the bigger the moment arm r·sin θ, the more effective the push.
+
+Three familiar consequences:
+
+- A **child on a swing** pumps by extending and retracting their legs at specific phases — adding angular momentum on the downswing and removing it on the upswing, so net L grows. Gravity provides the only restoring torque; the kid is timing their own moment of inertia to maximise energy gain.
+
+- A **bicycle stays upright** not because the wheels are heavy but because the angular momentum of the front wheel resists torques that would tip it over. Steering nudges the spin axis, which produces a precession that nudges the frame back upright. Without L in the wheels, the bike is a stick in unstable equilibrium.
+
+- A **Foucault pendulum** does not actually change its plane of swing — but the Earth rotates underneath it. The pendulum's angular momentum is fixed in space (no external torque); the building around it rotates once per sidereal day. The apparent rotation of the swing plane is the Earth's rotation, made visible.
+
+</Section>
+
+<Section index={6} title="Forward">
+
+Conservation of angular momentum rounds out the three-legged stool: **energy**, **momentum**, **angular momentum**. Together they constrain almost every mechanical system in the universe.
+
+But we've been pulling a magic trick. Each of the three laws has been presented as a consequence of something else — energy from work-integral of force, momentum from Newton's third law, angular momentum from the fact that central forces exert no torque. Why are all three true? Why does nature conserve exactly these three quantities and not some others?
+
+In the next topic we'll finally answer that. In 1918 a young German mathematician named Emmy Noether proved a single theorem — her life's most important result — that unifies every conservation law in physics under one idea. Conservation of energy is because physics is invariant under translations in time. Conservation of momentum is because physics is invariant under translations in space. Conservation of angular momentum is because physics is invariant under rotations. The pattern you have been seeing across the last three topics is not a coincidence; it is the most profound symmetry in all of physics, and it has a name: <PhysicistLink slug="emmy-noether">Noether's theorem</PhysicistLink>.
 
 </Section>
 

@@ -757,6 +757,428 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "friction-and-drag" },
     ],
   },
+  {
+    slug: "work",
+    term: "work",
+    category: "concept",
+    shortDefinition:
+      "The energy transferred to a body by a force acting over a distance: W = F · d · cos θ.",
+    description:
+      "Work is the physicist's precise name for the transaction between a force and the body it acts on. If a force F acts on a body and the body moves a distance d while the force is applied, the work done is the product of force and displacement — but only the component of the force aligned with the motion counts. A force perpendicular to the displacement does no work at all, which is why gravity does no work on a satellite in a circular orbit and why holding a heavy suitcase stationary costs biochemical effort but no mechanical work.\n\nFor constant forces the formula is W = F·d·cos θ. For variable forces, W = ∫F(x)·dx, the integral taken along the path. The SI unit is the joule, one newton-metre. The work–kinetic-energy theorem says that the net work done on a body equals the change in its kinetic energy — a direct consequence of Newton's second law.\n\nWork is the channel through which energy flows into and out of a mechanical system. Work done *on* a body increases its kinetic energy or its stored potential energy; work done *by* a body transfers energy from the body to whatever it is pushing against. All of macroscopic mechanical life is the bookkeeping of work flowing between bodies.",
+    relatedPhysicists: ["gottfried-wilhelm-leibniz", "thomas-young"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "kinetic-energy",
+    term: "kinetic energy",
+    category: "concept",
+    shortDefinition:
+      "The energy of a body in motion, ½·m·v², measured in joules.",
+    description:
+      "Kinetic energy is the energy a body has by virtue of being in motion. For a point mass moving at speed v, it equals ½·m·v². The formula is not arbitrary: it drops out of integrating F = m·a along the path, and it is exactly the work that must be done to bring the body from rest to speed v.\n\nThe v² dependence is essential. It is why a car at 60 mph carries four times the kinetic energy of the same car at 30 mph, and why its stopping distance scales quadratically with speed — braking must dissipate four times as much energy. It is also why Leibniz's 1686 proposal of vis viva (m·v², missing a factor of two) was closer to the truth than Descartes's m·|v| — kinetic energy, not linear momentum, is the quantity that matches the work done to set a body in motion.\n\nKinetic energy combines with potential energy to form the total mechanical energy of a system. In the absence of friction or other dissipative forces the total is conserved — the pendulum's swing, the falling brick, the orbiting planet. When kinetic energy is apparently lost, as in a car crash or a falling meteor, it has been converted to heat, sound, or deformation — never destroyed, only moved elsewhere in the energy budget.",
+    relatedPhysicists: ["emilie-du-chatelet", "thomas-young"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "potential-energy",
+    term: "potential energy",
+    category: "concept",
+    shortDefinition:
+      "Energy stored in the configuration of a system against a conservative force, retrievable by reversing that configuration.",
+    description:
+      "Potential energy is the energy a system holds in reserve by virtue of its configuration. A brick held aloft has gravitational potential energy; a compressed spring has elastic potential energy; a stretched rubber band, a charged capacitor, a drawn bow — all are potential-energy reservoirs. Release the constraint and the stored energy converts to kinetic energy of the moving parts.\n\nMathematically, a potential energy function U(r) exists whenever the force on a body can be derived as F = −∇U — that is, whenever the force is conservative. Gravity near the Earth's surface (U = m·g·h), Hookean springs (U = ½·k·x²), electrostatic attraction (U = k·q₁·q₂/r), and universal gravitation (U = −G·m₁·m₂/r) are all described by potential-energy functions. Friction and air drag are not — they are dissipative, and the energy they take cannot be retrieved by reversing the motion.\n\nThe zero of potential energy is arbitrary; only differences matter physically. What the concept buys you is the conservation of total mechanical energy ½·m·v² + U(r), a running constant along the motion. In the absence of dissipation, the universe keeps strict count of how much is kinetic and how much is potential, and the total never changes.",
+    relatedPhysicists: ["gottfried-wilhelm-leibniz", "joseph-louis-lagrange"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "conservation-of-energy",
+    term: "conservation of energy",
+    category: "concept",
+    shortDefinition:
+      "The total energy of an isolated system — mechanical, thermal, chemical, radiated — is constant over time.",
+    description:
+      "Conservation of energy is one of the deepest statements classical physics makes about the world. In an isolated system — one that exchanges no energy with its surroundings — the total of all forms of energy, however classified (kinetic, gravitational, elastic, chemical, thermal, electromagnetic), stays constant as the system evolves. Change the form and you can sometimes do something useful; change the total, and you will never succeed.\n\nThe law was not obvious. It emerged over a century of work: from Leibniz's 1686 vis viva, through Émilie du Châtelet's 1740 experiments, Joseph Black's latent heat (1760s), Mayer and Joule's mechanical equivalent of heat in the 1840s, to Helmholtz's 1847 synthesis Über die Erhaltung der Kraft, which united the various energies of classical physics into a single conserved currency. It is now recognised as a consequence, via Noether's theorem, of the fact that the laws of physics are invariant under translations in time.\n\nIn macroscopic terms it means every joule that seems to \"disappear\" can be accounted for elsewhere — in thermal motion, in sound, in chemical bonds, in radiation. A hockey puck's lost kinetic energy is thermal jiggling of the ice; a falling skydiver's energy becomes turbulent air; an exploding stick of dynamite's chemical energy becomes heat, sound, and expanding gas kinetic energy. The books always balance.",
+    relatedPhysicists: ["james-prescott-joule", "emilie-du-chatelet", "emmy-noether"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "power",
+    term: "power",
+    category: "concept",
+    shortDefinition:
+      "The rate at which work is done or energy is transferred: P = dW/dt, measured in watts (J/s).",
+    description:
+      "Power is the pace of energy transfer — how much work gets done per unit time. Climb a flight of stairs slowly and you do the same work as climbing it quickly; the difference is the power output. For a constant force acting along the direction of motion, P = F·v. For variable forces, P(t) = F(t)·v(t), and the total work is the integral of power over time.\n\nThe SI unit is the watt, defined as one joule per second. The unit and the idea of engineering power ratings both trace back to James Watt, whose separate-condenser steam engine of 1769 transformed the technology of the industrial revolution. To sell his engines to customers who thought in horses, Watt introduced the unit of horsepower — roughly 746 watts — as a benchmark. Modern engines, generators, and appliances are still rated in watts (or kilowatts or megawatts) because power is the practically relevant quantity: it determines how quickly a task can be completed, how bright a lamp burns, how much current an outlet must supply.\n\nPower is energy's tempo. It is why a 100 kW car engine accelerates faster than a 50 kW one even when both can do the same eventual total work; it is why an electric kettle boils water in two minutes and a gas stove takes longer; it is why solar panels are rated in peak-watts rather than total lifetime joules. Energy tells you how much. Power tells you how fast.",
+    relatedPhysicists: ["james-watt"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "momentum",
+    term: "momentum",
+    category: "concept",
+    shortDefinition:
+      "Mass times velocity (a vector, p = m·v); conserved in any closed system.",
+    description:
+      "Momentum is one of the three great conserved quantities of classical mechanics. For a point mass it is simply p = m·v — the product of mass and velocity, with a direction attached. In a closed system, the total vector sum of all the momenta stays constant through every internal interaction: collisions, explosions, chemical reactions, rocket burns. No internal force can change the total, because every internal force appears in equal-and-opposite pairs by Newton's third law, which cancel in the sum.\n\nThe idea was introduced by Descartes in 1644 as quantitas motus, but he used the magnitude |m·v| rather than the vector, and the quantity so defined is not conserved. Huygens (1669) and Wallis (1668) corrected the sign and established momentum as a genuine conservation law. Newton wrote it into the Principia as a cornerstone. In modern notation F = dp/dt — force is the rate of change of momentum — which is the most general form of Newton's second law and extends naturally to variable-mass systems like rockets.\n\nMomentum conservation underlies every collision analysis in classical mechanics, every billiards problem, and every rocket trajectory. It also underlies the concept of the center of mass, whose motion is determined by the total momentum and cannot be altered by internal rearrangements. From it, Emmy Noether showed, momentum conservation is a consequence of the fact that physics is invariant under translations in space — a deeper reason why the law must hold.",
+    relatedPhysicists: ["rene-descartes", "christiaan-huygens", "john-wallis", "isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "impulse",
+    term: "impulse",
+    category: "concept",
+    shortDefinition:
+      "The change in momentum delivered by a force acting over a time interval: J = ∫F dt = Δp.",
+    description:
+      "Impulse is the time-integral of force, and equals the change in momentum it produces. For a constant force F acting for a duration Δt, J = F·Δt. For variable forces, J = ∫F(t) dt. The SI unit is the newton-second, which is the same as kg·m/s — the unit of momentum, as it must be.\n\nThe insight is that it is the total impulse, not the peak force, that determines how much momentum a kick or push changes. Two collisions can deliver the same impulse with very different peak forces if one is long and the other short. Stretching the collision duration spreads the impulse over a longer interval and reduces the peak force proportionally. This is the principle behind airbags, crumple zones, foam helmet liners, parachutes, landing gear shock absorbers, and the boxer's slight pull-back on a punch to reduce peak force on a knuckle.\n\nThe opposite trick — concentrate the impulse into the shortest possible Δt — is used when peak force is what you want: a karate chop, a golf drive, the crack of a bullwhip, a hammer blow. Impulse is a fixed budget; how you spend it in time is the design decision.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "center-of-mass",
+    term: "center of mass",
+    category: "concept",
+    shortDefinition:
+      "The mass-weighted average position of a system; its motion obeys Newton's laws as if all the mass were concentrated there.",
+    description:
+      "The center of mass of a system of particles is the mass-weighted average of their positions: R_CM = (Σ m_i r_i) / (Σ m_i). For a rigid body it is the single special point whose motion summarises the motion of the whole: the total momentum of the body equals M·V_CM, where M is the total mass, and the net external force equals M·A_CM. In other words, the center of mass moves as if it were a point particle carrying all the mass, subject to all the external forces.\n\nThis has a remarkable consequence: in the absence of external forces, the center of mass moves at constant velocity no matter how complicated the internal motion is. A thrown grenade that explodes mid-flight into a hundred fragments has a center of mass that continues along the original parabola as if the explosion never happened — the internal forces cancel in pairs. A tuck-somersaulting diver's CM follows a perfect parabola from the springboard to the water, even though every limb traces a complicated curve. Every trampoline routine, every trapeze act, every cat landing on its feet is choreography around the fact that the CM obeys its own private Newton's laws.\n\nFor continuous bodies the sum becomes an integral: R_CM = ∫r dm / M. For simple uniform shapes the CM lies at the geometric center (the centroid); for composite bodies, like a hammer, it shifts toward the heavier part. It is why a hammer thrown end-over-end appears to rotate about a specific point on its handle rather than its geometric center — the rotation axis passes through the CM, and that is nearer the head.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "elastic-collision",
+    term: "elastic collision",
+    category: "concept",
+    shortDefinition:
+      "A collision in which total kinetic energy is conserved as well as total momentum.",
+    description:
+      "In an elastic collision, both momentum and kinetic energy are conserved. The colliding bodies rebound without any net loss to heat, sound, or deformation. Truly elastic collisions exist most cleanly among atomic and subatomic particles: protons off protons, electrons off atoms. Macroscopically they are an idealisation well approximated by hard steel balls, rubber superballs, and the smooth spheres in idealised kinetic-theory gas models.\n\nFor a 1-D elastic collision between masses m_A (with incoming velocity v_A) and m_B (initially at rest), the outgoing velocities are determined uniquely by combining momentum and energy conservation: v_A' = ((m_A − m_B) / (m_A + m_B))·v_A and v_B' = (2m_A / (m_A + m_B))·v_A. Three cases illuminate the geometry: equal masses swap velocities (the Newton's cradle trick); a heavy projectile barely slows while a light target shoots off at twice the projectile's speed (the golf-club effect); a light projectile bounces straight back off an essentially stationary heavy target (the rubber ball on a wall).\n\nBeyond its role as a pedagogical idealisation, the elastic collision is the conceptual backbone of scattering experiments in physics. When Rutherford in 1911 bounced alpha particles off gold-foil atoms and saw some deflect through large angles, he used the mathematics of elastic collisions to infer the existence of a small, heavy atomic nucleus. Every scattering experiment since — up to and including the LHC — is an elaborate extension of the same idea.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "inelastic-collision",
+    term: "inelastic collision",
+    category: "concept",
+    shortDefinition:
+      "A collision in which kinetic energy is not conserved; the missing energy goes into heat, sound, or deformation.",
+    description:
+      "An inelastic collision is one in which total kinetic energy is not conserved, though total momentum (as always) is. The \"lost\" energy has gone into heat, sound, internal vibrations, or permanent deformation of the bodies — it is not really lost, just moved into parts of the energy ledger mechanics alone does not track.\n\nA perfectly inelastic collision is the extreme case: the two bodies stick together and move as one. Cars in a pile-up, a lump of putty on a block, an arrow sunk into a target. For such collisions, the final common velocity is fixed by momentum conservation alone: v' = (m_A·v_A + m_B·v_B) / (m_A + m_B). The kinetic-energy fraction lost is m_A·m_B / (m_A + m_B)² of the initial KE — largest when the masses are equal and the collision is head-on.\n\nBetween elastic and perfectly inelastic, most real collisions are partially inelastic, parameterised by a coefficient of restitution e ∈ [0,1] — the ratio of post- to pre-collision relative speed. Engineering analyses of crashes, bouncing balls, and manufacturing impacts all live in this middle regime, where energy loss must be modelled explicitly rather than assumed away.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "coefficient-of-restitution",
+    term: "coefficient of restitution",
+    category: "concept",
+    shortDefinition:
+      "A dimensionless number e between 0 and 1 characterising how elastic a collision is: ratio of post-collision to pre-collision relative speed.",
+    description:
+      "The coefficient of restitution, usually written e, is the ratio of the relative speed of the two bodies after a collision to their relative speed before. e = 1 corresponds to a perfectly elastic collision (no KE lost); e = 0 to a perfectly inelastic one (maximum KE lost, bodies stick together). Everything real falls in between.\n\nTypical values: a tennis ball on a hard court, e ≈ 0.75; a baseball on a wooden bat, e ≈ 0.55; a hard rubber superball on concrete, e ≈ 0.9; a basketball on a gym floor, e ≈ 0.75; two billiard balls, e ≈ 0.95. Sports equipment is often specified with a maximum allowed e — the NCAA caps baseball bats at e ≈ 0.55 to keep the game from turning into a parade of home runs.\n\nFor 1-D collisions, given initial velocities v_A and v_B and masses m_A and m_B, momentum conservation combined with v_A' − v_B' = −e·(v_A − v_B) uniquely determines the outgoing velocities for any 0 ≤ e ≤ 1. The formulation generalises smoothly to oblique 2-D and 3-D collisions by applying it only to the component of velocity along the collision normal. Engineers use it to model everything from ball-mill milling to golf-club design to railway buffer behaviour.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "angular-momentum",
+    term: "angular momentum",
+    category: "concept",
+    shortDefinition:
+      "Rotational analogue of momentum: L = r × p for a particle, L = I·ω for a rigid body; conserved when external torque is zero.",
+    description:
+      "Angular momentum is the rotational analogue of linear momentum, and the third great conserved quantity of classical mechanics. For a point particle at position r with momentum p, it is defined by L = r × p — a vector pointing perpendicular to the plane of r and p, with magnitude m·r·v·sin θ. For a rigid body rotating at angular velocity ω about an axis whose moment of inertia is I, L = I·ω, pointing along the axis of rotation.\n\nAngular momentum is conserved in any system on which the net external torque is zero, in exact parallel to momentum conservation under zero external force. A central force (one pointing always toward a fixed centre, like gravity or a spring attached to a pivot) exerts zero torque about that centre, so angular momentum about the centre is conserved. This is why planetary orbits sweep out equal areas in equal times (Kepler's second law), why neutron stars spin hundreds of times per second (a collapsing stellar core preserves L while R shrinks enormously), and why a figure skater pulling in their arms speeds up (internal forces don't change L, but they do change I).\n\nNoether showed in 1918 that angular-momentum conservation is the consequence of the fact that physics is invariant under rotations — a rotational symmetry generates a conserved rotational charge. It is a law built into the isotropy of space itself.",
+    relatedPhysicists: ["johannes-kepler", "leonhard-euler", "isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+    ],
+  },
+  {
+    slug: "moment-of-inertia",
+    term: "moment of inertia",
+    category: "concept",
+    shortDefinition:
+      "The rotational analogue of mass: I = Σ m_i · r_i² (or ∫ r² dm for a continuous body).",
+    description:
+      "Moment of inertia is what mass becomes when you spin. For a rigid body rotating about a fixed axis, the moment of inertia is I = Σ m_i·r_i², summed over all the particles that make up the body (r_i is the perpendicular distance from each particle to the axis). For continuous bodies the sum becomes an integral I = ∫r² dm. It has units of kg·m².\n\nIts role in rotational dynamics mirrors mass's role in linear dynamics. Angular momentum is L = I·ω (mirroring p = m·v); rotational kinetic energy is ½·I·ω² (mirroring ½·m·v²); torque and angular acceleration obey τ = I·α (mirroring F = m·a). The single difference is that I depends both on the mass and on how it is distributed relative to the axis — doubling the radius of a ring quadruples its moment of inertia, even at the same total mass.\n\nFor common shapes, I takes simple closed forms: a solid disk, ½·m·r²; a hollow hoop, m·r²; a solid sphere, (2/5)·m·r²; a thin rod about its centre, (1/12)·m·L². The same mass in different distributions can differ in I by a factor of three or more, which is why a hollow sphere rolls down a ramp slower than a solid one (same mass, larger I, more of the energy goes into rotation and less into translation) — and why figure skaters can change their angular velocity by drawing in their arms.",
+    relatedPhysicists: ["leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+    ],
+  },
+  {
+    slug: "torque",
+    term: "torque",
+    category: "concept",
+    shortDefinition:
+      "The rotational analogue of force: τ = r × F; equals the rate of change of angular momentum.",
+    description:
+      "Torque is force applied with leverage. For a force F applied at position r from a pivot, the torque about that pivot is τ = r × F, with magnitude |τ| = r·F·sin θ, where θ is the angle between them. Its units are newton-metres. It is a vector along the pivot axis, with direction given by the right-hand rule.\n\nTorque stands to angular momentum exactly as force stands to linear momentum: τ = dL/dt. If the net external torque on a system is zero, its angular momentum is conserved. If the net torque is nonzero, the angular momentum changes at a rate equal to the torque — a direct consequence of Newton's laws applied to rotational motion.\n\nIn engineering, torque is the practically useful number for anything rotating: the output of a car engine is quoted in torque as well as power; a wrench's usefulness depends on its length (longer → more torque for the same hand force); a torque wrench on a tight bolt is how mechanics know they've tightened it properly. In biology, the skeletal muscles and bones together form a system of levers that generate torques about joints; where muscles insert, how long the bones are, and the angles involved together determine the torques available for motion.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "centripetal-force",
+    term: "centripetal force",
+    category: "concept",
+    shortDefinition:
+      "The net inward force that keeps a body moving on a circular path: F_c = m·v²/r = m·ω²·r.",
+    description:
+      "Centripetal force is not a new kind of force but the role any real force plays when it keeps a body moving on a circular path. The inward acceleration needed to maintain a circle of radius r at speed v is v²/r (or equivalently ω²·r), directed toward the centre. Whatever force supplies that inward acceleration — tension in a string, gravity, normal force from a banked curve, electromagnetic attraction — is acting as the centripetal force for that motion.\n\nThe formula F_c = m·v²/r is just Newton's second law for uniform circular motion. For a 1 kg ball whirled on a 1 m string at 2 m/s, the string tension must be 4 N directed inward. For a 1000 kg car on a flat 100 m turn at 20 m/s, the friction between tyres and road must supply 4000 N of centripetal force inward — and if the required force exceeds the friction's ceiling (μ·m·g), the car slides off the outside of the turn.\n\nThe \"centrifugal force\" sometimes invoked in everyday language is not a real force in the inertial frame; it is the fictitious pseudoforce that appears when you analyse the motion from a rotating (non-inertial) reference frame. In the lab frame, only the centripetal force acts, and it is entirely accounted for by string, gravity, or whatever the agent happens to be.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+    ],
+  },
+  {
+    slug: "precession",
+    term: "precession",
+    category: "phenomenon",
+    shortDefinition:
+      "The slow conical sweep of a spinning body's axis of rotation when a torque acts perpendicular to its angular momentum.",
+    description:
+      "Precession is the phenomenon, familiar from spinning tops and gyroscopes, in which the axis of rotation itself traces out a slow cone rather than tipping over. Intuitively, a spinning top should fall: gravity pulls down, the pivot pushes up, and the resulting torque should tip the top over. And it does — but not in the direction gravity would suggest. Instead the top's spin axis precesses, rotating slowly around the vertical.\n\nThe mechanism is a strict consequence of τ = dL/dt. A spinning top has angular momentum L along its spin axis. Gravity's torque τ is horizontal, perpendicular to L. By τ = dL/dt, this torque cannot change the *magnitude* of L (which would require a parallel component); it can only change its *direction*. So L rotates in the horizontal plane — and since L is along the spin axis, the spin axis rotates with it. The precession angular velocity Ω satisfies τ = Ω × L, giving Ω = (m·g·r)/(I·ω) for a gravity-driven top.\n\nPrecession is the reason gyroscopes resist tipping: any lateral push on a spinning disk produces a torque that only makes the axis precess, not fall. The same physics explains the 26,000-year precession of Earth's rotational axis (caused by lunar and solar tidal torques on the equatorial bulge), the slow wobble of a falling cat's spine in mid-air, and the stability of bicycles and motorcycles at speed.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "symmetry",
+    term: "symmetry",
+    category: "concept",
+    shortDefinition:
+      "An operation under which a system is unchanged — in physics, the source of every conservation law via Noether's theorem.",
+    description:
+      "A symmetry of a physical system is a transformation under which the laws governing the system, and the system itself, are unchanged. The classic examples are geometric: a square has rotational symmetry by 90° and reflection symmetry across its diagonals. In physics the concept is more general — it covers not just shapes but operations on space, time, fields, and internal variables, and it includes both discrete symmetries (parity, time reversal) and continuous symmetries (translation, rotation, Lorentz boosts, gauge transformations).\n\nContinuous symmetries are of particular importance because of Noether's theorem (1918), which says every continuous symmetry of a system's action implies a conserved quantity. Time-translation symmetry gives energy conservation; space-translation symmetry gives momentum conservation; rotational symmetry gives angular-momentum conservation. In quantum field theory the same theorem ties charge conservation to phase-rotation symmetry, and the full Standard Model of particle physics is built around the continuous symmetries of a product of unitary gauge groups.\n\nSymmetry-breaking — where a symmetry of the underlying laws is not respected by a particular state — is an equally important idea. The Higgs mechanism, ferromagnetism, and the chiral structure of the weak interaction are all examples. Observing that a conservation law is violated is direct evidence that a symmetry is broken, and broken symmetries are how new physics is usually discovered.",
+    relatedPhysicists: ["emmy-noether", "felix-klein"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "noethers-theorem",
+    term: "Noether's theorem",
+    category: "concept",
+    shortDefinition:
+      "Every continuous symmetry of a physical system's action gives rise to a conserved quantity.",
+    description:
+      "Noether's theorem, proved by Emmy Noether in 1918, is the most beautiful theorem in classical physics. It says: if the Lagrangian (or, more generally, the action) of a physical system is invariant under a continuous one-parameter group of transformations, then there is a conserved quantity — a Noether charge — that can be read directly off the generator of the transformation.\n\nThe three classical instances are: time-translation symmetry → energy conservation; space-translation symmetry → momentum conservation; rotational symmetry → angular-momentum conservation. The theorem explains why exactly these three conservation laws hold: the laws of classical physics are invariant under translations in time, translations in space, and rotations of space, and so — by Noether — they admit exactly these three conserved charges and no others.\n\nThe theorem extends beyond mechanics. In quantum field theory, conservation of electric charge comes from a global phase symmetry of wave functions; conservation of colour charge from SU(3) gauge symmetry; conservation of lepton and baryon numbers from further global symmetries. Noether herself stated a second theorem, less famous but equally deep, that handles gauge (local) symmetries differently — this is the theorem Einstein consulted her about while completing general relativity. The forward and backward directions of the theorem turn physics into a search for symmetries: find a symmetry, find a conserved quantity; lose a conserved quantity, blame a broken symmetry.",
+    relatedPhysicists: ["emmy-noether", "david-hilbert", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "lagrangian",
+    term: "Lagrangian",
+    category: "concept",
+    shortDefinition:
+      "The scalar function L = KE − PE whose time-integral (the action) is minimised along the true path of a physical system.",
+    description:
+      "The Lagrangian L of a mechanical system is a single scalar function of the generalised coordinates and velocities, equal (in the simplest case) to the kinetic minus the potential energy: L = T − V. From it, all the equations of motion of the system can be derived by imposing that the integral S = ∫L dt (the action) be stationary along the true physical path — the principle of least action.\n\nThe formalism was developed by Joseph-Louis Lagrange in his 1788 Mécanique analytique as an elegant restatement of Newtonian mechanics using generalised coordinates. It replaces vectors and forces with scalars and energies, and so simplifies the treatment of constrained systems (pendulums, rolling wheels, double pendulums) where Newton's laws become messy to apply. The resulting Euler–Lagrange equations, d/dt(∂L/∂q̇) − ∂L/∂q = 0, are the workhorses of modern classical mechanics.\n\nThe Lagrangian framework is also the natural setting for Noether's theorem. When the Lagrangian is invariant under a continuous transformation, the corresponding Noether charge is conserved. In quantum field theory the same object (extended to field variables) defines the theory entirely: the Standard Model is specified by writing down its Lagrangian. It is, in a precise sense, the most compact statement of what a physical theory is.",
+    relatedPhysicists: ["joseph-louis-lagrange", "emmy-noether"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "invariance",
+    term: "invariance",
+    category: "concept",
+    shortDefinition:
+      "The property of a physical quantity or law of remaining unchanged under a specified transformation.",
+    description:
+      "A quantity or law is invariant under a transformation if applying the transformation leaves it unchanged. Invariance is the precise technical counterpart of symmetry, and the two words are often used interchangeably in physics. Saying \"the Lagrangian is invariant under time translation\" is the same as saying \"the system has time-translation symmetry\".\n\nDifferent invariances underpin different theories. Galilean invariance — that the laws of mechanics look the same in any uniformly moving frame — is a foundational assumption of Newtonian physics. Lorentz invariance — the relativistic strengthening of Galilean invariance to include the speed of light as a universal constant — is the foundational assumption of special relativity. Diffeomorphism invariance — that the laws are independent of any particular coordinate choice — is the core of general relativity. Gauge invariances — local phase freedoms — are the defining feature of the Standard Model.\n\nNoether's theorem ties continuous invariance to conservation laws, making invariance not just a formal property but the origin of everything conserved in physics. Looking at a theory's invariances is how physicists work out what it predicts, and breaking a previously assumed invariance is how they discover new physics.",
+    relatedPhysicists: ["emmy-noether"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "moment-arm",
+    term: "moment arm",
+    category: "concept",
+    shortDefinition:
+      "The perpendicular distance from a pivot to the line of action of a force; torque equals force times moment arm.",
+    description:
+      "The moment arm of a force about a chosen pivot is the perpendicular distance from the pivot to the line along which the force acts. It captures the leverage the force has about that pivot: a force applied at a long moment arm produces more torque than the same force applied at a short moment arm. Torque equals force times moment arm, or equivalently F·r·sin θ, where r is the position vector from pivot to application point and θ the angle between r and F.\n\nThe concept is the practical engineering tool behind every lever: a door handle placed far from the hinge needs less force to turn than the same handle near the hinge; a wrench with a longer handle produces more torque than a short one for the same grip strength. Muscles in the body operate at very short moment arms relative to their pivots (joints) and therefore need large forces to produce the required torques — which is why biological muscles have to be strong.\n\nMathematically, the moment arm is simply the component of the position vector perpendicular to the force. Engineers and physicists use the terms moment arm and lever arm interchangeably, although in some older texts \"moment\" refers to the torque itself and \"moment arm\" specifically to the distance.",
+    relatedPhysicists: ["archimedes"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "lever",
+    term: "lever",
+    category: "instrument",
+    shortDefinition:
+      "A rigid bar pivoting about a fulcrum, trading applied force against distance to achieve mechanical advantage.",
+    description:
+      "A lever is the simplest of the classical simple machines: a rigid rod or bar that pivots about a fixed point called the fulcrum. It works by the principle that two torques balance if they are equal in magnitude and opposite in sense. If a small force is applied at a long moment arm on one side of the fulcrum, it can balance a much larger force at a short moment arm on the other side. The ratio of the two arms is the mechanical advantage of the lever.\n\nLevers are classified into three classes depending on the relative positions of load, effort, and fulcrum. Class 1 (fulcrum between effort and load): seesaws, crowbars, claw hammers pulling nails, scissors. Class 2 (load between fulcrum and effort): wheelbarrows, bottle openers, nutcrackers. Class 3 (effort between fulcrum and load): human forearms (biceps pulling near the elbow to lift weight at the hand), tweezers, fishing rods.\n\nThe law of the lever was first proved rigorously by Archimedes around 250 BCE in On the Equilibrium of Planes. His famous boast — \"Give me a place to stand and I will move the Earth\" — was a literal statement about the arithmetic of levers: with a long enough lever and a fulcrum, any force, however small, can move any weight, however large. The amount of distance one has to push is another matter — mechanical advantage is a trade, not a gift. The lever is the earliest known device in which humans beat brute-force strength by using geometry.",
+    relatedPhysicists: ["archimedes"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "static-equilibrium",
+    term: "static equilibrium",
+    category: "concept",
+    shortDefinition:
+      "The condition of a body at rest, requiring net force and net torque both to vanish.",
+    description:
+      "A body is in static equilibrium if it remains at rest and does not begin to rotate. For an extended body this requires two conditions to hold simultaneously: the net external force on it must be zero (so it does not translate), and the net external torque about any point must also be zero (so it does not rotate). Both are independent non-trivial constraints — a body with zero net force but nonzero torque will begin to spin; a body with zero net torque but nonzero force will start to slide.\n\nThe second condition is subtle: the torques in it are computed about some pivot point, but a useful mathematical fact is that once the net force is zero, the net torque is the same about every pivot. So for any body you believe to be in force equilibrium, you can check rotational equilibrium about whichever pivot simplifies the algebra most — often a point where an unknown force acts, so that force drops out.\n\nStatic equilibrium is the mathematical engine of structural engineering. A bridge, a ladder leaning against a wall, a crane lifting a load, a building, a human standing on one foot — in each case the designer works out the external forces and torques and insists both sums vanish. A body out of equilibrium accelerates; for a bridge this means it is collapsing, for a human it means they are falling. The condition is pedagogically useful in classical physics and decisively important in practical engineering.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "angular-acceleration",
+    term: "angular acceleration",
+    category: "concept",
+    shortDefinition:
+      "The rate of change of angular velocity: α = dω/dt; the rotational analogue of linear acceleration.",
+    description:
+      "Angular acceleration α is the rate at which angular velocity ω changes with time: α = dω/dt. For a body with angular velocity ω at one instant and ω + Δω a time Δt later, the average angular acceleration is Δω/Δt; the instantaneous value is the derivative. Units are radians per second squared (rad/s²).\n\nIn rigid-body mechanics angular acceleration stands to torque as linear acceleration stands to force: τ = I·α is the rotational version of Newton's second law, where I is the moment of inertia. A given torque produces more angular acceleration on a body with a smaller moment of inertia (e.g. a figure skater with arms drawn in versus arms out at the same applied muscle torque).\n\nFor rotational kinematics under constant angular acceleration, the formulas mirror linear kinematics: ω = ω₀ + α·t, θ = θ₀ + ω₀·t + ½·α·t², ω² = ω₀² + 2·α·Δθ. These are the equations engineers use to spin up flywheels, accelerate car wheels, and design electric motor starts. When α is not constant the integrals are done numerically or via energy methods.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "parallel-axis-theorem",
+    term: "parallel-axis theorem",
+    category: "concept",
+    shortDefinition:
+      "For any axis parallel to one through the centre of mass, I = I_CM + M·d² (also called Steiner's theorem).",
+    description:
+      "The parallel-axis theorem relates the moment of inertia of a rigid body about any axis to the moment of inertia about the parallel axis through the body's centre of mass. If I_CM is the centre-of-mass value and d is the perpendicular distance between the two axes, then the moment of inertia about the offset axis is I = I_CM + M·d², where M is the total mass of the body.\n\nThe theorem is a direct consequence of the definition of the center of mass and can be proved in two lines by expanding ∫(r − d)² dm. The middle cross-term vanishes because the first moment of the mass distribution about the centre of mass is zero by definition.\n\nIt is one of the most practically useful results in rigid-body mechanics. A thin rod of length L has I_CM = M·L²/12 about its centre; by the theorem, its moment about one end (d = L/2) is M·L²/12 + M·(L/2)² = M·L²/3 — a result that would otherwise require recomputing the integral from scratch. Together with the perpendicular-axis theorem (for laminar bodies), it turns a short list of fundamental integrals into a large table of moments of inertia about any reasonable axis. The theorem is often called Steiner's theorem after the Swiss geometer who published it in the mid-nineteenth century.",
+    relatedPhysicists: ["jacob-steiner"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+    ],
+  },
+  {
+    slug: "radius-of-gyration",
+    term: "radius of gyration",
+    category: "concept",
+    shortDefinition:
+      "The distance k = √(I/M) at which a point mass equal to the body's total mass would have the same moment of inertia.",
+    description:
+      "The radius of gyration k is the single distance from a chosen axis at which, if all the body's mass were concentrated at that one radius, the moment of inertia would equal the body's actual I. It is defined by I = M·k², giving k = √(I/M). Units are metres.\n\nFor a solid sphere, k = R·√(2/5) ≈ 0.632·R. For a hollow spherical shell, k = R·√(2/3) ≈ 0.816·R. For a thin hoop, k = R exactly. The radius of gyration is a compact way to summarise how spread-out a body's mass is relative to an axis, without having to quote both the mass and moment of inertia separately.\n\nIn structural engineering, the radius of gyration is used to characterise beams under compressive load: the slenderness ratio L/k (length over radius of gyration) controls how a column buckles under axial force. Two beams with the same mass per unit length but different cross-sectional shapes can have very different buckling behaviour, captured entirely by their differing values of k. In flywheel design k determines how much rotational energy is stored at a given ω. The concept lets engineers compare bodies with different mass distributions using a single number of dimension length.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+    ],
+  },
+  {
+    slug: "principal-axes",
+    term: "principal axes",
+    category: "concept",
+    shortDefinition:
+      "Three mutually perpendicular body-fixed axes about which the inertia tensor is diagonal; spinning about them produces no wobble.",
+    description:
+      "For any rigid body, no matter how irregularly shaped, there exist three mutually perpendicular axes, fixed in the body, called the principal axes of inertia. In the coordinate system defined by these axes, the inertia tensor is diagonal, with three values I_1, I_2, I_3 called the principal moments of inertia.\n\nThe significance: when a body rotates about one of its principal axes, the angular-momentum vector L is parallel to the angular-velocity vector ω, and the rotation is smooth and wobble-free. When a body rotates about any other axis, L and ω are not parallel — they point in different directions — and in the absence of external torque the body's spin axis traces a curve in the body frame. The result is a wobble, and it is responsible for the Chandler wobble of the Earth, the nutation of spinning tops, and the strange intermediate-axis instability of a tennis racket thrown spinning into the air.\n\nFor bodies with rotational symmetry (cylinders, spheres, cubes), the principal axes can be read off from the geometry — they coincide with the axes of symmetry. For asymmetric bodies they must be computed by diagonalising the inertia tensor. In every case, the three axes are orthogonal and the three principal moments are real — a consequence of the inertia tensor being symmetric and positive-definite. Rigid-body dynamics is much simpler when expressed in a principal-axis frame, and Euler's equations of motion are written most cleanly there.",
+    relatedPhysicists: ["leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "gyroscope",
+    term: "gyroscope",
+    category: "instrument",
+    shortDefinition:
+      "A rapidly spinning rotor on a gimbal or pivot, whose angular momentum resists reorientation — the workhorse of modern inertial navigation.",
+    description:
+      "A gyroscope is a rotor (a wheel or disk) spinning rapidly about its symmetry axis, usually mounted on gimbals that allow the axis of rotation to orient freely in space. The core physical property of a gyroscope is that its angular momentum — a large vector along the spin axis — resists changes imposed by applied torques. A torque perpendicular to the spin axis does not cause it to tip over; instead it causes the axis to precess slowly in a direction perpendicular to both the torque and the axis.\n\nThe gyroscope was turned into a scientific instrument by Léon Foucault in 1852, who used it to make the Earth's rotation visible: the axis of a freely-suspended spinning flywheel maintains its orientation in an inertial frame, so the Earth's rotation beneath it becomes directly observable. Foucault coined the name — from Greek gyros (circle) + skopein (to see).\n\nIn the twentieth century gyroscopes became navigational instruments of central importance. Elmer Sperry's 1908 gyrocompass aligned its axis with true (geographic) north regardless of the magnetic field, and became standard equipment on large ships. Aircraft use gyroscopic attitude indicators, directional gyros, and turn coordinators to tell pilots their orientation. Modern inertial navigation systems — in submarines, commercial aircraft, missiles, and spacecraft — use sets of orthogonal gyroscopes (often solid-state, using ring lasers or fibre-optic loops) to continuously track orientation by integrating the rotations they measure.",
+    relatedPhysicists: ["leon-foucault", "elmer-sperry"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "nutation",
+    term: "nutation",
+    category: "phenomenon",
+    shortDefinition:
+      "Small oscillations of a spinning body's axis superimposed on its steady precession.",
+    description:
+      "Nutation (Latin nutare, \"to nod\") refers to the small, relatively rapid oscillations of a spinning body's axis of rotation about its mean, precessing orientation. For a rigid body precessing steadily under a constant torque, nutation is a transient effect set by initial conditions: the axis traces a cycloid-like curve rather than a smooth circle. In spinning tops, nutation is visible as a slight up-and-down wobble of the axis as it precesses around the vertical.\n\nFor astronomical bodies, nutation refers specifically to the small periodic changes in the Earth's rotation axis superimposed on its 26,000-year precession of the equinoxes. The largest component of Earth's nutation has an 18.6-year period and an amplitude of about 9 arcseconds, driven by the regression of the Moon's orbital nodes. Smaller components come from semi-annual and semi-monthly variations of the lunar and solar gravitational torques on the Earth's equatorial bulge. James Bradley discovered the lunar nutation observationally in 1728.\n\nModern nutation theory, based on Very Long Baseline Interferometry observations of quasars, catalogues hundreds of nutation components with amplitudes down to microarcseconds. Each corresponds to a specific periodic feature of the Earth-Moon-Sun geometry and is predictable from gravitational celestial mechanics. The fact that the theory and observations agree to microarcseconds is one of the most sensitive demonstrations that Newtonian gravitation applied to rigid-body mechanics remains an extraordinarily good description of solar-system motions.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "euler-angles",
+    term: "Euler angles",
+    category: "concept",
+    shortDefinition:
+      "Three angles specifying the orientation of a rigid body in space relative to a fixed reference frame.",
+    description:
+      "Euler angles are a set of three angles — traditionally called the precession angle φ, the nutation angle θ, and the spin angle ψ — that parameterise the orientation of a rigid body in three-dimensional space relative to a fixed inertial reference frame. They arise naturally in the analysis of rotations and are central to rigid-body mechanics, orbital mechanics, and aerospace engineering.\n\nThe conventional interpretation: starting from the fixed reference frame, you first rotate by φ about the z-axis, then by θ about the new x-axis, then by ψ about the new z-axis. The three rotations, composed, produce the final orientation. The specific ordering is a convention — other conventions (roll-pitch-yaw, Tait-Bryan angles) split the three rotations across different axes — and different fields use different conventions. For rigid-body mechanics, the ZXZ convention due to Euler himself is traditional; for aerospace, ZYX (yaw-pitch-roll) is more common.\n\nEuler angles have two shortcomings: they suffer from gimbal lock (two of the three rotations degenerate when θ = 0 or π, losing a degree of freedom), and they are awkward for composing successive rotations. Modern orientation-tracking systems often use quaternions internally and convert to Euler angles only for display. But for analytical work on spinning tops, gyroscopes, and Earth-rotation problems, Euler's three angles remain the standard description.",
+    relatedPhysicists: ["leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "axial-precession",
+    term: "axial precession",
+    category: "phenomenon",
+    shortDefinition:
+      "The slow conical motion of the Earth's rotation axis, 25,800-year period, driven by lunar and solar tidal torques on the equatorial bulge.",
+    description:
+      "Axial precession is the slow rotation of the Earth's spin axis around the pole of the ecliptic, tracing a cone of half-angle 23.4° with a period of about 25,800 years. It is driven by the combined gravitational torque that the Moon and Sun exert on the Earth's equatorial bulge — an approximately 21-km deviation of the Earth's shape from a perfect sphere, caused by centrifugal deformation of its rotation. The torque is perpendicular to the Earth's angular-momentum vector and so rotates it in space rather than tipping the axis over.\n\nHipparchus of Nicaea discovered the precession around 130 BCE by comparing celestial longitudes of stars in his own observations with those catalogued by Timocharis 150 years earlier. Newton gave the first physical explanation in the Principia (1687), attributing it to the Moon's and Sun's torques on the bulge. Modern theory accounts for the Moon at about 2/3 of the total precessional rate and the Sun at 1/3, matching the observed 50.3 arcseconds per year (period 25,800 years) to high precision.\n\nAxial precession has cosmological consequences: the identity of the \"pole star\" changes over millennia. In ancient Egypt, Thuban (α Draconis) was the pole star. Today it is Polaris. In about 13,000 years, Vega will be within 5° of the celestial north pole. Axial precession also shifts the seasonal dates of the solstices and equinoxes against the backdrop of the stars, which is one of the phenomena astronomers try to separate from the Earth's orbital eccentricity variations (Milankovitch cycles) when modelling long-term climate.",
+    relatedPhysicists: ["hipparchus", "isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "chandler-wobble",
+    term: "Chandler wobble",
+    category: "phenomenon",
+    shortDefinition:
+      "A 433-day periodic wobble of the Earth's rotation axis with a few-metre amplitude at the surface, due to free rigid-body precession.",
+    description:
+      "The Chandler wobble is a free rigid-body wobble of the Earth's rotation axis with a period of approximately 433 days and an amplitude of a few metres at the surface. It was discovered in 1891 by the American actuary-astronomer Seth Carlo Chandler, who found the 433-day periodic signal in pooled historical latitude observations from observatories worldwide.\n\nIts physical origin is Euler's prediction (1758) that a rigid body rotating about an axis not exactly aligned with its principal axis of inertia undergoes a free nutation. For a perfectly rigid Earth the predicted period would be 305 days (Euler's period). The observed 433-day period reflects the Earth's elastic response: the equatorial bulge yields slightly to the wobble-induced stresses, extending the period by about 40%. Simon Newcomb worked out this physical explanation within a year of Chandler's discovery.\n\nThe wobble should damp out in about 70 years through internal friction, but it has not; it is continually re-excited, apparently by ocean-bottom pressure fluctuations and atmospheric variability acting as a stochastic forcing on the Earth-as-rigid-body. Modern space-geodetic techniques track the wobble to sub-millimetre precision, and it is a standard input to every high-accuracy Earth-orientation model. Its ongoing amplitude — the equilibrium between random forcing and internal damping — is still the subject of active geophysical research.",
+    relatedPhysicists: ["seth-carlo-chandler", "leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "equatorial-bulge",
+    term: "equatorial bulge",
+    category: "phenomenon",
+    shortDefinition:
+      "The excess of the Earth's equatorial radius over its polar radius (about 21 km), caused by the centrifugal deformation of rotation.",
+    description:
+      "The equatorial bulge is the departure of the Earth's shape from a perfect sphere: its equatorial radius is about 6378 km, its polar radius about 6357 km — a difference of 21 km. The bulge arises because the centrifugal acceleration of rotation acts only in the equatorial plane, and a fluid or plastic body in hydrostatic equilibrium with its own gravity and its rotation deforms into an oblate spheroid.\n\nFor the Earth, the oblateness is characterised by the dimensionless quantity J_2 ≈ 0.001083, which encodes the mass distribution's departure from spherical symmetry. This small number is crucial. It is the handle by which lunar and solar gravitational torques can act on the Earth: if the Earth were a perfect sphere, there would be no torque from any external mass (a point mass outside a spherically symmetric body exerts no torque on it). The 21-km bulge is what makes axial precession and nutation possible.\n\nOther rotating planets have their own equatorial bulges. Jupiter, rotating in 10 hours, has an oblateness ratio of 0.065 — visibly non-spherical in even amateur telescopes. Saturn is even more oblate at 0.098, again visible in photographs. Mars has an oblateness of 0.0059, larger than Earth's because its internal structure is less dense in the centre. Measuring a planet's oblateness provides a direct probe of its internal mass distribution, and spacecraft missions routinely use the gravitational effects of the oblateness on their orbits to constrain models of planetary interiors.",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

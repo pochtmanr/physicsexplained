@@ -962,6 +962,357 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "friction-and-drag" },
     ],
   },
+  {
+    slug: "gottfried-wilhelm-leibniz",
+    name: "Gottfried Wilhelm Leibniz",
+    shortName: "Leibniz",
+    born: "1646",
+    died: "1716",
+    nationality: "German",
+    oneLiner:
+      "Philosopher-mathematician who coined vis viva — the first attempt at what we now call kinetic energy.",
+    bio: "Gottfried Wilhelm Leibniz was born in Leipzig in 1646 and went on to become one of the most versatile intellects of the seventeenth century. He was a diplomat, a librarian to the Duke of Hanover, a historian, a philosopher, a theologian, a jurist, and — as a private passion — a working mathematician. Between the late 1670s and the mid-1680s he developed an infinitesimal calculus independently of Newton and published it before him. The priority dispute that followed poisoned Anglo-continental mathematics for half a century, but Leibniz's notation — dx, dy, ∫ — is what mathematicians use today.\n\nHis 1686 essay Brevis demonstratio erroris memorabilis Cartesii argued against Descartes's definition of the quantity of motion as m·v and proposed instead the scalar m·v² — a quantity Leibniz called vis viva, the \"living force\". The Cartesians and Leibnizians fought over it for the next sixty years. With modern eyes we can see that both were partially right: m·v (signed — a vector) is conserved in collisions, and so is ½·m·v². Leibniz's vis viva missed a factor of two and didn't become the full law of energy conservation for another two centuries, but the idea that motion-squared was conserved was a decisive step toward it.\n\nLeibniz's influence runs through nearly every branch of rational thought. He anticipated symbolic logic three centuries early; his monadology was one of the first systematic attempts at a metaphysical atomism; his principle of sufficient reason remains a standard move in philosophy. He died in Hanover in 1716, mostly forgotten by his patrons and in debt. His collected works are still being published.",
+    contributions: [
+      "co-invented the infinitesimal calculus (independently of Newton)",
+      "introduced the modern notation dx, dy, and ∫ for calculus",
+      "proposed vis viva (m·v²) as a conserved quantity of motion (1686)",
+      "anticipated binary arithmetic and symbolic logic",
+      "developed the monadology as a systematic metaphysics",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "emilie-du-chatelet",
+    name: "Gabrielle Émilie Le Tonnelier de Breteuil, Marquise du Châtelet",
+    shortName: "Du Châtelet",
+    born: "1706",
+    died: "1749",
+    nationality: "French",
+    oneLiner:
+      "Translated Newton into French and made the decisive experimental case for vis viva as m·v².",
+    bio: "Émilie du Châtelet was born in Paris in 1706 into minor aristocracy and educated, unusually for a girl of her class, in Latin, Greek, mathematics, and the natural sciences. She married the Marquis du Châtelet at 19 and shortly afterwards entered into a famous partnership with Voltaire, with whom she lived and collaborated for fifteen years at the Château de Cirey in Lorraine, building what was effectively a private research institute.\n\nHer most enduring work was the first — and for two centuries the only — French translation of Newton's Principia. Published posthumously in 1759, it included her own extensive commentary and corrections, bringing Newtonian mechanics to the French-speaking world at a moment when Cartesian physics still dominated the French academy.\n\nHer sharpest scientific contribution came earlier, in the dispute over vis viva between the Newtonians (who held the \"quantity of motion\" was m·v) and the Leibnizians (who insisted it was m·v²). She read the German experimentalist Willem 's Gravesande's 1722 results — brass balls dropped from varying heights into clay, leaving craters whose volume varied as the square of the impact velocity — and recognised that they settled the argument decisively in Leibniz's favour. Her 1740 Institutions de Physique made this case rigorously to a French audience and established the energy-side intuition that would mature into the conservation of energy in the nineteenth century. She died in 1749 in childbirth, six days after completing her Newton translation.",
+    contributions: [
+      "produced the first French translation of Newton's Principia (1759, posthumous)",
+      "established, via 's Gravesande's experiments, that kinetic energy scales as m·v²",
+      "wrote Institutions de Physique (1740), a major synthesis of Newtonian and Leibnizian thought",
+      "co-authored Voltaire's Elements of the Philosophy of Newton",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "james-prescott-joule",
+    name: "James Prescott Joule",
+    shortName: "Joule",
+    born: "1818",
+    died: "1889",
+    nationality: "English",
+    oneLiner:
+      "Proved by paddle wheel that mechanical work and heat are two forms of the same thing.",
+    bio: "James Prescott Joule was born in Salford, near Manchester, in 1818, the son of a wealthy brewer. Educated privately — one of his tutors was the chemist John Dalton — he lived off the family business and pursued physics as a private obsession for most of his working life. His early papers in the 1840s were rejected by the Royal Society and dismissed as the work of a provincial amateur.\n\nHe is remembered for the paddle-wheel experiments, carried out and refined between 1843 and 1850. The apparatus was simple: a weight on a string drove a shaft that spun a paddle wheel inside an insulated tank of water. The weight fell, the paddle stirred, and the water warmed. Joule measured both the mechanical potential energy given up by the weight and the resulting temperature rise, inferred the heat generated, and showed — over many runs — that the two were exactly proportional. His mechanical equivalent of heat, approximately 4.18 joules per calorie, is one of the foundational constants of thermodynamics. The SI unit of energy, the joule (J), bears his name.\n\nJoule's work was the decisive experimental demonstration that heat is not a fluid (the old caloric theory) but a form of energy convertible from mechanical work. Combined with contemporary insights from Mayer, Helmholtz, and Thomson (Lord Kelvin), it became the first law of thermodynamics: energy is conserved across all its forms, mechanical, thermal, and chemical. Joule collaborated with Kelvin on the Joule–Thomson effect, which is still used in refrigeration and gas liquefaction. He died in Sale in 1889.",
+    contributions: [
+      "measured the mechanical equivalent of heat to high precision (1843–1850)",
+      "established experimentally that heat is a form of energy",
+      "laid groundwork for the first law of thermodynamics",
+      "discovered the Joule–Thomson effect (with William Thomson)",
+      "studied the heating effect of electric currents (Joule heating)",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "thomas-young",
+    name: "Thomas Young",
+    shortName: "Young",
+    born: "1773",
+    died: "1829",
+    nationality: "English",
+    oneLiner:
+      "Polymath who introduced the word energy to physics, in its modern sense.",
+    bio: "Thomas Young was born in Milverton, Somerset, in 1773. A child prodigy fluent in Greek and Latin by age six, he trained as a physician but spent most of his career as an independent scholar in London. His output spans physics, physiology, Egyptology, and linguistics — he contributed substantially to the decipherment of the Rosetta Stone — and he published a large part of his scientific work anonymously to avoid damaging his medical practice.\n\nIn physics he is remembered for the double-slit experiment of 1801–1803, which demonstrated interference of light and revived the wave theory against Newton's corpuscular orthodoxy. Equally important, though less famous, was his 1807 introduction of the word energy in its modern technical sense — the first time the term was used in English scientific writing to describe the quantity ½·m·v², replacing the older and vaguer vis viva. He also named Young's modulus — the elastic constant relating stress to strain — and studied the physiology of vision and colour.\n\nHe died in London in 1829. His gravestone in Westminster Abbey calls him one who \"brought to the studies that interested him a variety of knowledge such as few men have ever possessed\".",
+    contributions: [
+      "demonstrated the wave nature of light with the double-slit experiment (1803)",
+      "introduced the scientific term 'energy' in its modern sense (1807)",
+      "defined Young's modulus in elasticity",
+      "contributed to the decipherment of Egyptian hieroglyphs",
+      "formulated the three-component theory of colour vision",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "james-watt",
+    name: "James Watt",
+    shortName: "Watt",
+    born: "1736",
+    died: "1819",
+    nationality: "Scottish",
+    oneLiner:
+      "Engineer whose separate-condenser steam engine powered the industrial revolution and lent his name to the unit of power.",
+    bio: "James Watt was born in Greenock, Scotland, in 1736. Trained as an instrument maker at the University of Glasgow, he was asked in 1763 to repair a Newcomen atmospheric engine and became fascinated by its poor efficiency. He worked out that the engine wasted most of its fuel heating and re-cooling the same cylinder on every stroke. His answer — a separate condenser that kept the cylinder continuously hot — was patented in 1769 and transformed the steam engine from a pumping curiosity into the prime mover of the industrial revolution.\n\nWith his business partner Matthew Boulton he founded Boulton & Watt in Birmingham, built engines for mines, mills, and factories across Britain, and introduced quantitative measures of engine output. Selling engines to buyers who thought in horses, Watt invented the unit of horsepower — one horse pulling 150 lb at a steady 2.5 mph, equivalent to about 746 watts in modern units. He went on to invent the centrifugal governor, the parallel motion linkage, and the indicator diagram for measuring engine work.\n\nThe SI unit of power, the watt (W), was named for him in 1960. He died at Heathfield Hall in 1819, a celebrated figure and a wealthy man.",
+    contributions: [
+      "patented the separate condenser for steam engines (1769)",
+      "made the steam engine efficient enough to drive the industrial revolution",
+      "invented the centrifugal governor for engine speed regulation",
+      "introduced the horsepower as a commercial unit of engine output",
+      "designed the indicator diagram for measuring engine cycles",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+    ],
+  },
+  {
+    slug: "rene-descartes",
+    name: "René Descartes",
+    shortName: "Descartes",
+    born: "1596",
+    died: "1650",
+    nationality: "French",
+    oneLiner:
+      "Philosopher who first proposed a conservation law for quantity of motion — nearly right, in need of a sign.",
+    bio: "René Descartes was born in La Haye en Touraine (now Descartes) in 1596, educated by the Jesuits at La Flèche, and spent most of his adult life in the Dutch Republic, where the intellectual climate was more tolerant. He is remembered in the humanities for the Meditations and Discourse on Method, and in mathematics for inventing analytic geometry — the fusion of algebra and geometry through coordinate systems that still bears the name Cartesian.\n\nIn physics his most consequential move was the 1644 Principia Philosophiae, where he proposed that God had endowed the universe with a fixed quantitas motus — a \"quantity of motion\" — measured as |m·v|, which would be conserved through all the collisions and motions of the material world. It was the first attempt at a conservation law in modern physics. Descartes was close to right: what he called quantity of motion became, with the addition of direction (the vector sign), Newtonian momentum, which is genuinely conserved.\n\nHuygens caught the error within a generation. Descartes's instinct — that something about motion must be preserved under all interactions — became one of the founding assumptions of classical mechanics. He died in Stockholm in 1650, having reluctantly agreed to tutor Queen Christina of Sweden at five in the morning through a Swedish winter, a regime he blamed for his final illness.",
+    contributions: [
+      "proposed the first conservation law in modern physics (quantity of motion, 1644)",
+      "invented analytic geometry and Cartesian coordinates",
+      "founded modern continental rationalist philosophy",
+      "stated an early version of the law of inertia",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "john-wallis",
+    name: "John Wallis",
+    shortName: "Wallis",
+    born: "1616",
+    died: "1703",
+    nationality: "English",
+    oneLiner:
+      "English mathematician who got momentum conservation right, with the sign, in 1668.",
+    bio: "John Wallis was born in Ashford, Kent, in 1616, took his MA at Emmanuel College, Cambridge, and spent most of his working life as Savilian Professor of Geometry at Oxford. He was a founding member of the Royal Society, a cryptanalyst for Parliament during the English Civil War, and one of the most productive mathematicians of the seventeenth century. He introduced the symbol ∞ for infinity and contributed key ideas to the development of the calculus — his Arithmetica Infinitorum was one of Newton's main sources.\n\nIn 1668 the Royal Society posed a public challenge: state the laws that govern collisions between bodies. Three correct replies came in, from Wallis, Huygens, and Christopher Wren. Wallis handled perfectly inelastic collisions (bodies that stick together), Wren the elastic case of equal masses, and Huygens the general elastic case. Wallis's key contribution was to treat velocities as signed quantities — vectors, in essence — and so correct the Cartesian error that had treated them as magnitudes. With the sign, momentum conservation held exactly.\n\nHe died in Oxford in 1703, having outlived most of the English mathematicians of his generation and shaped the mathematical climate into which Newton's Principia would arrive.",
+    contributions: [
+      "introduced the symbol ∞ for infinity",
+      "wrote Arithmetica Infinitorum, one of Newton's main sources for calculus",
+      "derived the law of perfectly inelastic collisions, with signed velocities (1668)",
+      "founded British cryptography during the Civil War",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "leonhard-euler",
+    name: "Leonhard Euler",
+    shortName: "Euler",
+    born: "1707",
+    died: "1783",
+    nationality: "Swiss",
+    oneLiner:
+      "The most prolific mathematician in history, who wrote the equations of rigid-body rotation and half the notation used today.",
+    bio: "Leonhard Euler was born in Basel in 1707 and trained under the Bernoullis at the University of Basel. He spent most of his career at the Imperial Russian Academy of Sciences in Saint Petersburg, with a long intermediate period at the Berlin Academy under Frederick the Great. He published more than 850 works — essays, monographs, and textbooks — across almost every branch of eighteenth-century mathematics and physics, including much that was simply unknown before him.\n\nHis contributions to classical mechanics begin with the 1736 textbook Mechanica, the first comprehensive treatment of Newtonian mechanics using the new calculus rather than the geometric methods of the Principia. He went on to derive the Euler–Lagrange equations of motion, the Euler equations of rigid-body dynamics (which govern every spinning top, planet, and gyroscope), the Euler equations of fluid flow, and the basic equations for the buckling of columns. The notation he introduced — f(x) for functions, e for the base of natural logarithms, i for the imaginary unit, π in its modern role, Σ for sums — is the notation still in use today.\n\nHe went blind in his right eye in 1738 and completely blind in 1771, but continued to produce mathematics at an astonishing rate through dictation. He died in Saint Petersburg in 1783, working until his last afternoon. His collected works, the Opera Omnia, run to over 70 volumes and are not yet complete.",
+    contributions: [
+      "wrote the Euler equations of rigid-body rotation",
+      "formulated the Euler–Lagrange equations of motion",
+      "derived the Euler equations of ideal fluid flow",
+      "introduced modern mathematical notation: f(x), e, i, π, Σ",
+      "founded the calculus of variations",
+      "co-founded graph theory with the Königsberg bridges problem",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+    ],
+  },
+  {
+    slug: "emmy-noether",
+    name: "Amalie Emmy Noether",
+    shortName: "Noether",
+    born: "1882",
+    died: "1935",
+    nationality: "German",
+    oneLiner:
+      "Proved that every continuous symmetry of a physical system gives a conservation law — the most beautiful theorem in classical physics.",
+    bio: "Emmy Noether was born in Erlangen in 1882, the daughter of the mathematician Max Noether. She wanted to study mathematics at a time when German universities did not admit women, and she audited lectures at Erlangen from 1900 to 1903 — only two women were permitted among nearly a thousand male students. She formally matriculated when rules briefly loosened and took her doctorate in 1907 on invariant theory — work she later dismissed as unremarkable.\n\nFrom 1908 to 1915 she worked as an unpaid assistant at Erlangen. In 1915 Hilbert and Klein, recognising her exceptional talent, invited her to Göttingen to help with the mathematical formulation of general relativity. The university refused to let her hold a paid teaching position on the grounds of her sex. She lectured under Hilbert's name for years. In 1918 she proved the theorem that bears her name: for every continuous symmetry of a physical system there exists a conserved quantity. Conservation of energy from time-translation symmetry; conservation of momentum from space-translation symmetry; conservation of angular momentum from rotational symmetry. The theorem is the skeleton key to all of modern theoretical physics.\n\nShe became a Privatdozent in 1919 and a tenured professor in 1922 — the first woman to hold a full mathematics chair in Germany. She went on to found modern abstract algebra; the structures she introduced (Noetherian rings, Noetherian modules) still bear her name. When the Nazis expelled Jews from German universities in 1933 she emigrated to Bryn Mawr College in the United States. She died there in 1935, aged 53, from complications following surgery. Einstein, unsparing of praise only when he meant it, called her \"the most significant creative mathematical genius thus far produced since the higher education of women began\".",
+    contributions: [
+      "proved Noether's theorem linking continuous symmetries to conservation laws (1918)",
+      "founded modern abstract algebra and the theory of Noetherian rings",
+      "contributed the mathematical framework for conservation laws in general relativity",
+      "supervised a generation of algebraists who carried her program through the 1930s",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "david-hilbert",
+    name: "David Hilbert",
+    shortName: "Hilbert",
+    born: "1862",
+    died: "1943",
+    nationality: "German",
+    oneLiner:
+      "Göttingen mathematician who helped shape general relativity and championed Noether through institutional prejudice.",
+    bio: "David Hilbert was born in Königsberg in 1862 and spent most of his career at the University of Göttingen, which he turned into the mathematical capital of the world. He contributed foundational work to algebraic number theory, functional analysis (Hilbert spaces), the axiomatisation of geometry, and the formalist programme in mathematical logic. His 1900 address to the International Congress of Mathematicians in Paris listed 23 unsolved problems that shaped twentieth-century mathematics.\n\nIn physics he worked in parallel with Einstein in 1915 on the field equations of general relativity, arriving at them from a variational principle within a few days of Einstein's final formulation. He recruited Emmy Noether to Göttingen to help with the theory and defended her against the Philosophical Faculty's refusal to appoint her: \"I do not see that the sex of the candidate is an argument against her admission as a Privatdozent. After all, the Senate is not a bathhouse.\" He died in Göttingen in 1943, under the shadow of the Nazi regime that had effectively emptied his department.",
+    contributions: [
+      "posed the 23 Hilbert problems (1900)",
+      "co-derived the field equations of general relativity (1915)",
+      "founded the formalist programme in mathematical logic",
+      "introduced Hilbert spaces, central to functional analysis and quantum mechanics",
+      "championed Emmy Noether's appointment at Göttingen",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "felix-klein",
+    name: "Felix Klein",
+    shortName: "Klein",
+    born: "1849",
+    died: "1925",
+    nationality: "German",
+    oneLiner:
+      "Göttingen geometer who co-invited Noether and connected geometry to groups via the Erlangen program.",
+    bio: "Felix Klein was born in Düsseldorf in 1849 and spent most of his working life at the University of Göttingen, where he was a dominant administrative figure alongside Hilbert. His 1872 Erlangen Program reorganised geometry around the notion of invariance under groups of transformations: each geometry is characterised by the transformations that leave its defining properties unchanged. This was a deep conceptual rearrangement whose echoes run all through twentieth-century mathematics and physics — including Noether's theorem, which is in effect an Erlangen Program for mechanics.\n\nKlein was also a powerful advocate for improving mathematical education in Germany and for recruiting exceptional talent to Göttingen. Together with Hilbert he invited Emmy Noether to Göttingen in 1915, backed her against the faculty's refusal to appoint her, and helped bring her work on invariance in general relativity to Einstein's attention. He died in 1925, aged 76.",
+    contributions: [
+      "formulated the Erlangen Program classifying geometries by their invariance groups (1872)",
+      "introduced the Klein bottle and developed the theory of non-orientable surfaces",
+      "co-founded modern group theory with Sophus Lie",
+      "co-invited Emmy Noether to Göttingen",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "albert-einstein",
+    name: "Albert Einstein",
+    shortName: "Einstein",
+    born: "1879",
+    died: "1955",
+    nationality: "German-Swiss-American",
+    oneLiner:
+      "Redefined space, time, and gravity — and relied on Emmy Noether to sort out energy conservation in general relativity.",
+    bio: "Albert Einstein was born in Ulm in 1879. After early struggles with German schooling he took a degree at the ETH in Zurich, worked as a patent examiner in Bern, and in 1905 — his miraculous year — published four papers that independently founded special relativity, introduced the photon, proved the reality of atoms via Brownian motion, and derived E = m·c². In 1915, after a decade of work, he completed general relativity, which recast gravity as the curvature of spacetime. He was awarded the Nobel Prize in Physics in 1921, for the photoelectric effect.\n\nDuring the development of general relativity he consulted Emmy Noether on a subtle technical question: how to make sense of energy conservation in a theory with local gauge invariance. Her solution became part of the mathematical foundation of the theory; she referred to the result as Noether's second theorem, less famous than the first but equally essential for gauge theories. Einstein emigrated to the United States in 1933 when the Nazis came to power and spent the rest of his career at the Institute for Advanced Study in Princeton. He died in 1955.",
+    contributions: [
+      "founded special relativity (1905)",
+      "derived E = m·c²",
+      "published the general theory of relativity (1915)",
+      "explained the photoelectric effect, laying groundwork for quantum theory",
+      "used Noether's second theorem to clarify energy conservation in general relativity",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
+  {
+    slug: "archimedes",
+    name: "Archimedes of Syracuse",
+    shortName: "Archimedes",
+    born: "c. 287 BCE",
+    died: "c. 212 BCE",
+    nationality: "Greek (Syracusan)",
+    oneLiner:
+      "Ancient mathematician and engineer who wrote the first rigorous treatise on levers and equilibrium.",
+    bio: "Archimedes was born in Syracuse, Sicily, around 287 BCE, and lived most of his life in that city. He is one of a small handful of ancient figures whose mathematical work survives in enough volume to judge him genuinely first-rank: his treatises on the sphere and cylinder, on circles, on spirals, on floating bodies, and on the equilibrium of planes are, by the standards of the time, extraordinary.\n\nHis On the Equilibrium of Planes, probably written around 250 BCE, gives the first rigorous proof of the law of the lever — that two unequal weights on opposite sides of a fulcrum balance when their distances from the fulcrum are inversely proportional to their weights. He also introduced the concept of the center of gravity and computed it for a range of geometric shapes, laying the foundation for what would become mass and moment analysis in mechanics.\n\nHe is equally famous for his engineering: the Archimedean screw for lifting water, compound pulleys that could let one man haul a warship (famously demonstrated for King Hiero II), burning-mirrors that could set enemy ships alight at a distance, and various artillery. He was killed in 212 BCE when Roman forces sacked Syracuse, reportedly while absorbed in a mathematical diagram.",
+    contributions: [
+      "proved the law of the lever rigorously (On the Equilibrium of Planes)",
+      "introduced the concept of center of gravity",
+      "derived the area and circumference of circles, and the surface area and volume of the sphere",
+      "developed the method of exhaustion — an ancient precursor of integral calculus",
+      "discovered the principle of buoyancy (Archimedes' principle)",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "jacob-steiner",
+    name: "Jakob Steiner",
+    shortName: "Steiner",
+    born: "1796",
+    died: "1863",
+    nationality: "Swiss",
+    oneLiner:
+      "Swiss geometer whose parallel-axis theorem lets moment of inertia be computed about any axis from the centre-of-mass value.",
+    bio: "Jakob Steiner was born in Utzenstorf, Switzerland, in 1796, to a peasant family. He did not begin formal schooling until age 14, but by 19 he was teaching mathematics in Yverdon under Pestalozzi and in 1834 was appointed extraordinary professor of mathematics at the University of Berlin, a position he held until his death. He is remembered as one of the greatest pure geometers of the nineteenth century, working almost exclusively in synthetic projective geometry rather than analytic coordinates.\n\nHis name is attached to the parallel-axis theorem in rigid-body mechanics: the moment of inertia of a body about any axis equals the moment of inertia about the parallel axis through its center of mass, plus M·d² for the offset. The theorem is a direct consequence of the definition of the center of mass and is stated in modern engineering textbooks sometimes as Steiner's theorem. He contributed many other results in projective geometry, conic sections, and the theory of surfaces.\n\nHe died in Bern in 1863 and left a substantial bequest to Swiss schools for the education of poor children. The Steiner prize, awarded by the Berlin Academy, still bears his name.",
+    contributions: [
+      "proved the parallel-axis theorem for moments of inertia (Steiner's theorem)",
+      "founded modern synthetic projective geometry",
+      "contributed major results on conic sections and ruled surfaces",
+      "taught geometry at the University of Berlin for nearly thirty years",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+    ],
+  },
+  {
+    slug: "elmer-sperry",
+    name: "Elmer Ambrose Sperry",
+    shortName: "Sperry",
+    born: "1860",
+    died: "1930",
+    nationality: "American",
+    oneLiner:
+      "Inventor and industrialist who turned the laboratory gyroscope into the central navigation instrument of twentieth-century ships and aircraft.",
+    bio: "Elmer Sperry was born in 1860 in Cortland, New York. A prolific inventor in the American engineering tradition — more than 350 patents to his name — he founded Sperry Gyroscope Company in 1910, and between then and 1930 he built the company that dominated the gyroscopic navigation and control business worldwide.\n\nHis most consequential invention was the gyrocompass (1908), a rapidly spinning flywheel mechanically constrained by gravity and gimbals to align its axis with true (geographic) north, unaffected by magnetic disturbances from iron hulls or geomagnetic anomalies. The Sperry gyrocompass was first adopted by the US Navy in 1910 and became standard equipment on essentially every large ship during the first half of the twentieth century. He went on to develop gyroscopic autopilots for ships and aircraft, gyroscopic stabilisers for ships against roll, and early inertial guidance systems.\n\nHe died in Brooklyn in 1930. The Sperry Corporation he founded went through various mergers and became part of Unisys; its gyroscope division is now part of Honeywell, and the basic gyrocompass and inertial-guidance technology Sperry pioneered is still in use today in submarines, commercial aircraft, and spacecraft.",
+    contributions: [
+      "invented the Sperry gyrocompass for shipboard navigation (1908)",
+      "developed the gyroscopic autopilot for aircraft",
+      "designed gyroscopic ship stabilisers",
+      "founded Sperry Gyroscope Company (1910)",
+      "held over 350 patents, many in electrical and mechanical engineering",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "hipparchus",
+    name: "Hipparchus of Nicaea",
+    shortName: "Hipparchus",
+    born: "c. 190 BCE",
+    died: "c. 120 BCE",
+    nationality: "Greek",
+    oneLiner:
+      "Ancient astronomer who discovered the precession of the equinoxes by comparing his own observations with those made 150 years earlier.",
+    bio: "Hipparchus was born in Nicaea (in what is now northwestern Turkey) around 190 BCE and did most of his observational work on the island of Rhodes. He is widely regarded as the greatest astronomer of antiquity. Almost none of his original writings survive, but his work is known in detail from quotations, tables, and references in later authors, particularly Ptolemy's Almagest.\n\nHis most famous discovery, around 130 BCE, was the precession of the equinoxes: comparing the celestial longitudes of stars in his own observations with those catalogued by Timocharis of Alexandria 150 years earlier, he noticed a systematic shift of 2° to the east — roughly 48 arcseconds per year. He correctly inferred that this was a slow motion of the Earth's rotational frame (or, in ancient geocentric terms, of the celestial sphere relative to the ecliptic), not of the stars themselves. The physical cause — the torque of the Sun and Moon on the Earth's equatorial bulge — would not be known for 1,800 years, until Newton derived it from gravitational theory.\n\nHipparchus also compiled the first systematic star catalogue of the Western tradition (containing around 850 stars, classified by apparent magnitude on a scale whose logic survives today), developed an early version of trigonometry including a table of chords, and worked out accurate values for the lunar and solar distances and the length of the tropical year. He is a foundational figure in ancient mathematical astronomy.",
+    contributions: [
+      "discovered the precession of the equinoxes (c. 130 BCE)",
+      "compiled the first systematic Western star catalogue (~850 stars)",
+      "introduced magnitude classification of stellar brightness",
+      "developed an early trigonometry with tables of chords",
+      "measured the length of the tropical year to within minutes",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "seth-carlo-chandler",
+    name: "Seth Carlo Chandler Jr.",
+    shortName: "Chandler",
+    born: "1846",
+    died: "1913",
+    nationality: "American",
+    oneLiner:
+      "Boston actuary-astronomer who discovered in 1891 that the Earth's rotation axis wobbles with a 433-day period.",
+    bio: "Seth Carlo Chandler Jr. was born in Boston in 1846 and spent his professional life as an actuary in the insurance business. He pursued astronomy as an avocation, with unusual rigour, and for decades kept detailed observations and analyses of astronomical data. He worked particularly on latitude observations — measurements of the local latitude of a fixed observatory, which should be constant if the Earth rotated on a perfectly stable axis but would vary if the rotation pole moved with respect to the Earth's crust.\n\nIn 1891, analysing pooled latitude data from observatories worldwide over the previous decades, Chandler discovered a clear periodic variation with a period of about 14 months — substantially longer than the 10-month period Euler had predicted in 1758 for a rigid Earth. Chandler's result was the first direct observational evidence that the Earth is not a perfectly rigid body; its elastic deformation under the stresses of its own wobble lengthens the free-precession period from Euler's 305 days to the observed 433 days. Simon Newcomb worked out the physical explanation within a year of Chandler's discovery.\n\nThe 433-day wobble is now called the Chandler wobble, and its amplitude of a few metres at the surface is tracked to sub-millimetre precision by modern space-geodetic techniques. Chandler died in 1913, never having held a formal academic position, but his name is attached to one of the most carefully measured geophysical phenomena of the twentieth and twenty-first centuries.",
+    contributions: [
+      "discovered the 433-day Chandler wobble of the Earth's rotation axis (1891)",
+      "performed decades of pioneering statistical analysis of latitude observations",
+      "provided the first observational evidence that the Earth is not rigid",
+      "refined the methodology of combined astronomical catalogues",
+    ],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

@@ -1,18 +1,170 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { EnergyBowlScene } from "@/components/physics/energy-bowl-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Gottfried Wilhelm Leibniz", href: "/physicists/gottfried-wilhelm-leibniz" },
+  { type: "physicist", label: "Émilie du Châtelet", href: "/physicists/emilie-du-chatelet" },
+  { type: "physicist", label: "James Prescott Joule", href: "/physicists/james-prescott-joule" },
+  { type: "physicist", label: "Thomas Young", href: "/physicists/thomas-young" },
+  { type: "term", label: "Work", href: "/dictionary/work" },
+  { type: "term", label: "Kinetic Energy", href: "/dictionary/kinetic-energy" },
+  { type: "term", label: "Potential Energy", href: "/dictionary/potential-energy" },
+  { type: "term", label: "Conservation of Energy", href: "/dictionary/conservation-of-energy" },
+  { type: "term", label: "Power", href: "/dictionary/power" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.05 · CONSERVATION LAWS"
   title="ENERGY AND WORK"
-  subtitle="Work, kinetic energy, and potential energy."
+  subtitle="The universe keeps a ledger — and the totals always balance."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="The ledger">
 
-TODO: write the opening.
+A hockey puck stops. A pendulum dies down. A falling brick hits the ground and doesn't bounce back to the height it was dropped from. In every case you could be tempted to say: *motion has been lost*. It hasn't. The universe runs on double-entry bookkeeping, and every joule has an address. Our first task is to build the ledger.
+
+The central claim of this module is simple enough to state in one sentence. **The total energy of an isolated system is constant.** Not the kinetic energy — that changes. Not the potential energy — that changes too. The *sum* of all the ways energy can be stored — motion, height, spring tension, temperature, chemical bonds, radiation — that sum never changes. Change the form and you can, sometimes, do something useful. But you cannot change the total.
+
+It took physics about two centuries to arrive at that sentence. From <PhysicistLink slug="gottfried-wilhelm-leibniz">Leibniz</PhysicistLink>'s 1686 notion of *vis viva* (the "living force" m·v²) through <PhysicistLink slug="emilie-du-chatelet">Émilie du Châtelet</PhysicistLink>'s 1740 defence of it against the Newtonian faction, through Joseph Black's discovery of latent heat in the 1760s, through <PhysicistLink slug="james-prescott-joule">Joule</PhysicistLink>'s patient experiments tying mechanical work to temperature in the 1840s, the idea of a single conserved quantity called *energy* only settled into shape around 1850. Before then there were many different "forces" — living, dead, latent, chemical, electrical — and no one was sure any of them was really the same stuff. This topic is the story of how they turned out to be.
+
+We'll do it in order: work, then kinetic energy, then potential energy, then the law that ties them, then power. By the end of the topic the hockey puck's missing motion will have a very specific place to go.
+
+</Section>
+
+<Section index={2} title="Work — the transaction">
+
+Start with something concrete. You push a crate across a floor with constant force F over a distance d, in the same direction as the push. The product F·d is called the **<Term slug="work">work</Term>** you did on the crate. If you pushed twice as hard, or twice as far, you did twice as much work. The units are newtons × metres, which have their own name: joules.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">W = F · d        (force and displacement aligned)</span>
+</EquationBlock>
+
+That simple form hides one subtlety: work is only done to the extent that the force and the displacement point the same way. Push horizontally on a crate and walk it forward — work is done. Push horizontally on a crate that doesn't budge — no displacement, no work. Stand holding a suitcase at arm's length — the force is vertical, the displacement (while you stand still) is zero, so no work is done on the suitcase, even though your arm is burning from the exertion. The body does biochemical work maintaining muscle tension, but no mechanical work is being done on the bag. Physicists' "work" is not everyday work.
+
+For a force at angle θ to the displacement, only the component along the path counts:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">W = F · d · cos θ</span>
+</EquationBlock>
+
+Push a sled straight forward on flat ground and θ = 0, cos θ = 1, and you get W = F·d. Push at 90° to the motion — a string tugging a ball in a circle, say — and cos θ = 0 and no work is done. That is why the gravitational force on a satellite in a circular orbit does no work on it: the force points inward, the motion is tangential, and the two are perpendicular. The satellite's kinetic energy stays constant because no work is transacted across that force-displacement interface.
+
+When the force varies along the path — a stretching spring, a changing gravitational field, a rocket motor ramping up — the product F·d becomes an integral:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">W = ∫ F(x) · dx</span>
+</EquationBlock>
+
+For a Hookean spring obeying F = −k·x, integrating from 0 to x gives W = ½·k·x². For gravity near the Earth's surface, with F = m·g constant, over a height h the work done *by gravity* on a falling body is m·g·h. Those two results are the backbone of what comes next.
+
+</Section>
+
+<Section index={3} title="Kinetic energy — the thing work creates">
+
+Do work on a body that is free to accelerate, and the body speeds up. How much? Write Newton's second law as F = m·(dv/dt), multiply both sides by v = dx/dt, and integrate:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">∫ F · dx = ∫ m·(dv/dt) · v · dt = ½·m·v² − ½·m·v₀²</span>
+</EquationBlock>
+
+The left side is the work done on the body. The right side is the change in a quantity called **<Term slug="kinetic-energy">kinetic energy</Term>**, usually written T or KE:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">KE = ½·m·v²</span>
+</EquationBlock>
+
+This is the **work–kinetic-energy theorem**: the net work done on a body equals the change in its kinetic energy. Push a 1 kg puck with 10 N across a 5 m stretch of frictionless ice and you have done 50 J of work on it — and 50 J of kinetic energy is exactly what it has when you let go. That is 10 m/s from rest. No additional accounting is required.
+
+The factor of ½ and the v² are not cosmetic. The v² is what makes stopping distance scale quadratically with speed: double the car's velocity and you need four times the braking distance, because four times as much kinetic energy has to be disposed of. The ½ is the price of integrating v from zero up to itself. It is also the reason the quantity that Leibniz originally called vis viva, m·v², was the wrong one by a factor of two — a factor of two <PhysicistLink slug="emilie-du-chatelet">Émilie du Châtelet</PhysicistLink> corrected in her commentary on the Newton–Leibniz priority dispute, though the dispute continued for decades after she had effectively settled it.
+
+<Callout variant="intuition">
+Why does KE scale as v²? Think of it as two separate pushes. Accelerating a body from 0 to v takes some amount of work W. Accelerating it from v to 2v takes the same force acting over four times the distance (because the body is already moving, and covers more ground during the same duration). So the second stage takes three times as much work as the first — and the total work at speed 2v is four times the work at speed v. The ratio is always the square of the velocity ratio.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Potential energy — the other side of the ledger">
+
+Lift a 1 kg brick 1 m straight up against gravity. You have done roughly 9.8 J of work on it. Let go. It falls. By the time it hits the ground it is moving at √(2gh) ≈ 4.4 m/s and has kinetic energy ½·m·v² ≈ 9.8 J — exactly the work you did lifting it.
+
+So what was the brick storing while it sat on the shelf, motionless? It had no kinetic energy — it was still. And yet, on command, it was able to cough up 9.8 J of kinetic energy all at once. That stored something-that-can-become-kinetic-energy is called **<Term slug="potential-energy">potential energy</Term>**. For gravity near the Earth's surface:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">PE_grav = m·g·h</span>
+</EquationBlock>
+
+where h is measured from any convenient zero level. The zero is arbitrary — only *changes* in PE are physical. What matters is ΔPE = m·g·Δh: lift a brick by 1 m and you have increased its PE by m·g; lower it by 1 m and you have decreased its PE by the same amount.
+
+The same logic works for a stretched spring. Compress or stretch a Hookean spring by x from its rest length and it stores:
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-base">PE_spring = ½·k·x²</span>
+</EquationBlock>
+
+Release it and that stored energy gets converted back into motion. The diving board, the bow, the pole vaulter's pole, the catapult, and the slingshot are all potential-energy reservoirs — you charge them up by doing work against a restoring force, and they let it out on your cue.
+
+The key idea generalises: every force that does work on a body reversibly — meaning, the energy can be fully retrieved by moving backward — admits a potential energy function. Gravity is such a force (its PE is m·g·h). Springs are such forces (½·k·x²). Electric forces are too. Friction, famously, is not — the work friction does against you cannot be retrieved by pushing the block backward. Friction is a dissipative force, and the energy it takes becomes heat.
+
+</Section>
+
+<Section index={5} title="Conservation of mechanical energy">
+
+Now tie kinetic and potential together. Drop the brick from rest at height h. At the top, KE = 0 and PE = m·g·h. At the bottom, just before impact, PE = 0 and KE = ½·m·v². The work-kinetic-energy theorem says KE_final − KE_initial = W_gravity. The work gravity does on the falling brick is +m·g·h. So:
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-base">½·m·v² − 0 = m·g·h    →    v = √(2·g·h)</span>
+</EquationBlock>
+
+That is Galileo's falling-body law, re-derived from energetics. Equivalently, notice that KE + PE = m·g·h at the top and ½·m·v² at the bottom — and those two are equal. In between, at any height y < h,
+
+<EquationBlock id="EQ.09">
+  <span className="font-mono text-base">½·m·v² + m·g·y = m·g·h    (constant)</span>
+</EquationBlock>
+
+The quantity on the left is the *mechanical energy*. As the brick falls, KE rises and PE falls, but their sum stays pinned. This is **<Term slug="conservation-of-energy">conservation of mechanical energy</Term>** in its simplest form. It holds for any system acted on only by conservative forces (gravity, springs, ideal elastic collisions). It fails the moment dissipative forces enter — but only because mechanical energy alone is the wrong total to track.
+
+<SceneCard caption="FIG.05a — energy budget of a ball in a parabolic bowl" className="w-full">
+  <EnergyBowlScene />
+</SceneCard>
+
+Drop a ball from the rim of a bowl. With friction set to zero, KE and PE trade back and forth forever — the total bar stays full. Turn the friction up, and the red "heat" segment grows: energy has leaked out of the mechanical ledger into thermal motion of the surface and the ball. The total mechanical energy (blue + gold) shrinks. The first law of thermodynamics promises the heat is really there — the bowl is microscopically warmer — but for the purposes of the ball's motion it is gone for good.
+
+</Section>
+
+<Section index={6} title="Power — the rate of doing work">
+
+Work is a total. **<Term slug="power">Power</Term>** is a rate. If a 100 kg lift carries a person 10 m up in 5 seconds, it does m·g·h ≈ 9.8 kJ of work — the same as if it took an hour, or a year. But the *power* — the joules per second — depends on how fast the work is done. 9.8 kJ in 5 s is about 2 kW. The same job stretched over an hour is about 2.7 W — a nightlight.
+
+<EquationBlock id="EQ.10">
+  <span className="font-mono text-base">P = dW/dt = F · v    (for constant force along motion)</span>
+</EquationBlock>
+
+The practical consequence is why engines have power ratings. A car engine rated at 100 kW can do 100 kJ of work every second. It can lift itself up a hill, accelerate, push through air resistance — but it can only do it at that rate. If the losses exceed the power, the car slows; if they are less, it accelerates. Peak acceleration happens where all the engine power is going into kinetic energy and none into drag. At terminal speed on a flat road, drag exactly eats the engine's 100 kW, and net power on the car is zero.
+
+The unit of power is the watt (W = J/s), named for <PhysicistLink slug="james-watt">James Watt</PhysicistLink>, the Scottish engineer who in the 1760s transformed the steam engine from a pumping curiosity into the prime mover of the industrial revolution. Watt himself, faced with selling engines to customers who thought in horses, invented the unit of horsepower to benchmark his machines. One horsepower turns out to be about 746 W — a large but plausible figure for a pack horse lifting a load steadily.
+
+<Callout variant="math">
+For a variable force, power is just the instantaneous rate: P(t) = F(t) · v(t). Integrating power over time gives work: W = ∫P(t) dt. So if you know the power curve of a motor over time, you know the work it has done. This is how energy auditors figure out how much electricity a factory used in a day — they integrate the instantaneous power consumption.
+</Callout>
+
+</Section>
+
+<Section index={7} title="Where the hockey puck went">
+
+Now we can close the loop we opened at the top. A hockey puck slides across an ice rink and stops. Mechanical energy has decreased from ½·m·v² to zero. Where did it go?
+
+It went into kinetic friction between puck and ice, and the ice (and puck) got microscopically warmer. You can measure it if you are careful — a high-sensitivity thermocouple can detect the warming of the ice under a decelerating puck. The kinetic energy didn't vanish. It redistributed itself into the thermal jiggling of 10²⁵ atoms, each getting a tiny share. No single atom's motion is visible, but summed over all of them, the energy balance holds exactly.
+
+Joule spent the 1840s making this precise. In the most famous of his experiments he placed a paddle wheel inside a well-insulated tank of water, hooked it to a falling weight, and let the weight drive the paddle to stir the water. The water got warmer. Joule measured by how much, and compared to the potential energy m·g·h of the falling weight. The numbers matched — once a conversion factor was applied between mechanical energy (joules) and thermal energy (calories), the totals balanced to within experimental error. One joule of work corresponds to exactly 1 joule of heat. Today we call this conversion factor 1 and call both quantities energy, but in 1843 that equivalence was news.
+
+Joule's paddle-wheel experiment is the capstone of this topic. It is why the hockey puck's motion is not gone — it has merely changed clothes. It is why friction and drag are not violations of conservation but particular, predictable ways of routing energy from one ledger entry (kinetic) to another (thermal). And it is why physics in the second half of the nineteenth century became thermodynamics: the study of energy in all its forms at once.
+
+In the next topic we'll tackle a complementary conservation law, one that tracks a different quantity — not m·v² but m·v itself — and that turns out to be exactly as fundamental. Energy is conserved because the laws of physics don't change with time. Momentum is conserved because they don't change with position. The pattern is beginning.
 
 </Section>
 

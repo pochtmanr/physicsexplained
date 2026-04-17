@@ -1,18 +1,165 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { CollisionScene } from "@/components/physics/collision-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "René Descartes", href: "/physicists/rene-descartes" },
+  { type: "physicist", label: "Christiaan Huygens", href: "/physicists/christiaan-huygens" },
+  { type: "physicist", label: "John Wallis", href: "/physicists/john-wallis" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Momentum", href: "/dictionary/momentum" },
+  { type: "term", label: "Impulse", href: "/dictionary/impulse" },
+  { type: "term", label: "Center of Mass", href: "/dictionary/center-of-mass" },
+  { type: "term", label: "Elastic Collision", href: "/dictionary/elastic-collision" },
+  { type: "term", label: "Inelastic Collision", href: "/dictionary/inelastic-collision" },
+  { type: "term", label: "Coefficient of Restitution", href: "/dictionary/coefficient-of-restitution" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.06 · CONSERVATION LAWS"
   title="MOMENTUM AND COLLISIONS"
-  subtitle="Elastic, inelastic, and the center of mass."
+  subtitle="The quantity nothing can create or destroy — only pass around."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="A second ledger">
 
-TODO: write the opening.
+In FIG.05 we built a ledger for energy. Every joule had an address, and no joule was ever lost, only relocated — sometimes uselessly, into heat. This topic builds a second ledger, one that tracks a different quantity entirely: not m·v² but the simpler product m·v, with a direction attached. It is called **<Term slug="momentum">momentum</Term>**, usually written p, and it obeys a conservation law every bit as strict as the one for energy — and in some ways a better one.
+
+Why introduce a second quantity? Because energy alone cannot tell you how a collision will end. Two billiard balls approach each other at equal and opposite speeds, 3 m/s each. After they collide, you know the total kinetic energy (if the collision is elastic) but not how it is split between them. They could both stop. They could swap. They could fly apart at some other pair of speeds. Energy narrows the possibilities but does not pin down the answer.
+
+Momentum does. For the head-on symmetric case above, total momentum is zero before the collision — m·(+3) + m·(−3) = 0. It must be zero after. So whatever the final velocities are, they must come in equal and opposite pairs. Combined with energy conservation for the elastic case, this forces the unique solution: they swap velocities, -3 and +3. Momentum removes the ambiguity. Every collision problem, from billiards to rocket launches, reduces to applying both ledgers at once.
+
+</Section>
+
+<Section index={2} title="What is momentum?">
+
+Momentum is the product of mass and velocity:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">p = m · v</span>
+</EquationBlock>
+
+It is a vector — it has both a magnitude and a direction. In 1-D problems you keep track of signs; in 3-D it's a triple (p_x, p_y, p_z). A 1 kg object moving at 3 m/s east has momentum +3 kg·m/s east. The same object moving 3 m/s west has momentum −3 kg·m/s.
+
+The conservation law is:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">p_total (before) = p_total (after)</span>
+</EquationBlock>
+
+for any closed system — one with no external forces acting on it. Internal forces between the parts don't matter: if particle A pushes particle B, then by Newton's third law particle B pushes back on A with an equal and opposite force, and the total p_A + p_B doesn't change. That is really all the law is: Newton's third law, promoted from a statement about forces to a statement about the time-integral of forces.
+
+The connection to Newton's second law is direct. F = m·a can be rewritten as F = dp/dt — force is the rate of change of momentum. Zero external force means dp/dt = 0, which means p = constant. Conservation of momentum is the time-integrated version of F = m·a when the net external F is zero.
+
+<PhysicistLink slug="rene-descartes">Descartes</PhysicistLink> had the idea first, in 1644, and called it *quantitas motus* — quantity of motion. He thought it was the deepest law of nature, a direct statement about how God maintained the universe. He was mostly right. What he got wrong was the definition: he used |m·v|, throwing away the direction, and that version doesn't conserve. Within a generation <PhysicistLink slug="christiaan-huygens">Huygens</PhysicistLink> and <PhysicistLink slug="john-wallis">John Wallis</PhysicistLink> independently caught the error, added the sign (or, in 2-D, the vector), and made the law actually hold. <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> wrote it into the *Principia* as a cornerstone, where it has lived ever since.
+
+</Section>
+
+<Section index={3} title="Impulse — the kick">
+
+If a force F acts on a body for a time Δt, it delivers an **<Term slug="impulse">impulse</Term>** J = F·Δt. By F = dp/dt, the impulse is exactly the change in momentum:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">J = F · Δt = Δp</span>
+</EquationBlock>
+
+For a varying force, J = ∫F·dt, with the integral taken over the duration of the force. The insight is that it is the *integral* of force over time that matters for changing momentum, not the peak force — and this fact underpins every piece of safety engineering there is.
+
+Airbags are the classic illustration. Stop a 70 kg passenger travelling at 20 m/s and you must remove 1400 kg·m/s of momentum. That total is fixed. What you can control is how quickly. Hit a steel dashboard and it happens in maybe 5 ms — average force 280 kN, roughly 400g, bones shatter. Hit an airbag and it happens in maybe 100 ms — average force 14 kN, survivable. Same impulse, different durations, spectacularly different peak forces. Every crumple zone, foam helmet lining, parachute, and landing-gear shock absorber does the same trick: trade a long Δt for a low F, at the expense of moving distance.
+
+Same logic, opposite direction: a karate chop, a golf drive, or the crack of a bullwhip wants a very short Δt — hit hard and fast — to produce the biggest possible force from a limited impulse budget. Catching an egg with both hands gently pulled back mid-catch gives you a long Δt and keeps the egg intact. Catching it against a wall gives you a short Δt and a broken yolk.
+
+</Section>
+
+<Section index={4} title="The center of mass">
+
+A system of several particles has a single special point called the **<Term slug="center-of-mass">center of mass</Term>**, defined by
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">R_CM = (m₁·r₁ + m₂·r₂ + … + m_n·r_n) / (m₁ + m₂ + … + m_n)</span>
+</EquationBlock>
+
+which in words is the mass-weighted average position of all the parts. Differentiate both sides with respect to time and you get
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">M · V_CM = p₁ + p₂ + … + p_n    (total momentum)</span>
+</EquationBlock>
+
+where M is the total mass. The total momentum of a system is exactly the total mass times the velocity of its center of mass. If external forces sum to zero, total momentum is conserved, and therefore the center of mass moves in a straight line at constant velocity — forever.
+
+This is a startlingly powerful statement. Consider a hand grenade thrown in an arc, which explodes mid-flight into a hundred fragments flying in every direction. Every single fragment has its own messy trajectory. But the center of mass of all those fragments, summed, continues along the original parabola as if the explosion never happened. The internal forces of the explosion cancel in pairs — they can redistribute momentum among fragments but cannot move the center of mass. Ignore air resistance, and the center of the swarm lands exactly where the unexploded grenade would have landed.
+
+Divers use the same trick. A tuck-somersault diver spins rapidly in mid-air, but their center of mass follows a perfect parabola from the springboard to the water. The limbs are tracing complicated curves; the CM is not. Trampolinists, gymnasts, and astronauts all rely on the same separation: internal rearrangements change everyone's individual motion but can never shift the system's center of mass.
+
+<Callout variant="intuition">
+This is also why you can't lift yourself up by your own bootstraps. Your CM can only be moved by forces from outside your body — the floor pushing your feet, the air pushing your skin. Flail internally all you like: every limb that moves up must be matched by another moving down, and the CM is stuck.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Collisions — elastic and otherwise">
+
+Two objects meet, exchange some force for a short Δt, and go their separate ways. Between the first contact and the last contact, no external forces act (we can ignore gravity and friction during the short collision). So momentum is conserved. That much is always true.
+
+What's not always true is whether kinetic energy is conserved. Three regimes:
+
+A collision is **<Term slug="elastic-collision">elastic</Term>** if kinetic energy is conserved. Billiard balls come close. Hard steel spheres come closer. Protons scattering off other protons are essentially perfect. Rubber bouncy balls on a hard floor can retain 90% of their KE per bounce.
+
+A collision is **perfectly <Term slug="inelastic-collision">inelastic</Term>** if the maximum possible KE is lost — the two bodies stick together and move as one. Cars in a pile-up, a lump of putty on a block, an arrow in a target. Momentum is still conserved, but KE drops by a factor set by the mass ratio. Some of it has gone into heat, sound, and deformation of the crumpled metal.
+
+In between, most real collisions are **partially inelastic**. They're parameterised by a **<Term slug="coefficient-of-restitution">coefficient of restitution</Term>** e, defined as the ratio of post-collision to pre-collision relative speed. e = 1 is elastic, e = 0 is perfectly inelastic, and everything real lies between. A tennis ball on a hard court has e ≈ 0.75; a baseball on a wooden bat has e ≈ 0.55; a dropped marble on concrete has e ≈ 0.9.
+
+<SceneCard caption="FIG.06a — two-body collision with adjustable mass and restitution" className="w-full">
+  <CollisionScene />
+</SceneCard>
+
+Slide e down to zero and the two bodies merge — KE drops by the factor m_B / (m_A + m_B) relative to the initial KE, which is the fraction always lost in a perfectly inelastic collision. Slide mass ratio up and watch A bounce backwards when it hits a much heavier B — the classic reflection, the same mechanism that makes a tennis ball shoot up faster than the incoming racket. The running total at the top stays fixed: momentum is constant through the entire process, regardless of e, regardless of mass ratio. Only the kinetic-energy bar shrinks.
+
+The math for the 1-D case is worth seeing. With A moving at v_A and B at rest, an elastic collision gives:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">v_A' = ((m_A − m_B) / (m_A + m_B)) · v_A</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-base">v_B' = (2·m_A / (m_A + m_B)) · v_A</span>
+</EquationBlock>
+
+Three limits are worth noticing. When m_A = m_B, the first ball stops dead and the second takes its velocity — the Newton's cradle trick. When m_A ≫ m_B, A barely slows and B shoots off at 2·v_A — this is why a golf club (heavy) sends a golf ball (light) at roughly twice the clubhead speed. When m_A ≪ m_B, A bounces back at almost −v_A and B hardly moves — which is why a rubber ball bounces off a wall.
+
+</Section>
+
+<Section index={6} title="Rockets — how a body changes its own momentum">
+
+In a closed system you cannot change the total momentum. You can, however, rearrange it — expel some mass backward, and the rest moves forward. That is how rockets work.
+
+A rocket of instantaneous mass M expels fuel at exhaust velocity u (relative to itself) at a mass flow rate dm/dt. Momentum balance: the fuel that leaves carries momentum (dm)·(−u) backward; the rocket, for its total momentum to remain unchanged, must gain momentum M·dv forward. Over an infinitesimal time interval,
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-base">M · dv = u · dm   →   dv = u · dM / M</span>
+</EquationBlock>
+
+Integrate from initial mass M₀ to final mass M:
+
+<EquationBlock id="EQ.09">
+  <span className="font-mono text-base">Δv = u · ln(M₀ / M)        (Tsiolkovsky rocket equation)</span>
+</EquationBlock>
+
+This is Konstantin Tsiolkovsky's 1903 result, and it is the fundamental equation of spaceflight. Every kilogram of payload you want to move requires you to also move fuel — and the fuel for that fuel, and the fuel for that fuel's fuel, exponentially. Reaching low Earth orbit requires about 9.4 km/s of Δv; chemical rockets have exhaust velocities around 4.5 km/s; so the mass ratio M₀/M must be about e^(9.4/4.5) ≈ 8. Eight kilograms of fuel per kilogram of rocket-plus-payload at the pad. That is why rockets are mostly fuel tanks.
+
+The logic also runs in reverse. If a squid wants to move forward, it has to squirt water backward. If a human on a frictionless ice rink wants to move, they throw a shoe. Momentum conservation is the reason no body can propel itself forward without pushing something else backward — there is no magic thruster, and there never will be.
+
+</Section>
+
+<Section index={7} title="Forward">
+
+We now have two conservation laws: energy (from FIG.05) and momentum (from this topic). They do not conflict — they are independent constraints — and applied together they pin down almost any collision in classical mechanics. Every billiard game, every car crash analysis, every rocket trajectory, and every bouncing ball is a balance of these two ledgers.
+
+One more conservation law is coming in FIG.07. It is the rotational cousin of what we did here — mass times velocity becomes moment-of-inertia times angular velocity, and the same argument that pinned momentum to translational symmetry will pin a new quantity, angular momentum, to rotational symmetry. Skaters pulling in their arms, hurricanes tightening over warming oceans, pulsars spinning thousands of times a second after a star's death — all of these are angular-momentum conservation in action. The pattern keeps repeating. By FIG.08 we will finally see why.
 
 </Section>
 
