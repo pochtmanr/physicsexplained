@@ -216,7 +216,7 @@ export function FrictionRampScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">Angle θ</label>
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">Angle θ</label>
           <input
             type="range"
             min={0}
@@ -231,7 +231,7 @@ export function FrictionRampScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">μ_s</label>
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">μ_s</label>
           <input
             type="range"
             min={0.05}

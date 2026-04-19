@@ -46,11 +46,11 @@ export function TopicBreadcrumb() {
     >
       <Link
         href={`/${branchSlug}`}
-        className="text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-cyan)]"
+        className="text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
       >
         {branchLabel}
       </Link>
-      <span className="text-[var(--color-fg-3)]">/</span>
+      <span className="text-[var(--color-fg-4)]">/</span>
       <span className="text-[var(--color-fg-0)]">{topicLabel}</span>
     </nav>
   );

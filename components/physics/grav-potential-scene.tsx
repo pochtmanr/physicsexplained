@@ -243,7 +243,7 @@ export function GravPotentialScene() {
         onPointerUp={handlePointerUp}
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">
+        <label className="text-sm text-[var(--color-fg-3)]">
           Total energy (E)
         </label>
         <input
@@ -261,7 +261,7 @@ export function GravPotentialScene() {
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2 px-2 font-mono text-xs text-[var(--color-fg-1)]">
         <div>
-          <span className="text-[var(--color-fg-2)]">PE </span>
+          <span className="text-[var(--color-fg-3)]">PE </span>
           {readout.PE.toFixed(2)}
         </div>
         <div>

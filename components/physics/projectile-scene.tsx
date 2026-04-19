@@ -270,7 +270,7 @@ export function ProjectileScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">
             angle θ
           </label>
           <input
@@ -287,7 +287,7 @@ export function ProjectileScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">
             speed v
           </label>
           <input

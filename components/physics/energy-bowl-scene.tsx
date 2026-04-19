@@ -199,7 +199,7 @@ export function EnergyBowlScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">friction</label>
+        <label className="text-sm text-[var(--color-fg-3)]">friction</label>
         <input
           type="range"
           min={0}

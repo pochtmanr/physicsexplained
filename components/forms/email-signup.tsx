@@ -36,7 +36,7 @@ export function EmailSignup({ branchSlug, className }: EmailSignupProps) {
 
   return (
     <div className={`max-w-md ${className ?? ""}`}>
-      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
         {t("eyebrow")}
       </div>
       <p className="mt-3 text-sm text-[var(--color-fg-1)]">{t("body")}</p>
@@ -47,7 +47,7 @@ export function EmailSignup({ branchSlug, className }: EmailSignupProps) {
           name="email"
           required
           placeholder={t("placeholder")}
-          className="flex-1 bg-[var(--color-bg-1)] border border-[var(--color-fg-3)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] focus:outline-none focus:border-[var(--color-cyan)] focus:ring-2 focus:ring-[var(--color-cyan)]/30"
+          className="flex-1 bg-[var(--color-bg-1)] border border-[var(--color-fg-4)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:outline-none focus:border-[var(--color-cyan)] focus:ring-2 focus:ring-[var(--color-cyan)]/30"
         />
         <SubmitButton />
       </form>
@@ -55,7 +55,7 @@ export function EmailSignup({ branchSlug, className }: EmailSignupProps) {
         <div
           className={`mt-4 font-mono text-xs uppercase tracking-wider ${
             state.ok
-              ? "text-[var(--color-cyan)]"
+              ? "text-[var(--color-mint)]"
               : "text-[var(--color-magenta)]"
           }`}
         >

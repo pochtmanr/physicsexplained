@@ -75,7 +75,7 @@ export default async function PhysicistPage({
       />
 
       {physicist.image && (
-        <div className="mb-16 overflow-hidden rounded-lg border border-[var(--color-fg-3)]">
+        <div className="mb-16 overflow-hidden rounded-lg border border-[var(--color-fg-4)]">
           <img
             src={physicist.image}
             alt={t("portraitAlt", { name: physicist.name })}
@@ -113,9 +113,9 @@ export default async function PhysicistPage({
           {physicist.contributions.map((c, i) => (
             <li
               key={i}
-              className="flex gap-4 border-l border-[var(--color-fg-3)] pl-4 text-[var(--color-fg-1)]"
+              className="flex gap-4 border-l border-[var(--color-fg-4)] pl-4 text-[var(--color-fg-1)]"
             >
-              <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] tabular-nums pt-1">
+              <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] tabular-nums pt-1">
                 {String(i + 1).padStart(2, "0")}
               </span>
               <span>{c}</span>
@@ -138,10 +138,10 @@ export default async function PhysicistPage({
             {physicist.majorWorks.map((work, i) => (
               <div
                 key={i}
-                className="border-l border-[var(--color-fg-3)] pl-4"
+                className="border-l border-[var(--color-fg-4)] pl-4"
               >
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                  <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] tabular-nums">
+                  <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] tabular-nums">
                     {work.year}
                   </span>
                   <span className="text-lg font-semibold italic text-[var(--color-fg-0)]">
@@ -172,10 +172,10 @@ export default async function PhysicistPage({
               <Link
                 key={`${branch.slug}/${topic.slug}`}
                 href={`/${branch.slug}/${topic.slug}`}
-                className="group flex items-center justify-between border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-6 transition-colors hover:z-10 hover:border-[var(--color-cyan)]"
+                className="group flex items-center justify-between border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-6 transition-colors hover:z-10 hover:border-[var(--color-cyan)]"
               >
                 <div>
-                  <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+                  <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
                     {branch.title}
                   </div>
                   <div className="mt-2 text-lg font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
@@ -184,7 +184,7 @@ export default async function PhysicistPage({
                 </div>
                 <span
                   aria-hidden="true"
-                  className="inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
+                  className="inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
                 >
                   →
                 </span>
@@ -194,10 +194,10 @@ export default async function PhysicistPage({
         </section>
       )}
 
-      <div className="mt-12 border-t border-[var(--color-fg-3)] pt-8">
+      <div className="mt-12 border-t border-[var(--color-fg-4)] pt-8">
         <Link
           href="/physicists"
-          className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-cyan)]"
+          className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
         >
           {t("backLink")}
         </Link>

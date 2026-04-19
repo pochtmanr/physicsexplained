@@ -234,15 +234,15 @@ export function SearchCommand() {
       <div
         role="dialog"
         aria-label={t("dialogLabel")}
-        className="relative w-full max-w-xl mx-4 border border-[var(--color-fg-3)] bg-[var(--color-bg-0)] shadow-2xl"
+        className="relative w-full max-w-xl mx-4 border border-[var(--color-fg-4)] bg-[var(--color-bg-0)] shadow-2xl"
         onKeyDown={handleKeyDown}
       >
         {/* Search input row */}
-        <div className="flex items-center gap-3 border-b border-[var(--color-fg-3)] px-4 py-3">
+        <div className="flex items-center gap-3 border-b border-[var(--color-fg-4)] px-4 py-3">
           <Search
             size={16}
             strokeWidth={1.5}
-            className="shrink-0 text-[var(--color-fg-2)]"
+            className="shrink-0 text-[var(--color-fg-3)]"
             aria-hidden="true"
           />
           <input
@@ -251,13 +251,13 @@ export function SearchCommand() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("placeholder")}
-            className="flex-1 bg-transparent font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] outline-none"
+            className="flex-1 bg-transparent font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] outline-none"
           />
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label={t("closeLabel")}
-            className="shrink-0 text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-fg-0)]"
+            className="shrink-0 text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-fg-0)]"
           >
             <X size={16} strokeWidth={1.5} />
           </button>
@@ -266,13 +266,13 @@ export function SearchCommand() {
         {/* Results */}
         <div ref={listRef} className="max-h-[60vh] overflow-y-auto py-2">
           {query.trim() && filtered.length === 0 && (
-            <p className="px-4 py-8 text-center font-mono text-xs text-[var(--color-fg-2)]">
+            <p className="px-4 py-8 text-center font-mono text-xs text-[var(--color-fg-3)]">
               {t("emptyNoResults", { query })}
             </p>
           )}
 
           {!query.trim() && (
-            <p className="px-4 py-8 text-center font-mono text-xs text-[var(--color-fg-2)]">
+            <p className="px-4 py-8 text-center font-mono text-xs text-[var(--color-fg-3)]">
               {t("emptyInitial")}
             </p>
           )}
@@ -284,8 +284,8 @@ export function SearchCommand() {
               <div key={group.category}>
                 {/* Category header */}
                 <div className="flex items-center gap-2 px-4 pt-3 pb-1">
-                  <Icon size={12} strokeWidth={1.5} className="text-[var(--color-fg-2)]" aria-hidden="true" />
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-fg-2)]">
+                  <Icon size={12} strokeWidth={1.5} className="text-[var(--color-fg-3)]" aria-hidden="true" />
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-[var(--color-fg-3)]">
                     {label}
                   </span>
                 </div>
@@ -312,7 +312,7 @@ export function SearchCommand() {
                         <p className={`text-sm font-medium truncate ${isActive ? "text-[var(--color-cyan)]" : "text-[var(--color-fg-0)]"}`}>
                           {result.title}
                         </p>
-                        <p className="truncate text-xs text-[var(--color-fg-2)]">
+                        <p className="truncate text-xs text-[var(--color-fg-3)]">
                           {result.subtitle}
                         </p>
                       </div>
@@ -333,17 +333,17 @@ export function SearchCommand() {
         </div>
 
         {/* Footer hint */}
-        <div className="flex items-center justify-between border-t border-[var(--color-fg-3)] px-4 py-2">
+        <div className="flex items-center justify-between border-t border-[var(--color-fg-4)] px-4 py-2">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-[10px] text-[var(--color-fg-2)]">
-              <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">↑↓</kbd> {t("hintNavigate")}
+            <span className="font-mono text-[10px] text-[var(--color-fg-3)]">
+              <kbd className="rounded border border-[var(--color-fg-4)] px-1 py-0.5 text-[10px]">↑↓</kbd> {t("hintNavigate")}
             </span>
-            <span className="font-mono text-[10px] text-[var(--color-fg-2)]">
-              <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">↵</kbd> {t("hintOpen")}
+            <span className="font-mono text-[10px] text-[var(--color-fg-3)]">
+              <kbd className="rounded border border-[var(--color-fg-4)] px-1 py-0.5 text-[10px]">↵</kbd> {t("hintOpen")}
             </span>
           </div>
-          <span className="font-mono text-[10px] text-[var(--color-fg-2)]">
-            <kbd className="rounded border border-[var(--color-fg-3)] px-1 py-0.5 text-[10px]">esc</kbd> {t("hintClose")}
+          <span className="font-mono text-[10px] text-[var(--color-fg-3)]">
+            <kbd className="rounded border border-[var(--color-fg-4)] px-1 py-0.5 text-[10px]">esc</kbd> {t("hintClose")}
           </span>
         </div>
       </div>

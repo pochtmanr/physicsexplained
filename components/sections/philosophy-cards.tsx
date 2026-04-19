@@ -80,7 +80,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
 
   const className = [
     "group relative flex h-full min-h-[280px] flex-col overflow-hidden",
-    "border border-[var(--color-fg-3)] p-6 md:p-8",
+    "border border-[var(--color-fg-4)] p-6 md:p-8",
     "transition-[border-color,box-shadow] duration-[280ms] ease-out",
     "hover:z-10 hover:border-[var(--color-cyan)]",
     "hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_35%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)]",
@@ -116,7 +116,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
       </span>
 
       {/* Label */}
-      <div className="relative font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+      <div className="relative font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
         {rule.label}
       </div>
 
@@ -130,7 +130,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
 
       {/* Action row — only on cards 2 & 3 */}
       {rule.cta ? (
-        <div className="relative mt-auto flex items-center gap-2 pt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+        <div className="relative mt-auto flex items-center gap-2 pt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
           {external ? (
             <span
               aria-hidden="true"
@@ -148,7 +148,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
           </span>
         </div>
       ) : (
-        <div className="relative mt-auto flex flex-wrap gap-2 pt-8 font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-2)]">
+        <div className="relative mt-auto flex flex-wrap gap-2 pt-8 font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
           <TechChip>odex</TechChip>
           <TechChip>Newton-Raphson</TechChip>
           <TechChip>analytic</TechChip>
@@ -186,7 +186,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
 
 function TechChip({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-block border border-[var(--color-fg-3)] px-2 py-1 transition-colors duration-[200ms] group-hover:border-[var(--color-cyan)] group-hover:text-[var(--color-cyan)]">
+    <span className="inline-block border border-[var(--color-fg-4)] px-2 py-1 transition-colors duration-[200ms] group-hover:border-[var(--color-cyan)] group-hover:text-[var(--color-cyan)]">
       {children}
     </span>
   );

@@ -15,12 +15,12 @@ export function NewsletterForm() {
 
   return (
     <div className="w-full max-w-md">
-      <p className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-2)] mb-3">
+      <p className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-3)] mb-3">
         Stay in the loop
       </p>
 
       {state?.ok ? (
-        <p className="font-mono text-sm text-[var(--color-cyan)]">
+        <p className="font-mono text-sm text-[var(--color-mint)]">
           {state.message}
         </p>
       ) : (
@@ -31,7 +31,7 @@ export function NewsletterForm() {
             required
             placeholder="you@example.com"
             aria-label="Email address"
-            className="min-w-0 flex-1 basis-48 border border-[var(--color-fg-3)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] outline-none transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cyan)]"
+            className="min-w-0 flex-1 basis-48 border border-[var(--color-fg-4)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] outline-none transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cyan)]"
           />
           <button
             type="submit"

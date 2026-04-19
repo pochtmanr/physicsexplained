@@ -189,7 +189,7 @@ export function CollisionScene() {
       />
       <div className="mt-2 flex flex-col gap-3 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-24 text-sm text-[var(--color-fg-2)]">
+          <label className="w-24 text-sm text-[var(--color-fg-3)]">
             restitution e
           </label>
           <input
@@ -206,7 +206,7 @@ export function CollisionScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="w-24 text-sm text-[var(--color-fg-2)]">
+          <label className="w-24 text-sm text-[var(--color-fg-3)]">
             mass ratio m_B / m_A
           </label>
           <input

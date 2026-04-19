@@ -37,7 +37,7 @@ export async function BranchCard({
   } as CSSProperties;
 
   const baseClass =
-    "group relative flex h-full min-h-[240px] md:min-h-[280px] flex-col overflow-hidden border border-[var(--color-fg-3)] p-6 md:p-8 transition-[border-color,box-shadow] duration-[280ms] ease-out hover:z-10";
+    "group relative flex h-full min-h-[240px] md:min-h-[280px] flex-col overflow-hidden border border-[var(--color-fg-4)] p-6 md:p-8 transition-[border-color,box-shadow] duration-[280ms] ease-out hover:z-10";
   const hoverBorder = isLive
     ? "hover:border-[var(--color-cyan)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)]"
     : "hover:border-[var(--color-magenta)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-magenta)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-magenta)_45%,transparent)]";
@@ -51,7 +51,7 @@ export async function BranchCard({
     : "group-hover:text-[var(--color-magenta)]";
 
   const pillClass = isLive
-    ? "inline-block border border-[var(--color-cyan)] px-3 py-1 font-mono text-xs uppercase text-[var(--color-cyan)]"
+    ? "inline-block border border-[var(--color-cyan-dim)] px-3 py-1 font-mono text-xs uppercase text-[var(--color-cyan-dim)]"
     : "inline-block border border-[var(--color-magenta)] px-3 py-1 font-mono text-xs uppercase text-[var(--color-magenta)]";
 
   const pillLabel = isLive
@@ -102,12 +102,12 @@ export async function BranchCard({
 
       {/* Top row: eyebrow + arrow */}
       <div className="relative flex items-start justify-between">
-        <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+        <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
           {branch.eyebrow}
         </div>
         <span
           aria-hidden="true"
-          className={`inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 rtl:-scale-x-100 rtl:group-hover:rotate-45 ${arrowHover}`}
+          className={`inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 rtl:-scale-x-100 rtl:group-hover:rotate-45 ${arrowHover}`}
         >
           →
         </span>

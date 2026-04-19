@@ -41,7 +41,7 @@ export function HoverCard({ children, content }: HoverCardProps) {
       {children}
       {visible && (
         <span
-          className={`absolute left-1/2 -translate-x-1/2 z-50 max-w-xs w-max rounded-lg border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-4 shadow-xl backdrop-blur-sm text-sm leading-relaxed animate-[fadeIn_120ms_ease-out] ${
+          className={`absolute left-1/2 -translate-x-1/2 z-50 max-w-xs w-max rounded-lg border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-4 shadow-xl backdrop-blur-sm text-sm leading-relaxed animate-[fadeIn_120ms_ease-out] ${
             above ? "bottom-full mb-2" : "top-full mt-2"
           }`}
           onMouseEnter={show}

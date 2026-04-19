@@ -132,7 +132,7 @@ export function ResonanceCurveScene() {
         style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">Q</label>
+        <label className="text-sm text-[var(--color-fg-3)]">Q</label>
         <input
           type="range"
           min={1}

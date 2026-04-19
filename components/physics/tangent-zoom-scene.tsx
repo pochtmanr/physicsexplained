@@ -163,7 +163,7 @@ export function TangentZoomScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-16 text-sm text-[var(--color-fg-2)]">t</label>
+          <label className="w-16 text-sm text-[var(--color-fg-3)]">t</label>
           <input
             type="range"
             min={0.2}
@@ -178,7 +178,7 @@ export function TangentZoomScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="w-16 text-sm text-[var(--color-fg-2)]">Δt</label>
+          <label className="w-16 text-sm text-[var(--color-fg-3)]">Δt</label>
           <input
             type="range"
             min={0.01}

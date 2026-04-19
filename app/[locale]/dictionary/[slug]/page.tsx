@@ -27,7 +27,7 @@ function ProseImage({
   fallbackAlt: string;
 }) {
   return (
-    <figure className="not-prose my-8 flex flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)]">
+    <figure className="not-prose my-8 flex flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]">
       <div className="aspect-[16/10] w-full overflow-hidden bg-[var(--color-bg-2)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -38,7 +38,7 @@ function ProseImage({
         />
       </div>
       {caption && (
-        <figcaption className="border-t border-[var(--color-fg-3)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+        <figcaption className="border-t border-[var(--color-fg-4)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
           {caption}
         </figcaption>
       )}
@@ -199,7 +199,7 @@ export default async function DictionaryTermPage({
 
   return (
     <ArticleLayout aside={asideLinks.length > 0 ? (
-      <div className="rounded-lg border border-[var(--color-fg-3)] p-4">
+      <div className="rounded-lg border border-[var(--color-fg-4)] p-4">
         <AsideLinks links={asideLinks} />
       </div>
     ) : undefined}>
@@ -258,7 +258,7 @@ export default async function DictionaryTermPage({
               return (
                 <figure
                   key={img.src}
-                  className="flex flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)]"
+                  className="flex flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]"
                 >
                   <div className="aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-2)]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -270,7 +270,7 @@ export default async function DictionaryTermPage({
                     />
                   </div>
                   {caption && (
-                    <figcaption className="border-t border-[var(--color-fg-3)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+                    <figcaption className="border-t border-[var(--color-fg-4)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
                       {caption}
                     </figcaption>
                   )}
@@ -308,10 +308,10 @@ export default async function DictionaryTermPage({
         </Section>
       )}
 
-      <div className="mt-12 border-t border-[var(--color-fg-3)] pt-8">
+      <div className="mt-12 border-t border-[var(--color-fg-4)] pt-8">
         <Link
           href="/dictionary"
-          className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-cyan)]"
+          className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
         >
           {t("backLink")}
         </Link>

@@ -173,7 +173,7 @@ export function GyroscopeScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">spin ω (rad/s)</label>
+        <label className="text-sm text-[var(--color-fg-3)]">spin ω (rad/s)</label>
         <input
           type="range"
           min={10}

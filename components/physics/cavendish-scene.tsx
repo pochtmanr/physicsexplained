@@ -213,7 +213,7 @@ export function CavendishScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">
+        <label className="text-sm text-[var(--color-fg-3)]">
           Large mass (M)
         </label>
         <input
@@ -231,15 +231,15 @@ export function CavendishScene() {
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2 px-2 font-mono text-xs text-[var(--color-fg-1)]">
         <div>
-          <span className="text-[var(--color-fg-2)]">twist </span>
+          <span className="text-[var(--color-fg-3)]">twist </span>
           {readoutState.angleDeg.toFixed(2)}°
         </div>
         <div>
-          <span className="text-[var(--color-fg-2)]">G </span>
+          <span className="text-[var(--color-fg-3)]">G </span>
           {readoutState.G.toExponential(3)}
         </div>
         <div>
-          <span className="text-[var(--color-fg-2)]">M⊕ </span>
+          <span className="text-[var(--color-fg-3)]">M⊕ </span>
           {readoutState.MEarth.toExponential(3)} kg
         </div>
       </div>

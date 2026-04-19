@@ -37,7 +37,7 @@ export function CookieBanner() {
     <div
       role="banner"
       aria-label="Cookie consent"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-fg-3)]/40 bg-[var(--color-bg-1)]/95 backdrop-blur-sm"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-1)]/95 backdrop-blur-sm"
     >
       <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-4 px-6 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8">
         <p className="text-sm text-[var(--color-fg-1)]">

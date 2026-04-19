@@ -263,7 +263,7 @@ export function MonkeyHunterScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">speed</label>
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">speed</label>
           <input
             type="range"
             min={6}
@@ -286,7 +286,7 @@ export function MonkeyHunterScene() {
           >
             fire
           </button>
-          <span className="text-xs text-[var(--color-fg-2)]">
+          <span className="text-xs text-[var(--color-fg-3)]">
             the cannon is always aimed straight at the monkey; change the speed
             and try again
           </span>

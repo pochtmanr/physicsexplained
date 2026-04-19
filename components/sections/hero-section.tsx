@@ -12,7 +12,7 @@ export async function HeroSection() {
     >
       <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 items-center w-full">
         <div className="min-w-0">
-          <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+          <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {t("tag")}
           </div>
           <h1 className="mt-6 text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
@@ -36,7 +36,7 @@ export async function HeroSection() {
             </Link>
             <a
               href="#branches"
-              className="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-[var(--color-fg-2)] hover:text-[var(--color-cyan)]"
+              className="inline-flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-[var(--color-fg-3)] hover:text-[var(--color-cyan)]"
             >
               {t("ctaSecondary")}
               <span aria-hidden="true">↓</span>
@@ -47,7 +47,7 @@ export async function HeroSection() {
         <div className="relative hidden min-w-0 lg:block">
           <div className="relative mx-auto w-fit">
             <div className="pointer-events-none absolute inset-0 -z-10 scale-[1.6] bg-[radial-gradient(circle_at_center,_rgba(91,233,255,0.2),_transparent_70%)]" />
-            <div className="pointer-events-none absolute -top-4 start-0 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+            <div className="pointer-events-none absolute -top-4 start-0 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
               {t("figLabel")}
             </div>
             <EpicycleScene />

@@ -189,19 +189,19 @@ export function FreeFallScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">Air</label>
+        <label className="text-sm text-[var(--color-fg-3)]">Air</label>
         <button
           type="button"
           onClick={() => setAirOn((v) => !v)}
           className={`rounded border px-3 py-1 text-xs font-mono transition ${
             airOn
               ? "border-[#5BE9FF] text-[#5BE9FF]"
-              : "border-[var(--color-fg-3)] text-[var(--color-fg-2)]"
+              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
           }`}
         >
           {airOn ? "on" : "off"}
         </button>
-        <span className="ml-2 text-xs text-[var(--color-fg-2)]">
+        <span className="ml-2 text-xs text-[var(--color-fg-3)]">
           {airOn
             ? "drag slows the feather"
             : "vacuum — both fall at the same rate"}

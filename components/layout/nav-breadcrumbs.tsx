@@ -33,7 +33,7 @@ export function NavBreadcrumbs() {
 
   return (
     <div className="flex items-center">
-      <span className="mx-2 font-mono text-xs text-[var(--color-fg-3)]">
+      <span className="mx-2 font-mono text-xs text-[var(--color-fg-4)]">
         {"\u00B7"}
       </span>
       {isBranchFinal ? (
@@ -43,14 +43,14 @@ export function NavBreadcrumbs() {
       ) : (
         <Link
           href={branchHref}
-          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)] hover:text-[var(--color-cyan)] transition-colors duration-[180ms] ease-out"
+          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] hover:text-[var(--color-cyan)] transition-colors duration-[180ms] ease-out"
         >
           {branchLabel}
         </Link>
       )}
       {topicLabel && (
         <>
-          <span className="mx-2 font-mono text-xs text-[var(--color-fg-3)]">
+          <span className="mx-2 font-mono text-xs text-[var(--color-fg-4)]">
             {"\u00B7"}
           </span>
           <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)]">

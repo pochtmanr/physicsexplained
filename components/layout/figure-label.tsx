@@ -10,7 +10,7 @@ export function FigureLabel({ section, figure, className }: FigureLabelProps) {
   return (
     <div
       className={clsx(
-        "font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]",
+        "font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]",
         className,
       )}
     >

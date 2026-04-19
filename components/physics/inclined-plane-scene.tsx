@@ -189,7 +189,7 @@ export function InclinedPlaneScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">
+        <label className="text-sm text-[var(--color-fg-3)]">
           Angle (θ)
         </label>
         <input

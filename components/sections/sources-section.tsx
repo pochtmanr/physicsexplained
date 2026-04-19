@@ -25,7 +25,7 @@ export async function SourcesSection() {
 
   return (
     <section className={`${WIDE_CONTAINER} mt-20 md:mt-28`}>
-      <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)] text-center">
+      <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)] text-center">
         {t("heading")}
       </div>
       <div className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14">

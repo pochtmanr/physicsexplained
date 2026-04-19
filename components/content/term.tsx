@@ -29,7 +29,7 @@ export function Term({ slug, children }: TermProps) {
     <HoverCard content={preview}>
       <Link
         href={`/dictionary/${slug}`}
-        className="underline decoration-dotted decoration-[var(--color-fg-3)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
+        className="underline decoration-dotted decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
       >
         {children ?? term.term}
       </Link>

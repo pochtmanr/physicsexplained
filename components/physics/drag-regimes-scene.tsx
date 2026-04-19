@@ -239,7 +239,7 @@ export function DragRegimesScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-28 text-sm text-[var(--color-fg-2)]">
+          <label className="w-28 text-sm text-[var(--color-fg-3)]">
             Stokes b
           </label>
           <input
@@ -256,7 +256,7 @@ export function DragRegimesScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="w-28 text-sm text-[var(--color-fg-2)]">
+          <label className="w-28 text-sm text-[var(--color-fg-3)]">
             Newton k
           </label>
           <input
@@ -272,7 +272,7 @@ export function DragRegimesScene() {
             {k.toFixed(3)}
           </span>
         </div>
-        <p className="px-1 text-xs text-[var(--color-fg-2)]">
+        <p className="px-1 text-xs text-[var(--color-fg-3)]">
           Low v — the Stokes line dominates (slope 1). High v — the Newton line
           takes over (slope 2). The cyan total follows whichever term is larger.
           Reynolds number ≈ 1 marks the knee.

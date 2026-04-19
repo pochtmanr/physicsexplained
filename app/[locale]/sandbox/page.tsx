@@ -62,7 +62,7 @@ export default async function SandboxPage({
           caption="FIG.00 — scene placeholder"
           hud={<HUD>θ = 0.27 rad · T = 2.01 s</HUD>}
         >
-          <div className="flex h-64 items-center justify-center text-[var(--color-fg-2)]">
+          <div className="flex h-64 items-center justify-center text-[var(--color-fg-3)]">
             (PendulumScene arrives in Phase 3)
           </div>
         </SceneCard>

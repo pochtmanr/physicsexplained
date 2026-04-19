@@ -177,11 +177,11 @@ export function TaylorExpansionScene() {
             if (idx > 0) setMaxOrder(ORDERS[idx - 1]!);
           }}
           disabled={maxOrder <= ORDERS[0]!}
-          className="rounded border border-[var(--color-fg-3)] px-3 py-1 text-sm text-[var(--color-fg-1)] disabled:opacity-30"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-sm text-[var(--color-fg-1)] disabled:opacity-30"
         >
           &minus; term
         </button>
-        <span className="text-sm text-[var(--color-fg-2)]">
+        <span className="text-sm text-[var(--color-fg-3)]">
           order {displayOrder}
         </span>
         <button
@@ -191,7 +191,7 @@ export function TaylorExpansionScene() {
             if (idx < ORDERS.length - 1) setMaxOrder(ORDERS[idx + 1]!);
           }}
           disabled={maxOrder >= ORDERS[ORDERS.length - 1]!}
-          className="rounded border border-[var(--color-fg-3)] px-3 py-1 text-sm text-[var(--color-fg-1)] disabled:opacity-30"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-sm text-[var(--color-fg-1)] disabled:opacity-30"
         >
           + term
         </button>

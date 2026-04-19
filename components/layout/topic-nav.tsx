@@ -35,14 +35,14 @@ export function TopicNav() {
   return (
     <nav
       aria-label="Topic navigation"
-      className="mt-20 flex items-stretch gap-3 border-t border-[var(--color-fg-3)]/40 pt-10 md:gap-4"
+      className="mt-20 flex items-stretch gap-3 border-t border-[var(--color-fg-4)]/40 pt-10 md:gap-4"
     >
       {prev ? (
         <Link
           href={`/${prev.branch.slug}/${prev.topic.slug}`}
-          className="group flex flex-1 flex-col border border-[var(--color-fg-3)] p-4 transition-colors hover:border-[var(--color-cyan)] md:p-6"
+          className="group flex flex-1 flex-col border border-[var(--color-fg-4)] p-4 transition-colors hover:border-[var(--color-cyan)] md:p-6"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
             {tMeta("previous")}
           </span>
           <span className="mt-2 flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-[var(--color-fg-1)] transition-colors group-hover:text-[var(--color-cyan)]">
@@ -58,9 +58,9 @@ export function TopicNav() {
       {next ? (
         <Link
           href={`/${next.branch.slug}/${next.topic.slug}`}
-          className="group flex flex-1 flex-col items-end border border-[var(--color-fg-3)] p-4 text-end transition-colors hover:border-[var(--color-cyan)] md:p-6"
+          className="group flex flex-1 flex-col items-end border border-[var(--color-fg-4)] p-4 text-end transition-colors hover:border-[var(--color-cyan)] md:p-6"
         >
-          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+          <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
             {tMeta("next")}
           </span>
           <span className="mt-2 flex items-center gap-2 font-mono text-sm uppercase tracking-wider text-[var(--color-fg-1)] transition-colors group-hover:text-[var(--color-cyan)]">

@@ -142,7 +142,7 @@ export function SymmetryTriptychScene() {
     `px-3 py-1 text-xs font-mono uppercase tracking-wider transition-colors ${
       active
         ? "bg-[var(--color-cyan)] text-[var(--color-bg-0)]"
-        : "bg-transparent text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
+        : "bg-transparent text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
     }`;
 
   return (

@@ -33,13 +33,13 @@ export default async function CookiesPage({
     <main className={WIDE_CONTAINER}>
       <article className="mx-auto max-w-[65ch] py-16">
         <header className="mb-12">
-          <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+          <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {t("tag")}
           </div>
           <h1 className="mb-6 font-display text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] md:text-5xl">
             {tCookies("title")}
           </h1>
-          <p className="text-[var(--color-fg-2)]">{t("lastUpdated")}</p>
+          <p className="text-[var(--color-fg-3)]">{t("lastUpdated")}</p>
         </header>
 
         <div className="space-y-8 text-[var(--color-fg-1)] leading-relaxed">
@@ -57,20 +57,20 @@ export default async function CookiesPage({
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[var(--color-fg-3)]/40 text-start">
-                    <th className="pb-2 pe-6 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-2)]">
+                  <tr className="border-b border-[var(--color-fg-4)]/40 text-start">
+                    <th className="pb-2 pe-6 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-3)]">
                       {tItems("tableHeaders.key")}
                     </th>
-                    <th className="pb-2 pe-6 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-2)]">
+                    <th className="pb-2 pe-6 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-3)]">
                       {tItems("tableHeaders.purpose")}
                     </th>
-                    <th className="pb-2 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-2)]">
+                    <th className="pb-2 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-fg-3)]">
                       {tItems("tableHeaders.values")}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-[var(--color-fg-3)]/20">
+                  <tr className="border-b border-[var(--color-fg-4)]/20">
                     <td className="py-3 pe-6">
                       <code className="font-mono text-sm text-[var(--color-cyan)]">
                         {tItems("physicsTheme.key")}
@@ -133,7 +133,7 @@ export default async function CookiesPage({
             </ul>
           </section>
 
-          <div className="border-t border-[var(--color-fg-3)]/40 pt-8 font-mono text-xs text-[var(--color-fg-2)]">
+          <div className="border-t border-[var(--color-fg-4)]/40 pt-8 font-mono text-xs text-[var(--color-fg-3)]">
             <Link href="/privacy">{tFooter("privacyPolicy")}</Link>
             {" · "}
             <Link href="/terms">{tFooter("termsOfService")}</Link>

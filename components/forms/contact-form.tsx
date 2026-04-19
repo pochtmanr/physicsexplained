@@ -30,7 +30,7 @@ export function ContactForm({ className }: { className?: string }) {
     <form action={formAction} className={`flex flex-col gap-4 ${className ?? ""}`}>
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-2">
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
             Name
           </span>
           <input
@@ -39,11 +39,11 @@ export function ContactForm({ className }: { className?: string }) {
             required
             minLength={2}
             placeholder="Ada Lovelace"
-            className="bg-[var(--color-bg-1)] border border-[var(--color-fg-3)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
+            className="bg-[var(--color-bg-1)] border border-[var(--color-fg-4)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
           />
         </label>
         <label className="flex flex-col gap-2">
-          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
             Email
           </span>
           <input
@@ -51,12 +51,12 @@ export function ContactForm({ className }: { className?: string }) {
             name="email"
             required
             placeholder="you@domain.com"
-            className="bg-[var(--color-bg-1)] border border-[var(--color-fg-3)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
+            className="bg-[var(--color-bg-1)] border border-[var(--color-fg-4)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
           />
         </label>
       </div>
       <label className="flex flex-col gap-2">
-        <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+        <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
           Message
         </span>
         <textarea
@@ -65,7 +65,7 @@ export function ContactForm({ className }: { className?: string }) {
           minLength={10}
           rows={6}
           placeholder="Tell us what's on your mind…"
-          className="bg-[var(--color-bg-1)] border border-[var(--color-fg-3)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-2)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
+          className="bg-[var(--color-bg-1)] border border-[var(--color-fg-4)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
         />
       </label>
       <div className="flex items-center justify-between gap-4">
@@ -74,7 +74,7 @@ export function ContactForm({ className }: { className?: string }) {
           <div
             className={`font-mono text-xs uppercase tracking-wider ${
               state.ok
-                ? "text-[var(--color-cyan)]"
+                ? "text-[var(--color-mint)]"
                 : "text-[var(--color-magenta)]"
             }`}
           >

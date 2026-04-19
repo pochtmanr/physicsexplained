@@ -22,7 +22,7 @@ export async function PhysicistLink({ slug, children }: PhysicistLinkProps) {
         {physicist.name}
       </span>
       {(lifespan || physicist.nationality) && (
-        <span className="block mt-0.5 text-[var(--color-fg-2)] text-xs">
+        <span className="block mt-0.5 text-[var(--color-fg-3)] text-xs">
           {[lifespan, physicist.nationality].filter(Boolean).join(" · ")}
         </span>
       )}
@@ -38,7 +38,7 @@ export async function PhysicistLink({ slug, children }: PhysicistLinkProps) {
     <HoverCard content={preview}>
       <Link
         href={`/physicists/${slug}`}
-        className="underline decoration-[var(--color-fg-3)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
+        className="underline decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
       >
         {children ?? physicist.shortName}
       </Link>

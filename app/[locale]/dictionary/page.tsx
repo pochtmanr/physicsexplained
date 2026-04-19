@@ -58,7 +58,7 @@ export default async function DictionaryIndexPage({
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
       <div>
-        <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+        <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}
         </div>
         <h1 className="mt-6 text-4xl md:text-6xl font-bold uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
@@ -67,7 +67,7 @@ export default async function DictionaryIndexPage({
         <p className="mt-8 text-lg text-[var(--color-fg-1)] max-w-[60ch]">
           {t("subtitle")}
         </p>
-        <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+        <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
           {t("stats", { total, categories: blocks.length })}
         </div>
       </div>
@@ -82,7 +82,7 @@ export default async function DictionaryIndexPage({
               <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
                 {block.label}
               </h2>
-              <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+              <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
                 · {block.terms.length}
               </span>
             </div>
@@ -95,15 +95,15 @@ export default async function DictionaryIndexPage({
                   <Link
                     key={term.slug}
                     href={`/dictionary/${term.slug}`}
-                    className="group relative flex h-full min-h-[200px] flex-col border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-8 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)]"
+                    className="group relative flex h-full min-h-[200px] flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-8 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)]"
                   >
                     <div className="flex items-start justify-between">
-                      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+                      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
                         {t(`categorySingular.${term.category}`)}
                       </div>
                       <span
                         aria-hidden="true"
-                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-xl leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
+                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-xl leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
                       >
                         →
                       </span>

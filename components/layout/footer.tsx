@@ -6,7 +6,7 @@ import { WIDE_CONTAINER } from "@/lib/layout";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 
 const navLinkClass =
-  "nav-link inline-flex items-center gap-2 border border-[var(--color-fg-3)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]";
+  "nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]";
 
 export async function Footer() {
   const t = await getTranslations("common.footer");
@@ -24,7 +24,7 @@ export async function Footer() {
   ] as const;
 
   return (
-    <footer className="border-t border-[var(--color-fg-3)]/40 mt-12">
+    <footer className="border-t border-[var(--color-fg-4)]/40 mt-12">
       <div className={`${WIDE_CONTAINER} py-16`}>
         {/* Logo + socials row */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -55,7 +55,7 @@ export async function Footer() {
               href="https://www.linkedin.com/in/romanpochtman/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-xs text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-cyan)]"
+              className="font-mono text-xs text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
               aria-label="LinkedIn"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -66,7 +66,7 @@ export async function Footer() {
               href="https://x.com/RPochtman"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-xs text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-cyan)]"
+              className="font-mono text-xs text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
               aria-label="X (Twitter)"
             >
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -93,14 +93,14 @@ export async function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[var(--color-fg-3)]/40 mt-12 pt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="border-t border-[var(--color-fg-4)]/40 mt-12 pt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           {/* Legal links */}
           <nav className="flex flex-wrap gap-4" aria-label="Legal">
             {LEGAL_LINKS.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className="font-mono text-xs text-[var(--color-fg-2)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--color-fg-1)]"
+                className="font-mono text-xs text-[var(--color-fg-3)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--color-fg-1)]"
               >
                 {label}
               </Link>
@@ -108,7 +108,7 @@ export async function Footer() {
           </nav>
 
           {/* Copyright */}
-          <div className="font-mono text-xs text-[var(--color-fg-2)]">
+          <div className="font-mono text-xs text-[var(--color-fg-3)]">
             &copy; 2026{" "}
             <a
               href="https://www.simnetiq.store/"

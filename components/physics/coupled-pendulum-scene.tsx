@@ -174,7 +174,7 @@ export function CoupledPendulumScene() {
             className={`rounded px-3 py-1 text-sm transition-colors ${
               mode === btn.value
                 ? "border border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border border-[var(--color-fg-3)] text-[var(--color-fg-2)]"
+                : "border border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
             }`}
           >
             {btn.label}

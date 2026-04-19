@@ -282,7 +282,7 @@ export function VectorAdditionScene() {
         >
           reset
         </button>
-        <span className="text-xs text-[var(--color-fg-2)]">
+        <span className="text-xs text-[var(--color-fg-3)]">
           drag the green or purple tip — the cyan resultant updates live
         </span>
       </div>

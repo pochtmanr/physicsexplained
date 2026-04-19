@@ -53,7 +53,7 @@ export function LocaleSwitcher() {
         aria-haspopup="listbox"
         aria-expanded={open}
         disabled={isPending}
-        className="inline-flex cursor-pointer items-center gap-1.5 border border-[var(--color-fg-3)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] disabled:opacity-60 md:px-3"
+        className="inline-flex cursor-pointer items-center gap-1.5 border border-[var(--color-fg-4)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] disabled:opacity-60 md:px-3"
       >
         <span>{current?.code ?? locale.toUpperCase()}</span>
         <ChevronDown
@@ -69,7 +69,7 @@ export function LocaleSwitcher() {
       {open && (
         <ul
           role="listbox"
-          className="absolute end-0 top-full z-30 mt-2 min-w-full border border-[var(--color-fg-3)] bg-[var(--color-bg-0)]/95 backdrop-blur-sm"
+          className="absolute end-0 top-full z-30 mt-2 min-w-full border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/95 backdrop-blur-sm"
         >
           {locales.map((loc) => {
             const label = LOCALE_LABELS[loc];
@@ -97,7 +97,7 @@ export function LocaleSwitcher() {
                   }`}
                 >
                   <span>{label?.code ?? loc.toUpperCase()}</span>
-                  <span className="text-[var(--color-fg-2)] normal-case tracking-normal">
+                  <span className="text-[var(--color-fg-3)] normal-case tracking-normal">
                     {label?.name ?? loc}
                   </span>
                 </button>

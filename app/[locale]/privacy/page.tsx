@@ -32,13 +32,13 @@ export default async function PrivacyPage({
     <main className={WIDE_CONTAINER}>
       <article className="mx-auto max-w-[65ch] py-16">
         <header className="mb-12">
-          <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+          <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {t("tag")}
           </div>
           <h1 className="mb-6 font-display text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] md:text-5xl">
             {tPrivacy("title")}
           </h1>
-          <p className="text-[var(--color-fg-2)]">{t("lastUpdated")}</p>
+          <p className="text-[var(--color-fg-3)]">{t("lastUpdated")}</p>
         </header>
 
         <div className="space-y-8 text-[var(--color-fg-1)] leading-relaxed">
@@ -90,7 +90,7 @@ export default async function PrivacyPage({
             <p>{tPrivacy("changes.body")}</p>
           </section>
 
-          <div className="border-t border-[var(--color-fg-3)]/40 pt-8 font-mono text-xs text-[var(--color-fg-2)]">
+          <div className="border-t border-[var(--color-fg-4)]/40 pt-8 font-mono text-xs text-[var(--color-fg-3)]">
             <Link href="/terms">{tFooter("termsOfService")}</Link>
             {" · "}
             <Link href="/cookies">{tFooter("cookiePolicy")}</Link>

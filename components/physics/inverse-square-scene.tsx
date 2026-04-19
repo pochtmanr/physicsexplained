@@ -131,7 +131,7 @@ export function InverseSquareScene({
   return (
     <div ref={containerRef} className="w-full pb-4 relative">
       <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
-      <div className="pointer-events-none absolute bottom-7 right-3 rounded-sm border border-[var(--color-fg-3)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm">
+      <div className="pointer-events-none absolute bottom-7 right-3 rounded-sm border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm">
         r = {readout.r.toFixed(2)} AU · F = {readout.F.toFixed(2)}
       </div>
     </div>

@@ -40,7 +40,7 @@ export async function AsideLinks({ links }: { links: AsideLink[] }) {
       <div className="space-y-6">
         {grouped.map((group) => (
           <div key={group.type}>
-            <h3 className="mb-3 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+            <h3 className="mb-3 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
               {(() => { const Icon = SECTION_ICONS[group.type]; return <Icon aria-hidden="true" size={12} strokeWidth={1.5} />; })()}
               {sectionTitles[group.type]}
             </h3>
@@ -49,13 +49,13 @@ export async function AsideLinks({ links }: { links: AsideLink[] }) {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="group block border-s-2 border-transparent py-1.5 ps-3 transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+                    className="group block border-s-2 border-transparent py-1.5 ps-3 transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
                   >
                     <span className="block text-sm leading-tight text-[var(--color-fg-1)] transition-colors group-hover:text-[var(--color-cyan)]">
                       {link.label}
                     </span>
                     {link.sublabel && (
-                      <span className="block font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-2)]">
+                      <span className="block font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
                         {link.sublabel}
                       </span>
                     )}

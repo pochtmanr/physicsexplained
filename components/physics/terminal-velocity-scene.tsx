@@ -232,7 +232,7 @@ export function TerminalVelocityScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-28 text-sm text-[var(--color-fg-2)]">
+          <label className="w-28 text-sm text-[var(--color-fg-3)]">
             Drag b (N·s/m)
           </label>
           <input
@@ -248,7 +248,7 @@ export function TerminalVelocityScene() {
             {dragB.toFixed(3)}
           </span>
         </div>
-        <p className="px-1 text-xs text-[var(--color-fg-2)]">
+        <p className="px-1 text-xs text-[var(--color-fg-3)]">
           Thicker fluid, larger b, lower terminal velocity. The curve approaches
           v_t exponentially with time constant τ = m / b.
         </p>

@@ -19,7 +19,7 @@ export function TopicHeader({
 }: TopicHeaderProps) {
   return (
     <header className={clsx("mt-16 mb-12", className)}>
-      <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+      <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
         {eyebrow}
       </div>
       <h1 className="mb-6 text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] break-words md:text-6xl">

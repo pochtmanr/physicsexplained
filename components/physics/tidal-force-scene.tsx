@@ -193,7 +193,7 @@ export function TidalForceScene() {
     <div ref={containerRef} className="w-full pb-4">
       <canvas ref={canvasRef} style={{ width, height }} className="block" />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">
+        <label className="text-sm text-[var(--color-fg-3)]">
           Moon distance
         </label>
         <input

@@ -10,7 +10,7 @@ export async function FeaturedTopicSection() {
     <section className={`${WIDE_CONTAINER} mt-32 md:mt-48`}>
       <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
         <div>
-          <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+          <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
             {t("tag")}
           </div>
           <h2 className="mt-4 text-3xl md:text-4xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
@@ -20,7 +20,7 @@ export async function FeaturedTopicSection() {
             <p>{t("body1")}</p>
             <p>{t("body2")}</p>
           </div>
-          <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+          <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
             {t("meta")}
           </div>
           <Link
@@ -33,7 +33,7 @@ export async function FeaturedTopicSection() {
             </span>
           </Link>
         </div>
-        <div className="border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] p-6 flex items-center justify-center">
+        <div className="border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-6 flex items-center justify-center">
           <PendulumScene theta0={0.35} length={1.2} />
         </div>
       </div>

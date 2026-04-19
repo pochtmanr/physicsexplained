@@ -21,7 +21,7 @@ export function EquationBlock({ id, children, className }: EquationBlockProps) {
         className,
       )}
     >
-      <div className="mb-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+      <div className="mb-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
         {id}
       </div>
       <div className="overflow-x-auto text-[var(--color-fg-0)] [-webkit-overflow-scrolling:touch] [scrollbar-width:thin]">

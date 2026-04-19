@@ -16,43 +16,56 @@
   --duration-slow: 600ms;
 }
 
-/* Default (dark) theme — applies when no data-theme or data-theme="dark" */
+/* Default (dark) theme — applies when no data-theme or data-theme="dark".
+   Background is a single near-black — depth comes from borders + grid-wash
+   opacity, not tonal layers. bg-1/bg-2 aliases kept for safety but resolve
+   to the same value. */
 :root,
 [data-theme="dark"] {
-  --color-bg-0: #05070A;
-  --color-bg-1: #0B0F16;
-  --color-bg-2: #121826;
+  --color-bg:   #07090E;
+  --color-bg-0: #07090E;
+  --color-bg-1: #07090E;
+  --color-bg-2: #07090E;
 
-  --color-fg-0: #E6EDF7;
-  --color-fg-1: #9FB0C8;
-  --color-fg-2: #5B6B86;
-  --color-fg-3: #2A3448;
+  --color-fg-0: #EEF2F9;
+  --color-fg-1: #B6C4D8;
+  --color-fg-2: #7D8DA6; /* secondary body, card subtitles */
+  --color-fg-3: #56687F; /* meta, captions, muted */
+  --color-fg-4: #2A3448; /* borders, rules, hairlines */
 
-  --color-cyan: #5BE9FF;
-  --color-magenta: #FF4FD8;
+  --color-cyan:     #5BE9FF; /* emphasis only — hero italic, live glow, link hover */
+  --color-cyan-dim: #6FB8C6; /* chrome — eyebrows, hover borders, pill outlines, icons */
+  --color-magenta:  #FF6ADE;
+  --color-mint:     #5BFFAE;
 
-  --color-grid: rgba(91, 233, 255, 0.08);
+  --color-grid: rgba(111, 184, 198, 0.08);
   --color-glow: rgba(91, 233, 255, 0.35);
 
   color-scheme: dark;
 }
 
-/* Light theme */
+/* Light — re-derived, not mechanically desaturated. Cyan becomes teal, magenta
+   fuchsia, amber bronze, mint emerald — each passes AA on the off-white bg. */
 [data-theme="light"] {
-  --color-bg-0: #F7F9FC;
-  --color-bg-1: #FFFFFF;
-  --color-bg-2: #EEF2F8;
+  --color-bg:   #FAFBFD;
+  --color-bg-0: #FAFBFD;
+  --color-bg-1: #FAFBFD;
+  --color-bg-2: #FAFBFD;
 
-  --color-fg-0: #0A0E14;
-  --color-fg-1: #334155;
-  --color-fg-2: #64748B;
-  --color-fg-3: #CBD5E1;
+  --color-fg-0: #0B1220;
+  --color-fg-1: #293244;
+  --color-fg-2: #4A5569;
+  --color-fg-3: #6E7A8F;
+  --color-fg-4: #CAD2DF;
 
-  --color-cyan: #0891B2;
-  --color-magenta: #C026D3;
+  --color-cyan:     #0B7285;
+  --color-cyan-dim: #5A8693;
+  --color-magenta:  #B6219E;
+  --color-amber:    #9A6410;
+  --color-mint:     #037A4B;
 
-  --color-grid: rgba(8, 145, 178, 0.08);
-  --color-glow: rgba(8, 145, 178, 0.35);
+  --color-grid: rgba(90, 134, 147, 0.10);
+  --color-glow: rgba(11, 114, 133, 0.28);
 
   color-scheme: light;
 }
@@ -140,14 +153,14 @@ table td {
   padding: 0.4rem 0.75rem;
   text-align: start;
   white-space: nowrap;
-  border-bottom: 1px solid var(--color-fg-3);
+  border-bottom: 1px solid var(--color-fg-4);
 }
 
 table th {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--color-fg-2);
+  color: var(--color-fg-3);
 }
 
 table td {

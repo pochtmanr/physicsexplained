@@ -210,7 +210,7 @@ export function ShellTheoremScene() {
         onPointerUp={handlePointerUp}
       />
       <div className="pointer-events-none mt-1 flex justify-end px-2">
-        <div className="rounded-sm border border-[var(--color-fg-3)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm">
+        <div className="rounded-sm border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm">
           r/R = {readout.r.toFixed(2)} ·{" "}
           {readout.inside ? (
             <span className="text-[#FF4FD8]">F = 0 (inside)</span>

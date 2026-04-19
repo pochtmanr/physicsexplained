@@ -24,7 +24,7 @@ export default async function AboutPage({
   return (
     <main className="mx-auto max-w-[720px] px-6 pb-32">
       <header className="mt-16 mb-24">
-        <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+        <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           § 00 · ABOUT
         </div>
         <h1 className="mb-6 text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] break-words md:text-6xl">
@@ -107,7 +107,7 @@ export default async function AboutPage({
         <ContactForm />
         <div className="mt-10 grid gap-6 sm:grid-cols-2">
           <div>
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
               DIRECT
             </div>
             <a
@@ -118,7 +118,7 @@ export default async function AboutPage({
             </a>
           </div>
           <div>
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
               ELSEWHERE
             </div>
             <a

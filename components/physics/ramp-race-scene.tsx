@@ -325,7 +325,7 @@ export function RampRaceScene() {
           type="button"
           onClick={handleReset}
           disabled={state === "idle"}
-          className="px-3 py-1 text-xs font-mono uppercase tracking-wider text-[var(--color-fg-2)] border border-[var(--color-fg-3)] disabled:opacity-40 hover:text-[var(--color-fg-1)]"
+          className="px-3 py-1 text-xs font-mono uppercase tracking-wider text-[var(--color-fg-3)] border border-[var(--color-fg-4)] disabled:opacity-40 hover:text-[var(--color-fg-1)]"
         >
           reset
         </button>

@@ -120,14 +120,14 @@ export function HarmonyTable() {
     <div ref={containerRef} className="w-full pb-4">
       <table className="w-full border-collapse font-mono text-sm">
         <thead>
-          <tr className="border-b border-[var(--color-fg-3)]">
-            <th className="py-2 text-left uppercase text-[var(--color-fg-2)]">
+          <tr className="border-b border-[var(--color-fg-4)]">
+            <th className="py-2 text-left uppercase text-[var(--color-fg-3)]">
               Planet
             </th>
-            <th className="py-2 text-right uppercase text-[var(--color-fg-2)]">
+            <th className="py-2 text-right uppercase text-[var(--color-fg-3)]">
               a (AU)
             </th>
-            <th className="py-2 text-right uppercase text-[var(--color-fg-2)]">
+            <th className="py-2 text-right uppercase text-[var(--color-fg-3)]">
               T (yr)
             </th>
             <th className="py-2 text-right uppercase text-[var(--color-cyan)]">
@@ -141,7 +141,7 @@ export function HarmonyTable() {
             return (
               <tr
                 key={p.name}
-                className="border-b border-[var(--color-fg-3)]/40"
+                className="border-b border-[var(--color-fg-4)]/40"
               >
                 <td className="py-2 text-[var(--color-fg-0)]">{p.name}</td>
                 <td className="py-2 text-right text-[var(--color-fg-1)]">

@@ -15,7 +15,7 @@ export async function Nav() {
   const t = await getTranslations("common.nav");
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[var(--color-fg-3)]/40 bg-[var(--color-bg-0)]">
+    <nav className="sticky top-0 z-50 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
       <div
         className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-4 md:py-5`}
       >
@@ -36,14 +36,14 @@ export async function Nav() {
           <NavBranchMenu />
           <Link
             href="/physicists"
-            className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-3)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+            className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
           >
             <User aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("physicists")}</span>
           </Link>
           <Link
             href="/dictionary"
-            className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-3)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+            className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
           >
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("dictionary")}</span>

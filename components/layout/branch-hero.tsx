@@ -25,7 +25,7 @@ export async function BranchHero({ branch }: BranchHeroProps) {
 
   return (
     <div>
-      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
         {branch.eyebrow} · {title}
       </div>
       <h1 className="mt-6 text-4xl md:text-6xl font-bold uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
@@ -35,7 +35,7 @@ export async function BranchHero({ branch }: BranchHeroProps) {
         {description}
       </p>
       {branch.status === "live" ? (
-        <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+        <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
           {tMeta("topicsTotal", {
             count: branch.topics.length,
             minutes: totalMinutes,

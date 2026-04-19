@@ -71,15 +71,15 @@ export function EpicycleScene() {
       // Trail
       const trail = trailRef.current;
       if (trail.length > 1) {
-        ctx.strokeStyle = "#FF4FD8"; ctx.lineWidth = 1.5; ctx.beginPath();
+        ctx.strokeStyle = colors.magenta; ctx.lineWidth = 1.5; ctx.beginPath();
         ctx.moveTo(trail[0].x, trail[0].y);
         for (let i = 1; i < trail.length; i++) ctx.lineTo(trail[i].x, trail[i].y);
         ctx.stroke();
       }
 
       // Planet
-      ctx.shadowColor = "rgba(255, 79, 216, 0.6)"; ctx.shadowBlur = 12;
-      ctx.fillStyle = "#FF4FD8"; ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
+      ctx.shadowColor = colors.magenta; ctx.shadowBlur = 12;
+      ctx.fillStyle = colors.magenta; ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0;
     },
   });
 

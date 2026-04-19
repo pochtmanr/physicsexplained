@@ -103,7 +103,7 @@ export function MobileNav() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
-        className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-3)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)] md:hidden"
+        className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:hidden"
       >
         {open ? (
           <X aria-hidden="true" size={18} strokeWidth={1.5} />
@@ -118,7 +118,7 @@ export function MobileNav() {
           open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="sticky top-0 z-10 border-b border-[var(--color-fg-3)]/40 bg-[var(--color-bg-0)]">
+        <div className="sticky top-0 z-10 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
           <div className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-4`}>
             <Link
               href="/"
@@ -136,14 +136,14 @@ export function MobileNav() {
               type="button"
               onClick={close}
               aria-label="Close menu"
-              className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-3)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+              className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
             >
               <X aria-hidden="true" size={18} strokeWidth={1.5} />
             </button>
           </div>
         </div>
         <div className="mx-auto w-full max-w-[640px] px-6 py-8">
-          <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+          <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {tBranches("tag")}
           </div>
           <ul className="grid grid-cols-1 gap-0 [&>li]:-mt-px">
@@ -156,16 +156,16 @@ export function MobileNav() {
                   <Link
                     href={`/${b.slug}`}
                     onClick={close}
-                    className="group flex items-center justify-between border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] px-4 py-3 transition-colors hover:border-[var(--color-cyan)]"
+                    className="group flex items-center justify-between border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 transition-colors hover:border-[var(--color-cyan)]"
                   >
                     <div className="flex min-w-0 items-baseline gap-3">
-                      <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-cyan)] shrink-0">
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-cyan-dim)] shrink-0">
                         {b.eyebrow}
                       </span>
                       <span
                         className={`truncate font-mono text-xs uppercase tracking-wider ${
                           isComingSoon
-                            ? "text-[var(--color-fg-2)]"
+                            ? "text-[var(--color-fg-3)]"
                             : "text-[var(--color-fg-0)]"
                         }`}
                       >
@@ -179,7 +179,7 @@ export function MobileNav() {
                     ) : (
                       <span
                         aria-hidden="true"
-                        className="ms-3 inline-flex h-5 w-5 shrink-0 items-center justify-center text-base text-[var(--color-fg-2)] group-hover:text-[var(--color-cyan)] rtl:-scale-x-100"
+                        className="ms-3 inline-flex h-5 w-5 shrink-0 items-center justify-center text-base text-[var(--color-fg-3)] group-hover:text-[var(--color-cyan)] rtl:-scale-x-100"
                       >
                         →
                       </span>
@@ -190,7 +190,7 @@ export function MobileNav() {
             })}
           </ul>
 
-          <div className="mt-8 mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan)]">
+          <div className="mt-8 mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             EXPLORE
           </div>
           <ul className="grid grid-cols-1 gap-0 [&>li]:-mt-px">
@@ -198,7 +198,7 @@ export function MobileNav() {
               <Link
                 href="/physicists"
                 onClick={close}
-                className="flex items-center gap-3 border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+                className="flex items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
               >
                 <User aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tNav("physicists")}
@@ -208,7 +208,7 @@ export function MobileNav() {
               <Link
                 href="/dictionary"
                 onClick={close}
-                className="flex items-center gap-3 border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+                className="flex items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
               >
                 <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tNav("dictionary")}
@@ -218,7 +218,7 @@ export function MobileNav() {
               <button
                 type="button"
                 onClick={openSearch}
-                className="flex w-full items-center gap-3 border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+                className="flex w-full items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
               >
                 <Search aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tSearch("triggerText")}
@@ -227,8 +227,8 @@ export function MobileNav() {
           </ul>
 
           <div className="mt-8 grid grid-cols-2 gap-0 [&>*]:-ms-px">
-            <div className="-ms-0 border border-[var(--color-fg-3)] bg-[var(--color-bg-1)]">
-              <div className="px-4 pt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+            <div className="-ms-0 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]">
+              <div className="px-4 pt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
                 LANG
               </div>
               <div className="grid grid-cols-2 gap-0 px-2 py-2 [&>*]:mx-1">
@@ -262,9 +262,9 @@ export function MobileNav() {
             <button
               type="button"
               onClick={toggleTheme}
-              className="flex flex-col items-start gap-2 border border-[var(--color-fg-3)] bg-[var(--color-bg-1)] px-4 py-3 text-start transition-colors hover:border-[var(--color-cyan)]"
+              className="flex flex-col items-start gap-2 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 text-start transition-colors hover:border-[var(--color-cyan)]"
             >
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
                 THEME
               </div>
               <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)]">

@@ -188,7 +188,7 @@ export function OrbitEnergyScene({}: OrbitEnergySceneProps) {
     <div ref={containerRef} className="w-full pb-4">
       <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
       <div className="mt-3 flex items-center gap-3 px-4 pb-2">
-        <label className="font-mono text-xs text-[var(--color-fg-2)]">
+        <label className="font-mono text-xs text-[var(--color-fg-3)]">
           e
         </label>
         <input

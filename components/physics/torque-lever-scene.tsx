@@ -241,7 +241,7 @@ function SliderRow({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <label className="w-32 text-sm text-[var(--color-fg-2)]">{label}</label>
+      <label className="w-32 text-sm text-[var(--color-fg-3)]">{label}</label>
       <input
         type="range"
         min={min}

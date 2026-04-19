@@ -11,8 +11,8 @@ interface TopicCardProps {
 }
 
 function extractFigNumber(eyebrow: string): string {
-  const match = eyebrow.match(/FIG\.(\d+)/i);
-  return match ? match[1] : "";
+  const match = eyebrow.match(/\d+/);
+  return match ? match[0] : "";
 }
 
 export async function TopicCard({
@@ -53,7 +53,7 @@ export async function TopicCard({
   return (
     <Link
       href={`/${branchSlug}/${topic.slug}`}
-      className="group relative flex h-full min-h-[220px] md:min-h-[260px] flex-col overflow-hidden border border-[var(--color-fg-3)] p-6 md:p-8 transition-[border-color,box-shadow] duration-[280ms] ease-out hover:z-10 hover:border-[var(--color-cyan)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)]"
+      className="group relative flex h-full min-h-[220px] md:min-h-[260px] flex-col overflow-hidden border border-[var(--color-fg-4)] p-6 md:p-8 transition-[border-color,box-shadow] duration-[280ms] ease-out hover:z-10 hover:border-[var(--color-cyan)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_32%,transparent),0_24px_56px_-20px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)]"
       style={style}
     >
       {/* Grid wash — density grows with card depth */}
@@ -84,12 +84,12 @@ export async function TopicCard({
 
       {/* Top row: eyebrow + arrow */}
       <div className="relative flex items-start justify-between">
-        <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">
+        <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
           {eyebrow}
         </div>
         <span
           aria-hidden="true"
-          className="inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-2)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
+          className="inline-flex h-6 w-6 items-center justify-center text-xl leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
         >
           →
         </span>
@@ -105,7 +105,7 @@ export async function TopicCard({
 
       {/* Bottom meta — pinned to bottom */}
       {topic.readingMinutes > 0 && (
-        <div className="relative mt-auto pt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]">
+        <div className="relative mt-auto pt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
           {tMeta("readingTime", { minutes: topic.readingMinutes })}
         </div>
       )}

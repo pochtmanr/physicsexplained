@@ -54,7 +54,7 @@ export default async function ClassicalMechanicsPage({
         const moduleTitle = moduleItems[mod.slug] ?? mod.title.toUpperCase();
         return (
           <section key={mod.slug} className="mt-16">
-            <h2 className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-2)]">
+            <h2 className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
               {tMeta("moduleHeading", {
                 index: mod.index,
                 title: moduleTitle,

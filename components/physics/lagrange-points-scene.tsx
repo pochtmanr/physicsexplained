@@ -351,7 +351,7 @@ export function LagrangePointsScene() {
         onPointerCancel={handlePointerUp}
       />
       <div className="mt-2 flex flex-wrap items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-2)]">Zoom</label>
+        <label className="text-sm text-[var(--color-fg-3)]">Zoom</label>
         <input
           type="range"
           min={0.5}
@@ -366,11 +366,11 @@ export function LagrangePointsScene() {
         </span>
         <button
           onClick={handleReset}
-          className="rounded border border-[var(--color-fg-3)] px-2 py-0.5 text-xs text-[var(--color-fg-2)] transition-colors hover:border-[var(--color-fg-2)]"
+          className="rounded border border-[var(--color-fg-4)] px-2 py-0.5 text-xs text-[var(--color-fg-3)] transition-colors hover:border-[var(--color-fg-3)]"
         >
           Reset
         </button>
-        <label className="ml-auto flex items-center gap-2 text-sm text-[var(--color-fg-2)]">
+        <label className="ml-auto flex items-center gap-2 text-sm text-[var(--color-fg-3)]">
           <input
             type="checkbox"
             checked={showOrbits}

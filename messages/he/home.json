@@ -107,104 +107,104 @@
         "eyebrow": "איור 04 · קינמטיקה וניוטון"
       },
       "energy-and-work": {
-        "title": "ENERGY AND WORK",
-        "subtitle": "Work, kinetic energy, and potential energy.",
-        "eyebrow": "FIG.05 · CONSERVATION LAWS"
+        "title": "אנרגיה ועבודה",
+        "subtitle": "עבודה, אנרגיה קינטית ואנרגיה פוטנציאלית — שלוש צורות של אותו מטבע.",
+        "eyebrow": "איור 05 · חוקי שימור"
       },
       "momentum-and-collisions": {
-        "title": "MOMENTUM AND COLLISIONS",
-        "subtitle": "Elastic, inelastic, and the center of mass.",
-        "eyebrow": "FIG.06 · CONSERVATION LAWS"
+        "title": "תנע והתנגשויות",
+        "subtitle": "אלסטיות, פלסטיות, ומרכז המסה שמתעקש להמשיך בדרכו.",
+        "eyebrow": "איור 06 · חוקי שימור"
       },
       "angular-momentum": {
-        "title": "ANGULAR MOMENTUM",
-        "subtitle": "Spinning skaters and bicycle wheels.",
-        "eyebrow": "FIG.07 · CONSERVATION LAWS"
+        "title": "תנע זוויתי",
+        "subtitle": "מחליקים על הקרח וגלגלי אופניים — למה הם ממשיכים להסתובב.",
+        "eyebrow": "איור 07 · חוקי שימור"
       },
       "noethers-theorem": {
-        "title": "NOETHER'S THEOREM",
-        "subtitle": "Symmetry and conservation are the same thing.",
-        "eyebrow": "FIG.08 · CONSERVATION LAWS"
+        "title": "משפט נתר",
+        "subtitle": "סימטריה ושימור הם בעצם אותו הדבר — זה אחד הרעיונות היפים בפיזיקה.",
+        "eyebrow": "איור 08 · חוקי שימור"
       },
       "torque-and-rotational-dynamics": {
-        "title": "TORQUE AND ROTATIONAL DYNAMICS",
-        "subtitle": "Forces that turn instead of push.",
-        "eyebrow": "FIG.09 · ROTATION & RIGID BODIES"
+        "title": "מומנט ודינמיקה סיבובית",
+        "subtitle": "הכוחות שמסובבים במקום לדחוף.",
+        "eyebrow": "איור 09 · סיבוב וגופים קשיחים"
       },
       "moment-of-inertia": {
-        "title": "MOMENT OF INERTIA",
-        "subtitle": "Why a hollow sphere rolls slower than a solid one.",
-        "eyebrow": "FIG.10 · ROTATION & RIGID BODIES"
+        "title": "מומנט האינרציה",
+        "subtitle": "מדוע כדור חלול מתגלגל לאט יותר מכדור מלא.",
+        "eyebrow": "איור 10 · סיבוב וגופים קשיחים"
       },
       "gyroscopes-and-precession": {
-        "title": "GYROSCOPES AND PRECESSION",
-        "subtitle": "Why a top doesn't fall.",
-        "eyebrow": "FIG.11 · ROTATION & RIGID BODIES"
+        "title": "ג׳ירוסקופים ונקיפה",
+        "subtitle": "למה סביבון שמסתובב פשוט מסרב ליפול.",
+        "eyebrow": "איור 11 · סיבוב וגופים קשיחים"
       },
       "the-wobbling-earth": {
-        "title": "THE WOBBLING EARTH",
-        "subtitle": "Precession, nutation, and the long memory of the planet.",
-        "eyebrow": "FIG.12 · ROTATION & RIGID BODIES"
+        "title": "כדור הארץ המתנדנד",
+        "subtitle": "נקיפה, נוטציה, והזיכרון הארוך של הפלנטה.",
+        "eyebrow": "איור 12 · סיבוב וגופים קשיחים"
       },
       "the-wave-equation": {
-        "title": "THE WAVE EQUATION",
-        "subtitle": "The equation that runs every wave there is.",
-        "eyebrow": "FIG.16 · WAVES"
+        "title": "משוואת הגל",
+        "subtitle": "משוואה אחת שמפעילה כל גל שקיים — מהים ועד האור.",
+        "eyebrow": "איור 16 · גלים"
       },
       "standing-waves-and-modes": {
-        "title": "STANDING WAVES AND MODES",
-        "subtitle": "Why guitar strings only sing certain notes.",
-        "eyebrow": "FIG.17 · WAVES"
+        "title": "גלים עומדים ומודים",
+        "subtitle": "מדוע מיתרי גיטרה משמיעים רק תווים מסוימים.",
+        "eyebrow": "איור 17 · גלים"
       },
       "doppler-and-shock-waves": {
-        "title": "DOPPLER AND SHOCK WAVES",
-        "subtitle": "What changes when the source moves.",
-        "eyebrow": "FIG.18 · WAVES"
+        "title": "אפקט דופלר וגלי הלם",
+        "subtitle": "מה משתנה ברגע שהמקור מתחיל לזוז.",
+        "eyebrow": "איור 18 · גלים"
       },
       "dispersion-and-group-velocity": {
-        "title": "DISPERSION AND GROUP VELOCITY",
-        "subtitle": "When different frequencies travel at different speeds.",
-        "eyebrow": "FIG.19 · WAVES"
+        "title": "נפיצה ומהירות החבורה",
+        "subtitle": "כשתדרים שונים נעים במהירויות שונות — וקשת נולדת.",
+        "eyebrow": "איור 19 · גלים"
       },
       "pressure-and-buoyancy": {
-        "title": "PRESSURE AND BUOYANCY",
-        "subtitle": "Why some things float.",
-        "eyebrow": "FIG.24 · FLUIDS"
+        "title": "לחץ וכוח העילוי",
+        "subtitle": "מדוע דברים מסוימים צפים, ואחרים שוקעים.",
+        "eyebrow": "איור 24 · זורמים"
       },
       "bernoullis-principle": {
-        "title": "BERNOULLI'S PRINCIPLE",
-        "subtitle": "Faster fluids push less.",
-        "eyebrow": "FIG.25 · FLUIDS"
+        "title": "עקרון ברנולי",
+        "subtitle": "ככל שהזורם מהיר יותר — כך הוא לוחץ פחות.",
+        "eyebrow": "איור 25 · זורמים"
       },
       "viscosity-and-reynolds-number": {
-        "title": "VISCOSITY AND REYNOLDS NUMBER",
-        "subtitle": "Honey, water, and the line between them.",
-        "eyebrow": "FIG.26 · FLUIDS"
+        "title": "צמיגות ומספר ריינולדס",
+        "subtitle": "דבש, מים, והגבול הדק שביניהם.",
+        "eyebrow": "איור 26 · זורמים"
       },
       "turbulence": {
-        "title": "TURBULENCE",
-        "subtitle": "The last unsolved problem of classical physics.",
-        "eyebrow": "FIG.27 · FLUIDS"
+        "title": "טורבולנציה",
+        "subtitle": "הבעיה הפתוחה האחרונה של הפיזיקה הקלאסית.",
+        "eyebrow": "איור 27 · זורמים"
       },
       "the-principle-of-least-action": {
-        "title": "THE PRINCIPLE OF LEAST ACTION",
-        "subtitle": "Nature picks the laziest path.",
-        "eyebrow": "FIG.28 · LAGRANGIAN & HAMILTONIAN"
+        "title": "עקרון הפעולה המינימלית",
+        "subtitle": "הטבע בוחר תמיד את הדרך העצלה ביותר.",
+        "eyebrow": "איור 28 · לגראנז׳יאן והמילטוניאן"
       },
       "the-lagrangian": {
-        "title": "THE LAGRANGIAN",
-        "subtitle": "Mechanics rewritten as energy minus energy.",
-        "eyebrow": "FIG.29 · LAGRANGIAN & HAMILTONIAN"
+        "title": "הלגראנז׳יאן",
+        "subtitle": "המכניקה נכתבת מחדש כאנרגיה פחות אנרגיה.",
+        "eyebrow": "איור 29 · לגראנז׳יאן והמילטוניאן"
       },
       "the-hamiltonian": {
-        "title": "THE HAMILTONIAN",
-        "subtitle": "Position and momentum, two halves of the same thing.",
-        "eyebrow": "FIG.30 · LAGRANGIAN & HAMILTONIAN"
+        "title": "ההמילטוניאן",
+        "subtitle": "מיקום ותנע — שני חצאים של אותו הדבר.",
+        "eyebrow": "איור 30 · לגראנז׳יאן והמילטוניאן"
       },
       "phase-space": {
-        "title": "PHASE SPACE",
-        "subtitle": "The space where every possible motion lives.",
-        "eyebrow": "FIG.31 · LAGRANGIAN & HAMILTONIAN"
+        "title": "מרחב הפאזה",
+        "subtitle": "המרחב שבו חיה כל תנועה אפשרית.",
+        "eyebrow": "איור 31 · לגראנז׳יאן והמילטוניאן"
       }
     },
     "meta": {

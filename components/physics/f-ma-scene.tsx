@@ -154,7 +154,7 @@ export function FMaScene() {
       />
       <div className="mt-2 flex flex-col gap-2 px-2">
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">
             Force F
           </label>
           <input
@@ -171,7 +171,7 @@ export function FMaScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-2)]">
+          <label className="w-20 text-sm text-[var(--color-fg-3)]">
             Mass m
           </label>
           <input

@@ -314,6 +314,166 @@ const DragRegimesScene = dynamic(
   { ssr: false },
 );
 
+const GyroscopeScene = dynamic(
+  () =>
+    import("@/components/physics/gyroscope-scene").then((m) => ({
+      default: m.GyroscopeScene,
+    })),
+  { ssr: false },
+);
+
+const ChandlerWobbleScene = dynamic(
+  () =>
+    import("@/components/physics/chandler-wobble-scene").then((m) => ({
+      default: m.ChandlerWobbleScene,
+    })),
+  { ssr: false },
+);
+
+const CollisionScene = dynamic(
+  () =>
+    import("@/components/physics/collision-scene").then((m) => ({
+      default: m.CollisionScene,
+    })),
+  { ssr: false },
+);
+
+const TorqueLeverScene = dynamic(
+  () =>
+    import("@/components/physics/torque-lever-scene").then((m) => ({
+      default: m.TorqueLeverScene,
+    })),
+  { ssr: false },
+);
+
+const SkaterSpinScene = dynamic(
+  () =>
+    import("@/components/physics/skater-spin-scene").then((m) => ({
+      default: m.SkaterSpinScene,
+    })),
+  { ssr: false },
+);
+
+const SymmetryTriptychScene = dynamic(
+  () =>
+    import("@/components/physics/symmetry-triptych-scene").then((m) => ({
+      default: m.SymmetryTriptychScene,
+    })),
+  { ssr: false },
+);
+
+const EnergyBowlScene = dynamic(
+  () =>
+    import("@/components/physics/energy-bowl-scene").then((m) => ({
+      default: m.EnergyBowlScene,
+    })),
+  { ssr: false },
+);
+
+const WorkScene = dynamic(
+  () =>
+    import("@/components/physics/work-scene").then((m) => ({
+      default: m.WorkScene,
+    })),
+  { ssr: false },
+);
+
+const PowerScene = dynamic(
+  () =>
+    import("@/components/physics/power-scene").then((m) => ({
+      default: m.PowerScene,
+    })),
+  { ssr: false },
+);
+
+const CenterOfMassScene = dynamic(
+  () =>
+    import("@/components/physics/center-of-mass-scene").then((m) => ({
+      default: m.CenterOfMassScene,
+    })),
+  { ssr: false },
+);
+
+const AngularAccelerationScene = dynamic(
+  () =>
+    import("@/components/physics/angular-acceleration-scene").then((m) => ({
+      default: m.AngularAccelerationScene,
+    })),
+  { ssr: false },
+);
+
+const GravityAssistScene = dynamic(
+  () =>
+    import("@/components/physics/gravity-assist-scene").then((m) => ({
+      default: m.GravityAssistScene,
+    })),
+  { ssr: false },
+);
+
+const ParallelAxisTheoremScene = dynamic(
+  () =>
+    import("@/components/physics/parallel-axis-theorem-scene").then((m) => ({
+      default: m.ParallelAxisTheoremScene,
+    })),
+  { ssr: false },
+);
+
+const RadiusOfGyrationScene = dynamic(
+  () =>
+    import("@/components/physics/radius-of-gyration-scene").then((m) => ({
+      default: m.RadiusOfGyrationScene,
+    })),
+  { ssr: false },
+);
+
+const PrincipalAxesScene = dynamic(
+  () =>
+    import("@/components/physics/principal-axes-scene").then((m) => ({
+      default: m.PrincipalAxesScene,
+    })),
+  { ssr: false },
+);
+
+const EulerAnglesScene = dynamic(
+  () =>
+    import("@/components/physics/euler-angles-scene").then((m) => ({
+      default: m.EulerAnglesScene,
+    })),
+  { ssr: false },
+);
+
+const EquatorialBulgeScene = dynamic(
+  () =>
+    import("@/components/physics/equatorial-bulge-scene").then((m) => ({
+      default: m.EquatorialBulgeScene,
+    })),
+  { ssr: false },
+);
+
+const LagrangianScene = dynamic(
+  () =>
+    import("@/components/physics/lagrangian-scene").then((m) => ({
+      default: m.LagrangianScene,
+    })),
+  { ssr: false },
+);
+
+const EllipticIntegralScene = dynamic(
+  () =>
+    import("@/components/physics/elliptic-integral-scene").then((m) => ({
+      default: m.EllipticIntegralScene,
+    })),
+  { ssr: false },
+);
+
+const NonlinearDynamicsScene = dynamic(
+  () =>
+    import("@/components/physics/nonlinear-dynamics-scene").then((m) => ({
+      default: m.NonlinearDynamicsScene,
+    })),
+  { ssr: false },
+);
+
 const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "ellipse-construction": EllipseConstruction,
   "phase-portrait": () => <PhasePortrait theta0={0.5} length={1.5} />,
@@ -354,6 +514,26 @@ const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "friction-ramp": FrictionRampScene,
   "terminal-velocity": TerminalVelocityScene,
   "drag-regimes": DragRegimesScene,
+  "gyroscope": GyroscopeScene,
+  "chandler-wobble": ChandlerWobbleScene,
+  "collision": CollisionScene,
+  "torque-lever": TorqueLeverScene,
+  "skater-spin": SkaterSpinScene,
+  "symmetry-triptych": SymmetryTriptychScene,
+  "energy-bowl": EnergyBowlScene,
+  "work": WorkScene,
+  "power": PowerScene,
+  "center-of-mass": CenterOfMassScene,
+  "angular-acceleration": AngularAccelerationScene,
+  "gravity-assist": GravityAssistScene,
+  "parallel-axis-theorem": ParallelAxisTheoremScene,
+  "radius-of-gyration": RadiusOfGyrationScene,
+  "principal-axes": PrincipalAxesScene,
+  "euler-angles": EulerAnglesScene,
+  "equatorial-bulge": EquatorialBulgeScene,
+  "lagrangian": LagrangianScene,
+  "elliptic-integral": EllipticIntegralScene,
+  "nonlinear-dynamics": NonlinearDynamicsScene,
 };
 
 export function Visualization({ vizKey }: { vizKey: string }) {
