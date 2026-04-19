@@ -57,7 +57,7 @@ export function GravityFieldScene() {
           x: width * 0.35,
           y: height / 2,
           M: 1,
-          color: "#5BE9FF",
+          color: "#6FB8C6",
           label: "M₁",
         },
       ];
@@ -145,8 +145,8 @@ export function GravityFieldScene() {
       for (const body of bodies) {
         const radius = 8 + body.M * 4;
         ctx.shadowColor =
-          body.color === "#5BE9FF"
-            ? "rgba(91, 233, 255, 0.8)"
+          body.color === "#6FB8C6"
+            ? "rgba(111, 184, 198, 0.8)"
             : "rgba(255, 79, 216, 0.8)";
         ctx.shadowBlur = 18;
         ctx.fillStyle = body.color;

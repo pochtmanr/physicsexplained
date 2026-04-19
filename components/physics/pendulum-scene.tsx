@@ -137,7 +137,7 @@ export function PendulumScene({
       ctx.clearRect(0, 0, width, height);
 
       // Draw ghost extremes (dim cyan dots at ±theta0)
-      ctx.fillStyle = "rgba(91, 233, 255, 0.25)";
+      ctx.fillStyle = "rgba(111, 184, 198, 0.25)";
       for (const sign of [-1, 1]) {
         const gx = pivotX + pxPerMeter * length * Math.sin(sign * theta0);
         const gy = pivotY + pxPerMeter * length * Math.cos(sign * theta0);
@@ -149,7 +149,7 @@ export function PendulumScene({
       // Draw trail
       for (const p of trailRef.current) {
         const alpha = Math.max(0, 1 - p.age / 1.2) * 0.6;
-        ctx.fillStyle = `rgba(91, 233, 255, ${alpha})`;
+        ctx.fillStyle = `rgba(111, 184, 198, ${alpha})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -170,9 +170,9 @@ export function PendulumScene({
       ctx.fill();
 
       // Draw bob with glow
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
       ctx.shadowBlur = 16;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(bobX, bobY, bobRadius, 0, Math.PI * 2);
       ctx.fill();
@@ -195,7 +195,7 @@ export function PendulumScene({
         // Progress fill
         const cyclesDone = t / period;
         const fractionThisCycle = cyclesDone - Math.floor(cyclesDone);
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(barLeft, barY);
@@ -208,7 +208,7 @@ export function PendulumScene({
           const x = barLeft + barWidth * (c / Math.max(1, completedCycles));
           const ageOfTick = t - c * period;
           const alpha = ageOfTick < 0.2 ? 1 : 0.4;
-          ctx.strokeStyle = `rgba(91, 233, 255, ${alpha})`;
+          ctx.strokeStyle = `rgba(111, 184, 198, ${alpha})`;
           ctx.beginPath();
           ctx.moveTo(x, barY - 6);
           ctx.lineTo(x, barY + 6);

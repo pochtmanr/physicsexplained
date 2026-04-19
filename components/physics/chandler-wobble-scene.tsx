@@ -104,7 +104,7 @@ export function ChandlerWobbleScene() {
         ctx.stroke();
 
         // Current pole
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.beginPath();
         ctx.arc(poleX, poleY, 8, 0, Math.PI * 2);
         ctx.fill();
@@ -172,7 +172,7 @@ export function ChandlerWobbleScene() {
         const axisVX = axisHX * axisLen;
         const axisVY = -Math.cos(tiltRad) * axisLen + axisHY * axisLen;
 
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.lineWidth = 3;
         ctx.beginPath();
         ctx.moveTo(cx - axisVX * 0.7, cy - axisVY * 0.7);

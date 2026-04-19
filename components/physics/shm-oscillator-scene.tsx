@@ -64,8 +64,8 @@ export function ShmOscillatorScene() {
       ctx.lineTo(splitX / 2, springBot); ctx.stroke();
 
       // Bob
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)"; ctx.shadowBlur = 12;
-      ctx.fillStyle = "#5BE9FF"; ctx.beginPath(); ctx.arc(splitX / 2, bobY, 12, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)"; ctx.shadowBlur = 12;
+      ctx.fillStyle = "#6FB8C6"; ctx.beginPath(); ctx.arc(splitX / 2, bobY, 12, 0, Math.PI * 2); ctx.fill();
       ctx.shadowBlur = 0;
 
       // Equilibrium dashed line
@@ -80,7 +80,7 @@ export function ShmOscillatorScene() {
 
       // Sinusoidal trace
       const traceW = width - splitX - 40, timeWindow = 6;
-      ctx.strokeStyle = "#5BE9FF"; ctx.lineWidth = 2; ctx.beginPath();
+      ctx.strokeStyle = "#6FB8C6"; ctx.lineWidth = 2; ctx.beginPath();
       let started = false;
       for (let px = 0; px <= traceW; px++) {
         const tT = t - (traceW - px) / traceW * timeWindow;
@@ -91,7 +91,7 @@ export function ShmOscillatorScene() {
       ctx.stroke();
 
       // Current dot on trace
-      ctx.fillStyle = "#5BE9FF"; ctx.beginPath(); ctx.arc(splitX + 20 + traceW, bobY, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#6FB8C6"; ctx.beginPath(); ctx.arc(splitX + 20 + traceW, bobY, 4, 0, Math.PI * 2); ctx.fill();
 
       // Connecting dashed line
       ctx.strokeStyle = colors.fg3; ctx.lineWidth = 1; ctx.setLineDash([2, 3]);

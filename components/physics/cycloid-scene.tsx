@@ -97,7 +97,7 @@ export function CycloidScene({
 
       // Draw cycloid trail
       if (trailRef.current.length > 1) {
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(trailRef.current[0]!.x, trailRef.current[0]!.y);
@@ -123,9 +123,9 @@ export function CycloidScene({
       ctx.stroke();
 
       // Draw generating point with glow
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
       ctx.shadowBlur = 12;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(gx, gy, 5, 0, Math.PI * 2);
       ctx.fill();

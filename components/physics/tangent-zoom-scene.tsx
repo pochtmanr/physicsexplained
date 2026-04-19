@@ -104,7 +104,7 @@ export function TangentZoomScene() {
     const slope = (xB - xA) / (tB - tA);
 
     // Secant extended across the plot
-    ctx.strokeStyle = "#5BE9FF";
+    ctx.strokeStyle = "#6FB8C6";
     ctx.lineWidth = 1.5;
     ctx.setLineDash([5, 4]);
     const secLeft = toPx(tMin, xA + slope * (tMin - tA));
@@ -118,7 +118,7 @@ export function TangentZoomScene() {
     // Two endpoint dots
     const pA = toPx(tA, xA);
     const pB = toPx(tB, xB);
-    ctx.fillStyle = "#5BE9FF";
+    ctx.fillStyle = "#6FB8C6";
     ctx.beginPath();
     ctx.arc(pA.px, pA.py, 5, 0, Math.PI * 2);
     ctx.fill();
@@ -171,7 +171,7 @@ export function TangentZoomScene() {
             step={0.01}
             value={t0}
             onChange={(e) => setT0(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {t0.toFixed(2)}
@@ -186,7 +186,7 @@ export function TangentZoomScene() {
             step={0.01}
             value={dt}
             onChange={(e) => setDt(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {dt.toFixed(2)}

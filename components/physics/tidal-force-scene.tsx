@@ -99,13 +99,13 @@ export function TidalForceScene() {
       const distToMoon = moonCenterX - cx;
 
       // Draw Earth
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.4)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.4)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(cx, cy, earthR, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = "rgba(91, 233, 255, 0.06)";
+      ctx.fillStyle = "rgba(111, 184, 198, 0.06)";
       ctx.beginPath();
       ctx.arc(cx, cy, earthR, 0, Math.PI * 2);
       ctx.fill();
@@ -150,7 +150,7 @@ export function TidalForceScene() {
 
         const arrowColor =
           Math.abs(Math.cos(theta)) > Math.abs(Math.sin(theta))
-            ? "#5BE9FF"
+            ? "#6FB8C6"
             : "#FF6B6B";
 
         drawArrow(
@@ -175,7 +175,7 @@ export function TidalForceScene() {
       );
 
       // Legend
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.fillRect(width - 160, height - 36, 10, 10);
       ctx.fillStyle = colors.fg2;
       ctx.font = "11px sans-serif";
@@ -203,7 +203,7 @@ export function TidalForceScene() {
           step={0.01}
           value={moonDist}
           onChange={(e) => setMoonDist(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-12 text-right font-mono text-sm text-[var(--color-fg-1)]">
           {moonDist.toFixed(2)}

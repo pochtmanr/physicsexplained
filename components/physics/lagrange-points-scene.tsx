@@ -195,7 +195,7 @@ export function LagrangePointsScene() {
       ];
       ctx.lineWidth = 0.5;
       for (const level of contourLevels) {
-        ctx.strokeStyle = "rgba(91, 233, 255, 0.12)";
+        ctx.strokeStyle = "rgba(111, 184, 198, 0.12)";
         const step = 4;
         for (let py = 0; py < height; py += step) {
           for (let px = 0; px < width; px += step) {
@@ -203,7 +203,7 @@ export function LagrangePointsScene() {
             const sy = -(py - cy) / scale + panOffset.y;
             const pot = effectivePotential(sx, sy);
             if (Math.abs(pot - level) < 0.04) {
-              ctx.fillStyle = "rgba(91, 233, 255, 0.08)";
+              ctx.fillStyle = "rgba(111, 184, 198, 0.08)";
               ctx.fillRect(px, py, 1, 1);
             }
           }
@@ -222,7 +222,7 @@ export function LagrangePointsScene() {
       if (showOrbits) {
         const orbitCX = toCanvasX(0.5 - mu);
         const orbitR = Math.abs(1 - mu - (-mu)) * scale * 0.5;
-        ctx.strokeStyle = "rgba(91, 233, 255, 0.15)";
+        ctx.strokeStyle = "rgba(111, 184, 198, 0.15)";
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
@@ -265,7 +265,7 @@ export function LagrangePointsScene() {
               (8 + (12 * (((i * 7 + 3) % numTrojans) / numTrojans))) * zoom;
             const tx = lpx + dist * Math.cos(angle + i * 0.8);
             const ty = lpy + dist * Math.sin(angle + i * 0.8);
-            ctx.fillStyle = "rgba(91, 233, 255, 0.35)";
+            ctx.fillStyle = "rgba(111, 184, 198, 0.35)";
             ctx.beginPath();
             ctx.arc(tx, ty, 1.5 * Math.min(zoom, 2), 0, Math.PI * 2);
             ctx.fill();
@@ -274,7 +274,7 @@ export function LagrangePointsScene() {
 
         // Point marker
         const markerR = Math.min(5 * zoom, 8);
-        ctx.fillStyle = lp.stable ? "#5BE9FF" : "#FF6B6B";
+        ctx.fillStyle = lp.stable ? "#6FB8C6" : "#FF6B6B";
         ctx.beginPath();
         ctx.arc(lpx, lpy, markerR, 0, Math.PI * 2);
         ctx.fill();
@@ -307,9 +307,9 @@ export function LagrangePointsScene() {
       ctx.fillText("Sun", sunX, sunY + Math.min(12 * zoom, 20) + 16);
 
       // Draw Earth
-      ctx.shadowColor = "rgba(91, 233, 255, 0.8)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 14;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(earthX, earthY, Math.min(6 * zoom, 12), 0, Math.PI * 2);
       ctx.fill();
@@ -321,7 +321,7 @@ export function LagrangePointsScene() {
       ctx.fillText("Earth", earthX, earthY + Math.min(6 * zoom, 12) + 14);
 
       // Legend
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(14, height - 30, 4, 0, Math.PI * 2);
       ctx.fill();
@@ -359,7 +359,7 @@ export function LagrangePointsScene() {
           step={0.1}
           value={zoom}
           onChange={(e) => setZoom(parseFloat(e.target.value))}
-          className="w-28 accent-[#5BE9FF]"
+          className="w-28 accent-[#6FB8C6]"
         />
         <span className="w-10 font-mono text-sm text-[var(--color-fg-1)]">
           {zoom.toFixed(1)}x
@@ -375,7 +375,7 @@ export function LagrangePointsScene() {
             type="checkbox"
             checked={showOrbits}
             onChange={(e) => setShowOrbits(e.target.checked)}
-            className="accent-[#5BE9FF]"
+            className="accent-[#6FB8C6]"
           />
           Orbit guides
         </label>

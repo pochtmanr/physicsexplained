@@ -33,13 +33,13 @@
   --color-fg-3: #56687F; /* meta, captions, muted */
   --color-fg-4: #2A3448; /* borders, rules, hairlines */
 
-  --color-cyan:     #5BE9FF; /* emphasis only — hero italic, live glow, link hover */
+  --color-cyan:     #6FB8C6; /* trial — was #5BE9FF, now matches cyan-dim */
   --color-cyan-dim: #6FB8C6; /* chrome — eyebrows, hover borders, pill outlines, icons */
   --color-magenta:  #FF6ADE;
   --color-mint:     #5BFFAE;
 
   --color-grid: rgba(111, 184, 198, 0.08);
-  --color-glow: rgba(91, 233, 255, 0.35);
+  --color-glow: rgba(111, 184, 198, 0.35); /* trial — matches cyan-dim */
 
   color-scheme: dark;
 }
@@ -58,7 +58,7 @@
   --color-fg-3: #6E7A8F;
   --color-fg-4: #CAD2DF;
 
-  --color-cyan:     #0B7285;
+  --color-cyan:     #5A8693; /* trial — was #0B7285, now matches cyan-dim */
   --color-cyan-dim: #5A8693;
   --color-magenta:  #B6219E;
   --color-amber:    #9A6410;

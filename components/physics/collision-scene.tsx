@@ -115,7 +115,7 @@ export function CollisionScene() {
 
       ctx.fillStyle = "#E4C27A";
       ctx.fillRect(pxA - rA / 2, trackY + 30 - rA, rA, rA);
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.fillRect(pxB - rB / 2, trackY + 30 - rB, rB, rB);
 
       // Labels
@@ -176,7 +176,7 @@ export function CollisionScene() {
         ctx.fill();
       };
       drawArrow(pxA, tLocal < tCol ? vA0 : vAf, "#E4C27A");
-      drawArrow(pxB, tLocal < tCol ? vB0 : vBf, "#5BE9FF");
+      drawArrow(pxB, tLocal < tCol ? vB0 : vBf, "#6FB8C6");
     },
   });
 
@@ -199,7 +199,7 @@ export function CollisionScene() {
             step={0.01}
             value={restitution}
             onChange={(e) => setRestitution(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {restitution.toFixed(2)}
@@ -216,7 +216,7 @@ export function CollisionScene() {
             step={0.05}
             value={massRatio}
             onChange={(e) => setMassRatio(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {massRatio.toFixed(2)}

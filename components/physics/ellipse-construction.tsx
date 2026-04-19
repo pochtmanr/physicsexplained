@@ -81,7 +81,7 @@ export function EllipseConstruction({
           0,
           2 * Math.PI,
         ],
-        { strokeColor: "#5BE9FF", strokeWidth: 2 },
+        { strokeColor: "#6FB8C6", strokeWidth: 2 },
       );
 
       // Foci: F1 is the sun-focus at origin (which is +c from ellipse center)
@@ -90,8 +90,8 @@ export function EllipseConstruction({
         name: "F₁",
         fixed: true,
         size: 4,
-        fillColor: "#5BE9FF",
-        strokeColor: "#5BE9FF",
+        fillColor: "#6FB8C6",
+        strokeColor: "#6FB8C6",
         label: {
           offset: [8, 8],
           fontSize: 12,
@@ -127,7 +127,7 @@ export function EllipseConstruction({
       const seg1 = board.create(
         "segment",
         [[0, 0], pt],
-        { strokeColor: "#5BE9FF", strokeWidth: 1.5 },
+        { strokeColor: "#6FB8C6", strokeWidth: 1.5 },
       );
       const seg2 = board.create(
         "segment",

@@ -93,7 +93,7 @@ export function UniversalOscillatorScene() {
       ctx.stroke();
 
       // Trace
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       let started = false;
@@ -145,9 +145,9 @@ export function UniversalOscillatorScene() {
     ctx.fill();
 
     // Bob with glow
-    ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+    ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
     ctx.shadowBlur = 16;
-    ctx.fillStyle = "#5BE9FF";
+    ctx.fillStyle = "#6FB8C6";
     ctx.beginPath();
     ctx.arc(bobX, bobY, 10, 0, Math.PI * 2);
     ctx.fill();
@@ -212,9 +212,9 @@ export function UniversalOscillatorScene() {
     );
 
     // Mass glow dot
-    ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+    ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
     ctx.shadowBlur = 12;
-    ctx.fillStyle = "#5BE9FF";
+    ctx.fillStyle = "#6FB8C6";
     ctx.beginPath();
     ctx.arc(blockX, midY, 6, 0, Math.PI * 2);
     ctx.fill();
@@ -283,7 +283,7 @@ export function UniversalOscillatorScene() {
     const chargeAlpha = Math.abs(charge) * 0.6;
     const chargeColor =
       charge > 0
-        ? `rgba(91, 233, 255, ${chargeAlpha})`
+        ? `rgba(111, 184, 198, ${chargeAlpha})`
         : `rgba(255, 107, 107, ${chargeAlpha})`;
     ctx.fillStyle = chargeColor;
     ctx.fillRect(

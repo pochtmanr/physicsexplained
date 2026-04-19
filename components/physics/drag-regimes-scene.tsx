@@ -165,7 +165,7 @@ export function DragRegimesScene() {
     ctx.setLineDash([]);
 
     // Total drag — what the object actually feels
-    ctx.strokeStyle = "#5BE9FF";
+    ctx.strokeStyle = "#6FB8C6";
     ctx.lineWidth = 2.25;
     ctx.beginPath();
     samples.forEach((s, i) => {
@@ -180,11 +180,11 @@ export function DragRegimesScene() {
     if (vCross > vMin && vCross < vMax) {
       const crossF = b * vCross;
       const { px, py } = toPx(vCross, crossF);
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(px, py, 5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.globalAlpha = 0.35;
       ctx.setLineDash([2, 3]);
       ctx.beginPath();
@@ -226,7 +226,7 @@ export function DragRegimesScene() {
     swatch("#FF6BCB", true);
     ctx.fillText("F_quad = k·v²   (Newton)", legendX + 30, ly + 4);
     ly += 18;
-    swatch("#5BE9FF", false);
+    swatch("#6FB8C6", false);
     ctx.fillText("F_total = b·v + k·v²", legendX + 30, ly + 4);
   }, [b, k, size, colors]);
 
@@ -249,7 +249,7 @@ export function DragRegimesScene() {
             step={0.001}
             value={b}
             onChange={(e) => setB(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {b.toFixed(3)}
@@ -266,7 +266,7 @@ export function DragRegimesScene() {
             step={0.001}
             value={k}
             onChange={(e) => setK(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {k.toFixed(3)}

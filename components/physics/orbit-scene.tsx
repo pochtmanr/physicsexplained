@@ -68,7 +68,7 @@ export function OrbitScene({
       const bSim = a * Math.sqrt(1 - e * e);
       const ellipseCenterX = cx + -a * e * scale;
       const ellipseCenterY = cy;
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.35)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.35)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.ellipse(
@@ -83,9 +83,9 @@ export function OrbitScene({
       ctx.stroke();
 
       // Draw sun at focus
-      ctx.shadowColor = "rgba(91, 233, 255, 0.8)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 20;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(cx, cy, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -94,7 +94,7 @@ export function OrbitScene({
       // Draw trail
       for (const q of trailRef.current) {
         const alpha = Math.max(0, 1 - q.age / 3) * 0.5;
-        ctx.fillStyle = `rgba(91, 233, 255, ${alpha})`;
+        ctx.fillStyle = `rgba(111, 184, 198, ${alpha})`;
         ctx.beginPath();
         ctx.arc(q.x, q.y, 2, 0, Math.PI * 2);
         ctx.fill();

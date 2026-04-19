@@ -118,7 +118,7 @@ export function ResonanceCurveScene() {
         0.01,
         2.2,
       ],
-      { strokeColor: "#5BE9FF", strokeWidth: 2 },
+      { strokeColor: "#6FB8C6", strokeWidth: 2 },
     );
 
     curveRef.current = curve;
@@ -140,7 +140,7 @@ export function ResonanceCurveScene() {
           step={1}
           value={Q}
           onChange={(e) => setQ(parseInt(e.target.value, 10))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-10 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {Q}

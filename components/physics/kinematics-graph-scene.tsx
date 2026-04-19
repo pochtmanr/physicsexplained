@@ -111,9 +111,9 @@ export function KinematicsGraphScene() {
       // Ball on track
       const xNow = xAt(tCursor);
       const ballPx = toTrackPx(xNow);
-      ctx.shadowColor = "rgba(91, 233, 255, 0.55)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.55)";
       ctx.shadowBlur = 12;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(ballPx, trackY, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -221,7 +221,7 @@ export function KinematicsGraphScene() {
       const g2Top = g1Top + graphH + gap;
       const g3Top = g2Top + graphH + gap;
 
-      drawGraph(g1Top, "x(t)", (tt) => xAt(tt), "#5BE9FF");
+      drawGraph(g1Top, "x(t)", (tt) => xAt(tt), "#6FB8C6");
       drawGraph(g2Top, "v(t) = v₀ + a·t", (tt) => v0 + a * tt, "#8EE8A3");
       drawGraph(g3Top, "a(t) = const", () => a, "#E29FFF");
 
@@ -256,7 +256,7 @@ export function KinematicsGraphScene() {
         step={step}
         value={value}
         onChange={(e) => setValue(parseFloat(e.target.value))}
-        className="flex-1 accent-[#5BE9FF]"
+        className="flex-1 accent-[#6FB8C6]"
       />
       <span className="w-20 text-right text-sm font-mono text-[var(--color-fg-1)]">
         {value.toFixed(1)} {unit}

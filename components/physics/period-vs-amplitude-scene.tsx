@@ -104,7 +104,7 @@ export function PeriodVsAmplitudeScene() {
           0.1,
           179.5,
         ],
-        { strokeColor: "#5BE9FF", strokeWidth: 2.5 },
+        { strokeColor: "#6FB8C6", strokeWidth: 2.5 },
       );
 
       // Annotated points

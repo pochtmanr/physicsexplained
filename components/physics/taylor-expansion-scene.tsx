@@ -16,7 +16,7 @@ function taylorSin(x: number, order: number): number {
 }
 
 const ORDERS = [1, 3, 5, 7] as const;
-const ORDER_COLORS = ["#5BE9FF", "#4ADE80", "#FACC15", "#FF6B6B"] as const;
+const ORDER_COLORS = ["#6FB8C6", "#4ADE80", "#FACC15", "#FF6B6B"] as const;
 
 const RATIO = 0.75;
 const MAX_HEIGHT = 360;

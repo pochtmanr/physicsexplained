@@ -97,9 +97,9 @@ export function DampedPendulumScene({
       ctx.fill();
 
       // Bob with glow
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
       ctx.shadowBlur = 16;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(bobX, bobY, 10, 0, Math.PI * 2);
       ctx.fill();
@@ -148,7 +148,7 @@ export function DampedPendulumScene({
       ctx.setLineDash([]);
 
       // x(t) trace (cyan)
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       let started = false;
@@ -196,7 +196,7 @@ export function DampedPendulumScene({
             traceRef.current = [];
             t0Ref.current = -1; // mark for reset on next frame
           }}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-10 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {gamma.toFixed(1)}

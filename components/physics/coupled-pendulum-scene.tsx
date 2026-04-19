@@ -142,9 +142,9 @@ export function CoupledPendulumScene() {
         ctx.fill();
 
         // Bob with glow
-        ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+        ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
         ctx.shadowBlur = 16;
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.beginPath();
         ctx.arc(bobX, bobY, 10, 0, Math.PI * 2);
         ctx.fill();

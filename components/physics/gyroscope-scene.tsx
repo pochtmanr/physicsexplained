@@ -124,7 +124,7 @@ export function GyroscopeScene() {
       const armAngle = Math.atan2(armEndY - (cyGround - 30), armEndX - cx);
       ctx.rotate(armAngle);
       ctx.fillStyle = colors.bg1;
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.ellipse(0, 0, 10, 30, 0, 0, Math.PI * 2);
@@ -181,7 +181,7 @@ export function GyroscopeScene() {
           step={1}
           value={spin}
           onChange={(e) => setSpin(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-14 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {spin.toFixed(0)}

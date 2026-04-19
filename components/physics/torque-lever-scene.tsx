@@ -132,7 +132,7 @@ export function TorqueLeverScene() {
 
       // Right mass
       const rR = 10 + Math.cbrt(rightMass) * 4;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(armRightPx, rR, rR, 0, Math.PI * 2);
       ctx.fill();
@@ -168,7 +168,7 @@ export function TorqueLeverScene() {
       );
       ctx.textAlign = "right";
       const netTau = (leftMass * leftArm - rightMass * rightArm) * g;
-      ctx.fillStyle = Math.abs(netTau) < 0.01 ? "#5BE9FF" : "#FF6B6B";
+      ctx.fillStyle = Math.abs(netTau) < 0.01 ? "#6FB8C6" : "#FF6B6B";
       ctx.fillText(
         `net τ = ${netTau.toFixed(2)} N·m  ${Math.abs(netTau) < 0.01 ? "(balanced)" : ""}`,
         width - 20,
@@ -249,7 +249,7 @@ function SliderRow({
         step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="flex-1 accent-[#5BE9FF]"
+        className="flex-1 accent-[#6FB8C6]"
       />
       <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
         {value.toFixed(2)}

@@ -149,7 +149,7 @@ export function FrictionRampScene() {
       // the user can see how close they are to slipping.
       const critEndX = originX + rampLen * Math.cos(thetaCrit);
       const critEndY = originY - rampLen * Math.sin(thetaCrit);
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.globalAlpha = 0.35;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -164,9 +164,9 @@ export function FrictionRampScene() {
       ctx.save();
       ctx.translate(cx + nx * blockSize * 0.5, cy + ny * blockSize * 0.5);
       ctx.rotate(-angle);
-      ctx.fillStyle = staticHolds ? colors.fg2 : "#5BE9FF";
+      ctx.fillStyle = staticHolds ? colors.fg2 : "#6FB8C6";
       if (!staticHolds) {
-        ctx.shadowColor = "rgba(91, 233, 255, 0.45)";
+        ctx.shadowColor = "rgba(111, 184, 198, 0.45)";
         ctx.shadowBlur = 10;
       }
       ctx.fillRect(-blockSize / 2, -blockSize / 2, blockSize, blockSize);
@@ -197,7 +197,7 @@ export function FrictionRampScene() {
         ctx.fillStyle = colors.fg2;
         ctx.fillText("STATIC — block holds", width - pad, pad + 4);
       } else {
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fillText(
           `SLIDING — v = ${vRef.current.toFixed(2)} m/s`,
           width - pad,
@@ -224,7 +224,7 @@ export function FrictionRampScene() {
             step={0.5}
             value={angleDeg}
             onChange={(e) => setAngleDeg(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {angleDeg.toFixed(1)}°
@@ -239,7 +239,7 @@ export function FrictionRampScene() {
             step={0.01}
             value={muStatic}
             onChange={(e) => setMuStatic(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {muStatic.toFixed(2)}

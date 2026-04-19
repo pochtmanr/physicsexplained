@@ -80,8 +80,8 @@ export function SmallAngleScene() {
       board.create(
         "functiongraph",
         [(x: number) => x, 0, Math.PI],
-        { strokeColor: "#5BE9FF", strokeWidth: 2, name: "θ", withLabel: true,
-          label: { strokeColor: "#5BE9FF", offset: [5, 10] } },
+        { strokeColor: "#6FB8C6", strokeWidth: 2, name: "θ", withLabel: true,
+          label: { strokeColor: "#6FB8C6", offset: [5, 10] } },
       );
 
       // sin(θ) curve (red)
@@ -98,8 +98,8 @@ export function SmallAngleScene() {
         [[0.5, -1.1], [2.5, -1.1], [0.01, 0.3, Math.PI]],
         {
           name: "θ₀",
-          strokeColor: "#5BE9FF",
-          fillColor: "#5BE9FF",
+          strokeColor: "#6FB8C6",
+          fillColor: "#6FB8C6",
           label: { strokeColor: colors.fg1 },
         },
       );
@@ -112,8 +112,8 @@ export function SmallAngleScene() {
           name: "",
           fixed: true,
           size: 4,
-          fillColor: "#5BE9FF",
-          strokeColor: "#5BE9FF",
+          fillColor: "#6FB8C6",
+          strokeColor: "#6FB8C6",
           showInfobox: false,
         },
       );

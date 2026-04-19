@@ -2,15 +2,17 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { EpicycleScene } from "@/components/physics/epicycle-scene";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { HeroBackground } from "./hero-background";
 
 export async function HeroSection() {
   const t = await getTranslations("home.hero");
 
   return (
-    <section
-      className={`${WIDE_CONTAINER} relative pt-20 pb-32 min-h-[640px] lg:min-h-[90vh] flex items-center`}
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 items-center w-full">
+    <section className="relative isolate overflow-hidden pt-20 pb-32 min-h-[640px] lg:min-h-[90vh] flex items-center">
+      <HeroBackground />
+      <div
+        className={`${WIDE_CONTAINER} relative z-10 grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 items-center`}
+      >
         <div className="min-w-0">
           <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {t("tag")}
@@ -46,7 +48,6 @@ export async function HeroSection() {
 
         <div className="relative hidden min-w-0 lg:block">
           <div className="relative mx-auto w-fit">
-            <div className="pointer-events-none absolute inset-0 -z-10 scale-[1.6] bg-[radial-gradient(circle_at_center,_rgba(91,233,255,0.2),_transparent_70%)]" />
             <div className="pointer-events-none absolute -top-4 start-0 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
               {t("figLabel")}
             </div>

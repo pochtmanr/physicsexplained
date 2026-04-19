@@ -75,7 +75,7 @@ export function BeatsScene({ width = 480, height = 380 }: BeatsSceneProps) {
       ctx.lineTo(marginL + plotW, y1);
       ctx.stroke();
 
-      drawWave(y1, (s) => Math.sin(2 * Math.PI * f1 * s), "#5BE9FF", 1.5);
+      drawWave(y1, (s) => Math.sin(2 * Math.PI * f1 * s), "#6FB8C6", 1.5);
 
       ctx.fillStyle = colors.fg2;
       ctx.font = "12px monospace";
@@ -170,7 +170,7 @@ export function BeatsScene({ width = 480, height = 380 }: BeatsSceneProps) {
           step={0.05}
           value={deltaF}
           onChange={(e) => setDeltaF(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-14 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {deltaF.toFixed(2)} Hz

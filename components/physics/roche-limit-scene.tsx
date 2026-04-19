@@ -111,7 +111,7 @@ export function RocheLimitScene() {
       ctx.fillText("Roche limit", planetX, planetY - rocheR - 8);
 
       // Planet ring (behind)
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.2)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.2)";
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.ellipse(
@@ -134,22 +134,22 @@ export function RocheLimitScene() {
         planetY,
         planetR,
       );
-      grad.addColorStop(0, "rgba(91, 233, 255, 0.25)");
-      grad.addColorStop(0.7, "rgba(91, 233, 255, 0.1)");
-      grad.addColorStop(1, "rgba(91, 233, 255, 0.03)");
+      grad.addColorStop(0, "rgba(111, 184, 198, 0.25)");
+      grad.addColorStop(0.7, "rgba(111, 184, 198, 0.1)");
+      grad.addColorStop(1, "rgba(111, 184, 198, 0.03)");
       ctx.fillStyle = grad;
       ctx.beginPath();
       ctx.arc(planetX, planetY, planetR, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.5)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.5)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(planetX, planetY, planetR, 0, Math.PI * 2);
       ctx.stroke();
 
       // Planet ring (front)
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.2)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.2)";
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.ellipse(
@@ -230,7 +230,7 @@ export function RocheLimitScene() {
       const distRatio = (actualDist / planetR).toFixed(2);
       const rocheRatioDisplay = rocheRatio.toFixed(2);
 
-      ctx.fillStyle = isDisrupted ? "#FF6B6B" : "#5BE9FF";
+      ctx.fillStyle = isDisrupted ? "#FF6B6B" : "#6FB8C6";
       ctx.font = "bold 13px monospace";
       ctx.textAlign = "right";
       ctx.fillText(isDisrupted ? "DISRUPTED" : "INTACT", width - 12, 24);
@@ -257,7 +257,7 @@ export function RocheLimitScene() {
           step={0.005}
           value={moonDist}
           onChange={(e) => setMoonDist(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-10 text-right font-mono text-sm text-[var(--color-fg-1)]">
           {moonDist.toFixed(2)}

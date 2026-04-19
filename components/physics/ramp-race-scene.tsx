@@ -20,7 +20,7 @@ interface Racer {
 
 const RACERS: readonly Racer[] = [
   { label: "sliding block", short: "block", color: "#FF6B6B", k: 0, formula: "I = 0  (doesn't rotate)" },
-  { label: "solid sphere",  short: "sphere", color: "#5BE9FF", k: 0.4, formula: "I = ⅖·m·R²" },
+  { label: "solid sphere",  short: "sphere", color: "#6FB8C6", k: 0.4, formula: "I = ⅖·m·R²" },
   { label: "solid cylinder", short: "cyl",  color: "#E4C27A", k: 0.5, formula: "I = ½·m·R²" },
   { label: "hollow sphere", short: "shell", color: "#A78BFA", k: 2 / 3, formula: "I = ⅔·m·R²" },
   { label: "thin hoop",     short: "hoop",  color: "#F472B6", k: 1.0, formula: "I = m·R²" },
@@ -160,7 +160,7 @@ export function RampRaceScene() {
         }
 
         // Finish line
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.setLineDash([4, 3]);
         ctx.lineWidth = 1.5;
         ctx.beginPath();
@@ -239,7 +239,7 @@ export function RampRaceScene() {
           ctx.fillText("—", padX + labelMargin + trackW + 8, yMid + 4);
         } else if (finished) {
           const finishT = Math.sqrt((2 * RAMP_LENGTH) / a);
-          ctx.fillStyle = rankByIdx[i] === 1 ? "#5BE9FF" : colors.fg1;
+          ctx.fillStyle = rankByIdx[i] === 1 ? "#6FB8C6" : colors.fg1;
           ctx.fillText(
             `#${rankByIdx[i]}  ${finishT.toFixed(2)}s`,
             padX + labelMargin + trackW + 8,
@@ -274,7 +274,7 @@ export function RampRaceScene() {
           height - 48,
         );
       } else {
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fillText(
           `winner: ${order[0].label} — a = g·sinθ / (1 + I/(m·R²))`,
           width / 2,

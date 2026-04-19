@@ -145,7 +145,7 @@ export function ActionReactionScene() {
         ctx.fillStyle = "#FF6B6B";
         ctx.fill();
         // Force on B (points right)
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.beginPath();
         ctx.moveTo(mid, cyA + 6);
         ctx.lineTo(mid + arrowH, cyA + 6);
@@ -155,14 +155,14 @@ export function ActionReactionScene() {
         ctx.lineTo(mid + arrowH - 6, cyA + 2);
         ctx.lineTo(mid + arrowH - 6, cyA + 10);
         ctx.closePath();
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fill();
       }
 
       // Skater A (left, red tint)
       drawSkater(ctx, cxA, cyA, rA, "#E4C27A", colors.fg0);
       // Skater B (right, cyan tint)
-      drawSkater(ctx, cxB, cyB, rB, "#5BE9FF", colors.fg0);
+      drawSkater(ctx, cxB, cyB, rB, "#6FB8C6", colors.fg0);
 
       // Labels under each
       ctx.fillStyle = colors.fg1;
@@ -219,7 +219,7 @@ export function ActionReactionScene() {
           step={0.05}
           value={ratio}
           onChange={(e) => setRatio(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-14 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {ratio.toFixed(2)}

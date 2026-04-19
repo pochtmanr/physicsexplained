@@ -86,7 +86,7 @@ export function OrbitEnergyScene({}: OrbitEnergySceneProps) {
       }
 
       // Draw the conic
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       const steps = 400;
@@ -112,9 +112,9 @@ export function OrbitEnergyScene({}: OrbitEnergySceneProps) {
       ctx.stroke();
 
       // Sun at focus (origin)
-      ctx.shadowColor = "rgba(91, 233, 255, 0.8)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 18;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(cx, cy, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -175,7 +175,7 @@ export function OrbitEnergyScene({}: OrbitEnergySceneProps) {
       ctx.textAlign = "left";
       ctx.fillText(label, 16, 28);
       ctx.font = "12px monospace";
-      ctx.fillStyle = e < 0.999 ? "#5BE9FF" : e <= 1.001 ? "#FFCF56" : "#FF4FD8";
+      ctx.fillStyle = e < 0.999 ? "#6FB8C6" : e <= 1.001 ? "#FFCF56" : "#FF4FD8";
       ctx.fillText(energyStr, 16, 48);
 
       ctx.fillStyle = colors.fg2;
@@ -198,7 +198,7 @@ export function OrbitEnergyScene({}: OrbitEnergySceneProps) {
           step={0.01}
           value={ecc}
           onChange={handleSlider}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-12 font-mono text-xs text-[var(--color-fg-1)]">
           {ecc.toFixed(2)}

@@ -15,7 +15,7 @@ import {
 
 const RATIO = 0.62;
 const MAX_HEIGHT = 460;
-const ACCENT = "#5BE9FF";
+const ACCENT = "#6FB8C6";
 
 export function ProjectileScene() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -183,7 +183,7 @@ export function ProjectileScene() {
       );
 
       // Ball
-      ctx.shadowColor = "rgba(91, 233, 255, 0.5)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.5)";
       ctx.shadowBlur = 10;
       ctx.fillStyle = ACCENT;
       ctx.beginPath();
@@ -280,7 +280,7 @@ export function ProjectileScene() {
             step={1}
             value={angleDeg}
             onChange={(e) => setAngleDeg(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-20 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {angleDeg.toFixed(0)}°
@@ -297,7 +297,7 @@ export function ProjectileScene() {
             step={0.1}
             value={speed}
             onChange={(e) => setSpeed(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-20 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {speed.toFixed(1)} m/s

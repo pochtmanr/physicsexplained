@@ -45,11 +45,11 @@ export function InverseSquareViz() {
         boundingbox: [-5, 5, 5, -5], axis: false, showNavigation: false, showCopyright: false, keepAspectRatio: true,
       });
 
-      board.create("point", [0, 0], { name: "Source", fixed: true, size: 6, fillColor: "#5BE9FF", strokeColor: "#5BE9FF", label: { offset: [10, 10], fontSize: 11, strokeColor: colors.fg1 } });
+      board.create("point", [0, 0], { name: "Source", fixed: true, size: 6, fillColor: "#6FB8C6", strokeColor: "#6FB8C6", label: { offset: [10, 10], fontSize: 11, strokeColor: colors.fg1 } });
 
       for (const r of [1, 2, 3]) {
         const opacity = 1 / (r * r);
-        board.create("circle", [[0, 0], r], { strokeColor: "#5BE9FF", strokeOpacity: 0.3, strokeWidth: 1, fillColor: "#5BE9FF", fillOpacity: opacity * 0.15, fixed: true, highlight: false });
+        board.create("circle", [[0, 0], r], { strokeColor: "#6FB8C6", strokeOpacity: 0.3, strokeWidth: 1, fillColor: "#6FB8C6", fillOpacity: opacity * 0.15, fixed: true, highlight: false });
         board.create("text", [r + 0.15, 0.3, `${r}r`], { fontSize: 10, strokeColor: colors.fg2, fixed: true });
       }
 

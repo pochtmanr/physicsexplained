@@ -105,7 +105,7 @@ export function SkaterSpinScene() {
       ctx.rotate(thetaRef.current);
 
       // Torso
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(0, 0, scale * 0.14, 0, Math.PI * 2);
       ctx.fill();
@@ -172,7 +172,7 @@ export function SkaterSpinScene() {
           step={0.01}
           value={pullIn}
           onChange={(e) => setPullIn(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-14 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {pullIn.toFixed(2)}

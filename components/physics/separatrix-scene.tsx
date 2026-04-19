@@ -122,7 +122,7 @@ export function SeparatrixScene() {
 
       // Libration orbits (low energy, cyan, thin)
       for (const E of [0.2, 0.5, 1.0, 1.5, 1.8]) {
-        plotOrbit(E, "#5BE9FF", 1.2);
+        plotOrbit(E, "#6FB8C6", 1.2);
       }
 
       // Separatrix (E = 2, red, thick)
@@ -136,7 +136,7 @@ export function SeparatrixScene() {
       // Labels
       board.create("text", [0, 0.6, "libration"], {
         fontSize: 12,
-        strokeColor: "#5BE9FF",
+        strokeColor: "#6FB8C6",
         anchorX: "middle",
       });
       board.create("text", [0, 3.8, "rotation"], {

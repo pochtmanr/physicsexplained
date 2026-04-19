@@ -47,7 +47,7 @@ export function EccentricitySlider() {
       });
 
       const slider = board.create("slider", [[-3.5, -3.5], [3.5, -3.5], [0, 0.5, 0.95]], {
-        name: "e", snapWidth: 0.01, strokeColor: "#5BE9FF", fillColor: "#5BE9FF",
+        name: "e", snapWidth: 0.01, strokeColor: "#6FB8C6", fillColor: "#6FB8C6",
         label: { fontSize: 12, strokeColor: colors.fg1 },
       });
 
@@ -55,9 +55,9 @@ export function EccentricitySlider() {
         (t: number) => a * Math.cos(t),
         (t: number) => { const e = slider.Value(); return a * Math.sqrt(1 - e * e) * Math.sin(t); },
         0, 2 * Math.PI,
-      ], { strokeColor: "#5BE9FF", strokeWidth: 2 });
+      ], { strokeColor: "#6FB8C6", strokeWidth: 2 });
 
-      board.create("point", [() => a * slider.Value(), 0], { name: "F₁", fixed: true, size: 4, fillColor: "#5BE9FF", strokeColor: "#5BE9FF", label: { offset: [8, 8], fontSize: 11, strokeColor: colors.fg1 } });
+      board.create("point", [() => a * slider.Value(), 0], { name: "F₁", fixed: true, size: 4, fillColor: "#6FB8C6", strokeColor: "#6FB8C6", label: { offset: [8, 8], fontSize: 11, strokeColor: colors.fg1 } });
       board.create("point", [() => -a * slider.Value(), 0], { name: "F₂", fixed: true, size: 4, fillColor: colors.fg2, strokeColor: colors.fg2, label: { offset: [8, 8], fontSize: 11, strokeColor: colors.fg1 } });
       board.create("point", [0, 0], { name: "", fixed: true, size: 2, fillColor: colors.fg3, strokeColor: colors.fg3 });
 

@@ -106,7 +106,7 @@ export function FMaScene() {
 
       // Force arrow — length scales with F
       const arrowLen = Math.min(90, force * 10);
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       const aY = ballY;
@@ -120,11 +120,11 @@ export function FMaScene() {
       ctx.lineTo(aX1 - 6, aY - 4);
       ctx.lineTo(aX1 - 6, aY + 4);
       ctx.closePath();
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.fill();
 
       // Ball with glow
-      ctx.shadowColor = "rgba(91, 233, 255, 0.5)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.5)";
       ctx.shadowBlur = 14;
       ctx.fillStyle = "#E6EDF7";
       ctx.beginPath();
@@ -164,7 +164,7 @@ export function FMaScene() {
             step={0.1}
             value={force}
             onChange={(e) => setForce(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {force.toFixed(1)} N
@@ -181,7 +181,7 @@ export function FMaScene() {
             step={0.1}
             value={mass}
             onChange={(e) => setMass(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {mass.toFixed(1)} kg

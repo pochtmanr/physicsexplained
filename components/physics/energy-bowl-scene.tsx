@@ -112,7 +112,7 @@ export function EnergyBowlScene() {
       const ballPy = bowlBottom - s.y * mToPxY - 10;
 
       // Ball
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(ballPx, ballPy, 10, 0, Math.PI * 2);
       ctx.fill();
@@ -136,7 +136,7 @@ export function EnergyBowlScene() {
 
       // KE segment
       const keW = barW * keFrac;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.fillRect(padX, barAreaY, keW, barH);
       // PE segment
       const peW = barW * peFrac;
@@ -154,7 +154,7 @@ export function EnergyBowlScene() {
 
       // Legend
       ctx.textAlign = "left";
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.fillRect(padX, barAreaY + barH + 10, 10, 10);
       ctx.fillStyle = colors.fg1;
       ctx.fillText(`KE ${(keFrac * 100).toFixed(0)}%`, padX + 16, barAreaY + barH + 19);
@@ -207,7 +207,7 @@ export function EnergyBowlScene() {
           step={0.005}
           value={friction}
           onChange={(e) => setFriction(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-14 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {friction.toFixed(3)}

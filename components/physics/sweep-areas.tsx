@@ -133,7 +133,7 @@ export function SweepAreas({
       // Ellipse outline
       const bSim = a * Math.sqrt(1 - e * e);
       const c = a * e;
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.35)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.35)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.ellipse(cx - c * scale, cy, a * scale, bSim * scale, 0, 0, Math.PI * 2);
@@ -156,16 +156,16 @@ export function SweepAreas({
       // Trail
       for (const q of trailRef.current) {
         const alpha = Math.max(0, 1 - q.age / 4) * 0.5;
-        ctx.fillStyle = `rgba(91, 233, 255, ${alpha})`;
+        ctx.fillStyle = `rgba(111, 184, 198, ${alpha})`;
         ctx.beginPath();
         ctx.arc(q.x, q.y, 2, 0, Math.PI * 2);
         ctx.fill();
       }
 
       // Sun
-      ctx.shadowColor = "rgba(91, 233, 255, 0.8)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 24;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(cx, cy, 10, 0, Math.PI * 2);
       ctx.fill();

@@ -99,7 +99,7 @@ export function EnergyDiagramScene({
       ctx.restore();
 
       // Potential well U(theta) = 1 - cos(theta)
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       const steps = 200;
@@ -138,14 +138,14 @@ export function EnergyDiagramScene({
       // KE shading: fill between ball and energy line
       const energyY = toY(E);
       if (by > energyY) {
-        ctx.fillStyle = "rgba(91, 233, 255, 0.15)";
+        ctx.fillStyle = "rgba(111, 184, 198, 0.15)";
         ctx.fillRect(bx - 8, energyY, 16, by - energyY);
       }
 
       // Draw ball with glow
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
       ctx.shadowBlur = 12;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(bx, by, 6, 0, Math.PI * 2);
       ctx.fill();

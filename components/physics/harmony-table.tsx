@@ -80,7 +80,7 @@ export function HarmonyTable() {
       board.create(
         "functiongraph",
         [(x: number) => 1.5 * x, -1.5, 2],
-        { strokeColor: "#5BE9FF", strokeWidth: 1.5 },
+        { strokeColor: "#6FB8C6", strokeWidth: 1.5 },
       );
 
       // Data points

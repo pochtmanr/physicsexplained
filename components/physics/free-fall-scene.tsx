@@ -195,7 +195,7 @@ export function FreeFallScene() {
           onClick={() => setAirOn((v) => !v)}
           className={`rounded border px-3 py-1 text-xs font-mono transition ${
             airOn
-              ? "border-[#5BE9FF] text-[#5BE9FF]"
+              ? "border-[#6FB8C6] text-[#6FB8C6]"
               : "border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
           }`}
         >

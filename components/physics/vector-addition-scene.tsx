@@ -6,7 +6,7 @@ import { add, angleOf, mag, type Vec2 } from "@/lib/physics/projectile";
 
 const RATIO = 0.7;
 const MAX_HEIGHT = 460;
-const ACCENT = "#5BE9FF";
+const ACCENT = "#6FB8C6";
 const A_COLOR = "#8EE8A3";
 const B_COLOR = "#E29FFF";
 const GRAB_RADIUS = 16;
@@ -278,7 +278,7 @@ export function VectorAdditionScene() {
         <button
           type="button"
           onClick={handleReset}
-          className="rounded border border-[#5BE9FF] px-3 py-1 text-xs font-mono text-[#5BE9FF] transition hover:bg-[#5BE9FF]/10"
+          className="rounded border border-[#6FB8C6] px-3 py-1 text-xs font-mono text-[#6FB8C6] transition hover:bg-[#6FB8C6]/10"
         >
           reset
         </button>

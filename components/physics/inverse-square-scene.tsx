@@ -68,16 +68,16 @@ export function InverseSquareScene({
       // Ellipse outline
       const bSim = a * Math.sqrt(1 - e * e);
       const c = a * e;
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.35)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.35)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.ellipse(cx - c * scale, cy, a * scale, bSim * scale, 0, 0, Math.PI * 2);
       ctx.stroke();
 
       // Sun
-      ctx.shadowColor = "rgba(91, 233, 255, 0.8)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 20;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(cx, cy, 10, 0, Math.PI * 2);
       ctx.fill();
@@ -101,7 +101,7 @@ export function InverseSquareScene({
 
       // Use magenta near perihelion, cyan elsewhere
       const nearPerihelion = rRelative < 1.0;
-      ctx.strokeStyle = nearPerihelion ? "#FF4FD8" : "#5BE9FF";
+      ctx.strokeStyle = nearPerihelion ? "#FF4FD8" : "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(px, py);
@@ -121,7 +121,7 @@ export function InverseSquareScene({
         tipY - 8 * Math.sin(angle + Math.PI / 6),
       );
       ctx.closePath();
-      ctx.fillStyle = nearPerihelion ? "#FF4FD8" : "#5BE9FF";
+      ctx.fillStyle = nearPerihelion ? "#FF4FD8" : "#6FB8C6";
       ctx.fill();
 
       setReadout({ r: p.r, F });

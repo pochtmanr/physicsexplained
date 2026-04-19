@@ -77,7 +77,7 @@ export function VisVivaScene({
       // --- Orbit ellipse ---
       const bSim = a * Math.sqrt(1 - e * e);
       const cFocus = a * e;
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.3)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.3)";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.ellipse(cx - cFocus * scale, cy, a * scale, bSim * scale, 0, 0, Math.PI * 2);
@@ -93,9 +93,9 @@ export function VisVivaScene({
       ctx.fillText("aphelion", apoX, cy + 18);
 
       // Sun at focus
-      ctx.shadowColor = "rgba(91, 233, 255, 0.8)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 18;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(cx, cy, 8, 0, Math.PI * 2);
       ctx.fill();
@@ -108,7 +108,7 @@ export function VisVivaScene({
       ctx.fill();
 
       // Radius line
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.2)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.2)";
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(cx, cy);
@@ -123,7 +123,7 @@ export function VisVivaScene({
 
       // KE bar (positive, going up from baseline) — cyan
       const keH = KE * barScale;
-      ctx.fillStyle = "rgba(91, 233, 255, 0.7)";
+      ctx.fillStyle = "rgba(111, 184, 198, 0.7)";
       ctx.fillRect(barX, barBaseY - keH, barW, keH);
 
       // PE bar (negative, going down from baseline) — magenta
@@ -153,7 +153,7 @@ export function VisVivaScene({
       // Bar labels
       ctx.font = "11px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.fillText("KE", barX + barW / 2, barBaseY + peH + 28);
       ctx.fillStyle = "#FF4FD8";
       ctx.fillText("|PE|", barX + barW + 8 + barW / 2, barBaseY + peH + 28);

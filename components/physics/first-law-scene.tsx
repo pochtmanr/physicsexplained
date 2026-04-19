@@ -119,7 +119,7 @@ export function FirstLawScene() {
       // Velocity arrow (cyan) — length scales with current v
       if (state.v > 0.01) {
         const arrowLen = (state.v / V0) * 70 + 10;
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.lineWidth = 2;
         ctx.beginPath();
         const aY = blockY - 10;
@@ -134,7 +134,7 @@ export function FirstLawScene() {
         ctx.lineTo(aX1 - 6, aY - 4);
         ctx.lineTo(aX1 - 6, aY + 4);
         ctx.closePath();
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fill();
       }
 
@@ -199,7 +199,7 @@ export function FirstLawScene() {
           step={0.005}
           value={mu}
           onChange={(e) => setMu(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {mu.toFixed(3)}

@@ -133,9 +133,9 @@ export function WaveChainScene() {
 
       // Glowing mass dots
       const dotR = Math.max(3, 8 - N * 0.2);
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
       ctx.shadowBlur = 10;
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       for (const pos of positions) {
         ctx.beginPath();
         ctx.arc(pos.x, pos.y, dotR, 0, Math.PI * 2);
@@ -163,7 +163,7 @@ export function WaveChainScene() {
           step={1}
           value={N}
           onChange={(e) => setN(parseInt(e.target.value, 10))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-8 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {N}

@@ -98,8 +98,8 @@ export function TerminalVelocityScene() {
       const sphereY = columnTop + 20 + fallFrac * (columnH - 40);
       const sphereX = colPad + colW / 2;
 
-      ctx.fillStyle = "#5BE9FF";
-      ctx.shadowColor = "rgba(91, 233, 255, 0.5)";
+      ctx.fillStyle = "#6FB8C6";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.5)";
       ctx.shadowBlur = 10;
       ctx.beginPath();
       ctx.arc(sphereX, sphereY, 10, 0, Math.PI * 2);
@@ -173,7 +173,7 @@ export function TerminalVelocityScene() {
       ctx.fillText(`v_t = ${vt.toFixed(2)} m/s`, plotL + 6, vtY - 4);
 
       // Trace v(t)
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       const samples = 200;
@@ -193,7 +193,7 @@ export function TerminalVelocityScene() {
       if (running) {
         const px = plotL + (tLocal / tMaxPlot) * plotW;
         const py = plotB - (v / maxV) * (plotH - 20);
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.beginPath();
         ctx.arc(px, py, 4, 0, Math.PI * 2);
         ctx.fill();
@@ -242,7 +242,7 @@ export function TerminalVelocityScene() {
             step={0.005}
             value={dragB}
             onChange={(e) => setDragB(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {dragB.toFixed(3)}

@@ -146,7 +146,7 @@ export function GravPotentialScene() {
       ctx.fillText("0", margin.left - 6, phiToPixel(0) + 4);
 
       // Plot Phi(r) = -1/r
-      ctx.strokeStyle = "#5BE9FF";
+      ctx.strokeStyle = "#6FB8C6";
       ctx.lineWidth = 2;
       ctx.beginPath();
       const steps = 200;
@@ -214,9 +214,9 @@ export function GravPotentialScene() {
       // Particle dot
       ctx.shadowColor = isEscape
         ? "rgba(255, 107, 107, 0.8)"
-        : "rgba(91, 233, 255, 0.8)";
+        : "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 12;
-      ctx.fillStyle = isEscape ? "#FF6B6B" : "#5BE9FF";
+      ctx.fillStyle = isEscape ? "#FF6B6B" : "#6FB8C6";
       ctx.beginPath();
       ctx.arc(dotPx, dotPy, 7, 0, Math.PI * 2);
       ctx.fill();
@@ -272,7 +272,7 @@ export function GravPotentialScene() {
           {readout.escape ? (
             <span className="text-[#FF6B6B]">unbound</span>
           ) : (
-            <span className="text-[#5BE9FF]">bound</span>
+            <span className="text-[#6FB8C6]">bound</span>
           )}
         </div>
       </div>

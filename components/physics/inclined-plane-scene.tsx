@@ -146,7 +146,7 @@ export function InclinedPlaneScene() {
         const my = endY + ms * Math.sin(angle);
         const midX = (prevPoint.x + mx) / 2;
         const midY = (prevPoint.y + my) / 2;
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fillText(String(ratios[i]), midX + nx * 22, midY + ny * 22 + 4);
         prevPoint.x = mx;
         prevPoint.y = my;
@@ -154,10 +154,10 @@ export function InclinedPlaneScene() {
 
       // Ball
       if (running) {
-        ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+        ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
         ctx.shadowBlur = 14;
       }
-      ctx.fillStyle = "#5BE9FF";
+      ctx.fillStyle = "#6FB8C6";
       ctx.beginPath();
       ctx.arc(ballX, ballY, 9, 0, Math.PI * 2);
       ctx.fill();
@@ -199,7 +199,7 @@ export function InclinedPlaneScene() {
           step={1}
           value={angleDeg}
           onChange={(e) => setAngleDeg(parseFloat(e.target.value))}
-          className="flex-1 accent-[#5BE9FF]"
+          className="flex-1 accent-[#6FB8C6]"
         />
         <span className="w-10 text-right text-sm font-mono text-[var(--color-fg-1)]">
           {angleDeg}°

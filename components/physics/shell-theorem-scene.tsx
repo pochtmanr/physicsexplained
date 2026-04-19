@@ -97,7 +97,7 @@ export function ShellTheoremScene() {
 
       // Draw shell as a ring of mass elements
       const numDots = 36;
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.25)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.25)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(cx, cy, shellRadius, 0, Math.PI * 2);
@@ -108,7 +108,7 @@ export function ShellTheoremScene() {
         const angle = (i / numDots) * Math.PI * 2;
         const dotX = cx + Math.cos(angle) * shellRadius;
         const dotY = cy + Math.sin(angle) * shellRadius;
-        ctx.fillStyle = "rgba(91, 233, 255, 0.6)";
+        ctx.fillStyle = "rgba(111, 184, 198, 0.6)";
         ctx.beginPath();
         ctx.arc(dotX, dotY, 3, 0, Math.PI * 2);
         ctx.fill();
@@ -123,9 +123,9 @@ export function ShellTheoremScene() {
       // Particle
       ctx.shadowColor = inside
         ? "rgba(255, 79, 216, 0.6)"
-        : "rgba(91, 233, 255, 0.8)";
+        : "rgba(111, 184, 198, 0.8)";
       ctx.shadowBlur = 12;
-      ctx.fillStyle = inside ? "#FF4FD8" : "#5BE9FF";
+      ctx.fillStyle = inside ? "#FF4FD8" : "#6FB8C6";
       ctx.beginPath();
       ctx.arc(pPos.x, pPos.y, 7, 0, Math.PI * 2);
       ctx.fill();
@@ -142,7 +142,7 @@ export function ShellTheoremScene() {
         const tipX = pPos.x + dirX * arrowLen;
         const tipY = pPos.y;
 
-        ctx.strokeStyle = "#5BE9FF";
+        ctx.strokeStyle = "#6FB8C6";
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(pPos.x, pPos.y);
@@ -163,7 +163,7 @@ export function ShellTheoremScene() {
           tipY - headSize * Math.sin(angle + Math.PI / 6),
         );
         ctx.closePath();
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fill();
 
         setReadout({

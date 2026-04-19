@@ -128,8 +128,8 @@ export function CavendishScene() {
 
       // Small masses (at arm ends)
       const smallR = 6;
-      ctx.fillStyle = "#5BE9FF";
-      ctx.shadowColor = "rgba(91, 233, 255, 0.6)";
+      ctx.fillStyle = "#6FB8C6";
+      ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
       ctx.shadowBlur = 10;
       ctx.beginPath();
       ctx.arc(arm1X, arm1Y, smallR, 0, Math.PI * 2);
@@ -169,7 +169,7 @@ export function CavendishScene() {
       // Twist angle indicator arc
       if (Math.abs(angle) > 0.002) {
         const arcR = 30;
-        ctx.strokeStyle = "rgba(91, 233, 255, 0.4)";
+        ctx.strokeStyle = "rgba(111, 184, 198, 0.4)";
         ctx.lineWidth = 1;
         ctx.beginPath();
         ctx.arc(cx, cy, arcR, 0, -angle, angle > 0);
@@ -183,7 +183,7 @@ export function CavendishScene() {
       }
 
       // Dashed lines showing gravitational attraction
-      ctx.strokeStyle = "rgba(91, 233, 255, 0.15)";
+      ctx.strokeStyle = "rgba(111, 184, 198, 0.15)";
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();

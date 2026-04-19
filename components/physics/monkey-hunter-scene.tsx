@@ -7,7 +7,7 @@ import { G_EARTH } from "@/lib/physics/projectile";
 
 const RATIO = 0.62;
 const MAX_HEIGHT = 440;
-const ACCENT = "#5BE9FF";
+const ACCENT = "#6FB8C6";
 const MONKEY_COLOR = "#E4C27A";
 
 /**
@@ -271,7 +271,7 @@ export function MonkeyHunterScene() {
             step={0.1}
             value={speed}
             onChange={(e) => setSpeed(parseFloat(e.target.value))}
-            className="flex-1 accent-[#5BE9FF]"
+            className="flex-1 accent-[#6FB8C6]"
           />
           <span className="w-20 text-right text-sm font-mono text-[var(--color-fg-1)]">
             {speed.toFixed(1)} m/s
@@ -282,7 +282,7 @@ export function MonkeyHunterScene() {
             type="button"
             onClick={fire}
             disabled={isFiring}
-            className="rounded border border-[#5BE9FF] px-3 py-1 text-xs font-mono text-[#5BE9FF] transition hover:bg-[#5BE9FF]/10 disabled:opacity-50"
+            className="rounded border border-[#6FB8C6] px-3 py-1 text-xs font-mono text-[#6FB8C6] transition hover:bg-[#6FB8C6]/10 disabled:opacity-50"
           >
             fire
           </button>

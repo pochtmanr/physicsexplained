@@ -101,7 +101,7 @@ export function PhasePortrait({
           0,
           2 * Math.PI,
         ],
-        { strokeColor: "#5BE9FF", strokeWidth: 2, strokeOpacity: 0.6 },
+        { strokeColor: "#6FB8C6", strokeWidth: 2, strokeOpacity: 0.6 },
       );
 
       // Animating point
@@ -109,8 +109,8 @@ export function PhasePortrait({
         name: "",
         fixed: true,
         size: 5,
-        fillColor: "#5BE9FF",
-        strokeColor: "#5BE9FF",
+        fillColor: "#6FB8C6",
+        strokeColor: "#6FB8C6",
         showInfobox: false,
       });
 

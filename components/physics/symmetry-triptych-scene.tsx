@@ -91,7 +91,7 @@ export function SymmetryTriptychScene() {
         ctx.fillStyle = colors.fg1;
         ctx.fillText("LEFT started at t = 0", leftCx, groundY + 30);
         ctx.fillText("RIGHT started at t = ½ s", rightCx, groundY + 30);
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fillText(
           "Same pendulum, different start times. Indistinguishable physics ⇒ ENERGY conserved.",
           width / 2,
@@ -104,15 +104,15 @@ export function SymmetryTriptychScene() {
         const x = Math.sin((2 * Math.PI * t) / period) * amp;
 
         drawSpring(ctx, leftCx, groundY, leftCx + x, groundY, colors.fg3);
-        drawMass(ctx, leftCx + x, groundY, 16, "#5BE9FF", colors.fg0);
+        drawMass(ctx, leftCx + x, groundY, 16, "#6FB8C6", colors.fg0);
 
         drawSpring(ctx, rightCx, groundY, rightCx + x, groundY, colors.fg3);
-        drawMass(ctx, rightCx + x, groundY, 16, "#5BE9FF", colors.fg0);
+        drawMass(ctx, rightCx + x, groundY, 16, "#6FB8C6", colors.fg0);
 
         ctx.fillStyle = colors.fg1;
         ctx.fillText("LEFT oscillator", leftCx, groundY + 40);
         ctx.fillText("RIGHT oscillator (shifted in x)", rightCx, groundY + 40);
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fillText(
           "Same spring, different locations. Indistinguishable physics ⇒ MOMENTUM conserved.",
           width / 2,
@@ -128,7 +128,7 @@ export function SymmetryTriptychScene() {
         ctx.fillStyle = colors.fg1;
         ctx.fillText("LEFT rotator", leftCx, groundY + 50);
         ctx.fillText("RIGHT (rotated 45°)", rightCx, groundY + 50);
-        ctx.fillStyle = "#5BE9FF";
+        ctx.fillStyle = "#6FB8C6";
         ctx.fillText(
           "Same rotator, different orientation. Indistinguishable physics ⇒ ANGULAR MOMENTUM conserved.",
           width / 2,
@@ -197,7 +197,7 @@ function drawPendulum(
   ctx.lineTo(ballX, ballY);
   ctx.stroke();
 
-  ctx.fillStyle = "#5BE9FF";
+  ctx.fillStyle = "#6FB8C6";
   ctx.beginPath();
   ctx.arc(ballX, ballY, 10, 0, Math.PI * 2);
   ctx.fill();
@@ -276,7 +276,7 @@ function drawRotator(
   ctx.beginPath();
   ctx.arc(-r, 0, 6, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = "#5BE9FF";
+  ctx.fillStyle = "#6FB8C6";
   ctx.beginPath();
   ctx.arc(r, 0, 6, 0, Math.PI * 2);
   ctx.fill();
