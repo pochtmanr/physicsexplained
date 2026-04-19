@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://physics.explained.dev/sitemap.xml",
+    sitemap: "https://physics.it.com/sitemap.xml",
   };
 }
