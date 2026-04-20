@@ -1,0 +1,21 @@
+{
+  "title": "",
+  "subtitle": "",
+  "blocks": [
+    {
+      "type": "section",
+      "index": 1,
+      "title": "C",
+      "children": [
+        {
+          "type": "callout",
+          "variant": "math",
+          "children": [
+            { "type": "paragraph", "inlines": ["A math-aside paragraph."] }
+          ]
+        }
+      ]
+    }
+  ],
+  "asideBlocks": []
+}

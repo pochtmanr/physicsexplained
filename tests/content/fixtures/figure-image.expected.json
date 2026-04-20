@@ -1,0 +1,19 @@
+{
+  "title": "",
+  "subtitle": "",
+  "blocks": [
+    {
+      "type": "section",
+      "index": 1,
+      "title": "Figure",
+      "children": [
+        {
+          "type": "figure",
+          "caption": "FIG.01",
+          "content": { "kind": "image", "src": "figures/pendulum.webp", "alt": "A pendulum" }
+        }
+      ]
+    }
+  ],
+  "asideBlocks": []
+}

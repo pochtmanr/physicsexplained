@@ -1,0 +1,15 @@
+{
+  "title": "",
+  "subtitle": "",
+  "blocks": [
+    {
+      "type": "section",
+      "index": 1,
+      "title": "Eq",
+      "children": [
+        { "type": "equation", "id": "EQ.01", "tex": "F = m a" }
+      ]
+    }
+  ],
+  "asideBlocks": []
+}
