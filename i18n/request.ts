@@ -9,13 +9,11 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   const common = (await import(`../messages/${locale}/common.json`)).default;
   const home = (await import(`../messages/${locale}/home.json`)).default;
-  const glossary = (await import(`../messages/${locale}/glossary.json`)).default;
-  const physicists = (await import(`../messages/${locale}/physicists.json`)).default;
   const about = (await import(`../messages/${locale}/about.json`)).default;
   const legal = (await import(`../messages/${locale}/legal.json`)).default;
 
   return {
     locale,
-    messages: { common, home, glossary, physicists, about, legal },
+    messages: { common, home, about, legal },
   };
 });
