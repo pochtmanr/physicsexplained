@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
-import { GLOSSARY, getTerm } from "@/lib/content/glossary";
-import { getLocalizedPhysicist } from "@/lib/content/physicists";
+import { GLOSSARY } from "@/lib/content/glossary";
+import { getContentEntry } from "@/lib/content/fetch";
+import { getPhysicist } from "@/lib/content/physicists";
 import { getBranch, getTopic } from "@/lib/content/branches";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
@@ -100,13 +101,51 @@ function ProseBlock({
   );
 }
 
-type GlossaryMessage = {
-  term?: string;
-  shortDefinition?: string;
-  description?: string;
-  history?: string;
-  imageCaptions?: string[];
-};
+interface GlossaryImage {
+  src: string;
+}
+
+type TopicRefLike = { branchSlug: string; topicSlug: string };
+
+function readString(value: unknown): string | null {
+  return typeof value === "string" ? value : null;
+}
+
+function readStringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((x): x is string => typeof x === "string") : [];
+}
+
+function readImages(value: unknown): GlossaryImage[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((v) => {
+      if (v && typeof v === "object" && typeof (v as { src?: unknown }).src === "string") {
+        return { src: (v as { src: string }).src };
+      }
+      return null;
+    })
+    .filter((x): x is GlossaryImage => x !== null);
+}
+
+function readTopicRefs(value: unknown): TopicRefLike[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((v) => {
+      if (
+        v &&
+        typeof v === "object" &&
+        typeof (v as { branchSlug?: unknown }).branchSlug === "string" &&
+        typeof (v as { topicSlug?: unknown }).topicSlug === "string"
+      ) {
+        return {
+          branchSlug: (v as { branchSlug: string }).branchSlug,
+          topicSlug: (v as { topicSlug: string }).topicSlug,
+        };
+      }
+      return null;
+    })
+    .filter((x): x is TopicRefLike => x !== null);
+}
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -119,12 +158,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const term = getTerm(slug);
-  if (!term) return {};
+  const { locale, slug } = await params;
+  const entry = await getContentEntry("glossary", slug, locale);
+  if (!entry) return {};
   return {
-    title: `${term.term} — physics`,
-    description: term.shortDefinition,
+    title: `${entry.title} — physics`,
+    description: entry.subtitle ?? undefined,
   };
 }
 
@@ -135,29 +174,54 @@ export default async function DictionaryTermPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const term = getTerm(slug);
-  if (!term) notFound();
+  const entry = await getContentEntry("glossary", slug, locale);
+  if (!entry) notFound();
 
   const t = await getTranslations("common.pages.dictionary");
-  const messages = await getMessages();
-  const localized = ((messages.glossary ?? {}) as Record<string, GlossaryMessage>)[slug] ?? {};
 
-  const displayTerm = localized.term ?? term.term;
-  const displayShort = localized.shortDefinition ?? term.shortDefinition;
-  const displayDescription = localized.description ?? term.description;
-  const displayHistory = localized.history ?? term.history;
+  const category = readString(entry.meta.category) ?? "concept";
+  const history = readString(entry.meta.history);
+  const visualization = readString(entry.meta.visualization);
+  const illustration = readString(entry.meta.illustration);
+  const images = readImages(entry.meta.images);
+  const captions = readStringArray(entry.meta.imageCaptions);
+  const relatedPhysicistSlugs = readStringArray(entry.meta.relatedPhysicists);
+  const relatedTopicRefs = readTopicRefs(entry.meta.relatedTopics);
 
-  const definitionParagraphs = displayDescription.split("\n\n");
-  const historyParagraphs = displayHistory ? displayHistory.split("\n\n") : [];
+  const displayTerm = entry.title;
+  const displayShort = entry.subtitle ?? "";
+
+  const definitionParagraphs = entry.blocks
+    .filter((b) => b.type === "paragraph")
+    .map((b) => {
+      if (b.type !== "paragraph") return "";
+      const first = b.inlines[0];
+      return typeof first === "string" ? first : "";
+    })
+    .filter((s) => s.length > 0);
+
+  const historyParagraphs = history ? history.split("\n\n") : [];
 
   const relatedPhysicists = (
-    await Promise.all((term.relatedPhysicists ?? []).map((s) => getLocalizedPhysicist(s)))
-  ).filter((p): p is NonNullable<Awaited<ReturnType<typeof getLocalizedPhysicist>>> => p !== undefined);
+    await Promise.all(
+      relatedPhysicistSlugs.map(async (s) => {
+        const base = getPhysicist(s);
+        if (!base) return null;
+        const physEntry = await getContentEntry("physicist", s, locale);
+        return {
+          slug: s,
+          name: physEntry?.title ?? s,
+          born: base.born,
+          died: base.died,
+        };
+      }),
+    )
+  ).filter((p): p is { slug: string; name: string; born: string; died: string } => p !== null);
 
-  const relatedTopics = (term.relatedTopics ?? [])
+  const relatedTopics = relatedTopicRefs
     .map((ref) => {
-      const branch = getBranch(ref.branchSlug);
-      const topic = getTopic(ref.branchSlug, ref.topicSlug);
+      const branch = getBranch(ref.branchSlug as never);
+      const topic = getTopic(ref.branchSlug as never, ref.topicSlug);
       if (!branch || !topic) return null;
       return { branch, topic };
     })
@@ -178,10 +242,8 @@ export default async function DictionaryTermPage({
     })),
   ];
 
-  const hasViz = !!term.visualization;
-  const hasIllustration = !!term.illustration;
-  const images = term.images ?? [];
-  const captions = localized.imageCaptions ?? [];
+  const hasViz = !!visualization;
+  const hasIllustration = !!illustration;
   const fallbackAlt = t("illustrationAlt", { term: displayTerm });
 
   const allBlocks = [...definitionParagraphs, ...historyParagraphs];
@@ -214,84 +276,92 @@ export default async function DictionaryTermPage({
               {t("linkLabel")}
             </Link>
             {" · "}
-            {t(`categorySingular.${term.category}`)}
+            {t(`categorySingular.${category}`)}
           </>
         }
         title={displayTerm}
         subtitle={displayShort}
       />
 
-      <Section index={++sectionIdx} title={t("sectionDefinition")}>
-        <ProseBlock
-          block={definitionParagraphs[0]}
-          idx={0}
-          images={images}
-          captions={captions}
-          fallbackAlt={fallbackAlt}
-        />
+      {entry.localeFallback ? (
+        <p className="mt-2 font-mono text-xs opacity-60">
+          Translation pending. Showing English.
+        </p>
+      ) : null}
 
-        {hasViz && (
-          <SceneCard caption={t("interactive", { term: displayTerm })} className="w-full">
-            <Visualization vizKey={term.visualization!} />
-          </SceneCard>
-        )}
+      {definitionParagraphs.length > 0 && (
+        <Section index={++sectionIdx} title={t("sectionDefinition")}>
+          <ProseBlock
+            block={definitionParagraphs[0]}
+            idx={0}
+            images={images}
+            captions={captions}
+            fallbackAlt={fallbackAlt}
+          />
 
-        {hasIllustration && (
-          <SceneCard caption={displayTerm} className="w-full">
-            <div className="flex justify-center p-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={term.illustration!}
-                alt={t("illustrationAlt", { term: displayTerm })}
-                width={560}
-                height={360}
-                className={`h-auto max-w-full${term.illustration!.endsWith(".svg") ? " dictionary-illustration" : ""}`}
-              />
+          {hasViz && (
+            <SceneCard caption={t("interactive", { term: displayTerm })} className="w-full">
+              <Visualization vizKey={visualization!} />
+            </SceneCard>
+          )}
+
+          {hasIllustration && (
+            <SceneCard caption={displayTerm} className="w-full">
+              <div className="flex justify-center p-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={illustration!}
+                  alt={t("illustrationAlt", { term: displayTerm })}
+                  width={560}
+                  height={360}
+                  className={`h-auto max-w-full${illustration!.endsWith(".svg") ? " dictionary-illustration" : ""}`}
+                />
+              </div>
+            </SceneCard>
+          )}
+
+          {showGallery && (
+            <div className="not-prose grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {ungalleriedImages.map(({ img, i }) => {
+                const caption = captions[i];
+                return (
+                  <figure
+                    key={img.src}
+                    className="flex flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]"
+                  >
+                    <div className="aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-2)]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={img.src}
+                        alt={caption ?? fallbackAlt}
+                        loading="lazy"
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    {caption && (
+                      <figcaption className="border-t border-[var(--color-fg-4)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
+                        {caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                );
+              })}
             </div>
-          </SceneCard>
-        )}
+          )}
 
-        {showGallery && (
-          <div className="not-prose grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {ungalleriedImages.map(({ img, i }) => {
-              const caption = captions[i];
-              return (
-                <figure
-                  key={img.src}
-                  className="flex flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]"
-                >
-                  <div className="aspect-[4/3] w-full overflow-hidden bg-[var(--color-bg-2)]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={img.src}
-                      alt={caption ?? fallbackAlt}
-                      loading="lazy"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  {caption && (
-                    <figcaption className="border-t border-[var(--color-fg-4)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
-                      {caption}
-                    </figcaption>
-                  )}
-                </figure>
-              );
-            })}
-          </div>
-        )}
-
-        {definitionParagraphs.length > 1 &&
-          definitionParagraphs.slice(1).map((para, i) => (
-            <ProseBlock
-              key={i + 1}
-              block={para}
-              idx={i + 1}
-              images={images}
-              captions={captions}
-              fallbackAlt={fallbackAlt}
-            />
-          ))}
-      </Section>
+          {definitionParagraphs.length > 1 &&
+            definitionParagraphs.slice(1).map((para, i) => (
+              <ProseBlock
+                key={i + 1}
+                block={para}
+                idx={i + 1}
+                images={images}
+                captions={captions}
+                fallbackAlt={fallbackAlt}
+              />
+            ))}
+        </Section>
+      )}
 
       {historyParagraphs.length > 0 && (
         <Section index={++sectionIdx} title={t("sectionHistory")}>

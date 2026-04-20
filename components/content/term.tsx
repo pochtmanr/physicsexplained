@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { getTerm } from "@/lib/content/glossary";
+import { getLocale } from "next-intl/server";
+import { getContentEntry } from "@/lib/content/fetch";
 import { HoverCard } from "./hover-card";
 
 interface TermProps {
@@ -8,20 +9,26 @@ interface TermProps {
   children?: ReactNode;
 }
 
-export function Term({ slug, children }: TermProps) {
-  const term = getTerm(slug);
-  if (!term) {
+export async function Term({ slug, children }: TermProps) {
+  const locale = await getLocale();
+  const entry = await getContentEntry("glossary", slug, locale);
+  if (!entry) {
     throw new Error(`Term: unknown slug "${slug}"`);
   }
+
+  const term = entry.title;
+  const shortDefinition = entry.subtitle ?? "";
 
   const preview = (
     <span className="block">
       <span className="block font-semibold text-[var(--color-fg-0)]">
-        {term.term}
+        {term}
       </span>
-      <span className="block mt-1 text-[var(--color-fg-1)]">
-        {term.shortDefinition}
-      </span>
+      {shortDefinition && (
+        <span className="block mt-1 text-[var(--color-fg-1)]">
+          {shortDefinition}
+        </span>
+      )}
     </span>
   );
 
@@ -31,7 +38,7 @@ export function Term({ slug, children }: TermProps) {
         href={`/dictionary/${slug}`}
         className="underline decoration-dotted decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
       >
-        {children ?? term.term}
+        {children ?? term}
       </Link>
     </HoverCard>
   );

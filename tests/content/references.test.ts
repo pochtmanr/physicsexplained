@@ -70,13 +70,10 @@ describe("physicists", () => {
 });
 
 describe("glossary", () => {
-  it("every entry has all required non-empty fields", () => {
+  it("every entry has all required non-empty structural fields", () => {
     for (const t of GLOSSARY) {
       expect(t.slug, `slug for ${t.slug}`).toBeTruthy();
-      expect(t.term, `term for ${t.slug}`).toBeTruthy();
       expect(t.category, `category for ${t.slug}`).toBeTruthy();
-      expect(t.shortDefinition, `shortDefinition for ${t.slug}`).toBeTruthy();
-      expect(t.description, `description for ${t.slug}`).toBeTruthy();
     }
   });
 

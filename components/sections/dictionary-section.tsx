@@ -1,22 +1,14 @@
 import Link from "next/link";
-import { getMessages, getTranslations } from "next-intl/server";
-import { getAllTerms } from "@/lib/content/glossary";
+import { getLocale, getTranslations } from "next-intl/server";
+import { getContentEntriesByKind } from "@/lib/content/fetch";
 import { WIDE_CONTAINER } from "@/lib/layout";
-
-type GlossaryMessage = {
-  term?: string;
-  shortDefinition?: string;
-};
 
 export async function DictionarySection() {
   const t = await getTranslations("home.dictionary");
   const tDict = await getTranslations("common.pages.dictionary");
-  const terms = getAllTerms();
-  const preview = terms.slice(0, 8);
-  const messages = (await getMessages()) as {
-    glossary?: Record<string, GlossaryMessage>;
-  };
-  const glossaryMessages = messages.glossary ?? {};
+  const locale = await getLocale();
+  const entries = await getContentEntriesByKind("glossary", locale);
+  const preview = entries.slice(0, 8);
 
   return (
     <section id="dictionary" className={`${WIDE_CONTAINER} mt-32 md:mt-48`}>
@@ -30,19 +22,20 @@ export async function DictionarySection() {
         {t("subtitle")}
       </p>
       <div className="mt-12 grid grid-cols-2 gap-0 sm:grid-cols-3 md:grid-cols-4 [&>*]:-mt-px [&>*]:-ms-px">
-        {preview.map((term) => {
-          const localized = glossaryMessages[term.slug];
-          const displayTerm = localized?.term ?? term.term;
-          const displayShort = localized?.shortDefinition ?? term.shortDefinition;
+        {preview.map((entry) => {
+          const displayTerm = entry.title;
+          const displayShort = entry.subtitle ?? "";
+          const category =
+            typeof entry.meta.category === "string" ? entry.meta.category : "concept";
           return (
             <Link
-              key={term.slug}
-              href={`/dictionary/${term.slug}`}
+              key={entry.slug}
+              href={`/dictionary/${entry.slug}`}
               className="group relative flex h-full min-h-[120px] flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-4 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)] md:min-h-[140px]"
             >
               <div className="flex items-start justify-between">
                 <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--color-cyan-dim)]">
-                  {tDict(`categorySingular.${term.category}`)}
+                  {tDict(`categorySingular.${category}`)}
                 </span>
                 <span
                   aria-hidden="true"
@@ -61,13 +54,13 @@ export async function DictionarySection() {
           );
         })}
       </div>
-      {terms.length > 8 && (
+      {entries.length > 8 && (
         <div className="mt-10 flex justify-center">
           <Link
             href="/dictionary"
             className="inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-6 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
           >
-            {t("viewAll", { count: terms.length })}{" "}
+            {t("viewAll", { count: entries.length })}{" "}
             <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
               →
             </span>

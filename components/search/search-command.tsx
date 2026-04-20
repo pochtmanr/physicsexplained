@@ -60,10 +60,14 @@ function buildIndex(): SearchResult[] {
   }
 
   for (const term of GLOSSARY) {
+    const titleCase = term.slug
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
     results.push({
       category: "dictionary",
-      title: term.term,
-      subtitle: term.shortDefinition,
+      title: titleCase,
+      subtitle: term.category,
       href: `/dictionary/${term.slug}`,
     });
   }

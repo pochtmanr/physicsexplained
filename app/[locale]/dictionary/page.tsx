@@ -1,15 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
-import { getTermsByCategory } from "@/lib/content/glossary";
-import type { GlossaryCategory, GlossaryTerm } from "@/lib/content/types";
+import { getContentEntriesByKind, type ContentEntry } from "@/lib/content/fetch";
+import type { GlossaryCategory } from "@/lib/content/types";
 import { WIDE_CONTAINER } from "@/lib/layout";
-
-type GlossaryMessage = {
-  term?: string;
-  shortDefinition?: string;
-};
 
 export const metadata: Metadata = {
   title: "Dictionary — physics",
@@ -21,7 +16,7 @@ interface CategoryBlock {
   category: GlossaryCategory;
   id: string;
   label: string;
-  terms: readonly GlossaryTerm[];
+  entries: ContentEntry[];
 }
 
 const CATEGORY_ORDER: readonly { category: GlossaryCategory; id: string }[] = [
@@ -35,6 +30,18 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
+function readCategory(value: unknown): GlossaryCategory | null {
+  if (
+    value === "instrument" ||
+    value === "concept" ||
+    value === "phenomenon" ||
+    value === "unit"
+  ) {
+    return value;
+  }
+  return null;
+}
+
 export default async function DictionaryIndexPage({
   params,
 }: {
@@ -43,17 +50,26 @@ export default async function DictionaryIndexPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("common.pages.dictionary");
-  const messages = await getMessages();
-  const glossaryMessages = (messages.glossary ?? {}) as Record<string, GlossaryMessage>;
+
+  const entries = await getContentEntriesByKind("glossary", locale);
+
+  const byCategory = new Map<GlossaryCategory, ContentEntry[]>();
+  for (const entry of entries) {
+    const category = readCategory(entry.meta.category);
+    if (!category) continue;
+    const list = byCategory.get(category) ?? [];
+    list.push(entry);
+    byCategory.set(category, list);
+  }
 
   const blocks: CategoryBlock[] = CATEGORY_ORDER.map(({ category, id }) => ({
     category,
     id,
     label: t(`categoryLabels.${category}`),
-    terms: getTermsByCategory(category),
-  })).filter((b) => b.terms.length > 0);
+    entries: byCategory.get(category) ?? [],
+  })).filter((b) => b.entries.length > 0);
 
-  const total = blocks.reduce((s, b) => s + b.terms.length, 0);
+  const total = blocks.reduce((s, b) => s + b.entries.length, 0);
 
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
@@ -61,7 +77,7 @@ export default async function DictionaryIndexPage({
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}
         </div>
-        <h1 className="mt-6 text-4xl md:text-6xl font-bold uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
+        <h1 className="mt-6 text-4xl md:text-6xl font-semibold uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
           {t("title")}
         </h1>
         <p className="mt-8 text-lg text-[var(--color-fg-1)] max-w-[60ch]">
@@ -83,23 +99,22 @@ export default async function DictionaryIndexPage({
                 {block.label}
               </h2>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
-                · {block.terms.length}
+                · {block.entries.length}
               </span>
             </div>
             <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
-              {block.terms.map((term) => {
-                const localized = glossaryMessages[term.slug];
-                const displayTerm = localized?.term ?? term.term;
-                const displayShort = localized?.shortDefinition ?? term.shortDefinition;
+              {block.entries.map((entry) => {
+                const displayTerm = entry.title;
+                const displayShort = entry.subtitle ?? "";
                 return (
                   <Link
-                    key={term.slug}
-                    href={`/dictionary/${term.slug}`}
+                    key={entry.slug}
+                    href={`/dictionary/${entry.slug}`}
                     className="group relative flex h-full min-h-[200px] flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-8 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)]"
                   >
                     <div className="flex items-start justify-between">
                       <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
-                        {t(`categorySingular.${term.category}`)}
+                        {t(`categorySingular.${block.category}`)}
                       </div>
                       <span
                         aria-hidden="true"
