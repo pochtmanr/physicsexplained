@@ -25,7 +25,7 @@ vi.mock("@/components/content/term", () => ({
 }));
 
 import { describe, it, expect, afterEach, beforeAll } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup, waitFor } from "@testing-library/react";
 import type { Block } from "@/lib/content/blocks";
 import { ContentBlocks } from "@/components/content/content-blocks";
 
@@ -107,7 +107,7 @@ describe("<ContentBlocks>", () => {
     expect(container.querySelector("img")?.getAttribute("src")).toContain("/storage/");
   });
 
-  it("renders a simulation figure from the registry", () => {
+  it("renders a simulation figure from the registry", async () => {
     const blocks: Block[] = [
       {
         type: "figure",
@@ -115,10 +115,12 @@ describe("<ContentBlocks>", () => {
       },
     ];
     render(<ContentBlocks blocks={blocks} />);
-    // PendulumScene renders a <canvas> root inside a <div>; confirming the
-    // registered component mounts is sufficient here. (Plan said "SVG" but
-    // the real component uses canvas — asserting what actually mounts.)
-    expect(document.querySelector("canvas")).toBeTruthy();
+    // PendulumScene is now code-split via next/dynamic (ssr: false), so its
+    // chunk resolves on a microtask after render. Wait for the <canvas>
+    // root to appear. (Plan said "SVG" but the real component uses canvas.)
+    await waitFor(() => {
+      expect(document.querySelector("canvas")).toBeTruthy();
+    });
   });
 
   it("throws on an unknown simulation name", () => {

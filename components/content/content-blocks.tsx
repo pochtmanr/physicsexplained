@@ -1,12 +1,11 @@
 import katex from "katex";
-import type { Block, FigureContent } from "@/lib/content/blocks";
+import type { Block } from "@/lib/content/blocks";
 import { ContentInline } from "@/components/content/content-inline";
 import { Section } from "@/components/layout/section";
 import { SceneCard } from "@/components/layout/scene-card";
 import { EquationBlock } from "@/components/math/equation-block";
 import { Callout } from "@/components/layout/callout";
-import { getSimulation } from "@/lib/content/simulation-registry";
-import { storageUrl } from "@/lib/supabase";
+import { FigureInner } from "@/components/content/figure-inner";
 
 export function ContentBlocks({ blocks }: { blocks: Block[] }) {
   return (
@@ -89,11 +88,3 @@ function BlockNode({ block }: { block: Block }) {
   }
 }
 
-function FigureInner({ content }: { content: FigureContent }) {
-  if (content.kind === "image") {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={storageUrl(content.src)} alt={content.alt} />;
-  }
-  const Component = getSimulation(content.component);
-  return <Component {...(content.props ?? {})} />;
-}
