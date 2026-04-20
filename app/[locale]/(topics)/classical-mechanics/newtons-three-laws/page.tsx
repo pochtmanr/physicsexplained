@@ -1,7 +1,13 @@
+import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
-import EnContent from "./content.en.mdx";
-import HeContent from "./content.he.mdx";
+import { getContentEntry } from "@/lib/content/fetch";
+import { ContentBlocks } from "@/components/content/content-blocks";
+import { TopicHeader } from "@/components/layout/topic-header";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import type { AsideLink } from "@/components/layout/aside-links";
+
+const SLUG = "classical-mechanics/newtons-three-laws";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -14,6 +20,29 @@ export default async function Page({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const Content = locale === "he" ? HeContent : EnContent;
-  return <Content />;
+
+  const entry = await getContentEntry("topic", SLUG, locale);
+  if (!entry) notFound();
+
+  const aside = Array.isArray(entry.meta.aside)
+    ? (entry.meta.aside as AsideLink[])
+    : [];
+  const eyebrow =
+    typeof entry.meta.eyebrow === "string" ? entry.meta.eyebrow : "";
+
+  return (
+    <TopicPageLayout aside={aside}>
+      <TopicHeader
+        eyebrow={eyebrow}
+        title={entry.title}
+        subtitle={entry.subtitle ?? ""}
+      />
+      {entry.localeFallback ? (
+        <p className="mt-2 font-mono text-xs opacity-60">
+          Translation pending. Showing English.
+        </p>
+      ) : null}
+      <ContentBlocks blocks={entry.blocks} />
+    </TopicPageLayout>
+  );
 }
