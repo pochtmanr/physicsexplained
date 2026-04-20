@@ -1,0 +1,25 @@
+{
+  "title": "",
+  "subtitle": "",
+  "blocks": [
+    {
+      "type": "section",
+      "index": 1,
+      "title": "T",
+      "children": [
+        {
+          "type": "table",
+          "header": [
+            ["Angle"],
+            ["Period error"]
+          ],
+          "rows": [
+            [["5°"], ["small"]],
+            [["30°"], ["noticeable"]]
+          ]
+        }
+      ]
+    }
+  ],
+  "asideBlocks": []
+}

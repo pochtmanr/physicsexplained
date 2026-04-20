@@ -101,6 +101,7 @@ function mapFlowNode(node: any): Block | Block[] | null {
     if (node.name === "EquationBlock") return mapEquationBlock(node);
     if (node.name === "SceneCard") return mapSceneCard(node);
     if (node.name === "Callout") return mapCallout(node);
+    if (node.name === "table") return mapTable(node);
     throw new Error(`unknown top-level JSX: <${node.name}>`);
   }
   if (node.type === "paragraph") return { type: "paragraph", inlines: mapInlines(node.children) };
@@ -147,6 +148,51 @@ function mapSceneCard(node: any): Block {
   }
   if (!content) throw new Error("SceneCard with no child image or simulation");
   return { type: "figure", caption, content };
+}
+
+// MDX wraps single-line JSX inside a `paragraph` node when the tag appears on
+// a line with prose-like content (e.g. `<tr><th>…</th></tr>` on one line).
+// Flatten those wrappers and return only JSX element children, regardless of
+// whether they're flow or text variants. Tags like <tr> at block position
+// come through as mdxJsxFlowElement; when nested inline they arrive as
+// mdxJsxTextElement — we accept both.
+function flattenTableChildren(children: any[] | undefined): any[] {
+  const out: any[] = [];
+  for (const child of children ?? []) {
+    if (!child) continue;
+    if (child.type === "paragraph") {
+      out.push(...flattenTableChildren(child.children));
+    } else if (child.type === "mdxJsxFlowElement" || child.type === "mdxJsxTextElement") {
+      out.push(child);
+    }
+  }
+  return out;
+}
+
+function mapTableRow(tr: any): Inline[][] {
+  return flattenTableChildren(tr.children)
+    .filter((c: any) => c.name === "th" || c.name === "td")
+    .map((c: any) => mapInlines(c.children ?? []));
+}
+
+function mapTable(node: any): Block {
+  let header: Inline[][] | undefined;
+  const rows: Inline[][][] = [];
+  for (const child of flattenTableChildren(node.children)) {
+    if (child.name === "thead") {
+      for (const hr of flattenTableChildren(child.children)) {
+        if (hr.name === "tr") header = mapTableRow(hr);
+      }
+    } else if (child.name === "tbody") {
+      for (const tr of flattenTableChildren(child.children)) {
+        if (tr.name === "tr") rows.push(mapTableRow(tr));
+      }
+    } else if (child.name === "tr") {
+      // Tables without tbody — treat as body row.
+      rows.push(mapTableRow(child));
+    }
+  }
+  return { type: "table", header, rows };
 }
 
 function mapCallout(node: any): Block {

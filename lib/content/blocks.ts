@@ -24,10 +24,11 @@ export type Block =
   | { type: "equation"; id?: string; tex: string }
   | { type: "figure"; caption?: string; content: FigureContent }
   | { type: "callout"; variant: CalloutVariant; children: Block[] }
-  | { type: "list"; ordered: boolean; items: Inline[][] };
+  | { type: "list"; ordered: boolean; items: Inline[][] }
+  | { type: "table"; header?: Inline[][]; rows: Inline[][][] };
 
 const BLOCK_TYPES = new Set<Block["type"]>([
-  "section", "heading", "paragraph", "equation", "figure", "callout", "list",
+  "section", "heading", "paragraph", "equation", "figure", "callout", "list", "table",
 ]);
 
 const INLINE_KINDS = new Set([

@@ -11,6 +11,10 @@ describe("simulation registry", () => {
     expect(SIMULATION_REGISTRY.PhasePortrait).toBeDefined();
   });
 
+  it("includes ActionReactionScene", () => {
+    expect(SIMULATION_REGISTRY.ActionReactionScene).toBeDefined();
+  });
+
   it("getSimulation throws on unknown name", () => {
     expect(() => getSimulation("Nope")).toThrow(/unknown simulation/i);
   });

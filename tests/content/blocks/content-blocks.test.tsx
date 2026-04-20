@@ -150,4 +150,17 @@ describe("<ContentBlocks>", () => {
     const { container } = render(<ContentBlocks blocks={blocks} />);
     expect(container.querySelector("ol")?.children.length).toBe(2);
   });
+
+  it("renders a table with header + rows", () => {
+    const blocks: Block[] = [
+      {
+        type: "table",
+        header: [["Col A"], ["Col B"]],
+        rows: [[["1"], ["x"]], [["2"], ["y"]]],
+      },
+    ];
+    const { container } = render(<ContentBlocks blocks={blocks} />);
+    expect(container.querySelector("thead th")?.textContent).toBe("Col A");
+    expect(container.querySelectorAll("tbody tr")).toHaveLength(2);
+  });
 });

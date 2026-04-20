@@ -68,6 +68,24 @@ function BlockNode({ block }: { block: Block }) {
         </Tag>
       );
     }
+
+    case "table":
+      return (
+        <table>
+          {block.header ? (
+            <thead>
+              <tr>{block.header.map((h, i) => (<th key={i}><ContentInline inlines={h} /></th>))}</tr>
+            </thead>
+          ) : null}
+          <tbody>
+            {block.rows.map((row, i) => (
+              <tr key={i}>
+                {row.map((cell, j) => (<td key={j}><ContentInline inlines={cell} /></td>))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
   }
 }
 
