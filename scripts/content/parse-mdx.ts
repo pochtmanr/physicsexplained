@@ -46,20 +46,37 @@ export function parseMdx(source: string): ParsedDoc {
 
   // Second pass: convert top-level flow children into Blocks, skipping chrome.
   const blocks: Block[] = [];
-  for (const child of (tree.children as any[]) ?? []) {
-    const block = mapFlowNode(child);
-    if (block) blocks.push(block);
-  }
+  mapFlowChildren(tree.children as any[], blocks);
 
   return { title, subtitle, eyebrow, blocks, asideBlocks };
 }
 
-function mapFlowNode(node: any): Block | null {
-  // MDX comment / expression at top level — skip.
+// Descend into a list of flow children, flattening transparent wrappers
+// (TopicPageLayout, bare <div>) into the caller's block list.
+function mapFlowChildren(children: any[] | undefined, out: Block[]): void {
+  for (const child of children ?? []) {
+    const mapped = mapFlowNode(child);
+    if (Array.isArray(mapped)) {
+      out.push(...mapped);
+    } else if (mapped) {
+      out.push(mapped);
+    }
+  }
+}
+
+function mapFlowNode(node: any): Block | Block[] | null {
+  // MDX comment / expression / ESM imports at top level — skip.
   if (node.type === "mdxFlowExpression") return null;
+  if (node.type === "mdxjsEsm") return null;
   // Chrome tags — drop.
   if (node.type === "mdxJsxFlowElement") {
-    if (node.name === "TopicHeader" || node.name === "TopicPageLayout") return null;
+    if (node.name === "TopicHeader") return null;
+    // Transparent wrappers — flatten their children into the parent flow.
+    if (node.name === "TopicPageLayout" || node.name === "div") {
+      const inner: Block[] = [];
+      mapFlowChildren(node.children, inner);
+      return inner;
+    }
     if (node.name === "Section") return mapSection(node);
     if (node.name === "EquationBlock") return mapEquationBlock(node);
     if (node.name === "SceneCard") return mapSceneCard(node);
@@ -75,10 +92,7 @@ function mapSection(node: any): Block {
   const index = Number(getAttr(node, "index") ?? 0);
   const title = String(getAttr(node, "title") ?? "");
   const children: Block[] = [];
-  for (const child of node.children ?? []) {
-    const b = mapFlowNode(child);
-    if (b) children.push(b);
-  }
+  mapFlowChildren(node.children, children);
   return { type: "section", index, title, children };
 }
 
@@ -118,10 +132,7 @@ function mapSceneCard(node: any): Block {
 function mapCallout(node: any): Block {
   const variant = (getAttr(node, "variant") ?? "aside") as CalloutVariant;
   const children: Block[] = [];
-  for (const child of node.children ?? []) {
-    const b = mapFlowNode(child);
-    if (b) children.push(b);
-  }
+  mapFlowChildren(node.children, children);
   return { type: "callout", variant, children };
 }
 

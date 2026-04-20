@@ -1,0 +1,396 @@
+{
+  "title": "THE SIMPLE PENDULUM",
+  "subtitle": "Why every clock that ever ticked ticked the same way.",
+  "eyebrow": "§ 01 · CLASSICAL MECHANICS",
+  "blocks": [
+    {
+      "type": "section",
+      "index": 1,
+      "title": "The question",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "In 1583, a bored nineteen-year-old sat in Pisa cathedral watching a bronze chandelier sway above his head. The breeze coming through the open doors nudged it this way and that. Sometimes it swung in a wide arc; sometimes it settled into a small one."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            {
+              "kind": "physicist",
+              "slug": "galileo-galilei",
+              "text": "Galileo"
+            },
+            " timed the swings against his own pulse. No matter how wide the chandelier swung, each full cycle took the same amount of time."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "He had just discovered something that would define physics for four centuries."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "What he had noticed was ",
+            {
+              "kind": "strong",
+              "text": "isochronism"
+            },
+            ": the property of oscillating with a constant period regardless of amplitude. It seemed almost too convenient to be real. It wasn't intuitive — you might expect a larger swing to take longer. But the chandelier didn't care about your expectations."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "This observation led, within a generation, to the ",
+            {
+              "kind": "term",
+              "slug": "pendulum-clock",
+              "text": "pendulum clock"
+            },
+            " — the first timekeeper accurate enough to measure longitude at sea and to synchronize scientific experiments across continents. All from watching a lamp swing in a breeze."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 2,
+      "title": "The restoring force",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "A pendulum, at rest, hangs straight down. If you pull it aside and let go, gravity pulls it back toward straight-down. The further you pull, the harder gravity tugs. That relationship — the force scales with the displacement — is the heart of the story."
+          ]
+        },
+        {
+          "type": "equation",
+          "id": "EQ.01",
+          "tex": ""
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Read it out loud: \"force equals negative stiffness times displacement.\" The minus sign is the whole point — the force always pushes back toward zero."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "This kind of force — proportional to displacement, directed back toward equilibrium — is called a ",
+            {
+              "kind": "strong",
+              "text": "restoring force"
+            },
+            ". It doesn't just describe pendulums. It describes every spring, every plucked string, every atom in a solid vibrating about its equilibrium position. The equation is the same everywhere. Only the constants change."
+          ]
+        },
+        {
+          "type": "figure",
+          "caption": "FIG.01 — the pendulum",
+          "content": {
+            "kind": "simulation",
+            "component": "PendulumScene",
+            "props": {
+              "theta0": 0.3,
+              "length": 1.2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 3,
+      "title": "The small-angle trick",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "When we write F = −kx, we are making a quiet but powerful assumption: that the angle is small enough for sin θ to equal θ. This is the small-angle approximation, and it deserves to be examined."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Expand sin θ as a Taylor series:"
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "math",
+          "children": [
+            {
+              "type": "paragraph",
+              "inlines": [
+                "sin θ = θ − θ³/6 + θ⁵/120 − …"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "For small θ, everything past the first term is negligible. At 5°, the error is just 0.1%. At 15°, it is about 1%. At 30°, the cubic term grows to 4.5% of the linear — still small, but no longer invisible."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "This simplification is what turns the pendulum equation from a nonlinear problem (no closed-form solution) into a linear one (clean sinusoids). It is the reason we can write T = 2π√(L/g) at all."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 4,
+      "title": "The rhythm",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "The thing Galileo heard in his pulse had a name: the ",
+            {
+              "kind": "strong",
+              "text": "period"
+            },
+            ", the time it takes the pendulum to complete one full swing and return. For a small-angle pendulum of length L, that time works out to:"
+          ]
+        },
+        {
+          "type": "equation",
+          "id": "EQ.02",
+          "tex": ""
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Notice what's not in that equation: the mass of the bob, the initial amplitude, the color of the string. Only the length matters."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "A one-meter pendulum has a period of about two seconds. A four-meter pendulum has a period of four seconds — double the length, double the period? No: double the period requires four times the length. The square root is the tell. This is why tall grandfather clocks tick slowly and small pocket watches tick fast."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "The bar below the pendulum marks one complete cycle. Watch the timeline fill. That duration is the period, and it doesn't change no matter how you start the pendulum."
+          ]
+        },
+        {
+          "type": "figure",
+          "caption": "FIG.02 — one full period",
+          "content": {
+            "kind": "simulation",
+            "component": "PendulumScene",
+            "props": {
+              "theta0": 0.25,
+              "length": 1.2,
+              "showTimer": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 5,
+      "title": "The surprise",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Here is the thing that blew ",
+            {
+              "kind": "physicist",
+              "slug": "galileo-galilei",
+              "text": "Galileo"
+            },
+            "'s mind, and should blow ours. Take three pendulums. Give them different masses. Pull them to different angles — one gentle, one moderate, one wild. Let them go."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Watch what happens."
+          ]
+        },
+        {
+          "type": "figure",
+          "caption": "FIG.03a — 1 kg · 10°",
+          "content": {
+            "kind": "simulation",
+            "component": "PendulumScene",
+            "props": {
+              "theta0": "(10 * Math.PI) / 180",
+              "length": 1.2
+            }
+          }
+        },
+        {
+          "type": "figure",
+          "caption": "FIG.03b — 3 kg · 25°",
+          "content": {
+            "kind": "simulation",
+            "component": "PendulumScene",
+            "props": {
+              "theta0": "(25 * Math.PI) / 180",
+              "length": 1.2,
+              "bobRadius": 14
+            }
+          }
+        },
+        {
+          "type": "figure",
+          "caption": "FIG.03c — 10 kg · 40°",
+          "content": {
+            "kind": "simulation",
+            "component": "PendulumScene",
+            "props": {
+              "theta0": "(40 * Math.PI) / 180",
+              "length": 1.2,
+              "bobRadius": 18
+            }
+          }
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Different masses. Different amplitudes. Same length. And they swing in perfect lockstep, crossing the center at exactly the same moment, swing after swing after swing."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "The period depends only on L and g. Galileo saw it in a chandelier in 1583. ",
+            {
+              "kind": "physicist",
+              "slug": "isaac-newton",
+              "text": "Isaac Newton"
+            },
+            " explained it, eighty years later."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 6,
+      "title": "The clock",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "In 1656, the Dutch mathematician ",
+            {
+              "kind": "physicist",
+              "slug": "christiaan-huygens",
+              "text": "Christiaan Huygens"
+            },
+            " did what Galileo had only dreamed of: he built a working ",
+            {
+              "kind": "term",
+              "slug": "pendulum-clock",
+              "text": "pendulum clock"
+            },
+            "."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "The new clocks were accurate to about a minute a day — a vast improvement over the quarter-hour daily drift of their predecessors. Within a decade, pendulum clocks were standard across Europe."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "But Huygens noticed a problem. Isochronism is only approximate: a pendulum swung to a large angle takes slightly longer than one swung gently. For a precision clock, \"slightly\" matters."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "His solution was elegant. He showed that a bead sliding along a cycloid — the curve traced by a point on the rim of a rolling wheel — reaches the bottom in the same time regardless of where it starts. This is the tautochrone property, and it is exact, not approximate."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Huygens added curved metal \"cheeks\" near the pivot to constrain the string, bending the bob's path from a circular arc into a cycloid. The result was a clock that kept perfect time at any amplitude."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 7,
+      "title": "The shape of motion",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "If you plot a pendulum's position and velocity against each other, the motion draws a perfect circle (well — an ellipse, if the units disagree). Every swing retraces the same curve, over and over."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "This curve has a name. It's called a ",
+            {
+              "kind": "strong",
+              "text": "phase portrait"
+            },
+            ", and it's the shape of every oscillator that ever existed."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Read this diagram as follows: the horizontal axis is the angle — how far the bob has swung from center. The vertical axis is angular velocity — how fast it's moving. When the pendulum passes through the center, the angle is zero but the speed is maximum. At the extremes, speed is zero but the angle is at its peak. That trade-off — position and velocity never both at zero at the same time — is what keeps the pendulum going. Energy sloshes back and forth between position and motion, forever, and the orbit in phase space is the footprint of that exchange."
+          ]
+        },
+        {
+          "type": "figure",
+          "caption": "FIG.04 — phase portrait",
+          "content": {
+            "kind": "simulation",
+            "component": "PhasePortrait",
+            "props": {
+              "theta0": 0.3,
+              "length": 1.2
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "index": 8,
+      "title": "What comes next",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Everything we have seen so far rests on one assumption: that the angle stays small. Small enough that sin θ ≈ θ. Small enough that the pendulum equation stays linear and the solutions stay sinusoidal."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "inlines": [
+            "But what happens when we push harder — when the angle grows past fifteen degrees, past forty-five, past ninety? The approximation breaks, the period stretches, and the pendulum reveals something much deeper about the physics of motion."
+          ]
+        }
+      ]
+    }
+  ],
+  "asideBlocks": []
+}

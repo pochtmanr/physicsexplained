@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
-import { parseMdx } from "@/scripts/content/parse-mdx";
+import { parseMdx, type ParsedDoc } from "@/scripts/content/parse-mdx";
 
 const FIXTURES = path.resolve(__dirname, "..", "fixtures");
 
@@ -19,4 +19,21 @@ describe("parseMdx — fixtures", () => {
       expect(parseMdx(mdx)).toEqual(expected);
     });
   }
+});
+
+describe("parseMdx — golden: real topic", () => {
+  it("the-simple-pendulum matches golden", () => {
+    const mdx = readFileSync(
+      path.resolve(__dirname, "../../..", "app/[locale]/(topics)/classical-mechanics/the-simple-pendulum/content.en.mdx"),
+      "utf8",
+    );
+    const expected = JSON.parse(
+      readFileSync(
+        path.resolve(__dirname, "..", "fixtures/golden/the-simple-pendulum.expected.json"),
+        "utf8",
+      ),
+    );
+    const result: ParsedDoc = parseMdx(mdx);
+    expect(result).toEqual(expected);
+  });
 });
