@@ -1,0 +1,224 @@
+/* ============================================================
+   Physics.explained — Colors & Type
+   ============================================================
+   Source of truth mirrors app/globals.css in the production repo.
+   Dark-first; light theme is supported but brand is defined in dark.
+   ============================================================ */
+
+/* ---------- Fonts ---------- */
+/* Body / UI: Inter (local variable font, uploaded). Mono: JetBrains Mono.
+   Display: Archivo Narrow substituted for the local .otf "archive-grotesk" in the repo. */
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-VariableFont_opsz_wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Archivo+Narrow:ital,wght@0,500;0,600;0,700;1,600;1,700&display=swap");
+
+:root {
+  /* Families */
+  --font-sans:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-display: "Archivo Narrow", "Inter", system-ui, sans-serif;
+
+  /* Motion */
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 600ms;
+}
+
+/* ---------- Color tokens ---------- */
+/* Dark (default brand look) */
+:root,
+[data-theme="dark"] {
+  /* Background — single near-black tinted toward deep space blue.
+     Depth is now expressed via borders + grid wash opacity, not tonal layers.
+     Legacy bg-1 / bg-2 aliases kept for UI-kit compatibility. */
+  --color-bg:   #07090E;
+  --color-bg-0: #07090E;
+  --color-bg-1: #07090E;
+  --color-bg-2: #07090E;
+
+  /* Foreground ladder — 5 steps, smooth luminance gradient */
+  --color-fg-0: #EEF2F9; /* primary text, headings */
+  --color-fg-1: #B6C4D8; /* body copy */
+  --color-fg-2: #7D8DA6; /* secondary body, card subtitles (NEW — fills prior gap) */
+  --color-fg-3: #56687F; /* meta, captions, muted */
+  --color-fg-4: #2A3448; /* borders, rules, hairlines */
+
+  /* Accents — cyan split into emphasis + chrome */
+  --color-cyan:     #5BE9FF; /* emphasis ONLY — italic hero accent, live glow, link hover */
+  --color-cyan-dim: #6FB8C6; /* chrome — eyebrows, hover borders, pill outlines, icons */
+  --color-magenta:  #FF6ADE; /* caution, coming-soon, trails (nudged brighter for AA) */
+  --color-amber:    #F5C451; /* intuition callouts, figure numbers, citations */
+  --color-mint:     #5BFFAE; /* success — form confirmations, "correct" state in scenes */
+
+  /* Utility overlays */
+  --color-grid: rgba(111, 184, 198, 0.08);  /* grid uses cyan-dim, not emphasis cyan */
+  --color-glow: rgba(91, 233, 255, 0.35);
+
+  color-scheme: dark;
+}
+
+/* Light — not a desaturated dark. Its own considered palette.
+   Background stays a single soft off-white; depth via borders + grid wash.
+   Accents re-chosen for AA on light bg (cyan goes teal, magenta goes fuchsia). */
+[data-theme="light"] {
+  /* Single background — matches the dark-mode approach */
+  --color-bg:   #FAFBFD;
+  --color-bg-0: #FAFBFD;
+  --color-bg-1: #FAFBFD;
+  --color-bg-2: #FAFBFD;
+
+  /* Foreground ladder — 5 steps, dark → light, tuned for readable body copy */
+  --color-fg-0: #0B1220; /* primary text, headings */
+  --color-fg-1: #293244; /* body copy */
+  --color-fg-2: #4A5569; /* secondary body, card subtitles */
+  --color-fg-3: #6E7A8F; /* meta, captions, muted */
+  --color-fg-4: #CAD2DF; /* borders, rules, hairlines */
+
+  /* Accents — re-derived for light bg, not mechanically desaturated.
+     cyan becomes teal (#0B7285) — passes AA on off-white, still unmistakably "cyan brand".
+     cyan-dim is a slate-teal for chrome, quiet enough not to compete with text.
+     magenta stays vivid (#B6219E) — proper fuchsia, AA-safe.
+     amber deepens to bronze (#9A6410) so it still feels warm against off-white.
+     mint becomes emerald (#037A4B) — green actually reads as success in light mode. */
+  --color-cyan:     #0B7285;
+  --color-cyan-dim: #5A8693;
+  --color-magenta:  #B6219E;
+  --color-amber:    #9A6410;
+  --color-mint:     #037A4B;
+
+  /* Utility overlays — grid is 10% cyan-dim, glow picks up the teal. */
+  --color-grid: rgba(90, 134, 147, 0.10);
+  --color-glow: rgba(11, 114, 133, 0.28);
+
+  color-scheme: light;
+}
+
+/* ---------- Base typography ---------- */
+html, body {
+  background: var(--color-bg-0);
+  color: var(--color-fg-0);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Semantic type scale ----------
+   Rule of the house: HEADINGS ARE UPPERCASE, TIGHT, with tracking-tight.
+   Display italic cyan is reserved for ONE hero accent phrase.
+   Mono is used for all eyebrows / tags / labels / meta / buttons. */
+
+.h1, h1 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(2rem, 5vw, 3.75rem); /* ~32–60px */
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-fg-0);
+}
+
+.h2, h2 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(1.75rem, 3vw, 2.25rem); /* ~28–36px */
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  color: var(--color-fg-0);
+}
+
+.h3, h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--color-fg-0);
+}
+
+/* Display italic — used only for the accented phrase in the hero title.
+   Example: <em class="display">shoulders of giants.</em> */
+.display-italic {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  color: var(--color-cyan);
+}
+
+/* Body */
+.p, p {
+  font-family: var(--font-sans);
+  color: var(--color-fg-1);
+  font-size: 1rem;
+  line-height: 1.65;
+}
+.p-lg  { font-size: 1.25rem; line-height: 1.55; }
+.p-sm  { font-size: 0.875rem; line-height: 1.6; }
+
+/* Eyebrow — the signature "§ BRANCHES" / "FIG.01" tag */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;   /* 12px */
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-cyan-dim);
+}
+
+/* Meta — small all-caps mono for reading-time, categories, dates */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem; /* 11px */
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-fg-3);
+}
+
+/* Code / equations inline */
+.code, code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--color-fg-0);
+  background: color-mix(in srgb, var(--color-fg-4) 40%, transparent);
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--color-fg-4);
+}
+
+/* Buttons — always mono, uppercase, border-only (ghost) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  background: transparent;
+  transition: background-color var(--duration-fast) ease;
+}
+.btn:hover { background: color-mix(in srgb, var(--color-cyan) 10%, transparent); }
+
+.btn-ghost {
+  border-color: var(--color-fg-4);
+  color: var(--color-fg-1);
+}
+.btn-ghost:hover { border-color: var(--color-cyan-dim); color: var(--color-cyan-dim); }
+
+/* Link — cyan + glow on hover */
+a.link, .link {
+  color: var(--color-cyan);
+  text-decoration: none;
+  transition: text-shadow var(--duration-fast) ease;
+}
+a.link:hover { text-shadow: 0 0 12px var(--color-glow); }
