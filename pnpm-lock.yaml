@@ -105,6 +105,9 @@ importers:
       jsdom:
         specifier: ^29.0.2
         version: 29.0.2
+      json5:
+        specifier: ^2.2.3
+        version: 2.2.3
       mdast-util-from-markdown:
         specifier: ^2.0.3
         version: 2.0.3
@@ -1606,6 +1609,11 @@ packages:
     peerDependenciesMeta:
       canvas:
         optional: true
+
+  json5@2.2.3:
+    resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
+    engines: {node: '>=6'}
+    hasBin: true
 
   jsxgraph@1.12.2:
     resolution: {integrity: sha512-7kTscexFVBHirsBrxZFQg2hA6Mf/Pa2piojNgxHZ9i/rQfxDAaq7p8oD9/009clQTFQ9fNLUpmDKwV+84zA2Gg==}
@@ -3623,6 +3631,8 @@ snapshots:
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - '@noble/hashes'
+
+  json5@2.2.3: {}
 
   jsxgraph@1.12.2: {}
 

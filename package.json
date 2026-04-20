@@ -46,6 +46,7 @@
     "dotenv": "^17.4.2",
     "fast-glob": "^3.3.3",
     "jsdom": "^29.0.2",
+    "json5": "^2.2.3",
     "mdast-util-from-markdown": "^2.0.3",
     "mdast-util-mdx": "^3.0.0",
     "remark-math": "^6.0.0",
