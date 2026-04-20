@@ -46,12 +46,12 @@ describe("<ContentInline>", () => {
   });
 
   it("renders an em span", () => {
-    const { container } = renderInlines([{ kind: "em", text: "note" }]);
+    const { container } = renderInlines([{ kind: "em", inlines: ["note"] }]);
     expect(container.querySelector("em")?.textContent).toBe("note");
   });
 
   it("renders a strong span", () => {
-    const { container } = renderInlines([{ kind: "strong", text: "key" }]);
+    const { container } = renderInlines([{ kind: "strong", inlines: ["key"] }]);
     expect(container.querySelector("strong")?.textContent).toBe("key");
   });
 

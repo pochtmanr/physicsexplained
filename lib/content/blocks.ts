@@ -5,8 +5,8 @@ export type CalloutVariant = "intuition" | "math" | "warning";
 
 export type Inline =
   | string
-  | { kind: "em"; text: string }
-  | { kind: "strong"; text: string }
+  | { kind: "em"; inlines: Inline[] }
+  | { kind: "strong"; inlines: Inline[] }
   | { kind: "code"; text: string }
   | { kind: "formula"; tex: string }
   | { kind: "link"; href: string; text: string }

@@ -4,6 +4,7 @@ import remarkParse from "remark-parse";
 import remarkMdx from "remark-mdx";
 import remarkMath from "remark-math";
 import { visit } from "unist-util-visit";
+import JSON5 from "json5";
 import type { Block, Inline, FigureContent, CalloutVariant } from "@/lib/content/blocks";
 
 export interface ParsedDoc {
@@ -12,6 +13,7 @@ export interface ParsedDoc {
   eyebrow?: string;
   blocks: Block[];
   asideBlocks: Block[];
+  aside?: unknown[];
 }
 
 export function parseMdx(source: string): ParsedDoc {
@@ -24,6 +26,7 @@ export function parseMdx(source: string): ParsedDoc {
   let title = "";
   let subtitle = "";
   let eyebrow: string | undefined;
+  let aside: unknown[] | undefined;
   const asideBlocks: Block[] = [];
 
   // First pass: pull TopicHeader + TopicPageLayout props out as metadata.
@@ -39,8 +42,8 @@ export function parseMdx(source: string): ParsedDoc {
       }
     }
     if (node.type === "mdxJsxFlowElement" && node.name === "TopicPageLayout") {
-      // aside={[...]} — optional. Leave asideBlocks empty for this fixture.
-      // Later tasks (§Task 10) will cover aside parsing.
+      const extracted = extractAside(node);
+      if (extracted) aside = extracted;
     }
   });
 
@@ -48,7 +51,24 @@ export function parseMdx(source: string): ParsedDoc {
   const blocks: Block[] = [];
   mapFlowChildren(tree.children as any[], blocks);
 
-  return { title, subtitle, eyebrow, blocks, asideBlocks };
+  const doc: ParsedDoc = { title, subtitle, eyebrow, blocks, asideBlocks };
+  if (aside) doc.aside = aside;
+  return doc;
+}
+
+function extractAside(node: any): unknown[] | undefined {
+  for (const attr of node.attributes ?? []) {
+    if (attr.name !== "aside") continue;
+    const raw = typeof attr.value === "string" ? attr.value : attr.value?.value;
+    if (typeof raw !== "string") return undefined;
+    try {
+      const parsed = JSON5.parse(raw);
+      return Array.isArray(parsed) ? parsed : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
 }
 
 // Descend into a list of flow children, flattening transparent wrappers
@@ -140,8 +160,8 @@ function mapInlines(nodes: any[]): Inline[] {
   const out: Inline[] = [];
   for (const n of nodes ?? []) {
     if (n.type === "text")      out.push(String(n.value));
-    else if (n.type === "emphasis")     out.push({ kind: "em",     text: collectText(n) });
-    else if (n.type === "strong")       out.push({ kind: "strong", text: collectText(n) });
+    else if (n.type === "emphasis")     out.push({ kind: "em",     inlines: mapInlines(n.children) });
+    else if (n.type === "strong")       out.push({ kind: "strong", inlines: mapInlines(n.children) });
     else if (n.type === "inlineCode")   out.push({ kind: "code",   text: String(n.value) });
     else if (n.type === "inlineMath")   out.push({ kind: "formula", tex: String(n.value) });
     else if (n.type === "link")         out.push({ kind: "link",   href: String(n.url), text: collectText(n) });

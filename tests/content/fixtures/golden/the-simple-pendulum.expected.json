@@ -37,7 +37,13 @@
             "What he had noticed was ",
             {
               "kind": "strong",
-              "text": "isochronism"
+              "inlines": [
+                {
+                  "kind": "term",
+                  "slug": "isochronism",
+                  "text": "isochronism"
+                }
+              ]
             },
             ": the property of oscillating with a constant period regardless of amplitude. It seemed almost too convenient to be real. It wasn't intuitive — you might expect a larger swing to take longer. But the chandelier didn't care about your expectations."
           ]
@@ -84,7 +90,13 @@
             "This kind of force — proportional to displacement, directed back toward equilibrium — is called a ",
             {
               "kind": "strong",
-              "text": "restoring force"
+              "inlines": [
+                {
+                  "kind": "term",
+                  "slug": "restoring-force",
+                  "text": "restoring force"
+                }
+              ]
             },
             ". It doesn't just describe pendulums. It describes every spring, every plucked string, every atom in a solid vibrating about its equilibrium position. The equation is the same everywhere. Only the constants change."
           ]
@@ -157,7 +169,9 @@
             "The thing Galileo heard in his pulse had a name: the ",
             {
               "kind": "strong",
-              "text": "period"
+              "inlines": [
+                "period"
+              ]
             },
             ", the time it takes the pendulum to complete one full swing and return. For a small-angle pendulum of length L, that time works out to:"
           ]
@@ -347,7 +361,13 @@
             "This curve has a name. It's called a ",
             {
               "kind": "strong",
-              "text": "phase portrait"
+              "inlines": [
+                {
+                  "kind": "term",
+                  "slug": "phase-portrait",
+                  "text": "phase portrait"
+                }
+              ]
             },
             ", and it's the shape of every oscillator that ever existed."
           ]
@@ -392,5 +412,47 @@
       ]
     }
   ],
-  "asideBlocks": []
+  "asideBlocks": [],
+  "aside": [
+    {
+      "type": "physicist",
+      "label": "Galileo Galilei",
+      "href": "/physicists/galileo-galilei"
+    },
+    {
+      "type": "physicist",
+      "label": "Isaac Newton",
+      "href": "/physicists/isaac-newton"
+    },
+    {
+      "type": "physicist",
+      "label": "Christiaan Huygens",
+      "href": "/physicists/christiaan-huygens"
+    },
+    {
+      "type": "term",
+      "label": "Isochronism",
+      "href": "/dictionary/isochronism"
+    },
+    {
+      "type": "term",
+      "label": "Pendulum Clock",
+      "href": "/dictionary/pendulum-clock"
+    },
+    {
+      "type": "term",
+      "label": "Restoring Force",
+      "href": "/dictionary/restoring-force"
+    },
+    {
+      "type": "term",
+      "label": "Phase Portrait",
+      "href": "/dictionary/phase-portrait"
+    },
+    {
+      "type": "term",
+      "label": "Simple Harmonic Oscillator",
+      "href": "/dictionary/simple-harmonic-oscillator"
+    }
+  ]
 }

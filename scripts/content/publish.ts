@@ -89,6 +89,10 @@ async function main() {
       continue;
     }
 
+    const meta: Record<string, unknown> = {};
+    if (parsed.eyebrow) meta.eyebrow = parsed.eyebrow;
+    if (parsed.aside)   meta.aside   = parsed.aside;
+
     const { error: upsertErr } = await client!
       .from("content_entries")
       .upsert({
@@ -99,7 +103,7 @@ async function main() {
         subtitle: parsed.subtitle || null,
         blocks: parsed.blocks,
         aside_blocks: parsed.asideBlocks,
-        meta: parsed.eyebrow ? { eyebrow: parsed.eyebrow } : {},
+        meta,
         source_hash: hash,
         updated_at: new Date().toISOString(),
       });
