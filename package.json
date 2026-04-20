@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "content:publish": "tsx --conditions=react-server scripts/content/publish.ts"
+    "content:publish": "tsx --conditions=react-server scripts/content/publish.ts",
+    "content:translate": "tsx --conditions=react-server scripts/content/translate.ts"
   },
   "dependencies": {
     "@chenglou/pretext": "0.0.5",
@@ -34,6 +35,7 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.90.0",
     "@tailwindcss/postcss": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

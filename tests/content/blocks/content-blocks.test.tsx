@@ -53,8 +53,8 @@ beforeAll(() => {
       unobserve() {}
       disconnect() {}
     }
-    // @ts-expect-error test-only polyfill
-    globalThis.ResizeObserver = ResizeObserverStub;
+    // test-only polyfill
+    (globalThis as unknown as Record<string, unknown>).ResizeObserver = ResizeObserverStub;
   }
   if (typeof globalThis.IntersectionObserver === "undefined") {
     class IntersectionObserverStub {
@@ -66,8 +66,8 @@ beforeAll(() => {
       rootMargin = "";
       thresholds = [];
     }
-    // @ts-expect-error test-only polyfill
-    globalThis.IntersectionObserver = IntersectionObserverStub;
+    // test-only polyfill
+    (globalThis as unknown as Record<string, unknown>).IntersectionObserver = IntersectionObserverStub;
   }
 });
 
