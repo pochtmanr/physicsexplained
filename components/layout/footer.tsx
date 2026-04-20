@@ -24,8 +24,8 @@ export async function Footer() {
   ] as const;
 
   return (
-    <footer className="border-t border-[var(--color-fg-4)]/40 mt-12">
-      <div className={`${WIDE_CONTAINER} py-16`}>
+    <footer className="border-t border-[var(--color-fg-4)]/40 mt-8 md:mt-12">
+      <div className={`${WIDE_CONTAINER} pt-10 pb-6 md:py-16`}>
         {/* Logo + socials row */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <Link href="/" className="inline-flex items-center gap-2.5 font-display text-xl">
@@ -77,7 +77,7 @@ export async function Footer() {
         </div>
 
         {/* Nav + Newsletter row */}
-        <div className="mt-8 flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+        <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
           {/* Navigation links */}
           <nav className="flex flex-wrap gap-3" aria-label="Footer navigation">
             {NAV_LINKS.map(({ href, label, icon: Icon }) => (
@@ -93,7 +93,7 @@ export async function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[var(--color-fg-4)]/40 mt-12 pt-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="border-t border-[var(--color-fg-4)]/40 mt-8 pt-6 flex flex-col gap-3 md:mt-12 md:pt-8 md:flex-row md:items-center md:justify-between md:gap-4">
           {/* Legal links */}
           <nav className="flex flex-wrap gap-4" aria-label="Legal">
             {LEGAL_LINKS.map(({ href, label }) => (

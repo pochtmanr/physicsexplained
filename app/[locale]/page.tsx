@@ -36,7 +36,7 @@ export default async function HomePage({
   setRequestLocale(locale);
 
   return (
-    <main className="pb-32">
+    <main className="pb-16 md:pb-32">
       <HeroSection />
       <BranchesSection />
       <PhysicistsSection />
