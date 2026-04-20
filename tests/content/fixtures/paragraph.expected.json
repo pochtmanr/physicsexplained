@@ -1,0 +1,23 @@
+{
+  "title": "Hello",
+  "subtitle": "World",
+  "eyebrow": "Test",
+  "blocks": [
+    {
+      "type": "section",
+      "index": 1,
+      "title": "First",
+      "children": [
+        {
+          "type": "paragraph",
+          "inlines": [
+            "Just one paragraph with a ",
+            { "kind": "physicist", "slug": "galileo-galilei", "text": "Galileo" },
+            " reference."
+          ]
+        }
+      ]
+    }
+  ],
+  "asideBlocks": []
+}
