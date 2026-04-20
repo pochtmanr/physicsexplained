@@ -65,6 +65,7 @@ function sha256(buf: string): string {
 async function main() {
   const args = new Set(process.argv.slice(2));
   const dryRun = args.has("--dry-run");
+  const force = args.has("--force");
   const onlyIdx = process.argv.indexOf("--only");
   const only = onlyIdx >= 0 ? process.argv[onlyIdx + 1] : null;
   const localeIdx = process.argv.indexOf("--locale");
@@ -98,7 +99,7 @@ async function main() {
       .maybeSingle();
     if (selectErr) throw selectErr;
 
-    if (existing?.source_hash === hash) {
+    if (!force && existing?.source_hash === hash) {
       stats.unchanged++;
       console.log(`  unchanged ${job.kind} ${job.slug} (${job.locale})`);
       continue;

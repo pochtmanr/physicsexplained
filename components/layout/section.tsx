@@ -18,7 +18,7 @@ export function Section({ index, title, children, className }: SectionProps) {
         <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
           §&#8239;{indexStr}
         </span>
-        <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+        <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
           {title}
         </h2>
       </div>

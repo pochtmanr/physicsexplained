@@ -1,5 +1,5 @@
-import { PhysicistDetailSkeleton } from "@/components/layout/physicist-detail-skeleton";
+import { PageLoader } from "@/components/layout/page-loader";
 
 export default function Loading() {
-  return <PhysicistDetailSkeleton />;
+  return <PageLoader />;
 }

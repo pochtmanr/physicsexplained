@@ -35,7 +35,7 @@ export default async function PrivacyPage({
           <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {t("tag")}
           </div>
-          <h1 className="mb-6 font-display text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] md:text-5xl">
+          <h1 className="mb-6 font-display text-4xl uppercase tracking-tight text-[var(--color-fg-0)] md:text-5xl">
             {tPrivacy("title")}
           </h1>
           <p className="text-[var(--color-fg-3)]">{t("lastUpdated")}</p>
@@ -43,14 +43,14 @@ export default async function PrivacyPage({
 
         <div className="space-y-8 text-[var(--color-fg-1)] leading-relaxed">
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tPrivacy("whoWeAre.title")}
             </h2>
             <p>{tPrivacy("whoWeAre.body")}</p>
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tPrivacy("whatWeCollect.title")}
             </h2>
             <ul className="list-disc space-y-2 ps-6">
@@ -62,21 +62,21 @@ export default async function PrivacyPage({
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tPrivacy("whatWeDoNotCollect.title")}
             </h2>
             <p>{tPrivacy("whatWeDoNotCollect.body")}</p>
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tPrivacy("dataStorage.title")}
             </h2>
             <p>{tPrivacy("dataStorage.body")}</p>
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tPrivacy("yourRights.title")}
             </h2>
             <p>{tPrivacy("yourRights.body")}</p>
@@ -84,7 +84,7 @@ export default async function PrivacyPage({
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tPrivacy("changes.title")}
             </h2>
             <p>{tPrivacy("changes.body")}</p>

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import type { ReactNode } from "react";
+import frame from "@/components/layout/corner-frame.module.css";
 
 export interface SceneCardProps {
   /** "FIG.01 — the pendulum" style caption */
@@ -20,12 +21,16 @@ export function SceneCard({ caption, children, hud, className }: SceneCardProps)
           {caption}
         </figcaption>
       )}
-      <div className="relative overflow-hidden rounded-md border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]">
+      <div className={`${frame.frame} bg-[var(--color-bg-1)]`}>
+        <span className={`${frame.corner} ${frame.tl}`} aria-hidden="true" />
+        <span className={`${frame.corner} ${frame.tr}`} aria-hidden="true" />
+        <span className={`${frame.corner} ${frame.bl}`} aria-hidden="true" />
+        <span className={`${frame.corner} ${frame.br}`} aria-hidden="true" />
         <div className="overflow-x-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:thin]">
           <div className="mx-auto">{children}</div>
         </div>
         {hud && (
-          <div className="pointer-events-none absolute bottom-3 right-3">
+          <div className="pointer-events-none absolute bottom-3 right-3 z-10">
             {hud}
           </div>
         )}

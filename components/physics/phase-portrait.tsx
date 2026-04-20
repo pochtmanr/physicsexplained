@@ -36,7 +36,7 @@ export function PhasePortrait({
           const h = Math.min(w * 0.75, 360);
           setSize({ width: w, height: h });
           if (boardRef.current) {
-            boardRef.current.resizeContainer(w, h);
+            boardRef.current.resizeContainer(w, h, true);
           }
         }
       }
@@ -116,6 +116,17 @@ export function PhasePortrait({
 
       boardRef.current = board;
       pointRef.current = pt;
+
+      // Re-sync the board to the container's actual rendered size. The
+      // ResizeObserver may have fired with real dimensions while jsxgraph was
+      // still loading, in which case the board was just created against a stale
+      // size. Force it to the live container size now.
+      const live = containerRef.current;
+      if (live) {
+        const w = live.clientWidth;
+        const h = live.clientHeight;
+        if (w > 0 && h > 0) board.resizeContainer(w, h, true);
+      }
     })();
 
     return () => {
@@ -146,7 +157,7 @@ export function PhasePortrait({
     <div
       ref={containerRef}
       className="jxgbox w-full pb-4"
-      style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
+      style={{ height: size.height, backgroundColor: "transparent" }}
     />
   );
 }

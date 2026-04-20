@@ -18,7 +18,7 @@ export async function PhilosophySection() {
       <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
         {t("tag")}
       </div>
-      <h2 className="mt-4 text-3xl md:text-4xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+      <h2 className="mt-4 text-3xl md:text-4xl uppercase tracking-tight text-[var(--color-fg-0)]">
         {t("title")}
       </h2>
       <PhilosophyCards rules={rules} />

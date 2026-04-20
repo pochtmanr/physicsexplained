@@ -20,10 +20,12 @@ export interface IntegrateOptions {
   tEnd: number;
   /** Number of samples to return, evenly spaced in [0, tEnd] */
   nSamples: number;
-  /** Absolute tolerance (default 1e-10) */
+  /** Absolute tolerance (default 1e-8) */
   absTol?: number;
-  /** Relative tolerance (default 1e-10) */
+  /** Relative tolerance (default 1e-8) */
   relTol?: number;
+  /** Maximum internal integration steps (default 200000) */
+  maxSteps?: number;
 }
 
 /**
@@ -41,8 +43,9 @@ export function integrate(opts: IntegrateOptions): ODESample[] {
     rhs,
     tEnd,
     nSamples,
-    absTol = 1e-10,
-    relTol = 1e-10,
+    absTol = 1e-8,
+    relTol = 1e-8,
+    maxSteps = 200000,
   } = opts;
 
   if (nSamples < 2) {
@@ -62,6 +65,7 @@ export function integrate(opts: IntegrateOptions): ODESample[] {
       absoluteTolerance: absTol,
       relativeTolerance: relTol,
       denseOutput: true,
+      maxSteps,
     },
   );
 
@@ -85,7 +89,7 @@ export function integrate(opts: IntegrateOptions): ODESample[] {
     const result = new Solver(
       (t: number, y: number[]) => rhs(t, y),
       n,
-      { absoluteTolerance: absTol, relativeTolerance: relTol, denseOutput: false },
+      { absoluteTolerance: absTol, relativeTolerance: relTol, denseOutput: false, maxSteps },
     ).solve(0, [...y0], tEnd);
     samples.push({ t: tEnd, y: [...result.y] });
   }

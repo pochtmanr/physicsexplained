@@ -36,7 +36,7 @@ export default async function CookiesPage({
           <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {t("tag")}
           </div>
-          <h1 className="mb-6 font-display text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] md:text-5xl">
+          <h1 className="mb-6 font-display text-4xl uppercase tracking-tight text-[var(--color-fg-0)] md:text-5xl">
             {tCookies("title")}
           </h1>
           <p className="text-[var(--color-fg-3)]">{t("lastUpdated")}</p>
@@ -44,14 +44,14 @@ export default async function CookiesPage({
 
         <div className="space-y-8 text-[var(--color-fg-1)] leading-relaxed">
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tCookies("shortVersion.title")}
             </h2>
             <p>{tCookies("shortVersion.body")}</p>
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tItems("title")}
             </h2>
             <div className="overflow-x-auto">
@@ -107,21 +107,21 @@ export default async function CookiesPage({
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tCookies("analytics.title")}
             </h2>
             <p>{tCookies("analytics.body")}</p>
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tCookies("thirdPartyCookies.title")}
             </h2>
             <p>{tCookies("thirdPartyCookies.body")}</p>
           </section>
 
           <section>
-            <h2 className="mb-3 font-display text-xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)]">
+            <h2 className="mb-3 font-display text-xl uppercase tracking-tight text-[var(--color-fg-0)]">
               {tCookies("howToClear.title")}
             </h2>
             <p>{tCookies("howToClear.intro")}</p>

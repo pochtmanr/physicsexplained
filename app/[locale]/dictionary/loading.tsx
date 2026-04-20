@@ -1,5 +1,5 @@
-import { IndexGridSkeleton } from "@/components/layout/index-grid-skeleton";
+import { PageLoader } from "@/components/layout/page-loader";
 
 export default function Loading() {
-  return <IndexGridSkeleton />;
+  return <PageLoader />;
 }

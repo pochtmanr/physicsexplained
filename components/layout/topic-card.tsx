@@ -76,7 +76,7 @@ export async function TopicCard({
       {number ? (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[168px] leading-none font-bold text-[var(--color-cyan)] opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2"
+          className="pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[168px] leading-none font-semibold text-[var(--color-cyan)] opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2"
         >
           {number}
         </span>
@@ -96,7 +96,7 @@ export async function TopicCard({
       </div>
 
       {/* Title + subtitle */}
-      <h3 className="relative mt-5 text-xl md:text-2xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+      <h3 className="relative mt-4 text-xl md:text-2xl uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
         {title}
       </h3>
       <p className="relative mt-3 text-sm md:text-base text-[var(--color-fg-1)]">

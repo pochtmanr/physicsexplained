@@ -83,7 +83,7 @@ export default async function PhysicistsIndexPage({
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}
         </div>
-        <h1 className="mt-6 text-4xl md:text-6xl font-semibold uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
+        <h1 className="mt-6 text-4xl md:text-6xl uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
           {t("title")}
         </h1>
         <p className="mt-8 text-lg text-[var(--color-fg-1)] max-w-[60ch]">
@@ -127,7 +127,7 @@ export default async function PhysicistsIndexPage({
                       </span>
                     </div>
 
-                    <h3 className="mt-4 text-xl md:text-2xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+                    <h3 className="mt-4 text-xl md:text-2xl uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
                       {e.title}
                     </h3>
                     <p className="mt-3 text-sm text-[var(--color-fg-1)]">

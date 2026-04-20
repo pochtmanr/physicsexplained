@@ -93,7 +93,7 @@ export async function BranchCard({
       {/* Giant watermark numeral */}
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[176px] leading-none font-bold opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2 ${
+        className={`pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[176px] leading-none font-semibold opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2 ${
           isLive ? "text-[var(--color-cyan)]" : "text-[var(--color-magenta)]"
         }`}
       >
@@ -115,7 +115,7 @@ export async function BranchCard({
 
       {/* Title + subtitle */}
       <h3
-        className={`relative mt-5 text-xl md:text-2xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors ${titleHover}`}
+        className={`relative mt-4 text-xl md:text-2xl uppercase tracking-tight text-[var(--color-fg-0)] transition-colors ${titleHover}`}
       >
         {title}
       </h3>

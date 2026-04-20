@@ -13,7 +13,10 @@ export function TopicPageLayout({
   aside: AsideLink[];
 }) {
   return (
-    <ArticleLayout aside={<AsideLinks links={aside} />}>
+    <ArticleLayout
+      aside={<AsideLinks links={aside} />}
+      asideTopClass="lg:mt-[7.25rem]"
+    >
       <TopicBreadcrumb />
       {children}
       <TopicNav />

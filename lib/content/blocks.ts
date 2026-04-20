@@ -21,7 +21,7 @@ export type Block =
   | { type: "section"; index: number; title: string; children: Block[] }
   | { type: "heading"; level: 3 | 4; text: string }
   | { type: "paragraph"; inlines: Inline[] }
-  | { type: "equation"; id?: string; tex: string }
+  | { type: "equation"; id?: string; tex: string; prose?: string }
   | { type: "figure"; caption?: string; content: FigureContent }
   | { type: "callout"; variant: CalloutVariant; children: Block[] }
   | { type: "list"; ordered: boolean; items: Inline[][] }

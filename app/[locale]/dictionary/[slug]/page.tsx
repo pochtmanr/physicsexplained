@@ -78,7 +78,7 @@ function ProseBlock({
     return (
       <h4
         key={idx}
-        className="mt-8 mb-3 text-lg font-semibold uppercase tracking-tight text-[var(--color-fg-0)]"
+        className="mt-8 mb-3 text-lg uppercase tracking-tight text-[var(--color-fg-0)]"
       >
         <RichText text={block.slice(4)} />
       </h4>
@@ -88,7 +88,7 @@ function ProseBlock({
     return (
       <h3
         key={idx}
-        className="mt-12 mb-4 text-xl md:text-2xl font-semibold tracking-tight text-[var(--color-fg-0)]"
+        className="mt-12 mb-4 text-xl md:text-2xl tracking-tight text-[var(--color-fg-0)]"
       >
         <RichText text={block.slice(3)} />
       </h3>
@@ -260,11 +260,7 @@ export default async function DictionaryTermPage({
   let sectionIdx = 0;
 
   return (
-    <ArticleLayout aside={asideLinks.length > 0 ? (
-      <div className="rounded-lg border border-[var(--color-fg-4)] p-4">
-        <AsideLinks links={asideLinks} />
-      </div>
-    ) : undefined}>
+    <ArticleLayout aside={asideLinks.length > 0 ? <AsideLinks links={asideLinks} /> : undefined}>
       <TopicHeader
         eyebrow={
           <>

@@ -77,7 +77,7 @@ export default async function DictionaryIndexPage({
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}
         </div>
-        <h1 className="mt-6 text-4xl md:text-6xl font-semibold uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
+        <h1 className="mt-6 text-4xl md:text-6xl uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
           {t("title")}
         </h1>
         <p className="mt-8 text-lg text-[var(--color-fg-1)] max-w-[60ch]">
@@ -95,7 +95,7 @@ export default async function DictionaryIndexPage({
               <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
                 §&#8239;{String(blockIdx + 1).padStart(2, "0")}
               </span>
-              <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+              <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
                 {block.label}
               </h2>
               <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
@@ -123,7 +123,7 @@ export default async function DictionaryIndexPage({
                         →
                       </span>
                     </div>
-                    <h3 className="mt-4 text-xl md:text-2xl font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+                    <h3 className="mt-4 text-xl md:text-2xl uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
                       {displayTerm}
                     </h3>
                     <p className="mt-3 text-sm text-[var(--color-fg-1)]">

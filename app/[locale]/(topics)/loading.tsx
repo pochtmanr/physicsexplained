@@ -1,5 +1,5 @@
-import { TopicPageSkeleton } from "@/components/layout/topic-page-skeleton";
+import { PageLoader } from "@/components/layout/page-loader";
 
 export default function Loading() {
-  return <TopicPageSkeleton />;
+  return <PageLoader />;
 }

@@ -110,7 +110,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
       {/* Giant watermark numeral */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[176px] leading-none font-bold text-[var(--color-cyan)] opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2"
+        className="pointer-events-none absolute -top-6 -end-2 select-none font-display text-[128px] md:text-[176px] leading-none font-semibold text-[var(--color-cyan)] opacity-[0.05] transition-all duration-[400ms] ease-out group-hover:opacity-[0.12] group-hover:-translate-y-1 rtl:-end-auto rtl:-start-2"
       >
         {number}
       </span>
@@ -121,7 +121,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
       </div>
 
       {/* Title */}
-      <h3 className="relative mt-4 text-xl md:text-2xl font-semibold text-[var(--color-fg-0)] transition-colors duration-[240ms] group-hover:text-[var(--color-cyan)]">
+      <h3 className="relative mt-4 text-xl md:text-2xl text-[var(--color-fg-0)] transition-colors duration-[240ms] group-hover:text-[var(--color-cyan)]">
         {rule.title}
       </h3>
 

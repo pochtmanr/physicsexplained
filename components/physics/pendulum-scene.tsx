@@ -64,18 +64,22 @@ export function PendulumScene({
     }
     let cancelled = false;
     (async () => {
-      const { largeAngleSolve, exactLargeAnglePeriod } = await import(
-        "@/lib/physics/pendulum"
-      );
-      const T = exactLargeAnglePeriod(theta0, length);
-      // Integrate across 3 periods at 300 samples/period for smooth playback
-      const samples = largeAngleSolve({
-        theta0,
-        L: length,
-        tEnd: 3 * T,
-        nSamples: 900,
-      });
-      if (!cancelled) exactSamplesRef.current = samples;
+      try {
+        const { largeAngleSolve, exactLargeAnglePeriod } = await import(
+          "@/lib/physics/pendulum"
+        );
+        const T = exactLargeAnglePeriod(theta0, length);
+        // Integrate across 3 periods at 300 samples/period for smooth playback
+        const samples = largeAngleSolve({
+          theta0,
+          L: length,
+          tEnd: 3 * T,
+          nSamples: 900,
+        });
+        if (!cancelled) exactSamplesRef.current = samples;
+      } catch (err) {
+        console.error("largeAngleSolve failed; falling back to small-angle", err);
+      }
     })();
     return () => {
       cancelled = true;

@@ -14,7 +14,7 @@ export function HUD({ children, className }: HUDProps) {
   return (
     <div
       className={clsx(
-        "rounded-sm border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1",
+        " border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1",
         "font-mono text-xs text-[var(--color-fg-1)] backdrop-blur-sm",
         className,
       )}

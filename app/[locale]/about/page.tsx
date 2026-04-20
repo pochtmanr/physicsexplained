@@ -27,7 +27,7 @@ export default async function AboutPage({
         <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           § 00 · ABOUT
         </div>
-        <h1 className="mb-6 text-4xl font-bold uppercase tracking-tight text-[var(--color-fg-0)] break-words md:text-6xl">
+        <h1 className="mb-6 text-4xl uppercase tracking-tight text-[var(--color-fg-0)] break-words md:text-6xl">
           WHO WE ARE
         </h1>
         <p className="max-w-[44ch] text-xl italic text-[var(--color-fg-1)]">
@@ -37,10 +37,10 @@ export default async function AboutPage({
 
       <section className="mb-24">
         <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
+          <span className="text-2xl tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
             §&#8239;01
           </span>
-          <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+          <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
             The idea
           </h2>
         </div>
@@ -66,7 +66,7 @@ export default async function AboutPage({
           <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
             §&#8239;02
           </span>
-          <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+          <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
             The studio
           </h2>
         </div>
@@ -96,7 +96,7 @@ export default async function AboutPage({
           <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
             §&#8239;03
           </span>
-          <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+          <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
             Contact
           </h2>
         </div>

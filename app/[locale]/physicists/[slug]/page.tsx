@@ -121,7 +121,7 @@ export default async function PhysicistPage({
           <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
             §&#8239;01
           </span>
-          <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+          <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
             {t("sectionBiography")}
           </h2>
         </div>
@@ -137,7 +137,7 @@ export default async function PhysicistPage({
           <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
             §&#8239;02
           </span>
-          <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+          <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
             {t("sectionContributions")}
           </h2>
         </div>
@@ -162,7 +162,7 @@ export default async function PhysicistPage({
             <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
               §&#8239;03
             </span>
-            <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+            <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
               {t("sectionMajorWorks")}
             </h2>
           </div>
@@ -195,7 +195,7 @@ export default async function PhysicistPage({
             <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
               §&#8239;{majorWorks.length > 0 ? "04" : "03"}
             </span>
-            <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
+            <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
               {t("sectionRelatedTopics")}
             </h2>
           </div>
@@ -210,7 +210,7 @@ export default async function PhysicistPage({
                   <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
                     {branch.title}
                   </div>
-                  <div className="mt-2 text-lg font-semibold uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+                  <div className="mt-2 text-lg uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
                     {topic.title}
                   </div>
                 </div>

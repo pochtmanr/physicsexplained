@@ -35,12 +35,22 @@ function BlockNode({ block }: { block: Block }) {
       return <p><ContentInline inlines={block.inlines} /></p>;
 
     case "equation": {
-      const html = katex.renderToString(block.tex, { throwOnError: true, displayMode: true });
-      return (
-        <EquationBlock id={block.id ?? ""}>
-          <span dangerouslySetInnerHTML={{ __html: html }} />
-        </EquationBlock>
-      );
+      if (block.tex) {
+        const html = katex.renderToString(block.tex, { throwOnError: true, displayMode: true });
+        return (
+          <EquationBlock id={block.id ?? ""}>
+            <span dangerouslySetInnerHTML={{ __html: html }} />
+          </EquationBlock>
+        );
+      }
+      if (block.prose) {
+        return (
+          <EquationBlock id={block.id ?? ""}>
+            <span className="font-mono text-lg">{block.prose}</span>
+          </EquationBlock>
+        );
+      }
+      return null;
     }
 
     case "figure":

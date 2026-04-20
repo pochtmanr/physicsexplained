@@ -5,7 +5,25 @@ import remarkMdx from "remark-mdx";
 import remarkMath from "remark-math";
 import { visit } from "unist-util-visit";
 import JSON5 from "json5";
+import { create, all } from "mathjs";
 import type { Block, Inline, FigureContent, CalloutVariant } from "@/lib/content/blocks";
+
+// Evaluator for simple arithmetic expressions used in JSX props
+// (e.g. `theta0={(10 * Math.PI) / 180}`). mathjs has no access to the host
+// environment's globals — safe for trusted content sources.
+const mathEval = create(all, {});
+
+function tryEvalNumber(raw: unknown): number | null {
+  if (typeof raw !== "string") return null;
+  // Translate `Math.PI` / `Math.E` into mathjs-native constants.
+  const src = raw.replace(/\bMath\.PI\b/g, "pi").replace(/\bMath\.E\b/g, "e");
+  try {
+    const v = mathEval.evaluate(src);
+    return typeof v === "number" && Number.isFinite(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
 
 export interface ParsedDoc {
   title: string;
@@ -120,10 +138,21 @@ function mapSection(node: any): Block {
 function mapEquationBlock(node: any): Block {
   const id = getAttr(node, "id") as string | undefined;
   let tex = "";
+  let prose = "";
   for (const child of node.children ?? []) {
-    if (child.type === "math") tex = String(child.value ?? "");
+    if (child.type === "math") {
+      tex = String(child.value ?? "");
+    } else {
+      const txt = collectText(child);
+      if (txt) prose += txt;
+    }
   }
-  return { type: "equation", id, tex };
+  const block: Block = { type: "equation", id, tex };
+  if (!tex) {
+    const trimmed = prose.trim();
+    if (trimmed) block.prose = trimmed;
+  }
+  return block;
 }
 
 function mapSceneCard(node: any): Block {
@@ -252,10 +281,19 @@ function collectProps(node: any): Record<string, unknown> {
   for (const a of node.attributes ?? []) {
     if (!a.name) continue;
     if (typeof a.value === "string") { out[a.name] = a.value; continue; }
-    // Simple numeric / boolean literals from expressions.
+    // Expression attribute. Short-value forms first.
     const raw = a.value?.value;
+    if (raw === undefined) { out[a.name] = true; continue; }
     const num = Number(raw);
-    out[a.name] = raw === undefined ? true : Number.isFinite(num) ? num : raw;
+    if (Number.isFinite(num)) { out[a.name] = num; continue; }
+    if (typeof raw === "string") {
+      const trimmed = raw.trim();
+      if (trimmed === "true")  { out[a.name] = true;  continue; }
+      if (trimmed === "false") { out[a.name] = false; continue; }
+      const evaluated = tryEvalNumber(trimmed);
+      if (evaluated !== null) { out[a.name] = evaluated; continue; }
+    }
+    out[a.name] = raw;
   }
   return out;
 }
