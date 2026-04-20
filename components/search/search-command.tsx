@@ -47,10 +47,14 @@ function buildIndex(): SearchResult[] {
   }
 
   for (const physicist of PHYSICISTS) {
+    const titleCase = physicist.slug
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
     results.push({
       category: "physicist",
-      title: physicist.name,
-      subtitle: physicist.oneLiner,
+      title: titleCase,
+      subtitle: `${physicist.born}–${physicist.died} · ${physicist.nationality}`,
       href: `/physicists/${physicist.slug}`,
     });
   }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { getLocalizedPhysicist } from "@/lib/content/physicists";
+import { getLocale } from "next-intl/server";
+import { getContentEntry } from "@/lib/content/fetch";
 import { HoverCard } from "./hover-card";
 
 interface PhysicistLinkProps {
@@ -9,26 +10,36 @@ interface PhysicistLinkProps {
 }
 
 export async function PhysicistLink({ slug, children }: PhysicistLinkProps) {
-  const physicist = await getLocalizedPhysicist(slug);
-  if (!physicist) {
+  const locale = await getLocale();
+  const entry = await getContentEntry("physicist", slug, locale);
+  if (!entry) {
     throw new Error(`PhysicistLink: unknown slug "${slug}"`);
   }
 
-  const lifespan = [physicist.born, physicist.died].filter(Boolean).join(" – ");
+  const name = entry.title;
+  const oneLiner = entry.subtitle ?? "";
+  const shortName =
+    typeof entry.meta.shortName === "string" ? entry.meta.shortName : name;
+  const born = typeof entry.meta.born === "string" ? entry.meta.born : "";
+  const died = typeof entry.meta.died === "string" ? entry.meta.died : "";
+  const nationality =
+    typeof entry.meta.nationality === "string" ? entry.meta.nationality : "";
+
+  const lifespan = [born, died].filter(Boolean).join(" – ");
 
   const preview = (
     <span className="block">
       <span className="block font-semibold text-[var(--color-fg-0)]">
-        {physicist.name}
+        {name}
       </span>
-      {(lifespan || physicist.nationality) && (
+      {(lifespan || nationality) && (
         <span className="block mt-0.5 text-[var(--color-fg-3)] text-xs">
-          {[lifespan, physicist.nationality].filter(Boolean).join(" · ")}
+          {[lifespan, nationality].filter(Boolean).join(" · ")}
         </span>
       )}
-      {physicist.oneLiner && (
+      {oneLiner && (
         <span className="block mt-1 text-[var(--color-fg-1)]">
-          {physicist.oneLiner}
+          {oneLiner}
         </span>
       )}
     </span>
@@ -40,7 +51,7 @@ export async function PhysicistLink({ slug, children }: PhysicistLinkProps) {
         href={`/physicists/${slug}`}
         className="underline decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
       >
-        {children ?? physicist.shortName}
+        {children ?? shortName}
       </Link>
     </HoverCard>
   );

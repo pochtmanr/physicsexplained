@@ -7,13 +7,34 @@ interface MatchEntry {
   slug: string;
 }
 
+/**
+ * Build the physicist match table from slugs.
+ *
+ * Since name / shortName now live in Supabase (per locale), we derive a
+ * reasonable English-side pattern set from the slug: the full slug rendered
+ * in title case ("isaac-newton" → "Isaac Newton"), and the last segment as a
+ * shortened form ("Newton"). This keeps the plain-text RichText substitution
+ * working without needing an async DB lookup at render time.
+ */
+function slugToTitleCase(slug: string): string {
+  return slug
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 function buildMatchTable(): MatchEntry[] {
   const entries: MatchEntry[] = [];
 
   for (const p of PHYSICISTS) {
-    entries.push({ pattern: p.name, slug: p.slug });
-    if (p.shortName !== p.name) {
-      entries.push({ pattern: p.shortName, slug: p.slug });
+    const full = slugToTitleCase(p.slug);
+    const parts = p.slug.split("-");
+    const last = parts[parts.length - 1];
+    const shortName = last.charAt(0).toUpperCase() + last.slice(1);
+
+    entries.push({ pattern: full, slug: p.slug });
+    if (shortName !== full) {
+      entries.push({ pattern: shortName, slug: p.slug });
     }
   }
 

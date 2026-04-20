@@ -35,17 +35,12 @@ const KEPLER_MDX_PATH = path.join(
 );
 
 describe("physicists", () => {
-  it("every entry has all required non-empty fields", () => {
+  it("every entry has all required non-empty structural fields", () => {
     for (const p of PHYSICISTS) {
       expect(p.slug, `slug for ${p.slug}`).toBeTruthy();
-      expect(p.name, `name for ${p.slug}`).toBeTruthy();
-      expect(p.shortName, `shortName for ${p.slug}`).toBeTruthy();
       expect(p.born, `born for ${p.slug}`).toBeTruthy();
       expect(p.died, `died for ${p.slug}`).toBeTruthy();
       expect(p.nationality, `nationality for ${p.slug}`).toBeTruthy();
-      expect(p.oneLiner, `oneLiner for ${p.slug}`).toBeTruthy();
-      expect(p.bio, `bio for ${p.slug}`).toBeTruthy();
-      expect(p.contributions.length, `contributions for ${p.slug}`).toBeGreaterThan(0);
       expect(p.relatedTopics.length, `relatedTopics for ${p.slug}`).toBeGreaterThan(0);
     }
   });

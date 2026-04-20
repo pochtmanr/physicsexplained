@@ -50,16 +50,10 @@ export interface MajorWork {
 
 export interface Physicist {
   slug: string;
-  name: string;
-  shortName: string;
   born: string;
   died: string;
   nationality: string;
-  oneLiner: string;
-  bio: string;
   image?: string;
-  contributions: readonly string[];
-  majorWorks?: readonly MajorWork[];
   relatedTopics: readonly TopicRef[];
 }
 
@@ -75,11 +69,7 @@ export interface GlossaryImage {
 
 export interface GlossaryTerm {
   slug: string;
-  term: string;
   category: GlossaryCategory;
-  shortDefinition: string;
-  description: string;
-  history?: string;
   visualization?: string;
   illustration?: string;
   images?: readonly GlossaryImage[];

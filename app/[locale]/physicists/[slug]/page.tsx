@@ -3,12 +3,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
-import { PHYSICISTS, getLocalizedPhysicist } from "@/lib/content/physicists";
+import { PHYSICISTS } from "@/lib/content/physicists";
 import { getBranch, getTopic } from "@/lib/content/branches";
+import { getContentEntry } from "@/lib/content/fetch";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { ArticleLayout } from "@/components/layout/article-layout";
 import { AsideLinks } from "@/components/layout/aside-links";
 import type { AsideLink } from "@/components/layout/aside-links";
+import type { MajorWork, TopicRef } from "@/lib/content/types";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -21,12 +23,12 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const physicist = await getLocalizedPhysicist(slug);
-  if (!physicist) return {};
+  const { locale, slug } = await params;
+  const entry = await getContentEntry("physicist", slug, locale);
+  if (!entry) return {};
   return {
-    title: `${physicist.name} — physics`,
-    description: physicist.oneLiner,
+    title: `${entry.title} — physics`,
+    description: entry.subtitle ?? undefined,
   };
 }
 
@@ -37,8 +39,9 @@ export default async function PhysicistPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const physicist = await getLocalizedPhysicist(slug);
-  if (!physicist) notFound();
+
+  const entry = await getContentEntry("physicist", slug, locale);
+  if (!entry) notFound();
 
   const t = await getTranslations("common.pages.physicists");
   const messages = (await getMessages()) as {
@@ -46,11 +49,35 @@ export default async function PhysicistPage({
   };
   const nationalityMap =
     messages.common?.pages?.physicists?.nationalities ?? {};
-  const localizedNationality = nationalityMap[physicist.nationality] ?? physicist.nationality;
 
-  const bioParagraphs = physicist.bio.split("\n\n");
+  const meta = entry.meta as {
+    born?: string;
+    died?: string;
+    nationality?: string;
+    image?: string | null;
+    contributions?: string[];
+    majorWorks?: MajorWork[];
+    relatedTopics?: TopicRef[];
+  };
 
-  const relatedTopics = physicist.relatedTopics
+  const born = meta.born ?? "";
+  const died = meta.died ?? "";
+  const nationality = meta.nationality ?? "";
+  const image = meta.image ?? null;
+  const contributions = meta.contributions ?? [];
+  const majorWorks = meta.majorWorks ?? [];
+  const relatedTopicRefs = meta.relatedTopics ?? [];
+
+  const localizedNationality = nationalityMap[nationality] ?? nationality;
+
+  const bioParagraphs = entry.blocks
+    .filter(
+      (block): block is Extract<typeof block, { type: "paragraph" }> =>
+        block.type === "paragraph",
+    )
+    .map((block) => (block.inlines[0] as string) ?? "");
+
+  const relatedTopics = relatedTopicRefs
     .map((ref) => {
       const branch = getBranch(ref.branchSlug);
       const topic = getTopic(ref.branchSlug, ref.topicSlug);
@@ -69,16 +96,21 @@ export default async function PhysicistPage({
   return (
     <ArticleLayout aside={asideLinks.length > 0 ? <AsideLinks links={asideLinks} /> : undefined}>
       <TopicHeader
-        eyebrow={`§ ${t("eyebrowSingular")} · ${physicist.born}–${physicist.died} · ${localizedNationality.toUpperCase()}`}
-        title={physicist.name}
-        subtitle={physicist.oneLiner}
+        eyebrow={`§ ${t("eyebrowSingular")} · ${born}–${died} · ${localizedNationality.toUpperCase()}`}
+        title={entry.title}
+        subtitle={entry.subtitle ?? ""}
       />
+      {entry.localeFallback ? (
+        <p className="mt-2 font-mono text-xs opacity-60">
+          Translation pending. Showing English.
+        </p>
+      ) : null}
 
-      {physicist.image && (
+      {image && (
         <div className="mb-16 overflow-hidden rounded-lg border border-[var(--color-fg-4)]">
           <img
-            src={physicist.image}
-            alt={t("portraitAlt", { name: physicist.name })}
+            src={image}
+            alt={t("portraitAlt", { name: entry.title })}
             className="w-full max-h-[400px] object-cover"
           />
         </div>
@@ -110,7 +142,7 @@ export default async function PhysicistPage({
           </h2>
         </div>
         <ol className="mt-6 space-y-3">
-          {physicist.contributions.map((c, i) => (
+          {contributions.map((c, i) => (
             <li
               key={i}
               className="flex gap-4 border-l border-[var(--color-fg-4)] pl-4 text-[var(--color-fg-1)]"
@@ -124,7 +156,7 @@ export default async function PhysicistPage({
         </ol>
       </section>
 
-      {physicist.majorWorks && physicist.majorWorks.length > 0 && (
+      {majorWorks.length > 0 && (
         <section className="mb-12">
           <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
@@ -135,7 +167,7 @@ export default async function PhysicistPage({
             </h2>
           </div>
           <div className="mt-6 space-y-6">
-            {physicist.majorWorks.map((work, i) => (
+            {majorWorks.map((work, i) => (
               <div
                 key={i}
                 className="border-l border-[var(--color-fg-4)] pl-4"
@@ -161,7 +193,7 @@ export default async function PhysicistPage({
         <section className="mb-12">
           <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
-              §&#8239;{physicist.majorWorks && physicist.majorWorks.length > 0 ? "04" : "03"}
+              §&#8239;{majorWorks.length > 0 ? "04" : "03"}
             </span>
             <h2 className="text-2xl font-semibold text-[var(--color-fg-0)] md:text-3xl">
               {t("sectionRelatedTopics")}

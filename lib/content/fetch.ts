@@ -63,3 +63,56 @@ export const getContentEntry = cache(
     return null;
   },
 );
+
+async function fetchMany(
+  kind: ContentKind,
+  locale: string,
+): Promise<Omit<ContentEntry, "localeFallback">[]> {
+  const { data, error } = await supabase
+    .from("content_entries")
+    .select("*")
+    .eq("kind", kind)
+    .eq("locale", locale);
+
+  if (error) throw error;
+  if (!data) return [];
+
+  return data.map((row) => ({
+    kind: row.kind as ContentKind,
+    slug: row.slug,
+    locale: row.locale,
+    title: row.title,
+    subtitle: row.subtitle,
+    blocks: (row.blocks ?? []) as Block[],
+    asideBlocks: (row.aside_blocks ?? []) as Block[],
+    meta: (row.meta ?? {}) as Record<string, unknown>,
+    sourceHash: row.source_hash,
+  }));
+}
+
+/**
+ * Fetch all entries of a given kind for a given locale, falling back to the
+ * English row for any slug that lacks a translation.
+ */
+export const getContentEntriesByKind = cache(
+  async (kind: ContentKind, locale: string): Promise<ContentEntry[]> => {
+    const primary = await fetchMany(kind, locale);
+    const primaryBySlug = new Map(primary.map((e) => [e.slug, e]));
+
+    if (locale === "en") {
+      return primary.map((e) => ({ ...e, localeFallback: false }));
+    }
+
+    const english = await fetchMany(kind, "en");
+    const merged: ContentEntry[] = [];
+    for (const enEntry of english) {
+      const localized = primaryBySlug.get(enEntry.slug);
+      if (localized) {
+        merged.push({ ...localized, localeFallback: false });
+      } else {
+        merged.push({ ...enEntry, localeFallback: true });
+      }
+    }
+    return merged;
+  },
+);
