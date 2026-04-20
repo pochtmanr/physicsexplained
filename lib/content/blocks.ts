@@ -1,7 +1,7 @@
 // Block + Inline types for structured content.
 // See docs/superpowers/specs/2026-04-20-content-to-supabase-hybrid-design.md
 
-export type CalloutVariant = "math" | "history" | "insight" | "aside";
+export type CalloutVariant = "intuition" | "math" | "warning";
 
 export type Inline =
   | string

@@ -4,7 +4,7 @@ import { ContentInline } from "@/components/content/content-inline";
 import { Section } from "@/components/layout/section";
 import { SceneCard } from "@/components/layout/scene-card";
 import { EquationBlock } from "@/components/math/equation-block";
-import { Callout, type CalloutVariant as LayoutCalloutVariant } from "@/components/layout/callout";
+import { Callout } from "@/components/layout/callout";
 import { getSimulation } from "@/lib/content/simulation-registry";
 import { storageUrl } from "@/lib/supabase";
 
@@ -53,7 +53,7 @@ function BlockNode({ block }: { block: Block }) {
 
     case "callout":
       return (
-        <Callout variant={block.variant as LayoutCalloutVariant}>
+        <Callout variant={block.variant}>
           <ContentBlocks blocks={block.children} />
         </Callout>
       );
