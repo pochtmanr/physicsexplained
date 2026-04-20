@@ -1,4 +1,5 @@
 import "./globals.css";
+import type { Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
@@ -34,6 +35,16 @@ export const metadata = {
     ],
     apple: "/apple-icon.png",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#07090E" },
+    { media: "(prefers-color-scheme: light)", color: "#FAFBFD" },
+  ],
 };
 
 // Runs before hydration to prevent a flash of the wrong theme.

@@ -9,7 +9,7 @@ export async function HeroSection() {
   const t = await getTranslations("home.hero");
 
   return (
-    <section className="relative isolate overflow-hidden pt-20 pb-32 min-h-[640px] lg:min-h-[90vh] flex items-center">
+    <section className="relative isolate overflow-hidden pb-20 md:pt-20 md:pb-32 min-h-[640px] lg:min-h-[90vh] flex items-center">
       <HeroBackground />
       <div className={`${WIDE_CONTAINER} relative z-10`}>
         <div className={heroStyles.shell}>
