@@ -4,15 +4,19 @@ import { PhasePortrait } from "@/components/physics/phase-portrait";
 
 // Allowlist of components that MDX / DB blocks may reference by string name.
 // Add a new simulation here before using it in content.
-export const SIMULATION_REGISTRY = {
+//
+// Types: DB-stored props are opaque JSON so the registry stores components as
+// ComponentType<any>. The renderer spreads `props` at runtime; invalid prop
+// combinations surface as React prop-validation errors, not type errors.
+export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PendulumScene,
   PhasePortrait,
-} as const satisfies Record<string, ComponentType<Record<string, unknown>>>;
+};
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
 
-export function getSimulation(name: string): ComponentType<Record<string, unknown>> {
-  const component = (SIMULATION_REGISTRY as Record<string, ComponentType<Record<string, unknown>>>)[name];
+export function getSimulation(name: string): ComponentType<any> {
+  const component = SIMULATION_REGISTRY[name];
   if (!component) {
     throw new Error(`unknown simulation component: ${name}`);
   }
