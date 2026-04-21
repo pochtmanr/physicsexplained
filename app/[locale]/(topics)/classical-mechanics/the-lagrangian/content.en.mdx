@@ -1,8 +1,22 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { LagrangianScene } from "@/components/physics/lagrangian-scene";
+import { CycloidScene } from "@/components/physics/cycloid-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph-Louis Lagrange", href: "/physicists/joseph-louis-lagrange" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Christiaan Huygens", href: "/physicists/christiaan-huygens" },
+  { type: "term", label: "Lagrangian", href: "/dictionary/lagrangian" },
+  { type: "term", label: "Euler-Lagrange equations", href: "/dictionary/euler-lagrange-equations" },
+  { type: "term", label: "Generalised coordinates", href: "/dictionary/generalised-coordinates" },
+  { type: "term", label: "Constraint", href: "/dictionary/constraint" },
+  { type: "term", label: "Tautochrone", href: "/dictionary/tautochrone" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.29 · LAGRANGIAN & HAMILTONIAN"
@@ -10,9 +24,159 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
   subtitle="Mechanics rewritten as energy minus energy."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="The book with no pictures">
 
-TODO: write the opening.
+In 1788, at the age of fifty-two, <PhysicistLink slug="joseph-louis-lagrange">Joseph-Louis Lagrange</PhysicistLink> published *Mécanique analytique* and boasted in the preface that it contained **not a single diagram**. Newton's *Principia* had been a forest of geometry — circles, tangents, secants, shaded triangles — because Newton had thought in shapes. Lagrange wanted to think in symbols. He claimed he could derive all of mechanics from a single scalar function and a handful of partial derivatives, and that if you followed the algebra you would never need to draw a free-body diagram again.
+
+He was right. The function is now called the **<Term slug="lagrangian">Lagrangian</Term>**, and once you know it, the equations of motion of a system fall out mechanically, like turning a crank. It was the first time physics felt like an algorithm.
+
+The rest of this page is what that sentence means — and why, two hundred and fifty years later, every graduate physics student still learns mechanics twice: once Newton's way, and once Lagrange's.
+
+</Section>
+
+<Section index={2} title="Kinetic minus potential">
+
+The whole construction starts with one quantity. Take the kinetic energy *T*, take the potential energy *V*, and subtract:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">L = T − V</span>
+</EquationBlock>
+
+That minus sign looks wrong. The conserved quantity we learned to care about in FIG.12 was *T + V*, the total energy. Why would *T − V* matter? What could "energy minus energy" even mean?
+
+Classical mechanics offers no intuitive answer. It is a brute algebraic fact that if you minimise the time-integral of *T − V* — the **action** of FIG.28 — you recover Newton's laws. In that sense *L* is a bookkeeping trick, a generating function, chosen because it works and not because it has a physical picture behind it.
+
+The picture shows up later, in two places. In quantum mechanics the path-integral tells you that a particle explores every path between two points, weighted by *e^(iS/ℏ)* with *S = ∫L dt*; the classical trajectory is the one where nearby paths interfere constructively, and the Lagrangian is what you were always computing phases with. In general relativity, the matter Lagrangian is what sources the gravitational field — the stress-energy tensor is literally a derivative of *L* with respect to the metric. Minus signs and all, *T − V* is the handle the rest of twentieth-century physics grabs the world by.
+
+<SceneCard caption="FIG.29a — the action S = ∫(T − V) dt is extremised along the physical path (magenta) from A to B" className="w-full">
+  <LagrangianScene />
+</SceneCard>
+
+For now, accept it as a definition. Kinetic minus potential. Integrate it along any candidate trajectory between two fixed endpoints. The trajectory nature actually chooses is the one where the integral is stationary — we proved this in FIG.28, the <Term slug="principle-of-least-action">principle of least action</Term>. What we haven't yet done is turn "stationary" into a working equation.
+
+</Section>
+
+<Section index={3} title="The Euler-Lagrange equation">
+
+Lagrange and <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink>, working in the 1750s and 60s, figured out exactly what equation a stationary action implies. The derivation fits on a napkin. Imagine the true trajectory *q(t)*, and perturb it by a small function *η(t)* that vanishes at the endpoints. The action *S* = ∫*L(q, q̇, t) dt* changes by
+
+<Callout variant="math">
+δS = ∫ [ (∂L/∂q) η + (∂L/∂q̇) η̇ ] dt
+</Callout>
+
+Integrate the second term by parts; the boundary terms die because *η* is zero at the endpoints. What survives is
+
+<Callout variant="math">
+δS = ∫ [ ∂L/∂q − d/dt (∂L/∂q̇) ] η(t) dt.
+</Callout>
+
+For *δS* to vanish for **every** wobble *η*, the bracketed quantity must itself be zero everywhere. That condition is the **<Term slug="euler-lagrange-equations">Euler-Lagrange equation</Term>**:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">d/dt (∂L / ∂q̇) − ∂L / ∂q = 0</span>
+</EquationBlock>
+
+Stop and notice what this is. It is a second-order differential equation in *q(t)*. The Lagrangian *L* is a function of position and velocity; take partial derivatives of it, plug them into the formula, and out falls the equation of motion. No forces, no free-body diagrams, no tangent-vector bookkeeping. Just partials.
+
+Whenever *L* depends on several coordinates *q₁, q₂, …, qₙ*, you get one Euler-Lagrange equation per coordinate, independently. The machinery scales.
+
+</Section>
+
+<Section index={4} title="Generalised coordinates">
+
+Here is the part that eats Newton's lunch.
+
+Newton's *F = ma* is written in Cartesian coordinates — *x*, *y*, *z* — because forces naturally live in 3-space. If your system is a bead on a wire, or a pendulum on a rod, or a planet on an orbit, you have to start by parameterising the geometry in Cartesians and then bolt on constraint forces (tensions, normal forces, rod tensions) to keep the motion on the allowed surface. Every first-year student has done the free-body-diagram dance and cursed the vanishing tension terms.
+
+The Lagrangian doesn't care. *q* in the Euler-Lagrange equation can be **any coordinate you like**, as long as it actually describes the configuration of the system. For a pendulum, *q = θ* — the angle — is ideal; the length is fixed, so a single angle pins down the bob. For a bead on a wire, *q* is the arc-length along the wire. For a double pendulum, *q₁* and *q₂* are the two angles. These are called **<Term slug="generalised-coordinates">generalised coordinates</Term>**, and the Euler-Lagrange equation works in any of them, unchanged.
+
+<Callout variant="intuition">
+Newton picks a fixed Cartesian grid and fights the geometry. Lagrange lets you pick whatever coordinates the system is naturally shaped in, then hands you the same equation. That portability — the fact that the formula *d/dt (∂L/∂q̇) = ∂L/∂q* looks the same in every coordinate system — is the single biggest practical reason Lagrangian mechanics took over the field.
+</Callout>
+
+The rest of this page is a tour of that fact. One system, one Lagrangian, one crank; Newton's version for comparison, kept deliberately short.
+
+</Section>
+
+<Section index={5} title="Example 1 — the pendulum, in one page">
+
+We already solved the simple pendulum in FIG.01 by balancing torques and a restoring force. Lagrange's way is faster.
+
+Pick *θ*, the angle from vertical, as the generalised coordinate. The bob's velocity is *Lθ̇*, so the kinetic energy is
+
+<Callout variant="math">
+T = ½ m L² θ̇².
+</Callout>
+
+The height above the lowest point is *L(1 − cos θ)*, so the potential energy is
+
+<Callout variant="math">
+V = m g L (1 − cos θ).
+</Callout>
+
+The Lagrangian is the difference:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">L = ½ m L² θ̇² − m g L (1 − cos θ)</span>
+</EquationBlock>
+
+Now turn the crank. *∂L/∂θ̇* = *m L² θ̇*; its time derivative is *m L² θ̈*. *∂L/∂θ* = *−m g L sin θ*. Plug into the Euler-Lagrange equation:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">m L² θ̈ + m g L sin θ = 0    ⟹    θ̈ = −(g / L) sin θ</span>
+</EquationBlock>
+
+The mass dropped out. The rod length and gravity survive. That's the full nonlinear pendulum equation we met in FIG.04 — derived in three lines of partials instead of a page of geometry. Notice in particular that we never wrote down the rod's tension, because *θ* is the only coordinate we have and constraint forces that act perpendicular to *θ* simply cannot appear in *L*. They were eliminated the moment we picked the coordinate.
+
+</Section>
+
+<Section index={6} title="Example 2 — the double pendulum">
+
+Attach a second pendulum to the end of the first. Let *θ₁* be the angle of the upper rod from vertical, *θ₂* the angle of the lower rod, and assume for simplicity that each rod has length *L* and each bob has mass *m*.
+
+Try to do this with Newton. You need the position and velocity of each bob in Cartesians, expressed through *θ₁* and *θ₂* and their derivatives. You need the tensions in both rods. You need to resolve forces along and perpendicular to each rod. You will fill a page with sines and cosines and tangents. The algebra is doable but miserable, and students routinely lose a term in it.
+
+Now try it Lagrange's way.
+
+The upper bob moves on a circle of radius *L* about the pivot, so *T₁ = ½ m L² θ̇₁²*. The lower bob's velocity is the vector sum of the upper bob's velocity and its own rotation about the upper bob; square it, and the cross term ends up as *2 L² θ̇₁ θ̇₂ cos(θ₁ − θ₂)*. Heights add the same way. Put it all together:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">L = ½(m₁+m₂) L₁² θ̇₁² + ½ m₂ L₂² θ̇₂² + m₂ L₁ L₂ θ̇₁ θ̇₂ cos(θ₁−θ₂) + (m₁+m₂) g L₁ cos θ₁ + m₂ g L₂ cos θ₂</span>
+</EquationBlock>
+
+That's it. Two lines of setup. The Euler-Lagrange machinery then produces two coupled second-order equations for *θ̇₁* and *θ̇₂* — we'll spare you the explicit form; they live in the `lagrangian-mechanics.ts` module and they are, bluntly, ugly. But you never had to draw a free-body diagram, you never wrote down a tension, and you never resolved forces along an axis. The coordinates are *θ₁* and *θ₂* from start to finish.
+
+<Callout variant="intuition">
+The double pendulum is famous for a second reason. Its solutions are **chaotic** — two copies of the same system started a hair apart from each other diverge exponentially. That's the subject of the phase-space chapter at the end of this module, FIG.31. For now, notice only that the Lagrangian *L* is a clean, short expression even though the dynamics it encodes are wild. The difficulty of the motion and the difficulty of writing *L* are decoupled. That decoupling is the deepest reason to prefer Lagrange's method: *L* is the size of the physics, not the size of the math.
+</Callout>
+
+</Section>
+
+<Section index={7} title="Constraints that disappear">
+
+The trick with the pendulum — pick the angle as your coordinate and the rod tension drops out — is not an accident. It is the general feature of the Lagrangian machinery.
+
+Suppose you have a bead sliding along a wire bent into some fixed shape. Newton's law for the bead asks you to find the **<Term slug="constraint">constraint force</Term>**: whatever force the wire exerts on the bead to keep it on the track. That force points perpendicular to the wire, changes direction as the bead moves, and depends on the bead's speed — and for most wire shapes you cannot write it down in closed form. The work of solving the motion is mostly the work of solving for the constraint force first.
+
+Now do it Lagrange's way. Let *s* be the arc-length along the wire — a single coordinate that fully specifies where the bead is. The bead's speed is *ṡ*, so *T = ½ m ṡ²*, clean and coordinate-free. The height *y(s)* is whatever the wire shape prescribes, so *V = m g y(s)*. Plug *L = ½ m ṡ² − m g y(s)* into Euler-Lagrange, and you get a single equation for *s̈(t)*. The constraint force never appears. **It's orthogonal to the coordinate you chose**, so its contribution to *∂L/∂s* and *∂L/∂ṡ* is identically zero. You get the motion for free.
+
+One wire in particular is worth pausing on. In 1659 <PhysicistLink slug="christiaan-huygens">Huygens</PhysicistLink>, working geometrically, proved that a bead sliding on a cycloid reaches the bottom in a time that is independent of where you drop it from. The cycloid is the **<Term slug="tautochrone">tautochrone</Term>** — the "same-time curve" — and it was what Huygens used to fix the amplitude-dependence of pendulum clocks. His proof took pages of Euclidean geometry. The Lagrangian version is exercise-sized: along the cycloid, the EoM reduces to simple harmonic motion in a well-chosen arc-length coordinate, and the period *π√(R/g)* drops out.
+
+<SceneCard caption="FIG.29b — the cycloid (Huygens's tautochrone). A bead released anywhere along the arc reaches the bottom in the same time." className="w-full">
+  <CycloidScene />
+</SceneCard>
+
+Every constraint you can pick a coordinate *along* simply vanishes from *L*. That is the whole reason the Lagrangian method dominates engineering dynamics today: robot arms, spacecraft attitude, suspension bridges, molecular modes. The coordinate absorbs the constraint, and you are left with one ordinary equation per degree of freedom.
+
+</Section>
+
+<Section index={8} title="What's next">
+
+Lagrange's reformulation was the first. It turned mechanics from a geometry problem into an algebra problem. Forty-five years later, in 1833, <PhysicistLink slug="william-rowan-hamilton">William Rowan Hamilton</PhysicistLink> sitting in Dublin did it again, and got a second reformulation that looks almost the same — the Euler-Lagrange equation is second-order in *q*, and Hamilton's version is two *first-order* equations in *q* and a new variable *p*, the momentum conjugate to *q*.
+
+You will wonder why anyone needs a second version of the same content. The answer is that it exposes a structure the Lagrangian hides: the natural space for mechanics isn't the configuration space of positions — it's the **phase space** of positions and momenta, and the laws of motion become a geometric flow on that space. Quantum mechanics uses Hamilton's version literally; every modern numerical planet-integrator is Hamiltonian by construction; and chaos, when it appears, is a property of the phase-space flow.
+
+Next: the Hamiltonian.
 
 </Section>
 

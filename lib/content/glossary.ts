@@ -1175,6 +1175,154 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
     ],
   },
+  {
+    slug: "action",
+    category: "concept",
+    relatedPhysicists: ["pierre-louis-maupertuis", "leonhard-euler", "joseph-louis-lagrange"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+    ],
+  },
+  {
+    slug: "principle-of-least-action",
+    category: "concept",
+    relatedPhysicists: ["pierre-louis-maupertuis", "leonhard-euler", "joseph-louis-lagrange", "pierre-de-fermat"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+    ],
+  },
+  {
+    slug: "stationary-action",
+    category: "concept",
+    relatedPhysicists: ["leonhard-euler", "joseph-louis-lagrange"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+    ],
+  },
+  {
+    slug: "fermats-principle",
+    category: "concept",
+    relatedPhysicists: ["pierre-de-fermat"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+    ],
+  },
+  {
+    slug: "euler-lagrange-equations",
+    category: "concept",
+    relatedPhysicists: ["joseph-louis-lagrange", "leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-lagrangian" },
+    ],
+  },
+  {
+    slug: "generalised-coordinates",
+    category: "concept",
+    relatedPhysicists: ["joseph-louis-lagrange"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-lagrangian" },
+    ],
+  },
+  {
+    slug: "constraint",
+    category: "concept",
+    relatedPhysicists: ["joseph-louis-lagrange"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-lagrangian" },
+    ],
+  },
+  {
+    slug: "hamiltonian",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+    ],
+  },
+  {
+    slug: "conjugate-momentum",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton", "joseph-louis-lagrange"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+    ],
+  },
+  {
+    slug: "hamiltons-equations",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+    ],
+  },
+  {
+    slug: "poisson-bracket",
+    category: "concept",
+    relatedPhysicists: ["simeon-denis-poisson", "william-rowan-hamilton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+    ],
+  },
+  {
+    slug: "liouvilles-theorem",
+    category: "concept",
+    relatedPhysicists: ["joseph-liouville", "william-rowan-hamilton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "symplectic",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton", "joseph-liouville"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "phase-space",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton", "joseph-liouville", "henri-poincare"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+    ],
+  },
+  {
+    slug: "chaos",
+    category: "phenomenon",
+    relatedPhysicists: ["henri-poincare", "aleksandr-lyapunov"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+      { branchSlug: "classical-mechanics", topicSlug: "tides-and-three-body" },
+    ],
+  },
+  {
+    slug: "lyapunov-exponent",
+    category: "concept",
+    relatedPhysicists: ["aleksandr-lyapunov"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "kam-theorem",
+    category: "concept",
+    relatedPhysicists: ["andrey-kolmogorov", "vladimir-arnold", "jurgen-moser"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "poincare-recurrence",
+    category: "phenomenon",
+    relatedPhysicists: ["henri-poincare", "joseph-liouville"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

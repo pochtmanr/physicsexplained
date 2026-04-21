@@ -1,18 +1,166 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SnellFermatScene } from "@/components/physics/snell-fermat-scene";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pierre de Fermat", href: "/physicists/pierre-de-fermat" },
+  { type: "physicist", label: "Pierre Louis Maupertuis", href: "/physicists/pierre-louis-maupertuis" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Joseph-Louis Lagrange", href: "/physicists/joseph-louis-lagrange" },
+  { type: "term", label: "Action", href: "/dictionary/action" },
+  { type: "term", label: "Principle of least action", href: "/dictionary/principle-of-least-action" },
+  { type: "term", label: "Stationary action", href: "/dictionary/stationary-action" },
+  { type: "term", label: "Fermat's principle", href: "/dictionary/fermats-principle" },
+  { type: "term", label: "Lagrangian", href: "/dictionary/lagrangian" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.28 · LAGRANGIAN & HAMILTONIAN"
   title="THE PRINCIPLE OF LEAST ACTION"
-  subtitle="Nature picks the laziest path."
+  subtitle="Of every path the ball could take, nature always picks the laziest one."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="The set-up">
 
-TODO: write the opening.
+Throw a ball. It leaves your hand at point A, lands on the floor at point B, and the whole thing takes, say, one second. Between those two events, the ball traced out exactly one trajectory — the parabola we computed in FIG.04 from Newton's laws.
+
+Stop. Think about how strange this is. You fixed the start, you fixed the end, you fixed the time. Of all the curves you could draw between A and B, the ball picked *one*. It could have dawdled up high and plunged at the last moment. It could have skimmed low and hopped up to catch B. It could have wriggled. It didn't. It drew a clean parabola.
+
+<Callout variant="intuition">
+**The question physics is secretly asking.** Newton gives you the forces at every instant and demands you integrate. That tells you *what happens next*. But given a start and an end, is there a rule that picks out the whole trajectory in one go — without stepping through it? A principle that looks at every candidate path side by side and announces: *this one*.
+</Callout>
+
+There is. It was spotted in 1744 by a man who had recently measured the shape of the Earth by freezing to death in Lapland, and who believed the answer was theological. He was the first to state it in the language we still use. His name was <PhysicistLink slug="pierre-louis-maupertuis">Maupertuis</PhysicistLink>, and the quantity he baptised is called the *action*.
+
+But the idea is older. It is older than Newton. It is older than calculus. We need to start with light.
+
+</Section>
+
+<Section index={2} title="Fermat's hint">
+
+In 1662, <PhysicistLink slug="pierre-de-fermat">Pierre de Fermat</PhysicistLink> — the lawyer from Toulouse who in his spare time founded number theory and nearly invented calculus — published a letter claiming that he could derive the whole law of refraction from a single sentence.
+
+The sentence was: *light travels between two points along the path that takes the least time.*
+
+This sounded crazy. The accepted explanation, due to <PhysicistLink slug="rene-descartes">Descartes</PhysicistLink>, was that light was a kind of projectile and the bending at the surface was a momentum argument. Fermat's statement was different in kind. It was not a mechanism. It said nothing about what light was. It said only that, whatever light is, it is *lazy* — and that laziness alone reproduces Snell's law.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">n₁ sin θ₁ = n₂ sin θ₂</span>
+</EquationBlock>
+
+The setup is clean. A point A sits in air (where light travels fast). A point B sits underwater (where light travels slower, by a factor of 1.33). Ask: where should the ray cross the surface? A straight line minimises distance, but distance is not time when the two media have different speeds. The ray should spend more of its journey in the fast medium and less in the slow one — and the right amount of bending is exactly the trade-off that minimises total time.
+
+<SceneCard caption="FIG.28a — Fermat's least-time principle" className="w-full">
+  <SnellFermatScene />
+</SceneCard>
+
+Drag the crossing point along the interface. At either extreme, the ray takes a long path in the slow medium or bends too sharply. Somewhere in the middle sits a minimum — and at that minimum, and nowhere else, the ratios sin θ₁ / v₁ and sin θ₂ / v₂ become equal. That equality is Snell's law. Fermat derived it from laziness, without needing to know light was a wave, or a particle, or anything at all.
+
+<Callout variant="math">
+**Why least time gives Snell.** Write the total travel time as t(x) = √(x² + h₁²)/v₁ + √((d−x)² + h₂²)/v₂, where x is the horizontal position of the crossing. Set dt/dx = 0. The two terms simplify to sin θ₁ / v₁ and sin θ₂ / v₂ respectively, and their equality is the refraction law. No waves. No forces. Just the derivative of a travel-time.
+</Callout>
+
+Fermat did not know it, but he had found the first instance of a pattern that was about to appear everywhere.
+
+</Section>
+
+<Section index={3} title="Action, defined">
+
+Eighty years after Fermat, Maupertuis asked: could the same trick work for *matter*? Light picks the path of least time. Does a thrown ball pick the path of least *something*?
+
+The quantity he proposed is called the **<Term slug="action">action</Term>**, and it is built out of two things we already know.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">S = ∫ L dt,   with   L = T − V</span>
+</EquationBlock>
+
+*T* is the kinetic energy, *V* is the potential energy, and their difference *L = T − V* is the **<Term slug="lagrangian">Lagrangian</Term>** of the system. The action *S* is what you get by integrating *L* along a candidate trajectory, from the start to the end. Its units are energy × time — joule-seconds — which is the same as Planck's constant. (Quantum mechanics will need us to remember this.)
+
+Read the definition slowly. It is unlike everything else in classical physics. Force is a thing you feel at an instant. Acceleration is a thing you measure at an instant. Action is a thing you compute only after you have already picked a whole trajectory. It is a property of the path, not a property of a moment. A single candidate path gets a single number *S*, and a nearby path gets a different number. That one number is the score.
+
+<Callout variant="intuition">
+**Why T minus V, and not T plus V?** This is the single most asked question in the subject. The honest answer is that there is no intuitive picture in classical mechanics. The combination *T − V* is the one that makes the variational rule reproduce *F = ma*. In quantum mechanics the same combination emerges naturally from the phase of a wave function, and in general relativity from the scalar curvature of spacetime. In FIG.29 we will start from *L = T − V* and derive Newton. For now: accept the rule, watch it work.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The statement">
+
+Here is the principle, in one sentence.
+
+<Callout variant="math">
+**The principle of least action.** Of all the paths a system could take between two fixed events, the one actually realised in nature is the path for which the action *S* is <Term slug="stationary-action">stationary</Term> — unchanged, to first order, under small variations of the path.
+</Callout>
+
+Two words need unpacking.
+
+*Stationary* is a generalisation of *minimum*. If you perturb the path a tiny bit in any direction, *S* does not change — to first order in the perturbation. The physical path sits at the flat bottom of a valley in the landscape of all possible paths. It is called *least* action out of historical loyalty to Maupertuis, but the rigorous word is *stationary*: it can be a minimum, it can be a saddle, in rare cases a maximum. For almost every problem you will meet, it is a minimum, and the slogan holds.
+
+*Fixed events* means: the start time, the start position, the end time, and the end position are all held constant as you vary the path. The principle does not determine these; they are the boundary conditions. It determines what happens *between* them.
+
+<Callout variant="intuition">
+**Feynman's view, in one line.** In quantum mechanics, a particle genuinely tries every path. Each path contributes a complex phase proportional to S/ℏ, and the paths interfere. Everywhere except near the stationary path, nearby paths have rapidly changing phases and cancel in pairs. Near the stationary path, nearby paths have *nearly the same* phase — because the phase is, to first order, unchanged — and they add up constructively. So the stationary path is the one that survives the interference. Classical mechanics is the shadow of that survival. The reason nature is lazy is that every other path cancels out.
+</Callout>
+
+That is the whole idea. The rest is consequences.
+
+</Section>
+
+<Section index={5} title="A worked example — a ball in free fall">
+
+Point A is the floor at *t = 0*. Point B is also the floor, 2 seconds later, 20 metres further along. A ball is to travel between them under gravity. What trajectory does it follow?
+
+Newton's answer: *F = ma*, acceleration is *g* downward, integrate twice with the boundary conditions, get a parabola that rises to 4.9 m and comes back down.
+
+The action-principle answer: write down all candidate vertical trajectories y(t) with y(0) = 0 and y(2) = 0. For each, compute *S = ∫₀² [½m ẏ² − mgy] dt*. Find the one with stationary *S*. You get the same parabola.
+
+The remarkable thing is that the parabola *is* a minimum. Flatten it — send the ball along a straight line at y = 0 — and *S* is less negative (larger) than on the parabola. Exaggerate it — send the ball up to 10 m — and *S* is again larger. Nudge it slightly either way and *S* creeps up. The parabola sits at the bottom of the valley in path-space.
+
+<Callout variant="math">
+**The trick under the hood.** *L = ½ m ẏ² − m g y.* The condition *δS = 0* for every admissible variation δy(t) (vanishing at the endpoints) forces a differential equation on *y(t)*:
+
+&nbsp;&nbsp;&nbsp;&nbsp;*d/dt (∂L/∂ẏ) = ∂L/∂y*,&nbsp;&nbsp; i.e.,&nbsp;&nbsp; *d/dt (mẏ) = −mg*,&nbsp;&nbsp; i.e.,&nbsp;&nbsp; *ÿ = −g*.
+
+That is Newton's second law, recovered from a scalar optimisation. The path is free to be anything; the extremal condition carves out the parabola. We will build this derivation properly in FIG.29.
+</Callout>
+
+Two routes. Same parabola. The fact that they agree is not a tautology — it is a theorem about *L = T − V* and Newton's laws. We will prove it next topic.
+
+</Section>
+
+<Section index={6} title="Why this matters">
+
+If the action principle just reproduced Newton's laws for point particles in gravity, it would be a curiosity. A cute reformulation. It is more than that.
+
+**It generalises.** The principle has the same form in every coordinate system. Polar coordinates, spherical, the angle of a pendulum, the length of a spring — whatever variables describe your system, write *L(q, q̇)* in them and the stationary-*S* condition gives the correct equations of motion. Newton's *F = ma* is cluttered by constraint forces (the tension in a string, the normal force from a surface) that the action principle handles transparently by simply not including them — constrained coordinates do the job automatically.
+
+**It scales.** A single particle gets one *L*. Ten thousand particles get one *L*. A vibrating string, a flexing drumhead, an elastic solid — all one *L*. A coupled system of fields filling all of space, like the electromagnetic field — one *L*. You add the Lagrangians together and the stationary-*S* condition handles everything at once. This is why *Mécanique analytique*, the 1788 book in which <PhysicistLink slug="joseph-louis-lagrange">Lagrange</PhysicistLink> worked out the machinery, could claim on its first page that it contained not a single diagram. It did not need diagrams. It had a function and a rule.
+
+**It crosses into new physics.** Every major theory after Newton has been built by writing down a Lagrangian and extremising. Maxwell's equations come from a Lagrangian. General relativity comes from the Einstein–Hilbert action. The Standard Model of particle physics is, at its heart, the most celebrated *L* ever written — a few lines on a T-shirt. When physicists invent a new theory, they no longer start from forces. They start from an action, and the equations of motion fall out.
+
+**It plugs into Noether.** We met this in FIG.08: every continuous symmetry of the Lagrangian is paired with a conserved quantity. That machinery *requires* a Lagrangian to work. Without *L = T − V*, Noether's theorem has nothing to chew on. The reason we can speak of conservation of energy, momentum, and angular momentum as shadows of symmetries of spacetime is precisely because the whole of mechanics can be re-expressed as the extremum of a scalar functional. The action principle is the skeleton on which every conservation law hangs.
+
+<Callout variant="intuition">
+**A note on Maupertuis.** Maupertuis stated the principle in a 1744 memoir titled *Accord entre différentes lois de la nature qui avaient jusqu'ici paru incompatibles*. He believed the principle was evidence of divine design: nature, operating under the hand of God, would naturally choose the most economical path. Modern readers wince at the theology — and <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink>, who gave the principle its first rigorous mathematical statement the very same year, carefully stripped that away. But Maupertuis was not wrong about the shape of the thing. Nature is lazy. Whether the reason is theological, or whether it is the quantum-mechanical interference argument we mentioned above, the principle itself is now one of the most robust in all of physics.
+</Callout>
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We have the principle. We have the action *S*, the Lagrangian *L = T − V*, and the slogan: make *S* stationary. What we do not yet have is a mechanical procedure to *find* the stationary path.
+
+In the worked example above, we hand-waved: Newton's second law *ÿ = −g* fell out of the extremal condition. That is not a coincidence. For any *L(q, q̇)*, the condition *δS = 0* is equivalent to a differential equation — the **Euler–Lagrange equation** — and once you have it, finding the stationary path is just ordinary calculus. No guessing, no variations, no candidate paths. Just a differential equation you can solve.
+
+That is FIG.29. We will derive the Euler–Lagrange equation from *δS = 0* in a page, and then apply it to every system we have met in the branch — pendulum, spring, orbit — and watch the same piece of machinery pump out their equations of motion, one after another.
+
+After that, FIG.30 reformulates the whole thing in terms of momenta instead of velocities, and we meet **the Hamiltonian** — the same structure seen from a different angle, the one that becomes quantum mechanics when you squint at it hard enough.
+
+The road from here to the frontier of modern physics runs through a single optimisation.
 
 </Section>
 

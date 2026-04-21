@@ -1,18 +1,180 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { LiouvilleFlowScene } from "@/components/physics/liouville-flow-scene";
+import { NonlinearDynamicsScene } from "@/components/physics/nonlinear-dynamics-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Liouville", href: "/physicists/joseph-liouville" },
+  { type: "physicist", label: "Henri Poincar\u00e9", href: "/physicists/henri-poincare" },
+  { type: "physicist", label: "Aleksandr Lyapunov", href: "/physicists/aleksandr-lyapunov" },
+  { type: "physicist", label: "Andrey Kolmogorov", href: "/physicists/andrey-kolmogorov" },
+  { type: "physicist", label: "Vladimir Arnold", href: "/physicists/vladimir-arnold" },
+  { type: "physicist", label: "J\u00fcrgen Moser", href: "/physicists/jurgen-moser" },
+  { type: "term", label: "Phase Space", href: "/dictionary/phase-space" },
+  { type: "term", label: "Phase Portrait", href: "/dictionary/phase-portrait" },
+  { type: "term", label: "Chaos", href: "/dictionary/chaos" },
+  { type: "term", label: "Lyapunov Exponent", href: "/dictionary/lyapunov-exponent" },
+  { type: "term", label: "KAM Theorem", href: "/dictionary/kam-theorem" },
+  { type: "term", label: "Poincar\u00e9 Recurrence", href: "/dictionary/poincare-recurrence" },
+]}>
 
 <TopicHeader
-  eyebrow="FIG.31 · LAGRANGIAN & HAMILTONIAN"
+  eyebrow="\u00a7 01 \u00b7 CLASSICAL MECHANICS"
   title="PHASE SPACE"
-  subtitle="The space where every possible motion lives."
+  subtitle="The space where every possible motion lives \u2014 and the place where classical physics meets its limits."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="Pulling back the camera">
 
-TODO: write the opening.
+Every topic in this module, from Galileo's chandelier to Saturn's rings, has been watching one thing: a point of matter tracing a path through ordinary space. A pendulum swings through the air. A planet sweeps through the sky. A double pendulum flails.
+
+Now we change the camera.
+
+Forget the trajectory in space. Plot instead the pair (**position, momentum**). One point on that plot is a complete specification of the system — everything Newton's equations need to predict the next instant. One curve is one possible history. The entire gallery of every motion the system could ever execute — every way it could ever be launched, perturbed, or evolved — is a single geometric object.
+
+That object is **<Term slug="phase-space">phase space</Term>**. We already met it, quietly, in FIG.07 and FIG.14, when the pendulum drew its little ellipse. This page is the chapter where we take phase space seriously and watch classical mechanics become geometry.
+
+</Section>
+
+<Section index={2} title="Two coordinates per degree of freedom">
+
+One particle on a line needs two numbers to be fully specified at an instant: where it is (*q*) and how its momentum is distributed (*p = mv*). Give me the two, and Newton — or <PhysicistLink slug="william-rowan-hamilton">Hamilton</PhysicistLink>'s equations — tell you every *q* and *p* for all future time.
+
+One particle in 3D needs six. *N* particles need **6N**.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">dim(phase space) = 2 \u00b7 (degrees of freedom)</span>
+</EquationBlock>
+
+A gram of air is around 2 × 10²² molecules. Its phase space has roughly 10²³ dimensions. You cannot draw it. You can barely conceive it. And yet classical mechanics asserts, flatly, that one single point in that absurd space — updated by Hamilton's equations — is the whole truth about that gram of air for all time.
+
+This is the first jolt. Phase space is huge. The universe's configuration is a single moving dot in it.
+
+</Section>
+
+<Section index={3} title="A point, a trajectory, a flow">
+
+Three ways to read a phase-space diagram:
+
+- **A point** is one state. One complete snapshot of the world.
+- **A trajectory** is one history — the curve traced by the point as time runs forward. Hamilton's equations *are* the rule for how the point moves.
+- **A flow** is what happens to a whole region. Seed a blob of initial conditions — a cloud of possible starting states, each slightly different — and watch the cloud evolve under the same physics. Every point flows according to the same rules.
+
+<SceneCard caption="FIG.01 \u2014 a blob flowing through phase space" className="w-full">
+  <LiouvilleFlowScene />
+</SceneCard>
+
+The scene seeds a disc of initial conditions and lets them ride the Hamiltonian flow. Toggle between the harmonic oscillator (a simple rotation), the pendulum (a rotation that stretches near the separatrix and wraps around once the energy exceeds the bar's height), and a pure shear.
+
+Watch the disc distort. It can become a crescent, a comma, a long ribbon wrapping around the origin. It does not have to stay connected-looking. But one thing never changes, and that one thing is the whole point.
+
+</Section>
+
+<Section index={4} title="Liouville's theorem">
+
+The thing that never changes is the **area**.
+
+In 1838, <PhysicistLink slug="joseph-liouville">Joseph Liouville</PhysicistLink> proved it in two lines from Hamilton's equations. The statement: under Hamiltonian flow, the volume of any region of phase space is conserved. The shape can stretch, twist, fold, even become fractally tangled. The volume is invariant.
+
+Here is the whole proof. Hamilton's equations are:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">dq/dt = \u2202H/\u2202p,  dp/dt = \u2212\u2202H/\u2202q</span>
+</EquationBlock>
+
+The flow has a velocity field *(q̇, ṗ)*. The rate at which volume expands — the divergence of that field — is
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">\u2202q\u0307/\u2202q + \u2202p\u0307/\u2202p = \u2202\u00b2H/\u2202q\u2202p \u2212 \u2202\u00b2H/\u2202p\u2202q = 0</span>
+</EquationBlock>
+
+Zero. Because mixed partials commute.
+
+<Callout variant="math">
+Hamiltonian flow is incompressible. No source, no sink. A swarm of states distorts freely but never concentrates.
+</Callout>
+
+This is quiet, and deep. It means classical dynamics can never lose information: two distinct initial conditions can never be brought together into one, and one cannot split into two. It is the reason statistical mechanics can *use* phase-space volume as a measure (Boltzmann's entropy is the log of a phase-space volume). It is the reason quantum mechanics, which also preserves probability volume, feels familiar. Liouville's theorem is the skeleton on which most of modern physics is hung.
+
+</Section>
+
+<Section index={5} title="Poincar\u00e9 recurrence">
+
+In 1890, while wrestling with the three-body problem that had cost him a prize and nearly his reputation, <PhysicistLink slug="henri-poincare">Henri Poincar\u00e9</PhysicistLink> noticed a consequence of Liouville that is either beautiful or deranged depending on your mood.
+
+Take a bounded Hamiltonian system — one whose phase-space trajectories cannot escape to infinity. The Earth orbiting the Sun, a pendulum in a gravitational field, a gram of air in a sealed box. Pick any initial state. Wait.
+
+**The system will return arbitrarily close to that state.** And it will do so infinitely often.
+
+The argument is almost embarrassingly clean. Divide the bounded region into small cells. There are only finitely many cells. Every second, the flow maps the occupied cells to new cells of the same total volume (Liouville). After enough seconds, two snapshots must land on overlapping cells. Between those two snapshots, the trajectory has made a near-round-trip.
+
+<Callout variant="math">
+Shuffle a deck of cards infinitely. If the shuffle preserves the uniform measure, the original order comes back \u2014 an infinite number of times. The recurrence time may be astronomical, but it is finite.
+</Callout>
+
+Boltzmann, across the hall trying to build the second law of thermodynamics on top of exactly these Hamiltonian mechanics, was *furious*. Entropy is supposed to always increase. Poincar\u00e9 just proved that any closed system returns to its initial (low-entropy) state. The paradox, known as Zermelo's objection, shaped the next century of statistical mechanics. We resolve it in § 03: the recurrence time for a realistic gas is *far* longer than the age of the universe, so in practice the second law wins. But in principle, every closed system in the cosmos keeps coming back.
+
+</Section>
+
+<Section index={6} title="Chaos">
+
+Volume preservation does not mean trajectories stay close together. It only constrains the total. Trajectories that start nearby can — and for most interesting systems, do — fly exponentially apart while the enclosing cloud maintains its volume by getting thinner and longer, folded and refolded like taffy.
+
+This is **<Term slug="chaos">chaos</Term>**: deterministic equations producing unpredictable outcomes because nearby histories diverge faster than any measurement can track.
+
+<SceneCard caption="FIG.02 \u2014 two double pendulums, 0.001 rad apart" className="w-full">
+  <NonlinearDynamicsScene />
+</SceneCard>
+
+Two copies of the same double pendulum, launched with angles differing by a thousandth of a radian — smaller than the width of a pencil line at arm's length. The equations are identical. The initial conditions are identical to three decimal places. And within seconds they are doing different things.
+
+The rate of divergence is quantified by a **<Term slug="lyapunov-exponent">Lyapunov exponent</Term>**, named for <PhysicistLink slug="aleksandr-lyapunov">Aleksandr Lyapunov</PhysicistLink>, who introduced the concept in his 1892 doctoral thesis:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">|\u03b4z(t)| \u2248 |\u03b4z(0)| \u00b7 e^(\u03bb t)</span>
+</EquationBlock>
+
+If λ > 0, two infinitesimally-close initial conditions separate exponentially. Predicting the trajectory to a given accuracy becomes impossible past a horizon that grows only **logarithmically** with how precisely you know the start. To double your prediction horizon, you need to measure the initial state exponentially better. For the double pendulum λ ≈ 1 per second; for the solar system's inner planets, <PhysicistLink slug="henri-poincare">Poincar\u00e9</PhysicistLink>'s successors Jacques Laskar and others have shown λ ≈ 1/(5 million years).
+
+Chaos is not randomness. The equations are deterministic. Chaos is the geometry of how Liouville-preserving flows distort a volume — squeezing it to zero thickness in some directions while stretching to infinity in others — with the global volume fixed.
+
+</Section>
+
+<Section index={7} title="KAM: why the solar system survives">
+
+If chaos is generic, if the slightest nonlinearity can rip apart the clean ellipses of an idealised orbit, how is it that the planets have kept their places for 4.6 billion years?
+
+The answer is one of the most beautiful theorems in twentieth-century mathematics, and it came from three mathematicians working in the shadow of the Iron Curtain.
+
+<PhysicistLink slug="andrey-kolmogorov">Andrey Kolmogorov</PhysicistLink> announced the result at the 1954 International Congress of Mathematicians, with a short sketch of proof. His student <PhysicistLink slug="vladimir-arnold">Vladimir Arnold</PhysicistLink> wrote out the full proof for analytic Hamiltonians in 1963. The German-American analyst <PhysicistLink slug="jurgen-moser">J\u00fcrgen Moser</PhysicistLink> extended the argument to the smooth (non-analytic) case the same year. Together the initials spell **KAM**.
+
+The theorem in one sentence: if you take an integrable Hamiltonian system — one whose phase space is foliated by invariant tori, each torus a donut of periodic motion — and perturb it slightly, **most of the tori survive**. The orbits wobble, but they stay bounded. They do not wander into the chaotic seas between them.
+
+<Callout variant="math">
+"Most" is precise. The measure of surviving tori tends to the full measure as the perturbation goes to zero, at a rate controlled by Diophantine conditions on the frequency ratios.
+</Callout>
+
+The solar system is *nearly* integrable. Each planet, to zeroth order, traces a Keplerian ellipse — a torus in phase space. The mutual gravitational tugs of the other planets are small perturbations. KAM says: *most of the tori survive*. The tiny fraction that don't — those with resonant frequency ratios — become sites of slow chaos, which is exactly where we observe gaps in the asteroid belt and where we expect Mercury to eventually go unstable on timescales of billions of years.
+
+KAM is why the planets, against the logic of generic chaos, still sail in the lanes Kepler drew.
+
+</Section>
+
+<Section index={8} title="The end of the beginning">
+
+Classical mechanics began in 1583 with Galileo and a chandelier. It ends here, in a 10²³-dimensional manifold whose flow preserves volume, recurs almost everywhere, and holds together — barely, exquisitely — because most of its invariant tori refuse to break.
+
+The framework is four centuries old, but it is not obsolete. It is the language in which statistical mechanics (§ 03), field theory (§ 02, § 06), and quantum mechanics (§ 05) are all phrased. Hamilton's equations become Schr\u00f6dinger's equation by a routine (if magical) substitution. Liouville's theorem becomes the unitarity of quantum evolution. Phase-space distributions become density matrices. The Poisson bracket becomes the commutator, scaled by *iℏ*. Phase space does not disappear when we switch to quantum mechanics. It becomes the space of operators.
+
+Read the next module (§ 02 Electromagnetism) and you will find Hamiltonians again, now governing fields. Read § 04 Relativity and you will find them again, now defined on curved manifolds. Read § 05 Quantum Mechanics and you will find them again, now promoted to operators acting on the states we used to call points.
+
+Classical mechanics is not a chapter that gets closed. It is the grammar of the book.
+
+Go on.
 
 </Section>
 

@@ -268,6 +268,15 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   KolmogorovSpectrumScene: lazyScene(() =>
     import("@/components/physics/kolmogorov-spectrum-scene").then((m) => ({ default: m.KolmogorovSpectrumScene })),
   ),
+  SnellFermatScene: lazyScene(() =>
+    import("@/components/physics/snell-fermat-scene").then((m) => ({ default: m.SnellFermatScene })),
+  ),
+  SymplecticKeplerScene: lazyScene(() =>
+    import("@/components/physics/symplectic-kepler-scene").then((m) => ({ default: m.SymplecticKeplerScene })),
+  ),
+  LiouvilleFlowScene: lazyScene(() =>
+    import("@/components/physics/liouville-flow-scene").then((m) => ({ default: m.LiouvilleFlowScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

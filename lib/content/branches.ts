@@ -265,8 +265,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "THE PRINCIPLE OF LEAST ACTION",
           eyebrow: "FIG.28 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "Nature picks the laziest path.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 11,
+          status: "live",
           module: "lagrangian-hamiltonian",
         },
     {
@@ -274,8 +274,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "THE LAGRANGIAN",
           eyebrow: "FIG.29 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "Mechanics rewritten as energy minus energy.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 12,
+          status: "live",
           module: "lagrangian-hamiltonian",
         },
     {
@@ -283,8 +283,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "THE HAMILTONIAN",
           eyebrow: "FIG.30 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "Position and momentum, two halves of the same thing.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 12,
+          status: "live",
           module: "lagrangian-hamiltonian",
         },
     {
@@ -292,8 +292,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "PHASE SPACE",
           eyebrow: "FIG.31 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "The space where every possible motion lives.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 13,
+          status: "live",
           module: "lagrangian-hamiltonian",
         }
 ];

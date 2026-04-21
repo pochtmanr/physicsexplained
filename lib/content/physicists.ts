@@ -641,6 +641,62 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "Russian",
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "pierre-louis-maupertuis",
+    born: "1698",
+    died: "1759",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+    ],
+  },
+  {
+    slug: "pierre-de-fermat",
+    born: "1607",
+    died: "1665",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+    ],
+  },
+  {
+    slug: "joseph-liouville",
+    born: "1809",
+    died: "1882",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "vladimir-arnold",
+    born: "1937",
+    died: "2010",
+    nationality: "Russian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "jurgen-moser",
+    born: "1928",
+    died: "1999",
+    nationality: "German-American",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "aleksandr-lyapunov",
+    born: "1857",
+    died: "1918",
+    nationality: "Russian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
     ],
   },
 ];
