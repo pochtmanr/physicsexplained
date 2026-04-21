@@ -17,7 +17,7 @@ export async function Nav() {
   return (
     <nav className="sticky top-0 z-50 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
       <div
-        className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-4 md:py-5`}
+        className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-2.5 md:py-3`}
       >
         <div className="flex min-w-0 items-center">
           <Link

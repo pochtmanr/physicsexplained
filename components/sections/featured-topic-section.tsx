@@ -26,7 +26,7 @@ export async function FeaturedTopicSection() {
               <h2 className="mt-4 text-3xl md:text-4xl uppercase tracking-tight text-[var(--color-fg-0)]">
                 {t("title")}
               </h2>
-              <div className="text-[var(--color-fg-1)] mt-6 space-y-4">
+              <div className="text-sm md:text-base text-[var(--color-fg-1)] mt-6 space-y-4">
                 <p>{t("body1")}</p>
                 <p>{t("body2")}</p>
               </div>

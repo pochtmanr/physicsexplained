@@ -126,7 +126,7 @@ function RuleCard({ rule, number, href, external, tint }: RuleCardProps) {
       </h3>
 
       {/* Body */}
-      <p className="relative mt-3 text-[var(--color-fg-1)]">{rule.body}</p>
+      <p className="relative mt-3 text-sm md:text-base text-[var(--color-fg-1)]">{rule.body}</p>
 
       {/* Action row — only on cards 2 & 3 */}
       {rule.cta ? (

@@ -88,13 +88,6 @@ body {
     color var(--duration-base) ease;
 }
 
-/* Positioning anchor so descendants using `position: absolute inset-0`
-   cover the full document instead of being clipped to the iOS 26
-   "inner" viewport under position: fixed. */
-body {
-  position: relative;
-}
-
 /* Hebrew font stack — Inter/Archive Grotesk don't cover Hebrew glyphs.
    Fall back to native Hebrew fonts until a dedicated webfont is added. */
 html[lang="he"] body {

@@ -78,7 +78,7 @@ export function NavBranchMenu() {
       <div
         role="menu"
         aria-hidden={!open}
-        className={`absolute inset-x-0 top-full z-30 max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] shadow-[0_16px_32px_-8px_rgb(0_0_0_/_0.25)] transition-all duration-[200ms] ease-out ${
+        className={`absolute inset-x-0 top-full z-30 max-h-[calc(100vh-4rem)] overflow-y-auto overscroll-contain border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] transition-all duration-[200ms] ease-out ${
           open
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-1 pointer-events-none"

@@ -119,7 +119,7 @@ export function MobileNav() {
         }`}
       >
         <div className="sticky top-0 z-10 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
-          <div className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-4`}>
+          <div className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-2.5`}>
             <Link
               href="/"
               onClick={close}
