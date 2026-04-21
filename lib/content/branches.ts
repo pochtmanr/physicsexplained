@@ -229,8 +229,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "PRESSURE AND BUOYANCY",
           eyebrow: "FIG.24 · FLUIDS",
           subtitle: "Why some things float.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 12,
+          status: "live",
           module: "fluids",
         },
     {
@@ -238,8 +238,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "BERNOULLI'S PRINCIPLE",
           eyebrow: "FIG.25 · FLUIDS",
           subtitle: "Faster fluids push less.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 13,
+          status: "live",
           module: "fluids",
         },
     {
@@ -247,8 +247,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "VISCOSITY AND REYNOLDS NUMBER",
           eyebrow: "FIG.26 · FLUIDS",
           subtitle: "Honey, water, and the line between them.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 13,
+          status: "live",
           module: "fluids",
         },
     {
@@ -256,8 +256,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "TURBULENCE",
           eyebrow: "FIG.27 · FLUIDS",
           subtitle: "The last unsolved problem of classical physics.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 12,
+          status: "live",
           module: "fluids",
         },
     {
