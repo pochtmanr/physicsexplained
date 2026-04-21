@@ -2,7 +2,7 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 import frame from "@/components/layout/corner-frame.module.css";
 
-export type CalloutVariant = "intuition" | "math" | "warning";
+export type CalloutVariant = "intuition" | "math" | "warning" | "info" | "note";
 
 export interface CalloutProps {
   variant: CalloutVariant;
@@ -10,15 +10,17 @@ export interface CalloutProps {
   className?: string;
 }
 
+const INTUITION_STYLE = {
+  border: "border-l-[var(--color-amber)]",
+  label: "INTUITION",
+  labelColor: "text-[var(--color-amber)]",
+} as const;
+
 const VARIANT_STYLES: Record<
   CalloutVariant,
   { border: string; label: string; labelColor: string }
 > = {
-  intuition: {
-    border: "border-l-[var(--color-amber)]",
-    label: "INTUITION",
-    labelColor: "text-[var(--color-amber)]",
-  },
+  intuition: INTUITION_STYLE,
   math: {
     border: "border-l-[var(--color-cyan)]",
     label: "MATH",
@@ -29,10 +31,20 @@ const VARIANT_STYLES: Record<
     label: "CAUTION",
     labelColor: "text-[var(--color-magenta)]",
   },
+  info: {
+    border: "border-l-[var(--color-cyan-dim)]",
+    label: "INFO",
+    labelColor: "text-[var(--color-cyan-dim)]",
+  },
+  note: {
+    border: "border-l-[var(--color-fg-3)]",
+    label: "NOTE",
+    labelColor: "text-[var(--color-fg-3)]",
+  },
 };
 
 export function Callout({ variant, children, className }: CalloutProps) {
-  const style = VARIANT_STYLES[variant];
+  const style = VARIANT_STYLES[variant] ?? INTUITION_STYLE;
   return (
     <aside
       className={clsx(
