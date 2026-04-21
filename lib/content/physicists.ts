@@ -532,6 +532,34 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
     ],
   },
+  {
+    slug: "johann-bohnenberger",
+    born: "1765",
+    died: "1831",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "pierre-simon-laplace",
+    born: "1749",
+    died: "1827",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "milutin-milankovic",
+    born: "1879",
+    died: "1958",
+    nationality: "Serbian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

@@ -8,128 +8,140 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
 <TopicPageLayout aside={[
   { type: "physicist", label: "Hipparchus", href: "/physicists/hipparchus" },
-  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
-  { type: "physicist", label: "Seth Carlo Chandler", href: "/physicists/seth-carlo-chandler" },
   { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
-  { type: "term", label: "Axial Precession", href: "/dictionary/axial-precession" },
-  { type: "term", label: "Chandler Wobble", href: "/dictionary/chandler-wobble" },
+  { type: "physicist", label: "Jean d'Alembert", href: "/physicists/jean-d-alembert" },
+  { type: "physicist", label: "Seth Carlo Chandler", href: "/physicists/seth-carlo-chandler" },
+  { type: "physicist", label: "Milutin Milanković", href: "/physicists/milutin-milankovic" },
+  { type: "term", label: "Precession of the equinoxes", href: "/dictionary/precession-of-equinoxes" },
+  { type: "term", label: "Obliquity", href: "/dictionary/obliquity" },
+  { type: "term", label: "Axial precession", href: "/dictionary/axial-precession" },
   { type: "term", label: "Nutation", href: "/dictionary/nutation" },
-  { type: "term", label: "Equatorial Bulge", href: "/dictionary/equatorial-bulge" },
+  { type: "term", label: "Chandler wobble", href: "/dictionary/chandler-wobble" },
+  { type: "term", label: "Milankovitch cycles", href: "/dictionary/milankovitch-cycles" },
+  { type: "term", label: "Equatorial bulge", href: "/dictionary/equatorial-bulge" },
 ]}>
 
 <TopicHeader
   eyebrow="FIG.12 · ROTATION & RIGID BODIES"
   title="THE WOBBLING EARTH"
-  subtitle="A planet is a spinning top. It precesses like one, nutates like one, and wobbles just like a slightly asymmetric one."
+  subtitle="The slowest measurable motion in the pre-modern sky — and the first thing Newton's gravity had to explain."
 />
 
-<Section index={1} title="The Earth as a rigid body">
+<Section index={1} title="Hipparchus notices a drift">
 
-The Earth is a rotating, nearly-spherical, slightly-oblate lump of rock and metal. For the purposes of rigid-body dynamics, it is a spinning top — a very big one, with a mass of 6×10²⁴ kg and a rotation period of 23 h 56 min 4 s. Everything we learned in FIG.09–11 about torques, moments of inertia, precession, and nutation applies to it, and produces a set of observable motions that amateur astronomers can track and that modern satellite geodesy measures to millimetres.
+In 127 BCE, on the island of Rhodes, the Greek astronomer <PhysicistLink slug="hipparchus">Hipparchus of Nicaea</PhysicistLink> did something unusual. He compared his own star catalogue — compiled with a quadrant, the sharpest instrument of his age — against a similar catalogue by Timocharis of Alexandria, made a century and a half earlier.
 
-There are three of them to explain, on three wildly different timescales:
+The stars had moved.
 
-1. **Axial precession.** The rotation axis sweeps out a cone of half-angle 23.4° around the pole of the ecliptic with a period of about 25,800 years. The effect is that Polaris, today's "North Star", will not be the pole star in 13,000 years — Vega will. This motion was discovered by <PhysicistLink slug="hipparchus">Hipparchus</PhysicistLink> around 130 BCE, more than nineteen centuries before Newton, as a slow drift of the equinoxes among the zodiac constellations.
+Not scattered — shifted. All of them, together, by roughly the same amount. The bright star Spica, near the ecliptic, had slid about 2° along the celestial longitude since Timocharis had measured it. Other stars told the same story. The fixed sphere of the heavens wasn't quite fixed.
 
-2. **Nutation.** Small oscillations superimposed on the precession, of amplitude up to about 9 arcseconds, driven by periodic variations in the lunar orbit. The largest component has an 18.6-year period.
+Hipparchus was careful. He considered, then rejected, the idea that the stars were individually moving; the shift was too uniform for that. What had moved, he concluded, was the *reference frame* — the equinox point, where the Sun crosses the celestial equator in spring, was sliding westward among the constellations. He had discovered what we now call the **<Term slug="precession-of-equinoxes">precession of the equinoxes</Term>**, and he pinned its rate at roughly 1° per century. The true value is about 1° every 72 years. He was right within a factor of two, from hand-tooled observations across 150 years of Greek astronomy.
 
-3. **Chandler wobble.** A free-body wobble with a period of about 433 days and an amplitude of a few metres at the Earth's surface. It has no external astronomical driver — it is a consequence of the Earth's rotation axis being not quite coincident with its principal axis of inertia.
-
-Each of these tells us something specific about the Earth's internal structure and its gravitational interactions with the Moon and Sun. Together they are one of the most beautiful demonstrations in solar-system physics.
+For the next nineteen centuries this was an observational fact without a mechanism. Nobody knew *why* the equinoxes precessed. Then, in 1687, <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> published the *Principia* — and in Book III, sandwiched between the tides and the shape of the Earth, he worked out that a spinning oblate planet, pulled on by the Moon and the Sun, has to behave exactly this way. The slow drift Hipparchus had spotted in his star maps was classical gyroscopic precession, written on the sky.
 
 </Section>
 
-<Section index={2} title="Axial precession — the 26,000-year cone">
+<Section index={2} title="The 26,000-year cone">
 
-The Earth is an oblate spheroid: it bulges at the equator by about 21 km relative to the poles, due to the centrifugal deformation of its rotation. This **equatorial bulge** is crucial. It turns the Earth from a perfect sphere (which would be gravitationally symmetric) into a body with a definite "waist" — the Moon and Sun can exert a torque on it.
+Here is what's actually happening. The Earth's rotation axis is tilted 23.4° from the perpendicular to its orbit around the Sun. That tilt is the Earth's **<Term slug="obliquity">obliquity</Term>**, and it is the reason we have seasons. The axis doesn't hold still in space. It traces out a cone — a full circle around the pole of the ecliptic, once every ~25,800 years.
 
-Specifically: the Moon's gravitational pull is stronger on the near side of the Earth's bulge than on the far side. The differential pull produces a small net torque, and because the Earth's rotation axis is tilted 23.4° to the Moon's orbital plane (the ecliptic, approximately), the torque is not along the axis — it is perpendicular to both the axis and the ecliptic pole, trying to swing the Earth's equator into the ecliptic plane.
+The cone has real, visible consequences. The "north star" — the star the rotation axis happens to point at — changes over millennia:
 
-By τ = dL/dt (FIG.11), a horizontal torque perpendicular to L rotates L horizontally — it does not flatten the tilt. L sweeps out a cone, and so does the rotation axis. The formula for the precession rate is:
+- **3000 BCE:** the pole pointed near **Thuban** in the constellation Draco. When the pyramids were built, Thuban was the pole star. The air shafts of Khufu's pyramid at Giza are aligned to it.
+- **2000 CE (today):** the pole points within 0.7° of **Polaris**. It will close to 0.4° around the year 2100, then start drifting away.
+- **14,000 CE:** the pole will point at **Vega**, the fifth-brightest star in the sky. Vega will be a much brighter pole star than Polaris is now, and a much worse one — it will sit 4° off the true pole.
 
-<EquationBlock id="EQ.01">
-  <span className="font-mono text-base">Ω = (3/2) · (G·M/r³) · (J_2 / ω) · cos ε</span>
-</EquationBlock>
+This is slow-music astronomy. One full revolution of the cone takes 25,800 years — longer than recorded human history. An eye watching the sky all its life sees nothing. A civilisation watching for a thousand years sees the equinox drift through half a zodiac sign. A planet watching for thirteen thousand years sees the entire sky flip upside down relative to its rotation axis.
 
-where G·M/r³ encodes the tidal strength of the perturbing body at distance r, J_2 is the Earth's oblateness coefficient (roughly 0.001), ω is the Earth's rotation rate, and ε is the axial tilt. Plugging in the Moon gives about 2/3 of the observed precession rate; the Sun gives about 1/3; the two together yield 50.3 arcseconds per year, which comes out to a period of 25,800 years. That 2:1 ratio between lunar and solar contributions is why the Earth's precession is called "lunisolar precession".
-
-**Hipparchus noticed it.** Around 130 BCE, comparing his observations with those of Timocharis 150 years earlier, Hipparchus noticed that the celestial longitude of the bright star Spica had shifted by about 2° — equivalent to about 48 arcseconds per year (he got the value roughly right). He correctly attributed this to a motion of the equinoxes rather than of the stars. For eighteen centuries "precession of the equinoxes" was an observational fact without a mechanical explanation. <PhysicistLink slug="isaac-newton">Newton</PhysicistLink>, in the *Principia* (1687), gave the first correct physical explanation — as a consequence of lunisolar torque on the equatorial bulge — and computed the rate from first principles.
-
-<SceneCard caption="FIG.12a — axial precession and Chandler wobble" className="w-full">
+<SceneCard caption="FIG.12a — the rotation axis precesses around the ecliptic pole" className="w-full">
   <ChandlerWobbleScene />
 </SceneCard>
 
-Switch between the two modes. Axial precession is the slow cone, rotation axis maintaining its 23.4° tilt but sweeping around the ecliptic pole with a 25,800-year period. Chandler wobble is the Earth's own free rigid-body response to not quite rotating about its principal axis — a tight circle in the pole's position, with a 433-day period. The two are completely different phenomena on different timescales, driven by different physics.
+Two motions live in this scene. Switch between them. **Axial precession** is the slow cone: the rotation axis keeps its 23.4° tilt but sweeps around the ecliptic pole with a 25,800-year period. **Chandler wobble** is something quite different, and we will get to it in section 5.
 
 </Section>
 
-<Section index={3} title="Nutation — the small ripples">
+<Section index={3} title="Why: the equatorial bulge and a sideways torque">
 
-Superimposed on the steady-cone precession are small oscillations called **<Term slug="nutation">nutation</Term>** (Latin for "nodding"). They arise because the astronomical torques driving the precession are not perfectly constant. In particular:
+The Earth is not a sphere. It spins, and centrifugal stress has pushed its equator outward by about 21 km relative to its poles. It is an **<Term slug="equatorial-bulge">oblate spheroid</Term>** — a slightly squashed ball with a definite waist. That waist is what makes precession possible.
 
-- The Moon's orbital plane is tilted about 5° to the ecliptic, and itself precesses with an 18.6-year period. This changes the geometry of the lunar torque on the Earth's bulge, modulating the precession rate.
-- The Earth's distance from the Sun varies over a year (our orbit is mildly elliptical), changing the solar torque's intensity seasonally.
-- Various shorter-period effects from the Moon's non-circular orbit.
+A perfect sphere is gravitationally symmetric. The Moon could hang anywhere around it and pull only along the line connecting the two centres — no leverage, no torque. But the bulge breaks the symmetry. The Moon's gravity pulls a little harder on the near side of the bulge than on the far side, and because the bulge is tilted 23.4° relative to the Moon's orbital plane, the net pull is *not* along the spin axis. It is a **torque perpendicular to the axis**, trying to tip the equator into the ecliptic.
 
-The result is a set of small oscillations of the rotation axis, the largest with an 18.6-year period and a ~9 arcsecond amplitude. They were first measured in 1728 by the English astronomer James Bradley, who had been hunting for stellar parallax and instead noticed that the positions of the stars as measured from the Earth underwent a complicated annual and multi-year pattern that matched exactly what the lunar-orbital geometry predicted. Bradley's work was the first direct experimental confirmation that the Moon's orbit mechanics tied in the right way to the Earth's rotation — a triumph of eighteenth-century Newtonian astronomy.
+From FIG.11 (gyroscopes and precession), we know what happens when a torque acts perpendicular to the angular momentum of a spinning body. The axis doesn't tip toward the torque — it sweeps sideways, perpendicular to both. The formula for the precession rate is:
 
-Modern nutation theory, refined through Very Long Baseline Interferometry measurements of quasars, has catalogued hundreds of nutation components with amplitudes down to microarcseconds. Each is a specific piece of the Earth-Moon-Sun geometry transferring as a time-varying torque on the equatorial bulge, and the fact that we can predict them to microarcseconds is a direct testimony to how well rigid-body dynamics models a planet.
-
-</Section>
-
-<Section index={4} title="Chandler wobble — the Earth's own free precession">
-
-Chandler wobble is different from precession and nutation. It has no external driver. It is the Earth's internal response to not quite rotating about one of its principal axes of inertia.
-
-**<PhysicistLink slug="leonhard-euler">Euler</PhysicistLink>** predicted it in 1758. His rigid-body equations say that a rigid body whose angular velocity vector is not aligned with one of its principal inertia axes will undergo a free nutation — a small oscillation of the rotation axis in the body frame. For a rigid Earth, Euler's prediction was a period of
-
-<EquationBlock id="EQ.02">
-  <span className="font-mono text-base">T_Euler = 2π / [ω · (C − A)/A ] ≈ 305 days</span>
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">Ω = (3/2) · (G·M/r³) · (J₂ / ω) · cos ε</span>
 </EquationBlock>
 
-where C and A are the polar and equatorial moments of inertia, and (C − A)/A ≈ 0.00328 is the Earth's dynamical flattening. For a full century astronomers looked for this 305-day motion and found nothing.
+where G·M/r³ is the tidal strength of the perturbing body at distance r, J₂ ≈ 0.00108 is the Earth's oblateness coefficient, ω is Earth's rotation rate, and ε = 23.4° is the obliquity. Plug in the Moon and you get two-thirds of the observed rate. Plug in the Sun and you get the remaining third. Together, 50.3 arcseconds per year — a period of 25,800 years. That 2:1 split between lunar and solar torque is why the phenomenon is called *lunisolar precession*, and it tells us that the Moon, despite being tiny compared to the Sun, is close enough that its tidal gradient dominates.
 
-In 1891 **<PhysicistLink slug="seth-carlo-chandler">Seth Carlo Chandler</PhysicistLink>**, a Boston insurance actuary and amateur astronomer, analysing nineteenth-century latitude-observation data, discovered a clear periodic signal — but at 433 days, not 305. The discrepancy was a puzzle for years. Simon Newcomb showed in 1892 that the difference was due to the Earth not being perfectly rigid: the equatorial bulge yields slightly under the rotational stresses of the wobble, and this elastic response lengthens the period from 305 to about 430 days. The detailed period depends on the Earth's internal elastic response, so Chandler wobble measurements are a direct probe of Earth's interior rheology.
-
-The wobble has an amplitude of a few metres — the pole of rotation traces a roughly 6-metre-diameter circle at the Earth's surface. It is visible in latitude observatory data: the observed latitude of any fixed observatory varies by about 0.3 arcseconds over the 433-day cycle, as the pole moves underneath. The International Earth Rotation Service tracks this wobble to sub-millimetre precision today, and it is a standard component of every GPS-quality Earth model.
-
-The wobble should damp out in about 70 years — internal friction within the Earth bleeds energy out of the free oscillation. It does not damp out. There must be some mechanism continually re-exciting it. The leading candidate is random excitation by ocean-bottom pressure fluctuations and atmospheric variations, which act as a sort of stochastic forcing on the Earth-as-a-rigid-body. The exact attribution is still debated in 2020s geophysics papers — the Chandler wobble is a small, subtle, observable motion whose maintenance is not yet fully understood.
+Newton had the qualitative picture in 1687 but his computation was off by about a factor of two. The full vector equations of rigid-body precession were written down by <PhysicistLink slug="jean-d-alembert">Jean d'Alembert</PhysicistLink> in his *Recherches sur la précession des équinoxes* (1749), and d'Alembert got the rate right to within a few percent of the modern value — a tour-de-force of eighteenth-century analytical mechanics. Two thousand years after Hipparchus noticed the drift, the drift had a one-line formula.
 
 </Section>
 
-<Section index={5} title="Why the wobble is small">
+<Section index={4} title="Nutation on top of it all">
 
-The Chandler wobble is measured in metres at the surface. The axial precession carries the pole through a 47° arc in the sky. Why is one so small and the other so large?
+The precession cone is not perfectly smooth. Watch carefully over decades and you see small oscillations on top — the rotation axis nods in and out, back and forth, by up to 9 arcseconds. The effect is called **<Term slug="nutation">nutation</Term>**, from the Latin *nutare*, "to nod".
 
-Two different physical regimes. Precession is driven by a very large, very steady external torque — the combined tidal pull of the Moon and Sun on the equatorial bulge. The torque is substantial (10²⁴ N·m), and over 13,000 years it rotates the axis through 47° on the sky. The amplitude is set by the fixed tilt angle (23.4°) and is not a "small" motion; it is an entire precession cone.
+Nutation exists because the torques driving the precession are not constant. Three sources:
 
-The Chandler wobble, by contrast, is a *free* oscillation with no large external driver. Its amplitude is set by initial conditions — whatever tiny offset of the rotation axis from the principal axis existed when the Earth formed or was most recently perturbed. Ocean bottom stress and atmospheric variability keep re-exciting it at a level of a few metres; that level is an equilibrium between the random forcing and the internal damping. If you hit the Earth with a really large impact — a 100-km asteroid, say — you could excite the wobble to hundreds of metres or more, and it would then damp slowly back to the ambient level over decades.
+- The Moon's orbit is itself tilted 5° to the ecliptic, and the line along which its orbit crosses the ecliptic — the **lunar node** — precesses with its own 18.6-year period. As the node rotates, the geometry of the lunar torque on the Earth's bulge changes, and so does the precession rate. This is the biggest single nutation term.
+- The Earth's orbit around the Sun is mildly elliptical, so the Sun's torque varies over the year.
+- The Moon's orbit is also elliptical, so the lunar torque has a monthly modulation.
 
-These two motions — the forced 26,000-year axial precession, and the free 433-day wobble — are different manifestations of the same rigid-body dynamics. Both are exactly what Euler's equations predict, applied to the Earth's particular inertia tensor, with or without external torques.
+The 18.6-year nutation was first measured in 1728 by the English astronomer James Bradley, who was hunting for stellar parallax and instead found this slow nod in the positions of the stars exactly where the lunar geometry said it should be. Bradley's discovery was one of the great confirmations of Newtonian astronomy: the Moon's orbit and the Earth's rotation were coupled, in the right way, to the third decimal place.
+
+Modern nutation theory, calibrated against Very Long Baseline Interferometry of quasars, catalogues hundreds of components down to microarcsecond amplitudes. Each one is a specific piece of the Earth-Moon-Sun geometry leaking into the rigid-body dynamics. That we can predict them to microarcseconds is a direct testimony to how cleanly rigid-body physics describes a planet.
+
+</Section>
+
+<Section index={5} title="Chandler wobble — the Earth's free oscillation">
+
+Precession and nutation are *forced* — they happen because something outside the Earth is pulling on it. There is a third motion, smaller and subtler, that happens because of the Earth itself. It is called the **<Term slug="chandler-wobble">Chandler wobble</Term>**.
+
+<PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> predicted it in 1758, as a consequence of his rigid-body equations. A rigid body whose rotation axis is not exactly aligned with one of its principal axes of inertia performs a free wobble — the rotation axis traces a small cone *in the body frame*, with a period determined entirely by the body's inertia ratios. For a perfectly rigid Earth, that period works out to:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">T_Euler = 2π / [ω · (C − A)/A] ≈ 305 days</span>
+</EquationBlock>
+
+where C is the polar moment of inertia and A the equatorial one. Astronomers looked for Euler's 305-day motion for over a century. Nothing. Latitude observatories — which fix their position by timing the transit of known stars — should have seen their latitude wobble by ±0.1 arcsecond every 305 days. They didn't.
+
+In 1891, a Boston insurance actuary and amateur astronomer named <PhysicistLink slug="seth-carlo-chandler">Seth Carlo Chandler</PhysicistLink> re-analysed decades of nineteenth-century latitude observations. He spotted a clear periodic signal — but at **433 days**, not 305. Simon Newcomb explained the discrepancy within the year: the Earth isn't rigid. Its equatorial bulge flexes slightly under the rotational stresses of the wobble, and that elastic give lengthens the period from 305 to about 430 days. The detailed period depends on the Earth's interior rheology, so Chandler wobble measurements are now a standard probe of the deep-Earth elastic response.
+
+The amplitude is small — the instantaneous rotation pole traces a circle about **6 metres across** at the Earth's surface. The International Earth Rotation Service tracks it to sub-millimetre precision today; it is baked into every GPS-quality Earth model.
+
+One open puzzle remains. The wobble should damp out in ~70 years as internal friction dissipates its energy. It hasn't. Something keeps re-exciting it. The current leading hypothesis is random forcing by ocean-bottom pressure and atmospheric mass variations, but the accounting is still debated in 2020s geophysics papers. The Chandler wobble is a small motion whose *maintenance* is not yet fully explained.
 
 <Callout variant="intuition">
-A spinning top on a finger captures both in miniature. The torque from gravity makes the top precess slowly around the vertical — that is the axial-precession analogue. And if you spin the top up with its axis not quite aligned to its symmetry axis, it also performs a fast nutational wobble at the top's own free-precession frequency — the Chandler wobble analogue. Bigger top, bigger Earth; same physics.
+A spinning top on your fingertip tells both stories in miniature. Gravity exerts a torque perpendicular to the spin and the top precesses slowly around the vertical — that is the axial-precession analogue. Spin the top up with its axis not quite along its symmetry axis and you also see a fast nutational wiggle at the top's own free-precession frequency — the Chandler wobble analogue. Bigger top, bigger Earth, same physics.
 </Callout>
 
 </Section>
 
-<Section index={6} title="Tidal braking — how the day got longer">
+<Section index={6} title="Milankovitch — how the slow music drives ice ages">
 
-There is one more rotation-related story the Earth tells. Its spin is slowing.
+Over tens of thousands of years, the Earth's orbital and rotational geometry changes in three ways at once:
 
-The same tidal torques that drive the precession also dissipate energy. The Moon raises tides on the Earth's oceans; those tides slosh and experience friction against the ocean floor and coastlines; that friction takes rotational energy out of the Earth's spin. Over geologic time, the Earth's day is getting longer — by about 1.7 milliseconds per century, measured directly from the comparison of atomic-clock standards with astronomical observations over the last hundred years. Paleontological evidence — growth bands in fossil corals — shows that in the Devonian (400 million years ago) the day was about 21 hours long and the year contained about 410 days.
+- **Precession** (the 26,000-year cone we have been discussing) shifts *when* in the orbit each season falls — whether northern summer happens near perihelion or aphelion.
+- **Obliquity** (the tilt itself) varies between about 22.1° and 24.5° over a 41,000-year cycle, because the Moon's own orbital geometry wobbles.
+- **Eccentricity** (how elliptical the orbit is) varies between nearly circular and about 0.06 over roughly 100,000 years, from gravitational nudges by Jupiter and Saturn.
 
-Angular momentum is conserved between the Earth-Moon system. Energy dissipated as ocean friction has to go somewhere, and the total L stays fixed. The bookkeeping is: Earth rotation slows, so spin L decreases; Moon's orbital L increases to compensate; so the Moon moves further from the Earth. The Moon is receding at about 3.8 cm per year, measured precisely by retroreflectors left on the lunar surface by Apollo astronauts. In two billion years it will be far enough that total solar eclipses will no longer occur — the Moon's apparent size will be too small to cover the Sun.
+Together these three are called the **<Term slug="milankovitch-cycles">Milankovitch cycles</Term>**, and they jointly set how much sunlight reaches each latitude in each season. When the cycles align to make northern summers cool — near-aphelion timing, low obliquity, high eccentricity in the right phase — winter snow at high northern latitudes can survive through summer, accumulate, and grow into continental ice sheets. When they align the other way, the ice melts back.
 
-This is the endgame of a spinning-body coupled to a satellite. Ultimately, over timescales of tens of billions of years (longer than the universe has existed), the Earth and Moon would become tidally locked — same face always pointing at the Moon, rotating together. The Earth would have a 47-day "day" and the Moon would appear stationary in its sky. It won't actually happen — the Sun will expand into a red giant first — but it is the natural endpoint of the rigid-body-plus-tides dynamics we have been describing.
+The idea that astronomy drives climate was proposed in the nineteenth century, but it was **<PhysicistLink slug="milutin-milankovic">Milutin Milanković</PhysicistLink>** — a Serbian mathematician — who turned it into a quantitative theory. He began the calculations in 1912. In 1914, conscripted as a Serbian citizen caught in Austria-Hungary at the outbreak of WWI, he was interned as a prisoner of war in Budapest. He was allowed to continue his research in the library of the Hungarian Academy of Sciences, and there, through the war years, he worked out the full insolation curves — how much sunlight reaches each latitude on each day of the year, at each point in the orbital cycles, going back half a million years.
+
+His 1920 *Mathematische Klimalehre* and 1941 *Canon of Insolation* laid out the theory. At first the paleoclimate data were not good enough to test it. Then, starting in the 1970s, deep-sea sediment cores and Antarctic ice cores gave temperature proxies running back hundreds of thousands of years — and the ice-age signal matched Milanković's curves cycle for cycle. The dominant period of the last million years of glaciation is 100,000 years: Jupiter and Saturn tugging on the Earth's orbit. A 41,000-year obliquity signal rides on top. The precessional 23,000-year signal is there too, strong at low latitudes.
+
+This is the slowest-played piece in classical mechanics. The same rigid-body equations that explain a gyroscope on a lab bench, sped up 26,000 years per second, give you the rhythm of the ice ages.
 
 </Section>
 
-<Section index={7} title="Forward — end of the rotation module">
+<Section index={7} title="What's next — the scale resets">
 
-This closes the module on rotation and rigid bodies. We built the toolkit — torque, moment of inertia, angular momentum, the parallel-axis theorem — and applied it: to gyroscopes, to bicycles, to falling cats, and finally to the Earth itself, whose precession, nutation, Chandler wobble, and tidal deceleration are all direct consequences of Euler's rigid-body equations.
+We have now built rotational dynamics all the way out to the scale of a planet. Starting from torque and moment of inertia, we went through gyroscopes, through free-body motion, and finally to a world whose spin, tilt, and wobble write the seasons, set the pole stars, and drive the glaciations.
 
-What is left? Newton's laws have been our framework for every topic so far in classical mechanics. It has served — as long as the systems are simple enough to work out the forces directly. But for anything more complicated than a few particles, the forces themselves become hard to enumerate (think of a double pendulum with its constraint forces, or a rolling ball on a curved surface). The nineteenth century developed an entirely different, and more powerful, formulation of mechanics — Lagrangian and Hamiltonian mechanics — in which we work not with forces but with energies, and the equations of motion pop out of a single scalar function. That is the last four topics of this branch (FIG.28–31). It will reframe everything we have done — pendulums, orbits, collisions, rotations — as consequences of one principle: the action is stationary along the true path. Newton will still be right, but Lagrange and Hamilton will see further.
+The next module resets the scale entirely. We return to single oscillators — a mass, a restoring force, maybe a damper, maybe a driver. We have already met the simple pendulum; the spring-mass system is next, then damping, then resonance. From a planet back to a mass on a spring. It will feel like a small topic after this one. It isn't. Everything in wave physics, in every branch of classical and quantum physics, is built on oscillators. The Earth itself, on the scale of its own interior elastic modes, is an oscillator too — and when we come back to rigid bodies in the Lagrangian formulation, we will see every motion in this topic as a special case of a much more general principle.
 
 </Section>
 

@@ -975,6 +975,54 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
     ],
   },
+  {
+    slug: "rolling-without-slipping",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+    ],
+  },
+  {
+    slug: "perpendicular-axis-theorem",
+    category: "concept",
+    relatedPhysicists: ["leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "moment-of-inertia" },
+    ],
+  },
+  {
+    slug: "inertial-navigation",
+    category: "concept",
+    relatedPhysicists: ["leon-foucault", "johann-bohnenberger", "elmer-sperry"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "gyroscopes-and-precession" },
+    ],
+  },
+  {
+    slug: "precession-of-equinoxes",
+    category: "phenomenon",
+    visualization: "chandler-wobble",
+    relatedPhysicists: ["hipparchus", "isaac-newton", "jean-d-alembert"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "obliquity",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "milankovitch-cycles",
+    category: "phenomenon",
+    relatedPhysicists: ["milutin-milankovic"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
