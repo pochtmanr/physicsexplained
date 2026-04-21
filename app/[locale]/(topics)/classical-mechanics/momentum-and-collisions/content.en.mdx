@@ -4,19 +4,20 @@ import { SceneCard } from "@/components/layout/scene-card";
 import { EquationBlock } from "@/components/math/equation-block";
 import { Callout } from "@/components/layout/callout";
 import { CollisionScene } from "@/components/physics/collision-scene";
+import { CenterOfMassScene } from "@/components/physics/center-of-mass-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
 <TopicPageLayout aside={[
-  { type: "physicist", label: "René Descartes", href: "/physicists/rene-descartes" },
   { type: "physicist", label: "Christiaan Huygens", href: "/physicists/christiaan-huygens" },
   { type: "physicist", label: "John Wallis", href: "/physicists/john-wallis" },
   { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Konstantin Tsiolkovsky", href: "/physicists/konstantin-tsiolkovsky" },
   { type: "term", label: "Momentum", href: "/dictionary/momentum" },
   { type: "term", label: "Impulse", href: "/dictionary/impulse" },
   { type: "term", label: "Center of Mass", href: "/dictionary/center-of-mass" },
   { type: "term", label: "Elastic Collision", href: "/dictionary/elastic-collision" },
   { type: "term", label: "Inelastic Collision", href: "/dictionary/inelastic-collision" },
-  { type: "term", label: "Coefficient of Restitution", href: "/dictionary/coefficient-of-restitution" },
+  { type: "term", label: "Rocket Equation", href: "/dictionary/rocket-equation" },
 ]}>
 
 <TopicHeader
@@ -25,13 +26,17 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
   subtitle="The quantity nothing can create or destroy — only pass around."
 />
 
-<Section index={1} title="A second ledger">
+<Section index={1} title="The cue ball">
 
-In FIG.05 we built a ledger for energy. Every joule had an address, and no joule was ever lost, only relocated — sometimes uselessly, into heat. This topic builds a second ledger, one that tracks a different quantity entirely: not m·v² but the simpler product m·v, with a direction attached. It is called **<Term slug="momentum">momentum</Term>**, usually written p, and it obeys a conservation law every bit as strict as the one for energy — and in some ways a better one.
+A cue ball crosses the felt and strikes a resting ball dead centre. The cue ball stops. The other ball shoots forward at exactly the speed the cue ball had a moment before. As if a quantity of motion had been handed off, whole and intact, from one body to the next.
 
-Why introduce a second quantity? Because energy alone cannot tell you how a collision will end. Two billiard balls approach each other at equal and opposite speeds, 3 m/s each. After they collide, you know the total kinetic energy (if the collision is elastic) but not how it is split between them. They could both stop. They could swap. They could fly apart at some other pair of speeds. Energy narrows the possibilities but does not pin down the answer.
+That quantity has a name. It is called **<Term slug="momentum">momentum</Term>**, usually written *p*, and it is the subject of this topic.
 
-Momentum does. For the head-on symmetric case above, total momentum is zero before the collision — m·(+3) + m·(−3) = 0. It must be zero after. So whatever the final velocities are, they must come in equal and opposite pairs. Combined with energy conservation for the elastic case, this forces the unique solution: they swap velocities, -3 and +3. Momentum removes the ambiguity. Every collision problem, from billiards to rocket launches, reduces to applying both ledgers at once.
+Energy alone cannot tell you how that collision will end. Two equal balls approach each other at 3 m/s each. After they collide, they might both stop, swap velocities, fly apart at some other pair of speeds — kinetic energy is the same in any of those outcomes (if the collision is elastic). Energy narrows the possibilities. It does not pin down the answer.
+
+Momentum does. The total momentum before — m·(+3) + m·(−3) = 0 — must equal the total momentum after. Whatever the final velocities are, they have to come in equal and opposite pairs. Combined with energy conservation, that forces a unique outcome: they swap. Every collision problem, from pool hall to rocket launch, is both ledgers applied at once.
+
+<PhysicistLink slug="isaac-newton">Newton</PhysicistLink> wrote his second law not as *F = ma* but as *F = dp/dt*. The form matters. *Force is the rate at which momentum changes.* It generalises cleanly into relativity. It survives a rocket losing mass mid-flight. *F = ma* is a special case. *F = dp/dt* is the real thing.
 
 </Section>
 
@@ -43,19 +48,17 @@ Momentum is the product of mass and velocity:
   <span className="font-mono text-base">p = m · v</span>
 </EquationBlock>
 
-It is a vector — it has both a magnitude and a direction. In 1-D problems you keep track of signs; in 3-D it's a triple (p_x, p_y, p_z). A 1 kg object moving at 3 m/s east has momentum +3 kg·m/s east. The same object moving 3 m/s west has momentum −3 kg·m/s.
+A vector — magnitude and direction, both. A 1 kg object moving at 3 m/s east has momentum +3 kg·m/s east. The same object moving west has −3. In three dimensions it's a triple (p_x, p_y, p_z), one conservation law per axis.
 
-The conservation law is:
+The law itself is one line:
 
 <EquationBlock id="EQ.02">
   <span className="font-mono text-base">p_total (before) = p_total (after)</span>
 </EquationBlock>
 
-for any closed system — one with no external forces acting on it. Internal forces between the parts don't matter: if particle A pushes particle B, then by Newton's third law particle B pushes back on A with an equal and opposite force, and the total p_A + p_B doesn't change. That is really all the law is: Newton's third law, promoted from a statement about forces to a statement about the time-integral of forces.
+for any closed system — one no external force is acting on. Internal forces between the parts don't matter. If particle A pushes particle B, Newton's third law says B pushes back on A with an equal and opposite force; the total p_A + p_B doesn't budge. Conservation of momentum *is* Newton's third law, promoted from a statement about forces to a statement about their time-integral.
 
-The connection to Newton's second law is direct. F = m·a can be rewritten as F = dp/dt — force is the rate of change of momentum. Zero external force means dp/dt = 0, which means p = constant. Conservation of momentum is the time-integrated version of F = m·a when the net external F is zero.
-
-<PhysicistLink slug="rene-descartes">Descartes</PhysicistLink> had the idea first, in 1644, and called it *quantitas motus* — quantity of motion. He thought it was the deepest law of nature, a direct statement about how God maintained the universe. He was mostly right. What he got wrong was the definition: he used |m·v|, throwing away the direction, and that version doesn't conserve. Within a generation <PhysicistLink slug="christiaan-huygens">Huygens</PhysicistLink> and <PhysicistLink slug="john-wallis">John Wallis</PhysicistLink> independently caught the error, added the sign (or, in 2-D, the vector), and made the law actually hold. <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> wrote it into the *Principia* as a cornerstone, where it has lived ever since.
+<PhysicistLink slug="rene-descartes">Descartes</PhysicistLink> had the idea first, in 1644, and called it *quantitas motus* — quantity of motion. He thought it was the deepest law of nature. He was mostly right. What he got wrong was the definition: he used |m·v|, absolute value, no sign. That version doesn't conserve. Within a generation <PhysicistLink slug="christiaan-huygens">Huygens</PhysicistLink> and <PhysicistLink slug="john-wallis">John Wallis</PhysicistLink>, working independently in 1668, caught the error, added the sign, and made the law actually hold — Huygens on elastic collisions, Wallis on inelastic ones. <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> wrote it into the *Principia* a generation later, where it has lived ever since.
 
 </Section>
 
@@ -93,7 +96,13 @@ where M is the total mass. The total momentum of a system is exactly the total m
 
 This is a startlingly powerful statement. Consider a hand grenade thrown in an arc, which explodes mid-flight into a hundred fragments flying in every direction. Every single fragment has its own messy trajectory. But the center of mass of all those fragments, summed, continues along the original parabola as if the explosion never happened. The internal forces of the explosion cancel in pairs — they can redistribute momentum among fragments but cannot move the center of mass. Ignore air resistance, and the center of the swarm lands exactly where the unexploded grenade would have landed.
 
-Divers use the same trick. A tuck-somersault diver spins rapidly in mid-air, but their center of mass follows a perfect parabola from the springboard to the water. The limbs are tracing complicated curves; the CM is not. Trampolinists, gymnasts, and astronauts all rely on the same separation: internal rearrangements change everyone's individual motion but can never shift the system's center of mass.
+Divers use the same trick. A tuck-somersault diver spins rapidly in mid-air, but their center of mass follows a perfect parabola from the springboard to the water. The limbs trace complicated curves; the CM does not. Trampolinists, gymnasts, and astronauts all rely on the same separation: internal rearrangements change individual motion but cannot shift the system's center of mass.
+
+<SceneCard caption="FIG.06a — the centre of mass moves in a straight line" className="w-full">
+  <CenterOfMassScene />
+</SceneCard>
+
+Two unequal masses, rigidly linked, tumble as they translate. Each mass traces a complicated looping path. The magenta dot marking their common CM glides along in a perfectly straight line. Whatever the bodies do between themselves, the CM keeps sailing at constant velocity — that is the translational motion of the system, cleanly decoupled from everything internal.
 
 <Callout variant="intuition">
 This is also why you can't lift yourself up by your own bootstraps. Your CM can only be moved by forces from outside your body — the floor pushing your feet, the air pushing your skin. Flail internally all you like: every limb that moves up must be matched by another moving down, and the CM is stuck.
@@ -113,7 +122,7 @@ A collision is **perfectly <Term slug="inelastic-collision">inelastic</Term>** i
 
 In between, most real collisions are **partially inelastic**. They're parameterised by a **<Term slug="coefficient-of-restitution">coefficient of restitution</Term>** e, defined as the ratio of post-collision to pre-collision relative speed. e = 1 is elastic, e = 0 is perfectly inelastic, and everything real lies between. A tennis ball on a hard court has e ≈ 0.75; a baseball on a wooden bat has e ≈ 0.55; a dropped marble on concrete has e ≈ 0.9.
 
-<SceneCard caption="FIG.06a — two-body collision with adjustable mass and restitution" className="w-full">
+<SceneCard caption="FIG.06b — two-body collision with adjustable mass and restitution" className="w-full">
   <CollisionScene />
 </SceneCard>
 
@@ -137,7 +146,7 @@ Three limits are worth noticing. When m_A = m_B, the first ball stops dead and t
 
 In a closed system you cannot change the total momentum. You can, however, rearrange it — expel some mass backward, and the rest moves forward. That is how rockets work.
 
-A rocket of instantaneous mass M expels fuel at exhaust velocity u (relative to itself) at a mass flow rate dm/dt. Momentum balance: the fuel that leaves carries momentum (dm)·(−u) backward; the rocket, for its total momentum to remain unchanged, must gain momentum M·dv forward. Over an infinitesimal time interval,
+A rocket of instantaneous mass M expels fuel at exhaust velocity u (relative to itself) at a mass flow rate dm/dt. Momentum balance: the fuel that leaves carries momentum (dm)·(−u) backward; the rocket, for its total momentum to stay fixed, must gain momentum M·dv forward. Over an infinitesimal interval,
 
 <EquationBlock id="EQ.08">
   <span className="font-mono text-base">M · dv = u · dm   →   dv = u · dM / M</span>
@@ -149,9 +158,13 @@ Integrate from initial mass M₀ to final mass M:
   <span className="font-mono text-base">Δv = u · ln(M₀ / M)        (Tsiolkovsky rocket equation)</span>
 </EquationBlock>
 
-This is Konstantin Tsiolkovsky's 1903 result, and it is the fundamental equation of spaceflight. Every kilogram of payload you want to move requires you to also move fuel — and the fuel for that fuel, and the fuel for that fuel's fuel, exponentially. Reaching low Earth orbit requires about 9.4 km/s of Δv; chemical rockets have exhaust velocities around 4.5 km/s; so the mass ratio M₀/M must be about e^(9.4/4.5) ≈ 8. Eight kilograms of fuel per kilogram of rocket-plus-payload at the pad. That is why rockets are mostly fuel tanks.
+That logarithm is the cruellest function in engineering.
 
-The logic also runs in reverse. If a squid wants to move forward, it has to squirt water backward. If a human on a frictionless ice rink wants to move, they throw a shoe. Momentum conservation is the reason no body can propel itself forward without pushing something else backward — there is no magic thruster, and there never will be.
+<PhysicistLink slug="konstantin-tsiolkovsky">Konstantin Tsiolkovsky</PhysicistLink> derived it in 1903 — a deaf schoolteacher in the Russian provincial town of Kaluga, with no laboratory, no colleagues, and almost no readers outside a small circle of Moscow enthusiasts. He worked it out from nothing but Newton's laws and the willingness to track what happens when mass itself is flowing out of the object under study. The **<Term slug="rocket-equation">rocket equation</Term>** is what fell out. A hundred and twenty years later it is still what NASA mission planners solve first when they sketch any trajectory, from LEO to Pluto.
+
+The logarithm is the villain. Every kilogram of payload you want to move requires fuel; the fuel for that fuel; the fuel for that fuel's fuel; all exponentially. Reaching low Earth orbit demands about 9.4 km/s of Δv. Chemical rockets have exhaust velocities around 4.5 km/s. So the required mass ratio is M₀/M ≈ e^(9.4/4.5) ≈ 8. Eight kilograms of fuel per kilogram of rocket-plus-payload sitting on the pad. That is why a Saturn V was 85% propellant by mass, and why spacecraft are engineered to shed every empty tank they can.
+
+The logic also runs in reverse. If a squid wants to move forward, it squirts water backward. If a human on a frictionless ice rink wants to move, they throw a shoe. Momentum conservation is the reason no body can propel itself forward without pushing something else backward — there is no magic thruster, and there never will be.
 
 </Section>
 

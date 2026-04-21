@@ -943,6 +943,38 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
     ],
   },
+  {
+    slug: "rocket-equation",
+    category: "concept",
+    relatedPhysicists: ["konstantin-tsiolkovsky", "isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
+  {
+    slug: "cross-product",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+    ],
+  },
+  {
+    slug: "central-force",
+    category: "concept",
+    relatedPhysicists: ["isaac-newton", "johannes-kepler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+    ],
+  },
+  {
+    slug: "continuous-symmetry",
+    category: "concept",
+    visualization: "symmetry-triptych",
+    relatedPhysicists: ["emmy-noether"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

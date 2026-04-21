@@ -11,8 +11,9 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
   { type: "physicist", label: "David Hilbert", href: "/physicists/david-hilbert" },
   { type: "physicist", label: "Felix Klein", href: "/physicists/felix-klein" },
   { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
-  { type: "term", label: "Symmetry", href: "/dictionary/symmetry" },
   { type: "term", label: "Noether's Theorem", href: "/dictionary/noethers-theorem" },
+  { type: "term", label: "Symmetry", href: "/dictionary/symmetry" },
+  { type: "term", label: "Continuous symmetry", href: "/dictionary/continuous-symmetry" },
   { type: "term", label: "Lagrangian", href: "/dictionary/lagrangian" },
   { type: "term", label: "Invariance", href: "/dictionary/invariance" },
 ]}>
@@ -20,118 +21,138 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 <TopicHeader
   eyebrow="FIG.08 · CONSERVATION LAWS"
   title="NOETHER'S THEOREM"
-  subtitle="Every conservation law comes from a symmetry. Every symmetry gives you a conservation law."
+  subtitle="Every conservation law is a symmetry in disguise."
 />
 
-<Section index={1} title="The pattern">
+<Section index={1} title="The pattern no one had noticed">
 
-Three conservation laws, three topics. Energy is conserved. Momentum is conserved. Angular momentum is conserved. Each law has been independently useful — we used energy conservation to pin down the speed of a falling brick, momentum conservation to solve collisions, angular-momentum conservation to explain spinning skaters.
+Three topics. Three conservation laws. Energy is conserved. Momentum is conserved. Angular momentum is conserved. Each law has been independently useful — we used energy conservation to pin down the speed of a falling brick, momentum conservation to solve collisions, angular-momentum conservation to explain spinning skaters.
 
-Stop and notice the pattern. Why exactly three of them? Why these three? Why not also m²·v, or m·v³, or the quantity m·x² — why do those not admit conservation laws? There are infinitely many things you could imagine being conserved, and the universe picks three. Is there a rule?
+Stop and notice the pattern. Why exactly three? Why these three? Why not also m²·v, or m·v³, or the quantity m·x²? There are infinitely many things you could imagine being conserved, and the universe picks three. Is there a rule that picks them out?
 
-There is. It is the most beautiful theorem in classical physics, proved by a single mathematician in 1918, and it answers the question at one stroke. **For every continuous symmetry of a physical system, there is a conserved quantity.** That is it. The three laws we've built are exactly the three symmetries of space and time that the universe turns out to have, and no others. Were the universe to have a fourth continuous symmetry, it would have a fourth conservation law. It doesn't, and it doesn't.
+There is. It is the most beautiful theorem in classical physics, and it was proved in 1918 by a mathematician who had spent the previous decade being refused a paid position at Göttingen because she was a woman. <PhysicistLink slug="emmy-noether">Emmy Noether</PhysicistLink> did not invent a new conservation law. She did something stranger. She proved that every conservation law that exists, or can exist, is the shadow of a symmetry of nature. Change the symmetries — and only those — and you change the ledger of what is conserved.
 
-The mathematician was <PhysicistLink slug="emmy-noether">Emmy Noether</PhysicistLink>. The theorem is her name. The rest of this topic is what it means and why.
+The rest of this topic is what that sentence means, and why physics has not stopped reckoning with it since.
 
 </Section>
 
-<Section index={2} title="What is a symmetry?">
+<Section index={2} title="What a symmetry is, exactly">
 
-The word is used loosely in everyday speech. In physics it has a precise meaning: a system has a **<Term slug="symmetry">symmetry</Term>** under some transformation if applying the transformation changes nothing about the physics. The laws of motion of the transformed system are identical to the laws of motion of the original system. An experiment run before the transformation and an experiment run after will produce indistinguishable results.
+The word is used loosely in everyday speech. In physics it has a precise meaning: a system has a **<Term slug="symmetry">symmetry</Term>** under some transformation if applying the transformation changes nothing about the physics. The laws of motion of the transformed system are identical to the laws of motion of the original system. An experiment run before and an experiment run after will produce indistinguishable results.
 
-Three candidate transformations of the physical world:
+Three candidate transformations of the physical world are unlike anything else:
 
-1. **Time translation.** If I run an experiment today, and an identical experiment tomorrow, they produce identical results. The laws of physics don't change with time. Nothing special about Wednesday versus Thursday. The system has a symmetry under t → t + Δt, for any Δt.
+1. **Time translation.** If I run an experiment today, and an identical experiment tomorrow, they produce identical results. The laws of physics don't change with time. Nothing special about Wednesday versus Thursday. The system has a symmetry under *t → t + Δt*, for any Δt.
 
-2. **Space translation.** If I run an experiment in Dortmund, and an identical experiment in Berlin, they produce identical results. Nothing special about one point in space over another — gravity, electromagnetism, pendulums, springs all behave the same way. Symmetry under r → r + Δr.
+2. **Space translation.** If I run an experiment in Dortmund, and an identical experiment in Berlin, they produce identical results. Nothing special about one point in space over another. Gravity, electromagnetism, pendulums, springs all behave the same way. Symmetry under *r → r + Δr*.
 
-3. **Rotation.** If I orient my apparatus pointing east, and you orient yours pointing north, we get identical physics. Space has no preferred direction. Symmetry under r → R·r, for any rotation R.
+3. **Rotation.** If I orient my apparatus pointing east, and you orient yours pointing north, we get identical physics. Space has no preferred direction. Symmetry under *r → R·r*, for any rotation matrix R.
 
-There are others (reflections, parity, time reversal), but these three are the fundamental *continuous* symmetries — meaning the transformation can be applied by any tiny amount, not just in discrete jumps. Continuity is what Noether's theorem needs.
+These three transformations share a critical property. Each of them can be applied by any tiny amount — slide the clock forward by a nanosecond, translate by a millimetre, rotate by a milliradian. That makes them **<Term slug="continuous-symmetry">continuous symmetries</Term>**: symmetries parameterised by a real number you can slide smoothly from zero. A mirror flip, by contrast, is a *discrete* symmetry — you either flip or you don't, no halfway. Noether's theorem, as we'll see, lives and dies on continuity.
 
-<SceneCard caption="FIG.08a — the three fundamental symmetries of mechanics" className="w-full">
+<SceneCard caption="FIG.08a — the three fundamental continuous symmetries of mechanics" className="w-full">
   <SymmetryTriptychScene />
 </SceneCard>
 
-Flip through the three panels. The left and right instances of each setup are identical systems, transformed by one of the three operations. They tick in perfect lockstep because the laws of motion don't care about the transformation. Each symmetry — time, space, rotation — is paired in this figure with the conservation law Noether pins to it.
+Flip through the three panels. The two instances of each setup are identical systems, transformed by one of the three operations. They tick in perfect lockstep, because the laws of motion don't care about the transformation. Each symmetry is paired, in the label, with the conservation law it turns out to be hiding.
 
 </Section>
 
-<Section index={3} title="Noether's theorem, stated">
+<Section index={3} title="The theorem, stated plainly">
 
-Noether's theorem is a statement in Lagrangian mechanics. (We will do Lagrangians properly in FIG.29; for now, take it that for every mechanical system you can write a single function L of positions and velocities whose behaviour over time encodes all the equations of motion. The function is called the **<Term slug="lagrangian">Lagrangian</Term>**, usually defined as L = KE − PE.)
+Noether's theorem is stated most cleanly in **<Term slug="lagrangian">Lagrangian</Term>** mechanics. (We'll treat Lagrangians properly in FIG.29. For now, take it that for every mechanical system you can write a single function *L* of positions and velocities whose behaviour over time encodes all the equations of motion. *L* is usually defined as kinetic energy minus potential energy.)
 
-Noether proved, in its classical form:
+Here is the theorem, in the spirit of Noether's 1918 paper:
 
-> If the Lagrangian of a system is invariant under a continuous transformation depending on a parameter ε, then there is a quantity Q that does not change with time — a conserved quantity — whose form can be read directly off the transformation.
+<Callout variant="math">
+**Noether's theorem.** If the Lagrangian of a system is <Term slug="invariance">invariant</Term> under a continuous transformation depending on a real parameter ε, then there exists a quantity Q that does not change with time — a conserved quantity — whose form can be read directly from the transformation.
+</Callout>
 
-"Invariant" means: applying the transformation makes no difference to L. "Continuous" means the transformation can be infinitesimal. Q is the generator of the transformation.
+Three words do all the work. *Invariant* means the Lagrangian looks the same after the transformation as before. *Continuous* means the transformation is parameterised by a real number ε you can make arbitrarily small. *Conserved* means dQ/dt = 0 along any solution to the equations of motion.
 
-The three classical cases, filled in:
-
-- **Time-translation symmetry** (L doesn't depend on t explicitly) → Q = energy
-- **Space-translation symmetry** (L doesn't depend on x explicitly) → Q = momentum
-- **Rotation symmetry** (L is invariant under rotations) → Q = angular momentum
-
-Every conservation law we met in FIG.05, FIG.06, FIG.07 is a specific instance of this theorem. Three topics of careful construction turned out to be three corollaries of one sentence.
+The symbol for the whole bargain:
 
 <EquationBlock id="EQ.01">
-  <span className="font-mono text-base">symmetry (continuous)    ⇔    conserved quantity</span>
+  <span className="font-mono text-base">continuous symmetry of L    ⇔    conserved quantity Q</span>
 </EquationBlock>
 
-Read the arrow both ways. A symmetry implies a conserved quantity — the forward direction is what Noether proved. But the converse also holds: observing a conserved quantity is direct evidence that the system has the corresponding symmetry. When we discover a new conservation law, we have discovered a new symmetry of the universe. When a conservation law is broken, we have discovered that a symmetry we thought existed doesn't — or is broken by some new physics.
+Read the arrow both ways. The forward direction is what Noether proved. The converse is equally consequential: the observation of a conserved quantity in nature is direct evidence that some symmetry is hiding in the laws. When we discover a new conservation law, we have discovered a new symmetry of the universe. When a conservation law is broken, a symmetry we thought existed doesn't — or is broken by some new physics we hadn't yet accounted for.
+
+The next three sections unpack, in order, the three symmetries we already met — and in each case read off the Noether charge.
 
 </Section>
 
-<Section index={4} title="Beyond mechanics">
+<Section index={4} title="Time-translation → energy">
 
-The theorem's reach is enormous. In classical mechanics it unifies our three conservation laws. In electromagnetism and quantum field theory — formalisms Noether herself did not live long enough to see fully developed — it unifies every conservation law in all of modern physics.
+The simplest symmetry to state is: *the laws of physics don't depend on when you apply them*. A pendulum released at noon swings the same way as one released at midnight. A falling apple falls the same in 1687 and in 2026. Formally, the Lagrangian of a closed system doesn't explicitly depend on *t*. Shift the clock by any Δt and *L* is unchanged.
 
-- **Conservation of electric charge** comes from the symmetry of quantum wave functions under a continuous phase rotation ψ → e^(iα)·ψ. The phase of a wave function is physically unobservable; Noether tells us that the conserved consequence of this fact is charge.
+What quantity does Noether's machinery hand back?
 
-- **Conservation of color charge** in quantum chromodynamics comes from a more complicated symmetry (the gauge group SU(3)), but it too is a Noether consequence of an unobservable phase.
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">time-translation symmetry    ⟹    energy conserved</span>
+</EquationBlock>
 
-- **Conservation of lepton number and baryon number** come from separate global phase symmetries.
+The conserved Noether charge associated with time-translation is what we have been calling the **<Term slug="conservation-of-energy">total energy</Term>** — the sum of kinetic and potential. Every time we summed ½mv² and mgh on a bouncing ball and got the same number at the top and bottom of the arc, we were observing time-translation invariance. Energy conservation is not a separate fact about the world, independent of its homogeneity in time. It is the same fact, re-expressed.
 
-- In general relativity, the absence of a single well-defined energy-momentum tensor for the gravitational field is a consequence of the theory's diffeomorphism invariance being a *local* symmetry rather than a rigid global one — Noether's theorem behaves differently for local gauge symmetries, and her *second* theorem (less famous but equally deep) handles those cases. <PhysicistLink slug="albert-einstein">Einstein</PhysicistLink> specifically consulted Noether about this subtlety when formulating general relativity — and <PhysicistLink slug="david-hilbert">Hilbert</PhysicistLink> and <PhysicistLink slug="felix-klein">Klein</PhysicistLink>, two of the foremost mathematicians of the time, credited her with solving it.
+<Callout variant="intuition">
+The universe is indifferent to when you do an experiment. Because of that indifference, you can add up certain combinations of kinetic and potential energy and the total does not change. Those are dual statements. Time-homogeneity and energy-conservation are the same thing wearing different clothes.
+</Callout>
 
-This is why Noether is frequently called the most important woman in the history of mathematics. Her 1918 theorem is the skeleton key to all of modern physics. Anywhere a quantity is conserved, somewhere a symmetry is hiding. Anywhere a symmetry is broken, somewhere a conservation law fails — and that failure is how new physics gets discovered.
-
-</Section>
-
-<Section index={5} title="Why the universe has just these three">
-
-We can now answer the question from §1. Why exactly three classical conservation laws?
-
-Because the universe has exactly three continuous symmetries of the simplest kind: time has one continuous dimension, and is invariant under sliding along it (one symmetry); space has three continuous dimensions, and is invariant under sliding along any of them (three symmetries, but by convention bundled into one "momentum" vector); space is invariant under three independent axes of rotation (one rotation symmetry, bundled into an "angular momentum" vector). Lump them as "time-shifts, space-shifts, rotations" and you get three Noether-charges: energy (scalar), momentum (3-vector), angular momentum (3-vector).
-
-No others are fundamental in non-relativistic classical mechanics. Galilean boosts — moving to a uniformly moving frame — are a symmetry of Newtonian physics but lead not to a new conserved quantity of the sort we want; they give the weaker statement that the motion of the center of mass is uniform, which is already implicit in momentum conservation. In relativity, Galilean boosts are replaced by Lorentz boosts, and those yield no scalar conserved charge in the usual sense either — instead they rotate energy and momentum into each other, which is why in relativity they are a single 4-vector.
-
-That is the full list for classical mechanics. Three symmetries, three conservation laws, no more, no less. Noether settles the count at one stroke. Whatever other conservation laws you discover in nature — of charge, of isospin, of baryon number — are reports on deeper, non-spatial symmetries whose existence is Noether-encoded in the structure of the theory.
+Run it in reverse: a system that does not conserve energy must have a Lagrangian that depends on *t*. A child on a swing who pumps their legs is transferring energy into the swing from their metabolism — the swing-plus-child system has no time-translation symmetry, because the Lagrangian is being actively modified by the child's muscles, and sure enough the swing's mechanical energy is *not* conserved. The broken symmetry is the leak in the bucket.
 
 </Section>
 
-<Section index={6} title="Emmy Noether">
+<Section index={5} title="Spatial-translation → momentum">
 
-Amalie Emmy Noether was born in Erlangen in 1882, the daughter of the mathematician Max Noether. She wanted to study mathematics at a time when German universities did not admit women. She audited lectures at Erlangen from 1900 to 1903 — only two women were permitted in a class of nearly a thousand men — and managed to formally matriculate when rules briefly changed. She took her doctorate in 1907 on a topic in invariant theory that she later described as "crap".
+Next symmetry: *the laws of physics don't depend on where you apply them*. Shift the whole experiment by a metre in any direction and *L* is unchanged. Space is homogeneous.
 
-From 1908 to 1915 she worked as an unpaid assistant to her father and produced original mathematics no one paid her to do. In 1915 Hilbert and Klein, recognising her extraordinary talent, invited her to Göttingen — then the world's mathematical capital — to help them with the mathematical formulation of general relativity. The university refused to let her hold a paid teaching position. Hilbert's famous response: *"I do not see that the sex of the candidate is an argument against her admission as a Privatdozent. After all, the Senate is not a bathhouse."* She lectured under Hilbert's name for years.
+Feed this into Noether and the conserved quantity is momentum — one component of **p = mv** for each direction in which the Lagrangian is invariant:
 
-In 1918 she proved the theorem that is her memorial. Einstein wrote, the following year, to Hilbert: *"Yesterday I received from Miss Noether a very interesting paper on invariance. I am impressed that one can handle these things from such a general point of view. It would not have hurt had the old guard at Göttingen picked up some instruction from her."*
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">spatial-translation symmetry    ⟹    momentum conserved</span>
+</EquationBlock>
 
-She became a formal (but still under-paid) Privatdozent in 1919 and a tenured professor in 1922 — the first woman to hold a full mathematics chair in Germany. She founded modern abstract algebra, and the structures she introduced — Noetherian rings, Noetherian modules — still bear her name and form the backbone of commutative algebra. When the Nazis expelled Jews from German universities in 1933 she emigrated to the United States and took a position at Bryn Mawr. She died in 1935, aged 53, from complications following an ovarian-cyst operation.
+The Noether charge is literally the same vector p you used in FIG.06 to solve collisions. Its three components are tied to the three directions in which space is translation-invariant. If gravity broke translational symmetry along *z* — say, by being stronger in Dortmund than in Berlin by some mysterious amount — then p_z would stop being conserved. In practice, gravity is nearly uniform on collision scales, all three components of p are conserved, and billiard balls obey the law you learned.
 
-Her theorem alone would have been a career's worth of work. She did it in her spare time. The rest of her career she spent founding the structural approach to modern algebra that shaped twentieth-century mathematics. Einstein, who did not use the word lightly, called her "the most significant creative mathematical genius thus far produced since the higher education of women began."
+The clean way to hold it in your head: **x-invariance gives p_x, y-invariance gives p_y, z-invariance gives p_z**. Each translation direction is a separate continuous symmetry and pays a separate conserved component. Three symmetries, three components, one conservation law for the combined vector.
 
 </Section>
 
-<Section index={7} title="Forward">
+<Section index={6} title="Rotational symmetry → angular momentum">
 
-This is the natural close of the conservation-laws module. We built three ledgers (FIG.05–07), then gave them a single explanation (FIG.08). A set of apparently independent empirical laws have turned into three facets of one theorem.
+Last symmetry: *the laws of physics don't depend on which way you orient the experiment*. Rotate the apparatus by any angle about any axis and *L* is unchanged. Space is isotropic.
 
-What next? Module 3 begins the deeper study of rotation. We've been throwing around moment of inertia, angular momentum, and torque as rotational analogues of mass, momentum, and force — but we haven't looked at them carefully. Rotational motion has its own surprises: a hollow sphere rolls slower than a solid one, a spinning top stands up rather than falls, and the Earth itself wobbles on its axis every 433 days in a way that was not predicted until <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> worked out rigid-body dynamics in the 1750s. Angular momentum is not just translation's rotational cousin; it has its own character, and the next four topics are about it.
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">rotational symmetry    ⟹    angular momentum conserved</span>
+</EquationBlock>
 
-One more thing to carry forward from Noether. When we reach FIG.28 and begin the principle of least action, we will introduce the Lagrangian formally, and Noether's theorem will appear again — this time as a direct geometric consequence of action-invariance. By the time we close this branch you will have met the theorem three times: as a pattern observed, as a theorem stated, and as a principle built into the deepest formulation of mechanics we know. That progression — phenomenon, law, structure — is how physics keeps going.
+The Noether charge is **L = r × p**, the angular momentum we met in FIG.07. Rotation about each axis is its own continuous symmetry, and each pays its own conserved component of L. A skater pulling in her arms is not doing magic. She is exploiting the fact that her isolated system has rotational symmetry about the vertical, so L_z is conserved; contract the moment of inertia and ω has to rise to keep the product unchanged.
+
+A planet tracing an ellipse is the same story. The Sun's gravitational field has rotational symmetry about the Sun's centre, so the planet's angular momentum about that point is conserved, and the orbit — as <PhysicistLink slug="johannes-kepler">Kepler</PhysicistLink> discovered empirically — sweeps out equal areas in equal times.
+
+<Callout variant="intuition">
+Three symmetries of space and time, three Noether charges. That is the entire bookkeeping of classical conservation laws. No fourth symmetry exists in ordinary non-relativistic mechanics at this level, and accordingly no fourth conservation law of the same kind exists. The universe comes with three ledgers, no more, because space and time have exactly the three continuous symmetries we've listed.
+</Callout>
+
+That bookkeeping is why Einstein wrote of Noether, the year after her theorem appeared, that she had given physics its most profound insight yet into the structure of its own laws.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+Noether's theorem will reappear. It is one of those results in physics that refuses to stay in its original room.
+
+In gauge theories — the formal machinery behind electromagnetism, the weak force, and QCD — Noether's theorem is how we learn that **conservation of electric charge** comes from the symmetry of quantum wave functions under a phase rotation *ψ → e^(iα)·ψ*, and **conservation of colour charge** from a more elaborate gauge symmetry (SU(3)). Every conservation law discovered in modern physics has turned out to be a Noether consequence of some symmetry, often a hidden or internal one with no obvious spatial picture.
+
+In general relativity the picture gets subtler: the theory's *local* gauge symmetry — diffeomorphism invariance — is governed by what's now called **Noether's second theorem**, a less famous companion result she proved in the same 1918 paper. <PhysicistLink slug="albert-einstein">Einstein</PhysicistLink> consulted Noether directly about the conservation-of-energy puzzles in GR, and <PhysicistLink slug="david-hilbert">Hilbert</PhysicistLink> and <PhysicistLink slug="felix-klein">Klein</PhysicistLink> — two of the era's foremost mathematicians — credited her with resolving them.
+
+<Callout variant="intuition">
+**A note on Emmy Noether.** She was, by consensus of people who would know, the most important woman in the history of mathematics. She lectured for years under Hilbert's name because the Göttingen faculty refused to confirm her as a *Privatdozent* on account of her sex. Hilbert's famous rejoinder to the Senate: *"I do not see that the sex of the candidate is an argument against her admission. After all, the Senate is not a bathhouse."* She was eventually confirmed in 1919, promoted to a tenured chair in 1922, and expelled from Germany along with every other Jewish academic in 1933. She died at 53, in exile at Bryn Mawr, having in her spare time founded modern abstract algebra. Einstein's eulogy called her the most significant creative mathematical genius thus far produced since the higher education of women began.
+</Callout>
+
+The Lagrangian we invoked in §3 is the other loose end. In FIG.28 we will build it from scratch, derive the equations of motion from it, and see Noether's theorem drop out as an almost geometric inevitability. By the end of the classical-mechanics branch you will have met the theorem three times: as a pattern to notice, as a statement to believe, and as a consequence of the deepest formulation of mechanics we know. That sequence — phenomenon, law, structure — is how physics keeps going.
+
+But first, rotation. We have been treating spinning objects as point masses dressed up in rotational language. Module 3 stops pretending. Things have shape, and shape has consequences. It turns out that gyroscopes don't fall over, the Earth wobbles on a 433-day cycle, and the rotational analogue of *F = ma* has a few surprises that point-particle mechanics never warned us about.
 
 </Section>
 

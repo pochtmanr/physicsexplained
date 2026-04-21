@@ -514,6 +514,24 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
     ],
   },
+  {
+    slug: "simeon-denis-poisson",
+    born: "1781",
+    died: "1840",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+    ],
+  },
+  {
+    slug: "konstantin-tsiolkovsky",
+    born: "1857",
+    died: "1935",
+    nationality: "Russian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "momentum-and-collisions" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {
