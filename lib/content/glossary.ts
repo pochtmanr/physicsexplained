@@ -781,6 +781,168 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
     ],
   },
+  {
+    slug: "wave-equation",
+    category: "concept",
+    relatedPhysicists: ["jean-d-alembert", "brook-taylor", "daniel-bernoulli", "leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "wavelength",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "frequency",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "phase-velocity",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton", "john-william-strutt-rayleigh", "jean-d-alembert"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+    ],
+  },
+  {
+    slug: "superposition-principle",
+    category: "concept",
+    relatedPhysicists: ["jean-d-alembert", "daniel-bernoulli"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "standing-wave",
+    category: "concept",
+    relatedPhysicists: ["joseph-fourier", "hermann-von-helmholtz"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "mode",
+    category: "concept",
+    relatedPhysicists: ["joseph-fourier", "leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "node",
+    category: "concept",
+    relatedPhysicists: ["ernst-chladni"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "antinode",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "harmonic-series",
+    category: "concept",
+    relatedPhysicists: ["pythagoras", "hermann-von-helmholtz"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "fourier-series",
+    category: "concept",
+    relatedPhysicists: ["joseph-fourier"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "doppler-effect",
+    category: "phenomenon",
+    relatedPhysicists: ["christian-doppler", "christophe-buys-ballot"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "redshift",
+    category: "phenomenon",
+    relatedPhysicists: ["christian-doppler", "vesto-slipher"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "blueshift",
+    category: "phenomenon",
+    relatedPhysicists: ["christian-doppler", "vesto-slipher"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "sonic-boom",
+    category: "phenomenon",
+    relatedPhysicists: ["ernst-mach"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "mach-number",
+    category: "concept",
+    relatedPhysicists: ["ernst-mach"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "dispersion",
+    category: "phenomenon",
+    relatedPhysicists: ["isaac-newton", "john-william-strutt-rayleigh"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+    ],
+  },
+  {
+    slug: "group-velocity",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton", "john-william-strutt-rayleigh"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+    ],
+  },
+  {
+    slug: "wave-packet",
+    category: "concept",
+    relatedPhysicists: ["william-rowan-hamilton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+    ],
+  },
+  {
+    slug: "refractive-index",
+    category: "concept",
+    relatedPhysicists: ["rene-descartes", "isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

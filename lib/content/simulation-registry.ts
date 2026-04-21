@@ -229,6 +229,30 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   WorkScene: lazyScene(() =>
     import("@/components/physics/work-scene").then((m) => ({ default: m.WorkScene })),
   ),
+  TravellingWaveScene: lazyScene(() =>
+    import("@/components/physics/travelling-wave-scene").then((m) => ({ default: m.TravellingWaveScene })),
+  ),
+  SuperpositionScene: lazyScene(() =>
+    import("@/components/physics/superposition-scene").then((m) => ({ default: m.SuperpositionScene })),
+  ),
+  StringModesScene: lazyScene(() =>
+    import("@/components/physics/string-modes-scene").then((m) => ({ default: m.StringModesScene })),
+  ),
+  ChladniScene: lazyScene(() =>
+    import("@/components/physics/chladni-scene").then((m) => ({ default: m.ChladniScene })),
+  ),
+  DopplerScene: lazyScene(() =>
+    import("@/components/physics/doppler-scene").then((m) => ({ default: m.DopplerScene })),
+  ),
+  RedshiftScene: lazyScene(() =>
+    import("@/components/physics/redshift-scene").then((m) => ({ default: m.RedshiftScene })),
+  ),
+  WavePacketScene: lazyScene(() =>
+    import("@/components/physics/wave-packet-scene").then((m) => ({ default: m.WavePacketScene })),
+  ),
+  DispersionScene: lazyScene(() =>
+    import("@/components/physics/dispersion-scene").then((m) => ({ default: m.DispersionScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -1,18 +1,185 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { WavePacketScene } from "@/components/physics/wave-packet-scene";
+import { DispersionScene } from "@/components/physics/dispersion-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Ren\u00e9 Descartes", href: "/physicists/rene-descartes" },
+  { type: "physicist", label: "William Rowan Hamilton", href: "/physicists/william-rowan-hamilton" },
+  { type: "physicist", label: "Lord Rayleigh", href: "/physicists/john-william-strutt-rayleigh" },
+  { type: "term", label: "Dispersion", href: "/dictionary/dispersion" },
+  { type: "term", label: "Phase Velocity", href: "/dictionary/phase-velocity" },
+  { type: "term", label: "Group Velocity", href: "/dictionary/group-velocity" },
+  { type: "term", label: "Wave Packet", href: "/dictionary/wave-packet" },
+  { type: "term", label: "Refractive Index", href: "/dictionary/refractive-index" },
+]}>
 
 <TopicHeader
-  eyebrow="FIG.19 · WAVES"
+  eyebrow="FIG.19 \u00b7 WAVES"
   title="DISPERSION AND GROUP VELOCITY"
-  subtitle="When different frequencies travel at different speeds."
+  subtitle="A pulse has two speeds. Only one of them carries information."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="Newton's prism">
 
-TODO: write the opening.
+In 1666, locked away from the plague in Woolsthorpe, <PhysicistLink slug="isaac-newton">Isaac Newton</PhysicistLink> punched a small hole in a window shutter, placed a glass prism in the beam, and found that white sunlight fanned out into a continuous band of colour on the opposite wall. Red bent least. Violet bent most. Everything else fell in between, in the order we now recognise as a rainbow.
+
+He reported the result formally in 1672, and in full again in *Opticks* (1704). The interpretation — that white light is a mixture, not a pure thing corrupted by the glass — was the moment colour became quantitative.
+
+But there is a deeper sentence hiding in the same experiment. If different colours bend by different amounts, they must be travelling at different speeds inside the glass. Bending, by Snell's law, is nothing more than a change of speed. What Newton discovered, without having the language for it, was **<Term slug="dispersion">dispersion</Term>**: the dependence of wave speed on wavelength.
+
+Every modern optical-fibre engineer has to think about the same effect. If a short pulse of light enters a fibre and its red content arrives a nanosecond later than its blue, the pulse smears. At 10 Gbit/s that smear eats bits. Dispersion is the reason your transatlantic cable needs to care about colour.
+
+</Section>
+
+<Section index={2} title="Two speeds, not one">
+
+A single pure sine wave has exactly one speed, and it is uninteresting. The universe never produces a single pure sine wave. Real disturbances — a clap, a chirp, a pulse of light, an electron — are always *packets*, narrow bundles of many frequencies superimposed.
+
+A packet has *two* speeds.
+
+The **<Term slug="phase-velocity">phase velocity</Term>** is how fast a single crest moves. It is the speed you would measure if you could isolate one Fourier component and time it against a ruler.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">v_p = ω / k</span>
+</EquationBlock>
+
+The **<Term slug="group-velocity">group velocity</Term>** is how fast the envelope moves — the overall bump of energy that contains the packet's information.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">v_g = dω / dk</span>
+</EquationBlock>
+
+In a medium where ω = c·k (vacuum, say), the two are identical and equal to c, and nothing in this topic would matter. But the moment ω(k) curves, they diverge. Here is what that looks like:
+
+<SceneCard caption="FIG.01 — carrier versus envelope" className="w-full">
+  <WavePacketScene />
+</SceneCard>
+
+Drag the slider. At **ratio 1.0** the crests and the envelope move together — this is vacuum. At **0.5** the envelope limps along at half the crest speed — this is deep-water gravity waves. At **2.0** the envelope runs twice as fast as the individual crests — this is a free quantum particle. In every regime except the trivial one, the carrier and the envelope are doing different things.
+
+Watch what happens at any non-unity ratio: crests *appear* at one end of the envelope, race across it, and *disappear* at the other end. The envelope is not made of any particular piece of carrier. It's an interference pattern.
+
+</Section>
+
+<Section index={3} title="Phase velocity can exceed c">
+
+Here is a fact that looks like it should be illegal: phase velocity can be greater than the speed of light in vacuum.
+
+It routinely is. X-rays in glass have a phase velocity above c. Radio waves in the ionosphere the same. Microwaves inside a waveguide the same. None of these violate relativity.
+
+How? Because **no information travels at v_p**. A pure sine wave is the same sine wave it was a billion years ago, going infinitely far in both directions, carrying exactly zero bits. You cannot modulate a pure sine wave and have it still be a pure sine wave. The moment you impose any information on it — switch it on, switch it off, chirp it, key it — you have built a packet, and a packet moves at **v_g**.
+
+<Callout variant="info">
+v_g is bounded by c for any signal that carries causal information. v_p has no such speed limit because it carries no information in the first place.
+</Callout>
+
+This is the single most misread fact in wave physics. Popular science articles routinely announce that some laboratory has made light "faster than c." What the laboratories have actually made is an anomalous-dispersion regime where v_p exceeds c. The front of any actual pulse, the part that could carry a bit, has always politely obeyed causality.
+
+</Section>
+
+<Section index={4} title="Hamilton, 1839">
+
+The person who first wrote down v_g = dω/dk was <PhysicistLink slug="william-rowan-hamilton">William Rowan Hamilton</PhysicistLink>, in a paper read to the Royal Irish Academy in 1839. Hamilton was working on optics — specifically on how rays of light bend through varying media — and noticed that the speed at which a *group* of rays progressed was not the same as the speed of any individual ray.
+
+<PhysicistLink slug="john-william-strutt-rayleigh">Lord Rayleigh</PhysicistLink> picked up the thread four decades later. In 1877, in his *Theory of Sound*, he gave the modern derivation and pointed out the consequence for water waves: a packet of ocean swell moves at **half** the speed of its individual crests. If you throw a rock into a pond and watch the ripple, the ring of disturbance expands at v_g, but individual ridges within the ring appear at the trailing edge and vanish at the leading edge. That's Stokes's 1847 observation seen through Rayleigh's formula.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">v_g = v_p + k · (dv_p/dk)</span>
+</EquationBlock>
+
+Read the identity carefully. Group velocity equals phase velocity *plus a correction* proportional to how fast the phase velocity changes with k. In a non-dispersive medium, dv_p/dk = 0 and the two speeds coincide. In a normally dispersive medium (shorter wavelengths travel slower — the usual case for light in glass) the correction is negative and v_g is *less* than v_p. In an anomalously dispersive medium, it flips.
+
+</Section>
+
+<Section index={5} title="A pulse spreads">
+
+So far everything has assumed the envelope holds its shape. That is only true when ω(k) is exactly linear — when the medium has no real dispersion at all. The instant ω(k) curves — the instant **d²ω/dk² ≠ 0** — the packet begins to spread.
+
+Here's why. The packet is a Gaussian sum of plane waves centred on some carrier wavenumber k₀. Every component travels at its own v_g(k). If v_g varies with k across the width of the spectrum, the fast components outrun the slow ones and the packet stretches. The width grows as:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">σ(t) = σ₀ · √(1 + (βt / σ₀²)²)</span>
+</EquationBlock>
+
+where β = d²ω/dk² is the curvature of the dispersion relation at the carrier. For long times this is linear in t: the pulse width grows in proportion to the distance travelled. The faster the pulse has to run — or the more curved the dispersion relation — the worse it smears.
+
+<SceneCard caption="FIG.02 — a Gaussian pulse entering a dispersive medium" className="w-full">
+  <DispersionScene />
+</SceneCard>
+
+At β = 0 the pulse glides intact. Push β up and the envelope swells out behind the leading edge. This is exactly the problem that transoceanic-fibre engineers spend their careers solving: they use special fibre profiles and dispersion-compensating modules to keep β small, or to invert it on alternating segments so the spreading cancels out.
+
+</Section>
+
+<Section index={6} title="What a refractive index actually is">
+
+Dispersion is usually tabulated not as ω(k) but as a **<Term slug="refractive-index">refractive index</Term>** n(λ), defined by:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">n = c / v_p</span>
+</EquationBlock>
+
+Crown glass has n ≈ 1.52 for yellow light. Water has n ≈ 1.33. Diamond has n ≈ 2.42 — absurdly high, which is why diamond cut at the right angles sparkles. But the number is always a little different for red than for violet, and the small difference is what makes dispersion visible.
+
+<Callout variant="math">
+For typical crown glass:  n_red ≈ 1.513,  n_violet ≈ 1.532. Difference: ~1.3%.
+</Callout>
+
+It sounds tiny. It isn't. A prism deflects light by a few tens of degrees, and a 1% change in the refraction angle is a centimetre on a wall a few metres away — enough to separate red from violet by the full width of a finger. Newton's rainbow on the wall of his Woolsthorpe room was that centimetre made quantitative.
+
+The Cauchy formula, empirical, captures it:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-lg">n(λ) ≈ A + B / λ²</span>
+</EquationBlock>
+
+Longer wavelengths — redder light — see a smaller n, go faster inside the glass, bend less at the surface. Shorter wavelengths — violet — see a bigger n, go slower, bend more. Newton's band of colour is a direct readout of the B coefficient.
+
+</Section>
+
+<Section index={7} title="The rainbow geometry">
+
+<PhysicistLink slug="rene-descartes">René Descartes</PhysicistLink>, in the *Discourse on Method* appendix of 1637 (the same book that gave us *cogito ergo sum* and analytic geometry), did something astonishing. He worked out the geometry of the rainbow correctly — an entire generation before Newton had colour, and two generations before anyone had a real theory of light.
+
+Descartes did it with a glass flask full of water, traced hundreds of parallel rays through it by hand, and asked: at what angle does the light come back out most concentrated?
+
+A ray hits a spherical raindrop. It refracts entering the drop, reflects once off the back, and refracts again on exit. The total angular deviation is:
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-lg">D(θᵢ) = 2·θᵢ − 4·θᵣ + π</span>
+</EquationBlock>
+
+where θᵢ is the angle of incidence and θᵣ = arcsin(sin θᵢ / n) is the refraction angle. For a range of incidence angles, D varies — but there's a *minimum*, and near that minimum D changes slowly with θᵢ. So many rays emerge at nearly the same angle. The sky is brightest along the cone where they pile up.
+
+Solving dD/dθᵢ = 0 gives:
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-lg">cos²(θᵢ) = (n² − 1) / 3</span>
+</EquationBlock>
+
+Plug in n = 1.333 for water and you get a minimum deviation of about 138°. A rainbow sits at 180° − 138° = **42° from the antisolar point** — the shadow of your own head. That is the Descartes cone, and every rainbow you have ever seen is a slice through it.
+
+Now add dispersion. Red light sees n ≈ 1.331 and comes out at 42.4°. Violet sees n ≈ 1.343 and comes out at 40.5°. Red on the outside, violet on the inside, every time. The double rainbow is the same argument with *two* internal reflections: D₂(θᵢ) = 2·θᵢ − 6·θᵣ + 2π, and the cone is at 51°, with the colour order reversed because of the extra bounce.
+
+</Section>
+
+<Section index={8} title="The sentence to keep">
+
+Every result in this topic is a consequence of one identity:
+
+<Callout variant="info">
+**v_g = dω/dk carries the energy and the information. v_p = ω/k can exceed c but carries neither.**
+</Callout>
+
+Newton split white light because n depends on λ. Fibre engineers compensate dispersion because β = d²ω/dk² is not zero. The rainbow sits at 42° because the deviation has a minimum where dD/dθ = 0, and it has colours because n(λ) is not constant. Descartes got the geometry right in 1637 using nothing but patience and geometry. Hamilton named the envelope's speed in 1839. Rayleigh formalised it in 1877.
+
+Three centuries, one equation. Module 5 ends here. What comes next — orbital mechanics, and then the fluids that carry waves of their own — is the universe working out the consequences of this same idea on different scales.
 
 </Section>
 

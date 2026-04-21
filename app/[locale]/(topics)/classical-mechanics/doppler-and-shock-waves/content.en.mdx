@@ -1,18 +1,162 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { DopplerScene } from "@/components/physics/doppler-scene";
+import { RedshiftScene } from "@/components/physics/redshift-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Christian Doppler", href: "/physicists/christian-doppler" },
+  { type: "physicist", label: "Buys Ballot", href: "/physicists/christophe-buys-ballot" },
+  { type: "physicist", label: "Ernst Mach", href: "/physicists/ernst-mach" },
+  { type: "physicist", label: "Vesto Slipher", href: "/physicists/vesto-slipher" },
+  { type: "term", label: "Doppler Effect", href: "/dictionary/doppler-effect" },
+  { type: "term", label: "Redshift", href: "/dictionary/redshift" },
+  { type: "term", label: "Blueshift", href: "/dictionary/blueshift" },
+  { type: "term", label: "Sonic Boom", href: "/dictionary/sonic-boom" },
+  { type: "term", label: "Mach Number", href: "/dictionary/mach-number" },
+]}>
+
 
 <TopicHeader
   eyebrow="FIG.18 · WAVES"
   title="DOPPLER AND SHOCK WAVES"
-  subtitle="What changes when the source moves."
+  subtitle="Why a passing siren shifts pitch, why a jet cracks the sky, and why distant galaxies look red."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="A Dutchman on a trumpet platform">
 
-TODO: write the opening.
+In 1842, an Austrian physicist named <PhysicistLink slug="christian-doppler">Christian Doppler</PhysicistLink> published a short paper arguing that the colour of starlight should depend on how fast the star was moving toward or away from Earth. The reasoning took about a page. He got the details of the stellar colour wrong — stars emit too broad a spectrum for the effect to be visible — but the underlying mechanism was one of the most reusable ideas in physics.
+
+Three years later, a Dutch meteorologist named <PhysicistLink slug="christophe-buys-ballot">Christophe Buys Ballot</PhysicistLink> decided to check. He rented an open railway flatcar, stood a group of trumpet players on it, and had them hold a single sustained note as the train thundered past a platform of trained musicians with perfect pitch. The listeners on the platform wrote down what they heard.
+
+As the train approached, the note was sharper. As it receded, the note was flatter. The same trumpets, played the same way, sounded like two different notes depending on which side of the platform the train was on.
+
+<PhysicistLink slug="christian-doppler">Doppler</PhysicistLink> was right. The effect now bears his name. And the same geometry — wavefronts squeezed together in front of a moving source, stretched apart behind it — explains everything from a police siren to a supersonic jet to the expansion of the universe.
+
+</Section>
+
+<Section index={2} title="The moving-source picture">
+
+Think about a source that emits one spherical wavefront every T seconds. It sits at the origin and pulses: ping, ping, ping. The wavefronts spread outward as concentric circles, each one T · c metres further out than the last, where c is the wave speed in the medium.
+
+Now set the source moving. Between one ping and the next, it has travelled a distance v · T. So the second wavefront is centred not at the origin, but a little further along. The third even further. The wavefronts bunch up ahead of the source — compressed — and spread out behind — stretched.
+
+That is the whole of the <Term slug="doppler-effect">Doppler effect</Term> in one sentence.
+
+<SceneCard caption="FIG.01 — moving source, subsonic to supersonic" className="w-full">
+  <DopplerScene />
+</SceneCard>
+
+Slide the speed above c. The geometry breaks: wavefronts pile up along a cone. We'll come back to that in § 05.
+
+</Section>
+
+<Section index={3} title="The formula — stationary observer">
+
+If the source moves toward a stationary observer at speed $v_s$, each new wavefront starts closer than the last. The spacing between consecutive wavefronts — the observed wavelength — drops from $cT$ to $(c - v_s)T$.
+
+Frequency is the reciprocal of period, and the observed period is the spacing divided by c:
+
+<EquationBlock id="EQ.01">
+$$f_{\text{obs}} = f_{\text{src}} \cdot \dfrac{c}{c - v_s}$$
+</EquationBlock>
+
+The minus sign is the whole story. As $v_s$ creeps toward $c$, the denominator shrinks toward zero and the observed frequency diverges. When $v_s$ exceeds $c$, the formula becomes negative — physics telling you that the model no longer applies. Something else happens. We'll get there.
+
+For the ambulance passing at 30 m/s (≈108 km/h) emitting a 1000 Hz siren: the observed pitch approaching is $1000 \cdot 343 / (343 - 30) \approx 1096$ Hz. Receding, it's $1000 \cdot 343 / (343 + 30) \approx 920$ Hz. A perfect fifth apart — close enough to the musical difference you actually hear.
+
+</Section>
+
+<Section index={4} title="The moving-observer case — and a real asymmetry">
+
+Now flip the setup. The source sits still; the observer moves toward it at speed $v_o$. You might guess the formula is the same with $v_o$ instead of $v_s$. It isn't.
+
+A moving observer doesn't change the spacing of the wavefronts in the air. It sweeps through them faster. The relative speed between observer and wavefront is now $c + v_o$, and the crossing rate — the observed frequency — becomes:
+
+<EquationBlock id="EQ.02">
+$$f_{\text{obs}} = f_{\text{src}} \cdot \dfrac{c + v_o}{c}$$
+</EquationBlock>
+
+Combine both cases when both are moving:
+
+<EquationBlock id="EQ.03">
+$$f_{\text{obs}} = f_{\text{src}} \cdot \dfrac{c + v_o}{c - v_s}$$
+</EquationBlock>
+
+These two denominators — $(c - v_s)$ and $c$ alone for the observer — are not symmetric. Plug in $v_s = 30$ and $v_o = 0$: you get about 1096 Hz. Plug in $v_s = 0$ and $v_o = 30$: you get about 1087 Hz. Same relative speed, different answer.
+
+<Callout variant="intuition">
+Why the asymmetry? Because the medium — the air — defines a preferred frame. "Moving toward the source" and "source moving toward me" look identical to you in your own body, but the air knows the difference. It's not Galilean-relative.
+</Callout>
+
+This will matter in the next section when we turn to light, which has no medium.
+
+</Section>
+
+<Section index={5} title="Light, and a hint of relativity">
+
+Sound lives in air. Take the air away and sound dies. Light doesn't need a medium — experiments from the 1880s onward tried to find one ("the luminiferous ether") and failed. Einstein's 1905 paper removed the ether entirely.
+
+With no medium, there's no preferred frame. The asymmetry from § 04 has to vanish. The relativistic Doppler formula for light — which we state here without derivation — is symmetric in the relative velocity $v$ alone:
+
+<EquationBlock id="EQ.04">
+$$f_{\text{obs}} = f_{\text{src}} \sqrt{\dfrac{1 - \beta}{1 + \beta}}, \qquad \beta = v / c$$
+</EquationBlock>
+
+Positive $\beta$ means the source and observer are separating. The wavelength stretches and we call it a <Term slug="redshift">redshift</Term>. Negative $\beta$: they're approaching, and the light <Term slug="blueshift">blueshifts</Term>. The shift is usually quoted as a dimensionless number $z$:
+
+<EquationBlock id="EQ.05">
+$$1 + z = \sqrt{\dfrac{1 + \beta}{1 - \beta}}$$
+</EquationBlock>
+
+For $\beta \ll 1$ this reduces to $z \approx v/c$, which is the version astronomers mostly use.
+
+<SceneCard caption="FIG.02 — a single emission line shifts with velocity" className="w-full">
+  <RedshiftScene />
+</SceneCard>
+
+In 1912, an American astronomer named <PhysicistLink slug="vesto-slipher">Vesto Slipher</PhysicistLink> pointed a spectroscope at the Andromeda nebula and measured its redshift — the first such measurement of a galaxy outside the Milky Way. He went on to measure dozens more, and almost all of them were redshifted — meaning almost all of them were moving away from us. A decade later, Hubble-era astronomers would stitch Slipher's velocities together with distance measurements and discover that the universe is expanding. Slipher did the hard part first.
+
+</Section>
+
+<Section index={6} title="The sonic boom, and Mach's cone">
+
+Now return to the scene in § 02 with the source speed above $c$. Every wavefront still expands at $c$, but the source itself is outrunning them. Each new wavefront is emitted outside all the older ones. The wavefronts pile up on a cone whose tip is the source and whose surface is the envelope of every sphere it has emitted.
+
+This is the **Mach cone**, named for <PhysicistLink slug="ernst-mach">Ernst Mach</PhysicistLink>, who worked out the geometry in 1887 from photographs of a bullet in flight. The half-angle $\theta$ of the cone depends only on how much faster than sound the source is going. Call that ratio the <Term slug="mach-number">Mach number</Term>, $M = v / c$:
+
+<EquationBlock id="EQ.06">
+$$\sin \theta = \dfrac{1}{M}$$
+</EquationBlock>
+
+At Mach 1 the cone is flat — the wavefronts all pile onto a vertical wall right in front of the source. This is the "sound barrier," and it's where the pressure gradient becomes extreme. Past Mach 1, the cone tightens as $M$ grows. At Mach 2, the half-angle is exactly 30°. At Mach 10 it's about 5.7°.
+
+A <Term slug="sonic-boom">sonic boom</Term> is what you hear when that cone sweeps past you. It's not "the sound of the jet breaking the sound barrier" — that's folklore. The jet is always producing the cone as long as it's supersonic. The boom is the moment the cone's edge arrives at your ear.
+
+</Section>
+
+<Section index={7} title="One geometry, many uses">
+
+Once you see the moving-source picture, you notice the Doppler effect everywhere.
+
+- **Police radar guns** bounce a microwave off your car. Your car reflects it with a shift; the radar compares emitted and returned frequencies and solves for $v$.
+- **Weather radar** does the same with raindrops, giving meteorologists wind fields inside storms.
+- **Echocardiograms** send ultrasound into the heart and measure the Doppler shift of the reflection from blood cells. That shift is the blood's velocity, in the vessel, live.
+- **Bats** emit ultrasonic chirps and listen for the Doppler-shifted echo. A closing moth blueshifts, a fleeing one redshifts, and the bat adjusts mid-flight.
+- **Galactic redshift** gave us the expanding universe, the Big Bang, and cosmology.
+
+One piece of geometry, written down on one page in 1842, supplies the technique by which half of modern observational physics measures speed. There is no trick here. Every one of these is exactly the picture from § 02.
+
+</Section>
+
+<Section index={8} title="What's next">
+
+We've assumed all along that the medium transmits every frequency at the same speed. For sound in air and light in vacuum, that's fine. But glass bends blue light more sharply than red. Deep water sends long waves faster than short ones. When wave speed depends on wavelength — when a medium is **dispersive** — a pulse falls apart as it travels.
+
+That is the next story.
 
 </Section>
 

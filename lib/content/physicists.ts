@@ -392,6 +392,128 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
     ],
   },
+  {
+    slug: "jean-d-alembert",
+    born: "1717",
+    died: "1783",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
+    ],
+  },
+  {
+    slug: "brook-taylor",
+    born: "1685",
+    died: "1731",
+    nationality: "English",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "beyond-small-angles" },
+    ],
+  },
+  {
+    slug: "daniel-bernoulli",
+    born: "1700",
+    died: "1782",
+    nationality: "Swiss",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "the-wave-equation" },
+      { branchSlug: "classical-mechanics", topicSlug: "bernoullis-principle" },
+    ],
+  },
+  {
+    slug: "william-rowan-hamilton",
+    born: "1805",
+    died: "1865",
+    nationality: "Irish",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+      { branchSlug: "classical-mechanics", topicSlug: "the-hamiltonian" },
+    ],
+  },
+  {
+    slug: "john-william-strutt-rayleigh",
+    born: "1842",
+    died: "1919",
+    nationality: "English",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "dispersion-and-group-velocity" },
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "pythagoras",
+    born: "c. 570 BCE",
+    died: "c. 495 BCE",
+    nationality: "Greek (Ionian)",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "joseph-fourier",
+    born: "1768",
+    died: "1830",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "ernst-chladni",
+    born: "1756",
+    died: "1827",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "hermann-von-helmholtz",
+    born: "1821",
+    died: "1894",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "standing-waves-and-modes" },
+    ],
+  },
+  {
+    slug: "christian-doppler",
+    born: "1803",
+    died: "1853",
+    nationality: "Austrian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "christophe-buys-ballot",
+    born: "1817",
+    died: "1890",
+    nationality: "Dutch",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "ernst-mach",
+    born: "1838",
+    died: "1916",
+    nationality: "Austrian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
+  {
+    slug: "vesto-slipher",
+    born: "1875",
+    died: "1969",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

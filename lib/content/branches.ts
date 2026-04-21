@@ -193,8 +193,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "THE WAVE EQUATION",
           eyebrow: "FIG.16 · WAVES",
           subtitle: "The equation that runs every wave there is.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 10,
+          status: "live",
           module: "waves",
         },
     {
@@ -202,8 +202,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "STANDING WAVES AND MODES",
           eyebrow: "FIG.17 · WAVES",
           subtitle: "Why guitar strings only sing certain notes.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 11,
+          status: "live",
           module: "waves",
         },
     {
@@ -211,8 +211,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "DOPPLER AND SHOCK WAVES",
           eyebrow: "FIG.18 · WAVES",
           subtitle: "What changes when the source moves.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 11,
+          status: "live",
           module: "waves",
         },
     {
@@ -220,8 +220,8 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
           title: "DISPERSION AND GROUP VELOCITY",
           eyebrow: "FIG.19 · WAVES",
           subtitle: "When different frequencies travel at different speeds.",
-          readingMinutes: 1,
-          status: "coming-soon",
+          readingMinutes: 12,
+          status: "live",
           module: "waves",
         },
     {

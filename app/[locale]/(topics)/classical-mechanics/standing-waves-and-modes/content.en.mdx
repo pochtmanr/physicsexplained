@@ -1,8 +1,25 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { StringModesScene } from "@/components/physics/string-modes-scene";
+import { ChladniScene } from "@/components/physics/chladni-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pythagoras", href: "/physicists/pythagoras" },
+  { type: "physicist", label: "Joseph Fourier", href: "/physicists/joseph-fourier" },
+  { type: "physicist", label: "Ernst Chladni", href: "/physicists/ernst-chladni" },
+  { type: "physicist", label: "Hermann von Helmholtz", href: "/physicists/hermann-von-helmholtz" },
+  { type: "term", label: "Standing Wave", href: "/dictionary/standing-wave" },
+  { type: "term", label: "Mode", href: "/dictionary/mode" },
+  { type: "term", label: "Node", href: "/dictionary/node" },
+  { type: "term", label: "Antinode", href: "/dictionary/antinode" },
+  { type: "term", label: "Harmonic Series", href: "/dictionary/harmonic-series" },
+  { type: "term", label: "Fourier Series", href: "/dictionary/fourier-series" },
+]}>
+
 
 <TopicHeader
   eyebrow="FIG.17 · WAVES"
@@ -10,9 +27,145 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
   subtitle="Why guitar strings only sing certain notes."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="A ladder, not a continuum">
 
-TODO: write the opening.
+Pluck a guitar string. You get a note — a definite pitch, not a hiss. Pluck it harder, or in a different place, and the pitch stays. Cut the string in half and it jumps up an octave. Halve it again, another octave. The string doesn't choose its frequencies at random. It picks them from a ladder.
+
+This is the deepest fact about any confined wave. A wave bouncing between two walls can only live there if it fits. A running wave becomes a **<Term slug="standing-wave">standing wave</Term>** — a pattern that doesn't travel anywhere, just pulses in place. And only a discrete set of patterns, called **<Term slug="mode">modes</Term>**, are allowed.
+
+<PhysicistLink slug="pythagoras">Pythagoras</PhysicistLink>, around 500 BCE, noticed that two plucked strings sound consonant when their lengths are in simple integer ratios — 2:1 gives an octave, 3:2 a perfect fifth, 4:3 a fourth. He had no idea what a wave was. But he had heard the ladder. It took two and a half millennia to derive it.
+
+<SceneCard caption="FIG.01 — a string with one end fixed to each wall. Drag n to climb the ladder.">
+  <StringModesScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Fit or die">
+
+The rule is simple. The string is pinned at both ends — those points can't move, ever. So any wave that lives on the string has to be zero at x = 0 and at x = L. A sine wave sin(kx) is zero at x = 0 automatically. It's zero at x = L only if
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">k L = n π,   n = 1, 2, 3, …</span>
+</EquationBlock>
+
+That integer n is the mode number. It counts the half-wavelengths squeezed between the walls. Mode 1 is half a sine. Mode 2 is a full sine. Mode 3 is one and a half. Every allowed shape is
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">y_n(x, t) = A sin(n π x / L) · cos(ω_n t)</span>
+</EquationBlock>
+
+Nothing in between fits. A wave with k somewhere between n π / L and (n+1) π / L would have to be non-zero at the wall, and the wall forbids it. That's the whole mechanism. Boundary conditions select modes. Everything else in this chapter is bookkeeping on that one idea.
+
+</Section>
+
+<Section index={3} title="Nodes and antinodes">
+
+Two kinds of points on a standing wave never confuse each other.
+
+A **<Term slug="node">node</Term>** is where the string doesn't move. Ever. The amplitude sin(n π x / L) is exactly zero there. Mode n has n + 1 nodes: the two fixed ends, plus (n − 1) in the middle. The fifth harmonic has four interior nodes, spaced evenly. Sprinkle chalk on the string and it stays put at the nodes — the wave simply never shakes it off.
+
+An **<Term slug="antinode">antinode</Term>** is where the string moves most violently. Halfway between adjacent nodes. The amplitude hits its full peak ±A, twenty or thirty or two hundred times a second, and keeps doing so as long as the energy holds out.
+
+<Callout variant="intuition">
+Nodes are not where the wave "is." They are where two running waves, bouncing off opposite walls, always cancel each other exactly. An antinode is where they always add. A standing wave is just two travelling waves — equal amplitude, opposite directions — living in the same spot.
+</Callout>
+
+That's why the pattern doesn't move. The underlying travelling waves do — they're running back and forth at full speed. But their interference locks the nodes in place.
+
+</Section>
+
+<Section index={4} title="Fourier's bomb">
+
+Here is the question that should bother you. A real guitar string, plucked off-centre, doesn't look like any single mode. It looks like a triangle — pulled up to a peak, two straight lines back to the ends. That's not sin(n π x / L) for any n. So what note does it play?
+
+In 1807, while working on heat flow in solids, <PhysicistLink slug="joseph-fourier">Joseph Fourier</PhysicistLink> submitted a paper to the French Academy with a claim so strange that Lagrange tried to block its publication. Fourier insisted that *any* reasonable function on [0, L] that vanishes at both ends can be written as an infinite sum of sine modes:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">f(x) = Σₙ bₙ sin(n π x / L)</span>
+</EquationBlock>
+
+Any shape. A triangle. A square. The outline of a coastline, a heartbeat, a letter of the alphabet. All of it, built from sines. <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> and <PhysicistLink slug="joseph-louis-lagrange">Lagrange</PhysicistLink> had fought for fifty years over whether this was possible. Fourier proved it — messily, brilliantly — and broke the mathematics of continuous functions wide open.
+
+For a string plucked at fractional position p with peak height 1, the coefficients have a clean form:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">bₙ = 2 sin(n π p) / (n² π² p (1 − p))</span>
+</EquationBlock>
+
+Pluck it at the midpoint (p = 1/2) and every even harmonic drops dead — sin(n π / 2) = 0 whenever n is even. That's why a guitar plucked over the twelfth fret sounds thinner than one plucked over the bridge: you've handed it a restricted menu of modes.
+
+<SceneCard caption="FIG.02 — the plucked shape (dashed) recovered from its first N Fourier modes. Drag the slider and watch the triangle assemble.">
+  <StringModesScene startInFourier />
+</SceneCard>
+
+The modes don't stay in phase. Each one oscillates at its own frequency ω_n = n π c / L. So a plucked string sounds like many notes at once — the fundamental plus a distinct mix of overtones. That mix is **timbre**. It's what makes a violin and a flute playing the same note sound different. They emphasise different harmonics.
+
+This idea — any signal as a sum of pure frequencies — turned out to be the single most-used tool in applied mathematics and physics. JPEG compression. MRI reconstruction. Quantum field theory. All of it is Fourier, with different windows and different kernels. A **<Term slug="fourier-series">Fourier series</Term>** is the first thing a physicist reaches for whenever a problem has linear dynamics and symmetric boundaries.
+
+</Section>
+
+<Section index={5} title="Pipes, open and closed">
+
+The boundary condition decides everything. Change the walls, and the ladder changes.
+
+A flute is open at both ends. The air column inside behaves as a wave in pressure — and at an open end, the pressure is clamped to atmospheric. Nodes of pressure, not of motion. Fit n half-wavelengths of pressure between the two openings:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">f_n = n c / (2 L),   n = 1, 2, 3, …</span>
+</EquationBlock>
+
+All integer multiples of the fundamental. That's the full <Term slug="harmonic-series">harmonic series</Term>.
+
+A clarinet is closed at the mouthpiece, open at the bell. Pressure node at the open end, pressure antinode at the closed one. Now you fit an odd number of quarter-wavelengths:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-lg">f_n = (2n − 1) c / (4 L),   n = 1, 2, 3, …</span>
+</EquationBlock>
+
+Odd harmonics only. And the fundamental is half that of an open pipe of the same length — which is why a clarinet sounds an octave lower than a flute of comparable size, with its characteristic hollow overtones.
+
+<Callout variant="math">
+A 1 m open pipe at 343 m/s gives 171.5 Hz, 343 Hz, 514.5 Hz, 686 Hz, … — every integer. A 1 m closed pipe gives 85.75 Hz, 257.25 Hz, 428.75 Hz, 600.25 Hz, … — every odd integer. Same pipe. Different boundary. Different music.
+</Callout>
+
+<PhysicistLink slug="hermann-von-helmholtz">Helmholtz</PhysicistLink>, writing his *On the Sensations of Tone* in 1863, made this the foundation of a new science: how boundary conditions shape what an ear actually hears. That book is still read.
+
+</Section>
+
+<Section index={6} title="Chladni's sand">
+
+In 1787, a German lawyer-turned-physicist named <PhysicistLink slug="ernst-chladni">Ernst Chladni</PhysicistLink> drew a bow across the edge of a brass plate sprinkled with fine sand. The plate sang. The sand danced, then abruptly settled — into sharp geometric patterns he could sketch.
+
+The plate is a two-dimensional version of the string. Same logic, more room to move. Its eigenfunctions on a square of side L look like
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-lg">φ_{`{m,n}`}(x, y) = sin(m π x / L) sin(n π y / L) ± sin(n π x / L) sin(m π y / L)</span>
+</EquationBlock>
+
+The ± accounts for the plate's symmetry. Wherever φ = 0, the surface is not moving — that's the **nodal set**. Sand bouncing around the plate eventually lands on the nodes and stays. The peaks shake it off; the nodes hold it.
+
+<SceneCard caption="FIG.03 — Chladni patterns on a square plate. Each (m, n) is a distinct eigenmode; white lines are nodal curves where sand settles.">
+  <ChladniScene />
+</SceneCard>
+
+Chladni toured Europe performing these with a violin bow. Napoleon was present at one of his demonstrations in 1809 and offered a 3,000-franc prize for a theoretical explanation. Sophie Germain won it — partially — after three tries. The full theory took until the twentieth century. The patterns themselves are that hard.
+
+The payoff was visible, beautiful, and completely convincing. Standing waves aren't a metaphor. They leave fingerprints.
+
+</Section>
+
+<Section index={7} title="The idea that ate physics">
+
+A century after Chladni, the discrete ladder of modes showed up in a place nobody was looking for it.
+
+An atom, it turned out, is a kind of resonant cavity. Its electrons don't orbit freely — they occupy a discrete set of standing-wave patterns, governed by the same boundary-value mathematics. The spherical-harmonic angular patterns on an atomic orbital are the direct three-dimensional cousins of Chladni figures. The same integer labels (n, ℓ, m) that number modes on a string number the energy levels of hydrogen.
+
+A guitar string and a hydrogen atom are the same equation with different boundaries.
+
+The lesson Fourier and Chladni and Helmholtz gave us was this: if you confine a wave — any kind, in any number of dimensions — the modes it supports tell you everything. Frequencies, spatial patterns, how external signals excite it. Half of modern physics is the working out of that sentence. The other half is the consequences.
+
+Next, we'll let the walls move. What happens when a source races toward you, or the medium itself is running past? That's Doppler — and it's where waves leave the confines of their box and start carrying information across the cosmos.
 
 </Section>
 

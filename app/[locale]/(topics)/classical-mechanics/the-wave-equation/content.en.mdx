@@ -1,18 +1,169 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { WaveChainScene } from "@/components/physics/wave-chain-scene";
+import { TravellingWaveScene } from "@/components/physics/travelling-wave-scene";
+import { SuperpositionScene } from "@/components/physics/superposition-scene";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Jean d'Alembert", href: "/physicists/jean-d-alembert" },
+  { type: "physicist", label: "Brook Taylor", href: "/physicists/brook-taylor" },
+  { type: "physicist", label: "Daniel Bernoulli", href: "/physicists/daniel-bernoulli" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "term", label: "Wave equation", href: "/dictionary/wave-equation" },
+  { type: "term", label: "Wavelength", href: "/dictionary/wavelength" },
+  { type: "term", label: "Frequency", href: "/dictionary/frequency" },
+  { type: "term", label: "Phase velocity", href: "/dictionary/phase-velocity" },
+  { type: "term", label: "Superposition principle", href: "/dictionary/superposition-principle" },
+]}>
+
 
 <TopicHeader
-  eyebrow="FIG.16 · WAVES"
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
   title="THE WAVE EQUATION"
   subtitle="The equation that runs every wave there is."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="1746, Paris">
 
-TODO: write the opening.
+A twenty-nine-year-old foundling named <PhysicistLink slug="jean-d-alembert">Jean le Rond d'Alembert</PhysicistLink> was staring at a vibrating string. He had spent years thinking about how a tensioned cord moves when you pluck it — the same problem <PhysicistLink slug="brook-taylor">Brook Taylor</PhysicistLink> had attacked in 1713, and that <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> and <PhysicistLink slug="daniel-bernoulli">Daniel Bernoulli</PhysicistLink> were still arguing over.
+
+d'Alembert wrote down a single line:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">∂²y/∂t² = v² · ∂²y/∂x²</span>
+</EquationBlock>
+
+Then he did something more remarkable than the equation itself. He solved it. In one stroke. The solution, he proved, is any function that moves to the right, plus any function that moves to the left:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">y(x, t) = f(x − v t) + g(x + v t)</span>
+</EquationBlock>
+
+That is the whole story of waves. A right-mover plus a left-mover, each keeping its shape, each sliding along at speed v. Everything else — sinusoids, pulses, standing waves, music, light, the signal running down your optic nerve right now — is a special case of this one sentence.
+
+The **<Term slug="wave-equation">wave equation</Term>** turned out to govern not just strings but sound, water, light, gravitational radiation across a billion light-years of empty space. Physics has very few universal equations. This is one of them.
+
+</Section>
+
+<Section index={2} title="The string, piece by piece">
+
+To see where <span className="italic">∂²y/∂t²</span> = v² <span className="italic">∂²y/∂x²</span> comes from, do what <PhysicistLink slug="brook-taylor">Taylor</PhysicistLink> did: model the string as a chain of tiny masses connected by tiny springs.
+
+Pluck one mass. It pulls on its neighbours. They pull on their neighbours. The disturbance ripples outward at a speed set by how heavy the masses are and how stiff the springs.
+
+<SceneCard caption="FIG.16a — bead-and-spring chain" className="w-full">
+  <WaveChainScene />
+</SceneCard>
+
+Drag the slider. With three masses you see three discrete wobbles. Push it to thirty and the chain starts to look continuous — a smooth wave running through a solid medium. In the limit of infinitely many, infinitely small masses, the discrete chain *becomes* a continuous string. That limit is the whole trick.
+
+Apply Newton's second law to an infinitesimal piece of string under tension T with linear mass density μ. The net transverse force on the piece is proportional to the curvature of the string — the second spatial derivative. Mass times acceleration is the second *time* derivative. Equate them and you get the wave equation, with
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">v = √(T / μ)</span>
+</EquationBlock>
+
+Tighten the string — v goes up. Thicken it — v goes down. This is why a guitar's low E is a thick, loose string and its high E is a thin, tight one.
+
+<Callout variant="math">
+The same derivation works for sound in air (restoring force from pressure gradients), light in vacuum (Maxwell's equations rearrange into a wave equation for E and B), ripples on a drumhead, the twisting of a shaft, a transmission line, a plasma oscillation. Different constants of proportionality. Same differential equation. Same left-mover-plus-right-mover solution. This is what "universal" means in physics.
+</Callout>
+
+</Section>
+
+<Section index={3} title="d'Alembert's theorem">
+
+Why does f(x − v t) solve the wave equation? Plug it in and the chain rule does the work for you.
+
+Let u = x − v t. Then ∂u/∂x = 1 and ∂u/∂t = −v. The spatial derivatives give f′(u) and f″(u). The time derivatives give −v f′(u) and v² f″(u). So
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">∂²f/∂t² = v² f″(u) = v² · ∂²f/∂x²</span>
+</EquationBlock>
+
+Done. Any twice-differentiable shape at all — a square pulse, a blip, a Gaussian, your grandmother's silhouette — propagates at speed v without changing form. f(x + v t) is the same argument with the sign flipped: a left-mover.
+
+The wave equation is **linear**, which means the sum of two solutions is also a solution. That is the d'Alembert theorem. And from it falls a surprising corollary — the one visualised in the next scene.
+
+</Section>
+
+<Section index={4} title="Two wavelengths, one equation">
+
+Most waves worth drawing are sinusoids, because sines are the eigenfunctions of the wave equation — the shapes that look identical to themselves after a derivative or two. The canonical travelling sine is
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">y(x, t) = A sin(k x − ω t)</span>
+</EquationBlock>
+
+Three knobs: amplitude A, wavenumber k, angular frequency ω. Two derived quantities everyone memorises:
+
+<Callout variant="math">
+**Wavelength** <Term slug="wavelength">λ</Term> = 2π / k — the spatial period, crest to crest.
+
+**Frequency** <Term slug="frequency">f</Term> = ω / (2π) — how many crests pass a fixed point per second.
+
+**<Term slug="phase-velocity">Phase velocity</Term>** v = ω / k = f λ — the speed of a given crest.
+</Callout>
+
+The relation v = f λ is almost too clean to be true. Pick any wavelength you like, pick any frequency you like, and the wave will travel at their product. For a string of fixed tension and mass, the medium sets v, and f and λ are locked into a trade: more wiggles per metre means fewer wiggles per second can still travel at v.
+
+<SceneCard caption="FIG.16b — travelling sine, live knobs" className="w-full">
+  <TravellingWaveScene />
+</SceneCard>
+
+Try it. Squeeze λ in half and the wave looks twice as dense. Double f and it ripples twice as fast. The magenta marker is the phase velocity, literally a point moving at v = f λ. Freeze the scene to read off a snapshot — a single instant of string, frozen mid-motion, with every crest and trough caught in place.
+
+</Section>
+
+<Section index={5} title="Energy — why photons matter">
+
+A wave carries energy. For a string of linear density μ vibrating sinusoidally, the time-averaged energy per unit length is
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-lg">⟨u⟩ = ½ μ A² ω²</span>
+</EquationBlock>
+
+Two things in that formula control everything. The amplitude-squared. And the frequency-squared.
+
+The A² part is intuitive — a louder wave carries more energy. The ω² part is the surprise. A high-frequency wave at a given amplitude carries far more energy than a low-frequency one at the same amplitude. This is the classical fingerprint of the fact <span className="italic">every photon of visible light</span> is more energetic than every photon of a radio wave, even though both are the same equation moving through the same vacuum. E ∝ f² is the first hint that something was going to have to give when quantum mechanics came knocking.
+
+The same equation explains a gentler oddity. A small sunbeam, carrying photons oscillating at 10¹⁴ Hz, can drive a solar sail. A mile-wide ocean swell carries vastly more mass, but at 0.1 Hz. Add it up and the photon wins per oscillation, even though the swell wins per cubic metre. The square on the frequency is the reason physics reaches into quantum territory at all.
+
+</Section>
+
+<Section index={6} title="Waves pass through each other">
+
+Here is the moment where the wave equation starts to feel like magic. Two particles collide — they bounce. Two waves collide — they pass through each other.
+
+<SceneCard caption="FIG.16c — linear superposition on a string" className="w-full">
+  <SuperpositionScene />
+</SceneCard>
+
+A right-moving Gaussian and a left-moving Gaussian approach each other on the same string. While they overlap, their displacements simply add. For a brief moment, the string is deformed more than either pulse alone would have deformed it. Then the pulses continue on their way, *unchanged*, as if nothing had happened.
+
+This is the **<Term slug="superposition-principle">superposition principle</Term>**, and it is a direct consequence of the linearity of the wave equation: if y₁ and y₂ are solutions, so is y₁ + y₂. Two pulses on a string don't know about each other any more than two beams of light passing through a room do. Two voices in a hallway can reach your ears intact because the air does not get confused. The air obeys a linear equation.
+
+<Callout variant="intuition">
+If waves *did* collide like particles, music would not exist. An orchestra would be a roar of interference artefacts. Radio would be a wash of corruption. Your eyes would see a different world depending on what light crossed the room.
+
+The world is legible because a lot of its fundamental equations happen to be linear. When they stop being linear — shock waves, solitons, rogue waves, nonlinear optics — the sky really does look different.
+</Callout>
+
+</Section>
+
+<Section index={7} title="What's next — tie down the ends">
+
+So far the string stretches to infinity. Real strings don't.
+
+<PhysicistLink slug="daniel-bernoulli">Daniel Bernoulli</PhysicistLink>, around 1750, made the provocative claim that any motion of a finite string could be written as a sum of sinusoidal modes — a fundamental plus its harmonics. <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> didn't buy it. Fourier, sixty years later, proved Bernoulli right.
+
+Fix the ends of a string and d'Alembert's left-mover and right-mover start bouncing back and forth between the boundaries. They interfere with themselves. The result is a standing wave — a pattern that oscillates in place, with frozen nodes where the string never moves. Only certain wavelengths fit between the endpoints. Only certain frequencies are allowed. A continuum has become a ladder.
+
+This is how a guitar picks a note out of a pluck. It is how a pipe organ fills a cathedral with a particular pitch. And a century and a half later, when a young physicist named Schrödinger was looking for an equation to govern the electron, the mathematical furniture he reached for — standing waves in a bounded region, discrete allowed frequencies — was already there, waiting. FIG.17 is where that starts.
 
 </Section>
 
