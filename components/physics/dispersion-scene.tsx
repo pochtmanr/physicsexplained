@@ -27,7 +27,7 @@ export function DispersionScene(_props: DispersionSceneProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
 
-  const [beta, setBeta] = useState(0.08);
+  const [beta, setBeta] = useState(0.2);
   const betaRef = useRef(beta);
   useEffect(() => {
     betaRef.current = beta;
@@ -52,8 +52,8 @@ export function DispersionScene(_props: DispersionSceneProps) {
   const { width, height } = size;
 
   // Animation: loop a pulse across the domain. tLoop in [0, T_loop).
-  const T_LOOP = 10; // seconds of loop
-  const startRef = useRef(0);
+  const T_LOOP = 14; // seconds of loop
+  const startRef = useRef<number | null>(null);
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -80,14 +80,14 @@ export function DispersionScene(_props: DispersionSceneProps) {
       const midY = topY + plotH / 2;
 
       // Local wrapped time so the pulse keeps coming back.
-      if (startRef.current === 0) startRef.current = t;
+      if (startRef.current === null) startRef.current = t;
       const tLocal = ((t - startRef.current) % T_LOOP + T_LOOP) % T_LOOP;
 
       // Simulation: x in [0, L]. Pulse starts at x0 = 4, v0 = 2.
       const L = 40;
       const x0 = 4;
       const v0 = 2;
-      const sigma0 = 1.2;
+      const sigma0 = 0.9;
       const k0 = 6;
       const currentBeta = betaRef.current;
 
@@ -222,12 +222,12 @@ export function DispersionScene(_props: DispersionSceneProps) {
         <input
           type="range"
           min={0}
-          max={0.3}
-          step={0.01}
+          max={0.8}
+          step={0.02}
           value={beta}
           onChange={(e) => {
             setBeta(parseFloat(e.target.value));
-            startRef.current = 0; // restart loop so the change is legible
+            startRef.current = null; // restart loop so the change is legible
           }}
           className="flex-1 accent-[#6FB8C6]"
         />
