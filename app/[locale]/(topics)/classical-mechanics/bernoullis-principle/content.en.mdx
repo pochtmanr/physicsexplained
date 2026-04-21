@@ -1,18 +1,178 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { VenturiScene } from "@/components/physics/venturi-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Daniel Bernoulli", href: "/physicists/daniel-bernoulli" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Giovanni Battista Venturi", href: "/physicists/giovanni-venturi" },
+  { type: "term", label: "Bernoulli's Principle", href: "/dictionary/bernoullis-principle" },
+  { type: "term", label: "Streamline", href: "/dictionary/streamline" },
+  { type: "term", label: "Incompressible Flow", href: "/dictionary/incompressible-flow" },
+  { type: "term", label: "Venturi Effect", href: "/dictionary/venturi-effect" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.25 · FLUIDS"
   title="BERNOULLI'S PRINCIPLE"
-  subtitle="Faster fluids push less."
+  subtitle="Fast fluids push less than slow ones — and almost every counter-intuitive thing a moving fluid does follows from that single sentence."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="A sheet of paper, a puff of air">
 
-TODO: write the opening.
+Hold a sheet of printer paper horizontally at your lips, letting the far edge droop under its own weight. Blow steadily across the top. The paper does not flatten under your breath — it lifts. The air you pushed *over* the sheet is trying, it seems, to pull the sheet *up* into itself.
+
+Every classroom demo teacher in the world has done this. It looks like a magic trick, and it survives the reveal, because the reveal is strange: a moving fluid exerts less static pressure than a still one at the same height. The slow air beneath the paper is at atmospheric pressure. The fast air you blew across the top is at less than atmospheric pressure. The difference pushes the paper up.
+
+<PhysicistLink slug="daniel-bernoulli">Daniel Bernoulli</PhysicistLink> wrote the relation down in 1738, in *Hydrodynamica*, a book that treated moving water with the same seriousness that Newton had treated falling stones. It turns out to be one of the shortest useful equations in physics, and it explains a surprising fraction of everyday fluid behaviour — the spray gun, the curveball, the shower curtain that sticks to your leg, the whistle of wind past a gap. It also explains, partially, how a wing generates lift. But only partially, and that is the cautionary tale we will come to.
+
+</Section>
+
+<Section index={2} title="The statement">
+
+For an inviscid, incompressible fluid in steady flow, along any single streamline, the quantity
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">p + ½·ρ·v² + ρ·g·h = constant</span>
+</EquationBlock>
+
+does not change from point to point. Three terms, each with units of pressure (Pa): the static pressure *p* the fluid exerts on the walls of whatever contains it, the **dynamic pressure** ½·ρ·v² built from its speed and density, and the **hydrostatic** contribution ρ·g·h from its elevation. Their sum is the fluid's *total head*, and that is the quantity that stays fixed as the fluid moves along a streamline.
+
+The consequences slide right out. Raise the fluid, its static pressure drops (tall water towers do this job). Speed the fluid up without changing elevation, its static pressure drops again. Slow it to a halt at a wall — a **stagnation point** — and every joule of its kinetic energy per unit volume reappears as static pressure. The plane's pitot tube, the Bunsen burner's inlet, the garden-hose nozzle: all of them are accounting exercises in that one equation.
+
+Three caveats are baked into the statement and must be respected or the formula lies. The flow must be **inviscid** — no friction between layers of the fluid. It must be **incompressible** — density *ρ* the same at every point. And it must be **steady** — the velocity field does not change in time. Each caveat fails somewhere in the real world, and in section 7 we will enumerate exactly where. For now we treat them as licence to proceed.
+
+<Callout variant="intuition">
+Read the equation as a restatement of energy conservation. Per unit volume, *p* is like stored elastic energy, ½ρv² is kinetic energy, and ρgh is gravitational potential energy. The total cannot change along a streamline for the same reason a rolling ball cannot, by itself, gain energy: there is no mechanism to do work on it as long as viscosity and compressibility are absent.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Derive it from energy">
+
+The derivation is almost embarrassingly short. Take a small parcel of fluid that travels along a **<Term slug="streamline">streamline</Term>** from point 1, where the pipe has area *A₁*, speed *v₁*, pressure *p₁*, and height *h₁*, to point 2 with the same quantities subscripted 2. The fluid is **<Term slug="incompressible-flow">incompressible</Term>**, so a volume *V* of it that leaves point 1 is the same volume *V* that arrives at point 2.
+
+Account for the work done on that parcel. The fluid behind it at point 1 pushes on it with force *p₁·A₁* through a displacement *V/A₁*, doing work *p₁·V* on it. At point 2, the parcel must push against the pressure *p₂*, doing work *p₂·V* against it — negative work on the parcel. Gravity acts between the two heights, doing work *m·g·(h₁ − h₂)* where *m = ρ·V*. Net work on the parcel:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">W = (p₁ − p₂)·V + ρ·V·g·(h₁ − h₂)</span>
+</EquationBlock>
+
+By the work–energy theorem (FIG.08), this net work equals the change in the parcel's kinetic energy:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">W = ½·ρ·V·(v₂² − v₁²)</span>
+</EquationBlock>
+
+Set the two expressions equal, divide through by *V*, collect:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">p₁ + ½·ρ·v₁² + ρ·g·h₁ = p₂ + ½·ρ·v₂² + ρ·g·h₂</span>
+</EquationBlock>
+
+Done. Fifteen lines, no ceremony. <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> rewrote the argument in the 1750s as a differential equation — the **Euler equations** — that govern inviscid flow at every point in the fluid, and Bernoulli's relation dropped out as a first integral along streamlines. That is still the cleanest derivation, and it is the first place in this module where the right way to describe a continuous medium is with a field equation rather than Newton's law for particles.
+
+</Section>
+
+<Section index={4} title="The flying sheet of paper">
+
+Back to the demo. The paper hangs horizontally, air at rest above it and below it, both at atmospheric pressure *p_atm*. The paper has weight *m·g* pulling it down. Nothing moves.
+
+Blow across the top. You have added velocity *v* to the air immediately above the sheet. Along a streamline that runs from your mouth, across the top, and back to still air far away, Bernoulli says
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">p_top + ½·ρ·v² = p_atm</span>
+</EquationBlock>
+
+— the flow is essentially horizontal, so the *ρgh* term drops out — and therefore *p_top = p_atm − ½·ρ·v²*. The air on top of the sheet is at *less than* atmospheric pressure. The air underneath, which you did not blow on, is still at *p_atm*. The net force per unit area pushing the sheet *up* is exactly the dynamic pressure you supplied:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">Δp  =  ½·ρ·v²</span>
+</EquationBlock>
+
+A gentle puff at 3 m/s (a slow exhale) across a sheet of air at density ρ = 1.2 kg/m³ gives Δp ≈ 5 Pa. Spread over a sheet of roughly A4 area (0.06 m²) that's a force of ~0.3 N — more than enough to overcome the weight of a single sheet of printer paper, which is about 0.04 N. The sheet lifts. No trick, no sleight of hand: just Bernoulli's relation evaluated on a streamline you could see if the air were smoky.
+
+The spray gun works on the same principle. A high-speed jet of air rushing across the top of a vertical feed tube drops the pressure at the tube's mouth; atmospheric pressure on the liquid reservoir below the jet pushes the liquid up the tube, where the fast air atomises it and carries it away. So does the Bunsen burner, the perfume atomiser, the aspirator pump on a sink. Every one of them is the flying paper demo dressed in a different suit.
+
+</Section>
+
+<Section index={5} title="The Venturi meter">
+
+In 1797 the Italian priest and natural philosopher <PhysicistLink slug="giovanni-venturi">Giovanni Battista Venturi</PhysicistLink>, a student of Lagrange's circle who had read Bernoulli carefully, published *Recherches expérimentales sur le principe de la communication latérale du mouvement dans les fluides*. In it he described a pipe that narrows to a throat and opens back out, and made the prediction that follows directly from combining continuity with Bernoulli: the fluid accelerates through the constriction, and its static pressure falls. Measure the pressure difference between the wide and narrow sections and you can read off the flow rate — a flow meter with no moving parts.
+
+The argument is two equations long. Mass conservation for an incompressible fluid says that the volume rate *A·v* is the same at every cross-section:
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-base">A₁·v₁ = A₂·v₂     (continuity)</span>
+</EquationBlock>
+
+— halve the pipe's area, double the speed. Bernoulli for a horizontal pipe (no *gh* term) gives
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-base">p₁ − p₂ = ½·ρ·(v₂² − v₁²)</span>
+</EquationBlock>
+
+Substitute the continuity result *v₂ = v₁·A₁/A₂*:
+
+<EquationBlock id="EQ.09">
+  <span className="font-mono text-base">p₁ − p₂  =  ½·ρ·v₁²·[(A₁/A₂)² − 1]</span>
+</EquationBlock>
+
+Invert it, and you can read off *v₁* — the flow rate — from a single pressure-difference measurement and the geometry of your pipe. Water utilities, gas suppliers, chemical plants, carburettors, and every anaesthesia machine in a hospital still run on this equation. In a carburettor the "throat" is a constriction in the intake tube; the low pressure there sucks fuel out of a jet and meters it into the air stream in the right proportion to the amount of air flowing — a fuel meter that operates without any electronics or moving parts, invented in the 1880s and only displaced by fuel injection a century later.
+
+<SceneCard caption="FIG.25a — venturi meter: velocity and pressure along the pipe" className="w-full">
+  <VenturiScene />
+</SceneCard>
+
+Move the inlet-velocity slider and the whole pressure profile scales as *v²*. Narrow the throat and watch the dip deepen sharply — it goes as *(A₁/A₂)² − 1*, so a throat at half the mouth's radius gives an area ratio of 4 and a pressure drop 15 times what a mild constriction would. Tracers bunch up and accelerate through the waist because mass has to go somewhere; the pressure curve below is the direct read-out of the Bernoulli constant reshuffling itself between static and dynamic parts. The flat regions outside the throat sit at the inlet pressure; the dip is the **<Term slug="venturi-effect">Venturi effect</Term>**, the signature of fast flow leaving static pressure behind.
+
+</Section>
+
+<Section index={6} title="Lift on a wing — an honest version">
+
+You will read, in a great many places, that lift on a wing is explained by Bernoulli alone. The story goes: the top surface is more curved than the bottom, so air has farther to travel on top, so the air moves faster on top, so the pressure is lower on top, so the wing is pushed up. Every step of that story has a problem.
+
+The most obvious problem is the "equal transit time" premise — the claim that two air parcels that part company at the leading edge must arrive at the trailing edge at the same time, and therefore the upper parcel has to move faster. There is no law of physics that requires this, and measurements show it is plainly false: the upper parcel typically arrives *well before* the lower one. A subtler problem is that thin flat plates, wings with no camber at all, also generate lift, just by sitting at a positive angle of attack. Bernoulli's principle as a standalone story cannot explain that.
+
+What does explain lift, in full, is a combination of two things that must be stated together. The first is Bernoulli: the airflow over the upper surface of a wing really is faster than the airflow below, and the static-pressure difference between top and bottom really is a large fraction of the lift force. The *reason* the air is faster on top, though, is not "equal transit time" — it is circulation. The wing's shape and angle of attack induce a net circulation of air around the wing (clockwise from the pilot's viewpoint, if the wing is flying left), which when added to the free-stream flow speeds up the upper surface and slows the lower. That circulation is not a fudge; it is a measurable, computable thing, and the lift per unit wingspan is exactly *L' = ρ·V·Γ* — the Kutta–Joukowski theorem — where *Γ* is the circulation.
+
+The second, which is what "Bernoulli alone" misses, is Newton's third law. A wing generating lift is continuously deflecting a column of air downward — the **downwash**. By Newton's third law, the air pushes the wing upward with equal force. For a real wing the downwash accounts for the full lift force when you integrate momentum flux; the pressure difference across the wing and the downstream momentum are two ways of reading the same physical event. They are not competing explanations. They are the same explanation seen from two angles: from inside the fluid, you see pressure differences; from the wing's rest frame looking at what it does to the air behind it, you see downwash.
+
+<Callout variant="math">
+A wing in level flight with weight *W* must push down, in net, a mass of air *dm/dt* at some downward velocity *v_d* such that *W = (dm/dt)·v_d*. At cruise a 200-tonne airliner is deflecting roughly a tonne of air per metre of travel and giving it a downward kick of about 2 m/s. That's the downwash. Bernoulli tells you the pressure field; the downwash tells you the reaction. Either calculation, done carefully, gives the same *L*.
+</Callout>
+
+The practical takeaway is not that Bernoulli is wrong — it is correct, and it will give you the pressure distribution across the wing if you feed it the right velocity field. The takeaway is that "Bernoulli explains lift" as a standalone sentence is a shortcut that omits the step where the velocity field comes from, and it leaves you unable to explain flat-plate wings, inverted flight, the physics of a propeller, or why a wing stalls. When someone shows you a diagram where a longer upper surface produces faster flow produces lower pressure, ask them where the circulation came from — and prepare to hear silence.
+
+</Section>
+
+<Section index={7} title="Where Bernoulli fails">
+
+Every line of that derivation in §3 made at least one assumption. Here is where each of them breaks.
+
+**Viscous flow near walls.** Real fluids have viscosity — friction between layers — and that friction does work on the fluid as it moves, dissipating some of the Bernoulli constant into heat. Inside a long pipe at steady flow, *p + ½ρv²* falls steadily from inlet to outlet because of viscous losses; the pressure does not recover on the downstream side of a Venturi as fully as the inviscid formula predicts. For short constrictions and fast flow the loss is small, which is why the Venturi meter works in practice; for long thin pipes the loss dominates and you need the Hagen–Poiseuille law instead.
+
+**Turbulent flow.** The derivation assumed steady streamlines. In a turbulent regime — fast flow past a blunt body, a wake behind a car, smoke curling off a cigarette — the velocity field is a chaotic mess with no stable streamlines to integrate along. Bernoulli can still be applied in an averaged sense, but the energy budget now includes a term for the kinetic energy of turbulent fluctuations, and the clean three-term sum is not conserved on any instantaneous streamline.
+
+**Compressible flow.** *ρ = constant* is fine for water always, and fine for air up to about Mach 0.3 (roughly 100 m/s at sea level). Faster than that, the fluid compresses as it accelerates, and the dynamic-pressure term stops capturing the full kinetic-energy change. Inside a jet engine, a gun barrel, a supersonic wind tunnel, a shock wave — all of them need the compressible form of the energy equation, and the familiar *p + ½ρv²* picks up extra terms involving the fluid's enthalpy.
+
+**Unsteady flow.** Bernoulli's principle applies instant by instant only if the flow does not change with time. A tidal bore, a water-hammer pulse in a pipe, an opening shock — these are genuinely time-dependent and need the unsteady Bernoulli equation, which has an extra *∂φ/∂t* term that you get from integrating Euler's equations along a streamline without throwing away the time derivative.
+
+<Callout variant="intuition">
+The three caveats — inviscid, incompressible, steady — are the boundary of a box. Inside the box Bernoulli is trivially true and useful. The next two topics in this module walk to the wall of the box and open the door. Viscosity and Reynolds number tell you when the inviscid assumption fails. Turbulence takes you into the outer dark, where even the equations stop being friendly.
+</Callout>
+
+</Section>
+
+<Section index={8} title="Forward">
+
+<Term slug="bernoullis-principle">Bernoulli's principle</Term> is the first real result of fluid mechanics in this module — the first time we are not just doing statics in a fluid (like the hydrostatic pressure of FIG.24) but watching a fluid *move* and extracting a clean conservation law from it. The law has three terms, three caveats, and an enormous reach: the flying paper, the spray gun, the Venturi meter, the carburettor, and a large fraction of the airflow around a real aircraft are all accounted for by one short equation.
+
+The caveats are the interesting part. Bernoulli threw away viscosity to get the clean formula, and the place where his assumption hurts is precisely the place real fluids get interesting: near walls, inside long pipes, around small swimming organisms, anywhere two layers of fluid slide past each other. That missing ingredient — viscosity, the internal friction of a fluid — is what FIG.26 is about. We'll put *η* back into the story, watch the velocity profile inside a pipe slump from flat to parabolic, and meet the Reynolds number, the dimensionless ratio that tells you at a glance whether Bernoulli is still a good idea.
 
 </Section>
 

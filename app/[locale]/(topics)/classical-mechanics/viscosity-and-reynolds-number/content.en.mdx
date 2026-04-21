@@ -1,18 +1,183 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { PoiseuilleProfileScene } from "@/components/physics/poiseuille-profile-scene";
+import { ReynoldsRegimesScene } from "@/components/physics/reynolds-regimes-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Jean Poiseuille", href: "/physicists/jean-poiseuille" },
+  { type: "physicist", label: "Osborne Reynolds", href: "/physicists/osborne-reynolds" },
+  { type: "physicist", label: "George Gabriel Stokes", href: "/physicists/george-gabriel-stokes" },
+  { type: "physicist", label: "Edward Mills Purcell", href: "/physicists/edward-mills-purcell" },
+  { type: "term", label: "Viscosity", href: "/dictionary/viscosity" },
+  { type: "term", label: "Reynolds Number", href: "/dictionary/reynolds-number" },
+  { type: "term", label: "Laminar Flow", href: "/dictionary/laminar-flow" },
+  { type: "term", label: "Poiseuille Flow", href: "/dictionary/poiseuille-flow" },
+  { type: "term", label: "Newtonian Fluid", href: "/dictionary/newtonian-fluid" },
+  { type: "term", label: "Stokes' Law", href: "/dictionary/stokes-law" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.26 · FLUIDS"
   title="VISCOSITY AND REYNOLDS NUMBER"
-  subtitle="Honey, water, and the line between them."
+  subtitle="Honey, water, and the single dimensionless number that tells them apart."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="Honey and water">
 
-TODO: write the opening.
+Pour honey onto a plate. Pour water onto a plate. Do it slowly and watch what happens. The water races to the edge, splashes, slips off. The honey crawls, piles up on itself, takes its time. You already know why — honey is "thicker" — but *thick* is a word, not a physics quantity. The physics quantity is **<Term slug="viscosity">viscosity</Term>**, written η (eta). It is a fluid's internal resistance to shear, and it is the single missing ingredient from almost everything we have said about fluids up to now.
+
+Bernoulli's equation, in the previous topic, assumed viscosity was zero. That assumption is clean, elegant and wrong for a huge range of real flows. Restore viscosity and the Bernoulli picture splits cleanly into two worlds: one where viscous forces dominate and fluid moves like treacle, and one where inertia dominates and the same fluid tears itself into vortices and noise. The boundary between those worlds is controlled by a dimensionless number so useful that engineers quote it before almost any other: the **<Term slug="reynolds-number">Reynolds number</Term>**.
+
+This topic is the bridge. It defines η, writes down Poiseuille's equation for pipe flow (with its famous fourth-power scaling, a result discovered by a doctor staring at capillaries), introduces Re, and uses it to make one of the most beautiful arguments in physics — Edward Purcell's explanation of why bacteria swim the way they do.
+
+</Section>
+
+<Section index={2} title="Viscosity, defined">
+
+Slide a flat plate across the top of a still pool of water. A thin layer of water right against the plate moves with the plate — it *sticks* to it, the no-slip condition — while the water at the bottom stays still. In between, each layer of water drags on its neighbour, and a gradient of velocity builds up between plate and bottom.
+
+Newton, in the *Principia*, proposed the simplest possible law for how much drag that gradient creates: the shear stress between two layers is proportional to how fast the velocity changes with height.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">τ = η · du/dy</span>
+</EquationBlock>
+
+τ is the force per unit area one layer exerts on the next. *du/dy* is the velocity gradient — how fast the flow speed changes as you move perpendicular to the flow. η is the **dynamic viscosity** of the fluid, measured in pascal-seconds (Pa·s).
+
+Fluids that obey this linear law — τ strictly proportional to the gradient — are called **<Term slug="newtonian-fluid">Newtonian fluids</Term>**. Water, air, glycerine, most oils, and blood above a shear threshold all qualify. Ketchup does not. Neither does a cornstarch-and-water slurry, which feels like liquid when you stir it gently and like a solid when you punch it; that's a non-Newtonian fluid, and the variable η needed to describe it is the subject of a whole separate field called rheology.
+
+A menu of viscosities, all at roughly room temperature:
+
+- Air: η ≈ 1.8 × 10⁻⁵ Pa·s
+- Water: η ≈ 1.0 × 10⁻³ Pa·s
+- Olive oil: η ≈ 8 × 10⁻² Pa·s
+- Honey: η ≈ 10 Pa·s (varies wildly with temperature)
+- Pitch: η ≈ 2 × 10⁸ Pa·s — the pitch-drop experiment at the University of Queensland has been running since 1927 and has released nine drops
+
+Ten orders of magnitude from air to honey, eighteen from air to pitch. One number, one equation, ruling all of them.
+
+</Section>
+
+<Section index={3} title="Poiseuille flow">
+
+<PhysicistLink slug="jean-poiseuille">Jean Léonard Marie Poiseuille</PhysicistLink> was a doctor in Paris in the 1830s, and he was interested in blood. Specifically, he wanted to know what determined how much blood flowed through a capillary at a given pressure. That is a question about viscous flow through a narrow tube. He built apparatus, ran careful experiments with water and various salt solutions through fine glass capillaries, and in 1840 published an empirical law that still bears his name.
+
+Take a long, straight, circular pipe of radius R. Push a Newtonian fluid through it with a pressure drop Δp between the two ends. Steady state: the fluid settles into a velocity profile that depends only on radial position r, not on where you are along the pipe. Solving Newton's shear law in cylindrical coordinates gives a parabola.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">u(r) = (Δp / 4ηL) · (R² − r²)</span>
+</EquationBlock>
+
+Fastest on the axis (r = 0), zero at the wall (r = R — no-slip again). Integrate that velocity across the pipe's cross-section and you get the **<Term slug="poiseuille-flow">Poiseuille flow</Term>** formula for volumetric flow rate:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">Q = π R⁴ Δp / (8 η L)</span>
+</EquationBlock>
+
+Read the exponents. The flow goes as R to the fourth power. Double the radius and you multiply the throughput by sixteen. Halve it and you cut it sixteen-fold.
+
+That fourth power is why vasoconstriction is such a powerful lever for blood pressure; why a small atherosclerotic plaque has consequences wildly out of proportion to how much of the vessel it blocks; why terminal bronchioles, not the trachea, dominate the resistance to breathing; why a slightly narrower fire hose feels very different at the nozzle. Any branched distribution system — lungs, circulatory tree, water mains, xylem — is dominated by its narrowest vessels. Poiseuille did not know he was writing down a governing law of biological engineering. He was just trying to understand why blood flowed the way it did.
+
+<SceneCard caption="FIG.26a — parabolic velocity profile" className="w-full">
+  <PoiseuilleProfileScene />
+</SceneCard>
+
+Slide the viscosity. The shape of the profile never changes — always a parabola, always pinned to zero at the walls — but the peak velocity tracks with 1/η. A drop of water and a drop of honey, pushed down the same tube by the same pressure, move very differently. The equation is linear in 1/η. The difference is four orders of magnitude.
+
+</Section>
+
+<Section index={4} title="The Reynolds number">
+
+Poiseuille's picture only works while the flow stays orderly — layers sliding past layers with no mixing. As pressure rises, or as the pipe widens, or as η drops, something happens: the orderly profile breaks, the fluid starts to churn, and Poiseuille's equation silently becomes wrong.
+
+<PhysicistLink slug="osborne-reynolds">Osborne Reynolds</PhysicistLink>, at Manchester in 1883, did the definitive experiment. He set up a glass tube, ran water through it, and injected a thin filament of dye at the inlet. At low flow speed the dye drew a straight line right down the centre — perfect laminar flow, exactly what Poiseuille would predict. At high speed the filament tore itself apart in a chaotic puff. Somewhere in between was a transition.
+
+Reynolds asked the right question. What combination of variables controls which regime you are in? He wrote down every quantity that could possibly matter — density ρ, velocity v, a length scale L (the pipe diameter), viscosity η — and formed the only dimensionless combination.
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">Re = ρ v L / η</span>
+</EquationBlock>
+
+No units. No hidden constants. Just a number. Re < 1 means viscous forces dominate over inertial ones; the fluid remembers the wall and damps away any disturbance. Re ≫ 1 means inertia wins; a bit of wobble gets amplified instead of killed, and the flow is unstable to turbulence.
+
+<Callout variant="intuition">
+The physical reading of Re. The numerator ρ·v·L has units of momentum density times length — roughly the inertia a parcel of fluid is carrying. The denominator η controls how fast that inertia is soaked up by shear. Re is literally the ratio of "how much momentum is in flight" to "how fast viscosity can dispose of it". When viscosity wins, you get honey behaviour; when inertia wins, you get splashing behaviour.
+</Callout>
+
+Reynolds' 1883 experiments showed the transition in a pipe sat around Re ≈ 2300 — a number that every mechanical engineer in the world still carries in their head. It is not a sharp line; the transition is notoriously messy, with turbulence sometimes triggered early by a burr on the pipe wall or a vibration in the apparatus. But the rough value is reliable and the dimensional argument behind Re is airtight.
+
+</Section>
+
+<Section index={5} title="Two regimes">
+
+Once you have Re you have a classification scheme for almost any flow. The same fluid in the same geometry can live in utterly different worlds depending on how hard you push it.
+
+- **Re ≪ 1 — creeping flow.** Viscous stresses beat inertia everywhere. The flow is time-reversible to an excellent approximation: run the motion backwards and it looks physically plausible. Drag on a sphere is proportional to v, not to v². Streamlines part around an obstacle and rejoin behind it without a wake.
+- **Re ≈ 1 to ~40 — steady separation.** Wakes appear behind bluff bodies; they are stable and time-independent. Still laminar.
+- **Re ≈ 40 to ~2000 — vortex shedding.** Flow past a cylinder peels off alternating vortices — the *Kármán vortex street*, named after the Hungarian-American aerodynamicist Theodore von Kármán who analysed it in 1911. The shedding has a well-defined frequency. This is what makes tall chimneys moan, telephone wires sing in the wind, and a flag flutter.
+- **Re ≳ 2000 — turbulence.** Inertia has fully won. Vortices on vortices, energy cascading down from large eddies to small ones until viscosity finally dissipates it as heat. No closed-form description. The next topic in the module.
+
+<SceneCard caption="FIG.26b — flow past a cylinder vs Re" className="w-full">
+  <ReynoldsRegimesScene />
+</SceneCard>
+
+The slider runs across six decades of Re. Watch the wake. At Re = 0.1 the flow is essentially symmetric fore-to-aft — you cannot tell which way it is going from a still photograph. At Re = 100 a Kármán street has formed, pink vortices drifting downstream in an alternating pattern. Past Re = 10 000 structure dissolves into noise. Same cylinder, same fluid. Only the push has changed.
+
+</Section>
+
+<Section index={6} title="Life at low Reynolds number">
+
+In 1977, <PhysicistLink slug="edward-mills-purcell">Edward Purcell</PhysicistLink> — Nobel laureate, one of the discoverers of nuclear magnetic resonance — gave a lecture at the American Institute of Physics titled *Life at Low Reynolds Number*. It was short. It was funny. It is now required reading for anyone thinking about microswimmers, microfluidics, or biological propulsion at small scales, which is to say almost everyone in soft-matter physics.
+
+Purcell's question: what is it like to be a bacterium?
+
+A bacterium is about 1 μm long and swims at about 10 μm/s in water. Plug those into Re = ρvL/η:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">Re ≈ (10³)(10⁻⁵)(10⁻⁶) / (10⁻³) ≈ 10⁻⁵</span>
+</EquationBlock>
+
+That is utterly, overwhelmingly viscous. To a bacterium, water has the consistency — in the sense of the ratio of inertia to viscosity — of treacle. Or, as Purcell memorably put it, of a swimming pool full of molasses with instructions that you are allowed to swim but not to move any part of your body faster than one centimetre per minute.
+
+Why does that matter? Because at Re ≪ 1, the Navier-Stokes equations become exactly time-reversible. The full equation has two inertial terms (the ∂v/∂t and the (v·∇)v), and in the creeping-flow limit both vanish, leaving only the Stokes equation. That equation has a startling property: if you reverse the forcing, the flow reverses exactly. There is no way to make net progress by executing a motion and then undoing it, because "undoing it" physically undoes the displacement too.
+
+This is the **scallop theorem**, and it is the real content of Purcell's lecture. A scallop propels itself at large Re by snapping its shells shut fast (squirting water out behind it) and then reopening slowly. The asymmetry in speed is what generates net momentum — at high Re, inertia carries the scallop forward during the slow reopen. At low Re there is no inertia, and any motion that is reciprocal — goes out and back through the same sequence of shapes — produces zero net displacement. A bacterium shaped like a tiny scallop could open and close its shell a billion times and end up exactly where it started.
+
+So bacteria cannot row. They must use propulsion mechanisms that are non-reciprocal — ones where the forward half of the cycle is geometrically different from the return half. Most real bacteria solve this with a helical flagellum: a corkscrew. Rotate a corkscrew in one direction and it drills forward through the fluid; rotate it in the other and it drills backward. Rotation is intrinsically chiral, intrinsically non-reciprocal. The fact that every motile bacterium on Earth uses a screw instead of a paddle is not an accident of biology. It is a theorem of low-Reynolds-number hydrodynamics.
+
+<Callout variant="intuition">
+Try to imagine swimming in Purcell's molasses pool. Every stroke you take — pull, recover, pull again — moves you forward during the pull and exactly the same distance backward during the recover. Your net progress is zero. To actually go somewhere you would need to move your limbs in a pattern whose shape sequence is different going out than coming back. A helix. A screw. Or the elegant undulating wave that a sperm cell's tail makes. Not a breaststroke.
+</Callout>
+
+</Section>
+
+<Section index={7} title="Stokes' law, again">
+
+We met <PhysicistLink slug="george-gabriel-stokes">Stokes' law</PhysicistLink> back in FIG.04 on friction and drag. The formula for the viscous drag on a sphere of radius r moving at speed v through a fluid of viscosity η is:
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">F = 6πηrv</span>
+</EquationBlock>
+
+We took it as given then. With the Reynolds number in hand, we can finally say *when* it holds.
+
+Stokes' law is the exact solution of the Stokes equation — the creeping-flow limit of Navier-Stokes — for a sphere in an unbounded fluid. That is valid when Re, built from the sphere's radius and its speed relative to the fluid, is much less than 1. For a raindrop falling through air, a dust particle settling in a room, a red blood cell tumbling in plasma, or Millikan's oil droplet held in an electric field, Stokes' law is accurate to a fraction of a percent.
+
+Above Re ≈ 1 the symmetric fore-aft flow pattern that underlies the derivation breaks. A wake forms behind the sphere, the drag stops being proportional to v and becomes proportional to v² (the *quadratic* drag regime, set by the kinetic energy that has to be given to the wake). That is why skydivers reach a terminal velocity set by C_d·v² rather than by η·v: they live at Re ≈ 10⁵, firmly in Newton's drag regime. At the other extreme a bacterium lives at Re ≈ 10⁻⁵ and feels nothing but Stokes.
+
+One formula, one regime. Which regime you are in is set by a single dimensionless number. This is the payoff of the Reynolds framework — we do not need separate theories for raindrops and for skydivers; we need one theory and a number that tells us which limit of it applies.
+
+</Section>
+
+<Section index={8} title="What comes next">
+
+We have put viscosity on a footing, derived Poiseuille's parabolic profile, learned the Reynolds number, and used it to explain why bacteria need corkscrews. What we have *not* done is address the regime where almost every flow in nature actually lives: high Re, fully turbulent, everything coupled to everything.
+
+Turbulence is the great unsolved problem of classical physics. Two centuries after the Navier-Stokes equations were written down, no one has proved that their three-dimensional solutions stay smooth, and no one has a closed-form description of a turbulent flow. It is also one of the most practically important phenomena on Earth: weather, climate, aircraft drag, combustion, arterial blood flow above the aortic arch, the atmospheres of planets and stars. The next topic is devoted to it — what it looks like, why it is so hard, what we have managed to say about it despite its resistance to theory, and why Heisenberg reportedly wanted to ask God about it.
 
 </Section>
 

@@ -1023,6 +1023,158 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
     ],
   },
+  {
+    slug: "pressure",
+    category: "concept",
+    relatedPhysicists: ["blaise-pascal", "simon-stevin"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "pascal-unit",
+    category: "unit",
+    relatedPhysicists: ["blaise-pascal"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "buoyancy",
+    category: "concept",
+    relatedPhysicists: ["archimedes"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "hydrostatic",
+    category: "concept",
+    relatedPhysicists: ["simon-stevin", "blaise-pascal"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "atmospheric-pressure",
+    category: "concept",
+    relatedPhysicists: ["evangelista-torricelli", "blaise-pascal"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "bernoullis-principle",
+    category: "concept",
+    relatedPhysicists: ["daniel-bernoulli", "leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "bernoullis-principle" },
+    ],
+  },
+  {
+    slug: "streamline",
+    category: "concept",
+    relatedPhysicists: ["leonhard-euler", "daniel-bernoulli"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "bernoullis-principle" },
+    ],
+  },
+  {
+    slug: "incompressible-flow",
+    category: "concept",
+    relatedPhysicists: ["daniel-bernoulli", "leonhard-euler"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "bernoullis-principle" },
+    ],
+  },
+  {
+    slug: "venturi-effect",
+    category: "phenomenon",
+    relatedPhysicists: ["giovanni-venturi", "daniel-bernoulli"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "bernoullis-principle" },
+    ],
+  },
+  {
+    slug: "viscosity",
+    category: "concept",
+    relatedPhysicists: ["isaac-newton", "jean-poiseuille", "george-gabriel-stokes"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "reynolds-number",
+    category: "concept",
+    relatedPhysicists: ["osborne-reynolds"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "laminar-flow",
+    category: "concept",
+    relatedPhysicists: ["jean-poiseuille", "osborne-reynolds"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "poiseuille-flow",
+    category: "phenomenon",
+    relatedPhysicists: ["jean-poiseuille"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "newtonian-fluid",
+    category: "concept",
+    relatedPhysicists: ["isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "turbulence",
+    category: "phenomenon",
+    relatedPhysicists: ["claude-louis-navier", "george-gabriel-stokes", "lewis-fry-richardson", "andrey-kolmogorov"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "navier-stokes-equations",
+    category: "concept",
+    relatedPhysicists: ["claude-louis-navier", "george-gabriel-stokes"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "vortex",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "energy-cascade",
+    category: "phenomenon",
+    relatedPhysicists: ["lewis-fry-richardson", "andrey-kolmogorov"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "kolmogorov-spectrum",
+    category: "phenomenon",
+    relatedPhysicists: ["andrey-kolmogorov"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

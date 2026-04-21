@@ -253,6 +253,21 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   DispersionScene: lazyScene(() =>
     import("@/components/physics/dispersion-scene").then((m) => ({ default: m.DispersionScene })),
   ),
+  BuoyancyScene: lazyScene(() =>
+    import("@/components/physics/buoyancy-scene").then((m) => ({ default: m.BuoyancyScene })),
+  ),
+  VenturiScene: lazyScene(() =>
+    import("@/components/physics/venturi-scene").then((m) => ({ default: m.VenturiScene })),
+  ),
+  PoiseuilleProfileScene: lazyScene(() =>
+    import("@/components/physics/poiseuille-profile-scene").then((m) => ({ default: m.PoiseuilleProfileScene })),
+  ),
+  ReynoldsRegimesScene: lazyScene(() =>
+    import("@/components/physics/reynolds-regimes-scene").then((m) => ({ default: m.ReynoldsRegimesScene })),
+  ),
+  KolmogorovSpectrumScene: lazyScene(() =>
+    import("@/components/physics/kolmogorov-spectrum-scene").then((m) => ({ default: m.KolmogorovSpectrumScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

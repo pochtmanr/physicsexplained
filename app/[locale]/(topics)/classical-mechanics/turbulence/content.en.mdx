@@ -1,8 +1,22 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { KolmogorovSpectrumScene } from "@/components/physics/kolmogorov-spectrum-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Claude-Louis Navier", href: "/physicists/claude-louis-navier" },
+  { type: "physicist", label: "George Gabriel Stokes", href: "/physicists/george-gabriel-stokes" },
+  { type: "physicist", label: "Lewis Fry Richardson", href: "/physicists/lewis-fry-richardson" },
+  { type: "physicist", label: "Andrey Kolmogorov", href: "/physicists/andrey-kolmogorov" },
+  { type: "term", label: "Turbulence", href: "/dictionary/turbulence" },
+  { type: "term", label: "Navier-Stokes Equations", href: "/dictionary/navier-stokes-equations" },
+  { type: "term", label: "Vortex", href: "/dictionary/vortex" },
+  { type: "term", label: "Energy Cascade", href: "/dictionary/energy-cascade" },
+  { type: "term", label: "Kolmogorov Spectrum", href: "/dictionary/kolmogorov-spectrum" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.27 · FLUIDS"
@@ -10,9 +24,117 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
   subtitle="The last unsolved problem of classical physics."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="A physicist's confession">
 
-TODO: write the opening.
+Werner Heisenberg, the story goes, was once asked what he would ask God given the chance. *Two questions*, he said. *Why relativity, and why turbulence. I really think He may have an answer to the first.* The line is almost certainly apocryphal — every retelling pins it on a different physicist, and Heisenberg's actual doctoral thesis was on the stability of laminar flow, so he was speaking from bruises. But physicists keep repeating the quote for a reason. Two hundred years after the governing equations were written down, turbulence is still the monster at the end of classical mechanics. You see it every time you watch smoke curl off a candle, every time a river goes white over a rock, every time an airliner's wingtip carves a vortex through the cloud deck. And nobody has a closed theory of it.
+
+This topic is less a derivation than a tour of where classical physics runs out of road. We will write down the equation of everything for fluids, admit that we cannot solve it, and then show you the one clean, quantitative prediction that survives the wreckage — <PhysicistLink slug="andrey-kolmogorov">Kolmogorov</PhysicistLink>'s −5/3 law. It is the humility lesson of the module, and it is the right place to end Newton's chapter before the next one begins.
+
+</Section>
+
+<Section index={2} title="What turbulence looks like">
+
+Watch cream poured into coffee. For an instant it arrives as a clean sheet. Then a wrinkle appears at the edge. The wrinkle grows into a curl, the curl folds back on itself, and within a second or two the neat sheet is replaced by a swirling, self-similar mess: large eddies that contain smaller eddies that contain smaller eddies still, all the way down until the cream and the coffee are finally indistinguishable.
+
+That is **<Term slug="turbulence">turbulence</Term>**. Not noise, not chaos in the colloquial sense, but a very particular kind of structured disorder — fluid motion organised into nested <Term slug="vortex">vortices</Term> across an enormous range of scales, each feeding the next.
+
+The best short description of it was written in 1922 by an English meteorologist named <PhysicistLink slug="lewis-fry-richardson">Lewis Fry Richardson</PhysicistLink>, in the middle of an otherwise technical book on weather prediction. He paused, mid-derivation, to write a verse:
+
+<Callout variant="intuition">
+Big whorls have little whorls<br />
+that feed on their velocity,<br />
+and little whorls have lesser whorls<br />
+and so on to viscosity<br />
+— in the molecular sense.
+</Callout>
+
+It is a parody of Jonathan Swift's couplet about fleas on fleas, and it is, as it turns out, a physical law. Energy is stirred in at the big scale — a spoon, a wing, a jet stream. It does not dissipate there. Instead it is *handed down* from big eddies to smaller ones, from smaller to smaller still, in a cascade, until finally at some very small scale the eddies are slow enough and close enough to the molecular motion that viscosity can convert them into heat. Richardson did not prove this. He guessed it, in a verse. Kolmogorov made the guess quantitative nineteen years later.
+
+</Section>
+
+<Section index={3} title="Navier-Stokes — the equation of everything for fluids">
+
+Before the cascade, the equation. In the 1820s a French engineer named <PhysicistLink slug="claude-louis-navier">Claude-Louis Navier</PhysicistLink>, working from a molecular picture he now know to be wrong in the details, wrote down a partial differential equation for the velocity field of a viscous fluid. Two decades later <PhysicistLink slug="george-gabriel-stokes">George Gabriel Stokes</PhysicistLink>, working from the continuum picture we now know to be right, re-derived the same equation from scratch. Nobody had the nerve to take credit alone, and so the result is known, fairly, as the **<Term slug="navier-stokes-equations">Navier-Stokes equations</Term>**.
+
+For an incompressible Newtonian fluid they read:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">ρ (∂v/∂t + (v·∇)v) = −∇p + η ∇²v + f</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">∇ · v = 0</span>
+</EquationBlock>
+
+Read it in parts. The left side is mass density times acceleration — Newton's second law, applied to a parcel of fluid, with the comma-separated extra term *(v·∇)v* accounting for the fact that a parcel is moving through a velocity field that itself varies in space. The right side is the sum of forces per unit volume: a pressure gradient pushing the parcel from high to low, a viscous stress *η∇²v* trying to average the velocity field smooth, and any external body force *f* — gravity, an electric field, the Coriolis pseudo-force on a rotating planet. The second line just says no fluid is being created or destroyed.
+
+That is it. Ocean currents, mushroom clouds, the slipstream behind a lorry, blood plasma in an artery, the solar wind at 300 km/s — all of them are solutions of these two lines, at different values of the constants. In principle, everything we are about to say about turbulence is already hidden inside this equation.
+
+</Section>
+
+<Section index={4} title="Why we cannot solve it">
+
+In practice, nobody can solve it. Not really. Not for anything interesting.
+
+The villain is the innocuous-looking term *(v·∇)v* on the left. It is non-linear: the velocity field multiplies itself. In a linear equation — a wave equation, Schrödinger's equation, the heat equation — you can decompose any solution into a sum of simple modes, solve each mode independently, and add the results back up. Turbulence refuses to play this game. The non-linear term *couples every scale to every other scale*. A Fourier component of wavenumber *k₁* and another of wavenumber *k₂* interact to produce motion at wavenumbers *k₁ + k₂* and *k₁ − k₂*. The big eddies talk to the small eddies and nothing can stop the conversation.
+
+That is exactly why Richardson's cascade is a cascade and not a set of independent oscillators. It is also why two centuries of attempts to produce a closed, analytic theory of turbulence have failed. We do not know whether smooth initial conditions in three dimensions always give smooth solutions for all time. That question — the regularity of 3D Navier-Stokes — is one of the seven Clay Millennium Prize problems, and the million dollars is still on the table.
+
+<Callout variant="math">
+"Millennium Prize problem" is the polite version. The sharper version: we
+do not know, with mathematical certainty, whether the equation we use to
+design every aircraft, weather model, and cardiovascular stent might at
+some instant produce a velocity that diverges to infinity. Our best
+numerical evidence says no. Our best analytic proofs say we do not know.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Kolmogorov 1941">
+
+In the summer of 1941, the German army was pushing east into the Soviet Union. Moscow was being evacuated. Food was rationed. And in a short paper submitted to the *Doklady Akademii Nauk*, <PhysicistLink slug="andrey-kolmogorov">Andrey Kolmogorov</PhysicistLink> — already one of the great mathematicians of the century, already the author of the axioms of probability theory — published three pages that remain the single most powerful statement ever made about turbulent flow. He did it by not solving Navier-Stokes at all.
+
+His argument was almost embarrassingly simple. Pick the inertial range: the range of eddy sizes small enough that the details of how energy was injected are forgotten, but large enough that viscosity has not yet caught up. In that range, Kolmogorov reasoned, only two quantities can matter: the wavenumber *k* of an eddy (inverse of its size) and the rate *ε* at which energy is being handed down the cascade per unit mass. Dimensional analysis then fixes the **<Term slug="energy-cascade">energy cascade</Term>**'s spectrum uniquely:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">E(k) = C · ε^(2/3) · k^(−5/3)</span>
+</EquationBlock>
+
+That is the **<Term slug="kolmogorov-spectrum">Kolmogorov spectrum</Term>**, or the K41 law, or just the −5/3 law. *C* is a dimensionless constant, measured ever since at about 1.5. Plot the energy contained in eddies of each size on log-log axes, and a straight line of slope −5/3 falls out.
+
+<SceneCard caption="FIG.27a — the −5/3 law" className="w-full">
+  <KolmogorovSpectrumScene />
+</SceneCard>
+
+The remarkable thing is that it *works*. Measured in wind tunnels, in the atmospheric boundary layer a hundred metres up, in tidal channels, in the jet efflux of a rocket engine, in the solar wind at Earth orbit — in every system with enough separation between its forcing scale and its viscous scale — the spectrum is a straight line, and the slope is −5/3, to the accuracy of the measurement. One of the cleanest quantitative predictions in classical physics, extracted from an equation we cannot solve, by a mathematician in a country at war.
+
+</Section>
+
+<Section index={6} title="Instability — how laminar becomes turbulent">
+
+A fluid is not turbulent by default. At low speed through a pipe, water flows in smooth parallel layers — laminar, reversible-looking, almost boring. Crank up the speed and at some critical point the layers break, vortices bloom, and the whole column goes chaotic. The transition is sharp. Osborne Reynolds, in 1883, photographed it with a dye filament and named the dimensionless number that controls it.
+
+For flow in a pipe the critical Reynolds number is around 2300. Below it, any disturbance is damped by viscosity; the flow is stable against perturbations of all wavelengths, and small kicks die away. Above it, at least some wavelengths grow — the linear stability problem has positive eigenvalues — and a small kick is amplified, cascades into larger kicks, and finally saturates as fully developed turbulence. The exact transition is messy. It depends on the inlet geometry, on surface roughness, on the precise kind of perturbation you feed in. Pipes have been seen to stay laminar at Re = 10⁵ in very clean laboratory conditions, and to go turbulent at Re = 1800 if you sneeze near the apparatus.
+
+That messiness is itself the story. Instability is not a binary. It is a family of thresholds, one for each kind of disturbance, with overlapping basins of attraction. The equations do not tell you when turbulence will appear; they tell you which solutions, *if they happen*, will grow. The Orr-Sommerfeld equation is where the bookkeeping lives, and it is one of the oldest still-open problems in mathematical physics.
+
+</Section>
+
+<Section index={7} title="Why it matters">
+
+Turbulence is not a technicality. Half of practical engineering is working around it.
+
+Every airliner that ever flew is shaped primarily to manage turbulent wakes — the drag coefficient of a well-designed wing is dominated not by skin friction but by how cleanly the boundary layer separates at the trailing edge. Every weather forecast you have ever read is the output of a numerical Navier-Stokes solver struggling to represent eddies below its grid resolution, papering over them with a subgrid turbulence model and accepting the approximation. The climate system is driven by turbulent transport in the ocean and atmosphere; the fine structure of every star is set by turbulent convection in its outer layers; tokamak plasmas fail to confine fusion fuel because turbulence in the magnetic geometry leaks heat across field lines ten times faster than theory says it should. The solar wind arrives at Earth already in the inertial range, its −5/3 spectrum measured by spacecraft, and the magnetic storms that take down our electrical grids are downstream consequences of that cascade.
+
+None of this has a closed-form solution. All of it has a −5/3 slope.
+
+</Section>
+
+<Section index={8} title="What comes next">
+
+We end Newton's chapter here, one module shy of a full theory, because that is the honest place to end it. Classical mechanics as Newton built it works superbly when you can isolate a few bodies, a handful of forces, and a small number of degrees of freedom. When you cannot — when the degrees of freedom couple across every scale at once — the framework does not so much fail as *sigh*. It keeps giving correct answers, for any one experiment, but it will not hand you a general theory. Turbulence is the limit case.
+
+In the next and final module of Classical Mechanics we pivot. Instead of summing forces and integrating equations of motion, we ask: of all the possible histories a system could have, which one does it actually take? The answer — the principle of least action, the Lagrangian, the Hamiltonian — will look at first like a mathematical curiosity. It is not. It is the form in which Newtonian mechanics generalises to fields, to quantum mechanics, to every modern theory that came after. Newton's mechanics is the local picture. Lagrange's is the global one. We need both.
 
 </Section>
 

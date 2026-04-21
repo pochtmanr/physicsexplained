@@ -560,6 +560,89 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "the-wobbling-earth" },
     ],
   },
+  {
+    slug: "blaise-pascal",
+    born: "1623",
+    died: "1662",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "simon-stevin",
+    born: "1548",
+    died: "1620",
+    nationality: "Flemish",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "pressure-and-buoyancy" },
+    ],
+  },
+  {
+    slug: "giovanni-venturi",
+    born: "1746",
+    died: "1822",
+    nationality: "Italian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "bernoullis-principle" },
+    ],
+  },
+  {
+    slug: "jean-poiseuille",
+    born: "1797",
+    died: "1869",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "osborne-reynolds",
+    born: "1842",
+    died: "1912",
+    nationality: "Irish",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "edward-mills-purcell",
+    born: "1912",
+    died: "1997",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "claude-louis-navier",
+    born: "1785",
+    died: "1836",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+      { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+    ],
+  },
+  {
+    slug: "lewis-fry-richardson",
+    born: "1881",
+    died: "1953",
+    nationality: "English",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
+  {
+    slug: "andrey-kolmogorov",
+    born: "1903",
+    died: "1987",
+    nationality: "Russian",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "turbulence" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

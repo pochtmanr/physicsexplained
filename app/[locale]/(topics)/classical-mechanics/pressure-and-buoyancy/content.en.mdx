@@ -1,18 +1,172 @@
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { BuoyancyScene } from "@/components/physics/buoyancy-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
-<TopicPageLayout aside={[]}>
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Archimedes", href: "/physicists/archimedes" },
+  { type: "physicist", label: "Simon Stevin", href: "/physicists/simon-stevin" },
+  { type: "physicist", label: "Evangelista Torricelli", href: "/physicists/evangelista-torricelli" },
+  { type: "physicist", label: "Blaise Pascal", href: "/physicists/blaise-pascal" },
+  { type: "term", label: "Pressure", href: "/dictionary/pressure" },
+  { type: "term", label: "Pascal (unit)", href: "/dictionary/pascal-unit" },
+  { type: "term", label: "Hydrostatic", href: "/dictionary/hydrostatic" },
+  { type: "term", label: "Atmospheric Pressure", href: "/dictionary/atmospheric-pressure" },
+  { type: "term", label: "Buoyancy", href: "/dictionary/buoyancy" },
+]}>
 
 <TopicHeader
   eyebrow="FIG.24 · FLUIDS"
   title="PRESSURE AND BUOYANCY"
-  subtitle="Why some things float."
+  subtitle="Why ships float, barometers read the sky, and the ocean crushes submarines from the sides as hard as from above."
 />
 
-<Section index={1} title="TODO: first section">
+<Section index={1} title="A naked man in Syracuse">
 
-TODO: write the opening.
+Third century BCE. Hiero II of Syracuse hands his favourite craftsman a fixed mass of gold and asks for a crown. The crown arrives, the mass checks out, and yet the king suspects he is being swindled — that some of the gold has quietly been swapped for silver under the leaf. He cannot smelt the crown to find out. He asks <PhysicistLink slug="archimedes">Archimedes</PhysicistLink> to answer the question without damaging it.
+
+The story, as Vitruvius tells it two centuries later, is that Archimedes stepped into a full bath, watched the water slosh over the rim, and understood in a single flash how to solve the problem. He ran naked through the streets shouting *heurēka* — *I have found it*. The anecdote is almost certainly polished. The physics underneath it is not.
+
+A body submerged in a fluid displaces a volume of that fluid equal to the body's own volume, and experiences an upward force equal to the weight of the fluid it pushed aside. Pure gold and silver have different densities; a crown of mixed composition displaces more water than a crown of solid gold of the same mass. Measure the displacement, measure the mass, compare the ratio. The king gets his answer without losing his crown.
+
+That one principle is sharp enough to tell gold from forgery, to float a supertanker carrying half a million tonnes of oil, and to lift a hot-air balloon off the ground. This topic builds it from first principles — starting with what pressure *is* — and ends at the edge of the next one, where fluids finally get to move.
+
+</Section>
+
+<Section index={2} title="Pressure, carefully defined">
+
+**<Term slug="pressure">Pressure</Term>** is force per unit area. A stiletto heel and a tank tread can carry the same weight, but the stiletto concentrates it onto a square centimetre and the tread spreads it over half a square metre. The stiletto sinks into the parquet and the tread rolls over the lawn. The difference is pressure.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">p = F / A</span>
+</EquationBlock>
+
+The SI unit is the **<Term slug="pascal-unit">pascal</Term>** — one newton per square metre, named for <PhysicistLink slug="blaise-pascal">Blaise Pascal</PhysicistLink>. A pascal is a tiny amount of pressure: a ten-gram coin resting on a postage stamp is about 40 Pa. Weather reports use hectopascals (100 Pa each), car tyres come in kilopascals or their American cousin the pound per square inch, and industrial pipework sometimes runs at megapascals. Standard **<Term slug="atmospheric-pressure">atmospheric pressure</Term>** at sea level is 101 325 Pa — about 10 N on every square centimetre of your skin, pushing from every direction at once.
+
+One subtlety. In a solid, push a bar on one face and the force stays directed along that bar. In a fluid at rest, push anywhere and the pressure is the same in *every* direction at that point. Pressure in a static fluid is a **scalar**: it has a magnitude but no direction. Any wall you put in the fluid feels a force normal to the wall with magnitude *p·A*, and the direction is set by the wall, not by some preferred direction in the fluid. That is why your eardrum is pushed inward by the atmosphere regardless of which way you turn your head, and why a deep-sea submarine is squeezed from the sides as hard as from the top.
+
+<Callout variant="intuition">
+The reason pressure in a fluid is isotropic comes from the fluid's inability to support shear. A fluid at rest cannot sustain a sideways force across an internal surface — if it could, the fluid would flow until it couldn't. What remains is a normal force only, and a little algebra on a tetrahedral fluid element shows that force per unit area must be the same on every face.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The hydrostatic equation">
+
+Imagine a thin horizontal slab of fluid, area *A* and thickness *dz*, at depth *z* below some reference level. Three forces act on it: the pressure from below pushing up, the pressure from above pushing down, and gravity pulling the slab's own weight down. For the slab to sit still, they balance:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">p(z) · A − p(z + dz) · A − ρ · A · dz · g = 0</span>
+</EquationBlock>
+
+Divide by *A·dz* and take the limit. What drops out is the hydrostatic equation:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">dp / dz = −ρ · g</span>
+</EquationBlock>
+
+Pressure rises linearly as you descend through a fluid of constant density. Measured downward from a free surface at pressure *p₀*, the pressure at depth *h* is
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">p(h) = p₀ + ρ · g · h</span>
+</EquationBlock>
+
+This is the single most useful equation in fluid statics. Plug in water (ρ ≈ 1000 kg/m³) and standard gravity (9.81 m/s²): every ten metres you descend adds about 98 kPa — essentially another atmosphere. At the bottom of a ten-metre swimming pool the total pressure is two atmospheres; at the bottom of the Mariana Trench it is over a thousand.
+
+<Callout variant="note">
+<PhysicistLink slug="simon-stevin">Simon Stevin</PhysicistLink>, a Flemish military engineer working a generation before Galileo, is the one who first showed — in 1586 — that pressure at a given depth depends only on the depth, not on the shape of the container. A narrow stovepipe and a wide swimming pool, both filled to the same depth, read the same pressure at the bottom. This is the so-called *hydrostatic paradox*: a few litres in a tall tube can push as hard against the floor as a tonne in a shallow pond, as long as the column heights agree. Stevin proved it geometrically, by imagining freezing part of the fluid into a rigid shape that must still be in equilibrium.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Torricelli weighs the atmosphere">
+
+If every fluid column of height *h* carries a pressure *ρ·g·h* at its base, then the atmosphere — which *is* a fluid column — must also carry a pressure at its base, equal to its own weight per unit area. That pressure is what we call one atmosphere, and in 1643 <PhysicistLink slug="evangelista-torricelli">Evangelista Torricelli</PhysicistLink> found a way to measure it directly.
+
+Torricelli took a glass tube, closed at one end, roughly a metre long. He filled it with mercury, inverted it into a dish of mercury, and watched what happened. The mercury didn't fall to the level of the dish. It fell a little, left a vacuum at the top of the tube, and then stopped — suspended, with 760 millimetres of mercury column above the dish surface.
+
+What was holding the mercury up? The atmosphere, pressing on the open surface of the dish, was transmitted through the fluid to the base of the column and pushed the mercury up the tube. Equilibrium at the bottom of the tube requires
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-base">p_atm = ρ_Hg · g · h</span>
+</EquationBlock>
+
+With ρ_Hg ≈ 13 595 kg/m³ and h ≈ 0.760 m, the right-hand side is about 101 kPa. Torricelli had built the first barometer and, incidentally, the first man-made vacuum — the empty space above the mercury column was a stumbling block for Aristotelian physics, which had insisted that nature abhors one. Nature, it turned out, didn't mind a vacuum at all; it just usually hadn't met one.
+
+Mercury is used because it is dense. The same atmosphere would support a water column ten metres tall, too tall for a laboratory instrument. That height — ten metres of water per atmosphere — is the intuition to carry around. Ten metres down, the pressure has doubled. Twenty metres, tripled. A scuba diver at thirty metres breathes air delivered at four atmospheres.
+
+</Section>
+
+<Section index={5} title="Pascal's principle">
+
+Here is something the hydrostatic equation seems to miss. If I take a closed bottle of water and squeeze the cap, the pressure everywhere inside jumps — not just near the cap. Where did that come from? The answer sounds almost too simple. <PhysicistLink slug="blaise-pascal">Blaise Pascal</PhysicistLink>, writing in 1653, stated it as a principle:
+
+> *A pressure applied anywhere to an enclosed, incompressible fluid is transmitted undiminished to every point of the fluid and to the walls of its container.*
+
+Why? Because a fluid at rest can only exist in equilibrium, and adding a uniform *Δp* to the hydrostatic profile p(h) = p₀ + ρ·g·h leaves dp/dz = −ρ·g intact. The absolute values shift; the depth-dependence doesn't. Every point gets the same boost.
+
+This single fact is the basis of every hydraulic machine in the industrial world. Couple two pistons by a shared volume of oil. Push the small one — area *A*₁ — with a force *F*₁. The pressure in the oil rises by *ΔP = F*₁*/A*₁. That same pressure pushes on the big piston of area *A*₂, delivering
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-base">F₂ = ΔP · A₂ = F₁ · (A₂ / A₁)</span>
+</EquationBlock>
+
+Area ratio 100, force ratio 100. A child can lift a car this way — and a car jack in a mechanic's garage does exactly that. Energy conservation keeps you honest: the small piston must travel a hundred times as far as the large one for the work to balance. Hydraulic presses, disc brakes, forklifts, dentist chairs, excavators, bulldozers — all of them run Pascal's principle as the core trick. The invisible part is the fluid. The visible part is the leverage.
+
+</Section>
+
+<Section index={6} title="Archimedes, stated precisely">
+
+Back to the crown. Consider a rectangular block of horizontal area *A* and height *H*, fully submerged in a fluid of density *ρ*. Its top face sits at depth *h*₁, its bottom face at depth *h*₂ = *h*₁ + *H*. The hydrostatic equation gives the pressures on each:
+
+<EquationBlock id="EQ.07">
+  <span className="font-mono text-base">p_top = p₀ + ρ·g·h₁       p_bottom = p₀ + ρ·g·h₂</span>
+</EquationBlock>
+
+The top face feels a downward force *p*_top*·A*. The bottom face feels an upward force *p*_bottom*·A*. Sideways pressures on the vertical faces cancel by symmetry. What's left is a net upward force
+
+<EquationBlock id="EQ.08">
+  <span className="font-mono text-base">F_b = (p_bottom − p_top) · A = ρ · g · H · A = ρ · g · V</span>
+</EquationBlock>
+
+where *V* = *H·A* is the block's volume. That is exactly the weight of the fluid the block displaced. Shape doesn't matter — the argument generalises to any volume by triangulation. This is **<Term slug="buoyancy">Archimedes' principle</Term>**, derived from nothing more than pressure growing linearly with depth.
+
+A body in equilibrium floats when the weight of fluid it *could* displace exceeds its own weight. A 1 m³ block of pine (ρ ≈ 500 kg/m³) weighs 500 kg; submerged in water it would displace 1000 kg of fluid, way more than its own weight, so it rises until half of it is above the waterline and the two forces balance. At equilibrium the submerged fraction is exactly the density ratio, ρ_body / ρ_fluid. For ice on water, that ratio is 0.917 — the fraction of the iceberg below the surface, and the origin of the cliché.
+
+<SceneCard caption="FIG.24a — density ratio decides everything" className="w-full">
+  <BuoyancyScene />
+</SceneCard>
+
+Drag the sliders. The block sinks, floats, or hovers on a single inequality: body density versus fluid density. Everything else — hull shape, size, material — collapses into that one comparison.
+
+</Section>
+
+<Section index={7} title="Why supertankers can't capsize (easily)">
+
+Floating isn't the whole story. A boat sitting quietly on calm water might still roll over if you nudge it wrong. What keeps it upright is a surprisingly geometric quantity called the **metacentric height**.
+
+Picture a hull cross-section. The ship's centre of gravity *G* sits somewhere inside the hull, determined by how mass is distributed. The centre of buoyancy *B* sits at the centroid of the *submerged* volume — the effective point where the buoyant force pushes up. When the ship is upright, *G* and *B* lie on the same vertical line and the net torque is zero.
+
+Tilt the ship a small angle *θ*. The shape of the submerged region changes: on the tilted-down side more hull dips in, on the tilted-up side less does. The centroid *B* shifts sideways. Extend the new line of buoyant force upward until it meets the ship's centreline, and call that intersection point the **metacentre** *M*. The distance *GM* — from centre of gravity to metacentre — is the **metacentric height**, and it decides the game.
+
+If *M* sits above *G* (GM positive), the buoyant force swings the ship back upright: the hull is stable against small heel angles. If *M* sits below *G*, the buoyant force increases the tilt and the hull capsizes. A rowboat with a standing passenger has a high *G* and a low *M*, and tips. A heavily ballasted container ship has a low *G* and a *very* wide beam, which sends *M* sky-high. A modern supertanker's metacentric height is often metres — enough that nudging it hard enough to capsize requires a wave tall enough to flip a small island.
+
+<Callout variant="warning">
+GM can be *too* big. A ship with an enormous metacentric height is stiff — it snaps back upright with violent angular acceleration, which is uncomfortable for passengers and, in extreme seas, dangerous to the structure. Warship design typically targets a moderate GM so the ship rolls briskly but not brutally. Cruise liners ride lower and wider, with a smaller GM, for a more comfortable motion.
+</Callout>
+
+</Section>
+
+<Section index={8} title="When the water starts to move">
+
+Everything in this topic assumed *hydrostatic* — fluid at rest. Pressure depended only on depth. The buoyant force balanced weight exactly. There was no flow, no friction, nothing moving.
+
+Let the fluid flow and the picture changes. Pressure is no longer a function of depth alone — it depends on speed. A fluid moving through a constriction accelerates, and in doing so its pressure drops. Fast fluids push less than slow ones. That one observation, turned into an equation by Daniel Bernoulli in 1738, lifts aircraft, measures flow rate in pipelines, and pulls the paper sheet upward when you blow across it.
+
+That is the next topic. Take Pascal, Stevin, Torricelli, and Archimedes with you — their principles still hold, now as limiting cases of something larger.
 
 </Section>
 
