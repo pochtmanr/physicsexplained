@@ -1,0 +1,152 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { WheelDecompositionScene } from "@/components/physics/wheel-decomposition-scene";
+import { RollingRaceScene } from "@/components/physics/rolling-race-scene";
+import { RollingSlippingScene } from "@/components/physics/rolling-slipping-scene";
+import { CoinRollingScene } from "@/components/physics/coin-rolling-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Leonhard Euler", href: "/physicists/leonhard-euler" },
+  { type: "physicist", label: "Archimedes", href: "/physicists/archimedes" },
+  { type: "term", label: "Rolling without slipping", href: "/dictionary/rolling-without-slipping" },
+  { type: "term", label: "Moment of inertia", href: "/classical-mechanics/moment-of-inertia" },
+  { type: "term", label: "Moment arm", href: "/dictionary/moment-arm" },
+]}>
+
+<TopicHeader
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
+  title="ROLLING MOTION"
+  subtitle="What a wheel does that a puck can't — and why a hollow cylinder loses every race."
+/>
+
+<Section index={1} title="The constraint">
+
+Slide a hockey puck across ice and it does one thing: it translates. Every point on the puck moves with the same velocity, in the same direction, at the same speed. There is one number that describes its motion, and that number is `v`.
+
+Now take a wheel and roll it across the floor. The wheel translates too — its center moves at some speed `v` — but it also rotates, spinning about that center at some angular rate `ω`. Two motions, glued together by a single condition: the bottom of the wheel must not slip against the ground.
+
+That gluing condition has a name and a formula. It is called <Term slug="rolling-without-slipping">rolling without slipping</Term>, and it says simply `v = ωR`: the translational speed of the center equals the rotational speed of the rim. If the wheel turns once, the center advances by exactly the circumference, `2πR`. No more, no less. Drive faster than that and the tire spins out — burning rubber. Brake harder than that and the tire locks — skidding to a stop. Both are failures of the constraint, and both are what anti-lock braking systems are designed to prevent.
+
+The strange consequence: the contact point — the patch of rubber actually touching the road — is **momentarily stationary**. Even when the car is doing 120 km/h, the tire molecules in contact with the asphalt have zero velocity at the instant of contact. They peel away, swing through the air, and slam down again, stationary, a fraction of a second later. The wheel rotates around that stationary point.
+
+</Section>
+
+<Section index={2} title="Rolling as translation + rotation">
+
+Watch a wheel roll past you in slow motion. The hub glides smoothly forward. The top of the tire blurs ahead of the hub. The bottom of the tire — the part touching the road — is, somehow, perfectly still.
+
+This is not an illusion. It is geometry. Decompose the motion: every point on the wheel is doing two things at once. It is translating with the center, at velocity `v`. And it is rotating around the center, at angular velocity `ω`. Add those two contributions together at any point on the rim and you get the total velocity of that point.
+
+At the **top** of the wheel, the rotational velocity points forward, in the same direction as the translation. The two add. The top of the wheel moves at `2v` — twice as fast as the car itself.
+
+At the **center**, there is no rotational contribution (the center is the axis of rotation). The hub moves at `v`.
+
+At the **bottom**, the rotational velocity points backward, opposite to the translation. The two cancel exactly, by virtue of the rolling constraint `v = ωR`. The contact point is, instantaneously, at rest.
+
+<SceneCard caption="FIG.13a — wheel decomposition: top moves at 2v, center at v, bottom at 0" className="w-full">
+  <WheelDecompositionScene />
+</SceneCard>
+
+A point on the rim, traced over time, draws a curve called a **cycloid** — a series of arches, each one a bit pointier than a circle, each one starting and ending at zero velocity. <PhysicistLink slug="leonhard-euler">Euler</PhysicistLink> studied this curve in the 1700s, working out the rotational dynamics that today bear his name. The cycloid is the signature of pure rolling.
+
+</Section>
+
+<Section index={3} title="Kinetic energy of a rolling body">
+
+A rolling object stores energy in two places. There is the energy of the center of mass moving forward, the familiar `½mv²`. And there is the energy of the body spinning about that center, `½Iω²`, where `I` is the <Term slug="moment-arm">moment of inertia</Term> — the rotational analog of mass, encoding how the matter is distributed around the axis.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">KE = ½mv² + ½Iω²</span>
+</EquationBlock>
+
+Now apply the rolling constraint `v = ωR`, which lets us replace `ω` with `v/R`:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">KE = ½(1 + I/mR²)mv²</span>
+</EquationBlock>
+
+The kinetic energy of a rolling body is the kinetic energy of a sliding body — `½mv²` — multiplied by a shape factor `(1 + I/mR²)`. That factor is always greater than one. A rolling object always carries more kinetic energy at a given speed than a sliding one, because some of the energy lives in the spin.
+
+How much more depends entirely on the shape. For a solid sphere (a marble, a billiard ball) `I = (2/5)mR²`, so the factor is `7/5 = 1.4`. For a solid cylinder (a wheel, a rolling pin) it is `3/2 = 1.5`. For a hollow cylinder (a pipe, a tin can) it is `2.0` — twice the energy of a slider. For a hollow sphere (a ping-pong ball) it is `5/3 ≈ 1.67`.
+
+The hollow shapes always carry more energy. Their mass sits far from the axis, so they have to spin "harder" — store more rotational energy — to keep up with the translation. That extra cost is about to decide a race.
+
+</Section>
+
+<Section index={4} title="The race down the incline">
+
+Set up four objects at the top of an inclined plane: a solid sphere, a solid cylinder, a hollow sphere, a hollow cylinder. Same mass, same radius, same starting height. Release them simultaneously. Which reaches the bottom first?
+
+Energy conservation tells the whole story. Each object starts with potential energy `mgh`. At the bottom, all of that has converted to kinetic energy `½(1 + I/mR²)mv²`. Solving for the speed:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">a = g sin θ / (1 + I/mR²)</span>
+</EquationBlock>
+
+The acceleration depends only on the shape factor `(1 + I/mR²)` and the angle of the incline. Mass and radius cancel out — a marble and a bowling ball, both solid spheres, accelerate identically. What matters is **how the mass is distributed**, not how much of it there is.
+
+Smaller shape factor → larger acceleration → wins the race. Run the numbers and the order is fixed:
+
+<Callout variant="intuition">
+1. **Solid sphere** — `a = (5/7) g sin θ`. The marble wins.
+2. **Solid cylinder** — `a = (2/3) g sin θ`.
+3. **Hollow sphere** — `a = (3/5) g sin θ`.
+4. **Hollow cylinder** — `a = (1/2) g sin θ`. The tin can loses, every time.
+
+A hockey puck, sliding without rolling, would beat all of them: `a = g sin θ`. The full `1.0`. Pure translation is unbeatable — but only if the surface is frictionless.
+</Callout>
+
+<SceneCard caption="FIG.13b — race down the incline: solid sphere wins, hollow cylinder loses" className="w-full">
+  <RollingRaceScene />
+</SceneCard>
+
+The puck wins because it doesn't have to spin up. The marble loses to the puck because two-sevenths of its budget goes into spin instead of forward motion. The tin can loses to everyone because half of its budget does. Same hill, same gravity, same starting height — different geometry, different outcome.
+
+</Section>
+
+<Section index={5} title="When rolling fails">
+
+The rolling constraint is not free. Something has to provide the torque that spins the object up as it rolls down the hill. That something is **static friction** at the contact point — friction acting on the part of the wheel that is, instantaneously, not moving.
+
+Static friction is bounded. It can supply at most `μ_s · mg cos θ`, where `μ_s` is the coefficient of static friction between the body and the surface. If the torque required to maintain `v = ωR` would demand more friction than that, the body cannot roll cleanly. Instead, it skids — the contact point slips, kinetic friction takes over, and the body slides while spinning at the wrong rate.
+
+The required coefficient, derived by demanding that friction produce exactly the angular acceleration needed to match the linear one, works out to:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">μ_req = (k tan θ) / (1 + k),  where k = I/mR²</span>
+</EquationBlock>
+
+Tilt the incline higher and `tan θ` grows; the required friction grows with it. At some critical angle, `μ_req` exceeds the available `μ_s` and rolling collapses into sliding. The body keeps accelerating — gravity is still pulling — but the spin and the translation are no longer locked. The contact point starts grinding against the surface, kinetic friction dissipates energy as heat, and the elegant `v = ωR` relation breaks.
+
+<SceneCard caption="FIG.13c — rolling vs. slipping: cyan when locked, red when the constraint breaks" className="w-full">
+  <RollingSlippingScene />
+</SceneCard>
+
+Notice the asymmetry: hollow shapes, with their larger `k`, demand more friction to roll cleanly. The same tin can that loses the race is also the first to start slipping when you tip the ramp up. Bad at racing, bad at gripping. Solid spheres have it best on both counts — small shape factor, modest friction demand. There is a reason marbles and billiard balls are solid.
+
+</Section>
+
+<Section index={6} title="Where it matters">
+
+Bowling balls roll the lane and hook on the spin you put on them at release. The hook works because static friction at the lane briefly grabs the surface of the ball — the same mechanism that powers a tire on a curve. Without the rolling constraint, every bowler would throw nothing but straight balls.
+
+Cyclists climbing a hill are fighting the shape factor of their own wheels. Heavy rims at large radius — the kind that look fast — store more rotational energy at a given road speed, which means more of every push has to go into spin instead of climbing. <PhysicistLink slug="archimedes">Archimedes</PhysicistLink>, who first reasoned carefully about centers of mass and the <Term slug="moment-arm">moment arm</Term>, would have appreciated why high-end racing wheels are deep-section carbon: mass concentrated near the hub, low `I`, more of your watts going where you want them.
+
+Tank treads exist to dodge the rolling constraint entirely. A tracked vehicle effectively lays down its own road — a closed loop of contact patches that is stationary against the ground while the vehicle moves over it. The contact "wheel" has infinite radius and infinite contact area. No slipping, immense traction, no shape-factor tax. The price is mass, complexity, and a top speed that would embarrass a bicycle.
+
+Car tires are round, not just wide, because round shapes obey `v = ωR`. A square wheel cannot roll without slipping; it has to lift its corner clear of the ground every quarter turn. (There is exactly one road profile — a chain of catenary arches — on which a square wheel rolls smoothly. <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> would have laughed.)
+
+<SceneCard caption="FIG.13d — coin rolling in a circle: a preview of precession" className="w-full">
+  <CoinRollingScene />
+</SceneCard>
+
+A spinning coin set rolling on a table traces a circle, leaning inward, the contact point sweeping a smaller and smaller loop until the coin clatters flat. That tilted, rolling, circling motion is **precession** — the rolling constraint coupled to angular momentum, the foundation of everything from gyroscopes to the wobbling Earth. The wheel that started this topic is, in disguise, the wheel that runs the rest of rotational mechanics.
+
+</Section>
+
+</TopicPageLayout>
