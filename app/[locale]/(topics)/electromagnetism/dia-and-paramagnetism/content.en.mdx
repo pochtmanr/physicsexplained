@@ -1,0 +1,104 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { OrbitalResponseScene } from "@/components/physics/orbital-response-scene";
+import { ParamagnetAlignmentScene } from "@/components/physics/paramagnet-alignment-scene";
+import { SusceptibilitySpectrumScene } from "@/components/physics/susceptibility-spectrum-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pierre Curie", href: "/physicists/pierre-curie" },
+  { type: "physicist", label: "Pierre Weiss", href: "/physicists/pierre-weiss" },
+  { type: "term", label: "Diamagnetism", href: "/dictionary/diamagnetism" },
+  { type: "term", label: "Paramagnetism", href: "/dictionary/paramagnetism" },
+  { type: "term", label: "Magnetic susceptibility", href: "/dictionary/magnetic-susceptibility" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.18 · MAGNETIC FIELDS IN MATTER"
+  title="DIAMAGNETISM AND PARAMAGNETISM"
+  subtitle="Two quiet regimes hiding in almost every material — a Lenz-law pushback everyone has, and a thermally-fought alignment a lucky few have on top."
+/>
+
+<Section index={1} title="Two quiet regimes">
+
+Bring a magnet near a piece of copper. Nothing happens. Bring it near a drop of water. Nothing. Near a chunk of aluminium — still nothing a finger can feel. The last topic (FIG.17) set up the bookkeeping of <Term slug="magnetization">magnetisation</Term> and the <Term slug="h-field">H field</Term>, and it closed on a promise: every material sits somewhere on a spectrum of the dimensionless number <Term slug="magnetic-susceptibility">χ_m</Term>. Iron's χ is enormous, a hundred thousand or more; that story is the next topic. This one covers everyone else. The two quiet regimes — **diamagnetism** and **paramagnetism** — are the small, honest responses every ordinary solid, liquid, and gas gives a magnetic field. Small enough that you mostly don't notice; consistent enough that they explain why magnets do, or don't, interact with almost anything you pick up.
+
+</Section>
+
+<Section index={2} title="Diamagnetism — everyone's baseline">
+
+Start with an atom that has no net magnetic moment of its own — every electron paired up, spins cancelling, closed shells all round. Noble gases are like this. So is water, bismuth, graphite, diamond, and most organic chemistry. Classically, such an atom is a nucleus ringed by electrons on tiny closed orbits. Each electron is a current loop; two electrons on the same shell orbit in opposite senses so their magnetic moments cancel. The atom's total moment is zero.
+
+Now switch on an external B field. Each electron orbit feels a change in the magnetic flux threading it, and by Lenz's law — the bookkeeping rule of §05 — every current loop *resists* that change by generating a current whose own field opposes the new flux. Classically, this means the counter-circulating electrons don't cancel anymore: one is pushed to orbit a bit faster, the other a bit slower. The imbalance is tiny but real, and its induced magnetic moment points *against* B.
+
+<SceneCard caption="FIG.18a — every orbit is a Lenz-law pushback; the imbalance is diamagnetism" className="w-full">
+  <OrbitalResponseScene />
+</SceneCard>
+
+Summed over all the electrons in a cubic metre of material, this gives a <Term slug="magnetization">magnetisation</Term> M pointing *opposite* to the applied H. In the linear regime M = χ·H, so this means **χ_m is negative** for a <Term slug="diamagnetism">diamagnet</Term>. A schematic estimate, summing the classical Larmor response for every bound electron, comes out as:
+
+<EquationBlock id="EQ.01">
+  $$ \chi_{\text{dia}} \;\approx\; -\mu_0\, n\, \frac{e^2}{6\,m_e}\,\langle r^2 \rangle $$
+</EquationBlock>
+
+where *n* is the number density of electrons, ⟨r²⟩ is the mean-square orbital radius, and *m_e* is the electron mass. The minus sign is the Lenz signature. The numerical value is parts-per-million and universal — every material has a diamagnetic contribution at this order. <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink>, in the 1840s, was the first to classify materials by their sign-of-response to a magnet, and coined the word *diamagnetic* for the ones that were repelled. He ran a lit candle flame through a strong field; the flame bent away from the poles. That was diamagnetism.
+
+</Section>
+
+<Section index={3} title="Paramagnetism — spins biased by B">
+
+Now give the atom a *net* moment of its own — an unpaired electron spin, or a partially-filled d- or f-shell where the spins don't fully cancel. Free oxygen molecules, aluminium atoms in metal, rare-earth ions in salt crystals, the Cu²⁺ ion in copper sulphate: all of these carry a permanent magnetic moment, roughly one Bohr magneton in size, attached to each atom.
+
+With no applied field, these moments point every direction at once — thermal motion jostles them so that the average over the whole sample is zero. Turn on B, and each moment feels a torque pulling it toward the field. A fully-aligned sample would give a huge M — every moment contributing — but thermal motion fights the alignment. The balance is what <PhysicistLink slug="pierre-curie">Pierre Curie</PhysicistLink> measured in his 1895 doctoral thesis, and the classical derivation was done shortly after by Paul Langevin.
+
+<SceneCard caption="FIG.18b — cool the sample and the spins begin to bias; M follows Curie's 1/T" className="w-full">
+  <ParamagnetAlignmentScene />
+</SceneCard>
+
+Let μ be the moment per atom and B the applied field. The energy of a moment aligned with B is −μB; against B, +μB. A Boltzmann-weighted average over all orientations gives the **Langevin function**:
+
+<EquationBlock id="EQ.02">
+  $$ \langle M \rangle \;=\; n\,\mu\;\bigl[\coth(x) - \tfrac{1}{x}\bigr], \qquad x = \frac{\mu B}{k_B T} $$
+</EquationBlock>
+
+At small x — weak field or warm sample — the bracket is just x/3, and the magnetisation is proportional to B with a 1/T prefactor. That is **Curie's law**:
+
+<EquationBlock id="EQ.03">
+  $$ \chi \;=\; \frac{C}{T}, \qquad C = \frac{n\,\mu_0\,\mu^2}{3\,k_B} $$
+</EquationBlock>
+
+Cold samples respond more strongly. Hot ones fight the alignment harder and respond less. Curie published the law in 1895 after weighing rare-earth salts in temperature-controlled magnets, one of the most-cited doctoral theses in physics. His student <PhysicistLink slug="pierre-weiss">Pierre Weiss</PhysicistLink> would extend it a decade later to cover the ferromagnetic case (next topic).
+
+<Callout variant="intuition">
+Curie's law is the thermometer of a paramagnet. Every moment is trying to point along B; temperature is trying to knock it off course. The ratio μB / k_B T tells you which side is winning. At room temperature in an ordinary lab field, x is about 10⁻³ — thermal motion wins by a factor of a thousand, and only a tiny biased fraction survives. Cool the sample to a few kelvin and x approaches unity; now a measurable fraction of every moment stays pointed at B.
+</Callout>
+
+At *very* large x — huge field, very cold — the Langevin function saturates at 1 and every moment is fully aligned. This is called magnetic saturation, and in a paramagnetic salt you can reach it at about 1 K in a few tesla. Below saturation, M is linear in B; above, it plateaus. The entire non-trivial shape lives inside one function: L(x) = coth x − 1/x.
+
+</Section>
+
+<Section index={4} title="The spectrum of χ">
+
+<SceneCard caption="FIG.18c — the spectrum: bismuth on one end, liquid oxygen on the other" className="w-full">
+  <SusceptibilitySpectrumScene />
+</SceneCard>
+
+Plotted on a symmetric log axis, every ordinary material is a tight cluster near zero. Bismuth is the standard-bearer among diamagnets at χ ≈ −1.7 × 10⁻⁴ — strong enough that a bismuth disc suspended above a strong magnet shows visible repulsion. Water, copper, and graphite hover in the low 10⁻⁵ range, all negative. The one odd ball at the negative extreme is *pyrolytic graphite*, which is anisotropic and strongly diamagnetic along its c-axis: the "levitating frog" experiments of the 1990s used exactly this effect, and a frog's water is diamagnetic enough to float in a 16-tesla field.
+
+On the positive side, aluminium sits at +2 × 10⁻⁵. Liquid oxygen climbs to several parts per thousand, which is enough to demonstrate: pour it between the poles of a strong magnet and it visibly sticks. Gadolinium salts reach the tenths. Everything above 10⁻³ is a specialty material; everything above 10³ is a <Term slug="ferromagnetism">ferromagnet</Term>, a different animal, covered next.
+
+</Section>
+
+<Section index={5} title="Where it shows up">
+
+Diamagnetism is what makes superconductors "float" magnets — a superconductor is the ultimate diamagnet, with χ_m = −1 exactly (FIG.20 covers the full Meissner story). Less dramatically, it's why water-filled biological tissue shows up at all in MRI contrast: the subtle χ of each tissue type slightly shifts the local Larmor frequency, and the scanner measures those shifts.
+
+Paramagnetism is the basis of **electron paramagnetic resonance** spectroscopy, the electronic cousin of NMR, which probes unpaired spins in transition-metal complexes. Clinically, paramagnetic **gadolinium chelates** are injected as MRI contrast agents — gadolinium's seven unpaired f-electrons make Gd³⁺ the most paramagnetic stable ion, and a shot of it sharpens vascular images by shortening the water relaxation time. Liquid-oxygen demonstrations are a physics-teacher staple: pour it between the poles of a Neodymium magnet and it hangs there, held by Curie's law. Neither diamagnetism nor paramagnetism does much heavy lifting on its own. Their importance is as the *baseline* — the quiet background that the next topic's cooperative iron atoms stand out against.
+
+</Section>
+
+</TopicPageLayout>

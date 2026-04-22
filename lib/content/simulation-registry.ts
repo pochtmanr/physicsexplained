@@ -506,6 +506,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   ChiVsTemperatureScene: lazyScene(() =>
     import("@/components/physics/chi-vs-temperature-scene").then((m) => ({ default: m.ChiVsTemperatureScene })),
   ),
+
+  // EM §04 — dia-and-paramagnetism
+  OrbitalResponseScene: lazyScene(() =>
+    import("@/components/physics/orbital-response-scene").then((m) => ({ default: m.OrbitalResponseScene })),
+  ),
+  ParamagnetAlignmentScene: lazyScene(() =>
+    import("@/components/physics/paramagnet-alignment-scene").then((m) => ({ default: m.ParamagnetAlignmentScene })),
+  ),
+  SusceptibilitySpectrumScene: lazyScene(() =>
+    import("@/components/physics/susceptibility-spectrum-scene").then((m) => ({ default: m.SusceptibilitySpectrumScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
