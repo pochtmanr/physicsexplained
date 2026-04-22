@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DipoleAlignmentScene } from "@/components/physics/dipole-alignment-scene";
+import { BoundChargeDensityScene } from "@/components/physics/bound-charge-density-scene";
+import { PolarizationVsFieldScene } from "@/components/physics/polarization-vs-field-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Polarization", href: "/dictionary/polarization" },
+  { type: "term", label: "Polarization density", href: "/dictionary/polarization-density" },
+  { type: "term", label: "Bound charge", href: "/dictionary/bound-charge" },
+  { type: "term", label: "Electric susceptibility", href: "/dictionary/electric-susceptibility" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.08 · ELECTRIC FIELDS IN MATTER"
+  title="POLARIZATION AND BOUND CHARGES"
+  subtitle="What happens when the charges can't leave, but can lean."
+/>
+
+<Section index={1} title="Insulators do something">
+
+So far we have been doing electrostatics in two regimes. In vacuum, charges sit where you put them and the field falls off as Coulomb says. In conductors — last topic — free electrons rearrange themselves until the inside is field-free, leaving an induced surface charge that does the bookkeeping.
+
+There is a third regime, and it is most of the world. A glass plate. A drop of water. The wax on a candle. The plastic between the plates of every capacitor in your phone. None of these conduct: their electrons are bound to atoms and cannot wander. But they are not inert either. Switch on an external field and *something* happens inside.
+
+What happens is leaning. Each atom is a tiny ball of negative cloud orbiting a positive nucleus. In zero field the cloud sits centred on the nucleus and the atom looks neutral from outside. Turn on a field pointing right, and the cloud — being negative — drifts a hair to the left while the nucleus — being positive — drifts a hair to the right. The atom is still neutral overall, but now its centre of negative charge and its centre of positive charge have been pulled apart by some tiny distance. The atom has become a dipole.
+
+Trillions of atoms doing this at once is called **polarization**, and it is what this whole topic is about.
+
+</Section>
+
+<Section index={2} title="The polarization vector">
+
+To talk about it cleanly, physicists collapse all the microscopic dipoles in a small chunk of matter into a single vector field called the **<Term slug="polarization-density">polarization density</Term>**, written `P`. Its definition is simple: take a small volume, sum the dipole moments of every atom inside it (each is a vector pointing from negative end to positive end, with magnitude `q · d`), and divide by the volume. The result has units of dipole moment per volume — coulombs per metre squared, the same units as a surface charge.
+
+`P` records both how strongly the matter is polarized and which way the leaning points. In a uniform field every atom leans the same way, and `P` is a single constant vector everywhere inside. In a field that varies in space, `P` varies with it.
+
+<SceneCard caption="FIG.08a — turn the field up and watch the atoms lean" className="w-full">
+  <DipoleAlignmentScene />
+</SceneCard>
+
+Drag the slider. At zero field the atoms point every which way and the average leaning — `⟨cos θ⟩` in the HUD — sits near zero. Turn the field up and the dipoles all swing toward the field direction. The mean alignment climbs and the polarization with it. Once the field is strong enough that nearly every atom has aligned, the bound surface charges on the slab's left and right faces are clearly visible: a magenta strip of leftover positive ends on the right, a cyan strip of negative ends on the left. The bulk in between still looks neutral.
+
+That bulk neutrality is not an accident, and the surface charge is not either. They are the two faces of one accounting rule.
+
+</Section>
+
+<Section index={3} title="The bookkeeping: bound charge">
+
+Why does the bulk look neutral? Picture two neighbouring atoms in a uniformly polarized slab. The right end of the left atom is positive; the left end of the right atom is negative. They overlap in space and cancel — exactly. Walk through the bulk and every interior atom-to-atom interface cancels the same way.
+
+The cancellation only fails at the *boundary*. There is no neighbour on the right of the rightmost atom to absorb its positive end, so it sits on the right face as a row of leftover positive charge. Same story, opposite sign, on the left face. We call these **<Term slug="bound-charge">bound charges</Term>** to remember that they are not free to move — they are the uncancelled tips of polarized atoms — but they act on the field exactly as if they were ordinary charges. From outside, a polarized slab is indistinguishable from a slab of vacuum with two sheets of real charge glued to its faces.
+
+The amount of leftover charge per unit area on a face is what `P` was already telling us. If `P` points outward through a face, you see the positive ends of the dipoles; if it points inward, you see the negative ends. The general rule is the dot product of `P` with the face's outward unit normal:
+
+<EquationBlock id="EQ.01">
+  $$ \sigma_b \;=\; \mathbf{P}\cdot\hat{\mathbf{n}} $$
+</EquationBlock>
+
+That is the **bound surface charge density**, in C/m². For a slab uniformly polarized along its axis, with `P` perpendicular to the faces, σ_b is exactly `+P` on the front face and `−P` on the back. A pair of equal-and-opposite charged sheets, set in stone by the polarization.
+
+What about inside? If `P` varies from point to point — if neighbouring atoms lean different amounts — then the cancellation in §3 fails in the bulk too, and a leftover **bound volume charge density** ρ_b appears.
+
+To say how much, we need the divergence. The **divergence** of a vector field at a point measures the rate at which the field spreads outward from that point — net outflow per unit volume. Where the polarization spreads outward from a region, the positive ends of the dipoles are leaving and the negative ends are not arriving fast enough to replace them, so the region is left with a net negative charge. The relation is
+
+<EquationBlock id="EQ.02">
+  $$ \rho_b \;=\; -\nabla\!\cdot\!\mathbf{P} $$
+</EquationBlock>
+
+The minus sign is the geometry just described: outflowing `P` leaves negative bound charge behind. For a uniform `P`, the divergence is zero, so ρ_b is zero — exactly the bulk-neutrality we saw in the slider. All the bound charge lives on the surface.
+
+<SceneCard caption="FIG.08b — uniform P leaves only surface charge; diverging P leaves bulk charge too" className="w-full">
+  <BoundChargeDensityScene />
+</SceneCard>
+
+The left panel is the uniform case from before. The right panel rigs the dipoles to point *outward* from the centre, so `P` spreads — its divergence is positive, and a net negative charge density pools in the bulk. Same accounting, in two regimes.
+
+</Section>
+
+<Section index={4} title="What sets P?">
+
+We have a vector that records the leaning. We have a way to read off the bound charges from it. The piece still missing is the link back to the field that is doing the leaning in the first place.
+
+For the kinds of insulator you meet in everyday electronics — glass, plastic, ceramic — the answer is the simplest thing you could hope for: the leaning is proportional to the field that finally settles inside the material. Double the internal field, double the polarization. Reverse it, reverse the polarization. The proportionality constant is a property of the material, not of the geometry, and it has its own name — the **<Term slug="electric-susceptibility">electric susceptibility</Term>** χ_e (chi-sub-e).
+
+<EquationBlock id="EQ.03">
+  $$ \mathbf{P} \;=\; \varepsilon_0\,\chi_e\,\mathbf{E} $$
+</EquationBlock>
+
+The factor of ε₀ is bookkeeping — it makes χ_e dimensionless. A larger χ_e means the material polarizes more for the same internal field. Vacuum has χ_e = 0 (nothing to polarize); a typical plastic sits around 1; water sits near 78; some specially engineered ceramics climb past 10,000.
+
+<SceneCard caption="FIG.08c — three regimes of P-vs-E: linear, saturating, hysteretic" className="w-full">
+  <PolarizationVsFieldScene />
+</SceneCard>
+
+The magenta line is the relation above: a clean straight line through the origin, with slope ε₀·χ_e. The cyan curve is what real matter does once the field gets large — the dipoles can only lean so far, and once they are nearly aligned the polarization stops climbing. The amber loop is a teaser for the next-but-one topic: in some special crystals the curve becomes a *loop*, and the polarization remembers which way it was pushed last. <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>, who first measured the dielectric constant of a material in 1837, was working in the linear regime; the saturation and hysteresis would not be charted until much later.
+
+</Section>
+
+<Section index={5} title="Where this is going">
+
+We now have three names for charge: free charge (the kind you pour onto a conductor), bound surface charge `σ_b = P · n̂`, and bound volume charge `ρ_b = −∇·P`. Gauss's law from FIG.03 still works, but it does not care which kind it is counting — the flux through any closed surface depends on the *total* enclosed charge, free and bound together.
+
+That is honest accounting, but it is awkward in practice. When you set up a problem you usually only know how much free charge you put on the conductors; the bound charge is what you are trying to find. In the next topic we introduce a new field — the displacement `D` — built so that it sees only the free charge and lets you solve dielectric problems without knowing P first. Bound charges do not vanish; they get hidden behind a cleaner equation.
+
+</Section>
+
+</TopicPageLayout>

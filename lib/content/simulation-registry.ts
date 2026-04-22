@@ -396,6 +396,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   InducedChargeScene: lazyScene(() =>
     import("@/components/physics/induced-charge-scene").then((m) => ({ default: m.InducedChargeScene })),
   ),
+
+  // EM §02 — polarization-and-bound-charges
+  DipoleAlignmentScene: lazyScene(() =>
+    import("@/components/physics/dipole-alignment-scene").then((m) => ({ default: m.DipoleAlignmentScene })),
+  ),
+  BoundChargeDensityScene: lazyScene(() =>
+    import("@/components/physics/bound-charge-density-scene").then((m) => ({ default: m.BoundChargeDensityScene })),
+  ),
+  PolarizationVsFieldScene: lazyScene(() =>
+    import("@/components/physics/polarization-vs-field-scene").then((m) => ({ default: m.PolarizationVsFieldScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
