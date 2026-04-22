@@ -112,11 +112,13 @@ export function MobileNav() {
         )}
       </button>
 
+      {/* Drawer uses display:none when closed (not opacity:0) so iOS 26
+          Safari's Liquid Glass tinting algorithm can't sample its dark
+          bg and paint the bottom toolbar dark on every page. */}
       <div
         aria-hidden={!open}
-        className={`fixed inset-0 z-50 md:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain transition-opacity duration-[180ms] ${
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        hidden={!open}
+        className="fixed inset-0 z-50 md:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain"
       >
         <div className="sticky top-0 z-10 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
           <div className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-2.5`}>
