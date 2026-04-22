@@ -88,12 +88,14 @@ body {
     color var(--duration-base) ease;
 }
 
-/* CookieBanner uses absolute+sticky to avoid iOS 26 inner-viewport
-   clip bug with position:fixed. The banner wraps in an absolute
-   inset-0 layer anchored to body, then sticky bottom-0 so its
-   bg extends past the iOS 26 clip. */
+/* Edge-to-edge safe-area padding for iOS (matches dopplervpn.org).
+   Without this, body bg bleeds under the home indicator, creating
+   a persistent dark strip that reads as a "second navbar" at the
+   bottom on every page. */
 body {
-  position: relative;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* Hebrew font stack — Inter/Archive Grotesk don't cover Hebrew glyphs.
