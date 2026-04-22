@@ -17,7 +17,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "the-simple-pendulum",
     title: "THE SIMPLE PENDULUM",
-    eyebrow: "FIG.13 · OSCILLATIONS",
+    eyebrow: "FIG.16 · OSCILLATIONS",
     subtitle: "Why every clock that ever ticked ticked the same way.",
     readingMinutes: 10,
     status: "live",
@@ -26,7 +26,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "beyond-small-angles",
     title: "BEYOND SMALL ANGLES",
-    eyebrow: "FIG.14 · OSCILLATIONS",
+    eyebrow: "FIG.17 · OSCILLATIONS",
     subtitle: "What the pendulum hides when you stop making approximations.",
     readingMinutes: 12,
     status: "live",
@@ -35,7 +35,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "oscillators-everywhere",
     title: "OSCILLATORS EVERYWHERE",
-    eyebrow: "FIG.15 · OSCILLATIONS",
+    eyebrow: "FIG.18 · OSCILLATIONS",
     subtitle: "The equation that runs half of physics.",
     readingMinutes: 12,
     status: "live",
@@ -44,7 +44,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "kepler",
     title: "THE LAWS OF PLANETS",
-    eyebrow: "FIG.20 · ORBITAL MECHANICS",
+    eyebrow: "FIG.24 · ORBITAL MECHANICS",
     subtitle:
       "How a German astronomer broke the sky open with three sentences.",
     readingMinutes: 6,
@@ -54,7 +54,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "universal-gravitation",
     title: "UNIVERSAL GRAVITATION",
-    eyebrow: "FIG.21 · ORBITAL MECHANICS",
+    eyebrow: "FIG.25 · ORBITAL MECHANICS",
     subtitle:
       "The force that holds the Moon is the force that drops the apple.",
     readingMinutes: 12,
@@ -64,7 +64,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "energy-in-orbit",
     title: "ENERGY IN ORBIT",
-    eyebrow: "FIG.22 · ORBITAL MECHANICS",
+    eyebrow: "FIG.26 · ORBITAL MECHANICS",
     subtitle: "One equation tells you the speed at every point in space.",
     readingMinutes: 12,
     status: "live",
@@ -73,7 +73,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   {
     slug: "tides-and-three-body",
     title: "TIDES AND THE THREE-BODY PROBLEM",
-    eyebrow: "FIG.23 · ORBITAL MECHANICS",
+    eyebrow: "FIG.27 · ORBITAL MECHANICS",
     subtitle:
       "When gravity gets complicated, the universe gets interesting.",
     readingMinutes: 12,
@@ -110,7 +110,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "friction-and-drag",
           title: "FRICTION AND DRAG",
-          eyebrow: "FIG.04 · KINEMATICS & NEWTON",
+          eyebrow: "FIG.05 · KINEMATICS & NEWTON",
           subtitle: "The forces that quietly take the energy away — and, in doing so, run half of everyday physics.",
           readingMinutes: 12,
           status: "live",
@@ -119,7 +119,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "energy-and-work",
           title: "ENERGY AND WORK",
-          eyebrow: "FIG.05 · CONSERVATION LAWS",
+          eyebrow: "FIG.07 · CONSERVATION LAWS",
           subtitle: "The universe keeps a ledger — and the totals always balance.",
           readingMinutes: 12,
           status: "live",
@@ -128,7 +128,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "momentum-and-collisions",
           title: "MOMENTUM AND COLLISIONS",
-          eyebrow: "FIG.06 · CONSERVATION LAWS",
+          eyebrow: "FIG.08 · CONSERVATION LAWS",
           subtitle: "The quantity nothing can create or destroy — only pass around.",
           readingMinutes: 13,
           status: "live",
@@ -137,7 +137,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "angular-momentum",
           title: "ANGULAR MOMENTUM",
-          eyebrow: "FIG.07 · CONSERVATION LAWS",
+          eyebrow: "FIG.09 · CONSERVATION LAWS",
           subtitle: "The quantity that makes skaters speed up, planets sweep out equal areas, and pulsars keep time.",
           readingMinutes: 13,
           status: "live",
@@ -146,7 +146,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "noethers-theorem",
           title: "NOETHER'S THEOREM",
-          eyebrow: "FIG.08 · CONSERVATION LAWS",
+          eyebrow: "FIG.10 · CONSERVATION LAWS",
           subtitle: "Every conservation law comes from a symmetry. Every symmetry gives you a conservation law.",
           readingMinutes: 14,
           status: "live",
@@ -155,7 +155,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "torque-and-rotational-dynamics",
           title: "TORQUE AND ROTATIONAL DYNAMICS",
-          eyebrow: "FIG.09 · ROTATION & RIGID BODIES",
+          eyebrow: "FIG.11 · ROTATION & RIGID BODIES",
           subtitle: "Forces that turn instead of push — and the geometry that decides how much.",
           readingMinutes: 12,
           status: "live",
@@ -164,7 +164,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "moment-of-inertia",
           title: "MOMENT OF INERTIA",
-          eyebrow: "FIG.10 · ROTATION & RIGID BODIES",
+          eyebrow: "FIG.12 · ROTATION & RIGID BODIES",
           subtitle: "What mass becomes when you spin it.",
           readingMinutes: 13,
           status: "live",
@@ -173,7 +173,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "gyroscopes-and-precession",
           title: "GYROSCOPES AND PRECESSION",
-          eyebrow: "FIG.11 · ROTATION & RIGID BODIES",
+          eyebrow: "FIG.14 · ROTATION & RIGID BODIES",
           subtitle: "Why a spinning top refuses to fall.",
           readingMinutes: 14,
           status: "live",
@@ -182,7 +182,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "the-wobbling-earth",
           title: "THE WOBBLING EARTH",
-          eyebrow: "FIG.12 · ROTATION & RIGID BODIES",
+          eyebrow: "FIG.15 · ROTATION & RIGID BODIES",
           subtitle: "Precession, nutation, and the long memory of the planet.",
           readingMinutes: 14,
           status: "live",
@@ -191,7 +191,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "the-wave-equation",
           title: "THE WAVE EQUATION",
-          eyebrow: "FIG.16 · WAVES",
+          eyebrow: "FIG.20 · WAVES",
           subtitle: "The equation that runs every wave there is.",
           readingMinutes: 10,
           status: "live",
@@ -200,7 +200,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "standing-waves-and-modes",
           title: "STANDING WAVES AND MODES",
-          eyebrow: "FIG.17 · WAVES",
+          eyebrow: "FIG.21 · WAVES",
           subtitle: "Why guitar strings only sing certain notes.",
           readingMinutes: 11,
           status: "live",
@@ -209,7 +209,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "doppler-and-shock-waves",
           title: "DOPPLER AND SHOCK WAVES",
-          eyebrow: "FIG.18 · WAVES",
+          eyebrow: "FIG.22 · WAVES",
           subtitle: "What changes when the source moves.",
           readingMinutes: 11,
           status: "live",
@@ -218,7 +218,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "dispersion-and-group-velocity",
           title: "DISPERSION AND GROUP VELOCITY",
-          eyebrow: "FIG.19 · WAVES",
+          eyebrow: "FIG.23 · WAVES",
           subtitle: "When different frequencies travel at different speeds.",
           readingMinutes: 12,
           status: "live",
@@ -227,7 +227,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "pressure-and-buoyancy",
           title: "PRESSURE AND BUOYANCY",
-          eyebrow: "FIG.24 · FLUIDS",
+          eyebrow: "FIG.28 · FLUIDS",
           subtitle: "Why some things float.",
           readingMinutes: 12,
           status: "live",
@@ -236,7 +236,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "bernoullis-principle",
           title: "BERNOULLI'S PRINCIPLE",
-          eyebrow: "FIG.25 · FLUIDS",
+          eyebrow: "FIG.29 · FLUIDS",
           subtitle: "Faster fluids push less.",
           readingMinutes: 13,
           status: "live",
@@ -245,7 +245,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "viscosity-and-reynolds-number",
           title: "VISCOSITY AND REYNOLDS NUMBER",
-          eyebrow: "FIG.26 · FLUIDS",
+          eyebrow: "FIG.30 · FLUIDS",
           subtitle: "Honey, water, and the line between them.",
           readingMinutes: 13,
           status: "live",
@@ -254,7 +254,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "turbulence",
           title: "TURBULENCE",
-          eyebrow: "FIG.27 · FLUIDS",
+          eyebrow: "FIG.31 · FLUIDS",
           subtitle: "The last unsolved problem of classical physics.",
           readingMinutes: 12,
           status: "live",
@@ -263,7 +263,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "the-principle-of-least-action",
           title: "THE PRINCIPLE OF LEAST ACTION",
-          eyebrow: "FIG.28 · LAGRANGIAN & HAMILTONIAN",
+          eyebrow: "FIG.32 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "Nature picks the laziest path.",
           readingMinutes: 11,
           status: "live",
@@ -272,7 +272,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "the-lagrangian",
           title: "THE LAGRANGIAN",
-          eyebrow: "FIG.29 · LAGRANGIAN & HAMILTONIAN",
+          eyebrow: "FIG.33 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "Mechanics rewritten as energy minus energy.",
           readingMinutes: 12,
           status: "live",
@@ -281,7 +281,7 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "the-hamiltonian",
           title: "THE HAMILTONIAN",
-          eyebrow: "FIG.30 · LAGRANGIAN & HAMILTONIAN",
+          eyebrow: "FIG.34 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "Position and momentum, two halves of the same thing.",
           readingMinutes: 12,
           status: "live",
@@ -290,12 +290,48 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
     {
           slug: "phase-space",
           title: "PHASE SPACE",
-          eyebrow: "FIG.31 · LAGRANGIAN & HAMILTONIAN",
+          eyebrow: "FIG.35 · LAGRANGIAN & HAMILTONIAN",
           subtitle: "The space where every possible motion lives.",
           readingMinutes: 13,
           status: "live",
           module: "lagrangian-hamiltonian",
-        }
+        },
+  {
+    slug: "circular-motion",
+    title: "CIRCULAR MOTION",
+    eyebrow: "FIG.04 · KINEMATICS & NEWTON",
+    subtitle: "Why the string always pulls inward — and why the Moon never stops falling.",
+    readingMinutes: 11,
+    status: "live",
+    module: "kinematics-newton",
+  },
+  {
+    slug: "non-inertial-frames",
+    title: "NON-INERTIAL REFERENCE FRAMES",
+    eyebrow: "FIG.06 · KINEMATICS & NEWTON",
+    subtitle: "Why a carousel feels like a force — and why the wind turns right in the northern hemisphere.",
+    readingMinutes: 13,
+    status: "live",
+    module: "kinematics-newton",
+  },
+  {
+    slug: "rolling-motion",
+    title: "ROLLING MOTION",
+    eyebrow: "FIG.13 · ROTATION & RIGID BODIES",
+    subtitle: "What a wheel does that a puck can't — and why a hollow cylinder loses every race.",
+    readingMinutes: 12,
+    status: "live",
+    module: "rotation-rigid-bodies",
+  },
+  {
+    slug: "damped-and-driven-oscillations",
+    title: "DAMPED & DRIVEN OSCILLATIONS",
+    eyebrow: "FIG.19 · OSCILLATIONS",
+    subtitle: "Why every real oscillator dies — and why, if you push it just right, it tries to kill you back.",
+    readingMinutes: 13,
+    status: "live",
+    module: "oscillations",
+  },
 ];
 
 export const BRANCHES: readonly Branch[] = [
