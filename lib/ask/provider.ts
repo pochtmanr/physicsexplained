@@ -132,6 +132,7 @@ class OpenAIProvider implements LLMProvider {
       max_completion_tokens: req.maxTokens,
       stream: true,
       stream_options: { include_usage: true },
+      // GPT-5 family rejects any temperature != 1. Let it default.
     });
 
     const toolAcc = new Map<number, { id: string; name: string; args: string }>();
@@ -189,7 +190,7 @@ class OpenAIProvider implements LLMProvider {
 
   async classify(model: string, system: string, user: string, labels: ClassifierLabel[]): Promise<ClassifierLabel> {
     const res = await this.client.chat.completions.create({
-      model, max_completion_tokens: 16, temperature: 0,
+      model, max_completion_tokens: 16,
       messages: [
         { role: "system", content: system },
         { role: "user", content: user },
