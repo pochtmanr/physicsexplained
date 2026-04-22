@@ -495,6 +495,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   MagneticDipoleFieldScene: lazyScene(() =>
     import("@/components/physics/magnetic-dipole-field-scene").then((m) => ({ default: m.MagneticDipoleFieldScene })),
   ),
+
+  // EM §04 — magnetization-and-the-h-field
+  MagnetizationVectorsScene: lazyScene(() =>
+    import("@/components/physics/magnetization-vectors-scene").then((m) => ({ default: m.MagnetizationVectorsScene })),
+  ),
+  HVsBFieldScene: lazyScene(() =>
+    import("@/components/physics/h-vs-b-field-scene").then((m) => ({ default: m.HVsBFieldScene })),
+  ),
+  ChiVsTemperatureScene: lazyScene(() =>
+    import("@/components/physics/chi-vs-temperature-scene").then((m) => ({ default: m.ChiVsTemperatureScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

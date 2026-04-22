@@ -1,0 +1,142 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MagnetizationVectorsScene } from "@/components/physics/magnetization-vectors-scene";
+import { HVsBFieldScene } from "@/components/physics/h-vs-b-field-scene";
+import { ChiVsTemperatureScene } from "@/components/physics/chi-vs-temperature-scene";
+
+<TopicPageLayout aside={[
+  { type: "term", label: "Magnetisation", href: "/dictionary/magnetization" },
+  { type: "term", label: "H field", href: "/dictionary/h-field" },
+  { type: "term", label: "Magnetic susceptibility", href: "/dictionary/magnetic-susceptibility" },
+  { type: "term", label: "Magnetic permeability", href: "/dictionary/magnetic-permeability" },
+  { type: "physicist", label: "Pierre Curie", href: "/physicists/pierre-curie" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.17 · MAGNETISM IN MATTER"
+  title="MAGNETISATION AND THE H FIELD"
+  subtitle="Why matter responds to a magnetic field at all — and why engineers secretly work with H, not B."
+/>
+
+<Section index={1} title="Matter isn't passive">
+
+We've spent the last four topics treating space as empty and magnetic fields as the handiwork of free currents in wires. Slide an iron bolt into a solenoid and the field inside jumps by a factor of a thousand. The bolt is doing *something*. What?
+
+Every atom has electrons in motion. An orbiting electron is a current loop; a spinning one is another. Each has a tiny magnetic moment, pointing however its quantum mechanics wants. In ordinary matter these moments point every which way and cancel on average — a billion tiny compass needles in a bag, net unmagnetised.
+
+Apply an external field and the moments stop cancelling. Some materials nudge gently toward the field, some against, and a stubborn few — iron, cobalt, nickel, a handful of rare-earth alloys — lock together en bloc and *stay* locked after you switch the field off. Three different stories, one cast of orbiting and spinning electrons.
+
+This topic names the coherent thing, measures it, and splits the bookkeeping into two fields — one tracking what matter is doing, one tracking what we're doing to it.
+
+</Section>
+
+<Section index={2} title="Magnetisation M">
+
+Zoom out from a single atom until one cubic metre is a blur of `N` atomic moments `m_i`. Sum them and divide:
+
+<EquationBlock id="EQ.01">
+  $$ \mathbf{M} \;=\; \frac{1}{V}\sum_{i \in V} \mathbf{m}_i $$
+</EquationBlock>
+
+That vector is the **<Term slug="magnetization">magnetisation</Term>**. Its units are A/m — amperes per metre, the same units as the field **H** we're about to meet. In plain words: *how aligned are the atoms, per cubic metre of stuff.* A fully aligned block of iron has `|M|` of order `10⁶` A/m; a paramagnet at room temperature, a few hundred; a diamagnetic copper wire, a couple tenths with the wrong sign.
+
+`M` is a field in its own right — it can vary from point to point inside a sample, it can rotate, it can have edges where it jumps. Where `M` changes abruptly you find **bound currents**, a sheet of magnetisation-current flowing around the surface that behaves, from outside the sample, exactly like a free current you didn't put there. <PhysicistLink slug="andre-marie-ampere">Ampère</PhysicistLink> guessed all of this a century before the electron was discovered; he just didn't know whose current was running around the little loops.
+
+The reason this matters: the **B** field you measure inside a magnetised chunk of iron is the sum of (a) whatever field the external free currents would have made in vacuum, and (b) the field produced by the bound currents that `M` stands in for. Two contributions, one vector — and the second one can be enormous.
+
+</Section>
+
+<Section index={3} title="Where M comes from">
+
+<SceneCard caption="FIG.17a — atomic moments, volume-averaged" className="w-full">
+  <MagnetizationVectorsScene />
+</SceneCard>
+
+Slide the applied field up from zero. In the *paramagnet* regime, the arrows jitter thermally — each atomic moment is fighting a kT tug-of-war against the external field. As `|B|` rises, the bias wins more often than thermal noise does, and the volume average (the HUD's `⟨M⟩`) climbs modestly. Switch to *ferromagnet* and the behaviour changes character entirely. The arrows don't just nudge; they *snap* — whole regions lock together and flip into alignment with the field at almost any non-zero applied strength. The volume average saturates almost instantly.
+
+That is the single most important distinction in this module. Paramagnetism is individual atoms negotiating with heat. Ferromagnetism is a collective phase — atoms agreeing among themselves before the field even arrives, organising into **<Term slug="magnetic-domain">magnetic domains</Term>** that have already decided where to point. The applied field doesn't align individual atoms; it reorients whole domains. We will unpack that story properly in FIG.19.
+
+For now, hold the principle: `M` is real, `M` is macroscopic, `M` is what *matter* is contributing to the total magnetic field. When you ask "what field is inside this iron," you are asking about `B`. When you ask "what field did I cause," you need a different bookkeeping.
+
+</Section>
+
+<Section index={4} title="The H field">
+
+Here is the bookkeeping. Pull the material's contribution out of the total `B` and you're left with a field that responds only to free currents. Call it **<Term slug="h-field">H</Term>**:
+
+<EquationBlock id="EQ.02">
+  $$ \mathbf{H} \;=\; \frac{\mathbf{B}}{\mu_0} \;-\; \mathbf{M} $$
+</EquationBlock>
+
+Symbol check. `B` is the total magnetic flux density (in tesla). `μ₀` is the vacuum permeability, a constant that just converts units. Subtracting `M` is the crucial move: it strips off the part of `B/μ₀` that the material's own aligned atoms supplied, and what remains is the field the free currents alone would have produced — had the matter not been there at all.
+
+Why bother with another field when we already have `B`? Because in a real laboratory you rarely know `M` in advance. You know what your solenoid is doing — you set its current. The quantity "free current per metre of solenoid length" is known, designed, and controllable. That quantity equals `H` inside the solenoid, whatever is stuffed into the core. `H` is the field whose source is the free current and only the free current. `M` adjusts to match.
+
+<Callout variant="intuition">
+`H` plays the same role for magnetic matter that **D** played for dielectrics in FIG.07. `D` tracked free charge while ignoring bound charge; `H` tracks free current while ignoring bound current. One pair of auxiliary fields, one duality, one reason engineers quote permittivity for capacitors and permeability for inductors — they are working in the variables they can control.
+</Callout>
+
+Ampère's law, in its matter-aware form, reflects this cleanly: the line integral of `H` around any closed loop equals the free current threading the loop (no bound-current bookkeeping needed). That equation is what makes `H` pay its rent.
+
+</Section>
+
+<Section index={5} title="H vs B in a solenoid with a core">
+
+<SceneCard caption="FIG.17b — two bookkeeping fields, one solenoid" className="w-full">
+  <HVsBFieldScene />
+</SceneCard>
+
+Slide the core in and out; ramp the susceptibility up. Watch the two panels tell two different stories about the same physical setup.
+
+Top panel: **B** — continuous lines that pass straight through the core/air boundary but visibly crowd together inside the core. That crowding is the magnetisation doing its work. Glowing patches on the left and right faces of the core mark the bound "N" and "S" poles — they are where `M` suddenly changes (ending the core) and the bound surface current is concentrated.
+
+Bottom panel: **H** — lines of identical strength inside and outside the core, determined only by the solenoid's free current per unit length. The core is invisible to `H` except as a boundary where `B` would crowd. Increase `χ_m` by a factor of ten and the top panel's density inside the core multiplies; the bottom panel doesn't flinch.
+
+This is the practical reason `H` earns its place on every transformer datasheet. "How many ampere-turns per metre do I need?" is a question about `H`. "How much flux does that put through my iron?" is a question about `B`. Two fields, one design.
+
+</Section>
+
+<Section index={6} title="Linear materials and susceptibility">
+
+For ordinary magnetic matter — everything except ferromagnets driven hard — `M` is approximately proportional to `H`. The constant of proportionality is the **<Term slug="magnetic-susceptibility">magnetic susceptibility</Term>** `χ_m`:
+
+<EquationBlock id="EQ.03">
+  $$ \mathbf{M} \;=\; \chi_m\,\mathbf{H} $$
+</EquationBlock>
+
+Plug that into EQ.02 and the `B`–`H` relation collapses to a single number you can quote:
+
+<EquationBlock id="EQ.04">
+  $$ \mathbf{B} \;=\; \mu_0 (1 + \chi_m)\,\mathbf{H} \;=\; \mu\,\mathbf{H} $$
+</EquationBlock>
+
+`μ_r = 1 + χ_m` is the **relative <Term slug="magnetic-permeability">permeability</Term>**; `μ = μ₀ μ_r` is the absolute one. Soft iron has `μ_r` in the low thousands — a core that multiplies your solenoid's `B` by that factor for free. A ferrite cup-core in a switching supply has `μ_r` in the hundreds. Vacuum has `μ_r` exactly 1.
+
+<SceneCard caption="FIG.17c — three families, three χ_m(T) signatures" className="w-full">
+  <ChiVsTemperatureScene />
+</SceneCard>
+
+The chart says the rest. Three families of matter, three shapes of `χ_m(T)`:
+
+- **Diamagnets** (copper, bismuth, water) — tiny, *negative*, and temperature-independent. Orbital electrons react against the applied field, <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>'s overlooked third magnetic force. Next topic, FIG.18.
+- **Paramagnets** (aluminium, platinum, oxygen) — small, positive, falling as `1/T` (<PhysicistLink slug="pierre-curie">Curie</PhysicistLink>'s law). Atomic moments align with the field; thermal noise fights them; heat wins.
+- **Ferromagnets** (iron, cobalt, nickel) — huge, positive, diverging near a critical temperature `T_c` (the Curie–Weiss spike in the chart) and collapsing to paramagnet behaviour above it. Below `T_c` the linear law breaks entirely and the material shows hysteresis instead. That is FIG.19 — the payoff module.
+
+Zoom the slider in near `T_c` to see the divergence; zoom out to see all three curves coexisting across two thousand kelvin.
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+Every transformer core, every inductor with a catalogue line like "`μ_r = 2000`," every MRI scanner's iron yoke that focuses the main field, every speaker's voice-coil gap — all are engineering applications of the B/H split. The designer sets `H` by choosing current and turns; the material gives back `B = μH`; the useful thing — flux, force, induced voltage — scales with `B`.
+
+The language we just built — `M`, `H`, `χ_m`, `μ_r` — is the vocabulary the next three topics need. FIG.18 takes diamagnets and paramagnets on their own terms. FIG.19 is the big one: what ferromagnets do that refuses the tidy linear story. FIG.20 is the reveal — a class of materials that push `M` so hard they expel `B` entirely. Three surprises, one set of variables.
+
+</Section>
+
+</TopicPageLayout>
