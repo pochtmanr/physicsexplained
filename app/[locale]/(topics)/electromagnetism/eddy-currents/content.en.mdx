@@ -1,0 +1,121 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MagnetThroughTubeScene } from "@/components/physics/magnet-through-tube-scene";
+import { InductionHeatingScene } from "@/components/physics/induction-heating-scene";
+import { MagneticBrakeScene } from "@/components/physics/magnetic-brake-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Léon Foucault", href: "/physicists/leon-foucault" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Heinrich Lenz", href: "/physicists/heinrich-lenz" },
+  { type: "term", label: "Eddy current", href: "/dictionary/eddy-current" },
+  { type: "term", label: "Motional EMF", href: "/dictionary/motional-emf" },
+  { type: "term", label: "Magnetic energy density", href: "/dictionary/magnetic-energy-density" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.25 · ELECTRODYNAMICS & INDUCTION"
+  title="EDDY CURRENTS AND MAGNETIC BRAKING"
+  subtitle="The invisible circuits that stop a falling magnet."
+/>
+
+<Section index={1} title="Induction inside a solid">
+
+Every previous page in this module drew the induced current as a neat loop of wire. A ring. A rectangle on rails. A single filament you could trace with a finger.
+
+<PhysicistLink slug="michael-faraday">Faraday's</PhysicistLink> law does not care about any of that. What it cares about is a **closed path** and the flux through any surface bounded by that path. Draw the path anywhere — in air, in vacuum, in a block of copper. If the flux through it is changing, there is an <Term slug="emf">EMF</Term> around it.
+
+Inside a solid conductor, the EMF drives a real current because the electrons are free to move. They can take the path you drew, or any of the neighbouring paths through the bulk metal. Every closed loop of material with changing flux through it becomes its own little circuit. <Term slug="electromagnetic-induction">Induction</Term> in a conductor does not produce one neat loop of current — it produces a whole field of them.
+
+We call them **<Term slug="eddy-current">eddy currents</Term>**. They swirl in closed loops inside the metal like little whirlpools, heating the material from within and pushing back against whatever tried to change the flux.
+
+</Section>
+
+<Section index={2} title="Foucault's copper disk">
+
+The effect was first demonstrated in 1855 by <PhysicistLink slug="leon-foucault">Léon Foucault</PhysicistLink> — the same man whose pendulum had proved the Earth's rotation four years earlier. Swinging a copper disk between the poles of a strong electromagnet, he watched the disk refuse to swing freely. Energise the magnet, and the disk decelerated sharply, as if it had plunged into molasses. De-energise the magnet, and the disk swung lightly again.
+
+There was no friction. The disk never touched the magnet. The drag was all field.
+
+In France the swirling induced currents were called **courants de Foucault** for the next century, and French physics textbooks still call them that today. English-speaking engineers settled on "eddy" — the word for the circular flows you see behind a bridge piling in a fast river — and the name stuck because the physics is the same: a bulk fluid of charge reorganising itself into closed loops wherever the driving field changes.
+
+</Section>
+
+<Section index={3} title="The falling magnet">
+
+Here is the demonstration that makes every physics-class audience gasp. A short vertical pipe of copper, two centimetres wide, open at both ends. A strong rare-earth magnet dropped in from the top. Common sense says it falls straight through in a tenth of a second. It does not. It takes four.
+
+<SceneCard caption="FIG.25a — the tube is not touching the magnet. Nothing solid connects them. The drag is all field." className="w-full">
+  <MagnetThroughTubeScene />
+</SceneCard>
+
+Pick any horizontal cross-section of the tube and call it a ring. As the magnet approaches, the flux through that ring *rises*. By Faraday's law, a rising flux drives an EMF around the ring — and because the ring is part of a solid conductor, a real current circulates there, right in the wall. By <Term slug="lenzs-law-term"><PhysicistLink slug="heinrich-lenz">Lenz's</PhysicistLink> law</Term> the induced current flows in whichever direction makes its own field *oppose* the change — the ring becomes a little electromagnet pointing the same way as the approaching magnet. Like poles repel. The tube pushes the magnet upward.
+
+A moment later the magnet is past the ring and receding. The flux now *falls*, so the induced current reverses; the ring becomes a magnet pulling the receding magnet back. Above the bar magnet, rings push it up; below, rings pull it up. The retarding force is the sum.
+
+Where does the work go? Each ring current flows through a bit of copper with nonzero resistance. The power dissipated is `I²R`, delivered as heat in the tube wall. The gravitational potential energy the magnet gives up does not go into kinetic energy — once the fall reaches terminal velocity, every joule of it warms the copper by a few millikelvin.
+
+Position rises linearly with time as the magnet settles into steady descent. Velocity accelerates briefly, then plateaus, clamped to the terminal value
+
+<EquationBlock id="EQ.01">
+  $$ v_{\text{term}} \;\sim\; \frac{m\,g}{k\,\sigma\,B_{\text{eff}}^2} $$
+</EquationBlock>
+
+Heavier magnets fall faster; more conductive tubes and stronger fields slow them down. The `B²` in the denominator is the teeth of the effect — double the magnet strength and the fall takes four times longer.
+
+<Callout variant="intuition">
+The magnet never knows the tube is there. It feels only a force, produced by currents it induced itself in a metal it never touches. Every watt of the dissipated heat is the missing kinetic energy, re-routed through induction on its way to the copper.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Usually a nuisance">
+
+The falling-magnet demo is charming. The effect itself, most of the time, is a problem.
+
+Every transformer has a pair of coils wound around an iron core. The whole point is to have alternating current in one coil drive a huge alternating flux through the core, which induces a voltage in the other. But iron is a metal, so the alternating flux drives eddy currents in the core that heat it and waste power. The remedy, discovered in the late nineteenth century: build the core not as a solid block but as a stack of thin iron sheets separated by insulating layers. Horizontal eddy loops are interrupted; the useful flux direction runs untouched along the sheets.
+
+How thin? The scaling law is stark:
+
+<EquationBlock id="EQ.02">
+  $$ \frac{P}{V} \;=\; \frac{\pi^{2}\,B_{0}^{2}\,d^{2}\,f^{2}}{6\,\rho} $$
+</EquationBlock>
+
+Eddy power density grows as `d²` and `f²`. Halve the lamination thickness and eddy losses drop by a factor of four. Every transformer, every motor, every mains inductor is made of the thinnest sheets the manufacturer could economically stamp.
+
+<SceneCard caption="FIG.25c — disk brake: magnetic drag as linear viscosity" className="w-full">
+  <MagneticBrakeScene />
+</SceneCard>
+
+Flip the sign of the engineering problem and the nuisance becomes a tool. An eddy-current brake is a spinning metal disk (typically aluminium) passing between the poles of a strong magnet. Each element of the disk sweeping through the field experiences a <Term slug="motional-emf">motional EMF</Term>, eddies circulate, their fields oppose the motion, and the disk spins down. The retarding torque is proportional to angular velocity, so `ω(t)` decays exponentially. High-speed trains and roller-coasters brake this way: frictionless, quiet, fade-free — nothing to overheat.
+
+</Section>
+
+<Section index={5} title="Sometimes the point">
+
+Flip the transformer's problem on its head and you get one of the most successful kitchen appliances of the last thirty years.
+
+<SceneCard caption="FIG.25b — induction cooktop: eddy currents as the heating element" className="w-full">
+  <InductionHeatingScene />
+</SceneCard>
+
+An induction cooktop is a flat ceramic surface with a flat copper coil underneath, driven at 20–40 kHz. The bottom of whatever ferromagnetic pan sits on the ceramic sees an AC flux density of a few hundredths of a tesla reversing tens of thousands of times per second. Eddy currents pour through the pan bottom at many amperes per square centimetre, dissipating as `I²R` heat exactly where you wanted it — in the pan, not in the coil, not in the ceramic, not in your counter. The cooktop itself stays cool enough to touch.
+
+Scaled up, induction heating hardens steel surfaces for machine tools, sorts aluminium cans out of a recycling stream (non-magnetic conductors accelerate *away* from moving field gradients), and drives the crack-detection tips of pipeline inspection crawlers. Same physics. Sometimes nuisance, sometimes the point — only the sign of "where did we want the dissipation to come out?" changes.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Eddy currents show up wherever charge is free to move through a changing field. Regenerative braking in every Tesla, every hybrid, every modern electric train is a souped-up Foucault disk: rotor currents drag against the field, the drag slows the car, the energy returns to the battery. Magnetic damping in seismometers and high-end analytical balances uses a small copper vane beside a magnet to extinguish oscillations without adding a contact spring. Eddy-current detectors live in airport security arches, in credit-card readers, in metal-separation lines at recycling plants. A copper coin dropped flat inside a research-grade MRI bore *lands silently* — its would-be oscillations are damped to heat before it can strike the magnet surface.
+
+And notice: the `∂B/∂t` in Faraday's law did every joule of work in this topic — the same time-derivative that, when the field is electric rather than magnetic, becomes the **displacement current** and closes the last open side of Maxwell's equations. That is the door FIG.26 opens. Every transformer, every cooktop, every falling magnet you just watched is one step from the radio wave.
+
+</Section>
+
+</TopicPageLayout>

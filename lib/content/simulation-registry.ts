@@ -583,6 +583,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CapacitorVsInductorScene: lazyScene(() =>
     import("@/components/physics/capacitor-vs-inductor-scene").then((m) => ({ default: m.CapacitorVsInductorScene })),
   ),
+
+  // EM §05 — eddy-currents (money shot)
+  MagnetThroughTubeScene: lazyScene(() =>
+    import("@/components/physics/magnet-through-tube-scene").then((m) => ({ default: m.MagnetThroughTubeScene })),
+  ),
+  InductionHeatingScene: lazyScene(() =>
+    import("@/components/physics/induction-heating-scene").then((m) => ({ default: m.InductionHeatingScene })),
+  ),
+  MagneticBrakeScene: lazyScene(() =>
+    import("@/components/physics/magnetic-brake-scene").then((m) => ({ default: m.MagneticBrakeScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
