@@ -572,6 +572,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   RLTimeConstantScene: lazyScene(() =>
     import("@/components/physics/rl-time-constant-scene").then((m) => ({ default: m.RLTimeConstantScene })),
   ),
+
+  // EM §05 — energy-in-magnetic-fields
+  MagneticEnergyDensityScene: lazyScene(() =>
+    import("@/components/physics/magnetic-energy-density-scene").then((m) => ({ default: m.MagneticEnergyDensityScene })),
+  ),
+  InductorEnergyRampScene: lazyScene(() =>
+    import("@/components/physics/inductor-energy-ramp-scene").then((m) => ({ default: m.InductorEnergyRampScene })),
+  ),
+  CapacitorVsInductorScene: lazyScene(() =>
+    import("@/components/physics/capacitor-vs-inductor-scene").then((m) => ({ default: m.CapacitorVsInductorScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

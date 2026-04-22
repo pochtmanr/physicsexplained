@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { InductorEnergyRampScene } from "@/components/physics/inductor-energy-ramp-scene";
+import { MagneticEnergyDensityScene } from "@/components/physics/magnetic-energy-density-scene";
+import { CapacitorVsInductorScene } from "@/components/physics/capacitor-vs-inductor-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Joseph Henry", href: "/physicists/joseph-henry" },
+  { type: "term", label: "Self-inductance", href: "/dictionary/self-inductance" },
+  { type: "term", label: "Magnetic energy density", href: "/dictionary/magnetic-energy-density" },
+  { type: "term", label: "Field energy density (E)", href: "/dictionary/field-energy-density" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.24 · ELECTRODYNAMICS & INDUCTION"
+  title="ENERGY IN MAGNETIC FIELDS"
+  subtitle="Where the work against back-EMF goes. The field is a reservoir."
+/>
+
+<Section index={1} title="Where did the work go">
+
+Wire up a battery, a resistor, and an inductor in a loop. Close the switch. The current doesn't leap to its final value — it ramps, slowly, climbing an exponential curve with time constant `τ = L/R`. During that ramp the battery is pushing charges against something: the **<Term slug="self-inductance">self-induced EMF</Term>** the coil is generating in opposition to its own rising current. <PhysicistLink slug="joseph-henry">Joseph Henry</PhysicistLink> named it back-EMF and the name stuck.
+
+Pushing against a force costs work. `W = ∫V·I dt` is the shape of that work, where `V = L·dI/dt` is the voltage the inductor presents *back* to the source. The battery pays it out current-second by current-second, and the energy has to go somewhere. It's not heat — ideal inductors are lossless; take the resistor out and nothing warms up. It's not kinetic energy — the wire is bolted to the bench. So where is it?
+
+It's in the magnetic field the current builds.
+
+</Section>
+
+<Section index={2} title="Energy stored in an inductor">
+
+The answer to "how much?" falls out of the integral cleanly. Start with zero current and ramp to `I`. At each instant the source delivers power `P = V·I = L·I·(dI/dt)`. Integrate from zero to the final current:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">U = ∫₀^I L i di = ½ L I²</span>
+</EquationBlock>
+
+That `∫` is just the running total. Read it in words: "add up, across all the intermediate currents between 0 and `I`, the little bit of work done to push each extra ampere against the back-EMF." The total comes out to the elegant half-product `½ L I²`.
+
+<Callout variant="intuition">
+The half is the same half that appeared in `½CV²`. It is the signature of work done against a linearly-rising opposition. The first ampere slides in for free, the last ampere fights the full back-EMF. Average them and the factor is ½.
+</Callout>
+
+<SceneCard caption="FIG.24a — current ramps exponentially; the energy in the coil ramps quadratically; integrated power tops up at ½LI²_max" className="w-full">
+  <InductorEnergyRampScene />
+</SceneCard>
+
+Watch the amber trace approach its asymptote and the magenta one approach the *square* of that asymptote. The green-cyan back-EMF arrow fades as `dI/dt` decays — at steady state the coil is a short circuit and the energy reservoir is full.
+
+</Section>
+
+<Section index={3} title="Energy density of a B field">
+
+`½ L I²` tells us how much energy a specific inductor holds — a quantity that depends on the coil's geometry through `L`. The deeper question is: how much energy is there **per unit volume** of magnetic field, regardless of what's making the field?
+
+The cleanest place to pin it down is a long solenoid. For that geometry we already know two things. The self-inductance is `L = μ₀ N² A / ℓ` (from the <Term slug="self-inductance">self-inductance</Term> topic). The interior field is `B = μ₀ N I / ℓ` — uniform, axial, zero outside. The energy stored is `½ L I²`. The volume where the field lives is `A · ℓ`. Divide energy by volume and simplify:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">u = B² / (2 μ₀)</span>
+</EquationBlock>
+
+Three substitutions and the coil geometry falls out. What's left is a purely local statement: every cubic metre of space where the magnetic field has magnitude `B` holds `B²/(2μ₀)` joules, and nothing about how that field got there matters. It is a property of the field itself.
+
+<SceneCard caption="FIG.24b — shading intensity and side bar u track B²/(2μ₀); |B| is linear, u is quadratic" className="w-full">
+  <MagneticEnergyDensityScene />
+</SceneCard>
+
+Slide the `|B|` slider. The left bar (the field magnitude) moves linearly; the right bar (the energy density) moves as the square. At `B = 1 T` the density is about 398 kJ/m³ — a single cubic metre of one-tesla field carries enough to run a hundred-watt lamp for over an hour. MRI scanners sit at 1.5–3 T; their cryogenic coils store megajoules in the field that images your knee.
+
+</Section>
+
+<Section index={4} title="The mirror of §01">
+
+There's a pattern here you've seen before. In §01 we found that charging a capacitor stores `U = ½CV²` — and that every cubic metre between the plates holds `u = ½ε₀E²`. Now the same arithmetic has landed on its magnetic twin.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">½ C V²   ↔   ½ L I²</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">½ ε₀ E²   ↔   B² / (2 μ₀)</span>
+</EquationBlock>
+
+<SceneCard caption="FIG.24c — same ramp curve, different field. The mirror pair." className="w-full">
+  <CapacitorVsInductorScene />
+</SceneCard>
+
+Capacitance and inductance are geometric reservoirs; voltage and current are the charging variables; `½ε₀E²` and `B²/(2μ₀)` are the field densities. <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink>'s instinct — that <Term slug="magnetic-field">fields</Term> are physical things with locatable properties, not bookkeeping devices — is what makes this symmetry more than algebra. Both densities integrate to the total energy. Both formulas say the same deep thing: **the field is a reservoir**.
+
+</Section>
+
+<Section index={5} title="Matter modifies the density">
+
+Inside ordinary matter, the clean vacuum form needs a small amendment. For a linear material (most of them), the correct expression is
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">u = ½ H · B</span>
+</EquationBlock>
+
+where `H` is the <Term slug="h-field">auxiliary field</Term>. In the linear regime `B = μH` with `μ = μ₀(1 + χ_m)`, and this reduces to `B²/(2μ)` — the vacuum formula with `μ₀` replaced by the absolute permeability of the material. A ferrite core with `μ_r = 2000` stores two thousand times more energy at the same `B` than vacuum would. That's why transformer and inductor designers chase high-`μ` cores.
+
+For nonlinear materials — the ferromagnets that walk a hysteresis loop — the single-valued formula breaks down and the true energy stored is the area enclosed as `H` sweeps from 0 to its working point. That enclosed area, each time round the loop, is the energy lost as heat: the hysteresis-loss story from §04.3.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Every switching power supply on your desk parks a few microjoules in an inductor's field thousands of times per second, handing them on to a capacitor and around the loop — that's how a laptop brick converts 120 V AC to 19 V DC without wasting half as heat. Superconducting magnetic energy storage (SMES) plants hold megajoules in ring-shaped coils at liquid-helium temperatures, releasing them in milliseconds to smooth grid transients. Tokamak fusion reactors pump gigajoules into the toroidal field that confines their plasma; the field is literally holding a star in a jar. MRI coils need kilowatt-minutes just to ramp up — the magnet doesn't light up; it fills.
+
+And the hook for <Term slug="flux">§07 Maxwell</Term>: this energy density is what lets electromagnetic waves *exist*. Light is an oscillation of `E` and `B` in free space, carrying `½ε₀E² + B²/(2μ₀)` joules per cubic metre as it propagates — no wires, no coils, no battery. The Sun warms your face because a field reservoir built eight minutes ago in a plasma 150 million kilometres away arrives at your skin and is reabsorbed. Start with `½LI²` and you have already glimpsed the radiant edge of electromagnetism.
+
+</Section>
+
+</TopicPageLayout>
