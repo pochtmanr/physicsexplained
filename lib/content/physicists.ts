@@ -49,6 +49,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/leon-foucault.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
+      { branchSlug: "electromagnetism", topicSlug: "eddy-currents" },
     ],
   },
   {
@@ -749,6 +750,11 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "the-electric-field" },
       { branchSlug: "electromagnetism", topicSlug: "conductors-and-shielding" },
       { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
+      { branchSlug: "electromagnetism", topicSlug: "faradays-law" },
+      { branchSlug: "electromagnetism", topicSlug: "lenz-law-and-motional-emf" },
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+      { branchSlug: "electromagnetism", topicSlug: "energy-in-magnetic-fields" },
+      { branchSlug: "electromagnetism", topicSlug: "eddy-currents" },
     ],
   },
   {
@@ -759,6 +765,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/pierre-curie.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "piezo-and-ferroelectricity" },
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+      { branchSlug: "electromagnetism", topicSlug: "dia-and-paramagnetism" },
     ],
   },
   {
@@ -811,6 +819,58 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/hendrik-antoon-lorentz.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
+    ],
+  },
+  {
+    slug: "pierre-weiss",
+    born: "1865",
+    died: "1940",
+    nationality: "French",
+    image: storageUrl("physicists/pierre-weiss.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+      { branchSlug: "electromagnetism", topicSlug: "dia-and-paramagnetism" },
+    ],
+  },
+  {
+    slug: "walther-meissner",
+    born: "1882",
+    died: "1974",
+    nationality: "German",
+    image: storageUrl("physicists/walther-meissner.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "superconductivity-and-meissner" },
+    ],
+  },
+  {
+    slug: "heike-kamerlingh-onnes",
+    born: "1853",
+    died: "1926",
+    nationality: "Dutch",
+    image: storageUrl("physicists/heike-kamerlingh-onnes.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "superconductivity-and-meissner" },
+    ],
+  },
+  {
+    slug: "joseph-henry",
+    born: "1797",
+    died: "1878",
+    nationality: "American",
+    image: storageUrl("physicists/joseph-henry.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "faradays-law" },
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+    ],
+  },
+  {
+    slug: "heinrich-lenz",
+    born: "1804",
+    died: "1865",
+    nationality: "Russian",
+    image: storageUrl("physicists/heinrich-lenz.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "lenz-law-and-motional-emf" },
     ],
   },
 ];

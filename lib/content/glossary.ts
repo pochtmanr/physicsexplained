@@ -1684,6 +1684,193 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
     ],
   },
+  {
+    slug: "magnetization",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetization-and-the-h-field" },
+      { branchSlug: "electromagnetism", topicSlug: "dia-and-paramagnetism" },
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+    ],
+  },
+  {
+    slug: "h-field",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetization-and-the-h-field" },
+    ],
+  },
+  {
+    slug: "magnetic-susceptibility",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetization-and-the-h-field" },
+      { branchSlug: "electromagnetism", topicSlug: "dia-and-paramagnetism" },
+    ],
+  },
+  {
+    slug: "magnetic-permeability",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetization-and-the-h-field" },
+    ],
+  },
+  {
+    slug: "diamagnetism",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dia-and-paramagnetism" },
+      { branchSlug: "electromagnetism", topicSlug: "superconductivity-and-meissner" },
+    ],
+  },
+  {
+    slug: "paramagnetism",
+    category: "phenomenon",
+    relatedPhysicists: ["pierre-curie"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dia-and-paramagnetism" },
+    ],
+  },
+  {
+    slug: "ferromagnetism",
+    category: "phenomenon",
+    relatedPhysicists: ["pierre-curie", "pierre-weiss"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+    ],
+  },
+  {
+    slug: "magnetic-domain",
+    category: "concept",
+    relatedPhysicists: ["pierre-weiss"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+    ],
+  },
+  {
+    slug: "hysteresis-loop",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+      { branchSlug: "electromagnetism", topicSlug: "piezo-and-ferroelectricity" },
+    ],
+  },
+  {
+    slug: "curie-temperature",
+    category: "concept",
+    relatedPhysicists: ["pierre-curie"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ferromagnetism-and-hysteresis" },
+    ],
+  },
+  {
+    slug: "meissner-effect",
+    category: "phenomenon",
+    relatedPhysicists: ["walther-meissner"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "superconductivity-and-meissner" },
+    ],
+  },
+  {
+    slug: "critical-temperature",
+    category: "concept",
+    relatedPhysicists: ["heike-kamerlingh-onnes"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "superconductivity-and-meissner" },
+    ],
+  },
+  {
+    slug: "electromagnetic-induction",
+    category: "phenomenon",
+    relatedPhysicists: ["michael-faraday", "joseph-henry"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "faradays-law" },
+    ],
+  },
+  {
+    slug: "faradays-law-term",
+    category: "concept",
+    relatedPhysicists: ["michael-faraday"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "faradays-law" },
+    ],
+  },
+  {
+    slug: "lenzs-law-term",
+    category: "concept",
+    relatedPhysicists: ["heinrich-lenz"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "lenz-law-and-motional-emf" },
+    ],
+  },
+  {
+    slug: "emf",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "faradays-law" },
+      { branchSlug: "electromagnetism", topicSlug: "lenz-law-and-motional-emf" },
+    ],
+  },
+  {
+    slug: "motional-emf",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "lenz-law-and-motional-emf" },
+    ],
+  },
+  {
+    slug: "self-inductance",
+    category: "concept",
+    relatedPhysicists: ["joseph-henry"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+    ],
+  },
+  {
+    slug: "mutual-inductance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+    ],
+  },
+  {
+    slug: "henry-unit",
+    category: "unit",
+    relatedPhysicists: ["joseph-henry"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+    ],
+  },
+  {
+    slug: "back-emf",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+    ],
+  },
+  {
+    slug: "eddy-current",
+    category: "phenomenon",
+    relatedPhysicists: ["leon-foucault"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "eddy-currents" },
+    ],
+  },
+  {
+    slug: "magnetic-energy-density",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "energy-in-magnetic-fields" },
+    ],
+  },
+  {
+    slug: "flux-linkage",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "faradays-law" },
+      { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
