@@ -517,6 +517,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SusceptibilitySpectrumScene: lazyScene(() =>
     import("@/components/physics/susceptibility-spectrum-scene").then((m) => ({ default: m.SusceptibilitySpectrumScene })),
   ),
+
+  // EM §04 — ferromagnetism-and-hysteresis (money shot)
+  HysteresisDomainScene: lazyScene(() =>
+    import("@/components/physics/hysteresis-domain-scene").then((m) => ({ default: m.HysteresisDomainScene })),
+  ),
+  CurieTransitionScene: lazyScene(() =>
+    import("@/components/physics/curie-transition-scene").then((m) => ({ default: m.CurieTransitionScene })),
+  ),
+  DomainWallMotionScene: lazyScene(() =>
+    import("@/components/physics/domain-wall-motion-scene").then((m) => ({ default: m.DomainWallMotionScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

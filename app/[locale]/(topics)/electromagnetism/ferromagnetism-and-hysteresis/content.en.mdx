@@ -1,0 +1,131 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { HysteresisDomainScene } from "@/components/physics/hysteresis-domain-scene";
+import { CurieTransitionScene } from "@/components/physics/curie-transition-scene";
+import { DomainWallMotionScene } from "@/components/physics/domain-wall-motion-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pierre Curie", href: "/physicists/pierre-curie" },
+  { type: "physicist", label: "Pierre Weiss", href: "/physicists/pierre-weiss" },
+  { type: "term", label: "Ferromagnetism", href: "/dictionary/ferromagnetism" },
+  { type: "term", label: "Magnetic domain", href: "/dictionary/magnetic-domain" },
+  { type: "term", label: "Hysteresis loop", href: "/dictionary/hysteresis-loop" },
+  { type: "term", label: "Curie temperature", href: "/dictionary/curie-temperature" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.19 · MAGNETIC FIELDS IN MATTER"
+  title="FERROMAGNETISM, DOMAINS, AND HYSTERESIS"
+  subtitle="Iron doesn't just tilt in response to a field — it cooperates with itself. The piece remembers which way you magnetised it, until you heat it past the Curie temperature and the memory evaporates."
+/>
+
+<Section index={1} title="Iron's cooperative trick">
+
+Most everyday materials respond to a magnetic field by about one part in a hundred thousand. Their atomic moments either tilt slightly toward the field (paramagnets) or slightly against it (diamagnets), and the effect is tiny and linear. That is the whole previous topic.
+
+Iron responds a million times more strongly than any paramagnet has any right to. And the response is not linear: iron has a memory. Magnetise a bar, remove the field, the bar stays magnetic. Its atoms are not independently tilting — they are locked onto each other, each one feeling its neighbours more strongly than it feels the field you apply.
+
+<PhysicistLink slug="pierre-curie">Pierre Curie</PhysicistLink>, in his 1895 doctoral thesis, mapped the temperature dependence of magnetic susceptibility and identified the critical temperature above which cooperative behaviour vanishes — the **<Term slug="curie-temperature">Curie temperature</Term>,** T_c. Twelve years later his student <PhysicistLink slug="pierre-weiss">Pierre Weiss</PhysicistLink> published the picture that made cooperation work: inside a piece of iron, large regions are *already* fully magnetised, each pointing its own way, separated by thin walls. The bulk looks unmagnetised only because the regions cancel each other. Apply a field and the regions reorganise.
+
+This is the surprise of **<Term slug="ferromagnetism">ferromagnetism</Term>.** Iron is not a mildly-biased paramagnet; it is a phase. Below T_c, cooperative. Above T_c, ordinary paramagnetic. Cross T_c and the behaviour changes qualitatively.
+
+</Section>
+
+<Section index={2} title="Domains">
+
+Weiss called the internally-aligned regions **domains.** A typical domain is a few micrometres across — millions of atoms, every single moment pointing the same way. A domain is not a defect. It is the ground state: exchange energy (neighbours want to align) fights magnetostatic energy (a uniformly-magnetised chunk would carry a huge field out into surrounding space), and the compromise is to break the piece into many regions whose directions cancel far away. A demagnetised piece of iron looks unmagnetised because its domains happen to point every which way.
+
+Between two neighbouring domains lies a thin region — a **<Term slug="magnetic-domain">domain wall</Term>** — where the magnetisation swings over about 100 nanometres. Walls cost energy to exist, but less than the alternative of sending the field out into space.
+
+<SceneCard caption="FIG.19a — a single domain wall, bulging elastically against pinning sites and then snapping" className="w-full">
+  <DomainWallMotionScene />
+</SceneCard>
+
+Drag the slider. For small fields the wall bulges elastically — the magenta domain grows slightly into the cyan one, and when you release the field the bulge relaxes back. No permanent change. That is the **reversible** regime. Keep pushing. At some threshold the wall snaps free of the current pinning site — an impurity, a grain boundary, a dislocation — and jumps to the next pin. That jump is **irreversible:** releasing the field will not bring the wall back. The snap is a *Barkhausen jump,* after the 1919 experiment of winding a coil around an iron bar, connecting it to a speaker, and hearing the jumps as audible clicks while sweeping the field.
+
+Every hysteresis loop is the vector sum of billions of these jumps.
+
+</Section>
+
+<Section index={3} title="The hysteresis loop — the money shot">
+
+Here is the live record of what the domains do as an applied field is cycled.
+
+<SceneCard caption="FIG.19b — B vs H loop on the left, domain mosaic on the right, locked to the same sweep" className="w-full">
+  <HysteresisDomainScene />
+</SceneCard>
+
+Start at the origin. The mosaic is randomly oriented — macroscopic magnetisation zero. Apply positive H. Domains whose switching threshold is low flip first; as H climbs, harder domains follow. The mosaic turns magenta; the B–H trace climbs, rounds over, saturates at *+M_sat* when every last domain has flipped. This *initial magnetisation curve* is travelled exactly once in the lifetime of the sample.
+
+Reduce H back toward zero. Domains don't unflip just because you stopped pushing — each flipped domain is sitting in its own energy minimum, no restoring force. The trace does *not* retrace the initial curve; it stays high, curving gently down. At H = 0 the magnetisation is still substantial — the **remanence** B_r. Iron doesn't forget.
+
+To bring B back to zero you have to reverse the applied field. A specific magnitude of reversed H, the **coercive field** H_c, is where enough domains flip back that the contributions cancel. Keep going and the piece saturates at *−M_sat.* Cycle once more and you retrace the same loop forever.
+
+<EquationBlock latex="\oint B\,dH = W_\mathrm{loss}\ \text{(per unit volume, per cycle)}" caption="EQ.01 — the area inside the hysteresis loop is the heat dissipated by domain-wall friction, per unit volume per cycle." />
+
+The symbol ∮ is a closed-loop integral — adding up B·dH as H makes one full round trip. Geometrically it is the *area enclosed by the loop.* In a soft iron transformer core that area becomes heat with every cycle of the AC — the hum and warmth of a plugged-in transformer.
+
+The loop we draw is deliberately *soft* — realistic iron, Pr/Psat ≈ 0.38, Hc ≈ 15% of the saturation field. Textbooks sometimes draw a sharp rectangle, but that shape exists only in the limit of a hard magnet driven far past its coercive field, and it hides the whole physics of gradual domain reconfiguration.
+
+<Callout variant="intuition">
+  The loop is the *average* of the mosaic. Every kink in the B–H trace is a clump of domains flipping together; the curve is smooth only because there are so many domains that their jumps average into continuity. Watch the mosaic flash as each clump flips — you are seeing the microscopic ledger behind the macroscopic curve.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The Curie temperature">
+
+Heat iron past 1043 kelvin — red-orange hot — and the ferromagnetism evaporates. Drop a bar magnet into that furnace and it comes out non-magnetic. Cool it and the ferromagnetism returns. This is a genuine **phase transition,** the first second-order phase transition this branch has met, and it is Weiss's other big idea.
+
+<SceneCard caption="FIG.19c — spontaneous magnetisation below T_c, Curie-Weiss susceptibility above" className="w-full">
+  <CurieTransitionScene />
+</SceneCard>
+
+Below T_c, exchange coupling wins against thermal agitation and domains exist. The spontaneous magnetisation of a single domain is the **order parameter** of the transition — zero in the disordered phase, non-zero in the ordered phase. Mean-field theory gives
+
+<EquationBlock latex="M(T) \approx M_\mathrm{sat}\sqrt{1 - T/T_c}" caption="EQ.02 — mean-field order parameter, exponent β = 1/2." />
+
+the square-root shape visible on the magenta curve. Real iron deviates slightly (measured β ≈ 0.36), but √ is the clean textbook shape and carries the intuition.
+
+Above T_c the domains dissolve. Iron becomes an ordinary paramagnet — but with a susceptibility that *diverges* as T drops toward T_c from above,
+
+<EquationBlock latex="\chi(T) = \dfrac{C}{T - T_c}" caption="EQ.03 — Curie-Weiss law, paramagnetic-side susceptibility just above the transition." />
+
+the divergence being the fingerprint of the order about to form. The Curie law's plain 1/T picks up the −T_c correction because atoms near the transition already feel their neighbours' influence, even though cooperation hasn't frozen in yet. The cyan dotted tail is this divergence.
+
+You can watch the transition by eye: hang an iron paperclip from a thread, hold a magnet near it so the clip swings to attach, then heat the clip with a blowtorch. As it passes red heat the clip suddenly swings back, released. Cool it; it re-attaches. A phase transition, witnessed.
+
+</Section>
+
+<Section index={5} title="Soft versus hard">
+
+The difference between a transformer core and a permanent magnet is the shape of the loop.
+
+**Soft magnets** have low H_c and low remanence. They respond eagerly, saturate quickly, release easily. Narrow loops — small area, small per-cycle loss. Silicon steel, soft iron, μ-metal. You want them inside transformers and motor stators and magnetic shields, where the field must follow an externally driven current without wasting heat.
+
+**Hard magnets** have high H_c and high remanence. Once pushed to saturation they stay there. Wide boxy loops with huge area (fine — you are not cycling them; you drive them to saturation once and use the stored remanence forever). Neodymium-iron-boron, samarium-cobalt, Alnico, ferrites. These live inside speakers, hard drives, refrigerator magnets, EV rotors.
+
+The two regimes trade off by microstructure: more grain boundaries and pinning sites mean higher H_c. Slow-cooled iron with large crystallites is soft; rapidly-quenched fine-grain alloy is hard. Designers pick the ratio for the application.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Every speaker and every motor rotor relies on a hard ferromagnet holding its polarisation against the reversing field from the voice coil or the drive windings. Every hard-disk platter stores bits as the local direction of the ferromagnetic film's magnetisation; the read-head senses the remanence; the write-head cycles H past H_c only in the regions that need flipping.
+
+Every transformer core in every wall-wart, every pole transformer on every power line, every inductor labelled "μ_r = 2000" exploits the soft regime to concentrate the H from a coil into an enormous B inside the core. The price paid for the amplification is the loop area: core loss, why big transformers hum and need oil cooling.
+
+Every MRI machine wraps its superconducting main coil in a huge soft-iron return yoke to channel the flux and contain the fringe field.
+
+Every compass needle, every fridge-door latch, every fridge magnet is a hard ferromagnet frozen in its remanent state. Leave them on a shelf for decades and the domain configuration barely drifts — room-temperature thermal energy is a tiny fraction of the pinning energy. Iron is patient.
+
+Iron remembers. That memory is what this topic is about. In the next one we will meet a class of materials that do exactly the opposite — they expel every field that tries to enter them, a reversal so sharp it looks like magic and is, like ferromagnetism, a genuine phase transition.
+
+</Section>
+
+</TopicPageLayout>
