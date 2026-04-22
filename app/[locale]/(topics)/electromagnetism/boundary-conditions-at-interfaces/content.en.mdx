@@ -1,0 +1,116 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BoundaryEFieldScene } from "@/components/physics/boundary-e-field-scene";
+import { BoundaryDFieldScene } from "@/components/physics/boundary-d-field-scene";
+import { DielectricRefractionScene } from "@/components/physics/dielectric-refraction-scene";
+
+<TopicPageLayout aside={[
+  { type: "term", label: "Boundary conditions (EM)", href: "/dictionary/boundary-conditions-em" },
+  { type: "term", label: "Displacement field", href: "/dictionary/displacement-field" },
+  { type: "term", label: "Permittivity", href: "/dictionary/permittivity" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.10 · ELECTRIC FIELDS IN MATTER"
+  title="BOUNDARY CONDITIONS AT INTERFACES"
+  subtitle="What the electric field must do when the material on the other side of the boundary changes."
+/>
+
+<Section index={1} title="Why interfaces are special">
+
+The bulk equations of electrostatics — Gauss's law and the statement that E is conservative — tell you what is happening *inside* a piece of material. They do not, in any direct way, tell you what happens at the seam where two materials meet. A vacuum next to glass. Glass next to oil. Air next to a salty droplet. Any time the medium changes, the field on the two sides has to fit together somehow, and that fitting is not free — it is forced by the same two laws applied right at the boundary.
+
+The trick is to apply the integral forms of Gauss's law and the loop law to *infinitesimally thin* regions that straddle the surface. A pillbox so flat it is essentially a coin. A rectangular loop so squashed it is essentially a flat strip. Take the height to zero and read off what survives. What survives is a small set of rules that the field must obey at every interface, no matter what shape, no matter what the materials. They are the bridge between bulk physics and the rest of the world.
+
+</Section>
+
+<Section index={2} title="The pillbox argument">
+
+Take a thin coin-shaped volume — physicists call it a *pillbox* — straddling the boundary between two media. One face sits just above, one just below, and the rim is so short you can ignore the cylindrical wall. Apply Gauss's law for the displacement field <Term slug="displacement-field">D</Term>: the total flux of D out through the surface equals the *free* charge enclosed.
+
+Because the wall is negligible, the only contributions are the top face (D in medium 1, dotted with the outward normal that points up) and the bottom face (D in medium 2, dotted with the outward normal that points down). Subtract and you get a constraint on just the components perpendicular to the interface — the *normal* components.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">D₁,n − D₂,n = σ_free</span>
+</EquationBlock>
+
+Where `σ_free` is the free surface charge density sitting on the interface, in coulombs per square metre. If there is no deposited free charge — and at a clean dielectric–dielectric boundary there usually isn't — `σ_free = 0` and *normal D is continuous*. That is the cleanest single statement in this whole subject. The bound charges that line up at the interface (because the two media polarise differently) are *not* visible to D — that is exactly what D was invented for.
+
+<SceneCard caption="FIG.10a — E across an interface (tangential matches, normal jumps)" className="w-full">
+  <BoundaryEFieldScene />
+</SceneCard>
+
+Slide the σ slider from zero. Watch the normal component of E change discontinuously while the tangential component stays exactly matched. The two media may have very different <Term slug="permittivity">permittivities</Term>, but that show is going on entirely in the normal direction.
+
+</Section>
+
+<Section index={3} title="The loop argument">
+
+For E we use the other Maxwell equation: in electrostatics, the line integral of E around any closed loop is exactly zero. (Equivalently, ∮ E · dℓ = 0 — the field is conservative.)
+
+Take a thin rectangular loop that straddles the interface — long sides parallel to the surface, short sides crossing it. Squash the rectangle so the short sides have negligible length. The integral around the loop becomes the difference of E along the two long sides. Since the loop integral has to vanish, the *tangential* components of E on the two sides must agree.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">E₁,t = E₂,t      (always, no exceptions)</span>
+</EquationBlock>
+
+This is the most rigid of the four boundary conditions: it does not care whether there is free charge at the interface, it does not care about the permittivities. Tangential E always matches. The reason is intuitive once you see it: if there were a step in tangential E, charges along the surface would feel a sideways shove and slide until the step closed up. In equilibrium nothing slides, so no step exists.
+
+Together with the pillbox result, this is the heart of the whole topic. Two rules — `E_t` matches, `D_n` jumps by `σ_free` — and you can derive everything else.
+
+</Section>
+
+<Section index={4} title="D's full picture">
+
+Combine the two rules above with the constitutive relation `D = κε₀E`, which holds inside each linear dielectric, and you get the matching pair for D and E without any extra work.
+
+For E, the *normal* component on side 2 follows from rearranging `κ₁ε₀E₁,n − κ₂ε₀E₂,n = σ_free`, giving `E₂,n = (κ₁ E₁,n − σ_free/ε₀) / κ₂`. For D, the *tangential* component on side 2 is `D₂,t = (κ₂/κ₁) D₁,t` — because tangential E is what matches, so tangential D scales by the κ ratio.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">tangential E continuous · tangential D scales by κ₂/κ₁</span>
+</EquationBlock>
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">normal D continuous (when σ_free=0) · normal E scales by κ₁/κ₂</span>
+</EquationBlock>
+
+<SceneCard caption="FIG.10b — D across the same interface; normal D matches when σ_free = 0" className="w-full">
+  <BoundaryDFieldScene />
+</SceneCard>
+
+Toggle the κ values and the σ slider on the D scene. With σ_free = 0, the vertical component of D is identical above and below — even though E's vertical component is jumping by a factor of four. *That is the whole reason D exists.* It hides the bound charge so cleanly that the only thing the math has to track at the interface is whatever real, deposited free charge you put there. The bound polarization charge on each side handles itself, silently.
+
+</Section>
+
+<Section index={5} title="Field-line refraction">
+
+There is a beautiful consequence of all this. Watch a single field line cross the interface. Above the surface it makes some angle θ₁ with the normal; below, it makes angle θ₂. The boundary conditions force a relationship between the two angles that looks startlingly like Snell's law from optics:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">tan θ₂ / tan θ₁ = κ₂ / κ₁</span>
+</EquationBlock>
+
+<SceneCard caption="FIG.10c — a field line bends as it crosses into a denser dielectric" className="w-full">
+  <DielectricRefractionScene />
+</SceneCard>
+
+The derivation is one line. The tangential component of E is preserved across the boundary, so `E_t` is the same on both sides. The normal component scales by `κ₁/κ₂`. The angle the line makes with the normal satisfies `tan θ = E_t / E_n`. Take the ratio of `tan θ₂` to `tan θ₁` and the `E_t` cancels, leaving exactly `κ₂/κ₁`.
+
+The shape is identical to Snell's law for light, but the *direction* of bending is opposite. Going into the higher-κ material, a static field line bends *away* from the normal — the opposite of what light does in the same configuration. The reason is that for static fields the rule is set by tangential E, while for waves the rule (eventually derivable as the limit of these same boundary conditions applied to time-varying Maxwell equations) is set by the wave's phase-matching across the interface. The dynamic story — Fresnel coefficients, refraction, total internal reflection — is the subject of the future <Term slug="fresnel-equations">Fresnel-equations</Term> topic in §09. The static rule is simpler, and it is genuinely different.
+
+</Section>
+
+<Section index={6} title="Where it matters">
+
+These four rules show up everywhere a field crosses a material boundary, which is almost everywhere. Multilayer ceramic capacitors stack hundreds of dielectric layers between metal electrodes; the engineer who designs them lives inside these conditions, juggling κ values to maximise capacitance per volume without breakdown. RF antenna covers (radomes) use the same arithmetic to keep a dielectric shell from distorting the radiated pattern. Optical fibres trap light by total internal reflection — a phenomenon whose static cousin lives in the formula above.
+
+The most consequential application is the one we don't usually think of as a boundary problem at all: every transistor in every chip on this planet has its electric fields shaped by the boundary conditions between silicon, silicon dioxide, and metal. The whole digital civilisation runs on people knowing exactly what E and D do at the seam where one material meets another.
+
+</Section>
+
+</TopicPageLayout>

@@ -418,6 +418,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   DVsEDifferenceScene: lazyScene(() =>
     import("@/components/physics/d-vs-e-difference-scene").then((m) => ({ default: m.DVsEDifferenceScene })),
   ),
+
+  // EM §02 — boundary-conditions-at-interfaces
+  BoundaryEFieldScene: lazyScene(() =>
+    import("@/components/physics/boundary-e-field-scene").then((m) => ({ default: m.BoundaryEFieldScene })),
+  ),
+  BoundaryDFieldScene: lazyScene(() =>
+    import("@/components/physics/boundary-d-field-scene").then((m) => ({ default: m.BoundaryDFieldScene })),
+  ),
+  DielectricRefractionScene: lazyScene(() =>
+    import("@/components/physics/dielectric-refraction-scene").then((m) => ({ default: m.DielectricRefractionScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
