@@ -22,18 +22,6 @@ export function CookieBanner() {
     }
   }, []);
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (visible) {
-      root.setAttribute("data-cookie-banner", "visible");
-    } else {
-      root.removeAttribute("data-cookie-banner");
-    }
-    return () => {
-      root.removeAttribute("data-cookie-banner");
-    };
-  }, [visible]);
-
   function accept() {
     try {
       localStorage.setItem(STORAGE_KEY, "accepted");
@@ -47,26 +35,31 @@ export function CookieBanner() {
 
   return (
     <div
-      role="banner"
-      aria-label="Cookie consent"
-      className="fixed inset-x-0 bottom-0 z-50 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-1)]/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]"
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 z-50"
     >
-      <div className="mx-auto flex w-full max-w-7xl flex-row items-center justify-between gap-3 px-4 py-3 md:gap-4 md:px-8 md:py-4">
-        <p className="flex-1 text-xs text-[var(--color-fg-1)] sm:text-sm">
-          {t("message")}{" "}
-          <Link
-            href="/cookies"
-            className="text-[var(--color-cyan)] underline underline-offset-2"
+      <div
+        role="banner"
+        aria-label="Cookie consent"
+        className="pointer-events-auto sticky bottom-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-1)]/95 backdrop-blur-sm pb-[env(safe-area-inset-bottom)]"
+      >
+        <div className="mx-auto flex w-full max-w-7xl flex-row items-center justify-between gap-3 px-4 py-3 md:gap-4 md:px-8 md:py-4">
+          <p className="flex-1 text-xs text-[var(--color-fg-1)] sm:text-sm">
+            {t("message")}{" "}
+            <Link
+              href="/cookies"
+              className="text-[var(--color-cyan)] underline underline-offset-2"
+            >
+              {t("linkText")}
+            </Link>
+          </p>
+          <button
+            onClick={accept}
+            className="shrink-0 cursor-pointer border border-[var(--color-cyan)] bg-[var(--color-cyan)]/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--color-cyan)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--color-cyan)]/20 hover:shadow-[0_0_12px_var(--color-glow)] sm:px-5 sm:py-2 sm:text-xs"
           >
-            {t("linkText")}
-          </Link>
-        </p>
-        <button
-          onClick={accept}
-          className="shrink-0 cursor-pointer border border-[var(--color-cyan)] bg-[var(--color-cyan)]/10 px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--color-cyan)] transition-all duration-[var(--duration-fast)] hover:bg-[var(--color-cyan)]/20 hover:shadow-[0_0_12px_var(--color-glow)] sm:px-5 sm:py-2 sm:text-xs"
-        >
-          {t("accept")}
-        </button>
+            {t("accept")}
+          </button>
+        </div>
       </div>
     </div>
   );
