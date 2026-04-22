@@ -5,7 +5,6 @@ import { routing } from "@/i18n/routing";
 import { locales } from "@/i18n/config";
 import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
-import { CookieBanner } from "@/components/layout/cookie-banner";
 import { HtmlDirSync } from "@/components/layout/html-dir-sync";
 
 export function generateStaticParams() {
@@ -32,7 +31,6 @@ export default async function LocaleLayout({
         <div className="flex-1">{children}</div>
         <Footer />
       </div>
-      <CookieBanner />
     </NextIntlClientProvider>
   );
 }
