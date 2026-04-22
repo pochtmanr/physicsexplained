@@ -26,3 +26,12 @@ export const K_COULOMB = 1 / (4 * Math.PI * EPSILON_0);
 
 /** Elementary charge, C (exact, SI 2019 redefinition) */
 export const ELEMENTARY_CHARGE = 1.602176634e-19;
+
+/** Vacuum permeability, H/m (CODATA 2018) */
+export const MU_0 = 1.25663706212e-6;
+
+/** Speed of light in vacuum, m/s (exact, SI 2019 redefinition) */
+export const SPEED_OF_LIGHT = 2.99792458e8;
+
+/** Bohr magneton, J/T (CODATA 2018) — used by magnetic-dipole topic */
+export const BOHR_MAGNETON = 9.2740100783e-24;
