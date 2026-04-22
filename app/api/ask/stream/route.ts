@@ -16,7 +16,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const BodySchema = z.object({
-  conversationId: z.string().uuid().optional(),
+  conversationId: z.string().uuid().nullable().optional(),
   message: z.string().min(1).max(4000),
   locale: z.string().default("en"),
   modelId: z.string().default(DEFAULT_MODEL_ID),
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   const rlRes = await checkRateLimit(rl);
   if (!rlRes.ok) return NextResponse.json({ error: "RATE_LIMITED", reason: rlRes.reason }, { status: 429 });
 
-  let conversationId = body.conversationId;
+  let conversationId = body.conversationId ?? undefined;
   if (!conversationId) {
     const { data, error } = await db
       .from("ask_conversations")
