@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DFieldFreeChargeScene } from "@/components/physics/d-field-free-charge-scene";
+import { DielectricCapacitorScene } from "@/components/physics/dielectric-capacitor-scene";
+import { DVsEDifferenceScene } from "@/components/physics/d-vs-e-difference-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Dielectric", href: "/dictionary/dielectric-term" },
+  { type: "term", label: "Permittivity", href: "/dictionary/permittivity" },
+  { type: "term", label: "Displacement field", href: "/dictionary/displacement-field" },
+  { type: "term", label: "Electric susceptibility", href: "/dictionary/electric-susceptibility" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.09 · ELECTRIC FIELDS IN MATTER"
+  title="DIELECTRICS AND THE D FIELD"
+  subtitle="The extra field that only notices what's free."
+/>
+
+<Section index={1} title="The accounting problem">
+
+A dielectric in an electric field grows two sets of charges. The ones you put there yourself — electrons pumped onto a capacitor plate, ions injected by a probe, the live wire of a power supply — are the **free charges**. The ones that appear because the medium polarised in response — the thin films of bound surface charge on each face of the slab, the volume charge wherever <Term slug="polarization-density">polarization</Term> changes — are the **bound charges**.
+
+Gauss's law sees them both. Take a closed surface, add up the field flux through it, and you recover *all* the charge inside. That includes the bound charge you didn't pay for, the bound charge you can't measure with a voltmeter, the bound charge that depends on what material you happen to be standing in. For a vacuum problem this is fine. For a problem with glass or water or a ceramic capacitor between the surfaces, it is a mess.
+
+We need an accounting trick: a field whose sources are *only* the free charges. That field is `D`.
+
+</Section>
+
+<Section index={2} title="The D field">
+
+The trick is to subtract the bound-charge contribution out of the field by hand. The polarisation `P` already encodes everything the dielectric is doing — bound surface charge is `P·n̂` on every face, bound volume charge is whatever spatial gradient of `P` is left over inside. Add `P` back into the vacuum field `ε₀E` and the bound charge cancels in the bookkeeping.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">D = ε₀ · E + P</span>
+</EquationBlock>
+
+That object is the **<Term slug="displacement-field">electric displacement</Term>**, in coulombs per square metre. It is the same shape as a charge-per-area — a flux density — and that's exactly what it acts like.
+
+The payoff comes when we ask Gauss's law about it. There is a vector-calculus operator called the **divergence** — written `∇·` — that asks, at every point in space, *how much is leaking out of an infinitesimal box around that point?* If you imagine the field as the velocity of a fluid, the divergence at a point is the rate at which fluid is appearing there from a hidden tap (positive divergence) or disappearing into a hidden drain (negative divergence). For an electric field the "taps" are positive charges and the "drains" are negative ones.
+
+For `D`, the only taps and drains it knows about are the *free* charges:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">∇ · D = ρ_free</span>
+</EquationBlock>
+
+Read it aloud: *the rate at which D-flux is leaking out of every point equals the density of free charge there.* The bound charges have vanished from the right-hand side. They are still in the medium, still polarising, still contributing to `E` — but `D` was constructed not to care.
+
+</Section>
+
+<Section index={3} title="The point-charge example">
+
+The cleanest demonstration uses a single positive free charge sitting at the centre of a thick spherical shell of dielectric. Outside the shell: vacuum. Inside the shell: a polarised medium. There are no other free charges anywhere.
+
+<SceneCard caption="FIG.09a — one free charge, two fields. Toggle D, E, or both." className="w-full">
+  <DFieldFreeChargeScene />
+</SceneCard>
+
+The amber `D`-field lines radiate straight out from the centre and pass through both faces of the dielectric without changing magnitude. That is what `∇·D = ρ_free` is telling you: the only source `D` sees is that one charge in the middle, so its flux pattern is identical to the vacuum case at every radius.
+
+The cyan `E`-field lines occupy the same geometry — radial — but their *intensity* drops by a factor of `κ` once they enter the slab and recovers once they leave. The bound surface charges on the inner and outer faces are partially shielding the central charge from anything on the far side. `E` notices that. `D` does not.
+
+Slide `κ` upward and watch the cyan arrows hesitate inside the shell while the amber arrows keep walking out at the same pace. Two fields, one source.
+
+</Section>
+
+<Section index={4} title="Capacitor with a dielectric">
+
+The version of this story that pays the rent in every electronics lab is the capacitor. Two parallel plates, free charge `±Q` on each, vacuum gap → slip a slab of dielectric into the gap. <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink>, who invented the word *dielectric* in 1837, called the resulting amplification "specific inductive capacity" and measured it for a dozen materials. We now write it `κ`, the **<Term slug="dielectric-constant">dielectric constant</Term>**.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">C = κ · C₀</span>
+</EquationBlock>
+
+`C₀ = ε₀A/d` is the vacuum capacitance from the geometry alone. `κ` is whatever the slab brings to the table — about 4 for glass, 80 for water, several hundred for the engineered ceramics inside surface-mount capacitors. The geometry hasn't changed; the *material* changed, and the device's ability to store free charge per unit voltage went up by exactly `κ`.
+
+<SceneCard caption="FIG.09b — slide the slab in. Toggle whether Q or V is held fixed." className="w-full">
+  <DielectricCapacitorScene />
+</SceneCard>
+
+Two ways the experiment can run. **Disconnect the battery first**, then slide the slab in: the free charge `Q` is trapped on the plates, can't go anywhere, but `C` rises by `κ`. So `V = Q/C` *drops*, and the stored energy `U = Q²/2C` drops with it. The slab actually gets pulled in by the field — the capacitor does work on it as it slides. **Leave the battery connected** and the voltage is held fixed; the battery responds to the new larger `C` by pumping in `(κ−1)Q` of extra free charge, and `U = ½CV²` *rises*. Same insertion, opposite energy ledger, depending on what the rest of the circuit was holding constant.
+
+</Section>
+
+<Section index={5} title="E versus D — what they tell you">
+
+`E` is the field that pushes on a charge. It is what a free electron actually feels, what a voltmeter actually averages, what a spark actually rides. It is the physical thing.
+
+`D` is the field that bookkeeps the free sources. It is not a force on anything by itself. It is a convenience invented to make Gauss's law useful when there is matter around.
+
+<SceneCard caption="FIG.09c — same plates, same charge, same slab. E shrinks. D doesn't." className="w-full">
+  <DVsEDifferenceScene />
+</SceneCard>
+
+The visual punchline above shows both panels at once: the cyan `E` arrows shrink to `1/κ` of their vacuum height inside the slab, while the amber `D` arrows stay the same length all the way across. The polarisation `P` made up the difference — `D = ε₀E + P` is engineered so the κ-fold reduction in `E` is exactly cancelled by `P`, leaving `D` flat.
+
+<Callout variant="intuition">
+A useful slogan: **E is what you feel; D is what you put there.** When you want to predict a force, integrate `E`. When you want to predict free charge from a geometry, integrate `D`.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Every multilayer ceramic capacitor on a circuit board is a stack of thin dielectric slabs in parallel — designers play `κ` against breakdown strength to fit microfarads into a millimetre. The "X7R" and "Y5V" labels you see in datasheets are different ceramic recipes with different `κ` values and different temperature stability; X7R is the boring reliable choice, Y5V buys you ten times the capacitance with five times the drift.
+
+Dielectric mirrors used in laser cavities are stacks of alternating high- and low-`κ` films a quarter-wavelength thick. The `D`-field bookkeeping is what makes the boundary conditions on each layer tractable. Microwave engineers tune cavity sizes by filling them with controlled-`κ` ceramics. And every time someone simulates a capacitor in SPICE, the model under the hood is `Q = CV` with `C = κε₀A/d` — Faraday's specific inductive capacity, dressed in modern units.
+
+The `D` field is invisible. No instrument reads it directly. But the moment you have to write down Gauss's law in matter and want a clean `ρ_free` on the right-hand side, it is the only sensible thing to write on the left.
+
+</Section>
+
+</TopicPageLayout>

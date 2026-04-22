@@ -407,6 +407,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PolarizationVsFieldScene: lazyScene(() =>
     import("@/components/physics/polarization-vs-field-scene").then((m) => ({ default: m.PolarizationVsFieldScene })),
   ),
+
+  // EM §02 — dielectrics-and-the-d-field
+  DFieldFreeChargeScene: lazyScene(() =>
+    import("@/components/physics/d-field-free-charge-scene").then((m) => ({ default: m.DFieldFreeChargeScene })),
+  ),
+  DielectricCapacitorScene: lazyScene(() =>
+    import("@/components/physics/dielectric-capacitor-scene").then((m) => ({ default: m.DielectricCapacitorScene })),
+  ),
+  DVsEDifferenceScene: lazyScene(() =>
+    import("@/components/physics/d-vs-e-difference-scene").then((m) => ({ default: m.DVsEDifferenceScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
