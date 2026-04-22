@@ -352,6 +352,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   FluxThroughSurfaceScene: lazyScene(() =>
     import("@/components/physics/flux-through-surface-scene").then((m) => ({ default: m.FluxThroughSurfaceScene })),
   ),
+
+  // EM §01 — electric-potential
+  PotentialSurfaceScene: lazyScene(() =>
+    import("@/components/physics/potential-surface-scene").then((m) => ({ default: m.PotentialSurfaceScene })),
+  ),
+  EquipotentialLinesScene: lazyScene(() =>
+    import("@/components/physics/equipotential-lines-scene").then((m) => ({ default: m.EquipotentialLinesScene })),
+  ),
+  VoltageRampScene: lazyScene(() =>
+    import("@/components/physics/voltage-ramp-scene").then((m) => ({ default: m.VoltageRampScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

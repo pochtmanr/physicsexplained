@@ -1,0 +1,126 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PotentialSurfaceScene } from "@/components/physics/potential-surface-scene";
+import { EquipotentialLinesScene } from "@/components/physics/equipotential-lines-scene";
+import { VoltageRampScene } from "@/components/physics/voltage-ramp-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Benjamin Franklin", href: "/physicists/benjamin-franklin" },
+  { type: "term", label: "Electric potential", href: "/dictionary/electric-potential-term" },
+  { type: "term", label: "Volt", href: "/dictionary/volt" },
+  { type: "term", label: "Equipotential", href: "/dictionary/equipotential" },
+  { type: "term", label: "Line integral", href: "/dictionary/line-integral" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.04 · ELECTROSTATICS"
+  title="ELECTRIC POTENTIAL"
+  subtitle="A scalar field where every battery, every voltmeter, every circuit diagram secretly lives."
+/>
+
+<Section index={1} title="Energy, not force">
+
+The electric field is a vector. Three numbers per point, everywhere, forever. To find what happens to a test charge you add up the field from every source and push the charge along the resulting arrow. It works. It is also more bookkeeping than the human eye wants to do.
+
+There is an easier description. Instead of asking *which way the field pushes*, ask *how much energy a unit of charge has here*. That number is a scalar — one value per point, no direction. Call it the **<Term slug="electric-potential-term">electric potential</Term>** *V*. The field can be reconstructed from it; nothing physical is lost. The bookkeeping shrinks by a factor of three, and the arithmetic stops involving cosines.
+
+This is why every voltmeter reads in volts and not in field units. Why a battery has a printed voltage on its case. Why a circuit diagram is a tree of node voltages, not a vector field. The whole language of electronics — voltage drops, ground, ten-volt rails — is the language of *V*. <PhysicistLink slug="benjamin-franklin">Franklin</PhysicistLink> coined "positive" and "negative" in the 1740s; we have been measuring the height difference between them ever since.
+
+</Section>
+
+<Section index={2} title="From force to potential">
+
+How do you turn a vector field into a number? You walk a test charge from one place to another and add up how much work the field does at each step.
+
+Start at point B, end at point A. At each tiny segment d**l** of your path, the field exerts a force *q*·**E**, doing work **E**·d**l** times *q*. Sum those contributions along the whole path and divide out *q*. What you get is the change in potential — with one sign convention: *V* increases as you walk *against* the field, because that's where work has to be done.
+
+That recipe is a **<Term slug="line-integral">line integral</Term>**: you walk from B to A, summing how much work the field does at each step, with a minus sign because moving against the field costs energy per unit charge. In one line:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">V(A) − V(B) = −∫<sub>B</sub><sup>A</sup> E · dl</span>
+</EquationBlock>
+
+A miracle hides in plain sight. The right-hand side is an integral along a path; the left-hand side depends only on two points. That can only work if the answer doesn't care which path you took. Such a field is called **conservative** — and the electrostatic field is. (The deep reason traces back to Noether's theorem and the time-symmetry of physics.)
+
+The same trick runs in reverse. If *V* is a scalar landscape, then *E* is its slope, pointing the way the landscape falls fastest: **E** = −∇*V*, where ∇*V* is the gradient — a vector built from the three partial derivatives ∂*V*/∂*x*, ∂*V*/∂*y*, ∂*V*/∂*z*. The minus sign makes the field flow from high *V* to low *V*. Force from energy.
+
+</Section>
+
+<Section index={3} title="The voltage map">
+
+For a single point charge *q* at the origin, doing the integral from infinity inward gives a tidy answer:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">V(r) = k · q / r</span>
+</EquationBlock>
+
+A *single* term, falling as 1/*r* — not 1/*r*². And because *V* is a scalar, many sources superpose by adding numbers, not vectors:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-base">V(r) = k · Σ q<sub>i</sub> / |r − r<sub>i</sub>|</span>
+</EquationBlock>
+
+That is the whole game. Pick a point, sum *kq*/*r* from every source, you have the voltage there.
+
+<SceneCard caption="FIG.04a — voltage of a dipole, as heatmap and as 3D landscape" className="w-full">
+  <PotentialSurfaceScene />
+</SceneCard>
+
+A positive charge is a hill; a negative charge is a well; a dipole is a hill next to a well, with a saddle ridge at *V* = 0 between them. Read it as a topo map: contour lines are heights, hot/cold colors are the same heights painted in. A positive test charge released anywhere would roll downhill toward the well; a negative one toward the hill. No arrows needed to predict the motion.
+
+</Section>
+
+<Section index={4} title="Equipotentials">
+
+A curve through points at the same voltage is called an **<Term slug="equipotential">equipotential</Term>** — a contour line of *V*. A test charge sliding along it does no work, because by definition *V* doesn't change.
+
+Two facts to memorise. The field is always perpendicular to equipotentials, because any tangential component of *E* would do nonzero work along a curve where *V* — by definition — doesn't change. And where equipotentials are dense, the field is strong; sparse contours mean a feeble *E*.
+
+<SceneCard caption="FIG.04b — field lines and equipotentials of a dipole" className="w-full">
+  <EquipotentialLinesScene />
+</SceneCard>
+
+Toggle either layer. Notice how every white field line crosses every colored ring at exactly ninety degrees. That is the geometry of conservatism, made visual.
+
+</Section>
+
+<Section index={5} title="The volt">
+
+The unit of *V* is the **<Term slug="volt">volt</Term>**, named for Alessandro Volta, who in 1800 stacked zinc and silver discs separated by brine-soaked cardboard and discovered the pile delivered a steady electric current. Before him there were sparks. After him there was electricity on demand.
+
+One volt is one joule per coulomb:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-base">1 V = 1 J / C</span>
+</EquationBlock>
+
+A 9-volt battery does nine joules of work for every coulomb it shoves through a circuit. A coulomb is a lot — about 6 × 10¹⁸ electrons — so a typical AA at a milliamp for an hour transports only 3.6 coulombs and delivers only a few joules. *V* is energy *per* charge, and charge is hugely subdivided. That's also why a static spark can hit ten thousand volts without hurting you (tiny total charge) while a 12-volt car battery can weld a wrench to the chassis (enormous current).
+
+</Section>
+
+<Section index={6} title="Path independence">
+
+The whole machinery only works because *V* is a function of position alone. Move a charge from A to B and the energy change *q* · (V(B) − V(A)) is fixed — straight, curved, looping, makes no difference.
+
+<SceneCard caption="FIG.04c — same endpoints, same energy change, different path" className="w-full">
+  <VoltageRampScene />
+</SceneCard>
+
+Two routes between the same A and B: a straight line and a zigzag detour. The energy bar fills to the same final value either way. The route is irrelevant. Only the endpoint potentials matter. This is what *conservative* means in practice — the same property that lets gravity have a potential energy *m·g·h*.
+
+</Section>
+
+<Section index={7} title="Why it matters">
+
+Once you have *V*, every electrostatic question becomes accountable in a single number. A circuit is a graph of node voltages. A capacitor stores energy by holding two plates at a known voltage difference. Millikan's oil-drop experiment in 1909 pinned a droplet between two horizontal plates by tuning the voltage until gravity and the electric force balanced — and so first measured the elementary charge. The ionisation energy of an atom is quoted as a voltage (13.6 V for hydrogen). The electron-volt, *eV* — the energy one electron gains by falling through one volt — is the natural currency of atomic, nuclear, and particle physics.
+
+All of this rides on one quiet algebraic move: trade three numbers per point for one. The vector field is still there, recoverable at any moment from **E** = −∇*V*, but the daily language of electromagnetism is *V*-language. The next topic turns this scalar around and asks what happens when the charges live on a metal surface, free to rearrange until *V* is constant on the conductor — the geometry that gives us the Faraday cage.
+
+</Section>
+
+</TopicPageLayout>
