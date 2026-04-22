@@ -1,0 +1,158 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { InductorCurrentBuildupScene } from "@/components/physics/inductor-current-buildup-scene";
+import { MutualInductionScene } from "@/components/physics/mutual-induction-scene";
+import { RLTimeConstantScene } from "@/components/physics/rl-time-constant-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Henry", href: "/physicists/joseph-henry" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Self-inductance", href: "/dictionary/self-inductance" },
+  { type: "term", label: "Mutual inductance", href: "/dictionary/mutual-inductance" },
+  { type: "term", label: "Henry (unit)", href: "/dictionary/henry-unit" },
+  { type: "term", label: "Back-EMF", href: "/dictionary/back-emf" },
+  { type: "term", label: "Flux linkage", href: "/dictionary/flux-linkage" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.23 · ELECTRODYNAMICS & INDUCTION"
+  title="SELF AND MUTUAL INDUCTANCE"
+  subtitle="A coil resists its own changing current. The constant that measures that resistance is the henry."
+/>
+
+<Section index={1} title="A coil resists its own changing current">
+
+Try to push a current through a coil of wire. A real current, the kind that lights a bulb or spins a motor. You close a switch, connect a battery, and you would think the current jumps instantly from zero to whatever the resistance allows — `V/R`, the answer Ohm would give.
+
+It doesn't. It rises, gently, over milliseconds or seconds or minutes depending on the coil. And on the way up, the coil pushes back. If you put a voltmeter across its terminals you will see a voltage opposing the battery, shrinking as the current settles. Disconnect the battery and the reverse happens: the current doesn't stop, it coasts downward, and the coil now *sources* a voltage that keeps it coasting.
+
+This is **<Term slug="self-inductance">self-inductance</Term>** in action. A coil carrying a current `I` surrounds itself with a magnetic field. Loop through that field and you get a flux — and because every turn of the coil threads through the field of every other turn, the total **<Term slug="flux-linkage">flux linkage</Term>** grows with `I`. When `I` changes, the flux changes. Faraday's law then produces an EMF inside the coil itself, and Lenz's law points that EMF *against* the change. The coil fights you whenever you try to alter its state.
+
+The whole story of inductors is packed into that sentence. What follows is its unpacking.
+
+</Section>
+
+<Section index={2} title="Self-inductance L">
+
+Begin with the flux linkage. For any coil geometry, the total flux through all of its turns is proportional to the current running through it. "Proportional" is the whole claim — double the current, double the field, double the flux through every cross-section, double the linkage:
+
+<EquationBlock id="EQ.01">
+  $$ \Phi_{\text{self}} \;=\; L \cdot I $$
+</EquationBlock>
+
+The constant `L` is the **self-inductance** of the coil. It depends only on geometry and the material filling the coil — how many turns, how big a cross-section, how long, whether there is iron in the core. It has nothing to do with `I` itself.
+
+Now feed this into <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>'s law. The EMF induced around a closed loop equals the negative rate of change of flux through it. In plain words: the symbol `dI/dt` means "how fast the current is changing per second," and the integral sign that appears when we compute flux is just an area sum — both are spelled out in detail in the Faraday topic. Applied to the coil's *own* flux, Faraday gives:
+
+<EquationBlock id="EQ.02">
+  $$ \mathcal{E} \;=\; -\,L \,\frac{dI}{dt} $$
+</EquationBlock>
+
+That minus sign is Lenz's law writ small. If `I` is rising, `dI/dt > 0`, so the EMF is negative — a **<Term slug="back-emf">back-EMF</Term>** that pushes *against* the rise. If `I` is falling, `dI/dt < 0`, the EMF flips positive and tries to keep the current going. The coil is an electrical flywheel.
+
+The SI unit for `L` is the **<Term slug="henry-unit">henry</Term>**, abbreviated `H`. From EQ.02, one henry is one volt per ampere-per-second — a coil that produces one volt of back-EMF when the current in it changes at one ampere per second.
+
+</Section>
+
+<Section index={3} title="Joseph Henry, late to publish">
+
+<PhysicistLink slug="joseph-henry">Joseph Henry</PhysicistLink> was a mathematics teacher at the Albany Academy in upstate New York when, in 1830, he noticed the same phenomenon <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink> would publish the following year: changing magnetic flux produces an EMF. Henry was first to observe self-induction specifically — the spark that jumps the gap when you open the switch on a big coil. He was also first to wind insulated wire on an iron bar and so build a practical electromagnet powerful enough to lift a ton.
+
+He published late. Teaching load, no scientific society nearby, a reluctance to dash into print. Faraday's 1831 paper won the priority race, and Henry's claim survived only because his colleagues at Princeton — where he became chair of natural philosophy in 1832 — vouched for the chronology. When the Smithsonian Institution was chartered in 1846 Henry became its first Secretary, a post he held for three decades and used to build American science from nearly nothing.
+
+The SI unit of inductance bears his name. Every time you see the letter `H` on a component datasheet you are reading Joseph Henry's initial, tucked into the engineering language a century after he missed being first in print.
+
+</Section>
+
+<Section index={4} title="Computing L for a solenoid">
+
+For the long solenoid geometry from §03, `L` comes out in two lines. Inside the solenoid the field is uniform at `B = μ₀ · (N/ℓ) · I`, where `N` is the total turn count and `ℓ` is the length. The flux through one turn is `B · A`, so the total linkage through all `N` turns is:
+
+<EquationBlock id="EQ.03">
+  $$ L \;=\; \frac{N \cdot B \cdot A}{I} \;=\; \frac{\mu_0 \, N^2 \, A}{\ell} $$
+</EquationBlock>
+
+Notice the `N²`. Wind twice as many turns on the same form and the inductance quadruples — one factor of `N` comes from a stronger interior field, the other from more turns catching that field. This is why every inductor you have ever seen is a coil, and why MRI gradient coils, transformer windings, and wireless-charging primaries are all tightly packed helices.
+
+<SceneCard caption="FIG.23a — current fills a bucket; the coil pushes back" className="w-full">
+  <InductorCurrentBuildupScene />
+</SceneCard>
+
+Close the switch and watch. The current climbs on an `(1 − e^(−t/τ))` curve toward its Ohm's-law limit `V/R`. Green-cyan across the inductor is the back-EMF — huge at `t = 0`, fading as `I` stabilises. Slide `L` upward and the whole rise stretches out: bigger coil, slower climb. Press *reset* to replay.
+
+</Section>
+
+<Section index={5} title="Mutual inductance M">
+
+If one coil produces flux, a *second* coil sitting nearby sees that flux too. Let `I_1` flow in coil 1 and ask how much of its flux links coil 2. The answer is again proportional:
+
+<EquationBlock id="EQ.04">
+  $$ \Phi_{21} \;=\; M \cdot I_1 $$
+</EquationBlock>
+
+`M` is the **<Term slug="mutual-inductance">mutual inductance</Term>** of the pair. Like `L`, it depends only on geometry — how the two coils are oriented, how far apart, whether they share a core. Applying Faraday to coil 2:
+
+<EquationBlock id="EQ.05">
+  $$ \mathcal{E}_2 \;=\; -\,M\,\frac{dI_1}{dt} $$
+</EquationBlock>
+
+A changing current in one coil produces a voltage in the other — without any wires between them. This is the principle of every **transformer**, every **induction motor**, every RFID card, every wireless phone charger. You drive coil 1 with AC; coil 2 picks up an AC voltage; no direct electrical contact is needed.
+
+The reciprocity theorem says `M_{12} = M_{21}` — the two directions give the same coupling constant — and a coupling coefficient `k = M / √(L_1 L_2)` lives in the interval `[0, 1]`, with `k = 1` meaning every field line from coil 1 threads coil 2 (an idealised transformer) and `k = 0` meaning the coils are geometrically decoupled.
+
+<SceneCard caption="FIG.23b — coupling coefficient falls with separation" className="w-full">
+  <MutualInductionScene />
+</SceneCard>
+
+A sinusoidal primary current drives flux through a smaller secondary sitting on the axis. The secondary picks up an EMF `−M · dI_1/dt`, shown in green-cyan, whose phase leads the primary current by a quarter cycle (because it tracks the derivative, not the current itself). Slide the secondary out of the primary's bore and the coupling `k` collapses — field lines miss the secondary, linkage drops, induced EMF shrinks.
+
+</Section>
+
+<Section index={6} title="The RL time constant">
+
+Close the loop with Ohm. In a series RL circuit — battery `V`, resistor `R`, inductor `L` — Kirchhoff's voltage law says at every instant:
+
+<EquationBlock id="EQ.06">
+  $$ V \;=\; I\,R \;+\; L\,\frac{dI}{dt} $$
+</EquationBlock>
+
+Solve with `I(0) = 0`:
+
+<EquationBlock id="EQ.07">
+  $$ I(t) \;=\; \frac{V}{R}\,\bigl(1 - e^{-t/\tau}\bigr), \qquad \tau \;=\; \frac{L}{R} $$
+</EquationBlock>
+
+The **RL time constant** `τ = L/R` sets the clock. After one `τ` the current has reached `(1 − 1/e) ≈ 63.2 %` of its asymptote; after `2τ`, `86 %`; after `3τ`, `95 %`; it never arrives at `V/R` in finite time.
+
+<SceneCard caption="FIG.23c — three τ, same asymptote, very different patience" className="w-full">
+  <RLTimeConstantScene />
+</SceneCard>
+
+Three curves, same voltage, same resistor, three different inductances — three different rhythms. The guide lines at 63 / 86 / 95 % mark the universal milestones of any first-order rise. "Faster" means smaller `L` or bigger `R`; "slower" means bigger `L` or smaller `R`. Every engineer who has ever spec'd a snubber circuit, an ignition coil, or a DC-DC converter has done arithmetic around this one equation.
+
+<Callout variant="intuition">
+`τ = L/R` is the magnetic twin of `τ = RC` from §01. A capacitor fights voltage changes by storing energy in an electric field; an inductor fights current changes by storing energy in a magnetic field. Two reservoirs, two time constants, same shape of curve. §06 makes the duality explicit.
+</Callout>
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+Self-inductance is the reason every **switched-mode power supply** works. A MOSFET chops the input DC into high-frequency pulses; those pulses drive a small coil; the coil's `L` smooths the output through the same RL-rise mechanism FIG.23c shows. Your phone charger, your laptop brick, the regulator inside your GPU — all of them lean on `τ = L/R` and the back-EMF.
+
+**Ignition coils** in petrol engines do it backwards. Current builds up through a coil, then a fast switch opens; `dI/dt` spikes hugely negative, EMF = `−L · dI/dt` spikes hugely positive, and a 20 kV pulse arcs across the spark plug gap. All of that voltage comes from the coil's refusal to let the current stop suddenly.
+
+Mutual inductance is the **transformer**. Step up, step down, isolate — three functions of one pair of coupled coils. Your doorbell runs on a 120 V → 12 V step-down; the substation transformer down the street runs 35 kV → 240 V; the Tesla coil in your physics department runs a step-*up* of a couple thousand.
+
+Mutual inductance is also the **NFC** in your phone's contactless-payment module: the reader's coil drives an AC field, your phone's coil picks up a few volts of induced EMF, and that is enough to power the chip and return a bit stream. Nothing touches. **Magnetic-card readers**, **wireless earbuds' charging cases**, **implantable medical devices** — every one of them is `Φ_{21} = M · I_1` in industrial disguise.
+
+Faraday's law was the first time `∂B/∂t` entered the physics. Self- and mutual inductance are its working forms. In FIG.24 we ask where the work done against back-EMF goes — and find that the magnetic field itself is the reservoir.
+
+</Section>
+
+</TopicPageLayout>

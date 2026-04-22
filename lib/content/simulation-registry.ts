@@ -561,6 +561,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   JumpingRingScene: lazyScene(() =>
     import("@/components/physics/jumping-ring-scene").then((m) => ({ default: m.JumpingRingScene })),
   ),
+
+  // EM §05 — self-and-mutual-inductance
+  InductorCurrentBuildupScene: lazyScene(() =>
+    import("@/components/physics/inductor-current-buildup-scene").then((m) => ({ default: m.InductorCurrentBuildupScene })),
+  ),
+  MutualInductionScene: lazyScene(() =>
+    import("@/components/physics/mutual-induction-scene").then((m) => ({ default: m.MutualInductionScene })),
+  ),
+  RLTimeConstantScene: lazyScene(() =>
+    import("@/components/physics/rl-time-constant-scene").then((m) => ({ default: m.RLTimeConstantScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
