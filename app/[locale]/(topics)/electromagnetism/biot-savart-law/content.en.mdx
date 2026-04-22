@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { WireSegmentFieldScene } from "@/components/physics/wire-segment-field-scene";
+import { StraightWireFieldScene } from "@/components/physics/straight-wire-field-scene";
+import { LoopFieldScene } from "@/components/physics/loop-field-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Jean-Baptiste Biot", href: "/physicists/jean-baptiste-biot" },
+  { type: "physicist", label: "Félix Savart", href: "/physicists/felix-savart" },
+  { type: "physicist", label: "André-Marie Ampère", href: "/physicists/andre-marie-ampere" },
+  { type: "term", label: "Biot–Savart law", href: "/dictionary/biot-savart-law-term" },
+  { type: "term", label: "Current density", href: "/dictionary/current-density" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.13 · MAGNETOSTATICS"
+  title="THE BIOT–SAVART LAW"
+  subtitle="The magnetic analogue of Coulomb, one current element at a time."
+/>
+
+<Section index={1} title="The magnetic Coulomb's law">
+
+In electrostatics every charge sources an electric field, and the field a collection of charges produces at any point is the sum of the contributions from each one. <PhysicistLink slug="charles-augustin-de-coulomb">Coulomb</PhysicistLink> gave us the kernel — `1/r²` along the radial direction — and superposition did the rest. Magnetism wants the same trick, but with one shift: the source of a static magnetic field is not a charge sitting still. It is a charge **in motion** — a current.
+
+A wire carrying current is the magnetic analogue of a charged sphere. Each tiny stretch of that wire pushes a little magnetic field into the space around it, and the total field at any point is the vector sum of all those contributions. The kernel is no longer purely radial; the magnetic field a current piece produces curls around the direction of flow rather than pointing along it. That curl is the geometric novelty of magnetism, and the equation that captures it is the **Biot–Savart law**.
+
+It came out of the same week of 1820 that <PhysicistLink slug="hans-christian-orsted">Ørsted</PhysicistLink>'s compass-needle experiment electrified Paris. Within months, <PhysicistLink slug="jean-baptiste-biot">Jean-Baptiste Biot</PhysicistLink> and <PhysicistLink slug="felix-savart">Félix Savart</PhysicistLink> were measuring how the deflection fell off with distance from a long wire. They found `1/r`, which surprised everyone — Coulomb had set the expectation that fundamental forces fall as `1/r²`. The resolution, as we will see, is that Biot–Savart at the level of one little piece of wire *is* a `1/r²` law; the long-wire `1/r` is what you get after summing infinite such pieces along the line.
+
+</Section>
+
+<Section index={2} title="The law itself">
+
+Pick a tiny piece of a current-carrying wire. We call it a <Term slug="current-density">current element</Term>: a short segment so short that we can pretend the current inside it is uniform and pointing one way. Write its directed length as `dl` (a small vector pointing along the current's direction, with magnitude equal to the segment's length). Let `r` be the displacement from the element to the field point P, and `r̂ = r/r` the unit vector along that direction. The magnetic field contribution of this single element at P is
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">dB = (μ₀ I / 4π) · (dl × r̂) / r²</span>
+</EquationBlock>
+
+That `dl × r̂` is a **cross product**. Two ways to read it. Algebraically, it is the vector perpendicular to both `dl` and `r̂` whose length is `|dl| · sin θ`, where θ is the angle between them. Physically — and this is the gloss we will keep returning to — the cross product picks out the direction *neither input points along*: it is what is left over once you have used up both `dl` and `r̂`. For a wire piece pointing east and a field point sitting north of it, `dl × r̂` points up out of the page. The right-hand rule is the practical recipe: lay your fingers along `dl`, curl them toward `r̂`, your thumb is `dl × r̂`.
+
+Where `dl` and `r̂` are parallel — meaning the field point lies on the extension of the wire piece — the cross product is zero, and that little piece contributes no field at all. The straight-line continuation of a current element feels nothing from it. All the action is sideways.
+
+The constant `μ₀ ≈ 1.257 × 10⁻⁶ H/m` is the **permeability of free space**, the magnetic analogue of `ε₀`. It is the unit-system price for choosing amperes as a base SI unit. The 4π in the denominator is the same accounting trick we met with Coulomb's law: it keeps Ampère's law (next topic) clean.
+
+<SceneCard caption="FIG.13a — one straight current segment, hover for dB direction" className="w-full">
+  <WireSegmentFieldScene />
+</SceneCard>
+
+The wire across the canvas is sliced into twenty sub-elements; each contributes its own `dB` at the field point P. Hover anywhere to move P. The cyan dots above the wire are contributions whose `dB` points out of the page; the magenta dots below mark contributions pointing into it. Their sum at P appears as the marker in the centre. This is what every Biot–Savart calculation does: chop the source into pieces, contribute, sum.
+
+</Section>
+
+<Section index={3} title="The long straight wire">
+
+Now slide an infinitely long straight wire through the formula and see what comes out. Put the wire along the y-axis, the field point P a perpendicular distance `d` from it on the x-axis. Each element `dl = ŷ dy` sits at height `y` and points along `+ŷ`. The displacement from element to P is `r = d x̂ − y ŷ` and its length is `√(d² + y²)`. The cross product `dl × r̂` works out to a vector along `+ẑ` (out of the page) with magnitude `dy · d / √(d² + y²)`. Plug into Biot–Savart and integrate from `y = −∞` to `y = +∞`.
+
+The integral is one of the cleanest in physics. The result is
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">B = μ₀ I / (2π · d)</span>
+</EquationBlock>
+
+A `1/d` falloff, and the field circles the wire — clockwise or counter-clockwise depending on the right-hand rule. Aim your right thumb along the current; your fingers curl in the direction `B` points around the wire. That is what Biot and Savart measured in 1820.
+
+<SceneCard caption="FIG.13b — concentric B-field rings around a vertical current" className="w-full">
+  <StraightWireFieldScene />
+</SceneCard>
+
+The rings flatten into perspective — front halves bright, back halves dim — to make the wrap-around obvious. The arrowheads on each ring track the right-hand-rule sense. Slide the current; the field at the marker point scales linearly. Doubling I doubles B; doubling the distance halves it. The `1/r²` of one tiny piece has been straightened into a `1/d` by the integration, the way two `1/r²` Coulomb forces from a dipole leave a `1/r³` residue. Geometry rearranges fall-off.
+
+</Section>
+
+<Section index={4} title="The circular loop">
+
+The next clean geometry is a loop. Bend the same wire into a circle of radius `R` and ask for the field on its symmetry axis a distance `z` from the centre. By symmetry, every element of the loop contributes a `dB` of the same magnitude, and the components perpendicular to the axis cancel in pairs around the loop. Only the axial components survive, and they all add. Biot–Savart, integrated round the ring, gives
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">B(z) = μ₀ I R² / [2 (R² + z²)^(3/2)]</span>
+</EquationBlock>
+
+At the centre (`z = 0`) this is `μ₀ I / (2R)`, the maximum. Far away (`z ≫ R`), the denominator becomes `2 z³`, and the field falls as `μ₀ I R² / (2 z³)` — the on-axis `1/z³` of a magnetic dipole, which is the same fall-off an electric dipole has on its own axis. The two dipoles are in deep structural sympathy; we will return to that in the magnetic-dipoles topic.
+
+<SceneCard caption="FIG.13c — current loop, B(z) curve along the symmetry axis" className="w-full">
+  <LoopFieldScene />
+</SceneCard>
+
+Slide R, I, and the sample point z. The cyan curve is `B(z)` plotted against position along the axis. The amber arrows on the loop trace the current direction; the cyan arrows on the axis show B (right-hand rule again — curl your fingers along the current, your thumb is B's direction inside the loop). Slide z away from zero and watch the curve — and the field magnitude — collapse. Two loops at the right separation give the famously uniform field of a Helmholtz pair, the workhorse geometry of magnetometer calibration.
+
+</Section>
+
+<Section index={5} title="Where it falls short">
+
+Biot–Savart always works in principle: discretize the current, sum the contributions, integrate to taste. In practice, the integral is hard the moment the geometry stops being trivial. A finite straight segment sustaining a particular subtended angle? Tractable. A square loop? Already four integrals. A toroidal coil, a solenoid, a tangled coil with non-uniform current density? Either you reach for numerics or you reach for a different formulation.
+
+The escape hatch in cases of high symmetry is <PhysicistLink slug="andre-marie-ampere">Ampère</PhysicistLink>'s law, which is to Biot–Savart what Gauss's law is to Coulomb. When a current configuration has enough symmetry to fix the shape of the field, Ampère gives the magnitude in two lines instead of an unforgiving integral. We meet it next.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Biot–Savart is the design equation behind every coil that makes a controlled magnetic field. Helmholtz coils for sensor calibration are two circular loops at separation equal to their radius; the on-axis sum of their `B(z)` curves is flat through the midpoint, and Biot–Savart picks the geometry. The gradient coils inside an MRI scanner, which paint a position-dependent field across the patient so that nuclei at different locations precess at different frequencies, are designed by Biot–Savart followed by numerical optimization. Transformer windings, electromagnets, and the deflection coils in old cathode-ray TVs were all sized this way — chop the current into elements, sum the field they produce at the point you care about.
+
+It was discovered by two French physicists with a magnetic needle and a length of wire in the autumn of Ørsted's announcement. Two centuries later, every tomography machine in every hospital still cashes the same cheque.
+
+</Section>
+
+</TopicPageLayout>

@@ -451,6 +451,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CyclotronScene: lazyScene(() =>
     import("@/components/physics/cyclotron-scene").then((m) => ({ default: m.CyclotronScene })),
   ),
+
+  // EM §03 — biot-savart-law
+  WireSegmentFieldScene: lazyScene(() =>
+    import("@/components/physics/wire-segment-field-scene").then((m) => ({ default: m.WireSegmentFieldScene })),
+  ),
+  LoopFieldScene: lazyScene(() =>
+    import("@/components/physics/loop-field-scene").then((m) => ({ default: m.LoopFieldScene })),
+  ),
+  StraightWireFieldScene: lazyScene(() =>
+    import("@/components/physics/straight-wire-field-scene").then((m) => ({ default: m.StraightWireFieldScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
