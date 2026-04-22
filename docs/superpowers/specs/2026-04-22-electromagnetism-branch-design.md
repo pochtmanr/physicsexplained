@@ -1,7 +1,7 @@
 # Electromagnetism — Branch Design
 
 **Date:** 2026-04-22
-**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22
+**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:351-361`.
@@ -314,8 +314,8 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §01 Electrostatics | 7 | 7 | ☑ complete |
 | §02 Electric fields in matter | 4 | 4 | ☑ complete |
 | §03 Magnetostatics | 5 | 5 | ☑ complete |
-| §04 Magnetic fields in matter | 4 | 0 | ☐ not started |
-| §05 Electrodynamics & induction | 5 | 0 | ☐ not started |
+| §04 Magnetic fields in matter | 4 | 4 | ☑ complete |
+| §05 Electrodynamics & induction | 5 | 5 | ☑ complete |
 | §06 Circuits | 7 | 0 | ☐ not started |
 | §07 Maxwell's equations | 5 | 0 | ☐ not started |
 | §08 EM waves in vacuum | 4 | 0 | ☐ not started |
@@ -323,7 +323,7 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §10 Radiation | 6 | 0 | ☐ not started |
 | §11 EM & relativity | 5 | 0 | ☐ not started |
 | §12 Foundations | 4 | 0 | ☐ not started |
-| **Total** | **66** | **16** | **24% complete** |
+| **Total** | **66** | **25** | **38% complete** |
 
 ### Per-topic checklist
 
@@ -352,17 +352,17 @@ Check off as each topic ships.
 - [x] 16 `magnetic-dipoles`
 
 **§04 Magnetic fields in matter**
-- [ ] 17 `magnetization-and-the-h-field`
-- [ ] 18 `dia-and-paramagnetism`
-- [ ] 19 `ferromagnetism-and-hysteresis`
-- [ ] 20 `superconductivity-and-meissner`
+- [x] 17 `magnetization-and-the-h-field`
+- [x] 18 `dia-and-paramagnetism`
+- [x] 19 `ferromagnetism-and-hysteresis`
+- [x] 20 `superconductivity-and-meissner`
 
 **§05 Electrodynamics & induction**
-- [ ] 21 `faradays-law`
-- [ ] 22 `lenz-law-and-motional-emf`
-- [ ] 23 `self-and-mutual-inductance`
-- [ ] 24 `energy-in-magnetic-fields`
-- [ ] 25 `eddy-currents`
+- [x] 21 `faradays-law`
+- [x] 22 `lenz-law-and-motional-emf`
+- [x] 23 `self-and-mutual-inductance`
+- [x] 24 `energy-in-magnetic-fields`
+- [x] 25 `eddy-currents`
 
 **§06 Circuits**
 - [ ] 26 `dc-circuits-and-kirchhoff`
