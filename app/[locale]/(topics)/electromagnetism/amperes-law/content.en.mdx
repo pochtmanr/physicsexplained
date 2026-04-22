@@ -1,0 +1,138 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { AmpereLoopWireScene } from "@/components/physics/ampere-loop-wire-scene";
+import { SolenoidFieldScene } from "@/components/physics/solenoid-field-scene";
+import { ToroidFieldScene } from "@/components/physics/toroid-field-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "André-Marie Ampère", href: "/physicists/andre-marie-ampere" },
+  { type: "term", label: "Ampère's law", href: "/dictionary/amperes-law-term" },
+  { type: "term", label: "Ampere (unit)", href: "/dictionary/ampere-unit" },
+  { type: "term", label: "Solenoid", href: "/dictionary/solenoid" },
+  { type: "term", label: "Toroid", href: "/dictionary/toroid" },
+  { type: "term", label: "Curl", href: "/dictionary/curl" },
+  { type: "term", label: "Line integral", href: "/dictionary/line-integral" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.14 · MAGNETOSTATICS"
+  title="AMPÈRE'S LAW"
+  subtitle="The magnetic Gauss: walk a loop around a current and the field tells you exactly how much current you encircled."
+/>
+
+<Section index={1} title="The shortcut Biot–Savart couldn't give">
+
+The Biot–Savart integral is honest. Hand it any current distribution and it grinds out the magnetic field at any point. It is also exhausting — for symmetric geometries you spend a page deriving a one-line answer.
+
+The history rhymes here. Coulomb's law gives a true answer for any charge distribution; Gauss's law gives the *easy* answer when the geometry has symmetry. Magnetism needed the same trick. <PhysicistLink slug="andre-marie-ampere">Ampère</PhysicistLink> found it in 1826, a few years after <PhysicistLink slug="hans-christian-orsted">Ørsted</PhysicistLink>'s 1820 discovery that current makes a compass deflect. The shape is the same as Gauss's idea for E: a closed integral on the left, the source on the right, the geometry collapsed away.
+
+The cost is the same too. The law is *always true*; it is only *useful* — solves for B in two lines — when the geometry lets you pull B out of the integral. Three geometries do: the long straight wire, the long solenoid, and the toroid. Those three are most of magnetostatics in practice.
+
+</Section>
+
+<Section index={2} title="The law">
+
+Pick a closed loop in space — any shape, anywhere. Walk around it once and, at every point, take the component of B that lies along your direction of travel. Add up those components, weighted by the small step you took. The total is the **closed line integral** of B around the loop.
+
+That phrase has its own symbol: the integral sign with a small circle through it, ∮, signals "the integration path is a closed curve, returning to where it started." When you read ∮ B · dℓ aloud, say "the line integral of B around the loop." Each tiny step dℓ is a vector pointing along the path; the dot product picks out only the part of B that runs *along* the path, ignoring any part that crosses it. Send the loop in the opposite direction and every dℓ flips sign — you get the same magnitude with the opposite sign.
+
+The other piece of the equation is the **current enclosed**. Imagine the loop as the wire rim of a soap film. The "current enclosed" is the total electric current threading through any surface that fills in the loop. Currents that punch through the film count; currents that loop back outside count zero. Two wires going opposite directions cancel.
+
+<EquationBlock id="EQ.01">
+  $$ \oint_{C} \mathbf{B} \cdot d\boldsymbol{\ell} \;=\; \mu_0 \, I_{\text{enc}} $$
+</EquationBlock>
+
+The constant μ₀ is the **vacuum permeability** — magnetism's analogue of ε₀, also a single number measured in the lab. The shape of the loop is missing from the right-hand side: stretch it, dent it, fold it into a star — as long as you do not cross any current, the integral is unchanged. Outside currents contribute exactly zero, because every line entering the loop also leaves.
+
+The sign comes from the **right-hand rule**. Curl the fingers of your right hand in the direction you walk the loop; your thumb points in the direction "positive" current must flow to count as positive enclosed.
+
+<Callout title="Aside: why the Term link is not enough">
+We linked <Term slug="line-integral">line integral</Term> in the aside, but the explanation has to be in the prose. A reader meeting ∮ for the first time should not have to follow a link to know what the symbol means.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The long wire revisited">
+
+Take an infinite straight wire carrying current I and ask for the field at perpendicular distance r. By the cylindrical symmetry, B at radius r has the same magnitude everywhere on a circle of radius r around the wire, and points tangent to that circle (right-hand rule: thumb along I, fingers curl in the direction of B).
+
+Choose that circle as your Amperian loop. Then B is parallel to dℓ everywhere on it, and the integrand B · dℓ is just B · dℓ, with B constant. The integral collapses to B · 2π·r. Setting that equal to μ₀·I:
+
+<EquationBlock id="EQ.02">
+  $$ B \cdot 2\pi r \;=\; \mu_0 I \quad\Longrightarrow\quad B \;=\; \frac{\mu_0 I}{2\pi r} $$
+</EquationBlock>
+
+<SceneCard caption="FIG.14a — the same integral, three loop shapes" className="w-full">
+  <AmpereLoopWireScene />
+</SceneCard>
+
+Two lines instead of the half-page Biot–Savart needs. The scene above does the rest of the proof: switch the Amperian loop from a circle to a square to a wobbly blob, and the numerical line integral of B · dℓ tracks μ₀·I exactly. Slide the loop off the wire and the integral drops to zero, because you no longer enclose the source.
+
+</Section>
+
+<Section index={4} title="The solenoid">
+
+A long, tightly-wound coil of wire — a **<Term slug="solenoid">solenoid</Term>** — produces a uniform magnetic field along its axis on the inside, and a near-zero field outside. To prove it, draw a rectangular Amperian loop straddling the wall: one long side of length L lies inside the solenoid, parallel to the axis; the other long side lies far outside, also parallel; the two short sides cross the wall, perpendicular to the field.
+
+Inside, B is uniform and points along the long side, so that side contributes B·L to ∮B·dℓ. Outside, B ≈ 0, so the parallel side outside contributes zero. The two short sides are perpendicular to B inside, and B is zero outside, so they contribute zero. The loop encloses every turn that lies between its two long sides. With n turns per metre, that is n·L turns, each carrying current I. So:
+
+<EquationBlock id="EQ.03">
+  $$ B \cdot L \;=\; \mu_0 \, n L \, I \quad\Longrightarrow\quad B \;=\; \mu_0 n I $$
+</EquationBlock>
+
+<SceneCard caption="FIG.14b — uniform field inside, near-zero outside" className="w-full">
+  <SolenoidFieldScene />
+</SceneCard>
+
+L vanishes — the field magnitude is set by the *density* of turns, not their total count. Plug in n = 1000 turns/m and I = 1 A and you get 1.26 mT, a tenth of the Earth's field. Real solenoids — MRI scanners, particle-accelerator focusing magnets, doorbell relays — are this geometry, possibly with iron in the core to multiply the field a few thousand times.
+
+</Section>
+
+<Section index={5} title="The toroid">
+
+Bend the solenoid into a doughnut and you have a **<Term slug="toroid">toroid</Term>**. The toroidal symmetry says B at a point inside the doughnut runs in a circle concentric with the central axis, with the same magnitude all the way around that circle.
+
+Choose that circle as your Amperian loop, at radius r from the axis. The line integral collapses to B · 2π·r. Every one of the N total turns punches through the disk bounded by the loop exactly once, so the enclosed current is N·I:
+
+<EquationBlock id="EQ.04">
+  $$ B(r) \;=\; \frac{\mu_0 N I}{2\pi r} $$
+</EquationBlock>
+
+<SceneCard caption="FIG.14c — three Amperian loops, three values of B(r)" className="w-full">
+  <ToroidFieldScene />
+</SceneCard>
+
+The field is *not* uniform inside the toroid: it falls off as 1/r, so the inner edge of the doughnut sees a stronger field than the outer edge. Outside the toroid, an Amperian circle encloses no net current — every turn punches in once and out once — so B = 0 there. This is why toroids are the geometry of choice for confining hot plasmas: a tokamak is a giant toroid whose internal B-field traps charged particles on circular orbits.
+
+</Section>
+
+<Section index={6} title="The differential form">
+
+The integral form ∮B·dℓ = μ₀·I_enc is a global statement: walk around a loop, sum up the field. There is also a local version, an equation that holds at every point in space.
+
+The local version uses an operator called the **curl**. For a vector field, curl asks: at this point, how much does the field circulate around the point itself? Imagine inserting a tiny paddlewheel; the curl tells you how fast it spins, and about which axis. A field that flows in straight lines has zero curl; a field that winds around a point has non-zero curl, pointing along the wheel's axis. We write the curl of B as ∇×B; see <Term slug="curl">curl</Term> for the full unpacking.
+
+The local form of Ampère's law says the curl of B at a point equals μ₀ times the local current density J at that point:
+
+<EquationBlock id="EQ.05">
+  $$ \nabla \times \mathbf{B} \;=\; \mu_0 \mathbf{J} $$
+</EquationBlock>
+
+This is incomplete. <PhysicistLink slug="hendrik-antoon-lorentz">Lorentz</PhysicistLink>-era electromagnetism noticed it predicts no field around a charging capacitor between the plates, where no actual current flows but the electric field is changing. Maxwell will fix this in §07 by adding a "displacement current" term ε₀ ∂E/∂t, which restores consistency and — almost as a free bonus — produces light.
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+The three closed-form solutions of Ampère's law are what made electromagnetic engineering possible. The straight-wire formula sets the safe spacing of high-current bus bars. The solenoid formula sizes electromagnets, the focusing coils of every cathode-ray tube, the main coils of an MRI machine, and the actuators of every electric door lock. The toroid formula confines the plasma in a tokamak fusion reactor — the donuts at JET and ITER are toroidal coils whose interior B-field traps deuterium ions on closed paths long enough to fuse.
+
+The pattern keeps recurring. A symmetric closed integral. One source on the right. The geometry collapses, the algebra is one line. Coulomb has Gauss; Biot–Savart has Ampère.
+
+</Section>
+
+</TopicPageLayout>

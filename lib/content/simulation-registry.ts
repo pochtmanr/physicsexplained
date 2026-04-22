@@ -462,6 +462,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   StraightWireFieldScene: lazyScene(() =>
     import("@/components/physics/straight-wire-field-scene").then((m) => ({ default: m.StraightWireFieldScene })),
   ),
+
+  // EM §03 — amperes-law
+  AmpereLoopWireScene: lazyScene(() =>
+    import("@/components/physics/ampere-loop-wire-scene").then((m) => ({ default: m.AmpereLoopWireScene })),
+  ),
+  SolenoidFieldScene: lazyScene(() =>
+    import("@/components/physics/solenoid-field-scene").then((m) => ({ default: m.SolenoidFieldScene })),
+  ),
+  ToroidFieldScene: lazyScene(() =>
+    import("@/components/physics/toroid-field-scene").then((m) => ({ default: m.ToroidFieldScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
