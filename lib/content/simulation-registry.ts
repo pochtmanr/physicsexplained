@@ -277,6 +277,48 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   LiouvilleFlowScene: lazyScene(() =>
     import("@/components/physics/liouville-flow-scene").then((m) => ({ default: m.LiouvilleFlowScene })),
   ),
+  VelocityTriangleScene: lazyScene(() =>
+    import("@/components/physics/velocity-triangle-scene").then((m) => ({ default: m.VelocityTriangleScene })),
+  ),
+  CentripetalForceScene: lazyScene(() =>
+    import("@/components/physics/centripetal-force-scene").then((m) => ({ default: m.CentripetalForceScene })),
+  ),
+  AngularVelocityScene: lazyScene(() =>
+    import("@/components/physics/angular-velocity-scene").then((m) => ({ default: m.AngularVelocityScene })),
+  ),
+  NewtonsCannonScene: lazyScene(() =>
+    import("@/components/physics/newtons-cannon-scene").then((m) => ({ default: m.NewtonsCannonScene })),
+  ),
+  CarouselScene: lazyScene(() =>
+    import("@/components/physics/carousel-scene").then((m) => ({ default: m.CarouselScene })),
+  ),
+  CoriolisTurntableScene: lazyScene(() =>
+    import("@/components/physics/coriolis-turntable-scene").then((m) => ({ default: m.CoriolisTurntableScene })),
+  ),
+  CoriolisGlobeScene: lazyScene(() =>
+    import("@/components/physics/coriolis-globe-scene").then((m) => ({ default: m.CoriolisGlobeScene })),
+  ),
+  RotatingProjectileScene: lazyScene(() =>
+    import("@/components/physics/rotating-projectile-scene").then((m) => ({ default: m.RotatingProjectileScene })),
+  ),
+  WheelDecompositionScene: lazyScene(() =>
+    import("@/components/physics/wheel-decomposition-scene").then((m) => ({ default: m.WheelDecompositionScene })),
+  ),
+  RollingRaceScene: lazyScene(() =>
+    import("@/components/physics/rolling-race-scene").then((m) => ({ default: m.RollingRaceScene })),
+  ),
+  RollingSlippingScene: lazyScene(() =>
+    import("@/components/physics/rolling-slipping-scene").then((m) => ({ default: m.RollingSlippingScene })),
+  ),
+  CoinRollingScene: lazyScene(() =>
+    import("@/components/physics/coin-rolling-scene").then((m) => ({ default: m.CoinRollingScene })),
+  ),
+  DampedRegimesScene: lazyScene(() =>
+    import("@/components/physics/damped-regimes-scene").then((m) => ({ default: m.DampedRegimesScene })),
+  ),
+  QualityFactorScene: lazyScene(() =>
+    import("@/components/physics/quality-factor-scene").then((m) => ({ default: m.QualityFactorScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
