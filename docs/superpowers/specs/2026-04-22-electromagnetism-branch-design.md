@@ -1,7 +1,7 @@
 # Electromagnetism — Branch Design
 
 **Date:** 2026-04-22
-**Status:** proposed
+**Status:** in progress — §01 shipped 2026-04-22
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:351-361`.
@@ -311,7 +311,7 @@ Update this table at the end of every session. A topic is "done" when: `content.
 
 | Module | Count | Done | Status |
 |--------|-------|------|--------|
-| §01 Electrostatics | 7 | 0 | ☐ not started |
+| §01 Electrostatics | 7 | 7 | ☑ complete |
 | §02 Electric fields in matter | 4 | 0 | ☐ not started |
 | §03 Magnetostatics | 5 | 0 | ☐ not started |
 | §04 Magnetic fields in matter | 4 | 0 | ☐ not started |
@@ -323,20 +323,20 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §10 Radiation | 6 | 0 | ☐ not started |
 | §11 EM & relativity | 5 | 0 | ☐ not started |
 | §12 Foundations | 4 | 0 | ☐ not started |
-| **Total** | **66** | **0** | **0% complete** |
+| **Total** | **66** | **7** | **11% complete** |
 
 ### Per-topic checklist
 
 Check off as each topic ships.
 
 **§01 Electrostatics**
-- [ ] 01 `coulombs-law`
-- [ ] 02 `the-electric-field`
-- [ ] 03 `gauss-law`
-- [ ] 04 `electric-potential`
-- [ ] 05 `capacitance-and-field-energy`
-- [ ] 06 `conductors-and-shielding`
-- [ ] 07 `method-of-images`
+- [x] 01 `coulombs-law`
+- [x] 02 `the-electric-field`
+- [x] 03 `gauss-law`
+- [x] 04 `electric-potential`
+- [x] 05 `capacitance-and-field-energy`
+- [x] 06 `conductors-and-shielding`
+- [x] 07 `method-of-images`
 
 **§02 Electric fields in matter**
 - [ ] 08 `polarization-and-bound-charges`
