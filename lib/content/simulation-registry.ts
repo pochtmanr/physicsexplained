@@ -319,6 +319,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   QualityFactorScene: lazyScene(() =>
     import("@/components/physics/quality-factor-scene").then((m) => ({ default: m.QualityFactorScene })),
   ),
+
+  // EM §01 — coulombs-law
+  TwoChargeForceScene: lazyScene(() =>
+    import("@/components/physics/two-charge-force-scene").then((m) => ({ default: m.TwoChargeForceScene })),
+  ),
+  DipoleFieldScene: lazyScene(() =>
+    import("@/components/physics/dipole-field-scene").then((m) => ({ default: m.DipoleFieldScene })),
+  ),
+  ChargeSuperpositionScene: lazyScene(() =>
+    import("@/components/physics/charge-superposition-scene").then((m) => ({ default: m.ChargeSuperpositionScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

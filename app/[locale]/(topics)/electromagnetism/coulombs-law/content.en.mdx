@@ -1,0 +1,127 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TwoChargeForceScene } from "@/components/physics/two-charge-force-scene";
+import { DipoleFieldScene } from "@/components/physics/dipole-field-scene";
+import { ChargeSuperpositionScene } from "@/components/physics/charge-superposition-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Charles Coulomb", href: "/physicists/charles-augustin-de-coulomb" },
+  { type: "physicist", label: "Benjamin Franklin", href: "/physicists/benjamin-franklin" },
+  { type: "term", label: "Electric charge", href: "/dictionary/electric-charge" },
+  { type: "term", label: "Coulomb (unit)", href: "/dictionary/coulomb-unit" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.01 · ELECTROSTATICS"
+  title="COULOMB'S LAW"
+  subtitle="Two charges, one force, an inverse square — the equation that opens electromagnetism."
+/>
+
+<Section index={1} title="Two kinds of charge">
+
+Rub a glass rod with silk and it picks up bits of paper. Rub two glass rods the same way and they push apart. Rub one with silk and one with fur, and they pull together. By the middle of the eighteenth century, the experiment was a parlour trick. Nobody knew what to make of it.
+
+<PhysicistLink slug="benjamin-franklin">Benjamin Franklin</PhysicistLink> made the guess that stuck. Working in Philadelphia in the 1740s, he proposed a single fluid — *electric fire* — that flowed from one body to another when they were rubbed. The body that gained fluid was *positive*; the body that lost it was *negative*. Like accumulations repelled. Opposite ones attracted. Franklin guessed wrong about which way the fluid actually flows in a wire, a mistake we are still living with, but the bookkeeping was right.
+
+What Franklin called electric fire we now call <Term slug="electric-charge">electric charge</Term>. It is a property of matter, like mass, that comes in two signs. Protons carry one sign; electrons the other. A neutral object has equal numbers of each. Charge it by rubbing — by stripping electrons off one body and depositing them on another — and you tip the balance. The spark you feel across a doorknob in winter is several billion electrons hopping back where they came from.
+
+The same Franklin who set the convention also flew a kite into a thunderstorm in 1752 to demonstrate that lightning is electrical. He survived. Two scientists who tried to repeat the experiment did not.
+
+</Section>
+
+<Section index={2} title="The law itself">
+
+Charge has a sign. The next question is quantitative: how strong is the push or pull, and how does it depend on distance?
+
+<PhysicistLink slug="charles-augustin-de-coulomb">Charles-Augustin de Coulomb</PhysicistLink>, a French military engineer, answered it in 1785. He built a *torsion balance* — a thin silver wire suspending a horizontal rod with a small charged ball at one end — and measured how much the wire twisted when a second charged ball was brought near. The twist gave him the force directly. Vary the charges, vary the distance, read off the law.
+
+What Coulomb found looks exactly like Newton's gravity, with two changes.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">F = k · q₁ · q₂ / r²</span>
+</EquationBlock>
+
+The force between two point charges is proportional to the product of the charges and inversely proportional to the square of the distance between them. Double the distance, quarter the force. Halve it, quadruple the force. The exponent is exactly two — Coulomb pinned it to within a few percent, and modern experiments have since confirmed it to one part in 10¹⁶.
+
+Two changes from gravity. First, charges can be *negative*, so the force can flip sign — like charges repel, opposite charges attract. Second, the constant `k` is enormous. The electric force between two protons in a hydrogen atom is roughly 10³⁹ times stronger than their gravitational attraction. Gravity is the weakest force in the universe; we only notice it because charge cancels out so well.
+
+<SceneCard caption="FIG.01a — two point charges on an axis" className="w-full">
+  <TwoChargeForceScene />
+</SceneCard>
+
+Slide the charges through their signs. Watch the arrows flip. Pull them apart and the magnitude collapses; push them together and it explodes. For two microcoulombs at a few centimetres' separation, the force is genuinely violent.
+
+</Section>
+
+<Section index={3} title="Superposition">
+
+A single pair of charges is the easy case. The world is full of charges. What happens when a third one enters the picture?
+
+The answer is the most useful single fact in electromagnetism: forces add. Each pair contributes its own Coulomb force, computed as if the others were not there, and you sum the vectors. Nothing screens, nothing interferes. The force on a test charge from many sources is the sum of the forces it would feel from each source on its own.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">F_total = F₁ + F₂ + F₃ + … = Σᵢ Fᵢ</span>
+</EquationBlock>
+
+This is **superposition**, and it is what physicists mean when they call electrostatics *linear*. Scale the input, scale the output; double the source charges, double the force; add two configurations, add their forces. The whole mathematics that follows — fields, potentials, capacitors, Maxwell's equations — is built on the floor superposition gives us.
+
+It is not a logical necessity. It happens to be true for electric forces in vacuum. The strong nuclear force does not superpose simply; even electromagnetism in some materials gets subtle. But the bare Coulomb force between point charges sums cleanly, and that fact is why an undergraduate can solve real problems by hand.
+
+<SceneCard caption="FIG.01b — drag-to-add charges, watch the resultant" className="w-full">
+  <ChargeSuperpositionScene />
+</SceneCard>
+
+Drop a few charges around the test charge at the centre. The amber arrow shows the vector sum — the actual force the test charge feels. Place charges symmetrically and watch it vanish. Place them lopsidedly and watch it tilt. This is what *every* electrostatics calculation is doing under the hood.
+
+</Section>
+
+<Section index={4} title="Dipoles, the simplest interesting case">
+
+Two equal and opposite charges held a small distance apart make a **dipole**. It is the simplest configuration more interesting than a single charge, and it shows up everywhere — in water molecules, in radio antennas, in the smudge a fingerprint leaves on your phone.
+
+The dipole is interesting because, far away, it looks neutral. Add up the two charges: zero. A test charge at infinity feels no force. Up close, though, the cancellation is incomplete. One end is slightly closer than the other, so its pull or push wins by a hair. The net force is small, and it falls off faster than 1/r² — like 1/r³ — because two cancelling 1/r² forces leave a residue one power higher.
+
+<SceneCard caption="FIG.01c — sampled force on a + test charge near a dipole" className="w-full">
+  <DipoleFieldScene />
+</SceneCard>
+
+The arrows show the force a small positive test charge would feel at each grid point. Notice how they curl out of the positive charge and into the negative one. That curling pattern is the *dipole field*, and we will meet it again in the next topic when we trade "force on a test charge" for the cleaner concept of a field.
+
+Dipoles matter because matter is mostly made of them. A water molecule has its oxygen end slightly negative and its hydrogen ends slightly positive. That tiny separation is why water dissolves salt, why ice floats, and why your microwave heats your coffee. Coulomb's law, applied to a dipole, is half of chemistry.
+
+</Section>
+
+<Section index={5} title="Units and the constant">
+
+The SI unit of charge is the <Term slug="coulomb-unit">coulomb</Term>, abbreviated C. One coulomb is a *lot* — about 6.24 × 10¹⁸ elementary charges, or the charge that flows through a 1-amp circuit in one second. Real laboratory electrostatics deals in microcoulombs (10⁻⁶ C) at most.
+
+Coulomb's constant `k` in SI units is
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">k = 8.988 × 10⁹ N·m²/C²</span>
+</EquationBlock>
+
+That huge number is why a microcoulomb feels like anything at all. Physicists almost never write `k` directly, though. They write it as
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">k = 1 / (4π ε₀)</span>
+</EquationBlock>
+
+where `ε₀ ≈ 8.854 × 10⁻¹² F/m` is the **permittivity of free space**. The 4π looks ugly until you meet Gauss's law, two topics from now, where the 4π *cancels* a 4π that comes from integrating over the surface of a sphere. SI was set up to make Gauss's law clean at the cost of making Coulomb's law slightly cluttered. It was the right trade.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Coulomb's law is the engine room of every static electrical phenomenon you've met. Static cling on a sweater out of the dryer: charges separated by friction. Lightning: a slow build-up between cloud and ground, released when the air can no longer insulate the difference. The toner in a laser printer: charged particles steered onto a charged drum, fixed to paper by heat. A capacitor: two metal plates holding equal and opposite charge, storing energy in the field between them — the next topic in this module begins exactly there.
+
+Everything that follows in electromagnetism — fields, potentials, currents, magnetism, light itself — is built on the floor Coulomb laid in 1785 with a piece of silver wire.
+
+</Section>
+
+</TopicPageLayout>
