@@ -9,7 +9,7 @@ export async function HeroSection() {
   const t = await getTranslations("home.hero");
 
   return (
-    <section className="relative isolate overflow-hidden pt-10 pb-20 md:pt-20 md:pb-32 min-h-[640px] lg:min-h-[90vh] flex items-center">
+    <section className="relative isolate overflow-hidden pt-8 pb-12 md:pt-20 md:pb-32 md:min-h-[640px] lg:min-h-[90vh] flex items-center">
       <HeroBackground />
       <div className={`${WIDE_CONTAINER} relative z-10`}>
         <div className={heroStyles.shell}>
@@ -18,7 +18,7 @@ export async function HeroSection() {
           <span className={`${heroStyles.shellCorner} ${heroStyles.scBl}`} aria-hidden="true" />
           <span className={`${heroStyles.shellCorner} ${heroStyles.scBr}`} aria-hidden="true" />
           <div
-            className={`${heroStyles.shellInner} grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 items-center px-6 py-10 md:px-12 md:py-14`}
+            className={`${heroStyles.shellInner} grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 items-center px-5 py-8 md:px-12 md:py-14`}
           >
             <div className="min-w-0">
               <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
@@ -33,7 +33,7 @@ export async function HeroSection() {
               <p className="mt-6 text-sm md:mt-8 md:text-xl text-[var(--color-fg-1)] max-w-[48ch]">
                 {t("subtitle")}
               </p>
-              <div className="mt-10 flex flex-wrap gap-6 items-center">
+              <div className="mt-8 flex flex-wrap gap-6 items-center md:mt-10">
                 <Link
                   href="/classical-mechanics"
                   className="inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition md:px-6 md:py-3 md:text-sm"

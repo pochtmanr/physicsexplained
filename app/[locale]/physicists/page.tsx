@@ -83,10 +83,10 @@ export default async function PhysicistsIndexPage({
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}
         </div>
-        <h1 className="mt-6 text-4xl md:text-6xl uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
+        <h1 className="mt-6 text-3xl md:text-5xl lg:text-6xl uppercase tracking-tight font-display text-[var(--color-fg-0)] max-w-[20ch]">
           {t("title")}
         </h1>
-        <p className="mt-8 text-lg text-[var(--color-fg-1)] max-w-[60ch]">
+        <p className="mt-6 text-sm md:mt-8 md:text-lg text-[var(--color-fg-1)] max-w-[60ch]">
           {t("subtitle")}
         </p>
         <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
