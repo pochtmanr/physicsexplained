@@ -1,0 +1,138 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ParallelPlateCapacitorScene } from "@/components/physics/parallel-plate-capacitor-scene";
+import { CapacitorChargingScene } from "@/components/physics/capacitor-charging-scene";
+import { EnergyDensityScene } from "@/components/physics/energy-density-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Benjamin Franklin", href: "/physicists/benjamin-franklin" },
+  { type: "term", label: "Capacitance", href: "/dictionary/capacitance-term" },
+  { type: "term", label: "Farad", href: "/dictionary/farad" },
+  { type: "term", label: "Field energy density", href: "/dictionary/field-energy-density" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.05 · ELECTROSTATICS"
+  title="CAPACITANCE AND FIELD ENERGY"
+  subtitle="Two plates, a gap, and the quiet truth that energy lives in the field itself."
+/>
+
+<Section index={1} title="Two plates, one insulator">
+
+Take two flat sheets of metal. Hold them close but not touching, a sliver of air or plastic between them, and wire each sheet to one terminal of a battery. Nothing dramatic happens. The wires don't glow. No current keeps flowing. And yet something has changed: electrons have piled up on one sheet and drained off the other. The two sheets now carry equal and opposite charges, separated by an insulator that refuses to let them recombine.
+
+That is a **capacitor**. Remove the battery and the charge stays put, held in place by its own attraction across the gap. Reconnect the plates through a wire and the charge rushes back, releasing — in a flash — whatever you put in.
+
+The Leyden jar of 1745 — a glass vessel lined with foil inside and out — did this for the first time. Eighteenth-century natural philosophers used it to deliver shocks across rooms full of joined hands, with no idea what was being stored. We do now, and the answer is stranger than they would have guessed.
+
+</Section>
+
+<Section index={2} title="Capacitance">
+
+How much charge piles up for a given voltage? That ratio is the device's **<Term slug="capacitance-term">capacitance</Term>**.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">C = Q / V</span>
+</EquationBlock>
+
+Linear. Double the voltage and you double the charge. `C` is a property of the device — not the battery, not the wires, just the geometry and materials of the capacitor itself.
+
+The unit, the **<Term slug="farad">farad</Term>**, is named after <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink>. One farad is one coulomb per volt — and it is enormous. The capacitor on a typical circuit board is measured in microfarads (10⁻⁶ F) or picofarads (10⁻¹² F). A one-farad capacitor is the size of a soda can. Faraday died in 1867, sixty years before the first practical electrolytic capacitor was patented; the unit was named for him posthumously, honouring the man whose field-line picture made the whole subject thinkable.
+
+</Section>
+
+<Section index={3} title="Parallel plates">
+
+For the simplest geometry — two flat plates of area `A`, separated by a vacuum gap of thickness `d` — the capacitance has a beautifully clean form.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">C = ε₀ · A / d</span>
+</EquationBlock>
+
+Bigger plates store more charge at the same voltage. Closer plates store more too. The constant `ε₀` is the **vacuum permittivity** — the same number that scaled Coulomb's law, now reappearing as the natural unit of electrical real estate per unit area per unit gap.
+
+<SceneCard caption="FIG.05a — sliders for area, gap, dielectric, and voltage" className="w-full">
+  <ParallelPlateCapacitorScene />
+</SceneCard>
+
+Push the gap slider toward zero and watch `C` blow up. The idealisation has no upper limit. In practice, the field eventually rips the air between the plates apart and the capacitor arcs over. Air breaks down at about three million volts per metre; every real capacitor lives one short distance away from a tiny lightning bolt.
+
+</Section>
+
+<Section index={4} title="Dielectrics as amplifiers">
+
+Slide a slab of glass, plastic, or an engineered ceramic into the gap. The capacitance jumps. The geometry hasn't changed — what changed is that the insulator between the plates is no longer empty space.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">C = ε₀ · κ · A / d</span>
+</EquationBlock>
+
+The dimensionless number `κ` — the **dielectric constant** — is a property of the material. Air is about 1.0006. Paper is around 3. Common ceramics are 100. Specialised perovskites reach 10,000.
+
+Inside the dielectric, each molecule polarises in response to the field — its positive and negative charges shift apart slightly, and the resulting bound charges on the inner surfaces partially cancel the field of the plates. The plates respond by accumulating *more* free charge to hold the same voltage. We'll pick up the bound-charge story properly in §02. For now, a dielectric is a capacitance amplifier.
+
+</Section>
+
+<Section index={5} title="Energy stored">
+
+Charging a capacitor is work. The first electron crosses an empty gap easily; the second is harder, because the first is already there pushing back; the hundredth is harder still. The total work to assemble charge `Q` against the rising voltage of the partly-charged plates comes out to:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">U = ½ · C · V²</span>
+</EquationBlock>
+
+That factor of one half is the source of a physical surprise.
+
+Connect a battery of voltage `V` to an empty capacitor through a wire. The battery does work `Q · V` moving the charge `Q = CV` across the gap. But the energy that ends up *stored* is only half of that — `½CV²`. Where did the other half go?
+
+Heat. The wire and the battery's internal resistance dissipate exactly `½CV²` as warmth, no matter how thick the wire or how cold the battery. Use a superconductor; you still lose half. Charging a capacitor directly is fundamentally a 50% efficient operation, and the fact feels wrong every time.
+
+<SceneCard caption="FIG.05b — charge ramps along q(t) = Q∞(1 − e^(−t/RC))" className="w-full">
+  <CapacitorChargingScene />
+</SceneCard>
+
+Real chargers — switching supplies, the brick on your laptop cable — swap inductors in and out of the circuit so the energy parks temporarily in magnetic fields instead of burning off as heat. That's a §06 Circuits story. The naïve RC circuit gives us the exponential approach to full charge above and the time constant `τ = RC` that governs how fast everything in electronics settles.
+
+</Section>
+
+<Section index={6} title="Where the energy lives">
+
+Now the deeper question. We've been talking as if the stored energy sat "on" the plates with the charges. But the charges aren't really *doing* anything — they're parked. What's between them is a uniform electric field pointing from the positive plate to the negative one. Could the energy live in *that*?
+
+It can. It does. The energy density of an electric field — joules per cubic metre — is:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">u = ½ · ε₀ · E²</span>
+</EquationBlock>
+
+To see that this is the same energy we just computed, slice the space between the plates into tiny boxes. Ask each box how much energy lives in it: that's `u` times the box's volume. Add up every box. The integral `∫ ½ε₀E² dV` over the gap, with `E = V/d` and volume `A·d`, comes out to exactly `½CV²`. Two formulas, one energy, two angles of view. (For the integral worked in detail, see <Term slug="field-energy-density">energy density</Term>.)
+
+<SceneCard caption="FIG.05c — the field region shaded by ½ε₀E²" className="w-full">
+  <EnergyDensityScene />
+</SceneCard>
+
+This is not a bookkeeping trick. The field is *physical*. It carries energy in locatable amounts you can integrate over a region of space. Push the plates together while the capacitor is disconnected from a battery and you have to do work — you are compressing a region of energetic field. Slide the voltage slider above and watch the shading rescale quadratically: `u` goes as `E²`, which goes as `V²`, which is `½CV²` again, seen from the field's point of view.
+
+This quiet observation will return, much later and much louder. Light is an electromagnetic field that has detached itself from any source and propagates through empty space, carrying its `½ε₀E²` along. The Sun warms your face because energy stored in fields eight light-minutes away arrives at your skin and is reabsorbed. Radio waves carry information the same way. All of it begins here: the field stores energy, and a parallel-plate capacitor is the cleanest place to see it.
+
+</Section>
+
+<Section index={7} title="Where capacitors show up">
+
+Open any electronic device and you will find capacitors by the dozen. A camera's flash dumps a capacitor through a xenon tube in two milliseconds, after several seconds of trickle-charging from the battery. A defibrillator does the same trick at lethal voltages, sending a few hundred joules through a stopped heart. Every dynamic-RAM cell in your computer is a tiny capacitor — one bit of memory, charged or discharged, refreshed thousands of times per second.
+
+Less visibly: a capacitor across a noisy power rail smooths it; in series with a microphone it blocks DC and passes the audio; on the input of an op-amp it turns the amplifier into an integrator.
+
+They are everywhere because they do something nothing else can: store energy *in a field*, with no moving parts and no chemistry. Charge in microseconds, hold for hours, discharge in nanoseconds — the same geometry the eighteenth century stumbled into by accident.
+
+FIG.06 picks up conductors with no insulator at all — metal in equilibrium, where the field inside is forced to be zero, with consequences like the Faraday cage, the lightning-safe car, and every shielded cable in the building.
+
+</Section>
+
+</TopicPageLayout>

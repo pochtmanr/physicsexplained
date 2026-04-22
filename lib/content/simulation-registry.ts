@@ -363,6 +363,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   VoltageRampScene: lazyScene(() =>
     import("@/components/physics/voltage-ramp-scene").then((m) => ({ default: m.VoltageRampScene })),
   ),
+
+  // EM §01 — capacitance-and-field-energy
+  ParallelPlateCapacitorScene: lazyScene(() =>
+    import("@/components/physics/parallel-plate-capacitor-scene").then((m) => ({ default: m.ParallelPlateCapacitorScene })),
+  ),
+  CapacitorChargingScene: lazyScene(() =>
+    import("@/components/physics/capacitor-charging-scene").then((m) => ({ default: m.CapacitorChargingScene })),
+  ),
+  EnergyDensityScene: lazyScene(() =>
+    import("@/components/physics/energy-density-scene").then((m) => ({ default: m.EnergyDensityScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
