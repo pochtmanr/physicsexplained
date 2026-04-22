@@ -1,0 +1,151 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { DampedRegimesScene } from "@/components/physics/damped-regimes-scene";
+import { QualityFactorScene } from "@/components/physics/quality-factor-scene";
+import { ResonanceCurveScene } from "@/components/physics/resonance-curve-scene";
+import { DampedPendulumScene } from "@/components/physics/damped-pendulum-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "John William Strutt (Rayleigh)", href: "/physicists/john-william-strutt-rayleigh" },
+  { type: "physicist", label: "Robert Hooke", href: "/physicists/robert-hooke" },
+  { type: "physicist", label: "Nikola Tesla", href: "/physicists/nikola-tesla" },
+  { type: "term", label: "Damping", href: "/dictionary/damping" },
+  { type: "term", label: "Quality factor", href: "/dictionary/q-factor" },
+  { type: "term", label: "Resonance", href: "/dictionary/resonance" },
+  { type: "term", label: "Forced oscillation", href: "/dictionary/forced-oscillation" },
+  { type: "term", label: "Amplitude response", href: "/dictionary/amplitude-response" },
+]}>
+
+<TopicHeader
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
+  title="DAMPED & DRIVEN OSCILLATIONS"
+  subtitle="Why every real oscillator dies — and why, if you push it just right, it tries to kill you back."
+/>
+
+<Section index={1} title="The ideal ends">
+
+The idealized harmonic oscillator — the pendulum, the spring, the LC circuit — obeys `x″ + ω₀²x = 0` and swings forever. Strike it once, walk away, and it will trace the same sinusoid for eternity. The math is clean. The math is also a lie.
+
+Real pendulums stop. Real springs settle. Real circuits go quiet. Pluck a guitar string and the note fades within seconds. Tap a wine glass and the ring lasts a few cycles before silence. Energy leaks somewhere — into air resistance, into friction at the pivot, into the resistance of the wire, into the inelastic groan of the material itself. The simple harmonic oscillator is the equation of a system in a vacuum, attached to nothing, made of nothing. Every actual oscillator on Earth is a tax-evader running out of money.
+
+So the first honest question is: where does the energy go, and what does the equation look like once we let it leave?
+
+</Section>
+
+<Section index={2} title="Damping">
+
+The simplest, most useful model of energy loss adds a friction force proportional to velocity. Move faster, lose more. <PhysicistLink slug="john-william-strutt-rayleigh">Rayleigh</PhysicistLink> formalized this in his 1877 *Theory of Sound* — a book that turned the messy phenomenology of vibrating bells, organ pipes, and orchestra halls into a clean linear theory. Add a `−γx′` term to the restoring-force equation and you get:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">x″ + γx′ + ω₀²x = 0</span>
+</EquationBlock>
+
+The new term, γx′, is the <Term slug="damping">damping</Term>. The parameter γ controls how quickly energy drains away. The solution is still sinusoidal — but now the amplitude decays exponentially, wrapped in an envelope of `e^(−γt/2)`. Each swing is a little smaller than the last. The frequency shifts slightly lower, too: a damped system oscillates a hair slower than its undamped twin.
+
+But the real story is what happens as you crank γ up. Three regimes emerge, and they feel completely different.
+
+<Callout variant="intuition">
+**Underdamped** (γ &lt; 2ω₀): the system oscillates and gradually dies. Strike a bell — it rings, fading over many cycles. This is the regime of music, of tuning forks, of ringing wine glasses, of any oscillator that wants to sound like an oscillator.
+
+**Critically damped** (γ = 2ω₀): the system returns to equilibrium as fast as possible without overshooting. This is what a good car suspension does — absorb the bump, settle immediately, no bouncing.
+
+**Overdamped** (γ &gt; 2ω₀): the system oozes back to equilibrium without oscillating at all, but sluggishly. A heavy door on a hydraulic closer — it swings shut, but it takes its time.
+</Callout>
+
+The boundary between oscillation and silence — the critically damped case — is the sharpest knife in engineering. Instrument needles, screen animations, servo motors, shock absorbers: all tuned to sit as close to critical damping as the application allows. Underdamp them and they ring. Overdamp them and they lag.
+
+<SceneCard caption="FIG.19a — three damping regimes" className="w-full">
+  <DampedRegimesScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Quality factor">
+
+How good is an oscillator? That question has a precise, dimensionless answer, and it is a single number.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">Q = ω₀ / γ</span>
+</EquationBlock>
+
+The <Term slug="q-factor">quality factor</Term> Q measures how many radians of oscillation pass before the energy drops to `1/e` of its initial value — equivalently, roughly `Q/π` full cycles before the amplitude falls by `1/e`. High Q means the oscillator rings for a long time. Low Q means it dies quickly. The ratio is named after the dimensionless figure Rayleigh used to grade resonators a century before "Q-rating" became a phrase.
+
+The numbers tell a story. A pendulum clock has Q around 100 — enough cycles to keep accurate time between escapement kicks. A tuning fork rings with Q near 1,000, which is why you can hear it across a room. The quartz crystal inside your wristwatch reaches Q of 10⁴ to 10⁵ — that stability is the entire reason quartz watches replaced mechanical ones. A superconducting microwave cavity in a particle accelerator hits Q of 10¹⁰. And the suspension wires holding up the mirrors of LIGO — the gravitational-wave detector — push Q to 10⁸ or higher, because every bit of damping in the suspension would smother the femtometer-scale signals they are trying to hear.
+
+At the other end: a car shock absorber has Q close to 0.5. A door closer, maybe 0.3. These are systems engineered *not* to oscillate — designed to kill ringing as efficiently as possible. Low Q is not a failure. It is a design choice.
+
+The Q factor turns up everywhere because it controls not just how long an oscillator rings in isolation, but how sharply it responds when something else tries to drive it. High Q means a narrow, tall resonance peak. Low Q means a broad, flat one. Hold that distinction; in two sections, it becomes the entire point.
+
+<SceneCard caption="FIG.19b — quality factor and ringdown" className="w-full">
+  <QualityFactorScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Driving force">
+
+So far, the oscillator has been left alone after one initial push. But what if you keep pushing? Apply a periodic force — a hand nudging a swing, a voltage driving a circuit, a loudspeaker vibrating a wine glass, wind sloshing back and forth across a bridge deck — and the equation picks up one more term:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">x″ + γx′ + ω₀²x = F₀ cos(ω_d · t)</span>
+</EquationBlock>
+
+The right-hand side is the driving force, oscillating at frequency `ω_d`. It does not care what the system's natural frequency `ω₀` is. It just pushes, relentlessly, at its own rhythm. This is a <Term slug="forced-oscillation">forced oscillation</Term>: the system is no longer free to do its own thing.
+
+At first, the response is messy. The system tries to swing at its own natural frequency `ω₀` *and* at the driving frequency `ω_d`, and the two patterns interfere — a transient muddle that lasts for a handful of damping times. But friction always wins. The natural oscillation decays away, killed by the same γ term that doomed the free oscillator, and what remains is a steady oscillation locked to the driving frequency. The system surrenders to the driver.
+
+The amplitude of that steady-state response depends almost entirely on one thing: how close `ω_d` is to the system's natural `ω₀`. Push at the wrong frequency and the system barely responds. Push at the right frequency and something dramatic happens.
+
+</Section>
+
+<Section index={5} title="Resonance">
+
+When the driving frequency matches the natural frequency — when `ω_d ≈ ω₀` — the steady-state amplitude peaks. With low <Term slug="damping">damping</Term>, that peak is enormous:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">A(ω_d) = F₀ / m · 1 / √((ω₀² − ω_d²)² + (γ ω_d)²)</span>
+</EquationBlock>
+
+At resonance the denominator is dominated by the `γ ω_d` term — meaning the peak height is inversely proportional to damping. Halve γ and the peak doubles. This is the <Term slug="amplitude-response">amplitude response</Term> curve, and the same shape governs every driven oscillator in physics, from a child on a swing to an electron in an antenna. This is <Term slug="resonance">resonance</Term>, and it is one of the most powerful and dangerous phenomena in mechanics.
+
+A child on a swing knows resonance intuitively. Push at the right moment — in time with the swing's own rhythm — and each push adds energy. The amplitude builds, cycle after cycle, far beyond what any single shove could accomplish. Push at the wrong time and you fight the swing, stealing energy instead of adding it. The child does not know calculus; the child knows timing.
+
+<PhysicistLink slug="nikola-tesla">Tesla</PhysicistLink> reportedly demonstrated mechanical resonance with a small oscillator clamped to a steel beam in his Manhattan laboratory in 1898. The story — possibly embellished, possibly not — claims the vibrations propagated through the building's structure into neighboring buildings, sending residents running into the street and bringing the police. Whether the details survive scrutiny, the physics is sound: a small periodic force, applied at exactly the resonant frequency of a high-Q structure, can drive a massive system to amplitudes that look impossible.
+
+<SceneCard caption="FIG.19c — resonance curve at varying Q" className="w-full">
+  <ResonanceCurveScene />
+</SceneCard>
+
+The same curve that explains a singer shattering a wine glass — the voice tuned to the glass's natural frequency, amplitude building until the material yields — explains how your radio plucks one station out of the air. An LC circuit in the receiver has its `ω₀` set by an adjustable capacitor; you turn the dial, you slide the resonance peak across the spectrum, and only the broadcast at exactly that frequency survives the filter. Everything else is suppressed by the falloff of the same curve.
+
+<SceneCard caption="FIG.19d — driven pendulum" className="w-full">
+  <DampedPendulumScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="The Tacoma Narrows story">
+
+On the morning of November 7, 1940, the Tacoma Narrows Bridge in Washington state was destroyed by a 40-mile-per-hour wind. The film is famous: a slender suspension deck twisting back and forth in enormous torsional waves, the roadway folding in on itself like ribbon, until a 600-foot span tore loose and fell into Puget Sound. No one died — the bridge had been closed in time — but the engineering profession got a lesson that still circulates in textbooks 85 years later.
+
+The popular story is "wind hit the natural resonant frequency and drove the bridge to destruction." That telling captures the spirit but mangles the mechanism. The honest version: the failure was *aeroelastic flutter*, a self-excited oscillation in which the bridge's own twisting motion modified the airflow around it, which in turn fed energy back into the twisting. There was no external periodic force at the bridge's resonant frequency — the wind was steady. The bridge generated the periodic force itself, by moving. Damping could not save it because the energy input grew with amplitude faster than the damping losses did.
+
+So flutter is more subtle than pure forced resonance. But it lives in the same conceptual neighborhood: a driving mechanism couples to a low-damping mode, and the amplitude grows. Without the underlying lightly-damped mode — without a high-Q structure willing to sing — the wind would have done nothing. The pedagogical lesson stands: real engineering structures must be designed with damping in mind, because high Q is beautiful in a tuning fork and lethal in a bridge.
+
+</Section>
+
+<Section index={7} title="Where it matters">
+
+Resonance and damping are everywhere once you know to look. Musical instruments are deliberately high-Q oscillators with deliberately tuned `ω₀` values — strings, columns of air, wooden plates — designed to ring loud and long at chosen pitches. Car suspensions are deliberately *low*-Q, near critical damping, designed to absorb bumps and refuse to ring. Every speaker, microphone, and headphone is an electromechanical oscillator whose response curve was carefully shaped to be as flat as possible across the audible band — no peaks, no dips, no resonant lies in the reproduction.
+
+MRI machines exploit resonance at the atomic level: hydrogen nuclei in your body precess at the Larmor frequency in a strong magnetic field, and a radio pulse tuned to that exact frequency tips them into resonance, producing a signal the machine reads to map your tissues. Atomic clocks lock laser frequencies to the resonance of a specific cesium hyperfine transition — Q values near 10¹⁰ — defining the second to fifteen decimal places. <PhysicistLink slug="robert-hooke">Hooke's</PhysicistLink> 1676 anagram *ut tensio sic vis* ("as the extension, so the force") was the first written statement of the linear restoring law that makes all of this possible; every resonance peak in physics is a descendant of that one observation about springs.
+
+And gravitational-wave detectors — LIGO, Virgo, KAGRA — are the most extreme oscillators humans have ever built. Mirrors hung on fused-silica fibers, swinging at sub-Hertz frequencies with Q above 10⁸, isolated from every conceivable source of vibration so they can hear ripples in spacetime that displace them by less than the diameter of a proton. The damped harmonic oscillator equation, written down by Rayleigh in 1877 to explain why a violin string fades, is the same equation that governs the kilometer-long arms now listening for collisions of black holes a billion light years away. One equation. Half of physics.
+
+</Section>
+
+</TopicPageLayout>
