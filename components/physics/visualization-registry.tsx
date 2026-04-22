@@ -474,6 +474,38 @@ const NonlinearDynamicsScene = dynamic(
   { ssr: false },
 );
 
+const VelocityTriangleScene = dynamic(
+  () =>
+    import("@/components/physics/velocity-triangle-scene").then((m) => ({
+      default: m.VelocityTriangleScene,
+    })),
+  { ssr: false },
+);
+
+const CentripetalForceScene = dynamic(
+  () =>
+    import("@/components/physics/centripetal-force-scene").then((m) => ({
+      default: m.CentripetalForceScene,
+    })),
+  { ssr: false },
+);
+
+const AngularVelocityScene = dynamic(
+  () =>
+    import("@/components/physics/angular-velocity-scene").then((m) => ({
+      default: m.AngularVelocityScene,
+    })),
+  { ssr: false },
+);
+
+const NewtonsCannonScene = dynamic(
+  () =>
+    import("@/components/physics/newtons-cannon-scene").then((m) => ({
+      default: m.NewtonsCannonScene,
+    })),
+  { ssr: false },
+);
+
 const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "ellipse-construction": EllipseConstruction,
   "phase-portrait": () => <PhasePortrait theta0={0.5} length={1.5} />,
@@ -534,6 +566,10 @@ const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "lagrangian": LagrangianScene,
   "elliptic-integral": EllipticIntegralScene,
   "nonlinear-dynamics": NonlinearDynamicsScene,
+  "velocity-triangle": VelocityTriangleScene,
+  "centripetal-force": CentripetalForceScene,
+  "angular-velocity": AngularVelocityScene,
+  "newtons-cannon": NewtonsCannonScene,
 };
 
 export function Visualization({ vizKey }: { vizKey: string }) {
