@@ -374,6 +374,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   EnergyDensityScene: lazyScene(() =>
     import("@/components/physics/energy-density-scene").then((m) => ({ default: m.EnergyDensityScene })),
   ),
+
+  // EM §01 — conductors-and-shielding
+  FaradayCageScene: lazyScene(() =>
+    import("@/components/physics/faraday-cage-scene").then((m) => ({ default: m.FaradayCageScene })),
+  ),
+  ConductorChargeDistributionScene: lazyScene(() =>
+    import("@/components/physics/conductor-charge-distribution-scene").then((m) => ({ default: m.ConductorChargeDistributionScene })),
+  ),
+  LightningShelterScene: lazyScene(() =>
+    import("@/components/physics/lightning-shelter-scene").then((m) => ({ default: m.LightningShelterScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

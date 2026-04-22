@@ -1,0 +1,97 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FaradayCageScene } from "@/components/physics/faraday-cage-scene";
+import { ConductorChargeDistributionScene } from "@/components/physics/conductor-charge-distribution-scene";
+import { LightningShelterScene } from "@/components/physics/lightning-shelter-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Faraday cage", href: "/dictionary/faraday-cage" },
+  { type: "term", label: "Induced charge", href: "/dictionary/induced-charge" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.06 · ELECTROSTATICS"
+  title="CONDUCTORS AND SHIELDING"
+  subtitle="Why a metal box is the safest place in a lightning storm — and one of the prettiest theorems in classical electromagnetism."
+/>
+
+<Section index={1} title="Conductors in equilibrium">
+
+A conductor is a piece of matter — usually a metal — that hosts a population of charges free to roam through it. Copper, silver, gold, aluminium, the salty water in your blood, the iron of a car body. The defining property is the freedom: push on a charge inside a conductor and it moves until something stops it.
+
+That single fact has a striking consequence. Suppose a conductor sits in some external field and is left alone long enough to settle. *In equilibrium the electric field inside the conductor is exactly zero.* The argument is one line. If there were any field inside, the free charges would feel a force and accelerate. They would keep moving until they had rearranged themselves to produce an internal field exactly opposite to the applied one — at which point the net field would vanish, and the motion would stop. Equilibrium *means* zero net field, by definition. There is no other stable state.
+
+The settling time is absurdly small — in a good metal, on the order of 10⁻¹⁹ seconds. The moment you bring a conductor into a field, the field inside is already gone.
+
+</Section>
+
+<Section index={2} title="Charge lives on the surface">
+
+If E = 0 everywhere inside the metal, where did all the rearranged charge go? It can only have ended up on the surface.
+
+Apply Gauss's law to a small volume drawn entirely inside the conductor. The flux through its boundary is zero, because E is zero throughout. Gauss's law then says the enclosed charge is zero too. This holds for every interior volume, no matter how small, so the interior charge density is identically zero. Whatever net charge the conductor carries — and whatever <Term slug="induced-charge">induced charge</Term> it acquires from external sources — has to live in a thin film on the boundary.
+
+The same argument tells you something about the field just outside. Imagine a tiny pillbox straddling the surface, one face inside the metal, one face outside. The inside face contributes nothing. The outside face contributes E·dA. Gauss's law gives E·dA = σ·dA / ε₀, so the field magnitude just outside is σ / ε₀, where σ is the local surface charge density. There is also a direction rule: the field at the surface points perpendicular to it. If any sideways component existed, free charges along the surface would slide in response — and equilibrium says nothing slides. So the field just outside a conductor in equilibrium is normal to the surface, with magnitude set by the local σ.
+
+That perpendicular condition is the only piece of calculus this topic needs. In words: at the surface of a conductor in equilibrium, the field has no component running along the surface. It points straight in, or straight out.
+
+</Section>
+
+<Section index={3} title="The Faraday cage">
+
+The interior result is dramatic on its own; it gets dramatic squared inside a *hollow* conductor. Take the hollowed-out volume of a metal box. The walls are conductor; the cavity in the middle contains nothing but air. Apply an external field. The walls equilibrate, the field inside the metal vanishes, and — here is the surprise — the field inside the *cavity* vanishes too.
+
+<SceneCard caption="FIG.06a — external field defeated by induced surface charges" className="w-full">
+  <FaradayCageScene />
+</SceneCard>
+
+The argument needs Laplace's equation, which we will meet properly in FIG.07. The short version: the cavity is empty, so any field inside it has to satisfy a particular smoothness condition. The boundary of the cavity is an equipotential — every point on the inner wall of a conductor sits at the same voltage. The unique smooth field consistent with constant boundary potential and no charges inside is the zero field. Whatever the outside world does — wave a charged rod past, blast it with radio waves, drag it through a thunderstorm — the inside of a sealed metal cavity feels nothing.
+
+This is the **Faraday cage**, and <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink> demonstrated it in 1836 by sitting inside one. He had a twelve-foot wooden cube built in the lecture theatre of the Royal Institution, lined it with metal foil and copper wire, and then had the assembly charged to a potential high enough to throw foot-long sparks off the outside. He sat inside with a sensitive electrometer for the duration. The electrometer registered nothing. *I went into the cube and lived in it,* he wrote in his diary, *but though I used lighted candles, electrometers, and all other tests of electrical states, I could not find the least influence upon them.*
+
+</Section>
+
+<Section index={4} title="Induced charge">
+
+The cavity field is zero — but the surface charge that makes it zero is not. Bring an external charge near a conductor and the free charges inside reorganise to cancel its influence. On the side facing the charge, the opposite sign accumulates; on the far side, the same sign. The conductor's net charge is unchanged (it was zero, it stays zero), but its distribution becomes wildly asymmetric.
+
+<SceneCard caption="FIG.06b — a conducting blob reacts to a nearby positive charge" className="w-full">
+  <ConductorChargeDistributionScene />
+</SceneCard>
+
+Drag the slider to bring the external charge closer. The negative density on the near face sharpens; the positive density on the far face spreads thinly. The induced charge on the surface is the conductor's response — the only response it can make, because it cannot grow or shrink its total charge, only push it around. This is exactly the <Term slug="induced-charge">induced charge</Term> phenomenon, and the next topic, FIG.07, will show how to compute the resulting field with a beautiful sleight-of-hand called the *method of images*.
+
+The local induced σ scales like 1/r² with the external charge's distance — the blob doesn't react uniformly; it reacts where the field is strongest, which is the side closest to the source. Conductors are sensitive listeners.
+
+</Section>
+
+<Section index={5} title="Lightning and cars">
+
+Now glue all of this together. A car body is a (mostly) hollow conductor — sheet metal wrapped around a cabin, windows that are small compared to the metal area, a chassis that grounds eventually through the tyres. From the outside it looks like a Faraday cage with leaky panels.
+
+When lightning strikes, a few hundred million volts try to push current through the body. The sheet metal does its job: charges rush along the outside, currents flow over the roof, down the sides, and into the ground through the wheels. Inside, the field stays at zero. You feel nothing. The same thing happens to airliners that are struck by lightning roughly once a year per plane and keep flying without their passengers noticing.
+
+<SceneCard caption="FIG.06c — current flows around the shell, the cabin stays at zero" className="w-full">
+  <LightningShelterScene />
+</SceneCard>
+
+The folk advice — *if you're caught in a lightning storm, sit in your car* — is correct, and it is correct because of a theorem proved a century and a half before cars existed. The rubber tyres are not what protects you. The metal shell is. A convertible with the top down would not save you. A fibreglass-bodied car would not save you. A 1980s Saab with a steel monocoque is one of the safest things in nature during a thunderstorm, and the reason is the same reason Faraday's electrometer stayed dead in 1836.
+
+</Section>
+
+<Section index={6} title="Why it matters">
+
+Faraday cages are everywhere once you start looking. The braided shield around a coaxial cable is one — it keeps stray fields from polluting the signal on the inner wire and keeps the inner wire's own field from leaking out. MRI scanner rooms are lined with copper mesh so that the radio noise of the city outside doesn't drown the faint resonance signal inside. The microwave oven door has a perforated metal screen with holes too small for the 12 cm microwaves to escape but big enough for visible light (wavelength under a micron) to pass through — that is why you can watch your popcorn pop without being cooked alongside it.
+
+Sensitive electronics get wrapped in metal cans. Spy agencies build entire windowless rooms — *SCIFs* — out of conductive walls so no electromagnetic field, friendly or hostile, can carry information in or out. Every one of these designs is the same theorem: a closed conductor shields its interior from any external static or low-frequency field, full stop.
+
+The next topic will take this idea and run with it, computing the induced charge distribution explicitly with a beautiful sleight-of-hand called the *method of images*.
+
+</Section>
+
+</TopicPageLayout>
