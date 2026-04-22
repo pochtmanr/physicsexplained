@@ -1,0 +1,145 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { CarouselScene } from "@/components/physics/carousel-scene";
+import { CoriolisTurntableScene } from "@/components/physics/coriolis-turntable-scene";
+import { CoriolisGlobeScene } from "@/components/physics/coriolis-globe-scene";
+import { RotatingProjectileScene } from "@/components/physics/rotating-projectile-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Gaspard-Gustave de Coriolis", href: "/physicists/gaspard-gustave-de-coriolis" },
+  { type: "physicist", label: "Léon Foucault", href: "/physicists/leon-foucault" },
+  { type: "physicist", label: "Jean d'Alembert", href: "/physicists/jean-d-alembert" },
+  { type: "term", label: "Inertial frame", href: "/dictionary/inertial-frame" },
+  { type: "term", label: "Centrifugal force", href: "/dictionary/centrifugal-force" },
+  { type: "term", label: "Coriolis force", href: "/dictionary/coriolis-force" },
+]}>
+
+<TopicHeader
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
+  title="NON-INERTIAL REFERENCE FRAMES"
+  subtitle="Why a carousel feels like a force — and why the wind turns right in the northern hemisphere."
+/>
+
+<Section index={1} title="The trouble with rotating rooms">
+
+Slide a coin across a spinning turntable. Stand outside the turntable and the coin moves in a perfectly straight line — Newton I, no surprises, friction aside. Now climb onto the turntable and watch the same coin from your spinning perch. Suddenly it curves. It veers. It accelerates sideways for no visible reason, as if pushed by an invisible hand.
+
+Nothing about the coin changed. What changed is *you*. By choosing to ride the turntable, you stepped out of an <Term slug="inertial-frame">inertial frame</Term> — a frame in which Newton's laws work as written — and into a rotating one, where they don't. Or rather, they do, but only if you smuggle in some extra forces that aren't really there.
+
+This is the central oddity of non-inertial frames. The physics is the same. The trajectory of the coin is what it is. But the description of that trajectory depends on who is watching, and from a rotating chair, you have to invent forces to make the bookkeeping balance. Those invented forces have names — centrifugal, Coriolis, Euler — and they are the price of doing physics from a spinning seat.
+
+Most of the time, this is a curiosity. But you live on a planet that completes a rotation every twenty-four hours, which means you have been doing physics from a spinning seat your entire life. The wind does not blow in straight lines. Hurricanes do not spiral by accident. The bathwater does not really care which hemisphere you are in, but the atmosphere very much does — and the reason is the same one that makes the coin on the turntable curve.
+
+</Section>
+
+<Section index={2} title="Fictitious forces">
+
+Newton wrote his laws for an inertial frame: a frame that is not accelerating, not rotating, just drifting along at constant velocity through space. In such a frame, F = ma. Real forces produce real accelerations. Done.
+
+A rotating frame is *not* inertial. It is accelerating — every point in it is being centripetally pulled toward the rotation axis, even if the frame itself feels stationary to anyone riding inside it. So if you insist on writing Newton's laws inside a rotating frame, you have to pay a tax. The acceleration you measure inside the spinning frame is not the same as the true inertial acceleration. The two are related by a correction:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">a_inertial = a_rot + 2 Ω × v_rot + Ω × (Ω × r)</span>
+</EquationBlock>
+
+Here Ω is the angular velocity of the rotating frame (a vector along the rotation axis), v_rot and a_rot are the velocity and acceleration as measured *inside* the rotating frame, and r is the position vector from the rotation axis. The two extra terms are the consequences of doing accounting from a non-inertial perch.
+
+<PhysicistLink slug="jean-d-alembert">d'Alembert</PhysicistLink> in 1743 made this idea respectable: any non-inertial frame can be treated as inertial *if* you add a set of "inertial forces" — forces that are not exerted by any physical object, but are bookkeeping entries needed to make F = ma balance. The two we care about in a rotating frame both have famous names: centrifugal (the Ω × (Ω × r) piece) and Coriolis (the 2 Ω × v piece).
+
+These are not real forces in the sense that you cannot trace them to a particular interaction. There is no "centrifugal particle." There is no centrifugal field. They are real only in the sense that, if you live inside a rotating frame and write Newton's laws as though it were inertial, you must include them or your equations will be wrong.
+
+</Section>
+
+<Section index={3} title="Centrifugal: the outward pull that isn't">
+
+Stand on a spinning carousel and you feel pushed outward. Hold a string with a weight on the end and the string pulls taut, the weight flying out as far as the string will allow. From your seat on the carousel, you would swear there is a force shoving everything away from the center.
+
+There isn't. The real force is the *opposite*: the seat (or the string, or your friction with the floor) is pulling you *inward*, providing the centripetal force needed to keep you on a circular path. From an outside, inertial view, this is obvious — without that inward pull, you would fly off in a straight line, tangent to the carousel. Newton's first law, full stop.
+
+But inside the rotating frame, the carousel feels stationary. You are not moving relative to it. So why is the seat pushing on you? The rotating-frame answer: there must be a counter-force pushing you outward, which the seat is fighting. We call it the <Term slug="centrifugal-force">centrifugal force</Term>, and its magnitude is exactly Ω²r — the square of the rotation rate times your distance from the axis.
+
+A 2-meter carousel spinning once per second produces a centrifugal acceleration of about 4π² · 2 ≈ 79 m/s² at the rim — eight times Earth's gravity. This is why amusement-park rides work, why centrifuges separate plasma from blood cells, and why a rotating space station could simulate gravity by spinning at the right rate. There is no force pulling outward. There is only the absence of a force, which from inside the spinning frame *looks* like a force.
+
+<SceneCard caption="FIG.06a — carousel: outside view vs rider's view" className="w-full">
+  <CarouselScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Coriolis: the sideways shove">
+
+Centrifugal is the easy one. Coriolis is the strange one.
+
+Roll a ball straight across a spinning turntable, from the center outward. From outside the turntable, the ball travels in a perfectly straight line — it doesn't know the table is spinning. But from the table's frame, the ball curves. Worse: it curves *sideways*, perpendicular to its own velocity, in a way that depends on which direction the table is spinning.
+
+The force responsible — really, the bookkeeping entry responsible — is the <Term slug="coriolis-force">Coriolis force</Term>:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">F_C = −2m (Ω × v_rot)</span>
+</EquationBlock>
+
+Note the cross product. The Coriolis force is always perpendicular to the velocity. It does no work — the speed of an object is unaffected. It only bends the path. And it scales with how fast the object is moving in the rotating frame: a stationary object in the rotating frame feels no Coriolis force at all.
+
+<PhysicistLink slug="gaspard-gustave-de-coriolis">Gaspard-Gustave de Coriolis</PhysicistLink>, a French engineer, derived this term in 1835 while studying the energy losses of waterwheels and rotating machinery. He had no idea his correction would one day explain why hurricanes spin, why long-range artillery has to lead its targets, and why every weather forecast on the planet depends on a 19th-century mechanical-engineering footnote. The term he wrote down for industrial water mills runs the entire science of atmospheric circulation.
+
+<SceneCard caption="FIG.06b — Coriolis on a turntable, both frames" className="w-full">
+  <CoriolisTurntableScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The planet as a rotating frame">
+
+Earth turns once every 23 hours and 56 minutes. From the surface, this rotation is invisible — the ground feels still, the sky feels stationary. But the Coriolis force does not care that the rotation is invisible. It applies anyway.
+
+In the northern hemisphere, anything moving freely across the surface — a parcel of air, a long-range artillery shell, an ocean current — gets deflected to the right of its motion. In the southern hemisphere, it is deflected to the left. This is why the trade winds blow as they do. It is why hurricanes in the north spin counterclockwise and hurricanes in the south spin clockwise. It is why the Gulf Stream curves the way it curves. The atmosphere and oceans are, from Earth's spinning perspective, full of phantom forces that are nothing more than Coriolis deflection on continental scales.
+
+The deflection is not uniform across the planet. It depends on latitude — specifically on the component of Earth's rotation vector that points perpendicular to the local ground. At the equator, that component is zero (Ω lies in the plane of the ground); at the poles it is maximum. <PhysicistLink slug="leon-foucault">Foucault's pendulum</PhysicistLink>, hung in the Pantheon in 1851, made this latitude dependence visible: a pendulum that swings freely will appear, from the rotating ground, to slowly precess. Its rotation period is:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">T_Foucault = 24 h / sin(latitude)</span>
+</EquationBlock>
+
+At the North Pole, the pendulum's plane of swing rotates a full 360° in 24 hours. In Paris (~48.8°), it rotates about 11° per hour, completing a circuit in roughly 32 hours. At the equator, the period is infinite — the pendulum does not precess at all. Foucault's pendulum was the first direct, visual proof that Earth itself is the rotating frame, not the stars overhead.
+
+<SceneCard caption="FIG.06c — winds on the rotating Earth" className="w-full">
+  <CoriolisGlobeScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Where it breaks">
+
+The cleanest way to see what fictitious forces actually *do* is to launch the same projectile from two different perspectives. From an inertial frame above the spinning Earth, a fired shell follows a clean parabola — gravity is the only force on it, and gravity is perfectly real. From the rotating frame on the ground, the same shell traces something stranger: a curving, drifting path that looks as though sideways forces were tugging at it the entire flight.
+
+The trajectory is identical in both descriptions. The shell does not know what frame you are watching from. But if you sit in the rotating frame and try to apply Newton's laws using only the real gravitational force, your prediction will be wrong. The shell will not land where your math says it should. To get the right answer from the rotating frame, you must include both centrifugal and Coriolis terms in your force budget:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">m a_rot = F_real − 2m (Ω × v_rot) − m Ω × (Ω × r)</span>
+</EquationBlock>
+
+This is Newton's second law as written in a rotating frame: the real force, minus the Coriolis correction, minus the centrifugal correction. Get any term wrong and the equation lies. Naval gunnery in the early twentieth century discovered this the hard way — long-range shells fired across many kilometers landed measurably off-target until ballistics tables started accounting for Coriolis deflection. The British Royal Navy had to recalibrate its targeting computers after observing systematic bias during the Battle of the Falkland Islands in 1914, when shots fired in the southern hemisphere consistently missed in the *opposite* direction from what the (northern-hemisphere-calibrated) tables predicted.
+
+<SceneCard caption="FIG.06d — projectile: inertial frame vs rotating frame" className="w-full">
+  <RotatingProjectileScene />
+</SceneCard>
+
+</Section>
+
+<Section index={7} title="Why it matters">
+
+Once you accept fictitious forces as a legitimate accounting tool, an enormous slice of physics becomes tractable. Atmospheric science is impossible without Coriolis — the entire mathematical apparatus of climate models, weather forecasting, and ocean dynamics is written in a rotating frame because Earth is rotating and pretending otherwise is more painful than including the correction. The same mathematics describes the swirl of cyclones on Jupiter, the differential rotation of the Sun's surface, and the formation of accretion disks around black holes.
+
+Ballistics, especially at long range, must account for Coriolis deflection or the shells miss. Pilots flying intercontinental routes are flying through air currents shaped by it. Gyrocompasses — the compasses that work without magnets, used in submarines and missiles where magnetic compasses are useless — operate by detecting Earth's rotation directly through the gyroscope's interaction with the rotating frame.
+
+And then there is the future of human spaceflight. A rotating space station — the kind imagined in *2001* and now seriously prototyped by NASA and private companies — uses centrifugal force to simulate gravity. Walk along the inner rim and you feel pulled outward, into a "floor" that is really the inside of a spinning drum. But take a few steps in the wrong direction and Coriolis kicks in: throw a ball across the rotating volume and it veers, climb a ladder along the radius and you feel sideways shoves you cannot explain. Engineers designing such stations have to think carefully about rotation rates, because below a certain rate the centrifugal "gravity" is too weak, and above a certain rate the Coriolis effects get strong enough to make people nauseous.
+
+The fictitious forces are not real, but the curving paths they produce are. Newton's laws still rule — they just have to be told, very clearly and with all the corrections in place, *which frame* the bookkeeping is happening in.
+
+</Section>
+
+</TopicPageLayout>
