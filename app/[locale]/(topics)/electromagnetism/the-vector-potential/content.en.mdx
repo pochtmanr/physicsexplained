@@ -1,0 +1,126 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { VectorPotentialScene } from "@/components/physics/vector-potential-scene";
+import { GaugeFreedomScene } from "@/components/physics/gauge-freedom-scene";
+import { ASourceCurrentScene } from "@/components/physics/a-source-current-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Siméon Denis Poisson", href: "/physicists/simeon-denis-poisson" },
+  { type: "term", label: "Vector potential", href: "/dictionary/vector-potential" },
+  { type: "term", label: "Gauge transformation", href: "/dictionary/gauge-transformation" },
+  { type: "term", label: "Curl", href: "/dictionary/curl" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.15 · MAGNETOSTATICS"
+  title="THE VECTOR POTENTIAL"
+  subtitle="The field behind the field — and a hint that it might be the realer of the two."
+/>
+
+<Section index={1} title="Why bother">
+
+The magnetic field **B** has a quirk that the electric field doesn't: it has no monopoles. Every B-field line that goes out of a region must come back in. That isn't a coincidence; it's a structural fact, written as ∇·**B** = 0 — divergence zero everywhere, no exceptions.
+
+There's a tidy theorem in vector calculus that says: a field with zero divergence everywhere can always be written as the curl of *something*. That something is the **<Term slug="vector-potential">vector potential</Term>** **A**. Wherever there is a B-field, there is some A whose curl produces it.
+
+This is the same trick that gave us *V* in electrostatics, run on a different field. *V* let us trade three numbers per point (the three components of **E**) for one (a scalar). **A** trades three numbers per point (the components of **B**) for three numbers per point (the components of **A**) — no compression. So why bother?
+
+Because **A** factorises the magnetic field into something more fundamental. It's the natural object in <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>'s induction law (the EMF around a loop is −dΦ/dt, which is just the loop integral of A changing in time). It's the field that couples directly to charge in the Lagrangian — the thing nature actually uses when you write down the action for a particle in a field. And, as the last section will hint, there are situations in which **A** is doing physical work even where **B** is exactly zero.
+
+</Section>
+
+<Section index={2} title="B = ∇×A">
+
+Curl is the operator that measures *how much a vector field circulates around a tiny loop*. If you stand in a stream and stick in a paddle wheel, the curl tells you how fast it spins, and which way. Mathematically, the *z*-component of ∇×**A** is
+
+  (∇×**A**)\_z = ∂A\_y/∂x − ∂A\_x/∂y
+
+— the rate at which A\_y grows as you walk in *x*, minus the rate at which A\_x grows as you walk in *y*. The other two components rotate the indices: each one mixes two derivatives of two components. We've already met curl in Ampère's law, where ∮ **B** · d**ℓ** = μ₀ I\_enc encodes ∇×**B** = μ₀**J** in integral form. Curl is the local statement; loop integrals are the global one.
+
+The defining equation of A is just one line:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-base">B = ∇ × A</span>
+</EquationBlock>
+
+That's the whole definition. Pick any A you like; the magnetic field it represents is its curl. And because the divergence of any curl is identically zero, ∇·**B** = ∇·(∇×**A**) = 0 *automatically* — Maxwell's "no monopoles" rule comes free.
+
+The puzzle is the other direction. Given a B-field, which A produced it? The answer, as the next section explains, is *infinitely many of them*.
+
+</Section>
+
+<Section index={3} title="Gauge freedom">
+
+Take any A that gives the right B. Now add the gradient of any scalar function *f* you like:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-base">A → A' = A + ∇f</span>
+</EquationBlock>
+
+The new A′ produces *exactly the same B*. The reason is a one-line vector identity: the curl of a gradient is identically zero. So ∇×**A**′ = ∇×**A** + ∇×(∇*f*) = ∇×**A** + 0 = **B**. Whatever you cooked up for *f*, it doesn't change the magnetic field by a hair.
+
+This is called a **<Term slug="gauge-transformation">gauge transformation</Term>**, and the freedom to choose *f* is called *gauge freedom*. It is not a defect of the theory; it is a feature. It means A is *underdetermined* by B — there isn't one A that "is" the vector potential of a given B-field, there's a whole family of A's, all equally good, related by ∇f shifts.
+
+<SceneCard caption="FIG.15a — same B, very different A: pick f, watch A change while the curl stays put" className="w-full">
+  <GaugeFreedomScene />
+</SceneCard>
+
+Toggle the choice of *f*. The amber arrows for **A** swing wildly: a linear *f* shifts every arrow by the same offset; a radial bowl makes them point outward; a shear *f* twists them. But the readout in the corner — |B| computed numerically from the curl of A at a fixed probe — does not flinch. The physics is in B; the bookkeeping is in A.
+
+</Section>
+
+<Section index={4} title="The Coulomb gauge">
+
+Since you get to pick A up to a gradient, the natural move is to *fix* the freedom by imposing one extra equation. The most popular choice, called the **Coulomb gauge**, demands
+
+  ∇ · **A** = 0.
+
+The divergence of A vanishes. With this single condition pinned, A is determined uniquely (up to boundary conditions at infinity). And in the Coulomb gauge, A satisfies a beautifully simple equation:
+
+  ∇²**A** = −μ₀ **J**
+
+— component by component, just like <PhysicistLink slug="simeon-denis-poisson">Poisson</PhysicistLink>'s equation for the electric potential, ∇²V = −ρ/ε₀. Same operator on the left, source on the right. The whole machinery you built for V — Green's functions, image charges, separation of variables — transfers across word for word, with the substitution V → A, ρ → μ₀ J. The only catch is that A is a vector, so you solve three Poisson equations in parallel, one per component.
+
+<SceneCard caption="FIG.15b — A from a wire, V from a line of charge: same equation, same shape" className="w-full">
+  <ASourceCurrentScene />
+</SceneCard>
+
+Two cross-sections, side by side. On the left, a wire carries current out of the page; A points axially (out of the page too, parallel to the current) and falls off logarithmically with distance. The faint blue rings show how its curl gives B = μ₀I/(2πr) circulating around the wire. On the right, a positive line of charge; V is a scalar, also falls off logarithmically; faint pink arrows show E pointing radially out. The colour pattern is identical because the source–potential relationship is identical.
+
+</Section>
+
+<Section index={5} title="A around a solenoid">
+
+Now the punchline, and this is the topic's whole reason for existing.
+
+An ideal infinite solenoid of radius R carries a uniform magnetic field B inside it and *exactly zero* magnetic field outside. From the B-field's perspective, the outside is empty. Yet the vector potential outside the solenoid is **not** zero. The flux through a circle of radius r > R is the same as the flux through any circle large enough to enclose the whole solenoid — namely BπR². Setting that equal to the loop integral of A:
+
+  ∮ **A** · d**ℓ** = 2π r · A\_φ = B π R²    ⇒    A\_φ = B R² / (2 r).
+
+A circulates around the solenoid forever, falling off only as 1/r. In a region where every magnetometer reads zero.
+
+<SceneCard caption="FIG.15c — A keeps swirling outside the solenoid, in a region where B is identically zero" className="w-full">
+  <VectorPotentialScene />
+</SceneCard>
+
+The cyan dots inside the circle are the only place **B** lives. The amber arrows for **A**, on the other hand, keep going. This is not a calculational artefact — it's not a bookkeeping smear. There is a real, measurable effect: a charged particle whose trajectory loops around the solenoid (without ever entering it) picks up a phase shift proportional to the enclosed flux. Two beams of electrons split around opposite sides of the solenoid will interfere differently depending on whether the current is on or off, even though neither beam ever touches a region of nonzero **B**. We will return to this in §12; it is one of the cleanest demonstrations that **A** is not just a calculational convenience but a physically meaningful field, and that the integral of **A** around a closed loop is real, even when the field's curl is zero everywhere along the loop.
+
+</Section>
+
+<Section index={6} title="Why this matters">
+
+In the next module, when we write down the Lagrangian for a charged particle in an electromagnetic field, the thing that appears in it is **A** (and the scalar potential V), not **E** and **B**. The whole formalism of canonical momentum — *p* = m**v** + q**A** — leans on it. Quantum mechanics inherits this directly: the Schrödinger equation for a particle in a magnetic field substitutes **p** → **p** − q**A**, not **p** → something with **B**. That is why the Aharonov–Bohm effect exists at all.
+
+In condensed matter, the vector potential is the natural variable for superconductivity (the Ginzburg–Landau order parameter is gauged with it), for quantum Hall physics (Chern–Simons theories live on **A**), and for most of modern gauge theory in particle physics. The same gauge-freedom story repeats up the ladder: in QED, in QCD, in the standard model. Every time, the rule is the same — the potential is the redundantly described field, the physics is in what survives the redundancy, and the redundancy is what makes the whole machinery work.
+
+For now: tuck away the equation B = ∇×A, the freedom A → A + ∇f, and the picture of A still circulating where B has gone silent. The next topic uses this geometry to explain why a current loop is a magnet — and why a compass turns.
+
+</Section>
+
+</TopicPageLayout>

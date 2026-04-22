@@ -473,6 +473,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   ToroidFieldScene: lazyScene(() =>
     import("@/components/physics/toroid-field-scene").then((m) => ({ default: m.ToroidFieldScene })),
   ),
+
+  // EM §03 — the-vector-potential
+  VectorPotentialScene: lazyScene(() =>
+    import("@/components/physics/vector-potential-scene").then((m) => ({ default: m.VectorPotentialScene })),
+  ),
+  GaugeFreedomScene: lazyScene(() =>
+    import("@/components/physics/gauge-freedom-scene").then((m) => ({ default: m.GaugeFreedomScene })),
+  ),
+  ASourceCurrentScene: lazyScene(() =>
+    import("@/components/physics/a-source-current-scene").then((m) => ({ default: m.ASourceCurrentScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
