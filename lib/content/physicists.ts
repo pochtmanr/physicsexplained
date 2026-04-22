@@ -52,6 +52,16 @@ export const PHYSICISTS: readonly Physicist[] = [
     ],
   },
   {
+    slug: "gaspard-gustave-de-coriolis",
+    born: "1792",
+    died: "1843",
+    nationality: "French",
+    image: storageUrl("physicists/gaspard-gustave-de-coriolis.avif"),
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "non-inertial-frames" },
+    ],
+  },
+  {
     slug: "johannes-kepler",
     born: "1571",
     died: "1630",
