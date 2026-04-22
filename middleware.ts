@@ -15,16 +15,24 @@ function hasSupabaseCookie(req: NextRequest): boolean {
 }
 
 export default async function middleware(req: NextRequest) {
-  const res = intl(req);
+  const p = req.nextUrl.pathname;
 
-  if (PROTECTED.test(req.nextUrl.pathname) && !hasSupabaseCookie(req)) {
-    if (req.nextUrl.pathname.startsWith("/api/")) {
+  // Pass through auth callback + API routes untouched — next-intl must not
+  // rewrite these. API-route auth is enforced by the protected block below.
+  if (p.startsWith("/auth/") || p.startsWith("/api/")) {
+    if (PROTECTED.test(p) && !hasSupabaseCookie(req)) {
       return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
     }
-    const locale = /^\/([a-z]{2})\//.exec(req.nextUrl.pathname)?.[1] ?? "en";
+    return NextResponse.next();
+  }
+
+  const res = intl(req);
+
+  if (PROTECTED.test(p) && !hasSupabaseCookie(req)) {
+    const locale = /^\/([a-z]{2})\//.exec(p)?.[1] ?? "en";
     const url = req.nextUrl.clone();
     url.pathname = `/${locale}/sign-in`;
-    url.searchParams.set("next", req.nextUrl.pathname);
+    url.searchParams.set("next", p);
     return NextResponse.redirect(url);
   }
   return res;
