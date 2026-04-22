@@ -585,6 +585,23 @@ The weber is the natural unit for Faraday's law of induction (EMF = −dΦ/dt, v
     ],
   },
   {
+    // Forward reference from §02.3 boundary-conditions-at-interfaces.
+    // Full treatment lives in §09 (electromagnetic waves). Placeholder seeded so the
+    // <Term slug="fresnel-equations"> link in the §02.3 prose resolves at render.
+    slug: "fresnel-equations",
+    term: "Fresnel equations",
+    category: "concept",
+    shortDefinition: "The reflection and transmission coefficients for an electromagnetic wave hitting an interface between two dielectrics. Derived from boundary conditions on E and B applied to plane waves.",
+    description: `The Fresnel equations describe what happens when a plane electromagnetic wave hits a flat interface between two transparent media — say, light striking the surface of glass from air. The wave splits into two pieces: a reflected wave that bounces back into the first medium, and a transmitted (refracted) wave that continues into the second medium with a new direction set by Snell's law. The Fresnel equations give the amplitude of each — equivalently, the fraction of power reflected and transmitted — as a function of the angle of incidence and the polarisation of the incoming wave.
+
+The two polarisations behave differently. For s-polarised light (electric field perpendicular to the plane of incidence), the reflection coefficient varies smoothly with angle and never vanishes. For p-polarised light (electric field in the plane of incidence), the reflection coefficient passes through zero at a special angle — Brewster's angle, tan θ_B = n₂/n₁ — at which the reflected wave is purely s-polarised. Polarising sunglasses exploit this: glare from horizontal surfaces (water, road) is preferentially p-polarised after reflection at near-Brewster angles, and a vertical-axis polariser blocks it.
+
+The equations follow from applying the static-form boundary conditions on E and B (tangential continuity, normal-displacement matching) to oscillating plane-wave solutions of Maxwell's equations on each side of the interface. The §02.3 boundary-conditions-at-interfaces topic is the static foundation; the Fresnel equations are the dynamic consequence and will be developed in full in the §09 electromagnetic-waves chapter. Augustin-Jean Fresnel derived them in 1823 from his elastic-solid theory of light, decades before Maxwell showed that light was an electromagnetic wave at all.`,
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "boundary-conditions-at-interfaces" },
+    ],
+  },
+  {
     slug: "curl",
     term: "Curl",
     category: "concept",
