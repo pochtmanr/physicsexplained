@@ -40,7 +40,6 @@ export const metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: dark)", color: "#07090E" },
     { media: "(prefers-color-scheme: light)", color: "#FAFBFD" },
@@ -63,13 +62,13 @@ export default async function RootLayout({
       lang={locale}
       dir={dir}
       data-theme="dark"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${archiveGrotesk.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable} ${archiveGrotesk.variable} h-full`}
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
       </head>
-      <body className="font-sans antialiased">
+      <body className="min-h-full flex flex-col font-sans antialiased">
         {children}
         <Analytics />
       </body>

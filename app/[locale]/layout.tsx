@@ -27,11 +27,9 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <HtmlDirSync />
-      <div className="flex min-h-screen flex-col">
-        <Nav />
-        <div className="flex-1">{children}</div>
-        <Footer />
-      </div>
+      <Nav />
+      <div className="flex-1">{children}</div>
+      <Footer />
       <CookieBanner />
     </NextIntlClientProvider>
   );
