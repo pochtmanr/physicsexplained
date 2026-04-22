@@ -46,3 +46,7 @@ yarn-error.log*
 # testing
 coverage
 .env*.local
+
+# local scratch / tooling
+.claude/
+reddit.md
