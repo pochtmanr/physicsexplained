@@ -88,6 +88,18 @@ body {
     color var(--duration-base) ease;
 }
 
+/* Reserve space for the fixed CookieBanner while it's visible so the
+   Footer isn't occluded. Mobile banner is a single compact row (~48px)
+   plus iOS safe-area; desktop banner is slightly taller. */
+html[data-cookie-banner="visible"] body {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 52px);
+}
+@media (min-width: 768px) {
+  html[data-cookie-banner="visible"] body {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 60px);
+  }
+}
+
 /* Hebrew font stack — Inter/Archive Grotesk don't cover Hebrew glyphs.
    Fall back to native Hebrew fonts until a dedicated webfont is added. */
 html[lang="he"] body {
