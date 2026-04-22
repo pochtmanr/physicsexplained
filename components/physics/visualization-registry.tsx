@@ -130,6 +130,22 @@ const DampedPendulumScene = dynamic(
   { ssr: false },
 );
 
+const DampedRegimesScene = dynamic(
+  () =>
+    import("@/components/physics/damped-regimes-scene").then((m) => ({
+      default: m.DampedRegimesScene,
+    })),
+  { ssr: false },
+);
+
+const QualityFactorScene = dynamic(
+  () =>
+    import("@/components/physics/quality-factor-scene").then((m) => ({
+      default: m.QualityFactorScene,
+    })),
+  { ssr: false },
+);
+
 const ShellTheoremScene = dynamic(
   () =>
     import("@/components/physics/shell-theorem-scene").then((m) => ({
@@ -586,6 +602,8 @@ const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "resonance-curve": () => <ResonanceCurveScene />,
   "coupled-pendulum": () => <CoupledPendulumScene />,
   "damped-pendulum": () => <DampedPendulumScene />,
+  "damped-regimes": DampedRegimesScene,
+  "quality-factor": QualityFactorScene,
   "beats": () => <BeatsScene />,
   "shell-theorem": () => <ShellTheoremScene />,
   "gravity-field": () => <GravityFieldScene />,
