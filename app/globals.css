@@ -180,6 +180,15 @@ table tbody tr:last-child td {
   }
 }
 
+/* Hide scrollbars on horizontal chip rails while keeping scroll behavior. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* Hover-card fade-in */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(4px); }

@@ -2,6 +2,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
 import { getBranch } from "@/lib/content/branches";
 import { BranchHero } from "@/components/layout/branch-hero";
+import { ModuleChips } from "@/components/layout/module-chips";
 import { TopicCard } from "@/components/layout/topic-card";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
@@ -43,17 +44,33 @@ export default async function ClassicalMechanicsPage({
   const tTopics = await getTranslations("home.topics");
   const moduleItems = tTopics.raw("modules") as Record<string, string>;
 
+  const populatedModules = branch.modules
+    .map((mod) => ({
+      mod,
+      topics: branch.topics.filter(
+        (t) => t.module === mod.slug && t.status !== "coming-soon",
+      ),
+    }))
+    .filter(({ topics }) => topics.length > 0);
+
+  const chipModules = populatedModules.map(({ mod }) => ({
+    slug: mod.slug,
+    index: mod.index,
+    title: moduleItems[mod.slug] ?? mod.title.toUpperCase(),
+  }));
+
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
       <BranchHero branch={branch} />
-      {branch.modules.map((mod) => {
-        const moduleTops = branch.topics.filter(
-          (t) => t.module === mod.slug && t.status !== "coming-soon",
-        );
-        if (moduleTops.length === 0) return null;
+      <ModuleChips modules={chipModules} />
+      {populatedModules.map(({ mod, topics: moduleTops }) => {
         const moduleTitle = moduleItems[mod.slug] ?? mod.title.toUpperCase();
         return (
-          <section key={mod.slug} className="mt-16">
+          <section
+            key={mod.slug}
+            id={`module-${mod.slug}`}
+            className="mt-16 scroll-mt-28"
+          >
             <h2 className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
               {tMeta("moduleHeading", {
                 index: mod.index,
