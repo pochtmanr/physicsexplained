@@ -1,0 +1,150 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MagnetThroughCoilScene } from "@/components/physics/magnet-through-coil-scene";
+import { FluxChangeAreaScene } from "@/components/physics/flux-change-area-scene";
+import { FaradayDiskScene } from "@/components/physics/faraday-disk-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Joseph Henry", href: "/physicists/joseph-henry" },
+  { type: "physicist", label: "Heinrich Lenz", href: "/physicists/heinrich-lenz" },
+  { type: "term", label: "Electromagnetic induction", href: "/dictionary/electromagnetic-induction" },
+  { type: "term", label: "Faraday's law", href: "/dictionary/faradays-law-term" },
+  { type: "term", label: "EMF", href: "/dictionary/emf" },
+  { type: "term", label: "Flux linkage", href: "/dictionary/flux-linkage" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.21 · ELECTRODYNAMICS & INDUCTION"
+  title="FARADAY'S LAW OF INDUCTION"
+  subtitle="A changing magnetic flux makes an electric field appear around it — the first time time itself enters a field equation."
+/>
+
+<Section index={1} title="Faraday's trick">
+
+Every equation in this branch so far has been a photograph. Gauss and Ampère say what a static charge or steady current does *right now*; time never appears. In 1831, in the basement of the Royal Institution, <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink> ran a cheap experiment that broke the stillness.
+
+He wound two coils on opposite sides of an iron ring. The first, the *primary*, could be switched to a battery. The second, the *secondary*, ran to a galvanometer. Close the switch: the needle snapped over, then drifted back to zero. Open it: the needle snapped the *other* way. Leave the switch closed with steady current flowing: nothing.
+
+That was the discovery. Not the current — the *change* in it. Push a bar magnet into a coil: needle twitches. Hold it still: nothing. Rotate a loop in a static field: needle. One rule governs all of it. The American <PhysicistLink slug="joseph-henry">Joseph Henry</PhysicistLink> had found the same phenomenon the year before but published late; the law took Faraday's name and Henry got the SI unit.
+
+</Section>
+
+<Section index={2} title="Flux through a loop">
+
+To write the rule down we need one ingredient: the <Term slug="flux">magnetic flux</Term> through a loop.
+
+Pick a closed wire. Imagine a soap film filling it in — any surface whose boundary is the wire. Walk a little area element dA across the film, with a vector pointing perpendicular to it. The flux contribution from that bit is the dot product of the local <Term slug="magnetic-field">magnetic field</Term> with dA: `B · dA`. Add up every contribution over the film; that total is the flux.
+
+The symbol for "add over a surface" is the double integral ∬. Read ∬ B · dA as "the surface integral of B over the film" — total field threading through. The film's shape doesn't matter, only its rim: a flat disk and a bulging hemisphere sharing the same boundary give the same answer.
+
+<EquationBlock id="EQ.01">
+  $$ \Phi_B \;=\; \iint_{S} \mathbf{B} \cdot d\mathbf{A} $$
+</EquationBlock>
+
+Units are teslas times square metres — collectively called **webers** (Wb). For a uniform B through a flat loop of area A whose normal makes angle θ with B, the integral collapses to Φ = B·A·cos θ. If the loop has N turns wound so each sees the same flux, the total **<Term slug="flux-linkage">flux linkage</Term>** is N·Φ — and every turn contributes independently to the EMF.
+
+</Section>
+
+<Section index={3} title="The law — EMF equals minus dΦ/dt">
+
+Here is Faraday's law in plain words. The **electromotive force** around a closed loop — the voltage a test charge would gain going once around — equals minus the rate at which the flux through the loop is changing.
+
+<EquationBlock id="EQ.02">
+  $$ \text{EMF} \;=\; -\,\frac{d\Phi_B}{dt} $$
+</EquationBlock>
+
+Two pieces need unpacking. "d/dt" is calculus shorthand for "how much is this quantity changing per second right now" — zero if Φ is constant, big if it whips around, negative if it is falling. <Term slug="emf">EMF</Term> — electromotive force — is the line integral of E around the loop: the work E does per unit charge on a charge shuttled once around.
+
+The minus sign is not a bookkeeping choice. It is Heinrich Lenz's 1834 observation: the induced EMF drives a current whose magnetic field *opposes* the flux change that caused it. The next topic, <Term slug="lenzs-law-term">Lenz's law</Term>, unpacks this fully.
+
+The cleanest thing about EQ.02 is what it *doesn't* care about — why Φ is changing. Move the magnet. Move the loop. Change a neighbouring current. Deform the loop. Tilt it. All of these are one equation.
+
+<Callout variant="intuition">
+A magnet sitting in your hand is surrounded by B. Hold a wire loop still in that field — no current. Wiggle the loop — current flows. The field didn't change; the flux through the loop did. Faraday's law is about the flux number, nothing else.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Three ways to change the flux">
+
+Faraday's list reduces to three moves: change the field, change the area, change the angle.
+
+<SceneCard caption="FIG.21a — move the magnet, the needle twitches" className="w-full">
+  <MagnetThroughCoilScene />
+</SceneCard>
+
+Push the bar magnet toward the coil and the flux through each turn rises. dΦ/dt is positive; EMF is negative; the galvanometer deflects one way. Pull it out and the needle flips. Hold it still — zero. The faster you move, the bigger the deflection, exactly because EMF scales with *how fast* Φ is changing, not how large it is.
+
+<SceneCard caption="FIG.21b — keep the field, change the area" className="w-full">
+  <FluxChangeAreaScene />
+</SceneCard>
+
+Here the field is uniform and constant — a grid of into-the-page crosses. The loop is a rectangle with a sliding bar on rails. Slide the bar right: area grows, Φ grows, dΦ/dt is positive, EMF is negative. Lenz says the induced current must oppose the increase, so it circulates counter-clockwise (viewed from the reader) — making a little out-of-page field inside the loop that cancels part of the growing into-page flux. Reverse v and everything flips.
+
+The third move — changing the angle — is the heart of every AC generator: a loop rotated at angular frequency ω in a uniform field B gives Φ(t) = B·A·cos(ωt), and EQ.02 gives EMF(t) = B·A·ω·sin(ωt). That sinusoid is what comes out of every wall socket on Earth.
+
+</Section>
+
+<Section index={5} title="The Faraday disk">
+
+Faraday built the first continuous DC generator in 1831 from a copper disk, a hand crank, and a permanent magnet.
+
+<SceneCard caption="FIG.21c — a disk, an axial field, and a steady EMF" className="w-full">
+  <FaradayDiskScene />
+</SceneCard>
+
+The disk sits between the poles of a magnet so B is perpendicular to the disk and uniform across it. Spin it at angular speed ω. A charge in the disk at radius r moves at v = ω·r; the Lorentz force qv × B on that charge is radial — pushing positive charge outward or inward depending on signs. Integrate the motional EMF from axle to rim and:
+
+<EquationBlock id="EQ.03">
+  $$ \text{EMF} \;=\; \tfrac{1}{2}\, B\, \omega\, R^{2} $$
+</EquationBlock>
+
+Unlike a rotating-loop generator, this output is steady DC — the geometry has rotational symmetry, so the axle-to-rim voltage does not oscillate. Plug in B = 1 T, ω = 100 rad/s, R = 0.1 m: 0.5 V. Small voltage, but a homopolar generator delivers colossal currents, which is why modern variants power rail guns and ship drives.
+
+</Section>
+
+<Section index={6} title="The differential form">
+
+EQ.02 is a statement about a loop. Like Ampère's and Gauss's laws, Faraday's law has a local version — an equation that holds at every point, with no loops or surfaces in sight.
+
+Ask at a point: how much does E circulate around the point itself? Imagine a tiny paddlewheel with an electric-field rotor; the **<Term slug="curl">curl</Term>** of E, written ∇×E, tells you how fast it spins and about which axis. Straight-line flow has zero curl; a field that winds around a point has non-zero curl.
+
+Faraday's law in differential form says the curl of E equals minus the time rate of change of B at that point:
+
+<EquationBlock id="EQ.04">
+  $$ \nabla \times \mathbf{E} \;=\; -\,\frac{\partial \mathbf{B}}{\partial t} $$
+</EquationBlock>
+
+In plain words: wherever the magnetic field is *changing in time*, an electric field curls around that place. Where B is steady, ∇×E is zero and E looks like the old gradient-of-a-potential field from §02.
+
+Pair this with the local Ampère law ∇×B = μ₀ J from §03 and you have two of the four Maxwell equations in their *dynamic* form. The two curl equations are what turn electromagnetism into a theory with time in it.
+
+<Callout variant="math">
+EQ.02 and EQ.04 are the same law. The integral form is the surface average of the differential form (by Stokes' theorem). Finite loop in a lab ⇒ EQ.02. Field at a point in vacuum ⇒ EQ.04.
+</Callout>
+
+In §07 we'll find that Ampère's law is *almost* right — missing a term proportional to ∂E/∂t that Maxwell will add. Together with EQ.04 that correction makes self-propagating waves of E and B. But that is the next module's door; we keep it closed for now.
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+Every generator on Earth runs on EQ.02. Coal, gas, hydro, nuclear, wind — the *energy source* differs, but the end of every chain is the same: spin a coil in a field, extract −dΦ/dt as AC EMF. The whole electrical grid is Faraday's 1831 experiment, scaled up.
+
+**Transformers** chain two Faraday rules back-to-back: AC in the primary makes time-varying flux in an iron core, which threads a secondary whose EMF is N₂/N₁ times the primary's.
+
+**Induction cooktops** run 20–60 kHz AC through a coil under a ceramic plate. A ferromagnetic pan on top sees time-varying flux; EQ.02 induces eddy currents in its base, which heat the pan directly — the cooktop itself stays cool.
+
+**Contactless chargers** (Qi pads) are transformers with an air gap. **Magnetic-stripe readers and RFID tags** decode the microvolt EMF induced in a pickup coil as a stripe or chip moves past. **Anti-theft tags** flood the doorway with time-varying B; a tagged item's resonant loop re-radiates and triggers the alarm. All Faraday.
+
+In FIG.22 we stare at the minus sign in EQ.02 — <PhysicistLink slug="heinrich-lenz">Lenz</PhysicistLink>'s contribution — and see how "oppose the change" gives us magnetic braking, the jumping ring, and every regenerative-brake system on a moving vehicle.
+
+</Section>
+
+</TopicPageLayout>

@@ -539,6 +539,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CriticalTemperatureScene: lazyScene(() =>
     import("@/components/physics/critical-temperature-scene").then((m) => ({ default: m.CriticalTemperatureScene })),
   ),
+
+  // EM §05 — faradays-law
+  MagnetThroughCoilScene: lazyScene(() =>
+    import("@/components/physics/magnet-through-coil-scene").then((m) => ({ default: m.MagnetThroughCoilScene })),
+  ),
+  FluxChangeAreaScene: lazyScene(() =>
+    import("@/components/physics/flux-change-area-scene").then((m) => ({ default: m.FluxChangeAreaScene })),
+  ),
+  FaradayDiskScene: lazyScene(() =>
+    import("@/components/physics/faraday-disk-scene").then((m) => ({ default: m.FaradayDiskScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
