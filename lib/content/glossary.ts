@@ -1494,6 +1494,196 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "electromagnetism", topicSlug: "method-of-images" },
     ],
   },
+  {
+    slug: "polarization",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-and-bound-charges" },
+    ],
+  },
+  {
+    slug: "polarization-density",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-and-bound-charges" },
+    ],
+  },
+  {
+    slug: "bound-charge",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-and-bound-charges" },
+    ],
+  },
+  {
+    slug: "electric-susceptibility",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dielectrics-and-the-d-field" },
+    ],
+  },
+  {
+    slug: "dielectric-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dielectrics-and-the-d-field" },
+    ],
+  },
+  {
+    slug: "permittivity",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dielectrics-and-the-d-field" },
+    ],
+  },
+  {
+    slug: "dielectric-constant",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dielectrics-and-the-d-field" },
+    ],
+  },
+  {
+    slug: "displacement-field",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dielectrics-and-the-d-field" },
+    ],
+  },
+  {
+    slug: "boundary-conditions-em",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "boundary-conditions-at-interfaces" },
+    ],
+  },
+  {
+    slug: "piezoelectricity",
+    category: "phenomenon",
+    relatedPhysicists: ["pierre-curie"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "piezo-and-ferroelectricity" },
+    ],
+  },
+  {
+    slug: "ferroelectricity",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "piezo-and-ferroelectricity" },
+    ],
+  },
+  {
+    slug: "lorentz-force",
+    category: "concept",
+    relatedPhysicists: ["hendrik-antoon-lorentz"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
+    ],
+  },
+  {
+    slug: "magnetic-field",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+    ],
+  },
+  {
+    slug: "tesla-unit",
+    category: "unit",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
+    ],
+  },
+  {
+    slug: "current-density",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+    ],
+  },
+  {
+    slug: "biot-savart-law-term",
+    category: "concept",
+    relatedPhysicists: ["jean-baptiste-biot", "felix-savart"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+    ],
+  },
+  {
+    slug: "ampere-unit",
+    category: "unit",
+    relatedPhysicists: ["andre-marie-ampere"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+    ],
+  },
+  {
+    slug: "amperes-law-term",
+    category: "concept",
+    relatedPhysicists: ["andre-marie-ampere"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+    ],
+  },
+  {
+    slug: "solenoid",
+    category: "instrument",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+    ],
+  },
+  {
+    slug: "toroid",
+    category: "instrument",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+    ],
+  },
+  {
+    slug: "vector-potential",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
+    ],
+  },
+  {
+    slug: "gauge-transformation",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
+    ],
+  },
+  {
+    slug: "magnetic-dipole-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-dipoles" },
+    ],
+  },
+  {
+    slug: "magnetic-moment",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-dipoles" },
+    ],
+  },
+  {
+    slug: "weber-unit",
+    category: "unit",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-dipoles" },
+    ],
+  },
+  {
+    slug: "curl",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+      { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

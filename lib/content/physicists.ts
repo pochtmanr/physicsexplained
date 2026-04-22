@@ -532,6 +532,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
       { branchSlug: "electromagnetism", topicSlug: "method-of-images" },
+      { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
     ],
   },
   {
@@ -747,6 +748,69 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-electric-field" },
       { branchSlug: "electromagnetism", topicSlug: "conductors-and-shielding" },
+      { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
+    ],
+  },
+  {
+    slug: "pierre-curie",
+    born: "1859",
+    died: "1906",
+    nationality: "French",
+    image: storageUrl("physicists/pierre-curie.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "piezo-and-ferroelectricity" },
+    ],
+  },
+  {
+    slug: "hans-christian-orsted",
+    born: "1777",
+    died: "1851",
+    nationality: "Danish",
+    image: storageUrl("physicists/hans-christian-orsted.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+    ],
+  },
+  {
+    slug: "andre-marie-ampere",
+    born: "1775",
+    died: "1836",
+    nationality: "French",
+    image: storageUrl("physicists/andre-marie-ampere.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "amperes-law" },
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+    ],
+  },
+  {
+    slug: "jean-baptiste-biot",
+    born: "1774",
+    died: "1862",
+    nationality: "French",
+    image: storageUrl("physicists/jean-baptiste-biot.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+    ],
+  },
+  {
+    slug: "felix-savart",
+    born: "1791",
+    died: "1841",
+    nationality: "French",
+    image: storageUrl("physicists/felix-savart.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "biot-savart-law" },
+    ],
+  },
+  {
+    slug: "hendrik-antoon-lorentz",
+    born: "1853",
+    died: "1928",
+    nationality: "Dutch",
+    image: storageUrl("physicists/hendrik-antoon-lorentz.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
     ],
   },
 ];
