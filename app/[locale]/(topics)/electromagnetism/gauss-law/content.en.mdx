@@ -1,0 +1,148 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GaussianSurfacesScene } from "@/components/physics/gaussian-surfaces-scene";
+import { GaussSymmetryScene } from "@/components/physics/gauss-symmetry-scene";
+import { FluxThroughSurfaceScene } from "@/components/physics/flux-through-surface-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Carl Friedrich Gauss", href: "/physicists/carl-friedrich-gauss" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Flux", href: "/dictionary/flux" },
+  { type: "term", label: "Gaussian surface", href: "/dictionary/gaussian-surface" },
+  { type: "term", label: "Divergence", href: "/dictionary/divergence" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.03 · ELECTROSTATICS"
+  title="GAUSS'S LAW"
+  subtitle="Why the field around any closed surface depends only on the charge inside — and how that single fact replaces a page of integrals."
+/>
+
+<Section index={1} title="The problem Coulomb leaves behind">
+
+Coulomb's law answers a single question: what force does one point charge exert on another? Add a third and you sum the forces. Add a fourth and you sum again. The recipe is exact and — past about three charges — completely impractical.
+
+Drop a test charge near a uniformly charged ball. To use Coulomb you treat the ball as a sea of infinitesimal charges and integrate over its volume. Doable. Now make the ball a hollow shell. Harder. Now make the shell oblong. The integral is now the kind of thing you write a paper about.
+
+There is a way out, found by <PhysicistLink slug="carl-friedrich-gauss">Gauss</PhysicistLink> in the early 1800s. It is not a new force law — it is a new *bookkeeping trick*. When the geometry has any symmetry — spherical, cylindrical, planar — the bookkeeping collapses the whole integral to one line of algebra. When the geometry has no symmetry it still holds, but it stops being useful for finding the field. We will be honest about both.
+
+</Section>
+
+<Section index={2} title="Flux">
+
+Before the law, the word. **Flux** answers a single question: *how much of a field passes through a surface?* Picture the electric field as a forest of arrows filling space. Hold up a hoop. The flux through the hoop is the count of arrows that thread through it.
+
+Two things change the count. The *strength* of the field — denser arrows, more through any given hoop. And the *orientation* of the hoop. Face-on to the arrows it catches the maximum; tilted edge-on the arrows skim past and the count drops to zero.
+
+The full definition keeps both. For each tiny patch of the surface, multiply the local field strength, the patch's area, and the *cosine of the angle* between the field and the patch's outward-facing normal. Sum over the whole surface.
+
+<SceneCard caption="FIG.03a — flux through a tilted surface" className="w-full">
+  <FluxThroughSurfaceScene />
+</SceneCard>
+
+Drag the surface to rotate its normal. When the normal points along the field every arrow goes straight through; the flux is `E·A`. As you tilt, the count falls off as the cosine of the angle. At ninety degrees the surface is parallel to the arrows and the flux is zero. Same area, different count. That is the entire content of <Term slug="flux">flux</Term>.
+
+Physicists write the sum-over-patches as a surface integral with a tiny vector dA at each point — its length is the patch area, its direction is the outward normal. The dot product with the field does the cosine for you.
+
+<EquationBlock id="EQ.01">
+  $$ \Phi_E \;=\; \int_S \mathbf{E} \cdot d\mathbf{A} $$
+</EquationBlock>
+
+Read it left to right: the flux ΦE is what you get when you walk over every patch of the surface S, dot the local field E with the patch's outward area-vector dA, and sum. Nothing more.
+
+</Section>
+
+<Section index={3} title="Gauss's law">
+
+Now make the surface *closed* — a balloon, a box, a soda can with both ends capped. Anything with a clear inside and outside. The integral becomes the **net** flux: outgoing minus incoming. Lines that punch in one side and out the other contribute zero (they cross twice, with opposite signs). Lines that *originate* inside and escape contribute positively. Lines that terminate inside contribute negatively.
+
+Gauss's claim: the only thing this net flux depends on is the total charge enclosed, and the proportionality is fixed by a single constant of nature.
+
+<EquationBlock id="EQ.02">
+  $$ \oint_{S} \mathbf{E} \cdot d\mathbf{A} \;=\; \frac{Q_{\text{enc}}}{\varepsilon_0} $$
+</EquationBlock>
+
+The circle on the integral sign is the only new mark — it signals a closed surface. Q_enc is the algebraic sum of every charge inside (positive counts positive, negative counts negative, outside charges contribute zero). The constant ε₀ is the **vacuum permittivity**, a single number measured in the lab that fixes the conversion rate between charge and flux.
+
+Two things to notice. The shape of the surface is missing from the right-hand side: stretch the balloon, dent it, fold it into a star — as long as you do not cross any charge, the flux is unchanged. And outside charges contribute exactly zero, because every line entering also leaves; they cancel in the sum. This is what we mean when we say field lines "start on positive charges and end on negative charges." Gauss's law is that picture, made into an equation.
+
+An equivalent local form — the **<Term slug="divergence">divergence</Term>** of E equals ρ/ε₀ — says the same thing for an infinitesimal box. The integral form is what does the work here.
+
+</Section>
+
+<Section index={4} title="The spherical case">
+
+Here is what symmetry buys you. Put a point charge q at the origin and wrap it in a sphere of radius r — your **<Term slug="gaussian-surface">Gaussian surface</Term>**, chosen by you, not by the physics.
+
+By symmetry the field on this sphere has the same magnitude everywhere and points radially outward. The dot product E · dA is just `E · dA` everywhere, and the integral is `E` times the sphere's area `4π·r²`. Plug into Gauss:
+
+<EquationBlock id="EQ.03">
+  $$ E \cdot 4\pi r^{2} \;=\; \frac{q}{\varepsilon_0} \quad\Longrightarrow\quad E \;=\; \frac{q}{4\pi\varepsilon_0\, r^{2}} $$
+</EquationBlock>
+
+<SceneCard caption="FIG.03b — three symmetry pictures" className="w-full">
+  <GaussSymmetryScene />
+</SceneCard>
+
+Coulomb's law, recovered in two lines instead of two pages. The same argument works for any spherically symmetric distribution — ball, hollow shell, layered onion. From outside, all of them look like a point charge at the centre. From inside, only the charge enclosed by your Gaussian sphere matters; outer shells contribute nothing.
+
+</Section>
+
+<Section index={5} title="Line and plane symmetries">
+
+Symmetry does not have to be spherical. Two other geometries collapse Gauss to one-line algebra.
+
+A long straight line of charge with linear density λ (charge per metre) has cylindrical symmetry. Wrap it in a Gaussian cylinder of radius `s` and length `L`. The field is radial, perpendicular to the line, so the cylinder's two flat ends catch zero flux and only the curved side contributes. That side has area `2π·s·L`; inside is a charge `λ·L`. The L cancels:
+
+<EquationBlock id="EQ.04">
+  $$ E \;=\; \frac{\lambda}{2\pi\varepsilon_0\, s} $$
+</EquationBlock>
+
+The field falls as `1/s`, slower than the `1/r²` of a point charge — the line keeps contributing as you slide along it.
+
+An infinite flat sheet with surface density σ has planar symmetry. Wrap a small Gaussian pillbox straddling the sheet, each face of area A. The field points perpendicularly away from the sheet on both sides, so only the two flat faces catch flux (total area `2A`); inside is charge `σ·A`. The A cancels:
+
+<EquationBlock id="EQ.05">
+  $$ E \;=\; \frac{\sigma}{2\varepsilon_0} $$
+</EquationBlock>
+
+Distance does not appear. Walk away from an infinite sheet and the field is constant. This is why the inside of a parallel-plate capacitor is so well-behaved: each plate gives a uniform field, and they add. The simplest non-trivial geometry in all of electromagnetism falls out of one Gaussian pillbox.
+
+</Section>
+
+<Section index={6} title="Flux is surface-independent">
+
+We have been taking the choice of Gaussian surface for granted. This is the section where that choice stops being a tool and becomes the whole point.
+
+<SceneCard caption="FIG.03c — same charge, different surfaces, same flux" className="w-full">
+  <GaussianSurfacesScene />
+</SceneCard>
+
+A single point charge at the centre. Around it, the surface morphs continuously through a sphere, a tall cylinder, a cube, a flat pillbox, and back. The HUD reports the flux. The number does not move.
+
+Pause and let that land. The sphere has a smooth uniform field on its surface. The cube has corners where the field is weaker and faces where it is stronger. The cylinder catches almost no flux through its end caps and a great deal through its sides. Each surface gathers its flux in a completely different way — and yet the totals all agree, exactly, to `q/ε₀`.
+
+This is what "field lines start on charges" *means*, made into mathematics. Every line that leaves the central charge has to escape your surface eventually, no matter what shape you draw, because the surface encloses the charge. The lines do not care about your geometry; they only care about being counted once each. Gauss's law is the conservation law of field-line departures.
+
+The payoff in §4 and §5 was small change. *This* is the insight. Charges are sources. Surfaces are accountants. The accounting always balances.
+
+</Section>
+
+<Section index={7} title="Where it fails without symmetry">
+
+Honesty matters here. Gauss's law is *always true*. It is not always *useful*.
+
+Take a lopsided lump of charge — a bent wire, an irregular blob, two charges placed at random. Wrap a Gaussian surface around it and the law still tells you, exactly, that the flux equals the enclosed charge over ε₀. But to extract the field at a point you need to pull `E` out of the integral, and you can only do that when `E` is constant in magnitude and along the normal everywhere on the surface. Symmetry is what buys you that. Without it the integral cannot be inverted.
+
+When symmetry fails we fall back on Coulomb plus computer time, or on the local form — the divergence equation — with a numerical solver.
+
+The deep value of Gauss's law is not the algebra in §4 and §5. It is §6: that closed surfaces and enclosed charges are in a one-to-one bookkeeping relationship no geometric trickery can disturb. <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>, who first drew field lines, was right to insist the field was real. Gauss made the picture into an equation. In FIG.04 we give that field a partner: a potential, measured in volts.
+
+</Section>
+
+</TopicPageLayout>

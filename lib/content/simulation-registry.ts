@@ -341,6 +341,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   FieldLinesParallelPlatesScene: lazyScene(() =>
     import("@/components/physics/field-lines-parallel-plates-scene").then((m) => ({ default: m.FieldLinesParallelPlatesScene })),
   ),
+
+  // EM §01 — gauss-law (money shot)
+  GaussianSurfacesScene: lazyScene(() =>
+    import("@/components/physics/gaussian-surfaces-scene").then((m) => ({ default: m.GaussianSurfacesScene })),
+  ),
+  GaussSymmetryScene: lazyScene(() =>
+    import("@/components/physics/gauss-symmetry-scene").then((m) => ({ default: m.GaussSymmetryScene })),
+  ),
+  FluxThroughSurfaceScene: lazyScene(() =>
+    import("@/components/physics/flux-through-surface-scene").then((m) => ({ default: m.FluxThroughSurfaceScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
