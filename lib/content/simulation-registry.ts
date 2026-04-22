@@ -330,6 +330,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   ChargeSuperpositionScene: lazyScene(() =>
     import("@/components/physics/charge-superposition-scene").then((m) => ({ default: m.ChargeSuperpositionScene })),
   ),
+
+  // EM §01 — the-electric-field
+  FieldLinesPointScene: lazyScene(() =>
+    import("@/components/physics/field-lines-point-scene").then((m) => ({ default: m.FieldLinesPointScene })),
+  ),
+  FieldLinesDipoleScene: lazyScene(() =>
+    import("@/components/physics/field-lines-dipole-scene").then((m) => ({ default: m.FieldLinesDipoleScene })),
+  ),
+  FieldLinesParallelPlatesScene: lazyScene(() =>
+    import("@/components/physics/field-lines-parallel-plates-scene").then((m) => ({ default: m.FieldLinesParallelPlatesScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

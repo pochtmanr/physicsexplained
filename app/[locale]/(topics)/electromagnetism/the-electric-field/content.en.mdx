@@ -1,0 +1,101 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FieldLinesPointScene } from "@/components/physics/field-lines-point-scene";
+import { FieldLinesDipoleScene } from "@/components/physics/field-lines-dipole-scene";
+import { FieldLinesParallelPlatesScene } from "@/components/physics/field-lines-parallel-plates-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Charles Coulomb", href: "/physicists/charles-augustin-de-coulomb" },
+  { type: "term", label: "Electric field", href: "/dictionary/electric-field" },
+  { type: "term", label: "Field line", href: "/dictionary/field-line" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.02 · ELECTROSTATICS"
+  title="THE ELECTRIC FIELD"
+  subtitle="What charges leave behind in the empty space around them."
+/>
+
+<Section index={1} title="From force to field">
+
+<PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink> was a bookbinder's apprentice. He had no university education, almost no mathematics, and no business reaching the conclusion he reached. In the 1830s, working at the Royal Institution in London, he stared at iron filings sprinkled around a magnet and saw something his contemporaries refused to see: the empty space between the filings was not empty. Something filled it. Something stretched from one pole to the other and pulled the filings into curves. He called the curves *lines of force*, and he insisted — to a community of mathematicians who thought him a brilliant experimentalist with peculiar metaphysics — that those lines were physically real.
+
+This is the move. <PhysicistLink slug="charles-augustin-de-coulomb">Coulomb's law</PhysicistLink> tells you the force one charge exerts on another. But it never tells you what is happening in the space between them. Faraday's answer was that the space itself is the medium. A charge changes its surroundings. Place a second charge anywhere nearby and it feels what the first charge has already done to that location. The field is the bookkeeping for "what the first charge did," and it exists whether or not a second charge is ever there to feel it.
+
+The mathematical move is one division. Take Coulomb's law for the force on a small test charge `q` placed at a point, and divide both sides by `q`:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">E = F / q = k · Q / r²</span>
+</EquationBlock>
+
+The result is the <Term slug="electric-field">electric field</Term>: force per unit charge, in newtons per coulomb. It is the property of the *point in space*, not of any particular test charge you might happen to put there. Drop the test charge and the field stays. Drop in a different test charge and you predict the force on it by multiplying — `F = q·E` — and you are done. Two charges become one charge plus one field. Then *n* charges become one shared field. The whole rest of electromagnetism is what you learn to do once you start thinking about fields instead of pairs.
+
+</Section>
+
+<Section index={2} title="Field lines">
+
+Faraday's other gift was the picture. To make a field visible, draw lines that everywhere point along E. Each <Term slug="field-line">field line</Term> is a curve a tiny positive test charge would trace if you let it go and let the field push it. Where the lines are dense, the field is strong; where they spread out, the field weakens. That convention — density equals strength — is not a coincidence. It falls out of geometry. As you move farther from a point charge, a fixed number of lines fan out across larger and larger spheres. The lines per unit area drops as 1/r², which is exactly how E itself drops.
+
+<SceneCard caption="FIG.02a — radial lines from a point charge" className="w-full">
+  <FieldLinesPointScene />
+</SceneCard>
+
+The rules are simple. Lines start on positive charges. Lines end on negative charges, or run out to infinity. Lines never cross — if they did, the field at the crossing would have two different directions, which is incoherent. Toggle the sign in the scene above and the arrows reverse: positive charges push outward, negative charges pull inward.
+
+</Section>
+
+<Section index={3} title="Superposition of fields">
+
+When you have many charges, you do not multiply or convolve or do anything clever. You add the field vectors, one source at a time. This is the **principle of superposition**, and it is the same principle that worked for forces in §01 — once you divide forces by the test charge, the principle survives the division.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">E_total(r) = Σ_i  k · q_i · (r − r_i) / |r − r_i|³</span>
+</EquationBlock>
+
+The Σ symbol is "sum over": for every source charge `q_i` sitting at position `r_i`, compute its contribution to the field at the point `r`, then add them all up as vectors. The factor `(r − r_i) / |r − r_i|³` packages two things at once — direction (the unit vector from source to field point) and magnitude (1/r²). Superposition is the linchpin. It is what makes a field calculation tractable in the first place.
+
+</Section>
+
+<Section index={4} title="Dipole field">
+
+The simplest non-trivial arrangement is a **dipole**: a positive charge and an equal negative charge separated by a small distance. Atoms behave like dipoles when you push their electron clouds slightly off-centre. Water molecules are permanent dipoles. Antennas radiate as dipoles. The picture is everywhere.
+
+<SceneCard caption="FIG.02b — field lines of a dipole" className="w-full">
+  <FieldLinesDipoleScene />
+</SceneCard>
+
+Lines leave the positive charge in every direction, but they cannot escape — every one of them eventually curves back and lands on the negative charge. Far from the pair, the two contributions almost cancel. What survives is a residual field that falls off as 1/r³ instead of 1/r². The intuition: from far away, you cannot resolve the two charges as separate, so the leading 1/r² piece subtracts itself, and the next-order correction takes over. The rate is set by the **dipole moment** `p = q · d`, where `d` is the separation vector pointing from − to +.
+
+</Section>
+
+<Section index={5} title="Parallel plates">
+
+Take a positive sheet of charge and a negative sheet of charge and hold them parallel a small distance apart. The field of an infinite sheet is constant — it does not weaken with distance, because spreading the lines into more area is exactly cancelled by the larger amount of charge they see. Stack two such sheets with opposite signs and almost everything cancels outside, while inside the fields add. The result is a region of nearly uniform field running straight from + to −.
+
+<SceneCard caption="FIG.02c — parallel plates with edge fringing" className="w-full">
+  <FieldLinesParallelPlatesScene />
+</SceneCard>
+
+In the middle of the plates the lines are evenly spaced and parallel — a textbook uniform field. Out at the edges they bow outward in graceful arcs. That bowing is called **fringing**, and it is what real capacitors look like once you stop pretending the plates are infinite. The next topic, FIG.04 on capacitance, picks this geometry up and gives it a number: the energy stored per volt squared is `½·ε₀·E²` per unit volume of field, and a parallel-plate capacitor is the cleanest place to see that formula at work.
+
+</Section>
+
+<Section index={6} title="Where it matters">
+
+A century-and-a-half after Faraday, the field is no longer a metaphysical luxury. It is the explanation. Cathode-ray television sets, the dominant display technology of the twentieth century, steered electron beams across a screen by sweeping them through the electric field between two charged plates — the parallel-plate scene above, electrified at thirty kilohertz. Inkjet printers do the same trick at smaller scale: ink droplets pick up a charge as they exit the nozzle, fall through a programmable E-field, and land where the field tells them to. Atomic physics is electric fields all the way down — the electrons in every atom you have ever touched are bound by the field of the nucleus, and the chemistry of every reaction is the rearrangement of those bound configurations under the influence of neighbouring fields.
+
+<Callout variant="intuition">
+The hardest mental switch in the whole module is this one. Stop thinking "charges pull on charges across empty space." Start thinking "charges source a field, and the field pushes the charges that sit in it." Faraday made the switch in 1832 by looking at iron filings. Maxwell, thirty years later, would write the equations that prove it.
+</Callout>
+
+The field as a real, independent thing is the foundation everything that follows is built on. Gauss's law, the next topic, is what happens when you ask how much of the field is poking through a closed surface. Maxwell's equations, four modules from now, are what happens when you let the field move.
+
+</Section>
+
+</TopicPageLayout>
