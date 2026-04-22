@@ -1,0 +1,136 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { LorentzTrajectoryScene } from "@/components/physics/lorentz-trajectory-scene";
+import { CyclotronScene } from "@/components/physics/cyclotron-scene";
+import { VelocitySelectorScene } from "@/components/physics/velocity-selector-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Hans Christian Ørsted", href: "/physicists/hans-christian-orsted" },
+  { type: "term", label: "Lorentz force", href: "/dictionary/lorentz-force" },
+  { type: "term", label: "Magnetic field", href: "/dictionary/magnetic-field" },
+  { type: "term", label: "Tesla (unit)", href: "/dictionary/tesla-unit" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.12 · MAGNETOSTATICS"
+  title="CURRENTS AND THE LORENTZ FORCE"
+  subtitle="Why a moving charge feels what a still one doesn't — and how that single rule organises every cyclotron, mass spectrometer, and aurora."
+/>
+
+<Section index={1} title="A magnetic field that does nothing">
+
+Place a stationary electron inside a strong magnet. Use the biggest field you can buy. Watch carefully. Nothing happens.
+
+This is the strangest fact about magnetism, and the one every textbook glosses over. An electric field grabs a charge wherever it finds it, moving or not. A magnetic field is fussier. The charge has to be *going somewhere*. A static charge in a static B field is invisible to the field; a charge in motion is, suddenly, in a fight.
+
+The phenomenon was first noticed by <PhysicistLink slug="hans-christian-orsted">Hans Christian Ørsted</PhysicistLink> in 1820. He was running a current through a wire during a demonstration and noticed that a nearby compass needle twitched whenever he closed the switch. Currents — moving charges — pushed the needle. Stationary charges did not. A century later, electromagnetism would lean on that single observation as its foundational asymmetry.
+
+What we call the **<Term slug="lorentz-force">Lorentz force</Term>** is the formula that captures it. <PhysicistLink slug="hendrik-antoon-lorentz">Hendrik Lorentz</PhysicistLink> wrote it down in the 1890s, gluing the electric and magnetic effects on a single charge into one expression. It is the bridge from "fields" to "what particles actually do."
+
+</Section>
+
+<Section index={2} title="Set it moving">
+
+Here is the rule, in plain words. A charge `q` moving with velocity `v` through fields `E` and `B` feels two pushes added together. The first is the electric one, `qE`, dragging the charge along the field. The second is magnetic, and it is the strange one: it is *perpendicular to both* the velocity and the magnetic field, and its size is `|q| · |v| · |B|` times the sine of the angle between them.
+
+The mathematical object that captures "perpendicular to both, with that exact size" is the **cross product**. Written `v × B`, it eats two vectors and spits out a third one, at right angles to both, with length `|v||B| sin θ`. The direction is set by the **right-hand rule**: point your fingers along `v`, curl them toward `B`, and your thumb shows where `v × B` points. Reverse either input and the result flips. If `v` and `B` are parallel, `sin θ` is zero and the cross product vanishes — a charge moving along the field line feels no magnetic force at all.
+
+<EquationBlock id="EQ.01">
+  $$ \mathbf{F} \;=\; q\,(\mathbf{E} \;+\; \mathbf{v} \times \mathbf{B}) $$
+</EquationBlock>
+
+The whole topic is in this line. Nothing more is needed; everything that follows is an unpacking.
+
+<SceneCard caption="FIG.12a — three trajectories from one equation" className="w-full">
+  <LorentzTrajectoryScene />
+</SceneCard>
+
+Three particles released at the same instant in the same uniform B field, with three slightly different setups. The cyan trace is a clean circle: velocity perpendicular to B, no electric field, force always sideways, the path closes onto itself. The magenta trace is a helix: same setup but with a little extra velocity *along* B, which the magnetic force ignores, so the particle drifts forward while still spinning. The amber trace is a cycloid: now an E field is added perpendicular to B, and the result is a looping arc that drifts steadily sideways. One equation. Three behaviours. Toggle the sliders and watch each trace reorganise.
+
+<Callout variant="intuition">
+The magnetic force is always perpendicular to `v`. That means it can never speed the charge up or slow it down — it can only steer. Energy is conserved without any of the bookkeeping. This is why magnetic fields make great *guides* (cyclotrons, MRI, plasma confinement) but lousy *accelerators* on their own. To add energy, you need an electric field somewhere in the loop.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Three trajectories, one equation">
+
+Stare at FIG.12a long enough and you will see the entire structure. The magnetic force is a *centripetal* force — always pointing toward the centre of the orbit, never along the motion — so when a charge moves perpendicular to B, the trajectory closes into a circle. Add a velocity component parallel to B, and that component is untouched (the cross product zeroes it out), so the particle drifts at constant speed along the field line while orbiting around it. Stack the two motions and you get the helix: the natural shape charged particles take in the Earth's field, in the solar wind, in laboratory plasma.
+
+The cycloid is the subtler case. Crossed E and B fields produce a steady drift in the direction `(E × B)/B²`. The particle still wants to circle (because of B), but the electric field keeps nudging it. The result is a looping arc whose loops never come back to the same point — they drift sideways at a fixed velocity that depends only on E and B, not on the particle's mass or charge. Every charge sign, every mass, drifts together. This is the **E×B drift** and it shows up everywhere in plasma physics.
+
+Three different setups. The same `F = q(v × B + E)` rule, played three different ways.
+
+</Section>
+
+<Section index={4} title="Cyclotron motion">
+
+Take the simplest case — a charge with `v ⊥ B`, no electric field — and make it quantitative. The magnetic force has magnitude `|q|vB`. To circle at radius `r` you need a centripetal force `mv²/r`. Setting them equal:
+
+<EquationBlock id="EQ.02">
+  $$ r \;=\; \frac{m\,v}{|q|\,B} $$
+</EquationBlock>
+
+Faster particles trace wider circles. Stronger fields tighten them. Heavier particles bend less. So far so unsurprising. The shock comes when you ask how long one orbit takes. The circumference is `2πr`, the speed is `v`, so the period is `2πr/v = 2πm/(|q|B)`:
+
+<EquationBlock id="EQ.03">
+  $$ T \;=\; \frac{2\pi m}{|q|\,B}, \qquad \omega \;=\; \frac{|q|\,B}{m} $$
+</EquationBlock>
+
+Notice what is *missing*: the speed `v` does not appear. A slow particle and a fast particle in the same field complete one orbit in the same time. The fast one travels a longer path along a wider circle, and the two effects cancel exactly. This **isochronism** is what makes the cyclotron work.
+
+<SceneCard caption="FIG.12b — the cyclotron: spiral grows, period stays fixed" className="w-full">
+  <CyclotronScene />
+</SceneCard>
+
+Two D-shaped electrodes — the *dees* — sit either side of a thin gap. Inside each dee the field is purely magnetic, so the particle's path is a half-circle. As it crosses the gap, an alternating voltage gives it a small kick along the direction of motion, adding energy. Because the orbital frequency is independent of `v`, the voltage's flip rate can be set once and stay in tune forever. The spiral grows; the rhythm doesn't.
+
+Ernest Lawrence built the first cyclotron in 1932 — a metal disk the size of a salad plate that accelerated protons to a million electron-volts. Modern variants accelerate ions to billions of electron-volts and stand the size of buildings, but the music is the same.
+
+</Section>
+
+<Section index={5} title="Velocity selectors and mass spectrometers">
+
+Crossed E and B fields have a second use: they can pick a single speed out of a beam.
+
+Suppose E points down and B points into the page. A positive charge moving rightward with speed `v` feels an electric force `qE` *down* and a magnetic force `q(v × B)` *up* — the right-hand rule, applied to right-pointing `v` curling into the page-pointing `B`, lifts your thumb. The two forces compete. For a particle to sail straight through, they must cancel exactly. Setting their magnitudes equal, `qE = qvB`:
+
+<EquationBlock id="EQ.04">
+  $$ v_{\text{select}} \;=\; \frac{E}{B} $$
+</EquationBlock>
+
+Only particles entering at exactly this speed get through. Slower ones curve one way; faster ones curve the other.
+
+<SceneCard caption="FIG.12c — velocity selector: only v = E/B sails straight" className="w-full">
+  <VelocitySelectorScene />
+</SceneCard>
+
+Slide the E and B sliders. The amber band marks the selected speed; particles whose initial speed deviates from it bend visibly and slam into the channel walls. This is the input stage of every **mass spectrometer**: pick a speed with crossed fields, then send the survivors into a region of pure B where the cyclotron radius `r = mv/(|q|B)` separates them by mass-to-charge ratio. Each isotope carves out its own circle.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+The Lorentz force is the rule that organises charged-particle motion across nine orders of magnitude.
+
+In the **auroras**, solar-wind protons and electrons spiral down along Earth's magnetic field lines — helical trajectories from §3 — and dump their energy into the upper atmosphere near the magnetic poles. The shape of an aurora is the shape of a field line, lit up.
+
+In **particle accelerators**, the cyclotron's isochronism breaks down at relativistic speeds (the mass `m` becomes velocity-dependent), so the synchrotron was invented to compensate by ramping B in step with the particle's growing energy. CERN's LHC steers protons around a 27-kilometre ring with thousands of superconducting magnets, each of them an industrial-scale `F = qv × B`.
+
+In **MRI machines**, hydrogen nuclei in your tissue precess about the scanner's main field at the **Larmor frequency** `ω = γB`, which is the cyclotron frequency dressed up for spin-half particles. The radio pulses that flip them and the receivers that listen to them are tuned to that one number.
+
+In **mass spectrometry**, the velocity-selector trick from §5 is the front end of every device that identifies a molecule by its mass-to-charge ratio — proteomics, drug testing, dating ancient ice cores.
+
+In **fusion reactors**, magnetic confinement uses toroidal B fields to hold a plasma at a hundred million degrees off the walls of the chamber. The plasma is bound by `F = qv × B` — and only by it.
+
+The unit of magnetic field, the **<Term slug="tesla-unit">tesla</Term>**, was named after Nikola Tesla. Earth's field is about 50 microtesla; a refrigerator magnet a few millitesla; an MRI machine a few tesla; a neutron star, hundreds of millions. Across that span, one rule does the work. In FIG.13 we ask the inverse question: given some currents, what magnetic field do *they* produce? That is the Biot–Savart law.
+
+</Section>
+
+</TopicPageLayout>

@@ -440,6 +440,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   DomainSwitchingScene: lazyScene(() =>
     import("@/components/physics/domain-switching-scene").then((m) => ({ default: m.DomainSwitchingScene })),
   ),
+
+  // EM §03 — the-lorentz-force (money shot)
+  LorentzTrajectoryScene: lazyScene(() =>
+    import("@/components/physics/lorentz-trajectory-scene").then((m) => ({ default: m.LorentzTrajectoryScene })),
+  ),
+  VelocitySelectorScene: lazyScene(() =>
+    import("@/components/physics/velocity-selector-scene").then((m) => ({ default: m.VelocitySelectorScene })),
+  ),
+  CyclotronScene: lazyScene(() =>
+    import("@/components/physics/cyclotron-scene").then((m) => ({ default: m.CyclotronScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
