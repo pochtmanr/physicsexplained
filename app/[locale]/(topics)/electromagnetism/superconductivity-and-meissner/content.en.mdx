@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MeissnerExpulsionScene } from "@/components/physics/meissner-expulsion-scene";
+import { LevitationScene } from "@/components/physics/levitation-scene";
+import { CriticalTemperatureScene } from "@/components/physics/critical-temperature-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Heike Kamerlingh Onnes", href: "/physicists/heike-kamerlingh-onnes" },
+  { type: "physicist", label: "Walther Meissner", href: "/physicists/walther-meissner" },
+  { type: "term", label: "Meissner effect", href: "/dictionary/meissner-effect" },
+  { type: "term", label: "Critical temperature", href: "/dictionary/critical-temperature" },
+  { type: "term", label: "Diamagnetism", href: "/dictionary/diamagnetism" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.20 · FIELDS IN MATTER"
+  title="SUPERCONDUCTIVITY AND THE MEISSNER EFFECT"
+  subtitle="Below a material-specific temperature, two impossibilities happen at once — the resistance vanishes, and whatever magnetic field was inside is thrown out."
+/>
+
+<Section index={1} title="Zero is a phase of matter">
+
+In the summer of 1911, in a laboratory in Leiden, <PhysicistLink slug="heike-kamerlingh-onnes">Heike Kamerlingh Onnes</PhysicistLink> was measuring the electrical resistance of a frozen column of mercury, cooled with the liquid helium he had been the first person in the world to produce three years earlier. He expected a gentle slope — metals get more conductive as their lattice vibrations die out, and the curve should flatten toward some small residual value set by impurities. Instead, at 4.2 kelvin, the reading on his galvanometer fell below the noise floor of the instrument and stayed there.
+
+Not "very small." Not "approaching zero." *Zero.* He checked for a broken lead. He changed samples. He tried lead and tin the next year — same behaviour, at different temperatures. In his notebook he wrote, in Dutch, that the resistance "practically disappears." In the Nobel lecture he gave a few years later, he was blunter: mercury had *entered a new state*, distinguished from the ordinary metal by the total absence of electrical resistance.
+
+A superconductor's defining quantity is a temperature. Below the **<Term slug="critical-temperature">critical temperature</Term> T_c**, a DC current will circulate in a closed loop of the material for days — in persistent-current experiments, for *years* — without measurable decay. Above it, the same material is a perfectly ordinary metal.
+
+</Section>
+
+<Section index={2} title="Not just zero resistance">
+
+For twenty-two years, physicists interpreted the Onnes discovery the cheapest way possible. A superconductor, they said, must be a *perfect conductor* — a metal whose charge carriers had finally shed every scattering mechanism. This is already strange but not philosophically disruptive. A perfect conductor is just the limit you always pretended the wires in your circuits were.
+
+In 1933 <PhysicistLink slug="walther-meissner">Walther Meissner</PhysicistLink> and his student Robert Ochsenfeld put a superconducting tin cylinder into a magnetic field, cooled it through its transition, and measured the field just outside the surface. The field configuration did not stay put. The interior of the sample *ejected* the magnetic field as it crossed T_c — the flux lines peeled off, bent around the sample, and left the inside empty.
+
+<SceneCard caption="FIG.20a — cool past Tc and the field is thrown out, not just held in place" className="w-full">
+  <MeissnerExpulsionScene />
+</SceneCard>
+
+This is not something a perfect conductor can do. If you cooled a perfect conductor inside a field, the field would be *trapped* — Faraday's induction law forbids any change in the flux through a zero-resistance loop. You would cool it into its current state and the field stays. A superconductor says: no. Whatever was inside gets pushed out, and remains out, as if the sample were actively allergic to B. The field inside is not "unchanged from its initial value." It is *zero*.
+
+That is the **<Term slug="meissner-effect">Meissner effect</Term>**. In modern language: a superconductor is a thermodynamic phase whose order parameter demands B = 0 in the bulk, the same way a ferromagnet demands a finite M. It is not an extreme version of good conductivity; it is a different state of matter. Free energy, not induction, is doing the expelling.
+
+Viewed through the vocabulary of the previous topics, the Meissner phase is the extreme end of <Term slug="diamagnetism">diamagnetism</Term>: the volume magnetic susceptibility is exactly −1. Ordinary diamagnets (water, copper, bismuth) have χ_m of order −10⁻⁵ and you have to squint to see them push back against a field. A superconductor pushes back completely.
+
+<Callout variant="intuition">
+A perfect conductor remembers the field it was born into. A superconductor has no memory — cool it in any field, inside a solenoid or outside, and the interior ends up at B = 0. That is why Meissner's experiment, and not Onnes's, is the one that nails down the phase transition.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Penetration depth">
+
+"B = 0 inside" is not literally true at the surface. The field has to go from its exterior value to zero over *some* distance, and that distance is small but finite. The phenomenological picture the London brothers wrote down in 1935 says the field decays exponentially into the bulk:
+
+<EquationBlock id="EQ.01">
+  $$ B(x) \;=\; B_0 \, e^{-x / \lambda_L} $$
+</EquationBlock>
+
+with x the depth measured inward from the surface and λ_L the **London penetration depth** — typically 20–200 nanometres in elemental superconductors. Plain words: the applied field leaks a short way into the material and gets killed by surface currents that circulate to oppose it. Past a few λ_L the field is indistinguishable from zero.
+
+The penetration depth itself depends on temperature. As T rises toward T_c, the fraction of electrons participating in the Meissner-phase "superfluid" shrinks, and the shielding gets weaker. The two-fluid model gives λ(T) = λ_0 / √(1 − (T/T_c)⁴), which diverges at T_c: right at the transition the screening fails completely, which is how you know you have arrived at the phase boundary.
+
+</Section>
+
+<Section index={4} title="Levitation, or: a magnet and its image">
+
+The Meissner effect gives you one of the most photographed demonstrations in physics. Cool a ceramic YBCO puck in liquid nitrogen, set a small neodymium magnet above it, and the magnet hovers — a few millimetres up, perfectly stable, gently wobbling when you nudge it.
+
+<SceneCard caption="FIG.20b — a permanent magnet and its mirror image in a superconducting plate" className="w-full">
+  <LevitationScene />
+</SceneCard>
+
+The right way to read this picture is to remember §01.07. Back in electrostatics we solved "a point charge above a grounded conductor" by replacing the conductor with an image charge of opposite sign, sitting at the mirror position. The boundary condition (potential = 0 on the plane) is satisfied automatically, and the force on the real charge is just Coulomb's law between the real charge and its image.
+
+The Meissner boundary condition is the magnetic analogue: B·n̂ = 0 on the superconductor's surface, because there is no flux inside to speak of. The same trick works. Replace the superconductor with a mirror magnet at the reflected position, with poles reversed so that like faces like. The field outside the plate is exactly the sum of the real magnet plus its image, and the force on the real magnet is purely repulsive — the ghost magnet underneath pushes it up. At equilibrium, the height is whatever makes that repulsion balance gravity. The stability comes from flux pinning in the type-II ceramic, which is why real levitating pucks don't drift sideways the way a pure image-magnet calculation would allow.
+
+One mechanism, two branches of electromagnetism: conductors expel electric field, superconductors expel magnetic field, the bookkeeping is identical.
+
+</Section>
+
+<Section index={5} title="Critical temperature — and field, and current">
+
+Every superconductor has three ways to die: warm it past T_c, immerse it in a magnetic field larger than H_c(T), or push more than a critical current through it. The three boundaries carve out a small region in (T, H, I) space that the Meissner phase calls home, and that was the experimental programme of the twentieth century — finding materials with bigger regions.
+
+<SceneCard caption="FIG.20c — same motif at 4.2 K, 7.2 K, 92 K" className="w-full">
+  <CriticalTemperatureScene />
+</SceneCard>
+
+The critical-temperature story had two great punctuations. In 1957 niobium alloys hit T_c around 20 K and stopped climbing for three decades; conventional superconductivity seemed to be capped. Then in 1986 Georg Bednorz and Alex Müller, working at IBM Zurich, found that a copper-oxide ceramic superconducted at 35 K. Within a year the family had broken above the liquid-nitrogen line at 77 K, and YBa₂Cu₃O₇ landed at **T_c ≈ 92 K** — a temperature you can reach with a supermarket-cheap cryogen. A couple of decades later, hydrogen sulfide squeezed to 155 GPa crossed **203 K**. Room-temperature superconductivity under room pressure remains, as of the writing of this page, still open.
+
+The critical field shrinks as you warm up: H_c(T) ≈ H_c0 · (1 − (T/T_c)²). Push the field above that curve and the Meissner phase collapses back to normal metal.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Every MRI machine you have ever met is built around a superconducting solenoid — typically NbTi or Nb₃Sn wire in a bath of liquid helium. The point isn't the zero resistance (you could in principle power a normal magnet from the wall), it's that a persistent current lets you make a field of several tesla, perfectly stable over years, inside a bore big enough to put a human in.
+
+The **LHC at CERN** steers protons around a 27-kilometre ring with 1232 superconducting dipole magnets, each holding its field to within a part per million at 8.3 tesla. Without superconductivity the accelerator would have to be several times larger and draw a small country's electricity budget.
+
+**Maglev trains** use the Meissner effect directly — levitation by flux expulsion over a track of cooled superconducting coils. **SQUIDs** (superconducting quantum interference devices) are the most sensitive magnetometers ever built, able to read the femtotesla field from a firing neuron. And superconducting qubits — tiny Josephson-junction circuits at 20 millikelvin — are the hardware platform that the current generation of quantum computers runs on.
+
+The microscopic theory — why charge carriers in a superconductor pair up into Cooper pairs, why pairs obey bosonic statistics, why the resulting condensate gives both zero resistance and the Meissner effect — is **BCS theory**, written down in 1957 by Bardeen, Cooper, and Schrieffer. It is a quantum-mechanical account that a field-theory branch can do justice to but that this branch, built on classical Maxwell thinking, cannot. We will meet it again in the QUANTUM branch, where <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>'s continuum of "field lines threading matter" gives way to a condensate whose phase is the thing actually carrying the current. For now: remember that "below T_c" means a new kind of order, and the rest is bookkeeping.
+
+</Section>
+
+</TopicPageLayout>

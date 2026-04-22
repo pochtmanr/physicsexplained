@@ -528,6 +528,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   DomainWallMotionScene: lazyScene(() =>
     import("@/components/physics/domain-wall-motion-scene").then((m) => ({ default: m.DomainWallMotionScene })),
   ),
+
+  // EM §04 — superconductivity-and-meissner
+  MeissnerExpulsionScene: lazyScene(() =>
+    import("@/components/physics/meissner-expulsion-scene").then((m) => ({ default: m.MeissnerExpulsionScene })),
+  ),
+  LevitationScene: lazyScene(() =>
+    import("@/components/physics/levitation-scene").then((m) => ({ default: m.LevitationScene })),
+  ),
+  CriticalTemperatureScene: lazyScene(() =>
+    import("@/components/physics/critical-temperature-scene").then((m) => ({ default: m.CriticalTemperatureScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
