@@ -1323,6 +1323,44 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
     ],
   },
+  {
+    slug: "angular-velocity",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "circular-motion" },
+      { branchSlug: "classical-mechanics", topicSlug: "torque-and-rotational-dynamics" },
+    ],
+  },
+  {
+    slug: "centrifugal-force",
+    category: "concept",
+    relatedPhysicists: ["christiaan-huygens"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "non-inertial-frames" },
+    ],
+  },
+  {
+    slug: "coriolis-force",
+    category: "concept",
+    relatedPhysicists: ["gaspard-gustave-de-coriolis"],
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "non-inertial-frames" },
+    ],
+  },
+  {
+    slug: "forced-oscillation",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "damped-and-driven-oscillations" },
+    ],
+  },
+  {
+    slug: "amplitude-response",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "classical-mechanics", topicSlug: "damped-and-driven-oscillations" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
