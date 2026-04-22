@@ -429,6 +429,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   DielectricRefractionScene: lazyScene(() =>
     import("@/components/physics/dielectric-refraction-scene").then((m) => ({ default: m.DielectricRefractionScene })),
   ),
+
+  // EM §02 — piezo-and-ferroelectricity
+  PiezoCrystalScene: lazyScene(() =>
+    import("@/components/physics/piezo-crystal-scene").then((m) => ({ default: m.PiezoCrystalScene })),
+  ),
+  FerroelectricHysteresisScene: lazyScene(() =>
+    import("@/components/physics/ferroelectric-hysteresis-scene").then((m) => ({ default: m.FerroelectricHysteresisScene })),
+  ),
+  DomainSwitchingScene: lazyScene(() =>
+    import("@/components/physics/domain-switching-scene").then((m) => ({ default: m.DomainSwitchingScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

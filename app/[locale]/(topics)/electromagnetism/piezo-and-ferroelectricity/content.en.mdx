@@ -1,0 +1,105 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PiezoCrystalScene } from "@/components/physics/piezo-crystal-scene";
+import { FerroelectricHysteresisScene } from "@/components/physics/ferroelectric-hysteresis-scene";
+import { DomainSwitchingScene } from "@/components/physics/domain-switching-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pierre Curie", href: "/physicists/pierre-curie" },
+  { type: "term", label: "Piezoelectricity", href: "/dictionary/piezoelectricity" },
+  { type: "term", label: "Ferroelectricity", href: "/dictionary/ferroelectricity" },
+  { type: "term", label: "Polarization", href: "/dictionary/polarization" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.11 · ELECTRIC FIELDS IN MATTER"
+  title="PIEZOELECTRICITY AND FERROELECTRICITY"
+  subtitle="Crystals that remember the field — squeezed quartz makes a voltage, soaked-then-released BaTiO₃ keeps its polarisation when the field is gone."
+/>
+
+<Section index={1} title="Crystals with a memory">
+
+Most dielectrics are forgetful. Apply a field, the molecular dipoles tilt; remove the field, the dipoles relax back, the polarisation goes to zero, and the material has no idea anything happened. The previous topic — bound charges, the displacement field, ordinary linear dielectrics — was that whole story. *D = εE.* No memory, no surprise.
+
+A handful of crystals refuse to play that game. Some produce a voltage when you squeeze them, and a strain when you apply a voltage, with the same coupling constant doing both jobs. A smaller, weirder subset keep their polarisation after the field is removed, and even after the field is reversed they hold out for a while before flipping. These are the **piezoelectrics** and the **ferroelectrics**. They exist because their lattices have no centre of inversion symmetry — a built-in directionality, a polar axis, that the lattice will happily either push back against or rearrange itself along. Once you start looking, you find them in every quartz watch, every ultrasound transducer, and every receipt-printer memory chip.
+
+</Section>
+
+<Section index={2} title="The direct piezoelectric effect">
+
+The Curie brothers — Jacques, the older, and <PhysicistLink slug="pierre-curie">Pierre</PhysicistLink>, then twenty-one — discovered piezoelectricity in 1880 by squeezing thin slabs of tourmaline, quartz, and Rochelle salt between brass plates and watching electrometers across the crystal twitch. They went on to make the effect quantitative, and gave it its name from the Greek *piezein,* "to press."
+
+What they found is that the surface charge density on the polar faces of the crystal is exactly proportional to the applied stress. There is a coefficient, a single number for each crystal direction, that converts one to the other. The diagonal element along the polar axis is called *d₃₃,* and for α-quartz it has the value 2.3 × 10⁻¹² C/N. For lead zirconate titanate (PZT), the workhorse of modern transducers, it is two orders of magnitude larger — about 374 pC/N. The full constitutive equation including an applied field reads
+
+<EquationBlock latex="D = d_{33}\, \sigma + \varepsilon\, E" caption="EQ.01 — direct piezoelectric effect plus the ordinary dielectric response." />
+
+with σ the mechanical stress (in pascals — newtons per square metre), E the applied electric field, and ε the dielectric permittivity at constant stress. The first term is the new physics; the second is the same response any insulator gives.
+
+<SceneCard caption="FIG.11a — squeeze the lattice, watch the polar faces light up" className="w-full">
+  <PiezoCrystalScene />
+</SceneCard>
+
+Squeeze the slider in DIRECT mode. Compressive stress (negative σ) drives one sign of charge to the top face and the other to the bottom; tensile stress flips both. The numbers in the HUD are real: a 1 MPa squeeze on a quartz disc produces about 2.3 µC per square metre on its polar faces. That is enough, with a high-impedance amplifier, to register a single grain of rice landing on the crystal — which is how piezoelectric force sensors work.
+
+</Section>
+
+<Section index={3} title="The inverse effect">
+
+Switch the toggle to INVERSE. Now the slider drives a voltage across the same crystal, and the lattice elongates or contracts. The relation is the same equation read backwards: the strain is
+
+<EquationBlock latex="\frac{\delta L}{L} = d_{33}\, E = d_{33}\,\frac{V}{L}" caption="EQ.02 — inverse piezoelectric effect; same d₃₃." />
+
+The same numerical coefficient that mapped stress to charge in EQ.01 maps field to strain in EQ.02. This is not a coincidence — it is forced by a Maxwell relation in the thermodynamic free energy of the crystal. One d₃₃, two effects, both directions.
+
+For α-quartz, applying 1000 V across a 1 mm wafer gives a strain of about 2.3 parts per million — invisible to the eye, less than a wavelength of light. But drive the voltage at exactly the crystal's mechanical resonance frequency and the tiny stretches accumulate into a violent oscillation that quartz sustains with absurdly low losses. The Q factor of a good resonator is around 100,000 — it rings for a hundred thousand cycles before its amplitude decays by a factor of e.
+
+This is the trick inside every quartz watch made since 1969. A laser-trimmed tuning fork, cut to vibrate at exactly 32,768 Hz (which is 2¹⁵ — a chain of flip-flops divides it down to 1 Hz), is driven by a small alternating voltage from a CMOS oscillator. The crystal flexes; the oscillator amplifies whatever feedback comes back off the strained electrodes; the loop locks at resonance. The frequency drifts by seconds per year. For fifty years it has owned the wristwatch market, and the same effect at higher frequencies clocks every radio, computer, and GPS receiver.
+
+</Section>
+
+<Section index={4} title="Ferroelectricity">
+
+Now squeeze harder. In a small subset of piezoelectric crystals — barium titanate (BaTiO₃), the niobates, the titanates of lead and zirconium, and a few organics — the lattice has not just *one* preferred polarisation direction but two, related by a reflection. The ions can sit slightly off-centre in their unit cells, displaced one way or the other along the polar axis. The displacement creates a permanent dipole, and the energy to flip from one orientation to the other is finite but nontrivial. Such crystals are called **ferroelectrics,** by analogy with ferromagnets, which exhibit the same memory in the magnetic sector.
+
+Apply a strong field along the polar axis and you can drive every unit cell to its "+" orientation; the macroscopic polarisation saturates at *+P_sat.* Now ramp the field down to zero. Some cells flip back, but most don't — the energy cost of flipping is too high without a push. The polarisation at *E = 0* lands at the **remanent polarisation** *P_r,* a substantial fraction of *P_sat.* To pull the polarisation back through zero, you have to apply a reversed field of magnitude *E_c,* the **coercive field.** Then the curve passes through zero, saturates at *−P_sat,* and the same story repeats on the way back.
+
+<SceneCard caption="FIG.11b — the P–E hysteresis loop, traced live as E sweeps" className="w-full">
+  <FerroelectricHysteresisScene />
+</SceneCard>
+
+The trace plots polarisation versus applied field as the driving E auto-ramps between ±E_sat. The interior of the loop has area, and that area is the energy dissipated per cycle per unit volume. There is no clean linear relation between *P* and *E* — instead, two saturating branches, each with memory, joined at the saturation tips. Ferroelectrics are the most extreme departure from the comforting *D = εE* of the previous lecture.
+
+</Section>
+
+<Section index={5} title="Domains in a ferroelectric">
+
+The macroscopic loop is the average of something microscopic. Inside an unpoled ferroelectric crystal, the lattice spontaneously breaks up into **domains** — patches of unit cells all aligned the same way, separated by thin walls where the alignment switches. Different domains point different directions, and the macroscopic polarisation is the vector average over the domain configuration. A freshly-grown crystal of barium titanate has roughly equal "up" and "down" domain volumes; its average polarisation is zero.
+
+When you apply a field, individual domains begin to switch. The soft ones flip first — those whose local environment lowers their flipping threshold — and as the field grows, harder and harder domains follow. The macroscopic polarisation grows by domain switching, not by uniform tilting.
+
+<SceneCard caption="FIG.11c — domains flip one by one as the field sweeps" className="w-full">
+  <DomainSwitchingScene />
+</SceneCard>
+
+Watch the mosaic. Each cell has a private switching threshold (drawn from a quenched random distribution shown as the histogram on the right). As |E| sweeps past each threshold, the corresponding cell aligns. The macroscopic ⟨P⟩ — averaged over all the cells — traces out a hysteresis loop just like the smooth model in the previous figure. The smooth thermodynamic curve is hiding a discrete combinatorial process underneath.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Quartz oscillators are everywhere — a 32,768 Hz crystal in your watch, a 25 MHz crystal as the master clock of an Ethernet card, a 100 MHz oven-stabilised oscillator behind every cellular base station. You probably own dozens of pieces of vibrating quartz right now.
+
+Piezoelectric ultrasound transducers send and receive the megahertz pressure waves that image babies, find cracks inside aircraft wings, and run sonar. Drive a PZT puck with a short voltage pulse and it punches a single ultrasonic ping into the medium; let it listen for echoes and the inverse effect generates a measurable signal at every reflection.
+
+Ferroelectrics turn into computer memory. **FRAM** stores bits as the polarisation direction of small BaTiO₃ or PZT capacitors; reading briefly applies a field and senses whether the polarisation flipped. It is non-volatile, fast, and survives many more write cycles than flash — it runs the data buses inside many smart-card chips and is the place your local cafe's receipt printer stores its line counter so it doesn't lose count when the lights flicker.
+
+And tiny piezoelectric beams in your phone's accelerometer turn acceleration into voltage; tiny drivers in inkjet printheads spit precisely metered drops onto paper. The single equation EQ.01 plays out in a different geometry every time, always with the Curie-brothers logic: a crystal without an inversion centre couples electricity and mechanics, in both directions.
+
+</Section>
+
+</TopicPageLayout>
