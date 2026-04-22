@@ -506,6 +506,38 @@ const NewtonsCannonScene = dynamic(
   { ssr: false },
 );
 
+const CarouselScene = dynamic(
+  () =>
+    import("@/components/physics/carousel-scene").then((m) => ({
+      default: m.CarouselScene,
+    })),
+  { ssr: false },
+);
+
+const CoriolisTurntableScene = dynamic(
+  () =>
+    import("@/components/physics/coriolis-turntable-scene").then((m) => ({
+      default: m.CoriolisTurntableScene,
+    })),
+  { ssr: false },
+);
+
+const CoriolisGlobeScene = dynamic(
+  () =>
+    import("@/components/physics/coriolis-globe-scene").then((m) => ({
+      default: m.CoriolisGlobeScene,
+    })),
+  { ssr: false },
+);
+
+const RotatingProjectileScene = dynamic(
+  () =>
+    import("@/components/physics/rotating-projectile-scene").then((m) => ({
+      default: m.RotatingProjectileScene,
+    })),
+  { ssr: false },
+);
+
 const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "ellipse-construction": EllipseConstruction,
   "phase-portrait": () => <PhasePortrait theta0={0.5} length={1.5} />,
@@ -570,6 +602,10 @@ const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "centripetal-force": CentripetalForceScene,
   "angular-velocity": AngularVelocityScene,
   "newtons-cannon": NewtonsCannonScene,
+  "carousel": CarouselScene,
+  "coriolis-turntable": CoriolisTurntableScene,
+  "coriolis-globe": CoriolisGlobeScene,
+  "rotating-projectile": RotatingProjectileScene,
 };
 
 export function Visualization({ vizKey }: { vizKey: string }) {
