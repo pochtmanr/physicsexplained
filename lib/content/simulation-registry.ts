@@ -385,6 +385,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   LightningShelterScene: lazyScene(() =>
     import("@/components/physics/lightning-shelter-scene").then((m) => ({ default: m.LightningShelterScene })),
   ),
+
+  // EM §01 — method-of-images
+  ImageChargePlaneScene: lazyScene(() =>
+    import("@/components/physics/image-charge-plane-scene").then((m) => ({ default: m.ImageChargePlaneScene })),
+  ),
+  ImageChargeSphereScene: lazyScene(() =>
+    import("@/components/physics/image-charge-sphere-scene").then((m) => ({ default: m.ImageChargeSphereScene })),
+  ),
+  InducedChargeScene: lazyScene(() =>
+    import("@/components/physics/induced-charge-scene").then((m) => ({ default: m.InducedChargeScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -1,0 +1,118 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ImageChargePlaneScene } from "@/components/physics/image-charge-plane-scene";
+import { ImageChargeSphereScene } from "@/components/physics/image-charge-sphere-scene";
+import { InducedChargeScene } from "@/components/physics/induced-charge-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Siméon Denis Poisson", href: "/physicists/simeon-denis-poisson" },
+  { type: "term", label: "Image charge", href: "/dictionary/image-charge" },
+  { type: "term", label: "Induced charge", href: "/dictionary/induced-charge" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.07 · ELECTROSTATICS"
+  title="THE METHOD OF IMAGES"
+  subtitle="A single beautiful trick that turns a hard boundary-condition problem into an easy symmetry."
+/>
+
+<Section index={1} title="The problem">
+
+A point charge hovers a centimetre above a grounded sheet of metal. What is the electric field everywhere above the sheet? It sounds like the easiest possible question. It is not.
+
+The trouble is that the metal is a conductor, and a conductor cannot tolerate an electric field along its surface. Free electrons inside it would slide until that field vanished. They do exactly that — billions of them rearrange themselves on the upper surface, leaving an <Term slug="induced-charge">induced charge</Term> distribution that, together with the original point charge, holds the surface at a single potential. Because the sheet is grounded, that potential is zero. The boundary condition is `V = 0` on the entire plane.
+
+Solving the field above the plane therefore means solving Laplace's equation — the statement that, in vacuum, the potential averages out: at every empty point, V equals the mean of V on any small sphere around it — subject to that boundary condition plus the singular point charge. In symbols Laplace's equation is `∇²V = 0`, and it belongs to the tradition begun by <PhysicistLink slug="simeon-denis-poisson">Poisson</PhysicistLink> and Laplace at the start of the nineteenth century. There is no Gauss's law trick available — the geometry has no useful symmetry. Solving such a problem from scratch, with the induced charge as an unknown, is genuinely hard.
+
+</Section>
+
+<Section index={2} title="The trick">
+
+In 1848 William Thomson — later Lord Kelvin, then twenty-four — noticed something extraordinary. *Throw the conductor away.* In its place, drop a phantom charge of opposite sign at the mirror-reflected position behind where the plane used to be. A real `+q` at height `d` above the plane, a phantom `-q` at depth `d` below it.
+
+The two together produce a potential that is exactly zero on the entire plane `z = 0`. (At every point on the plane, you are equidistant from `+q` and `-q`. The contributions cancel.) That is the same boundary condition the grounded conductor was enforcing. By the *uniqueness theorem* — Laplace's equation has a single solution for given boundary data — the field of the real charge plus its <Term slug="image-charge">image charge</Term>, in the region above the plane, IS the field of the real charge plus the conductor.
+
+<SceneCard caption="FIG.07a — real-world view vs image-world view" className="w-full">
+  <ImageChargePlaneScene />
+</SceneCard>
+
+Toggle between the two views. In the real-world view, field lines from the `+` charge curve down and slam into the conductor at right angles, terminating on the induced surface charge. In the image-world view, the lines pass straight through the (now-absent) plane to a phantom `-` charge below — and above the plane, they trace exactly the same curves. The induced surface charge has been replaced, conceptually, by a single point charge living in a region we never look at. A messy boundary-value problem has become a two-charge problem.
+
+The image charge is not real. It does not exist. There is no physical charge below the plane. The trick works because the mathematics of Laplace's equation cannot tell the difference between two different sources that produce the same boundary data — and we are free to choose whichever source makes the calculation easy.
+
+</Section>
+
+<Section index={3} title="The force on the real charge">
+
+The real charge is attracted to the conductor — the induced negative charge below it pulls it down. How hard? With the image-charge picture, the answer falls out in one line. The real `+q` feels the Coulomb force of its phantom `-q` partner at a distance of `2d` (the real charge sits at `+d`, the image at `-d`, so they are `2d` apart).
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">F = -k · q² / (2d)²</span>
+</EquationBlock>
+
+The minus sign means the force pulls the real charge toward the plane. The factor of `(2d)²` — not `d²` — is the subtle bit, and the one students get wrong. The relevant separation in Coulomb's law is between the real charge and its image, not between the real charge and the surface. Halve the distance to the plane and you don't quadruple the force; you do, because halving `d` halves `2d` too — but you have to remember to compute it that way.
+
+</Section>
+
+<Section index={4} title="The induced surface charge">
+
+The image trick gives the field above the plane for free, but it also tells us what the conductor is actually doing. Just outside any conductor, the electric field is perpendicular to the surface, with magnitude `σ/ε₀` where `σ` is the local surface charge density. Compute the field at the plane using the two-charge picture, divide by `ε₀`, and you have `σ(x)`.
+
+For a real charge `+q` at height `d`, the answer is
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">σ(x) = -q · d / [2π · (x² + d²)^(3/2)]</span>
+</EquationBlock>
+
+a smooth negative bump centred directly under the real charge, falling off with distance. The dip directly below the charge is where the conductor's electrons piled up most densely.
+
+<SceneCard caption="FIG.07b — induced σ(x) and its integral" className="w-full">
+  <InducedChargeScene />
+</SceneCard>
+
+Now integrate `σ` over the entire plane — sum the surface charge in every infinitesimal patch and add them all up. The total comes out to *exactly* `-q`. Slide the window slider out: the running total `Q(window)` creeps toward `-1` as you sample more of the plane. Every electron has to be accounted for: the conductor is electrically neutral overall, but it has shunted exactly enough negative charge to the upper surface to terminate every field line that the real `+q` casts on it.
+
+</Section>
+
+<Section index={5} title="The sphere case">
+
+Kelvin's bigger gift was the same trick for a *sphere*. Take a grounded conducting sphere of radius `R`, drop a real `+q` outside it at distance `a` from the centre. Where, and how big, is the image charge?
+
+The plane was a special case where the answer was a perfect mirror — same magnitude, mirror position. The sphere does not preserve magnitudes. Kelvin's result is
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">q′ = -q · R/a    at    d′ = R²/a</span>
+</EquationBlock>
+
+The image sits inside the sphere at distance `R²/a` from the centre — the *inverse point* of the real charge with respect to the sphere — with magnitude reduced by the factor `R/a`. As `a → R⁺`, the image approaches `-q` sitting just inside the surface, and the force on the real charge diverges. As `a → ∞`, the image shrinks to nothing and slides toward the centre.
+
+<SceneCard caption="FIG.07c — Kelvin's image charge for the sphere" className="w-full">
+  <ImageChargeSphereScene />
+</SceneCard>
+
+Slide `a` and watch the image track the formula in real time. The HUD shows `q′` and `d′` updating live. The same uniqueness argument as before guarantees that the field outside the sphere — where the real charge actually lives — is exactly that of the real charge plus this phantom partner. Inside the sphere, where the real conductor sits, the picture is a fiction; we never go there.
+
+</Section>
+
+<Section index={6} title="Where the trick breaks">
+
+The method of images is wonderful when it works and silent when it doesn't. The plane and the sphere are essentially the only conductor geometries for which a single image charge does the job. Two parallel planes need an infinite series of mirror images, bouncing back and forth (the same geometry as a hall of mirrors). A right-angle dihedral needs three. Most other shapes — a cube, an ellipsoid, a real laboratory electrode — admit no closed-form image at all.
+
+For those, you have to solve Laplace's equation directly: numerically, by relaxation or finite-element methods, or by expansion in the geometry's natural basis (spherical harmonics for a sphere, Bessel functions for a cylinder, and so on). The image trick is a special gift of simple geometry — a reminder that physics rewards symmetry beyond all reason. When the symmetry is there, the answer falls out in a line. When it isn't, you reach for a computer.
+
+</Section>
+
+<Section index={7} title="Why it matters">
+
+The method of images is not just a pedagogical trick. It is the working tool of a real subfield. Scanning probe microscopes — atomic force, scanning tunnelling — rely on knowing the field between a sharp metal tip and a flat conducting sample, and the leading-order calculation is exactly this two-charge picture. Atoms and molecules adsorbed on metal surfaces feel the image-charge attraction; it is part of why molecules stick to catalysts. MEMS devices — the tiny silicon machines inside accelerometers and gyroscopes — are designed around the forces between micron-scale charged plates, and the engineer's first sanity check is `F = -kq²/(2d)²` with `q` replaced by the relevant capacitance times voltage.
+
+A trick that started as a young Kelvin showing off in 1848 turned into a calculation tool that nobody serious does without. That is what beautiful physics looks like.
+
+</Section>
+
+</TopicPageLayout>
