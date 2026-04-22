@@ -334,6 +334,87 @@ const CLASSICAL_MECHANICS_TOPICS: readonly Topic[] = [
   },
 ];
 
+const ELECTROMAGNETISM_MODULES: readonly Module[] = [
+  { slug: "electrostatics", title: "Electrostatics", index: 1 },
+  { slug: "fields-in-matter", title: "Electric Fields in Matter", index: 2 },
+  { slug: "magnetostatics", title: "Magnetostatics", index: 3 },
+  { slug: "magnetism-in-matter", title: "Magnetic Fields in Matter", index: 4 },
+  { slug: "induction", title: "Electrodynamics & Induction", index: 5 },
+  { slug: "circuits", title: "Circuits", index: 6 },
+  { slug: "maxwell", title: "Maxwell's Equations", index: 7 },
+  { slug: "em-waves-vacuum", title: "EM Waves in Vacuum", index: 8 },
+  { slug: "waves-in-matter-optics", title: "Waves in Matter & Optics", index: 9 },
+  { slug: "radiation", title: "Radiation", index: 10 },
+  { slug: "em-relativity", title: "EM & Relativity", index: 11 },
+  { slug: "foundations", title: "Foundations", index: 12 },
+];
+
+const ELECTROMAGNETISM_TOPICS: readonly Topic[] = [
+  {
+    slug: "coulombs-law",
+    title: "ELECTRIC CHARGE AND COULOMB'S LAW",
+    eyebrow: "FIG.01 · ELECTROSTATICS",
+    subtitle: "The force between two charges — and why it looks so much like gravity.",
+    readingMinutes: 10,
+    status: "live",
+    module: "electrostatics",
+  },
+  {
+    slug: "the-electric-field",
+    title: "THE ELECTRIC FIELD",
+    eyebrow: "FIG.02 · ELECTROSTATICS",
+    subtitle: "When a force has a place of its own.",
+    readingMinutes: 11,
+    status: "live",
+    module: "electrostatics",
+  },
+  {
+    slug: "gauss-law",
+    title: "GAUSS'S LAW",
+    eyebrow: "FIG.03 · ELECTROSTATICS",
+    subtitle: "The equation that turns symmetry into an answer.",
+    readingMinutes: 12,
+    status: "live",
+    module: "electrostatics",
+  },
+  {
+    slug: "electric-potential",
+    title: "ELECTRIC POTENTIAL AND VOLTAGE",
+    eyebrow: "FIG.04 · ELECTROSTATICS",
+    subtitle: "Energy per charge, and the map every battery reads from.",
+    readingMinutes: 11,
+    status: "live",
+    module: "electrostatics",
+  },
+  {
+    slug: "capacitance-and-field-energy",
+    title: "CAPACITANCE AND FIELD ENERGY",
+    eyebrow: "FIG.05 · ELECTROSTATICS",
+    subtitle: "Where the charge goes when you let go of the switch.",
+    readingMinutes: 12,
+    status: "live",
+    module: "electrostatics",
+  },
+  {
+    slug: "conductors-and-shielding",
+    title: "CONDUCTORS AND THE FARADAY CAGE",
+    eyebrow: "FIG.06 · ELECTROSTATICS",
+    subtitle: "Why a metal box is the safest place in a lightning storm.",
+    readingMinutes: 11,
+    status: "live",
+    module: "electrostatics",
+  },
+  {
+    slug: "method-of-images",
+    title: "THE METHOD OF IMAGES",
+    eyebrow: "FIG.07 · ELECTROSTATICS",
+    subtitle: "A trick that turns a hard problem into a symmetry.",
+    readingMinutes: 12,
+    status: "live",
+    module: "electrostatics",
+  },
+];
+
 export const BRANCHES: readonly Branch[] = [
   {
     slug: "classical-mechanics",
@@ -354,10 +435,10 @@ export const BRANCHES: readonly Branch[] = [
     eyebrow: "§ 02",
     subtitle: "Light, charge, and the field that holds the world together.",
     description:
-      "Maxwell's four equations — the most important four lines in physics — unify electricity, magnetism, and light into a single field theory. Every radio, screen, wire, and star depends on them.",
-    modules: [],
-    topics: [],
-    status: "coming-soon",
+      "Maxwell's four equations — the most important four lines in physics — unify electricity, magnetism, and light into a single field theory. Every radio, screen, wire, and star depends on them. The branch ends on the quiet reveal that magnetism was never a second force at all: it is electricity, seen from a moving train.",
+    modules: ELECTROMAGNETISM_MODULES,
+    topics: ELECTROMAGNETISM_TOPICS,
+    status: "live",
   },
   {
     slug: "thermodynamics",

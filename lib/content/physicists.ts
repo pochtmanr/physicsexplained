@@ -531,6 +531,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "French",
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "angular-momentum" },
+      { branchSlug: "electromagnetism", topicSlug: "method-of-images" },
     ],
   },
   {
@@ -707,6 +708,45 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "Russian",
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "phase-space" },
+    ],
+  },
+  {
+    slug: "charles-augustin-de-coulomb",
+    born: "1736",
+    died: "1806",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "coulombs-law" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electric-field" },
+    ],
+  },
+  {
+    slug: "benjamin-franklin",
+    born: "1706",
+    died: "1790",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "coulombs-law" },
+      { branchSlug: "electromagnetism", topicSlug: "electric-potential" },
+    ],
+  },
+  {
+    slug: "carl-friedrich-gauss",
+    born: "1777",
+    died: "1855",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauss-law" },
+    ],
+  },
+  {
+    slug: "michael-faraday",
+    born: "1791",
+    died: "1867",
+    nationality: "English",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electric-field" },
+      { branchSlug: "electromagnetism", topicSlug: "conductors-and-shielding" },
     ],
   },
 ];

@@ -1361,6 +1361,139 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "classical-mechanics", topicSlug: "damped-and-driven-oscillations" },
     ],
   },
+  {
+    slug: "electric-charge",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "coulombs-law" },
+    ],
+  },
+  {
+    slug: "coulomb-unit",
+    category: "unit",
+    relatedPhysicists: ["charles-augustin-de-coulomb"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "coulombs-law" },
+    ],
+  },
+  {
+    slug: "electric-field",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electric-field" },
+    ],
+  },
+  {
+    slug: "field-line",
+    category: "concept",
+    relatedPhysicists: ["michael-faraday"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electric-field" },
+    ],
+  },
+  {
+    slug: "flux",
+    category: "concept",
+    relatedPhysicists: ["carl-friedrich-gauss", "michael-faraday"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauss-law" },
+    ],
+  },
+  {
+    slug: "gaussian-surface",
+    category: "concept",
+    relatedPhysicists: ["carl-friedrich-gauss"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauss-law" },
+    ],
+  },
+  {
+    slug: "divergence",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauss-law" },
+    ],
+  },
+  {
+    slug: "gradient",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-potential" },
+    ],
+  },
+  {
+    slug: "line-integral",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-potential" },
+    ],
+  },
+  {
+    slug: "electric-potential-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-potential" },
+    ],
+  },
+  {
+    slug: "volt",
+    category: "unit",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-potential" },
+    ],
+  },
+  {
+    slug: "equipotential",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-potential" },
+    ],
+  },
+  {
+    slug: "capacitance-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "capacitance-and-field-energy" },
+    ],
+  },
+  {
+    slug: "farad",
+    category: "unit",
+    relatedPhysicists: ["michael-faraday"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "capacitance-and-field-energy" },
+    ],
+  },
+  {
+    slug: "field-energy-density",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "capacitance-and-field-energy" },
+    ],
+  },
+  {
+    slug: "faraday-cage",
+    category: "instrument",
+    relatedPhysicists: ["michael-faraday"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "conductors-and-shielding" },
+    ],
+  },
+  {
+    slug: "induced-charge",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "conductors-and-shielding" },
+    ],
+  },
+  {
+    slug: "image-charge",
+    category: "concept",
+    relatedPhysicists: ["simeon-denis-poisson"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "method-of-images" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
