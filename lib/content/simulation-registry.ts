@@ -550,6 +550,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   FaradayDiskScene: lazyScene(() =>
     import("@/components/physics/faraday-disk-scene").then((m) => ({ default: m.FaradayDiskScene })),
   ),
+
+  // EM §05 — lenz-law-and-motional-emf
+  LenzOppositionScene: lazyScene(() =>
+    import("@/components/physics/lenz-opposition-scene").then((m) => ({ default: m.LenzOppositionScene })),
+  ),
+  SlidingRodEmfScene: lazyScene(() =>
+    import("@/components/physics/sliding-rod-emf-scene").then((m) => ({ default: m.SlidingRodEmfScene })),
+  ),
+  JumpingRingScene: lazyScene(() =>
+    import("@/components/physics/jumping-ring-scene").then((m) => ({ default: m.JumpingRingScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

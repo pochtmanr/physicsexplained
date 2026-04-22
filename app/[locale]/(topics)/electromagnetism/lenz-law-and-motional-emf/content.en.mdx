@@ -1,0 +1,130 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { LenzOppositionScene } from "@/components/physics/lenz-opposition-scene";
+import { SlidingRodEmfScene } from "@/components/physics/sliding-rod-emf-scene";
+import { JumpingRingScene } from "@/components/physics/jumping-ring-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Heinrich Lenz", href: "/physicists/heinrich-lenz" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Lenz's law", href: "/dictionary/lenzs-law-term" },
+  { type: "term", label: "Motional EMF", href: "/dictionary/motional-emf" },
+  { type: "term", label: "Electromotive force", href: "/dictionary/emf" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.22 · INDUCTION"
+  title="LENZ'S LAW AND MOTIONAL EMF"
+  subtitle="The minus sign in Faraday's law, made physical. Why every induced current fights the change that created it — and why BLv is the cleanest derivation of induction in the book."
+/>
+
+<Section index={1} title="Nature is conservative">
+
+There is a minus sign in Faraday's law. `EMF = −dΦ/dt`. It is not decoration.
+
+If the induced current ran in either direction with equal probability, you would have a machine that generates electrical energy whenever a magnet wandered past a coil. No fuel. Energy conservation would be a polite suggestion.
+
+Nature refuses. The induced current always flows in the direction that opposes the change that produced it. Push a magnet toward a loop: the loop becomes, briefly, a magnet with its same pole facing you, pushing back. Pull the magnet away: the loop flips to pull it toward itself. You have to do work against that push-back to move the magnet, and that work is exactly what reappears as electrical energy in the loop. Bookkeeping closes. No free lunch.
+
+<PhysicistLink slug="heinrich-lenz">Heinrich Lenz</PhysicistLink> stated this in 1834, three years after <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink>'s original experiments. Faraday observed *that* a changing flux produces an EMF. Lenz explained what *sign* the EMF takes. Without Lenz, Faraday's law is one-handed; with Lenz, induction is a direction-preserving machine for trading mechanical work into electrical energy, and back.
+
+</Section>
+
+<Section index={2} title="Lenz's law, stated">
+
+The plain-words version:
+
+> The induced current flows in whatever direction produces a magnetic field that opposes the change in flux through the loop.
+
+Not the flux itself — the *change* in flux. If the flux is increasing, the induced current produces a B that points the other way, trying to bring the flux back down. If the flux is decreasing, the induced current produces a B in the same direction, trying to hold the flux up.
+
+This is the Lenz-decorated form of <Term slug="electromagnetic-induction">electromagnetic induction</Term>:
+
+<EquationBlock id="EQ.01">
+  $$ \mathrm{EMF} \;=\; -\,\frac{d\Phi_B}{dt} $$
+</EquationBlock>
+
+Here `Φ_B` is the <Term slug="flux">magnetic flux</Term> through the loop — loosely, "how much B threads the surface the loop bounds." The symbol `d/dt` is calculus shorthand for "rate of change with time": read it "how fast Φ is changing, right now." When Φ grows, the derivative is positive; the minus flips it into a negative EMF, meaning: *the EMF drives current in the direction that would shrink Φ back*. When Φ shrinks, the minus flips to positive, driving current the other way. The sign is the physics.
+
+<SceneCard caption="FIG.22a — the loop always pushes back" className="w-full">
+  <LenzOppositionScene />
+</SceneCard>
+
+A bar magnet drifts back and forth along the axis of a conducting loop. Watch the induced-current arrows, in green-cyan, flip direction each time the magnet reverses. The label on the loop's near face — *induced N*, *induced S* — tracks whatever pole would repel the incoming magnet or attract the retreating one. The loop is never passive. It is always setting itself up as exactly the magnet that makes the intruder's life harder.
+
+<Callout variant="intuition">
+A quick mnemonic: the induced current is lazy in the bookkeeping sense, not the effort sense. It works hard to preserve the flux that was there before you came along and disturbed it.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Motional EMF: BLv from F = qv × B">
+
+The prettiest case of Lenz's law is not a magnet shoved through a coil, but a wire sliding in a uniform field. No calculus required.
+
+Lay two parallel rails horizontally in a region of uniform <Term slug="magnetic-field">magnetic field</Term> `B` pointing into the page. A conducting rod of length `L` lies across the rails, free to slide. Pull the rod along the rails at constant speed `v`.
+
+The charges inside the rod are not standing still any more — they share the rod's velocity. Each free electron is now a charge moving through a magnetic field, which means it feels the <Term slug="lorentz-force">Lorentz force</Term> `F = q·v × B` from §03. With `v` horizontal and `B` into the page, the cross product `v × B` points *along the rod*. Positive charges feel a push toward one end; negative charges, toward the other. Charge accumulates at the rod's ends until the electric field they build up balances the magnetic push, and equilibrium settles with a voltage across the rod. That voltage is the rod's <Term slug="motional-emf">motional EMF</Term>.
+
+Its magnitude is almost trivial. The magnetic force per charge is `vB`. The work that force does moving a charge from one end of the rod to the other is force × length = `qvBL`. Work per unit charge is <Term slug="emf">EMF</Term> by definition:
+
+<EquationBlock id="EQ.02">
+  $$ \mathrm{EMF} \;=\; B\,L\,v $$
+</EquationBlock>
+
+No flux integrals. No `d/dt`. Just the same `F = qv × B` rule from [the Lorentz force](/electromagnetism/the-lorentz-force), applied to the charges riding inside the rod. If you want the Faraday picture, notice the loop's area grows at rate `L · v`, so its flux grows at rate `B · L · v` — the same number, with Lenz's minus sign placing the EMF in the right direction. Two derivations, one answer.
+
+<SceneCard caption="FIG.22b — rod on rails: EMF, induced current, retarding force" className="w-full">
+  <SlidingRodEmfScene />
+</SceneCard>
+
+Drive the rod with an external force `F_ext` (magenta slider). The induced EMF is `BLv`; the induced current is `I = BLv/R`; that current, sitting in the external field, feels a force `F_mag = −B²L²v/R` pointing *backwards*. Turn on the force, the rod accelerates, the retarding force grows in step, and the two settle at a terminal velocity `v_term = F_ext · R / (B²L²)`. The trace along the bottom shows `v(t)`, `I(t)`, and EMF(t) converging together.
+
+</Section>
+
+<Section index={4} title="Magnetic braking">
+
+The retarding force is Lenz's law made mechanical. The induced current is precisely the current whose own `F = IL × B` force, reacting back on the rod, opposes `v`. Reverse `v` and everything flips sign; the rod is still fighting its own motion.
+
+This is the principle behind every **eddy-current brake**. High-end trains, roller coasters, and precision balances all use the same trick: drag a conductor through a strong magnetic field, and induced currents dissipate kinetic energy as heat. No friction pads, no wear.
+
+<EquationBlock id="EQ.03">
+  $$ v_{\mathrm{term}} \;=\; \frac{F_{\mathrm{ext}}\,R}{B^{2}\,L^{2}} $$
+</EquationBlock>
+
+Stronger `B`, longer rod, lower resistance — all sharpen the brake. Regenerative braking in electric vehicles is the engineered extreme: the motor is run in reverse so the retarding force charges the battery.
+
+</Section>
+
+<Section index={5} title="The jumping ring">
+
+The classroom demo that makes Lenz's law visible across a lecture hall is Elihu Thomson's 1887 **jumping ring**. An iron core carries a primary coil at its base; a loose aluminium ring sits around the core. Hit the switch. The ring launches.
+
+<SceneCard caption="FIG.22c — Thomson's jumping ring" className="w-full">
+  <JumpingRingScene />
+</SceneCard>
+
+Mechanism, in one sentence: the AC primary produces a fast-changing flux through the ring; Lenz sets up a ring current that opposes the change; the ring-plus-coil system is two coaxial magnets with like poles facing, and like poles repel.
+
+Cool the ring in liquid nitrogen first. Its resistance plummets, the induced current grows, the Lenz repulsion grows with it, and the jump is visibly higher. Flip the "cool ring" button and watch the landing altitude climb. Same physics, bigger effect.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Lenz's law is everywhere the words *induced* and *opposing* belong together.
+
+Eddy-current brakes on trains and drop-towers. Induction cooktops, whose coil sets up a fast-oscillating B through the pan's base and heats the iron directly via Lenz-induced eddies. Anti-theft tags that radiate a Lenz signal when pushed through the alarm's field. Recycling-plant rotors that repel aluminium cans off a conveyor belt.
+
+Every regenerative-braking EV is Lenz converting forward motion into battery charge. Every generator under a dam is Lenz demanding the generator push back on the turbine, so the water has to keep pushing, so the river has to keep falling. A hydroelectric dam is, economically, a Lenz-law factory.
+
+The next topic takes Lenz and Faraday to their engineering payoff — inductance, the property of a circuit that resists changes in its own current by this exact same mechanism. After that, the minus sign has an even bigger job waiting at the door of Faraday's fourth equation, where `∂B/∂t` becomes the source of a curling electric field. `§07` walks through that door.
+
+</Section>
+
+</TopicPageLayout>
