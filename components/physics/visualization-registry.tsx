@@ -474,6 +474,38 @@ const NonlinearDynamicsScene = dynamic(
   { ssr: false },
 );
 
+const WheelDecompositionScene = dynamic(
+  () =>
+    import("@/components/physics/wheel-decomposition-scene").then((m) => ({
+      default: m.WheelDecompositionScene,
+    })),
+  { ssr: false },
+);
+
+const RollingRaceScene = dynamic(
+  () =>
+    import("@/components/physics/rolling-race-scene").then((m) => ({
+      default: m.RollingRaceScene,
+    })),
+  { ssr: false },
+);
+
+const RollingSlippingScene = dynamic(
+  () =>
+    import("@/components/physics/rolling-slipping-scene").then((m) => ({
+      default: m.RollingSlippingScene,
+    })),
+  { ssr: false },
+);
+
+const CoinRollingScene = dynamic(
+  () =>
+    import("@/components/physics/coin-rolling-scene").then((m) => ({
+      default: m.CoinRollingScene,
+    })),
+  { ssr: false },
+);
+
 const VelocityTriangleScene = dynamic(
   () =>
     import("@/components/physics/velocity-triangle-scene").then((m) => ({
@@ -606,6 +638,10 @@ const VISUALIZATIONS: Record<string, React.ComponentType> = {
   "coriolis-turntable": CoriolisTurntableScene,
   "coriolis-globe": CoriolisGlobeScene,
   "rotating-projectile": RotatingProjectileScene,
+  "wheel-decomposition": WheelDecompositionScene,
+  "rolling-race": RollingRaceScene,
+  "rolling-slipping": RollingSlippingScene,
+  "coin-rolling": CoinRollingScene,
 };
 
 export function Visualization({ vizKey }: { vizKey: string }) {
