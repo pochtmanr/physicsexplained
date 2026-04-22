@@ -1,7 +1,7 @@
 # Electromagnetism — Branch Design
 
 **Date:** 2026-04-22
-**Status:** in progress — §01 shipped 2026-04-22
+**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:351-361`.
@@ -312,8 +312,8 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | Module | Count | Done | Status |
 |--------|-------|------|--------|
 | §01 Electrostatics | 7 | 7 | ☑ complete |
-| §02 Electric fields in matter | 4 | 0 | ☐ not started |
-| §03 Magnetostatics | 5 | 0 | ☐ not started |
+| §02 Electric fields in matter | 4 | 4 | ☑ complete |
+| §03 Magnetostatics | 5 | 5 | ☑ complete |
 | §04 Magnetic fields in matter | 4 | 0 | ☐ not started |
 | §05 Electrodynamics & induction | 5 | 0 | ☐ not started |
 | §06 Circuits | 7 | 0 | ☐ not started |
@@ -323,7 +323,7 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §10 Radiation | 6 | 0 | ☐ not started |
 | §11 EM & relativity | 5 | 0 | ☐ not started |
 | §12 Foundations | 4 | 0 | ☐ not started |
-| **Total** | **66** | **7** | **11% complete** |
+| **Total** | **66** | **16** | **24% complete** |
 
 ### Per-topic checklist
 
@@ -339,17 +339,17 @@ Check off as each topic ships.
 - [x] 07 `method-of-images`
 
 **§02 Electric fields in matter**
-- [ ] 08 `polarization-and-bound-charges`
-- [ ] 09 `dielectrics-and-the-d-field`
-- [ ] 10 `boundary-conditions-at-interfaces`
-- [ ] 11 `piezo-and-ferroelectricity`
+- [x] 08 `polarization-and-bound-charges`
+- [x] 09 `dielectrics-and-the-d-field`
+- [x] 10 `boundary-conditions-at-interfaces`
+- [x] 11 `piezo-and-ferroelectricity`
 
 **§03 Magnetostatics**
-- [ ] 12 `the-lorentz-force`
-- [ ] 13 `biot-savart-law`
-- [ ] 14 `amperes-law`
-- [ ] 15 `the-vector-potential`
-- [ ] 16 `magnetic-dipoles`
+- [x] 12 `the-lorentz-force`
+- [x] 13 `biot-savart-law`
+- [x] 14 `amperes-law`
+- [x] 15 `the-vector-potential`
+- [x] 16 `magnetic-dipoles`
 
 **§04 Magnetic fields in matter**
 - [ ] 17 `magnetization-and-the-h-field`
