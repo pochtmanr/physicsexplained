@@ -484,6 +484,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   ASourceCurrentScene: lazyScene(() =>
     import("@/components/physics/a-source-current-scene").then((m) => ({ default: m.ASourceCurrentScene })),
   ),
+
+  // EM §03 — magnetic-dipoles
+  DipoleTorqueScene: lazyScene(() =>
+    import("@/components/physics/dipole-torque-scene").then((m) => ({ default: m.DipoleTorqueScene })),
+  ),
+  CompassScene: lazyScene(() =>
+    import("@/components/physics/compass-scene").then((m) => ({ default: m.CompassScene })),
+  ),
+  MagneticDipoleFieldScene: lazyScene(() =>
+    import("@/components/physics/magnetic-dipole-field-scene").then((m) => ({ default: m.MagneticDipoleFieldScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

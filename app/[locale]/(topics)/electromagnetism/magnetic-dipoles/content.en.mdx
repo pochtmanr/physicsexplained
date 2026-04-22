@@ -1,0 +1,126 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DipoleTorqueScene } from "@/components/physics/dipole-torque-scene";
+import { CompassScene } from "@/components/physics/compass-scene";
+import { MagneticDipoleFieldScene } from "@/components/physics/magnetic-dipole-field-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hans Christian Ørsted", href: "/physicists/hans-christian-orsted" },
+  { type: "physicist", label: "André-Marie Ampère", href: "/physicists/andre-marie-ampere" },
+  { type: "term", label: "Magnetic dipole", href: "/dictionary/magnetic-dipole-term" },
+  { type: "term", label: "Magnetic moment", href: "/dictionary/magnetic-moment" },
+  { type: "term", label: "Weber (unit)", href: "/dictionary/weber-unit" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.16 · MAGNETOSTATICS"
+  title="MAGNETIC DIPOLES"
+  subtitle="A current loop is the simplest magnet — and once you know it, you know what makes a compass turn."
+/>
+
+<Section index={1} title="A loop is a magnet">
+
+Bend a current-carrying wire into a closed loop. From a distance the loop has a north face and a south face: walk a small compass needle past it and the needle dips and swivels exactly the way it does near a bar magnet. There is no iron, no permanent magnet — just a single moving turn of charge — yet the magnetic behaviour is identical.
+
+This is the deepest fact of magnetostatics, and it took until the 1820s to land. Before then, electricity and magnetism were separate kingdoms with parallel folk-stories. After it, every magnet had a ready explanation: a current loop, real or hidden in the spinning electrons of an atom, was making it work. The loop is the magnetic analogue of the electric dipole, and like the dipole, a single vector captures everything that matters about it from outside.
+
+That vector is the **magnetic moment**, written `m`. The rest of this topic is what you can do with it.
+
+</Section>
+
+<Section index={2} title="Magnetic moment">
+
+Pick a flat loop. Send a steady current `I` around it. Call the area enclosed `A`. Decide which direction to call "up" by curling the fingers of your right hand around the loop in the direction of the current — the thumb points along a unit vector `n̂` perpendicular to the loop's plane. The loop's magnetic moment is then
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">m = I · A · n̂</span>
+</EquationBlock>
+
+Three ingredients: how much current, how much area, and which way the loop is facing. The product carries units of ampere-square-metres (A·m²). A milliampere flowing around a square centimetre gives a magnetic moment of 10⁻⁷ A·m² — a tiny number, the kind that lives in laboratory pickup coils. An MRI machine's superconducting magnet, on the other hand, has an effective `m` of order 10³ A·m², and you can feel it from the next room as a soft tug on the steel zip of your jeans.
+
+Two pieces of geometry are worth pinning down. First, only the current and the area-vector matter; the loop's *shape* — circle, square, kidney bean — does not, as long as it is small compared to the distance you are looking from. Second, doubling the loop area while halving the current keeps `m` the same. The loop is a single vector to the outside world, and it doesn't care how it was built. <PhysicistLink slug="andre-marie-ampere">André-Marie Ampère</PhysicistLink>, working in Paris in the years after 1820, was the one who pushed this idea to its logical end: every magnet, he argued, is just a collection of microscopic current loops. Two centuries later, with quantum mechanics in hand, we know he was essentially right.
+
+</Section>
+
+<Section index={3} title="Torque on a loop in a field">
+
+Drop the loop into a uniform external magnetic field `B`. The two opposite edges of the loop carry current in opposite directions, so the magnetic forces on them push opposite ways — a couple. The net force on the whole loop is zero (the field is uniform, after all), but the *torque* is not. The loop wants to swing.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">τ = m × B</span>
+</EquationBlock>
+
+The cross-product `m × B` returns a vector perpendicular to both `m` and `B`, pointing in the direction your right thumb points if your fingers curl from `m` toward `B`. Its magnitude is `m·B·sin θ`, where `θ` is the angle between the two vectors. The torque vanishes when `m` and `B` are parallel (θ = 0), is largest when they are perpendicular (θ = π/2), and vanishes again when they are anti-parallel (θ = π). The geometric content is "the torque tries to align `m` with `B`."
+
+<SceneCard caption="FIG.16a — torque on a loop in a uniform B" className="w-full">
+  <DipoleTorqueScene />
+</SceneCard>
+
+Drag the angle slider. Watch the torque arrow swell as `θ` approaches 90°, then collapse as it passes through 180°. The energy bowl on the right tracks the same story from the other side: the loop is rolling toward the bottom of a cosine well. This is the mechanism behind every electric motor on Earth — keep flipping the field's direction at just the right moment and the loop never stops chasing alignment, converting electrical energy into rotation.
+
+</Section>
+
+<Section index={4} title="Energy of a dipole">
+
+Each orientation of the loop costs a different amount of energy. Aligned with the field is cheap; anti-aligned is expensive. Compute the work done against the torque as the loop rotates from `θ = 0` to a generic `θ` and you find
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">U = −m · B = −m·B·cos θ</span>
+</EquationBlock>
+
+The minus sign is the bookkeeping that says aligned (θ = 0) is the *minimum*, with `U = −m·B`, and anti-aligned (θ = π) is the *maximum*, with `U = +m·B`. The torque is the negative slope of the energy curve, which is just calculus's way of saying the loop is always pushed toward smaller energy. A magnet sitting on your fridge is doing nothing more dramatic than parking itself in its own cosine well.
+
+</Section>
+
+<Section index={5} title="The compass">
+
+In April 1820, in Copenhagen, <PhysicistLink slug="hans-christian-orsted">Hans Christian Ørsted</PhysicistLink> was setting up a lecture demonstration — almost certainly something else entirely, the historical record is patchy — when he noticed that a compass needle near a current-carrying wire had twitched. He tried it again. The needle moved every time the current was switched on, and it pointed *not* along the wire but *across* it, perpendicular. Switch the current direction and the needle reversed. Up to that moment, electricity and magnetism had been separate phenomena with eerie parallels. Ørsted's twitching needle was the first physical evidence that they are the same.
+
+<SceneCard caption="FIG.16b — Ørsted's experiment in one slider" className="w-full">
+  <CompassScene />
+</SceneCard>
+
+A wire runs into the page at the centre. With the current at zero, the needle points north — Earth's slow magnetic field is the only thing it feels. Switch the current on and a circular field wraps around the wire by the right-hand rule; that field competes with Earth's to set a new equilibrium for the needle, which swings east or west depending on the current's sign. The deflection grows with `I` and saturates at 90° once the wire's field overwhelms Earth's.
+
+What Ørsted saw in three minutes opened the door to Ampère's loop picture, then to Faraday's induction, then to Maxwell — and eventually to the realization that light itself is the same machinery in motion.
+
+</Section>
+
+<Section index={6} title="The far-field pattern">
+
+Far from the loop — far enough that you cannot resolve its shape — the magnetic field looks identical to the electric field of a tiny electric dipole. Make the substitution `E → B`, `1/(4πε₀) → μ₀/(4π)`, and the equations carry over verbatim. On the loop's symmetry axis, at distance `z`,
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">B_axis = (μ₀ / 4π) · 2m / z³</span>
+</EquationBlock>
+
+and on the equatorial plane (perpendicular to `m`), at distance `r`,
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">B_eq = (μ₀ / 4π) · m / r³</span>
+</EquationBlock>
+
+Two facts are worth remembering. First, the falloff is `1/r³`, not `1/r²` — one power steeper than a point charge or a single magnetic pole, because the loop is neutral on average and the cancellations leave a residue one power higher. Second, the on-axis field is exactly twice the equatorial field at the same distance — the canonical signature of a dipole pattern, the same factor of two you would get from a stretched pair of `±q` charges.
+
+<SceneCard caption="FIG.16c — far-field B pattern of a dipole" className="w-full">
+  <MagneticDipoleFieldScene />
+</SceneCard>
+
+Slide the view radius outward. The arrow pattern stays the same shape (it is scale-invariant), but the on-axis HUD readout collapses by a factor of eight every time you double the distance, exactly as `1/r³` demands. Earth's own magnetic field has this same shape on the largest scale — to a first approximation our planet is a single big dipole, tilted some 11° from the rotation axis, generated by molten iron currents in the outer core.
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+Compasses, of course — a needle is a small permanent dipole hunting for Earth's. MRI machines image the body by aligning the magnetic moments of hydrogen nuclei (each proton's `m` ≈ 1.4 × 10⁻²⁶ A·m²) with a strong static field, then nudging them with radio pulses and listening to how they relax. Every electric motor turns by feeding current into a loop sitting in a permanent magnet's field, then commutating the current to keep the torque always positive. Magnetic storage wrote bits as the orientation of microscopic dipole domains. And the geodynamo protecting Earth from the solar wind is a loop too: a closed circulation of liquid iron whose `m` sets up the field that holds the auroras in place.
+
+Every one of them is a current loop, real or effective, doing what current loops do: producing an `m`, swinging in fields, and pushing the rest of the world around through the dipole pattern that began here.
+
+</Section>
+
+</TopicPageLayout>
