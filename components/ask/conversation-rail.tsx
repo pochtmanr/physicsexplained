@@ -11,7 +11,7 @@ export function ConversationRail({ locale, conversations, activeId }: Props) {
     <aside className="w-60 border-r hidden md:flex flex-col shrink-0">
       <Link
         href={`/${locale}/ask`}
-        className="m-3 border rounded px-3 py-2 text-sm text-center hover:bg-muted"
+        className="m-3 border rounded px-3 py-2 text-sm text-center hover:bg-[var(--color-fg-4)]/20"
       >
         + New chat
       </Link>
@@ -23,7 +23,7 @@ export function ConversationRail({ locale, conversations, activeId }: Props) {
           <li key={c.id}>
             <Link
               href={`/${locale}/ask/${c.id}`}
-              className={`block px-3 py-2 text-sm hover:bg-muted truncate ${
+              className={`block px-3 py-2 text-sm hover:bg-[var(--color-fg-4)]/20 truncate ${
                 c.id === activeId ? "bg-muted font-medium" : ""
               }`}
             >

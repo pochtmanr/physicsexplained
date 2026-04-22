@@ -62,7 +62,7 @@ export function Composer({
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <ModelPicker value={modelId} onChange={onModel} />
-            <span className="text-xs text-muted-foreground">Enter to send · Shift+Enter newline</span>
+            <span className="text-xs text-[var(--color-fg-3)]">Enter to send · Shift+Enter newline</span>
           </div>
           <div className="flex gap-2">
             <textarea
@@ -72,12 +72,14 @@ export function Composer({
               placeholder="Ask a physics question…"
               rows={2}
               maxLength={4000}
-              className="flex-1 border rounded px-3 py-2 resize-y bg-background"
+              autoFocus
+              className="flex-1 border border-[var(--color-fg-4)] rounded px-3 py-2 resize-y bg-[var(--color-bg-0)] text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:outline-none focus:border-[var(--color-cyan-dim)]"
             />
             <button
+              type="button"
               onClick={submit}
               disabled={!value.trim()}
-              className="border rounded px-4 py-2 hover:bg-muted disabled:opacity-60"
+              className="border border-[var(--color-cyan-dim)] rounded px-4 py-2 text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/10 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Send
             </button>

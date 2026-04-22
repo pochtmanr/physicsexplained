@@ -9,7 +9,7 @@ export function ModelPicker({
       value={value ?? DEFAULT_MODEL_ID}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="border rounded px-2 py-1 text-xs bg-background disabled:opacity-60"
+      className="border border-[var(--color-fg-4)] rounded px-2 py-1 text-xs bg-[var(--color-bg-0)] text-[var(--color-fg-1)] disabled:opacity-60"
       title="Answerer model"
     >
       {AVAILABLE_MODELS.map((m) => (

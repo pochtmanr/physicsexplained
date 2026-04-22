@@ -20,7 +20,7 @@ export function EmptyState({ onPick }: { onPick: (q: string) => void }) {
           <button
             key={p}
             onClick={() => onPick(p)}
-            className="text-left text-sm border rounded px-3 py-2 hover:bg-muted"
+            className="text-left text-sm border rounded px-3 py-2 hover:bg-[var(--color-fg-4)]/20 border-[var(--color-fg-4)]"
           >
             {p}
           </button>

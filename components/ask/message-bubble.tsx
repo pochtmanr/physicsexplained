@@ -13,7 +13,7 @@ export function MessageBubble({
   return (
     <div
       className={`my-3 px-4 py-3 rounded ${
-        role === "user" ? "ml-auto max-w-xl bg-muted" : "mr-auto max-w-2xl"
+        role === "user" ? "ml-auto max-w-xl bg-[var(--color-fg-4)]/20 border border-[var(--color-fg-4)]/50" : "mr-auto max-w-2xl"
       }`}
     >
       {parts.map((p, i) => renderPart(p, i, locale))}
