@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, BookOpen } from "lucide-react";
+import { User, BookOpen, Sparkles } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "./logo";
 import { NavBranchMenu } from "./nav-branch-menu";
@@ -17,7 +17,7 @@ export async function Nav() {
   return (
     <nav className="sticky top-0 z-50 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
       <div
-        className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-2.5 md:py-3`}
+        className={`${WIDE_CONTAINER} flex h-12 items-center justify-between gap-4 md:h-14`}
       >
         <div className="flex min-w-0 items-center">
           <Link
@@ -47,6 +47,13 @@ export async function Nav() {
           >
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("dictionary")}</span>
+          </Link>
+          <Link
+            href="/ask"
+            className="nav-link inline-flex items-center gap-2 border border-[var(--color-cyan-dim)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] transition-colors hover:bg-[var(--color-cyan-dim)]/10"
+          >
+            <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} />
+            <span>Ask</span>
           </Link>
           <SearchTrigger />
           <LocaleSwitcher />
