@@ -4,19 +4,13 @@ import { SceneCard } from "@/components/layout/scene-card";
 import { EquationBlock } from "@/components/math/equation-block";
 import { Callout } from "@/components/layout/callout";
 import { UniversalOscillatorScene } from "@/components/physics/universal-oscillator-scene";
-import { DampedPendulumScene } from "@/components/physics/damped-pendulum-scene";
-import { ResonanceCurveScene } from "@/components/physics/resonance-curve-scene";
 import { CoupledPendulumScene } from "@/components/physics/coupled-pendulum-scene";
 import { WaveChainScene } from "@/components/physics/wave-chain-scene";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 
 <TopicPageLayout aside={[
-  { type: "physicist", label: "Nikola Tesla", href: "/physicists/nikola-tesla" },
   { type: "physicist", label: "Jules Lissajous", href: "/physicists/jules-lissajous" },
   { type: "physicist", label: "Leon Foucault", href: "/physicists/leon-foucault" },
-  { type: "term", label: "Damping", href: "/dictionary/damping" },
-  { type: "term", label: "Quality Factor", href: "/dictionary/q-factor" },
-  { type: "term", label: "Resonance", href: "/dictionary/resonance" },
   { type: "term", label: "Normal Modes", href: "/dictionary/normal-modes" },
   { type: "term", label: "Beats", href: "/dictionary/beats" },
 ]}>
@@ -42,95 +36,15 @@ A pendulum displaced by angle θ obeys θ″ + (g/L)θ = 0. A mass on a spring d
 
 This is **simple harmonic motion**, and it is the most reused equation in all of physics. Every system with a restoring force proportional to displacement ends up here. The pendulum doesn't know it's a pendulum. The spring doesn't know it's a spring. They all trace the same sinusoid, at the frequency set by their own constants, and they do it for the same mathematical reason.
 
-<SceneCard caption="FIG.03a — three systems, one equation" className="w-full">
+<SceneCard caption="FIG.18a — three systems, one equation" className="w-full">
   <UniversalOscillatorScene />
 </SceneCard>
 
-</Section>
-
-<Section index={2} title="Damped oscillations">
-
-Real pendulums stop swinging. Real springs settle. Real circuits go quiet. Energy leaks — into air resistance, into friction at the pivot, into the resistance of the wire. The idealized oscillator swings forever; the real one doesn't.
-
-The simplest model of energy loss adds a friction force proportional to velocity. Move faster, lose more. The equation becomes:
-
-<EquationBlock id="EQ.02">
-  <span className="font-mono text-lg">x″ + γx′ + ω₀²x = 0</span>
-</EquationBlock>
-
-The new term, γx′, is the <Term slug="damping">damping</Term>. The parameter γ controls how quickly energy drains away. The solution is still sinusoidal — but now the amplitude decays exponentially. Each swing is a little smaller than the last. The frequency shifts slightly lower, too: the damped system oscillates a hair slower than the undamped one.
-
-But the real story is what happens as you increase γ. Three regimes emerge, and they feel completely different.
-
-<Callout variant="intuition">
-**Underdamped** (γ &lt; 2ω₀): the system oscillates and gradually dies. Strike a bell — it rings, fading over many cycles. This is the regime of music, of tuning forks, of ringing wine glasses.
-
-**Critically damped** (γ = 2ω₀): the system returns to equilibrium as fast as possible without overshooting. This is what a good car suspension does — absorb the bump, settle immediately, no bouncing.
-
-**Overdamped** (γ &gt; 2ω₀): the system oozes back to equilibrium without oscillating at all, but sluggishly. A heavy door on a hydraulic closer — it swings shut, but it takes its time.
-</Callout>
-
-The boundary between oscillation and no oscillation — the critically damped case — is the sharpest knife in engineering. Instrument needles, screen animations, servo motors, shock absorbers: all tuned to sit as close to critical damping as the application allows.
-
-<SceneCard caption="FIG.03b — damped pendulum" className="w-full">
-  <DampedPendulumScene />
-</SceneCard>
+Once you let an oscillator interact with the outside world — through a friction term that drains energy, or a periodic force that pumps energy in — the behavior multiplies into damping regimes, quality factors, and the drama of resonance. Those threads are picked up in their own dedicated topic, [Damped & Driven Oscillations](/classical-mechanics/damped-and-driven-oscillations). The rest of this page is about a different generalization: what happens when oscillators touch.
 
 </Section>
 
-<Section index={3} title="The Q factor">
-
-How good is an oscillator? That question has a precise answer, and it is a single number.
-
-<Callout variant="math">
-Q = ω₀ / γ
-</Callout>
-
-The <Term slug="q-factor">quality factor</Term> Q measures how many oscillations the system completes before its energy drops to 1/e of the original. High Q means the oscillator rings for a long time. Low Q means it dies quickly.
-
-A tuning fork has Q around 1,000 — it rings for thousands of cycles, which is why you can hear it across a room. A quartz crystal oscillator, the kind inside your watch, has Q around 10⁵. A superconducting microwave cavity, the kind used in particle accelerators, reaches Q of 10¹⁰ — ten billion oscillations before the energy halves. At that point, the electromagnetic field bouncing inside the cavity would keep going for minutes even if you turned everything off.
-
-At the other end: a car shock absorber has Q close to 0.5. A door closer, maybe 0.3. These are systems designed to not oscillate — engineered to kill oscillation as efficiently as possible. Low Q is not a failure. It is a design choice.
-
-The Q factor turns up everywhere because it controls not just how long an oscillator rings, but how sharply it responds to being driven at its natural frequency. High Q means a narrow, tall resonance peak. Low Q means a broad, flat one. This distinction matters enormously, as we are about to see.
-
-</Section>
-
-<Section index={4} title="Driven oscillations">
-
-So far, the oscillator has been left alone after an initial push. But what if you keep pushing? Apply a periodic force — a hand nudging a swing, a voltage driving a circuit, a loudspeaker vibrating a wine glass — and the equation picks up one more term:
-
-<EquationBlock id="EQ.03">
-  <span className="font-mono text-lg">x″ + γx′ + ω₀²x = F₀ cos(ω_d · t)</span>
-</EquationBlock>
-
-The right-hand side is the driving force, oscillating at frequency ω_d. It doesn't care what the system's natural frequency is. It just pushes, relentlessly, at its own rhythm.
-
-At first, the response is messy — a transient muddle of the system's natural frequency and the driving frequency fighting for dominance. But friction wins. The natural oscillation decays away (damping kills it), and what remains is a steady oscillation at the driving frequency. The system surrenders to the driver.
-
-The amplitude of that steady-state response depends on one thing above all: how close ω_d is to the system's natural frequency ω₀. Push at the wrong frequency, and the system barely responds. Push at the right frequency, and something dramatic happens.
-
-</Section>
-
-<Section index={5} title="Resonance">
-
-When the driving frequency matches the natural frequency — when ω_d ≈ ω₀ — the amplitude of the response peaks. With low <Term slug="damping">damping</Term>, the peak is enormous. This is <Term slug="resonance">resonance</Term>, and it is one of the most powerful and dangerous phenomena in physics.
-
-A child on a swing knows resonance intuitively. Push at the right moment — in time with the swing's own rhythm — and each push adds energy. The amplitude builds, cycle after cycle. Push at the wrong time, and you fight the swing, stealing energy instead of adding it.
-
-The Tacoma Narrows Bridge learned this lesson in 1940. Wind flowing over the bridge deck drove it at a frequency near its natural mode of torsional oscillation. The amplitude grew until the bridge tore itself apart, captured on film that still shocks engineering students. The wind wasn't strong. It was just persistent, and tuned to the wrong frequency.
-
-<PhysicistLink slug="nikola-tesla">Tesla</PhysicistLink> reportedly demonstrated mechanical resonance with a small oscillator attached to a steel beam in his Manhattan laboratory. The story — possibly embellished, possibly not — claims the vibrations propagated through the building's structure and into neighboring buildings, sending residents into a panic and bringing the police. Whether the details are exact, the physics is sound: a small periodic force, applied at the resonant frequency, can drive a massive system to enormous amplitudes.
-
-MRI machines exploit resonance: hydrogen nuclei in your body precess at the Larmor frequency in a magnetic field, and a radio pulse tuned to that exact frequency tips them into resonance, producing a signal the machine can detect. Your radio exploits it too — an LC circuit tuned so its resonant frequency matches the station you want, rejecting everything else. A singer shattering a wine glass is acoustic resonance: the voice matches the glass's natural frequency, and the amplitude builds until the glass cannot hold itself together.
-
-<SceneCard caption="FIG.03c — resonance curve" className="w-full">
-  <ResonanceCurveScene />
-</SceneCard>
-
-</Section>
-
-<Section index={6} title="Coupled oscillators">
+<Section index={2} title="Coupled oscillators">
 
 Take two identical pendulums and connect them with a weak spring. Displace one and let go. At first, only the first pendulum swings. But slowly, energy transfers through the spring to the second pendulum, which begins to swing while the first one dies down. Then the energy flows back. The two pendulums trade energy back and forth, and the envelope of their motion waxes and wanes — a phenomenon called <Term slug="beats">beats</Term>.
 
@@ -140,19 +54,19 @@ Any motion of the coupled system — no matter how complicated it looks — is a
 
 <PhysicistLink slug="jules-lissajous">Lissajous</PhysicistLink> visualized coupled oscillations optically in the 1850s, bouncing a beam of light off two vibrating tuning forks oriented at right angles. The resulting figures — now called Lissajous figures — made the relationship between coupled frequencies visible for the first time. The patterns were so beautiful that they became a staple of physics demonstrations and, eventually, of oscilloscope screens worldwide.
 
-<SceneCard caption="FIG.03d — coupled pendulums" className="w-full">
+<SceneCard caption="FIG.18b — coupled pendulums" className="w-full">
   <CoupledPendulumScene />
 </SceneCard>
 
 </Section>
 
-<Section index={7} title="From oscillators to waves">
+<Section index={3} title="From oscillators to waves">
 
 Line up N identical masses connected by identical springs. Each mass is a harmonic oscillator coupled to its neighbors. Displace one, and the disturbance propagates down the chain — not because anything moves from end to end, but because each mass pulls on the next.
 
 As N grows large and the spacing shrinks, the discrete chain of oscillators becomes a continuous medium. The equations of motion for the individual masses merge into a single partial differential equation:
 
-<EquationBlock id="EQ.04">
+<EquationBlock id="EQ.02">
   <span className="font-mono text-lg">∂²u/∂t² = c² · ∂²u/∂x²</span>
 </EquationBlock>
 
@@ -162,7 +76,7 @@ Sound is a pressure wave in coupled air molecules, each one a tiny oscillator nu
 
 <PhysicistLink slug="leon-foucault">Foucault</PhysicistLink> used a single pendulum — a sixty-seven-meter cable hanging from the dome of the Pantheon in Paris, 1851 — to prove that the Earth rotates. The pendulum swung in a fixed plane while the floor of the Pantheon turned beneath it, the plane of oscillation drifting by about eleven degrees per hour at the latitude of Paris. A single oscillator, given enough length and enough patience, revealed the motion of an entire planet. That is the reach of this equation.
 
-<SceneCard caption="FIG.03e — from oscillators to waves" className="w-full">
+<SceneCard caption="FIG.18c — from oscillators to waves" className="w-full">
   <WaveChainScene />
 </SceneCard>
 
