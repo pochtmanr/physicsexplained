@@ -1,0 +1,138 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { VelocityTriangleScene } from "@/components/physics/velocity-triangle-scene";
+import { CentripetalForceScene } from "@/components/physics/centripetal-force-scene";
+import { AngularVelocityScene } from "@/components/physics/angular-velocity-scene";
+import { NewtonsCannonScene } from "@/components/physics/newtons-cannon-scene";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Christiaan Huygens", href: "/physicists/christiaan-huygens" },
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "term", label: "Centripetal force", href: "/dictionary/centripetal-force" },
+  { type: "term", label: "Angular velocity", href: "/dictionary/angular-velocity" },
+  { type: "term", label: "Inertial frame", href: "/dictionary/inertial-frame" },
+]}>
+
+
+<TopicHeader
+  eyebrow="§ 01 · CLASSICAL MECHANICS"
+  title="CIRCULAR MOTION"
+  subtitle="Why the string always pulls inward — and why the Moon never stops falling."
+/>
+
+<Section index={1} title="The puzzle">
+
+Tie a tennis ball to a string and swing it around your head. The ball traces a circle. Let go and it flies off — not outward, as people often guess, but along the tangent, in a straight line. <PhysicistLink slug="galileo-galilei">Galileo</PhysicistLink> noticed this first: a body in motion, left alone, keeps moving in a straight line at constant speed.
+
+That single observation, polished by <PhysicistLink slug="isaac-newton">Newton</PhysicistLink> into the first law, is the seed of a small mystery. The ball on the string is *not* moving in a straight line. It is curving. Its direction changes every instant, and changing direction is changing velocity, even at constant speed. By the second law, anything whose velocity changes must feel a force.
+
+So where is the force? Your hand, through the string, pulls inward. What about the satellite circling the Earth, or the Moon doing the same? There is no string. There has to be something — and that something must point toward the Earth.
+
+The puzzle of circular motion isn't that things go in circles. It's that they need a constant inward pull to do it, and that pull has to come from somewhere physical.
+
+</Section>
+
+<Section index={2} title="Centripetal acceleration">
+
+Before naming the force, measure the acceleration. A particle moving in a circle of radius r at speed v has a velocity vector that rotates with it — same length, always tangent. After a tiny time Δt, that vector has turned by a small angle Δθ. Draw the old and new vectors tail-to-tail and you get a thin isoceles triangle with base Δv ≈ v · Δθ.
+
+The angle Δθ in radians is the arc divided by the radius: Δθ = v · Δt / r. Substitute, divide by Δt, and the acceleration is:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">a = v² / r</span>
+</EquationBlock>
+
+This is the <Term slug="centripetal-force">centripetal</Term> acceleration — Latin for "center-seeking". As Δθ shrinks toward zero, the direction of Δv tilts to point exactly toward the center of the circle. The acceleration is inward, always, no matter where on the circle the particle is.
+
+In terms of angular velocity ω = v/r, in radians per second, the same acceleration becomes:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">a = ω² r</span>
+</EquationBlock>
+
+<PhysicistLink slug="christiaan-huygens">Huygens</PhysicistLink> derived this result in 1659, before Newton wrote down his second law. He worked it out geometrically, exactly as above, and used it to design pendulum clocks whose period was independent of amplitude. The same v²/r that governs a tennis ball governed his isochrones.
+
+<SceneCard caption="FIG.04a — the velocity triangle" className="w-full">
+  <VelocityTriangleScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="The force that pulls inward">
+
+Multiply the centripetal acceleration by the mass and you have the force required to keep the particle on its circular track:
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">F = m v² / r</span>
+</EquationBlock>
+
+Three letters, one very general statement. Whatever moves in a circle, *something* supplies this much force, inward, every instant. If it runs out, the particle leaves the circle and obeys Newton's first law again.
+
+The subtle bit: "centripetal force" is not a kind of force the way gravity or friction is. It is a *role* any force can play, as long as it points toward the center.
+
+<Callout variant="intuition">
+**Ball on a string:** the role of centripetal force is played by string tension. Cut the string and the ball flies off tangentially.
+
+**Satellite around the Earth:** the role is played by gravity, pulling toward Earth's center. Remove gravity and the satellite flies off tangentially.
+
+**Car rounding a curve:** the role is played by static friction between tires and road, pushing the car inward. Hit ice and the friction vanishes — the car flies off tangentially.
+</Callout>
+
+The equation is the same in every case. Engineers don't invent the force; they find a real one and check that it's strong enough. A road's bank, a satellite's altitude, a string's breaking strength — each sets the maximum v at which the geometry holds together.
+
+<SceneCard caption="FIG.04b — three sources of the same role" className="w-full">
+  <CentripetalForceScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Angular velocity and period">
+
+Speed in m/s is fine for a tennis ball, but for a wheel, a gear, or a planet, it is more natural to describe motion by how fast the angle is sweeping. The <Term slug="angular-velocity">angular velocity</Term> ω is just radians per second. If the period — the time for one complete revolution — is T, then:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">ω = 2π / T,&nbsp;&nbsp;&nbsp;v = ω r</span>
+</EquationBlock>
+
+Two points on the same rigid wheel share the same ω but have different v: the one farther from the axis moves faster, in proportion to its radius. This is why a propeller tip — at constant ω — can go supersonic while the hub barely moves.
+
+A low Earth orbit has a period of about ninety minutes; geosynchronous, twenty-four hours; the Moon, about twenty-seven days. Each is set by the same balance: gravitational pull on the inside, mv²/r on the outside, a single ω that ties them. A gear train is the same idea miniaturized — engaged teeth force two wheels to share a tangential speed, so their angular velocities scale inversely with their radii. Clocks, transmissions, and turbines all live on that one relation.
+
+<SceneCard caption="FIG.04c — angular velocity on a wheel" className="w-full">
+  <AngularVelocityScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The Moon is falling">
+
+In a thought experiment that closes the 1687 *Principia*, Newton imagined a cannon on a mountain so tall it pokes above the atmosphere. Fire it horizontally and the ball follows a parabolic arc, landing some distance away. Use more powder, it lands farther. Use even more, and the curve of the Earth becomes part of the picture: the ground falls away beneath the ball as the ball falls toward the ground.
+
+There is one muzzle velocity at which the two curves match exactly. The ball falls toward the Earth at the same rate the surface falls away, and it never lands. That speed — about 7.9 km/s at low altitude — is the orbital velocity, the v that satisfies mv²/r = mg.
+
+Newton then asked the real question: is the Moon doing this? At the Moon's distance, gravity is weaker by the inverse-square law — about 1/3600 of its surface value. The Moon's speed, about 1 km/s at 384,000 km, gives v²/r ≈ 0.0027 m/s². And 9.8 / 3600 ≈ 0.0027. The numbers matched. The Moon is in continuous freefall toward the Earth — it just keeps missing.
+
+That was the moment classical physics became *one* subject. The same g that pulled an apple pulled the Moon away from a straight line.
+
+<SceneCard caption="FIG.04d — Newton's cannon" className="w-full">
+  <NewtonsCannonScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Where it matters">
+
+Centrifuges spin at thousands of rpm so ω²r at the bottom of a test tube reaches tens of thousands of g, separating dense molecules from light ones in seconds. Banked highway turns are the same trick in reverse: tilt the road so part of the normal force points inward, and the pavement itself supplies the centripetal pull, with friction held in reserve for rain.
+
+Particle accelerators are circular for one reason: pushing particles to higher energies means passing them through the same electric fields again and again, which means bending the path back on itself. At LHC speeds the bending is done by 8-tesla superconducting magnets. The ring radius (4.3 km) and the field set the maximum energy — F = mv²/r, deciding the size of a tunnel under Switzerland.
+
+GPS satellites orbit at an altitude where the period is half a sidereal day, a radius of about 26,600 km, fixed by GM/r² = ω²r. Circular motion sets the geometry of a system that tells you, to the meter, where you are. Find the inward pull, find the orbit.
+
+</Section>
+
+</TopicPageLayout>
