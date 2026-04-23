@@ -1,0 +1,138 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PhasorDiagramScene } from "@/components/physics/phasor-diagram-scene";
+import { ImpedanceTriangleScene } from "@/components/physics/impedance-triangle-scene";
+import { PowerFactorScene } from "@/components/physics/power-factor-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Nikola Tesla", href: "/physicists/nikola-tesla" },
+  { type: "physicist", label: "Oliver Heaviside", href: "/physicists/oliver-heaviside" },
+  { type: "physicist", label: "Joseph Henry", href: "/physicists/joseph-henry" },
+  { type: "term", label: "Phasor", href: "/dictionary/phasor" },
+  { type: "term", label: "Impedance", href: "/dictionary/impedance" },
+  { type: "term", label: "Reactance", href: "/dictionary/reactance" },
+  { type: "term", label: "AC frequency", href: "/dictionary/ac-frequency" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.30 · CIRCUITS"
+  title="AC CIRCUITS, PHASORS, AND IMPEDANCE"
+  subtitle="Rotation is the secret of every wall socket."
+/>
+
+<Section index={1} title="The trick is rotation">
+
+Plug a voltmeter into a European wall socket and the needle does not sit still. It sweeps through 230 volts, passes zero, swings to −230 volts, passes zero again, and returns — fifty times a second. The current that runs your refrigerator, the current your laptop charger negotiates with, the current that lights every street on every continent is not a steady push. It rotates.
+
+It rotates because a generator rotates. In 1888, in a rented loft in lower Manhattan, <PhysicistLink slug="nikola-tesla">Nikola Tesla</PhysicistLink> patented the polyphase induction motor: a rotor spun not by brushes scraping commutators but by a magnetic field that itself rotated, synthesised out of three sinusoidal currents offset in phase by 120°. Within a decade the entire industrial world had copied him. The wall socket you plug into is the far end of that rotation — a turbine in a hydroelectric dam or a steam turbine in a nuclear plant is physically spinning, and the voltage at your outlet is the projection of that rotation onto a wire.
+
+Alternating current is not an engineer's perverse choice. It is what falls out of the simplest way to convert mechanical rotation into electrical energy, and — because transformers work only on changing flux — it is the only form that can be stepped up to transmission voltages and down to your toaster with a pair of iron-cored coils and no moving parts. Thomas Edison fought Tesla's AC tooth and nail throughout the 1890s; within fifteen years AC had won every contested city. Every result in this topic follows from a single observation: if the source rotates, model everything else as rotating too.
+
+</Section>
+
+<Section index={2} title="Phasors as complex numbers">
+
+A <Term slug="phasor">phasor</Term> is a rotating arrow in a plane. Write the mains voltage as
+
+<EquationBlock>
+  $$ v(t) = V_0 \cos(\omega t + \phi) $$
+</EquationBlock>
+
+with ω = 2π·50 rad/s in Europe, 2π·60 in North America. That cosine is awkward to differentiate, tedious to add. But it is the real part of something much easier:
+
+<EquationBlock id="EQ.00">
+  $$ v(t) = \mathrm{Re}\bigl\{\, V_0\, e^{j(\omega t + \phi)} \,\bigr\} $$
+</EquationBlock>
+
+Electrical engineers write `j` instead of `i` for √−1 because `i` already means "current" — a century-old convention that has refused to die. The quantity V̂ = V₀·e^(jφ) is the **phasor**: a complex amplitude that encodes both the peak value and the phase, but not the instantaneous time. The e^(jωt) factor is the shared rotation — apply it to everything and differentiation becomes multiplication by jω, integration becomes division by jω, and every linear circuit equation collapses into complex arithmetic on constant phasors.
+
+The symbol `ω` — angular frequency, measured in radians per second — is just "how many radians of rotation per second." At 50 Hz, ω ≈ 314 rad/s; see also <Term slug="ac-frequency">AC frequency</Term>. One full turn of the phasor is one full cycle of v(t). The convention is that **all phasors in one circuit rotate at the same ω**, so you can drop the e^(jωt) factor from every equation and work with the standing complex amplitudes alone. The rotation is implied; the phasor diagram is a snapshot.
+
+</Section>
+
+<Section index={3} title="Reactance and impedance">
+
+Take Faraday's law applied to an ideal inductor, V = L·dI/dt. If I(t) = I₀·e^(jωt), then dI/dt = jω·I₀·e^(jωt), so V = jωL·I. The ratio V/I is a complex number:
+
+<EquationBlock id="EQ.01">
+  $$ Z_L = j\omega L $$
+</EquationBlock>
+
+The same move for a capacitor, where I = C·dV/dt, gives
+
+<EquationBlock id="EQ.02">
+  $$ Z_C = \frac{1}{j\omega C} = -\,\frac{j}{\omega C} $$
+</EquationBlock>
+
+A resistor is unchanged — Z_R = R, purely real — because Ohm's law has no time derivative. Put all three in series and the total is
+
+<EquationBlock id="EQ.03">
+  $$ Z = R + j\!\left(\omega L - \tfrac{1}{\omega C}\right) = R + jX $$
+</EquationBlock>
+
+The real part R dissipates heat. The imaginary part X is the **<Term slug="reactance">reactance</Term>** — energy shuttles into the field and back without net loss, measured in ohms just like resistance but invisible on a DC meter. Together, Z = R + jX is the **<Term slug="impedance">impedance</Term>**, coined by <PhysicistLink slug="oliver-heaviside">Oliver Heaviside</PhysicistLink> in 1886 as the AC generalisation of resistance. |Z| tells you how much current the circuit will admit; arg(Z) = φ tells you how that current lines up with the driving voltage in time. Every Kirchhoff rule from the DC topic works unchanged — node currents still sum to zero, loop voltages still cancel — provided you treat each branch as a complex impedance instead of a real resistance.
+
+</Section>
+
+<Section index={4} title="The rotating phasor">
+
+<SceneCard caption="FIG.30a — the money shot: rotating phasors (left) and the oscilloscope trace they paint (right). Drag φ." className="w-full">
+  <PhasorDiagramScene />
+</SceneCard>
+
+The left panel is the complex plane — the phasor diagram. V̂ is a magenta arrow of length V₀ rotating at ω. Î is an amber arrow rotating at the same ω, but turned back by φ relative to V̂. The two arrows keep their angle fixed while they spin; only their orientation in the plane advances with time.
+
+The right panel is what an oscilloscope actually shows. Take the horizontal projection of each arrow — the real part — and plot it against time. V̂ projects to V₀·cos(ωt); Î projects to I₀·cos(ωt − φ). The magenta trace crests when V̂ points along the positive real axis. The amber trace crests a little later, when Î catches up to that axis. The *horizontal distance between their peaks* is exactly φ translated from radians into time: Δt = φ/ω.
+
+Drag the slider. Set φ = 0 and the two arrows lock together — a purely resistive load; v and i peak simultaneously. Push φ positive (an inductive load, ELI: **E**MF **l**eads **I** in an inductor) and the amber trace slides right. Push it negative (capacitive, ICE: **I** leads **E** in a **C**apacitor) and it slides left. The phase lag is now a *visible* separation. The "j" in Z = R + jX is not a mathematical abstraction — it is a rotation, imposed by the time-derivative operator, that literally tilts the current phasor off the voltage phasor.
+
+One slider, two panels, one picture. This is how impedance becomes intuition.
+
+</Section>
+
+<Section index={5} title="The impedance triangle">
+
+<SceneCard caption="FIG.30b — impedance triangle: R on the real axis, X on the imaginary, |Z| as the hypotenuse." className="w-full">
+  <ImpedanceTriangleScene />
+</SceneCard>
+
+Drop the rotation and freeze Z in the complex plane. It is a right triangle: R along the real axis, X = ωL − 1/(ωC) along the imaginary, and |Z| = √(R² + X²) as the hypotenuse. The angle φ at the origin satisfies tan(φ) = X/R — it is the phase you just saw in the oscilloscope.
+
+Three sliders drive this one. Boost L and the triangle tips upward. Boost C and the triangle tips downward. At a particular ratio, X_L = X_C and the triangle collapses to the real axis: **series resonance**, where the circuit behaves as if the capacitor and inductor were not there and |Z| = R is at its minimum. Drive the circuit at that ω and current peaks sharply. Radio receivers live on this trick: tune a variable capacitor until ω₀ = 1/√(LC) matches the broadcast frequency of the station you want, and the antenna signal at that frequency overwhelms everything else. The whole audio of a distant transmitter is pulled out of a thousand overlapping carriers by nothing more than a well-placed complex-plane triangle.
+
+</Section>
+
+<Section index={6} title="Power and power factor">
+
+How much real power does an AC load actually dissipate? Multiply v(t)·i(t) and average over a cycle. The reactive parts integrate to zero — the field-and-back — and the resistive part survives:
+
+<EquationBlock id="EQ.04">
+  $$ P_{\text{avg}} = V_{\text{rms}}\, I_{\text{rms}}\, \cos\phi $$
+</EquationBlock>
+
+<SceneCard caption="FIG.30c — same voltage, three loads. Only cos(φ) decides the brightness." className="w-full">
+  <PowerFactorScene />
+</SceneCard>
+
+Three identical bulbs, the same 230 V rms source. The R-only branch reaches full brightness because cos(φ) = 1. The R+L branch dims, not because less current flows — in fact the current's rms value is smaller only mildly — but because a large fraction of that current returns to the source without having done useful work. Same story on the R+C branch. The phase angle is the difference between *apparent* power (V·I) and *real* power (V·I·cos φ).
+
+</Section>
+
+<Section index={7} title="Why the grid runs on this">
+
+Continental grids are 50 Hz; the Americas picked 60 Hz. Either choice rotates the phasor slowly enough that transformers work (see FIG.31) and fast enough that incandescent bulbs do not flicker visibly. Power plants do not feed you a single sinusoid but three, offset in phase by 120°. This is **three-phase**, and it is what lets a motor start itself without an external commutator: the three currents together synthesise a rotating magnetic field identical to the one Tesla drew in 1887.
+
+Industrial users are billed on their power factor for exactly the reason FIG.30c shows. A factory drawing 100 kW of real power at cos(φ) = 0.7 pulls 143 kVA of apparent power — 43% more current, 43% more I²R heat in the transmission lines feeding it, for zero extra useful work. Utilities charge for the mess. Factories answer with **power-factor correction**: a bank of capacitors sized so that ωL = 1/(ωC) cancels the inductive reactance of their motors. The triangle flattens. cos(φ) climbs toward 1. The bill drops.
+
+<Callout variant="intuition">
+The wall socket is a projection of a rotation. Every law in this topic is the real part of complex arithmetic on rotating vectors. Once that clicks, impedance is no longer a formula — it is a picture.
+</Callout>
+
+</Section>
+
+</TopicPageLayout>

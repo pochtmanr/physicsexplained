@@ -638,6 +638,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   RlcBandpassScene: lazyScene(() =>
     import("@/components/physics/rlc-bandpass-scene").then((m) => ({ default: m.RlcBandpassScene })),
   ),
+
+  // EM §06 — ac-circuits-and-phasors
+  PhasorDiagramScene: lazyScene(() =>
+    import("@/components/physics/phasor-diagram-scene").then((m) => ({ default: m.PhasorDiagramScene })),
+  ),
+  ImpedanceTriangleScene: lazyScene(() =>
+    import("@/components/physics/impedance-triangle-scene").then((m) => ({ default: m.ImpedanceTriangleScene })),
+  ),
+  PowerFactorScene: lazyScene(() =>
+    import("@/components/physics/power-factor-scene").then((m) => ({ default: m.PowerFactorScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
