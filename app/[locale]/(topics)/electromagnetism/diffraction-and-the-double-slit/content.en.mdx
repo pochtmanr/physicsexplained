@@ -1,0 +1,125 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DoubleSlitBuildupScene } from "@/components/physics/double-slit-buildup-scene";
+import { SingleSlitScene } from "@/components/physics/single-slit-scene";
+import { DiffractionGratingScene } from "@/components/physics/diffraction-grating-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Thomas Young", href: "/physicists/thomas-young" },
+  { type: "physicist", label: "Christiaan Huygens", href: "/physicists/christiaan-huygens" },
+  { type: "physicist", label: "Joseph Fraunhofer", href: "/physicists/joseph-fraunhofer" },
+  { type: "term", label: "Diffraction", href: "/dictionary/diffraction-em" },
+  { type: "term", label: "Huygens' principle", href: "/dictionary/huygens-principle" },
+  { type: "term", label: "Single-slit diffraction", href: "/dictionary/single-slit-diffraction" },
+  { type: "term", label: "Double-slit diffraction", href: "/dictionary/double-slit-diffraction" },
+  { type: "term", label: "Coherence length", href: "/dictionary/coherence-length" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.49 · WAVES IN MATTER & OPTICS"
+  title="DIFFRACTION AND THE DOUBLE SLIT"
+  subtitle="What a wave does when a wall gets in the way."
+/>
+
+<Section index={1} title="1801 — a candle, a card, and the end of the corpuscular theory">
+
+For a century Newton's *Opticks* was the answer. Light, he argued, was a stream of corpuscles — tiny particles travelling in straight lines, reflecting off mirrors like billiard balls, refracting at glass surfaces because the denser medium pulled them slightly sideways. The mathematics worked. The analogy fit. The authority was overwhelming.
+
+Then, in November 1801, <Term slug="young-interference">Thomas Young</Term> stood in a London lecture hall and demonstrated something Newton's corpuscles could not do. He took a slip of paper and pierced it with a pin. He lit a candle. He slid a second paper with two closely-spaced slits in front of the first. And on the wall behind the second paper, he projected not two bright lines but a *ladder* — a periodic pattern of bright and dark fringes, marching away from the centre with uniform spacing.
+
+Corpuscles collide and stack. They do not subtract. They cannot cancel each other out to produce a dark fringe between two illuminated slits. Waves can. The experiment was simple enough that a schoolchild could reproduce it and definitive enough that it demolished an entire physical theory. This is the topic where classical wave optics earns its keep — and where, a century later, the same experiment becomes the single strangest demonstration in all of physics.
+
+</Section>
+
+<Section index={2} title="Huygens' principle — every point on a wavefront is a wavelet">
+
+To predict what happens downstream of a slit, you need a way to propagate a wavefront forward. <Term slug="christiaan-huygens">Christiaan Huygens</Term> wrote the rule down in 1678, a hundred and twenty years before Young needed it. It reads: **every point on an existing wavefront acts as the source of a spherical secondary wavelet.** The wavefront at any later instant is the envelope — or, in the quantitative version Fresnel added in 1818, the *coherent sum* — of all those secondary wavelets.
+
+Run that rule through a single hole. The incident plane wave hits the opaque screen; only the points inside the hole can radiate secondary wavelets forward. Each one of those surviving points emits a spherical wavelet on the far side. If the hole is narrower than a few wavelengths, only a handful of wavelet sources remain, and their envelope behind the hole is no longer a plane wave — it is essentially a single spherical wave fanning outward into the geometric shadow. That is **diffraction**. A beam that met a narrow aperture does not continue as a beam.
+
+<EquationBlock id="EQ.01">
+  $$ E(\mathbf{r},t) \;\propto\; \int_{\text{aperture}} \frac{e^{\,ik\,|\mathbf{r}-\mathbf{r}'|}}{|\mathbf{r}-\mathbf{r}'|}\; dS' $$
+</EquationBlock>
+
+The Huygens–Fresnel integral is the whole theory in one line: the field at a downstream point **r** is the sum of spherical wavelets emitted from every point **r′** inside the aperture, each carrying a phase `k·|r−r′|` set by the distance it travelled. Everything that follows in this topic — single-slit envelopes, double-slit fringes, diffraction gratings, even the photon-by-photon reveal at the end — is a special case of that integral.
+
+</Section>
+
+<Section index={3} title="One slit — the central maximum and its first zero">
+
+Start with a single slit of width `a` illuminated by a plane wave of wavelength `λ`. On a screen at distance `L`, the wavelets from the two edges of the slit differ in path length by `a sin θ` at an angle `θ` from the forward direction. When that path difference equals exactly one wavelength, the slit splits neatly into two halves whose wavelets cancel in pairs — an edge wavelet with its counterpart from the slit's midline, offset by exactly `λ/2`. Every pairing destructively interferes. The net field is zero.
+
+That is the **first diffraction minimum**:
+
+<EquationBlock id="EQ.02">
+  $$ \sin\theta_{\min} \;=\; \frac{\lambda}{a} \qquad \Longrightarrow \qquad y_{\min} \;\approx\; \frac{\lambda L}{a} $$
+</EquationBlock>
+
+The central bright lobe has angular half-width `λ/a`; on a screen at distance `L` it is a linear half-width of `λL/a`. Narrow slit → wide central lobe. Widen the slit to many wavelengths and the lobe shrinks down toward the straight-through geometric beam — Newton's corpuscles as a limit case. Drive the slit down to a single wavelength and the lobe fans out across the entire half-plane behind the aperture.
+
+<SceneCard caption="FIG.49a — single-slit diffraction. Narrow the slit and the central lobe fans outward; widen it and the lobe contracts toward a geometric beam." className="w-full">
+  <SingleSlitScene />
+</SceneCard>
+
+The full single-slit pattern (from integrating EQ.01 across an aperture of width `a`) is a **sinc²** envelope: `(sin β/β)²` with `β = π a sin θ / λ`. Its central lobe carries about 90% of the transmitted power. The side lobes — the gentle bumps beyond the first zero — carry the rest, decaying as `1/β²`.
+
+</Section>
+
+<Section index={4} title="Two slits — Young's ladder of fringes">
+
+Now open a second narrow slit, parallel to the first, separated by a centre-to-centre distance `d`. Each slit is a Huygens point source. A point on the screen is illuminated by two spherical wavelets whose path lengths differ by `d sin θ`. Whenever that path difference is an integer number of wavelengths, the wavelets arrive *in phase*, the amplitudes add, and the intensity peaks at four times one slit alone. Whenever the path difference is a half-integer number, they arrive out of phase, cancel perfectly, and the intensity drops to zero.
+
+The bright fringes sit at angles `sin θ_m = m λ / d`. On a screen at distance `L`, neighbouring bright fringes are separated by
+
+<EquationBlock id="EQ.03">
+  $$ \Delta y \;=\; \frac{\lambda L}{d} $$
+</EquationBlock>
+
+This is what Young measured. With `d` a fifth of a millimetre, `L` half a metre, and `λ` around 550 nm, the fringe spacing works out to about 1.1 mm — visible to the unaided eye on a plain white wall. Run the numbers backwards from his measurement and you recover the wavelength of green light. That is literally how the number was first obtained.
+
+The *full* double-slit pattern is the product of the two physics we just derived — bright fringes at spacing `λL/d`, modulated by the single-slit envelope from each slit's width `a`. The envelope controls how many fringes are visible before the intensity dies off; the fringe term controls their spacing. Two orthogonal knobs, one pattern.
+
+</Section>
+
+<Section index={5} title="The money shot — watch one photon at a time">
+
+<SceneCard caption="FIG.49 — the canonical diffraction experiment. Start in wave-view for the continuous intensity; switch to particle-view and watch the fringes build up dot by dot." className="w-full">
+  <DoubleSlitBuildupScene />
+</SceneCard>
+
+Hit wave-view. The intensity landing on the screen is the smooth `cos²` fringe pattern scaled by the single-slit envelope. Slide `d` down — fringes spread apart (wider spacing means fewer bright lines on screen). Slide `λ` up into red — same thing, for the same reason. Slide `L` up — the pattern stretches. Every response matches EQ.03 exactly; the amber ticks on the screen mark the formula's predicted fringe positions and the peaks of the curve sit on them.
+
+Now hit particle-view. The screen goes dark. A single photon arrives. It makes *one dot*. It did not split. It did not land as a smeared wave. Where it hit is a discrete, localised point, like a bullet. Another photon arrives. Another dot. Another. Another. Early on the dots look random — a dusting of flecks scattered across the screen. But keep watching. After a few thousand dots the histogram attached to the screen starts growing taller in some places, shorter in others. After ten thousand dots a periodic ladder is unmistakable. After a hundred thousand the dots have carved out the exact same `cos²`-times-sinc² intensity profile the wave-view painted continuously.
+
+Each photon lands in one place, but the places are **distributed** according to the wave's intensity pattern. You cannot dim the beam enough to escape this — turn the source down until there is only one photon in the apparatus at any time and the fringes still build up, one dot at a time, over minutes or hours of exposure. This is the single photon passing "through both slits" in the sense that its arrival probability is governed by the interference of two slit-amplitudes. There is no classical particle-picture of what that photon did in flight. There is only the distribution of where it landed. Try to insert a detector at one of the slits to catch it going through, and the fringes vanish — the detector collapses the two-path amplitude into one and the probability density on the screen reverts to an ordinary single-slit blob.
+
+This is the starting gun of quantum mechanics. Young's 1801 experiment, run slowly enough to resolve individual quanta, is the experimental fact that every interpretation of quantum theory has to accommodate. The mathematics of `λL/d` is still there; it just tells you the *probability* distribution now instead of a deterministic intensity.
+
+</Section>
+
+<Section index={6} title="Many slits — the grating and the birth of spectroscopy">
+
+<SceneCard caption="FIG.49b — replace two slits with N. Principal maxima stay at sin θ = mλ/d; widths shrink as 1/N." className="w-full">
+  <DiffractionGratingScene />
+</SceneCard>
+
+Put `N` narrow slits in a row, separated by `d`. The same Huygens sum now has `N` terms instead of two, and the principal maxima still sit at `sin θ_m = m λ / d` — each slit delays the next by an integer number of wavelengths at those angles. What changes is *sharpness*. Between two principal maxima there are now `N − 2` secondary peaks and `N − 1` perfect zeros, forced by the geometric sum of the `N` coherent wavelets. The angular half-width of each principal maximum narrows as `1/N`.
+
+Two slits give Young's broad sinusoidal fringes. Fifty slits give narrow pulses at the same angles. Five thousand slits per millimetre — a typical optical grating — give essentially delta-function-sharp spectral lines. <Term slug="joseph-fraunhofer">Joseph Fraunhofer</Term>, the Bavarian optician who first built precision gratings around 1821, used exactly this sharpness to resolve the dark absorption lines in sunlight — now called Fraunhofer lines — and turned astronomy into chemistry. When an optical physicist writes a cover sheet with their instrument's **resolving power**, they are writing `R = Nm` — the Rayleigh criterion for distinguishing two nearby wavelengths — and that `N` is the same `N` as in EQ.03 with two slits, scaled up by a factor of a few thousand.
+
+</Section>
+
+<Section index={7} title="The bridge">
+
+Diffraction is what a wave does when a wall gets in the way. Huygens gave us the rule; Young measured the first hard wavelength with it; Fraunhofer sharpened it into a spectrometer. The analytical content is two formulas: `Δy = λL/d` for fringe spacing and `λL/a` for the central-lobe half-width of a single slit. The numerical content is one integral — Huygens–Fresnel — which the scenes above solve in closed form whenever the analytical formulas apply and by direct summation when they don't.
+
+And then there's one photon at a time. Every fringe you have seen in this topic was built by a huge number of indistinguishable arrivals, each one localised, each one distributed according to the wave's intensity. That is the bridge. The `λL/d` on which Young's entire measurement rested is still there — unchanged, quantitative, predictive — but it is now the functional form of a probability density, not a deterministic intensity. Topic §17 opens on the other side of that bridge.
+
+</Section>
+
+</TopicPageLayout>
