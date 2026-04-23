@@ -9,7 +9,7 @@ import { MobileNav } from "./mobile-nav";
 
 import { SearchTrigger } from "@/components/search/search-trigger";
 import { SearchCommand } from "@/components/search/search-command";
-import { WIDE_CONTAINER } from "@/lib/layout";
+import { FULL_BLEED } from "@/lib/layout";
 
 export async function Nav() {
   const t = await getTranslations("common.nav");
@@ -17,7 +17,7 @@ export async function Nav() {
   return (
     <nav className="sticky top-0 z-50 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
       <div
-        className={`${WIDE_CONTAINER} flex h-12 items-center justify-between gap-4 md:h-14`}
+        className={`${FULL_BLEED} flex h-12 items-center justify-between gap-4 md:h-14`}
       >
         <div className="flex min-w-0 items-center">
           <Link
