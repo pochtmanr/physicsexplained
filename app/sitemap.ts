@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/content/branches";
-import { PHYSICISTS } from "@/lib/content/physicists";
-import { GLOSSARY } from "@/lib/content/glossary";
+import { supabase } from "@/lib/supabase";
 import { locales, defaultLocale } from "@/i18n/config";
 
 const BASE = "https://physics.it.com";
@@ -42,7 +41,7 @@ function entry(
   };
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
   const staticPages: MetadataRoute.Sitemap = [
@@ -59,18 +58,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry(`/${b.slug}`, now, "monthly", 0.8),
   );
 
-  const topicPages: MetadataRoute.Sitemap = BRANCHES.flatMap((b) =>
-    b.topics
-      .filter((t) => t.status === "live")
-      .map((t) => entry(`/${b.slug}/${t.slug}`, now, "monthly", 0.9)),
+  // Pull live content slugs directly from Supabase so the sitemap never drifts
+  // from the database that actually renders the pages.
+  const [topicRes, physicistRes, glossaryRes] = await Promise.all([
+    supabase
+      .from("content_entries")
+      .select("slug, updated_at")
+      .eq("kind", "topic")
+      .eq("locale", defaultLocale)
+      .order("slug"),
+    supabase
+      .from("content_entries")
+      .select("slug, updated_at")
+      .eq("kind", "physicist")
+      .eq("locale", defaultLocale)
+      .order("slug"),
+    supabase
+      .from("content_entries")
+      .select("slug, updated_at")
+      .eq("kind", "glossary")
+      .eq("locale", defaultLocale)
+      .order("slug"),
+  ]);
+
+  const topicPages: MetadataRoute.Sitemap = (topicRes.data ?? []).map((t) =>
+    entry(`/${t.slug}`, t.updated_at ?? now, "monthly", 0.9),
   );
 
-  const physicistPages: MetadataRoute.Sitemap = PHYSICISTS.map((p) =>
-    entry(`/physicists/${p.slug}`, now, "monthly", 0.6),
+  const physicistPages: MetadataRoute.Sitemap = (physicistRes.data ?? []).map((p) =>
+    entry(`/physicists/${p.slug}`, p.updated_at ?? now, "monthly", 0.6),
   );
 
-  const dictionaryPages: MetadataRoute.Sitemap = GLOSSARY.map((term) =>
-    entry(`/dictionary/${term.slug}`, now, "monthly", 0.5),
+  const dictionaryPages: MetadataRoute.Sitemap = (glossaryRes.data ?? []).map((g) =>
+    entry(`/dictionary/${g.slug}`, g.updated_at ?? now, "monthly", 0.5),
   );
 
   return [
