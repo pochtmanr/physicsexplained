@@ -1,7 +1,7 @@
 # Electromagnetism — Branch Design
 
 **Date:** 2026-04-22
-**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23
+**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23; §06 + §07 shipped 2026-04-23
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:351-361`.
@@ -316,14 +316,14 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §03 Magnetostatics | 5 | 5 | ☑ complete |
 | §04 Magnetic fields in matter | 4 | 4 | ☑ complete |
 | §05 Electrodynamics & induction | 5 | 5 | ☑ complete |
-| §06 Circuits | 7 | 0 | ☐ not started |
-| §07 Maxwell's equations | 5 | 0 | ☐ not started |
+| §06 Circuits | 7 | 7 | ☑ complete |
+| §07 Maxwell's equations | 5 | 5 | ☑ complete |
 | §08 EM waves in vacuum | 4 | 0 | ☐ not started |
 | §09 Waves in matter & optics | 10 | 0 | ☐ not started |
 | §10 Radiation | 6 | 0 | ☐ not started |
 | §11 EM & relativity | 5 | 0 | ☐ not started |
 | §12 Foundations | 4 | 0 | ☐ not started |
-| **Total** | **66** | **25** | **38% complete** |
+| **Total** | **66** | **37** | **56% complete** |
 
 ### Per-topic checklist
 
@@ -365,20 +365,20 @@ Check off as each topic ships.
 - [x] 25 `eddy-currents`
 
 **§06 Circuits**
-- [ ] 26 `dc-circuits-and-kirchhoff`
-- [ ] 27 `rc-circuits`
-- [ ] 28 `rl-circuits`
-- [ ] 29 `rlc-circuits-and-resonance`
-- [ ] 30 `ac-circuits-and-phasors`
-- [ ] 31 `transformers`
-- [ ] 32 `transmission-lines`
+- [x] 26 `dc-circuits-and-kirchhoff`
+- [x] 27 `rc-circuits`
+- [x] 28 `rl-circuits`
+- [x] 29 `rlc-circuits-and-resonance`
+- [x] 30 `ac-circuits-and-phasors`
+- [x] 31 `transformers`
+- [x] 32 `transmission-lines`
 
 **§07 Maxwell's equations**
-- [ ] 33 `displacement-current`
-- [ ] 34 `the-four-equations`
-- [ ] 35 `gauge-freedom-and-potentials`
-- [ ] 36 `the-poynting-vector`
-- [ ] 37 `maxwell-stress-tensor`
+- [x] 33 `displacement-current`
+- [x] 34 `the-four-equations`
+- [x] 35 `gauge-freedom-and-potentials`
+- [x] 36 `the-poynting-vector`
+- [x] 37 `maxwell-stress-tensor`
 
 **§08 EM waves in vacuum**
 - [ ] 38 `deriving-the-em-wave-equation`
