@@ -1,0 +1,130 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TwoSourceInterferenceScene } from "@/components/physics/two-source-interference-scene";
+import { NewtonsRingsScene } from "@/components/physics/newtons-rings-scene";
+import { ThinFilmScene } from "@/components/physics/thin-film-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Thomas Young", href: "/physicists/thomas-young" },
+  { type: "physicist", label: "Christiaan Huygens", href: "/physicists/christiaan-huygens" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Constructive interference", href: "/dictionary/constructive-interference" },
+  { type: "term", label: "Destructive interference", href: "/dictionary/destructive-interference" },
+  { type: "term", label: "Coherence length", href: "/dictionary/coherence-length" },
+  { type: "term", label: "Plane wave", href: "/dictionary/plane-wave-term" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.48 · WAVES IN MATTER & OPTICS"
+  title="INTERFERENCE"
+  subtitle="Two waves that know how to add — and how to cancel."
+/>
+
+<Section index={1} title="Linearity is the whole trick">
+
+Two waves cross paths in the same region of space. Each is a solution of the same linear wave equation; the sum of two solutions is again a solution. That sentence — superposition — is the entire setup for interference. The medium does not "mix" the waves. It carries their algebraic sum, instant by instant, point by point. What ends up on a detector, though, is not the field — it is the **intensity**, proportional to the square of the resultant field amplitude. Squaring a sum is how interference sneaks into the bookkeeping.
+
+Write two coherent monochromatic waves meeting at a point with (real-valued) amplitudes `E₁` and `E₂` and a phase offset `Δφ`. The resultant field is `E = E₁ cos(ωt) + E₂ cos(ωt + Δφ)`. A time-averaged power meter reads
+
+<EquationBlock id="EQ.01">
+  $$ I \;\propto\; \lvert E_1 + E_2 \rvert^{2} \;=\; E_1^{2} + E_2^{2} + 2\,E_1 E_2 \cos(\Delta\varphi) $$
+</EquationBlock>
+
+The first two pieces are what you would see if the beams arrived independently — the boring additive part. The third is the **interference term**, the cosine-weighted cross product that knows the relative phase. It is the reason two 1-mW beams can, with the right geometry, hand a detector 4 mW in one place and exactly 0 mW a quarter-wavelength over. Energy is not created: it is moved around. The bright fringes owe everything they have to the dark ones next door.
+
+</Section>
+
+<Section index={2} title="Two conditions, two regimes">
+
+Look at the cross term. It takes its maximum value `+2 E₁ E₂` when `cos(Δφ) = +1`, i.e. when `Δφ = 2πm` for integer `m`. That is **<Term slug="constructive-interference">constructive interference</Term>** — the waves reinforce, and for equal amplitudes the intensity climbs to `4 E²`. It takes its minimum `−2 E₁ E₂` when `cos(Δφ) = −1`, i.e. `Δφ = (2m + 1)π`. That is **<Term slug="destructive-interference">destructive interference</Term>** — the waves cancel, and for equal amplitudes the detector sees zero.
+
+Relative phase in optics comes from two distinct sources and most problems are bookkeeping on their sum.
+
+The first is **path difference**. Two rays leave the same source, take different routes, and arrive with an extra optical path `ΔL = n·Δℓ` between them. That becomes a phase of
+
+<EquationBlock id="EQ.02">
+  $$ \Delta\varphi_{\text{path}} \;=\; \frac{2\pi}{\lambda}\,\Delta L $$
+</EquationBlock>
+
+so constructive fringes sit at `ΔL = mλ` and destructive at `ΔL = (m + ½)λ`. This is the rule behind Young's double slit, behind the `d sin θ = mλ` grating equation, behind every two-beam interferometer you will ever touch.
+
+The second is **reflection phase jumps**. A wave bouncing off a boundary into a medium of *higher* refractive index picks up an extra π — a half-wavelength kick that flips its sign. Bouncing off a *lower*-index medium picks up nothing. It is one line of algebra from the Fresnel formulas (§09.3: `r_s` goes negative when `n₂ > n₁`), but it shows up everywhere. Thin films, Newton's rings, anti-reflection coatings, Lloyd's mirror, Pohl's interferometer — all of them live or die on remembering who flips and who doesn't.
+
+</Section>
+
+<Section index={3} title="Two sources, one screen — the canonical figure">
+
+<SceneCard caption="FIG.48a — two coherent point sources on the left, interference lattice in the middle, projected fringes on the right screen." className="w-full">
+  <TwoSourceInterferenceScene />
+</SceneCard>
+
+Two point sources at separation `d` emit in phase at the same wavelength `λ`. At a far screen at distance `L`, the path difference to a point at vertical offset `y` from the central axis is approximately `ΔL ≈ d·y/L`. Plug into `ΔL = mλ` and the bright fringes sit at
+
+<EquationBlock id="EQ.03">
+  $$ y_{m} \;=\; \frac{m\,\lambda\,L}{d} $$
+</EquationBlock>
+
+spaced by `Δy = λL/d`. Slide the separation `d` up and the fringes crowd together; slide it down and they spread out. Slide the frequency (and therefore `λ`) the other way and the fringes do the opposite. This is the piece of physics <Term slug="huygens-principle">Christiaan Huygens</Term> had half of (spherical wavelets add), that <Term slug="constructive-interference">Thomas Young</Term> completed in 1801 when he put two slits in front of a lamp and watched the screen light up in stripes — the first durable experimental proof that light was a wave.
+
+Every two-beam interferometer runs on the same geometry. A Michelson splits one beam into two, routes them through arms of slightly different length, and recombines them on a detector; the output is EQ.01 plotted against the arm difference. A Mach–Zehnder does the same with separated arms. A gravitational-wave detector like LIGO is a kilometre-long Michelson watching for `Δφ < 10⁻⁹ rad` shifts in its fringe pattern.
+
+</Section>
+
+<Section index={4} title="Thin films — and the two reflections that fight it out">
+
+<SceneCard caption="FIG.48b — a soap film in air with thickness ramping left → right. Each colour constructive at a different thickness; the result is the familiar iridescence." className="w-full">
+  <ThinFilmScene />
+</SceneCard>
+
+A thin transparent film of index `n_f` sits between two media. Light hits the top surface: a fraction reflects (top reflection, ray 1), the rest refracts in, bounces off the bottom surface, refracts back out (ray 2). Rays 1 and 2 are coherent — they came from the same incident wave — and they interfere. The round-trip inside the film contributes a path phase of `2π · 2 n_f d / λ` at normal incidence. On top of that, each reflection either flips or it doesn't, depending on whether it goes low-to-high or high-to-low in refractive index.
+
+For a soap bubble — air outside, water-like film, air inside — only the top reflection flips. The bottom reflection goes from film (high `n`) to air (low `n`), no flip. The total relative phase becomes
+
+<EquationBlock id="EQ.04">
+  $$ \Delta\varphi \;=\; \frac{4\pi\,n_f d}{\lambda} + \pi $$
+</EquationBlock>
+
+Bright reflections (constructive) sit where `2 n_f d = (m + ½)λ`; dark ones where `2 n_f d = m λ`. Because `λ` depends on colour, each wavelength picks a different thickness for its own bright condition, and a wedge-shaped film paints the visible spectrum in stripes. The ultra-thin left edge of the bubble — `d → 0` — lands at `Δφ = π`: destructive across every wavelength, so it looks uniformly dark. Soap-bubble makers call that the **black film**, and it appears a few seconds before the bubble bursts, when it has drained down to ~10 nm thick.
+
+Engineers invert this. A single λ/4 layer of MgF₂ (n ≈ 1.38) over glass (n = 1.5) uses destructive interference to kill the front-surface reflection of a camera lens at one wavelength, taking reflection at that λ from ~4% down to well under 0.5%. Stack a dozen such layers with carefully chosen thicknesses and you get the multi-coated lens that loses almost nothing across the whole visible band.
+
+</Section>
+
+<Section index={5} title="Newton's rings — the archetype">
+
+<SceneCard caption="FIG.48c — plano-convex lens on a flat under monochromatic light. Concentric rings sit at r_m = √(m λ R); the dark centre is the π-flip." className="w-full">
+  <NewtonsRingsScene />
+</SceneCard>
+
+A plano-convex lens of radius of curvature `R` sits on a flat glass plate. Between them is a wedge of air whose thickness grows outward from zero at the contact point as `t(r) ≈ r²/(2R)` (binomial expansion of the sagitta). Monochromatic light illuminates from above. The interfering rays are the one reflecting off the bottom of the lens (glass → air, no flip) and the one reflecting off the top of the flat (air → glass, +π flip). Round-trip path `2t` plus the single π gives destructive interference at `2t = mλ`. Solving for `r`,
+
+<EquationBlock id="EQ.05">
+  $$ r_{m} \;=\; \sqrt{m\,\lambda\,R} $$
+</EquationBlock>
+
+which is the signature of this geometry: ring radii scale as `√m`, not as `m`. The contact point itself is dark (`m = 0`, and the π-flip dominates — a striking check that the flip is real). <Term slug="huygens-principle">Isaac Newton</Term> catalogued these rings in 1675 and measured them precisely enough to infer a wavelength — despite spending most of his career arguing light was corpuscular. The rings that bear his name were, eventually, the data that undid him.
+
+Newton's rings are still an industrial test. Placing a production lens on a calibrated reference flat and counting fringes measures the sag to a fraction of a wavelength — nanometre accuracy with a sodium lamp. Optical-shop quality control ran on this for most of the twentieth century.
+
+</Section>
+
+<Section index={6} title="Coherence — how long before the phases forget">
+
+The interference term `2 E₁ E₂ cos(Δφ)` only survives time-averaging if `Δφ` is stable. A real source emits wavetrains of finite duration; its spectrum has finite width `Δλ`; the phase of its output wanders randomly on a timescale `τ_c ~ 1/Δν`. Two beams with a path difference larger than `c·τ_c` sample uncorrelated pieces of that phase wander and the cross term averages to zero — no fringes. The length
+
+<EquationBlock id="EQ.06">
+  $$ L_c \;=\; c\,\tau_c \;=\; \frac{\lambda^{2}}{\Delta\lambda} $$
+</EquationBlock>
+
+is the **<Term slug="coherence-length">coherence length</Term>**. A cheap HeNe laser (λ = 633 nm, `Δλ ≈ 1.5 pm`) has `L_c ≈ 27 cm` — fringes stay crisp across a lab bench. A stabilised single-mode laser stretches that to kilometres. A white-light LED (`Δλ ≈ 100 nm`) has `L_c ≈ 3 μm`, which is why you see coloured bands on soap bubbles (very small path differences) and not on a window pane (huge path differences). Michelson's "white light fringe" — the unique zero-path-difference position where white light does produce visible colour fringes — is how his interferometer was aligned. It was also, in 1887, the method that tested whether the Earth moved through the aether: the whole thing rested on EQ.01.
+
+Interference is the operational signature of "the thing is a wave." Every wave property — λ, phase, coherence, polarization — reads out through some interference measurement. The next two topics (§09.8 diffraction, §09.9 polarization phenomena) are two more places it shows up. But the algebra is already here, in six equations, on one page.
+
+</Section>
+
+</TopicPageLayout>
