@@ -1,6 +1,6 @@
 import type { LLMProvider, NeutralMessage } from "./provider";
 import type { AnswerStreamChunk, ClassifierLabel, UsageRow } from "./types";
-import { TOOL_SCHEMAS } from "./tool-schemas";
+import { TOOL_SCHEMAS, type JsonToolDef } from "./tool-schemas";
 import { CLASSIFIER_PROMPT, SYSTEM_PROMPT_BASE, OFF_TOPIC_REFUSAL, INJECTION_RE } from "./prompts";
 import { renderToc, type TocData } from "./toc";
 import { computeCostMicros } from "./cost";
@@ -9,6 +9,27 @@ const MAX_HOPS = 6;
 const LABELS: ClassifierLabel[] = [
   "glossary-lookup", "article-pointer", "conceptual-explain", "calculation", "viz-request", "off-topic",
 ];
+
+// Router — narrow the tool set based on classifier label. Fewer tools in the
+// system prompt = smaller payload = faster TTFB + cheaper. The full set is a
+// safety net for conceptual-explain (the broadest category).
+const TOOLS_BY_LABEL: Record<Exclude<ClassifierLabel, "off-topic">, readonly string[]> = {
+  "glossary-lookup": ["searchGlossary", "listGlossaryByCategory", "getContentEntry", "searchSiteContent"],
+  "article-pointer": ["searchSiteContent", "getContentEntry", "searchGlossary"],
+  "conceptual-explain": [
+    "searchSiteContent", "getContentEntry", "searchGlossary",
+    "searchScenes", "showScene", "plotFunction", "plotParametric",
+    "webSearch", "fetchUrl",
+  ],
+  "calculation": ["searchSiteContent", "getContentEntry", "plotFunction", "plotParametric"],
+  "viz-request": ["searchScenes", "showScene", "plotFunction", "plotParametric", "searchSiteContent"],
+};
+
+function pickTools(label: ClassifierLabel): JsonToolDef[] {
+  if (label === "off-topic") return [];
+  const allowed = new Set(TOOLS_BY_LABEL[label]);
+  return TOOL_SCHEMAS.filter((t) => allowed.has(t.name));
+}
 
 export interface PipelineDeps {
   provider: LLMProvider;
@@ -30,7 +51,15 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     return;
   }
 
-  const label = await deps.provider.classify(deps.classifierModel, CLASSIFIER_PROMPT, userMsg, LABELS);
+  // Router: classify only on the first user turn of a conversation. Follow-ups
+  // are implicitly treated as continuations of an already-accepted physics
+  // discussion — this saves a full classifier round-trip (~300ms) and, more
+  // importantly, stops follow-ups like "why?" from being mis-classified as
+  // off-topic (which would refuse before history even entered the picture).
+  const isFollowUp = deps.history.length > 0;
+  const label: ClassifierLabel = isFollowUp
+    ? "conceptual-explain"
+    : await deps.provider.classify(deps.classifierModel, CLASSIFIER_PROMPT, userMsg, LABELS);
 
   if (label === "off-topic") {
     yield { type: "text", delta: OFF_TOPIC_REFUSAL };
@@ -41,6 +70,7 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
 
   const systemFull = renderToc(deps.toc) + "\n\n" + SYSTEM_PROMPT_BASE;
   const systemDynamic = [deps.systemTail ?? "", `Classifier label: ${label}`].filter(Boolean).join("\n\n");
+  const scopedTools = pickTools(label);
 
   const messages: NeutralMessage[] = [...deps.history, { role: "user", content: [{ type: "text", text: userMsg }] }];
   let totalUsage: UsageRow = { model: deps.answererModel, inputTokens: 0, outputTokens: 0, cachedTokens: 0, costMicros: 0 };
@@ -63,7 +93,7 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
       system: systemFull,
       systemDynamic: systemDynamicHop,
       messages,
-      tools: isLastHop ? [] : TOOL_SCHEMAS,
+      tools: isLastHop ? [] : scopedTools,
       maxTokens: deps.answererModel.includes("mini") || deps.answererModel.includes("haiku") ? 800 : 1500,
       signal: deps.signal,
     });
@@ -81,6 +111,7 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
         case "tool-call-end":
           if (delta.toolCallId && delta.toolName) {
             pendingToolCalls.push({ id: delta.toolCallId, name: delta.toolName, input: delta.finalInput });
+            yield { type: "tool-call-args", toolCallId: delta.toolCallId, args: delta.finalInput };
           }
           break;
         case "usage":
@@ -107,20 +138,21 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     const toolResultBlocks: import("./provider").NeutralContent[] = [];
     for (const call of pendingToolCalls) {
       const fn = deps.toolset[call.name];
-      let outStr: string; let isErr = false;
+      let outStr: string; let isErr = false; let preview: string | undefined;
       if (!fn) { outStr = JSON.stringify({ error: `Unknown tool ${call.name}` }); isErr = true; }
       else {
         try {
           const result = await fn((call.input ?? {}) as never);
           outStr = JSON.stringify(result);
           if ((result as { ok?: boolean } | null)?.ok === false) isErr = true;
+          preview = summarizeToolResult(call.name, result);
         } catch (e) {
           outStr = JSON.stringify({ error: (e as Error).message });
           isErr = true;
         }
       }
       toolResultBlocks.push({ type: "tool_result", tool_use_id: call.id, content: outStr, is_error: isErr });
-      yield { type: "tool-call-end", toolCallId: call.id, ok: !isErr };
+      yield { type: "tool-call-end", toolCallId: call.id, ok: !isErr, resultPreview: preview };
     }
     messages.push({ role: "user", content: toolResultBlocks });
   }
@@ -141,4 +173,33 @@ function mergeUsage(a: UsageRow, b: UsageRow): UsageRow {
     cachedTokens: a.cachedTokens + b.cachedTokens,
     costMicros: 0,
   };
+}
+
+// Short human-friendly hint shown in the progress tree after a tool runs.
+function summarizeToolResult(name: string, result: unknown): string | undefined {
+  if (!result || typeof result !== "object") return undefined;
+  const r = result as Record<string, unknown>;
+  if (name === "searchSiteContent" || name === "searchGlossary" || name === "searchScenes") {
+    const hits = (r.hits as Array<unknown> | undefined) ?? (r.results as Array<unknown> | undefined);
+    if (Array.isArray(hits)) return `${hits.length} result${hits.length === 1 ? "" : "s"}`;
+  }
+  if (name === "listGlossaryByCategory") {
+    const items = (r.items as Array<unknown> | undefined) ?? (r.entries as Array<unknown> | undefined);
+    if (Array.isArray(items)) return `${items.length} entries`;
+  }
+  if (name === "getContentEntry") {
+    const title = (r.title as string | undefined) ?? (r.entry as { title?: string } | undefined)?.title;
+    if (title) return title.length > 60 ? `${title.slice(0, 60)}…` : title;
+  }
+  if (name === "webSearch") {
+    const results = (r.results as Array<unknown> | undefined) ?? (r.hits as Array<unknown> | undefined);
+    if (Array.isArray(results)) return `${results.length} web result${results.length === 1 ? "" : "s"}`;
+  }
+  if (name === "fetchUrl") {
+    const title = r.title as string | undefined;
+    return title ? (title.length > 60 ? `${title.slice(0, 60)}…` : title) : "fetched";
+  }
+  if (name === "showScene") return "scene rendered";
+  if (name === "plotFunction" || name === "plotParametric") return "plot generated";
+  return undefined;
 }

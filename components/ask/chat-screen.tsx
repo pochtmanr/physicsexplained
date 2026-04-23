@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { DEFAULT_MODEL_ID } from "@/lib/ask/types";
 import { Composer } from "./composer";
@@ -40,17 +40,22 @@ export function ChatScreen({ conversationId, variant, children }: Props) {
     setText("");
   };
 
-  const onSettled = (id: string) => {
-    if (variant === "landing" && id && id !== conversationId) {
-      // Navigate to the new conversation; the unmount clears pending
-      // implicitly so the user keeps seeing their message until the new
-      // page renders the persisted transcript.
-      router.push(`/${locale}/ask/${id}`);
-    } else {
-      setPending(null);
-      router.refresh();
-    }
-  };
+  const onSettled = useCallback(
+    (id: string) => {
+      if (variant === "landing" && id && id !== conversationId) {
+        router.push(`/${locale}/ask/${id}`);
+      } else {
+        setPending(null);
+        router.refresh();
+      }
+    },
+    [variant, conversationId, locale, router],
+  );
+
+  const onQuotaExhausted = useCallback(
+    (reason: "free_quota_exhausted" | "tokens_exhausted" | "past_due") => setQuotaModal(reason),
+    [],
+  );
 
   // Auto-scroll the messages region as text streams in
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -84,7 +89,7 @@ export function ChatScreen({ conversationId, variant, children }: Props) {
                 locale={locale}
                 modelId={modelId}
                 onSettled={onSettled}
-                onQuotaExhausted={setQuotaModal}
+                onQuotaExhausted={onQuotaExhausted}
               />
             </>
           )}

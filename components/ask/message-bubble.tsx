@@ -5,6 +5,7 @@ import { parseFences, type FencePart } from "@/lib/ask/render";
 import { InlineScene } from "./inline-scene";
 import { MathPlot } from "./math-plot";
 import { Cite } from "./cite";
+import { FurtherReading } from "./further-reading";
 
 export function MessageBubble({
   role, text, locale,
@@ -20,6 +21,14 @@ export function MessageBubble({
     );
   }
 
+  const glossarySlugs = Array.from(
+    new Set(
+      parts
+        .filter((p): p is Extract<FencePart, { kind: "cite" }> => p.kind === "cite" && p.targetKind === "glossary")
+        .map((p) => p.slug),
+    ),
+  );
+
   return (
     <div className="my-4 mr-auto max-w-2xl">
       <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-1.5">
@@ -28,6 +37,7 @@ export function MessageBubble({
       <div className="text-[var(--color-fg-0)]">
         {parts.map((p, i) => renderPart(p, i, locale))}
       </div>
+      {glossarySlugs.length > 0 && <FurtherReading slugs={glossarySlugs} locale={locale} />}
     </div>
   );
 }

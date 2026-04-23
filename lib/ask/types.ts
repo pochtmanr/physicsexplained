@@ -20,7 +20,8 @@ export interface UsageRow {
 export type AnswerStreamChunk =
   | { type: "text"; delta: string }
   | { type: "tool-call-start"; name: string; toolCallId: string }
-  | { type: "tool-call-end"; toolCallId: string; ok: boolean }
+  | { type: "tool-call-args"; toolCallId: string; args: unknown }
+  | { type: "tool-call-end"; toolCallId: string; ok: boolean; resultPreview?: string }
   | { type: "usage"; usage: UsageRow }
   | { type: "flag"; reason: string }
   | { type: "error"; message: string }

@@ -60,14 +60,36 @@ export async function POST(req: Request) {
   if (!rlRes.ok) return NextResponse.json({ error: "RATE_LIMITED", reason: rlRes.reason }, { status: 429 });
 
   let conversationId = body.conversationId ?? undefined;
+  let dedupedExisting = false;
   if (!conversationId) {
-    const initialTitle = makeInitialTitle(body.message);
-    const { data, error } = await db
+    // Dedup: if the same user submitted the exact same first message within the
+    // last 10s (e.g. dev strict-mode double-mount, router.refresh re-fire), reuse
+    // the existing conversation instead of creating a parallel one.
+    const tenSecondsAgo = new Date(Date.now() - 10_000).toISOString();
+    const { data: recent } = await db
       .from("ask_conversations")
-      .insert({ user_id: user.id, locale: body.locale, title: initialTitle })
-      .select("id").single();
-    if (error) return NextResponse.json({ error: "DB_ERR", message: error.message }, { status: 500 });
-    conversationId = data.id as string;
+      .select("id, ask_messages!inner(role, content, created_at)")
+      .eq("user_id", user.id)
+      .gte("created_at", tenSecondsAgo)
+      .order("created_at", { ascending: false })
+      .limit(5);
+    const match = (recent ?? []).find((row) => {
+      const msgs = (row.ask_messages ?? []) as Array<{ role: string; content: { text?: string } | null; created_at: string }>;
+      const first = [...msgs].sort((a, b) => a.created_at.localeCompare(b.created_at))[0];
+      return first?.role === "user" && first?.content?.text === body.message;
+    });
+    if (match?.id) {
+      conversationId = match.id as string;
+      dedupedExisting = true;
+    } else {
+      const initialTitle = makeInitialTitle(body.message);
+      const { data, error } = await db
+        .from("ask_conversations")
+        .insert({ user_id: user.id, locale: body.locale, title: initialTitle })
+        .select("id").single();
+      if (error) return NextResponse.json({ error: "DB_ERR", message: error.message }, { status: 500 });
+      conversationId = data.id as string;
+    }
   }
 
   const { data: historyRows } = await db
@@ -92,11 +114,13 @@ export async function POST(req: Request) {
     summaryRow.data?.summary ?? null,
   );
 
-  await db.from("ask_messages").insert({
-    conversation_id: conversationId,
-    role: "user",
-    content: { text: body.message },
-  });
+  if (!dedupedExisting) {
+    await db.from("ask_messages").insert({
+      conversation_id: conversationId,
+      role: "user",
+      content: { text: body.message },
+    });
+  }
 
   const toolsetImpl = makeToolset({
     db, locale: body.locale,
@@ -152,8 +176,14 @@ export async function POST(req: Request) {
             controller.enqueue(encoder.encode(sseEncode("text", { delta: chunk.delta })));
           } else if (chunk.type === "tool-call-start") {
             controller.enqueue(encoder.encode(sseEncode("tool-start", { name: chunk.name, id: chunk.toolCallId })));
+          } else if (chunk.type === "tool-call-args") {
+            controller.enqueue(encoder.encode(sseEncode("tool-args", { id: chunk.toolCallId, args: chunk.args })));
           } else if (chunk.type === "tool-call-end") {
-            controller.enqueue(encoder.encode(sseEncode("tool-end", { id: chunk.toolCallId, ok: chunk.ok })));
+            controller.enqueue(encoder.encode(sseEncode("tool-end", {
+              id: chunk.toolCallId,
+              ok: chunk.ok,
+              preview: chunk.resultPreview,
+            })));
           } else if (chunk.type === "flag") {
             flagged = true;
           } else if (chunk.type === "usage") {
