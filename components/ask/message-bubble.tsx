@@ -46,7 +46,12 @@ function renderPart(p: FencePart, key: number, locale: string): JSX.Element {
   if (p.kind === "text") return <Prose key={key} text={p.text} />;
   if (p.kind === "scene") return <InlineScene key={key} id={p.id} params={p.params} />;
   if (p.kind === "plot") return <MathPlot key={key} args={p.args} />;
-  if (p.kind === "cite") return <Cite key={key} kind={p.targetKind} slug={p.slug} locale={locale} />;
+  if (p.kind === "cite") {
+    // Glossary citations surface as rich cards in <FurtherReading/> below the
+    // message — skip the inline chip so it doesn't duplicate.
+    if (p.targetKind === "glossary") return <span key={key} />;
+    return <Cite key={key} kind={p.targetKind} slug={p.slug} locale={locale} />;
+  }
   return <span key={key} />;
 }
 
