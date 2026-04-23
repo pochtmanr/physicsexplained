@@ -4,6 +4,7 @@ import { ConversationRail } from "@/components/ask/conversation-rail";
 import { KillSwitchBanner } from "@/components/ask/kill-switch-banner";
 import { AccountDrawerProvider } from "@/components/account/account-drawer-context";
 import { AccountDrawer } from "@/components/account/account-drawer";
+import { OpenDrawerFromQuery } from "@/components/account/open-drawer-from-query";
 import { loadBillingSnapshot } from "@/app/actions/account";
 
 export default async function AskLayout({
@@ -36,6 +37,7 @@ export default async function AskLayout({
   const enabled = process.env.ASK_ENABLED === "true";
   return (
     <AccountDrawerProvider>
+      <OpenDrawerFromQuery />
       <div className="flex min-h-[calc(100vh-4rem)]">
         <ConversationRail
           locale={locale}
