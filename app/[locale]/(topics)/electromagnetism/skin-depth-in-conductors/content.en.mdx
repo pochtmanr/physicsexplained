@@ -1,0 +1,90 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SkinDepthDecayScene } from "@/components/physics/skin-depth-decay-scene";
+import { CrossSectionScene } from "@/components/physics/cross-section-scene";
+import { CoaxSkinEffectScene } from "@/components/physics/coax-skin-effect-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Oliver Heaviside", href: "/physicists/oliver-heaviside" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Skin depth", href: "/dictionary/skin-depth" },
+  { type: "term", label: "Refractive index", href: "/dictionary/refractive-index" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.43 · WAVES IN MATTER & OPTICS"
+  title="SKIN DEPTH IN CONDUCTORS"
+  subtitle="How deep a radio wave can actually get into a metal."
+/>
+
+<Section index={1} title="A wave walks into a metal">
+
+You already know an electromagnetic wave in vacuum: E and B oscillate in phase, perpendicular to each other and to the direction of propagation, moving at c. Push that wave at a polished copper plate. Something obvious happens at the surface — most of the wave reflects — and something less obvious happens underneath: a fraction leaks *in*, and you can ask how far.
+
+The honest answer is: not very far, and the distance is a pure number you can calculate from three constants. That number is called the **<Term slug="skin-depth">skin depth</Term>**, written δ. It is the distance into the metal at which the wave's amplitude has fallen to 1/e — about 37% — of its value just inside the surface. Go a few more δ and the field has effectively vanished. At 50 Hz in copper δ is about 9 millimetres, which is why you can wrap a building in thin copper mesh and still ground it well at mains frequency. At 1 GHz the same metal has δ ≈ 2 micrometres — a smear thinner than a human hair — and the field simply does not get past the first atomic layers of the plating.
+
+</Section>
+
+<Section index={2} title="Where δ comes from">
+
+Inside a material with conductivity σ, Ohm's law gives a conduction current density **J** = σ·**E**. Drop that into Ampère's law alongside <PhysicistLink slug="james-clerk-maxwell">Maxwell's</PhysicistLink> displacement-current term and you get the full Ampère–Maxwell equation for a conductor: ∇×**B** = μ·σ·**E** + μ·ε·∂**E**/∂t. Combine it with Faraday's law, assume a plane wave of the form E(z,t) = E₀·exp(i(kz − ωt)), and the dispersion relation drops out:
+
+<EquationBlock id="EQ.01">
+  $$ k^{2} \;=\; \mu\varepsilon\,\omega^{2} \;+\; i\,\mu\sigma\omega. $$
+</EquationBlock>
+
+Two sources feed the wave number. The real piece comes from the displacement current — that is the vacuum story. The imaginary piece comes from the conduction current, and it is the piece that makes the wave decay.
+
+In a **good conductor** — the regime where σ ≫ ω·ε, which for copper holds everywhere from DC up to the far infrared — the imaginary piece dominates completely. Take the square root and k becomes (1 + i)/δ, with
+
+<EquationBlock id="EQ.02">
+  $$ \delta \;=\; \sqrt{\frac{2}{\mu\,\sigma\,\omega}}. $$
+</EquationBlock>
+
+The real part of k sets the wavelength inside the metal; the imaginary part sets the decay. The two are *equal*, which means the wave loses about 54% of its amplitude in every wavelength it travels. It does not propagate so much as it dies on the way in. The decay length δ is the same quantity you would read off a semilog plot of |E(z)|: its slope is −1/δ, always and forever, as long as the good-conductor approximation holds.
+
+Notice what δ is made of: three constants, and no geometry. Nothing about shape, size, cross-section, or the direction of approach enters the formula. That is because the decay happens in the thin layer just under the surface, where the wave has not yet experienced any of the bulk geometry; whatever shape sits behind it, the field has already forgotten. The same δ governs a hemisphere, a plate, a wire, and the side of a warship.
+
+</Section>
+
+<Section index={3} title="Watch it decay">
+
+<SceneCard caption="FIG.43a — amplitude versus depth. Slide the frequency to see δ shrink as √f. Switch material to compare copper, aluminum, magnetic iron, and seawater." className="w-full">
+  <SkinDepthDecayScene />
+</SceneCard>
+
+Three scaling laws fall out of EQ.02, and the scene above makes all three visible. First: **δ shrinks as 1/√f**. Quadruple the frequency and the skin thins by a factor of two. Second: **δ shrinks as 1/√σ**. A better conductor buries the field faster. Third — the one that surprises people — **a magnetic material has a much thinner skin**. Iron's μᵣ ≈ 200 means its μ·σ product is huge, and at 60 Hz δ in mild steel is under a millimetre even though steel's conductivity is six times worse than copper's. This is why power transformers have laminated iron cores: you want the flux in, but you want eddy currents shallow.
+
+</Section>
+
+<Section index={4} title="The AC skin effect">
+
+Now turn the geometry ninety degrees. Instead of a wave hitting a surface from outside, push an alternating current *through* a conductor. The same physics applies — the current's own self-generated magnetic field, via Faraday's law, induces eddy currents that cancel the current in the core and reinforce it near the surface.
+
+<SceneCard caption="FIG.43b — cross-section of a 4 mm-radius copper wire. At DC the amber is uniform. Sweep the frequency up and J is squeezed into a thin surface sheath, lilac ring marks r = a − δ." className="w-full">
+  <CrossSectionScene />
+</SceneCard>
+
+The practical consequence is that the AC resistance of a solid wire grows with frequency. Once δ is much smaller than the wire radius a, the effective cross-section is roughly the wire's perimeter times δ, so R_ac scales as √f. At 1 MHz a 10-gauge copper wire already carries its current in a 65-μm shell out of a 1.3-mm radius — less than 5% of the metal is doing any work, and 95% of it is just heat-sinking the strand. RF engineers solve this by stranding: **Litz wire** uses dozens of individually insulated hair-thin strands woven so each spends equal time near the bundle surface, restoring an almost DC-like current distribution up into the MHz. Power engineers at 50 or 60 Hz cheat by splitting the conductor the other way, using hollow aluminium tube for long-distance lines where the core would have been dead weight at those wavelengths anyway.
+
+</Section>
+
+<Section index={5} title="Why coax works — and why <PhysicistLink slug="oliver-heaviside">Heaviside</PhysicistLink> knew it first">
+
+The first person to do this calculation properly was <PhysicistLink slug="oliver-heaviside">Oliver Heaviside</PhysicistLink>, working out the telegrapher's equations in the 1880s for signal-line design. Cross-link back to §06.7 on transmission lines: a lossy coax is a transmission line whose per-unit-length resistance R(ω) comes from exactly this calculation.
+
+<SceneCard caption="FIG.43c — coax side view. At DC current spreads through the copper evenly. Sweep the frequency and watch it crowd onto the OUTSIDE of the inner conductor and the INSIDE of the shield — the two facing surfaces." className="w-full">
+  <CoaxSkinEffectScene />
+</SceneCard>
+
+The shield trick is the payoff. A coax's outer conductor carries its RF current on the inner face only, shielded from the outside world by all the copper behind it. A few skin-depths of shield — 20 μm at 1 GHz — is enough to cut external pickup by 80+ dB. The same logic designs Faraday cages: the wall thickness has to exceed δ at the lowest frequency you care about. Microwave-oven mesh is a special case, because at 2.45 GHz δ in steel is ~1 μm, so the mesh wires are opaque; what matters is hole size versus wavelength, not thickness. The visible-light story is different again: at 500 THz even copper's skin depth has collapsed to ~3 nm and the free-electron approximation fails, which is where metals stop looking like conductors and start looking like dispersive dielectrics. FIG.46 will pick up that thread.
+
+</Section>
+
+</TopicPageLayout>
