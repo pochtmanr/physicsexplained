@@ -1,0 +1,143 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MaxwellTableScene } from "@/components/physics/maxwell-table-scene";
+import { IntegralVsDifferentialScene } from "@/components/physics/integral-vs-differential-scene";
+import { SourceSinkFieldScene } from "@/components/physics/source-sink-field-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Oliver Heaviside", href: "/physicists/oliver-heaviside" },
+  { type: "physicist", label: "Carl Friedrich Gauss", href: "/physicists/carl-friedrich-gauss" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Maxwell's equations", href: "/dictionary/maxwell-equations-term" },
+  { type: "term", label: "Displacement current", href: "/dictionary/displacement-current" },
+  { type: "term", label: "Divergence", href: "/dictionary/divergence" },
+  { type: "term", label: "Curl", href: "/dictionary/curl" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.34 · UNIFICATION"
+  title="THE FOUR EQUATIONS"
+  subtitle="Thirty-six figures of individual laws collapse onto four lines. On one page, for the first time, the whole of classical electromagnetism."
+/>
+
+<Section index={1} title="Four lines on one page">
+
+This is the page the whole branch has been moving toward. From Coulomb's inverse-square in FIG.01 through the displacement-current fix two topics ago, every figure has been a piece of what sits below. Pieced together, they make a theory complete enough to describe every electric light, radio wave, motor, generator, and photon ever recorded. It fits on one page. In integral form:
+
+<EquationBlock id="EQ.01">
+  $$ \oint_{\partial V} \mathbf{E} \cdot d\mathbf{A} \;=\; \frac{Q_{\text{enc}}}{\varepsilon_0} $$
+</EquationBlock>
+
+<EquationBlock id="EQ.02">
+  $$ \oint_{\partial V} \mathbf{B} \cdot d\mathbf{A} \;=\; 0 $$
+</EquationBlock>
+
+<EquationBlock id="EQ.03">
+  $$ \oint_{\partial S} \mathbf{E} \cdot d\boldsymbol{\ell} \;=\; -\,\frac{d\Phi_B}{dt} $$
+</EquationBlock>
+
+<EquationBlock id="EQ.04">
+  $$ \oint_{\partial S} \mathbf{B} \cdot d\boldsymbol{\ell} \;=\; \mu_0 \!\left( I_{\text{enc}} + \varepsilon_0 \frac{d\Phi_E}{dt} \right) $$
+</EquationBlock>
+
+The symbol `∮` is shorthand for "integrate once around the boundary" — around the skin of a closed volume for EQ.01 and EQ.02, around the rim of an open surface for EQ.03 and EQ.04. `d**A**` is a little patch of area with a direction perpendicular to it; `d**ℓ**` is a little step along a wire or a loop. Read the lines as sentences: *charges are the sources of E. There are no magnetic sources. A changing magnetic flux winds an E around itself. A current — or a changing electric flux — winds a B around itself.* Four sentences, four equations. The rest of this topic unpacks them one at a time.
+
+</Section>
+
+<Section index={2} title="Line one — sources of E">
+
+EQ.01 is <PhysicistLink slug="carl-friedrich-gauss">Carl Friedrich Gauss</PhysicistLink>'s law, the integral form you met in FIG.04. The left-hand side is the *electric flux* through a closed surface — blow a balloon anywhere in space, count the field lines crossing its skin (outward as positive, inward as negative), and that number is what goes on the left. The right-hand side says: the balloon's skin doesn't matter. Only the total charge sitting inside does, divided by the permittivity of free space.
+
+The consequence is that electric-field lines *begin and end on charges*. Field lines never float around in the middle of empty space without origin. A positive charge is a source — lines stream out of it. A negative charge is a sink — lines stream into it. Any balloon drawn around a chunk of vacuum, with no charge inside, has zero net flux: whatever lines enter must leave.
+
+<SceneCard caption="FIG.34c — sources, sinks, and a current that B curls around" className="w-full">
+  <SourceSinkFieldScene />
+</SceneCard>
+
+The first two tiles above are the whole geometric content of EQ.01: E-field lines grow from +, die on −. The constant `1/ε₀` is just the exchange rate — how many volt-metres of flux you get per coulomb of source.
+
+</Section>
+
+<Section index={3} title="Line two — no magnetic monopoles, yet">
+
+EQ.02 has a right-hand side of exactly zero. For every closed surface you can draw, the net magnetic flux across it is *always* zero: whatever goes in comes out. Unlike E-field lines, B-field lines have no endpoints. They are loops. Cut a bar magnet in half and you don't get a north-only piece and a south-only piece — you get two smaller bar magnets, each with its own north and south. The geometry doesn't admit a loose end.
+
+This is the one line of the four that is still experimentally open. <Term slug="maxwell-equations-term">The four equations</Term> are asymmetric: charges and currents show up on the right-hand sides of EQ.01 and EQ.04, but there is no magnetic charge on the right of EQ.02 and no magnetic current on the right of EQ.03. Paul Dirac showed in 1931 that a *magnetic monopole* would be consistent with quantum mechanics and would explain why electric charge comes in integer multiples of the electron's charge — a clean result waiting for an experimental confirmation that has not arrived in the ninety-five years since. Every time an experiment has looked carefully, the monopole count has been zero. For now, EQ.02 stands.
+
+</Section>
+
+<Section index={4} title="Line three — Faraday's law">
+
+EQ.03 says: run around the rim of any open surface, add up `E · dℓ` as you go, and the result equals minus the time rate of change of the magnetic flux through that surface. In plainer words, a changing magnetic field winds an electric field around itself. That curling E is what drives current through every generator on Earth.
+
+This was <PhysicistLink slug="michael-faraday">Michael Faraday</PhysicistLink>'s 1831 discovery: the *change* of magnetic flux, not the flux itself, is what makes currents flow. Push a bar magnet into a coil — needle twitches. Hold it still — nothing. The needle doesn't care that there's a strong field present; it cares that the flux *through the loop* is changing. The minus sign is Lenz's: the induced E circulates in whatever direction opposes the flux change that produced it. Nature charges a fee for letting you move charges around with magnets, and it's paid in conservation.
+
+Crucially, EQ.03 is the first line with a *time derivative* on its right-hand side. Up through Gauss and static Ampère, electromagnetism was a theory of instantaneous configurations. Faraday's line is where time enters. The next line is where time enters the other half.
+
+</Section>
+
+<Section index={5} title="Line four — Ampère–Maxwell">
+
+EQ.04 was Ampère's law until 1861. Ampère's original statement said: the circulation of B around a loop equals `μ₀ I_enc`, where `I_enc` is the conduction current threading the loop. It works beautifully for steady currents — FIG.08 through FIG.11 were Ampère — and fails, as FIG.33 showed, the moment a capacitor enters the circuit. Between the plates there is no conduction current. The surface spanning the Ampère loop can be chosen to slip between those plates. The right-hand side then reads zero, while the left-hand side is plainly not zero, because B keeps circling the wire on the way to the plate.
+
+<PhysicistLink slug="james-clerk-maxwell">James Clerk Maxwell</PhysicistLink> fixed this in 1861 by adding a term — `μ₀ ε₀ dΦ_E/dt` — to the right-hand side. That extra piece is the <Term slug="displacement-current">displacement current</Term>: a time-varying electric flux acts, for the purposes of this law, like a real conduction current. With it, the bookkeeping closes. Currents make B curl; so does a changing E. And once a changing E can make a B, and a changing B can make an E (EQ.03), the two lines can prop each other up and propagate. Light, in retrospect, had been lying inside the four lines the entire time.
+
+</Section>
+
+<Section index={6} title="The same four lines, differential form">
+
+Every integral law has a local twin. The integral form asks "how much leaves this balloon?" or "what is the circulation around this loop?"; the differential form asks the same question at a single point in space. Between them sit the divergence theorem (∮E·dA becomes ∫∇·E dV) and Stokes's theorem (∮E·dℓ becomes ∫(∇×E)·dA). The moves are calculus, the physics is identical.
+
+<SceneCard caption="FIG.34b — the same Gauss's law, two instruments: a balloon and a point" className="w-full">
+  <IntegralVsDifferentialScene />
+</SceneCard>
+
+<EquationBlock id="EQ.05">
+  $$ \nabla \cdot \mathbf{E} \;=\; \frac{\rho}{\varepsilon_0} $$
+</EquationBlock>
+
+<EquationBlock id="EQ.06">
+  $$ \nabla \cdot \mathbf{B} \;=\; 0 $$
+</EquationBlock>
+
+<EquationBlock id="EQ.07">
+  $$ \nabla \times \mathbf{E} \;=\; -\,\frac{\partial \mathbf{B}}{\partial t} $$
+</EquationBlock>
+
+<EquationBlock id="EQ.08">
+  $$ \nabla \times \mathbf{B} \;=\; \mu_0 \!\left( \mathbf{J} + \varepsilon_0 \frac{\partial \mathbf{E}}{\partial t} \right) $$
+</EquationBlock>
+
+The symbols `∇·` (divergence) and `∇×` (curl) are pointwise questions. <Term slug="divergence">Divergence</Term> asks: right here, is the field spreading out of this point or piling into it? <Term slug="curl">Curl</Term> asks: right here, is the field winding around this point, and about which axis? Divergence of E is fed by charge density `ρ`. Divergence of B is always zero. Curl of E is fed by a changing B. Curl of B is fed by conduction current `J` *and* a changing E. Same four sentences, point by point instead of loop by loop.
+
+<SceneCard caption="FIG.34a — the four lines, integral on the left, differential on the right" className="w-full">
+  <MaxwellTableScene />
+</SceneCard>
+
+<Callout variant="math">
+Integral form ⇔ differential form. Stokes's theorem and the divergence theorem are the algebraic bridge. Which form is easier to use depends on the geometry — a finite loop in a lab suggests integral; a field at a point in vacuum suggests differential.
+</Callout>
+
+</Section>
+
+<Section index={7} title="What Heaviside did">
+
+When Maxwell wrote his 1865 paper, the equations did not look like EQ.01–EQ.04. They were twenty coupled equations in twenty variables, written in quaternion notation — a four-component algebra Hamilton had invented in 1843 that professional physicists of the 1860s largely disliked and students of that generation never forgave. Maxwell's own *Treatise on Electricity and Magnetism* (1873) was beautiful, canonical, and nearly unreadable by anyone without a year to spend on it.
+
+<PhysicistLink slug="oliver-heaviside">Oliver Heaviside</PhysicistLink> changed that. A self-taught telegraph engineer who had left school at sixteen, Heaviside rewrote Maxwell's system in the vector calculus he and Josiah Willard Gibbs were inventing in parallel — `∇·`, `∇×`, and `∇` as distinct operators acting on three-component vector fields. Twenty equations collapsed to four. Quaternions never recovered. The four lines you see in every textbook today — the four lines on your screen right now — are Heaviside's. Maxwell is the physics; Heaviside is the notation. Both deserve the credit and both usually get it only half.
+
+</Section>
+
+<Section index={8} title="And light falls out">
+
+Start with EQ.07 and EQ.08 in vacuum — no charges, no currents. Take the curl of the first and substitute the second; a standard identity drops out: `∂²E/∂t² = (1/μ₀ε₀) ∇²E`. That is the wave equation for the electric field, with propagation speed `c = 1/√(μ₀ε₀)`. Plug in the numbers: roughly 3 × 10⁸ m/s. Maxwell, in 1864, computed this from laboratory measurements of electric and magnetic constants alone, no beam of light involved, and recognised the answer as the speed of light. The four equations know about light without anyone telling them. FIG.36, two topics ahead, unpacks the derivation and draws the wave; here we keep the door shut and let the miracle sit.
+
+</Section>
+
+</TopicPageLayout>

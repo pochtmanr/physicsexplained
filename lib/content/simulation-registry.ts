@@ -682,6 +682,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CapacitorCurrentContinuityScene: lazyScene(() =>
     import("@/components/physics/capacitor-current-continuity-scene").then((m) => ({ default: m.CapacitorCurrentContinuityScene })),
   ),
+
+  // EM §07 — the-four-equations
+  MaxwellTableScene: lazyScene(() =>
+    import("@/components/physics/maxwell-table-scene").then((m) => ({ default: m.MaxwellTableScene })),
+  ),
+  IntegralVsDifferentialScene: lazyScene(() =>
+    import("@/components/physics/integral-vs-differential-scene").then((m) => ({ default: m.IntegralVsDifferentialScene })),
+  ),
+  SourceSinkFieldScene: lazyScene(() =>
+    import("@/components/physics/source-sink-field-scene").then((m) => ({ default: m.SourceSinkFieldScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
