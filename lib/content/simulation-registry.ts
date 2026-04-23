@@ -605,6 +605,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   VoltageDividerScene: lazyScene(() =>
     import("@/components/physics/voltage-divider-scene").then((m) => ({ default: m.VoltageDividerScene })),
   ),
+
+  // EM §06 — rc-circuits
+  RcChargingScene: lazyScene(() =>
+    import("@/components/physics/rc-charging-scene").then((m) => ({ default: m.RcChargingScene })),
+  ),
+  RcDischargingScene: lazyScene(() =>
+    import("@/components/physics/rc-discharging-scene").then((m) => ({ default: m.RcDischargingScene })),
+  ),
+  RcTimeConstantScene: lazyScene(() =>
+    import("@/components/physics/rc-time-constant-scene").then((m) => ({ default: m.RcTimeConstantScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

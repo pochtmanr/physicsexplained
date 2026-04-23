@@ -1,0 +1,127 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RcChargingScene } from "@/components/physics/rc-charging-scene";
+import { RcDischargingScene } from "@/components/physics/rc-discharging-scene";
+import { RcTimeConstantScene } from "@/components/physics/rc-time-constant-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Georg Ohm", href: "/physicists/georg-ohm" },
+  { type: "physicist", label: "James Prescott Joule", href: "/physicists/james-prescott-joule" },
+  { type: "term", label: "RC time constant", href: "/dictionary/rc-time-constant" },
+  { type: "term", label: "Capacitor charging", href: "/dictionary/capacitor-charging" },
+  { type: "term", label: "Capacitance", href: "/dictionary/capacitance" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.27 · CIRCUITS"
+  title="RC CIRCUITS AND THE CHARGING CURVE"
+  subtitle="Why the capacitor never quite gets there, and always almost does."
+/>
+
+<Section index={1} title="Nothing changes instantly in a capacitor">
+
+Plug a battery into a capacitor through a resistor. Close the switch. What would you expect the capacitor's voltage to do? If the wires were perfect and the cap were a magic tank, you would expect `V_c` to snap from zero to whatever the battery supplies, the way a lightbulb's brightness snaps on. That is not what happens. The voltage *eases* up, tentative at first, then slower, then slower still, and it never quite arrives.
+
+The reason is one line of accounting: the voltage across a capacitor is `V_c = Q/C`. To raise `V_c` by any amount you have to push that same amount of `Q/C` of extra charge onto the plate. Charge has to flow through the resistor to get there, and the resistor — obeying <PhysicistLink slug="georg-ohm">Ohm</PhysicistLink>'s law — only lets charge past at a finite rate `i = (V₀ − V_c)/R`. At `t = 0` the capacitor is empty, the full battery voltage drops across R, and current is at its maximum. One microsecond later the cap has a tiny voltage on it, the resistor has a tiny bit less to drop, and the current has shrunk by the same tiny bit. The system is eating its own appetite. That is the whole phenomenology.
+
+A capacitor cannot change its voltage discontinuously because its charge cannot change discontinuously — and charge, like water in a tank, only arrives through pipes that have flow limits. This is the rule you lean on every time you reason about a filter, a debouncer, or a flash unit: **<Term slug="capacitor-charging">V_c is never ahead of its history</Term>**.
+
+</Section>
+
+<Section index={2} title="Charging — the one-paragraph derivation">
+
+Take the series loop: battery `V₀`, resistor `R`, capacitor `C`. Apply Kirchhoff's voltage law around it. The voltage the battery supplies has to equal the sum of what the resistor drops and what the capacitor holds:
+
+<EquationBlock id="EQ.01" tex="V_0 \;=\; i\,R \;+\; V_c \;=\; i\,R \;+\; \tfrac{Q}{C}">
+  Sum of voltage drops around the loop equals the source EMF.
+</EquationBlock>
+
+Now use the two bridge facts. The current `i` is the rate at which charge piles onto the cap — in plain words, `i` is the derivative `dQ/dt`, how fast `Q` is changing per second. Substitute:
+
+<EquationBlock id="EQ.02" tex="V_0 \;=\; R\,\frac{dQ}{dt} \;+\; \frac{Q}{C}">
+  The first-order linear ODE for the charge on the plate.
+</EquationBlock>
+
+One line of calculus finishes the job. Rearrange to `dQ/dt = (V₀ − Q/C)/R`, separate variables, integrate with `Q(0) = 0`, and collect:
+
+<EquationBlock id="EQ.03" tex="V_c(t) \;=\; V_0 \,\bigl(1 - e^{-t/\tau}\bigr), \qquad \tau \;=\; R\,C">
+  The charging curve. τ = R·C is the **<Term slug="rc-time-constant">RC time constant</Term>**.
+</EquationBlock>
+
+That is the whole chapter in one equation. The current `i(t) = (V₀/R)·e^(−t/τ)` falls along a mirror exponential — maximum at `t = 0`, zero at infinity. Notice what `τ` means: a big capacitor (bigger tank) or a big resistor (narrower hose) both slow the process down, and they slow it by exactly their *product*. The units work: ohms × farads = seconds, a numerical surprise the first time you check it.
+
+</Section>
+
+<Section index={3} title="The asymptote">
+
+The time constant is how long it takes `V_c` to cover roughly two-thirds of the distance to `V₀`. At `t = τ`, `1 − 1/e ≈ 63.2 %`. At `2τ`, `86.5 %`. At `3τ`, `95 %`. At `5τ`, `99.3 %` — close enough that every datasheet lists "5 time constants" as the rule-of-thumb settling time.
+
+<SceneCard caption="FIG.27a — V_c rises on (1 − e^(−t/τ)); i decays on e^(−t/τ)" className="w-full">
+  <RcChargingScene />
+</SceneCard>
+
+Close the switch and watch. The lilac trace is `V_c(t)` climbing toward `V₀`. The amber trace is `i(t)` falling from `V₀/R` toward zero. They share a time constant — `τ` controls *both* rhythms because they are the same first-order system observed from two angles. Drag the sliders: increase `R` and everything slows down together; increase `C` and the same. The 63 % line is a universal marker that every RC-filter, debouncer, and sample-and-hold circuit designer recognises in their sleep.
+
+The never-arrives is not a bug. In every real circuit some tiny leakage will pin `V_c` asymptotically close to `V₀` after 5–7 `τ`, but the formal "infinity" in the exponential is the mathematics being honest: first-order linear systems are patient.
+
+</Section>
+
+<Section index={4} title="Discharging">
+
+Disconnect the battery and short the capacitor through the same resistor. The KVL loop now reads `V_c = i·R` with `i = −dQ/dt` (the cap is losing charge), giving `R·C · dV_c/dt = −V_c`. Integrate with `V_c(0) = V₀`:
+
+<EquationBlock id="EQ.04" tex="V_c(t) \;=\; V_0 \, e^{-t/\tau}">
+  Discharge through the same resistor follows the mirror exponential.
+</EquationBlock>
+
+At `t = τ` the cap is at `1/e ≈ 36.8 %` of its starting voltage. At `5τ` it is below 1 %. The current magnitude mirrors it — same envelope, reversed direction.
+
+<SceneCard caption="FIG.27b — the switch flips; current reverses; V_c decays on e^(−t/τ)" className="w-full">
+  <RcDischargingScene />
+</SceneCard>
+
+A pre-charged cap drains through `R`. The amber arrows on the loop now sweep the *other* way — this is the cap acting as a source, pushing current the direction that will empty it. The discharge is the same mathematics with a sign flipped, which is how first-order linear systems always work.
+
+</Section>
+
+<Section index={5} title="Half the energy always goes to heat">
+
+Here is the twist that surprises every undergraduate who meets it. Charge a cap from 0 to `V₀` through any resistor `R`. The energy stored on the capacitor at the end is `½·C·V₀²`. The energy the battery put out over the whole charge is `C·V₀²`. Where did the other half go?
+
+<EquationBlock id="EQ.05" tex="W_R \;=\; \int_0^\infty i(t)^2\,R\,dt \;=\; \int_0^\infty \frac{V_0^2}{R}\,e^{-2t/\tau}\,R\,dt \;=\; \tfrac{1}{2}\,C\,V_0^2">
+  The integral of i²R over the whole charge. The R cancels — and so does every hope of doing better.
+</EquationBlock>
+
+Look at that cancellation. `R` sits in the numerator of `i(t)² · R`, and the factor of `τ = R·C` from the integral brings in another `R` on the *other* side. They cancel. The total heat dumped in the resistor is `½CV₀²` — *independent of R*. A bigger resistor dissipates at a lower rate for longer; a smaller resistor dissipates at a higher rate for less time. The product integrates to the same number either way. <PhysicistLink slug="james-prescott-joule">Joule</PhysicistLink> would have raised an eyebrow and then nodded: `i²R` is his heating law, and here it delivers the same total regardless of how you spread it over time.
+
+Half the battery's joules become heat. You cannot charge a capacitor from zero through a resistor with better than 50 % efficiency — not with a bigger R, not with a smaller R, not at any speed. The other half — exactly the other half — is the `½CV²` now stored in the capacitor's electric field (see FIG.19, §02). Switched-mode power supplies escape this tax by charging capacitors through *inductors* instead; that is their whole reason to exist.
+
+</Section>
+
+<Section index={6} title="Time-constant intuition">
+
+What engineers actually measure on a scope is `τ`, not `R` or `C` separately. A blurry resistor and a tolerancey capacitor still pin down `τ` beautifully: close the switch, hit the cursor on the scope at 63 % of final value, read the time. That is your `τ`, and from it you back out either parameter given the other.
+
+<SceneCard caption="FIG.27c — three τ, same C, three different paces" className="w-full">
+  <RcTimeConstantScene />
+</SceneCard>
+
+Three curves, same `V₀`, same `C`, three resistors — three different rhythms. The 63 % guide crosses each one at its own `τ`, with `τ` varying linearly with `R`. This is the picture every EE keeps in their head. "Make the filter 10× slower" means "make `R` or `C` 10× bigger." "Make the circuit settle in 5 ms" means "`τ ≈ 1 ms` so `R·C ≈ 1 ms` — choose the capacitor you have, divide into it, done."
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+RC is the most reached-for filter in electronics. A resistor followed by a capacitor to ground is an **RC low-pass** — high-frequency noise sees a cap that looks like a short to ground; low-frequency signal sees a cap that looks like an open. The corner frequency is `f = 1/(2π·τ)`, the one formula every audio and RF engineer can recite in their sleep.
+
+**Debouncing** is pure RC: press a mechanical switch, the contacts chatter for 5 ms, you feed the signal through an RC with `τ ≈ 10 ms`, the chatter averages out. **PWM smoothing** — turning a square wave into a DC voltage — is an RC whose time constant is much longer than the pulse period. **Camera flash** capacitors charge slowly through a small trickle resistor then dump their `½CV²` through a xenon tube in microseconds when you press the shutter. **Sample-and-hold** front-ends on every ADC hold their voltage between conversions using the fact that a capacitor has `τ = ∞` when disconnected — it holds its state with patience.
+
+Every one of these is a line of `V_c(t) = V₀(1 − e^(−t/τ))` or `V₀·e^(−t/τ)` turned sideways into product design. FIG.28 meets the coil — the same mathematics with the sign of hesitation reversed.
+
+</Section>
+
+</TopicPageLayout>
