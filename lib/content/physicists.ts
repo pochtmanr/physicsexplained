@@ -140,6 +140,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/nikola-tesla.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "oscillators-everywhere" },
+      { branchSlug: "electromagnetism", topicSlug: "transformers" },
+      { branchSlug: "electromagnetism", topicSlug: "ac-circuits-and-phasors" },
     ],
   },
   {
@@ -261,6 +263,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/james-prescott-joule.webp"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+      { branchSlug: "electromagnetism", topicSlug: "rc-circuits" },
+      { branchSlug: "electromagnetism", topicSlug: "rlc-circuits-and-resonance" },
     ],
   },
   {
@@ -871,6 +875,63 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/heinrich-lenz.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "lenz-law-and-motional-emf" },
+    ],
+  },
+  {
+    slug: "gustav-kirchhoff",
+    born: "1824",
+    died: "1887",
+    nationality: "German",
+    image: storageUrl("physicists/gustav-kirchhoff.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+      { branchSlug: "electromagnetism", topicSlug: "rc-circuits" },
+      { branchSlug: "electromagnetism", topicSlug: "rlc-circuits-and-resonance" },
+    ],
+  },
+  {
+    slug: "georg-ohm",
+    born: "1789",
+    died: "1854",
+    nationality: "German",
+    image: storageUrl("physicists/georg-ohm.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+      { branchSlug: "electromagnetism", topicSlug: "rc-circuits" },
+    ],
+  },
+  {
+    slug: "oliver-heaviside",
+    born: "1850",
+    died: "1925",
+    nationality: "British",
+    image: storageUrl("physicists/oliver-heaviside.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "transmission-lines" },
+      { branchSlug: "electromagnetism", topicSlug: "the-four-equations" },
+    ],
+  },
+  {
+    slug: "james-clerk-maxwell",
+    born: "1831",
+    died: "1879",
+    nationality: "Scottish",
+    image: storageUrl("physicists/james-clerk-maxwell.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "displacement-current" },
+      { branchSlug: "electromagnetism", topicSlug: "the-four-equations" },
+      { branchSlug: "electromagnetism", topicSlug: "gauge-freedom-and-potentials" },
+      { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
+    ],
+  },
+  {
+    slug: "john-henry-poynting",
+    born: "1852",
+    died: "1914",
+    nationality: "British",
+    image: storageUrl("physicists/john-henry-poynting.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-poynting-vector" },
     ],
   },
 ];

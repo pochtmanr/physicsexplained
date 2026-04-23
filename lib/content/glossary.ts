@@ -1871,6 +1871,212 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "electromagnetism", topicSlug: "self-and-mutual-inductance" },
     ],
   },
+  {
+    slug: "ohms-law-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+      { branchSlug: "electromagnetism", topicSlug: "rc-circuits" },
+    ],
+  },
+  {
+    slug: "resistance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+    ],
+  },
+  {
+    slug: "resistor",
+    category: "instrument",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+    ],
+  },
+  {
+    slug: "kirchhoff-voltage-law",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+    ],
+  },
+  {
+    slug: "kirchhoff-current-law",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+    ],
+  },
+  {
+    slug: "voltage-divider",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "dc-circuits-and-kirchhoff" },
+    ],
+  },
+  {
+    slug: "rc-time-constant",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "rc-circuits" },
+    ],
+  },
+  {
+    slug: "capacitor-charging",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "rc-circuits" },
+    ],
+  },
+  {
+    slug: "rl-time-constant",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "rl-circuits" },
+    ],
+  },
+  {
+    slug: "quality-factor",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "rlc-circuits-and-resonance" },
+    ],
+  },
+  {
+    slug: "phasor",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ac-circuits-and-phasors" },
+    ],
+  },
+  {
+    slug: "impedance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ac-circuits-and-phasors" },
+      { branchSlug: "electromagnetism", topicSlug: "transmission-lines" },
+    ],
+  },
+  {
+    slug: "reactance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ac-circuits-and-phasors" },
+    ],
+  },
+  {
+    slug: "ac-frequency",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "ac-circuits-and-phasors" },
+    ],
+  },
+  {
+    slug: "transformer",
+    category: "instrument",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "transformers" },
+    ],
+  },
+  {
+    slug: "turns-ratio",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "transformers" },
+    ],
+  },
+  {
+    slug: "transmission-line-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "transmission-lines" },
+    ],
+  },
+  {
+    slug: "characteristic-impedance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "transmission-lines" },
+    ],
+  },
+  {
+    slug: "standing-wave-ratio",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "transmission-lines" },
+    ],
+  },
+  {
+    slug: "displacement-current",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "displacement-current" },
+      { branchSlug: "electromagnetism", topicSlug: "the-four-equations" },
+    ],
+  },
+  {
+    slug: "maxwell-equations-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-four-equations" },
+    ],
+  },
+  {
+    slug: "lorenz-gauge",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-freedom-and-potentials" },
+    ],
+  },
+  {
+    slug: "coulomb-gauge",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-freedom-and-potentials" },
+    ],
+  },
+  {
+    slug: "poynting-vector",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-poynting-vector" },
+    ],
+  },
+  {
+    slug: "poynting-theorem",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-poynting-vector" },
+    ],
+  },
+  {
+    slug: "maxwell-stress-tensor",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
+    ],
+  },
+  {
+    slug: "field-momentum",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
+    ],
+  },
+  {
+    slug: "radiation-pressure-term",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
+    ],
+  },
+  {
+    slug: "back-reaction",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
