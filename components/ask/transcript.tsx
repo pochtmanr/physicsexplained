@@ -12,12 +12,12 @@ export async function Transcript({
     .order("created_at", { ascending: true });
 
   return (
-    <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6">
+    <>
       {(data ?? []).map((m) => {
         if (m.role === "tool") return null;
         const text = (m.content as { text?: string } | null)?.text ?? "";
         return <MessageBubble key={m.id} role={m.role as "user" | "assistant"} text={text} locale={locale} />;
       })}
-    </div>
+    </>
   );
 }

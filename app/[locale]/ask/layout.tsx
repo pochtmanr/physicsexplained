@@ -47,7 +47,7 @@ export default async function AskLayout({
         avatarUrl={userPayload.avatarUrl}
         initial={(userPayload.fullName ?? userPayload.email ?? "?").slice(0, 1).toUpperCase()}
       />
-      <div className="flex min-h-[calc(100vh-4rem)]">
+      <div className="flex h-[calc(100dvh-3rem)] md:h-[calc(100dvh-3.5rem)] overflow-hidden">
         <ConversationRail
           locale={locale}
           conversations={convs ?? []}
@@ -55,7 +55,7 @@ export default async function AskLayout({
           planLabel={snapshot?.plan.label ?? "Free"}
           percentUsed={snapshot?.percentUsed ?? 0}
         />
-        <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-w-0">
+        <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-w-0 min-h-0">
           {!enabled && <KillSwitchBanner />}
           {children}
         </main>
