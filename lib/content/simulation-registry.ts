@@ -704,6 +704,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PotentialFreedomScene: lazyScene(() =>
     import("@/components/physics/potential-freedom-scene").then((m) => ({ default: m.PotentialFreedomScene })),
   ),
+
+  // EM §07 — the-poynting-vector
+  PoyntingFlowScene: lazyScene(() =>
+    import("@/components/physics/poynting-flow-scene").then((m) => ({ default: m.PoyntingFlowScene })),
+  ),
+  CoaxEnergyFlowScene: lazyScene(() =>
+    import("@/components/physics/coax-energy-flow-scene").then((m) => ({ default: m.CoaxEnergyFlowScene })),
+  ),
+  AntennaRadiationPatternScene: lazyScene(() =>
+    import("@/components/physics/antenna-radiation-pattern-scene").then((m) => ({ default: m.AntennaRadiationPatternScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

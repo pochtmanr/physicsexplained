@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PoyntingFlowScene } from "@/components/physics/poynting-flow-scene";
+import { CoaxEnergyFlowScene } from "@/components/physics/coax-energy-flow-scene";
+import { AntennaRadiationPatternScene } from "@/components/physics/antenna-radiation-pattern-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "John Henry Poynting", href: "/physicists/john-henry-poynting" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Poynting vector", href: "/dictionary/poynting-vector" },
+  { type: "term", label: "Poynting theorem", href: "/dictionary/poynting-theorem" },
+  { type: "term", label: "Field energy density", href: "/dictionary/field-energy-density" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.36 · MAXWELL'S EQUATIONS"
+  title="THE POYNTING VECTOR"
+  subtitle="Where the energy in a field is flowing, right now."
+/>
+
+<Section index={1} title="Energy has to be going somewhere">
+
+In §05.4 we made a claim that needs paying for. We said the magnetic field is a reservoir — every cubic metre where `B` has magnitude `|B|` holds `B²/(2μ₀)` joules, and §01 had already pinned the electric half at `½ε₀E²` joules per cubic metre. Empty space carrying nothing but fields still stores energy, locally, at every point.
+
+Fine. But fields change. Capacitors discharge; inductors ramp; radio antennas spray oscillations into the room. When the energy density at a point *drops*, the joules did not evaporate — they went somewhere else. So there must be a **current of energy**: a vector field `S` whose value at each point tells you how much power is streaming across a small area there, and in which direction.
+
+That is the Poynting vector, and the rest of this topic is about what it is made of, why it takes exactly the form it does, and one consequence that rewrites your mental picture of how a circuit works.
+
+The trick, as with every other conservation law, is to look for a continuity equation — the shape "rate of change plus outflow equals source." Mass has one. Charge has one. Probability has one. Energy in the electromagnetic field must have one too, and writing it down is what pins the form of `S` uniquely.
+
+</Section>
+
+<Section index={2} title="The derivation sketch">
+
+<PhysicistLink slug="john-henry-poynting">John Henry Poynting</PhysicistLink> published the answer in 1884 in a paper titled *"On the Transfer of Energy in the Electromagnetic Field."* He started where we just did — with the field energy densities — and did a piece of bookkeeping that <PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink> could have done but had not written down as cleanly.
+
+The game is: take `u = ½ε₀E² + B²/(2μ₀)` and compute `∂u/∂t`. Use Maxwell's equations to rewrite the resulting time derivatives of `E` and `B` in terms of spatial derivatives and currents. After two pages of vector identities the whole thing collapses into the shape of a continuity equation:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">∂u/∂t  +  ∇·S  =  −J·E</span>
+</EquationBlock>
+
+Every symbol earns its keep. `∂u/∂t` is "the energy density at this point is changing this fast." `∇·S` — the **divergence** of a vector field, which in plain words is "net outflow per unit volume" — is how much is streaming away through a tiny box around the point. `−J·E` on the right is the one piece that *isn't* field energy: it is the rate at which the field loses energy to moving charges. When an electric field pushes a current, `J·E` watts per cubic metre are converted into kinetic energy of the carriers — and from there, via collisions in a resistor, into heat. Poynting's theorem is a local statement: energy stored here decreases either because it flowed somewhere else, or because it did work on charges here. No other possibilities.
+
+And the vector `S` that makes the bookkeeping balance comes out in exactly one form.
+
+</Section>
+
+<Section index={3} title="S = (1/μ₀) · E × B">
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">S  =  (1 / μ₀) · E × B</span>
+</EquationBlock>
+
+The **cross product** `E × B` is perpendicular to both. The right-hand rule gives the orientation: curl your fingers from `E` toward `B` and your thumb points along `S`. Divide by `μ₀` and the units work out to watts per square metre — the correct dimensions for a power flux.
+
+<SceneCard caption="FIG.36a — a plane wave: E in magenta, B in cyan, S in lilac. Everything perpendicular to everything; the energy moves along +x̂." className="w-full">
+  <PoyntingFlowScene />
+</SceneCard>
+
+Drag the `E₀` slider. The intensity of the lilac S arrows grows as the *square* of the field amplitude, because `S ∝ E·B` and `B = E/c` in a plane wave, so `S ∝ E²`. The time-average works out to `I = ½ E₀² / (μ₀ c)` — the equation every photodiode and solar cell is calibrated against. At `E₀ = 1 kV/m` the intensity is about 1.33 kW/m², which is why the solar-constant number 1361 W/m² shows up in the HUD: sunlight *is* a plane wave whose `E₀` at Earth orbit happens to be right there.
+
+<Callout variant="intuition">
+The factor of ½ is the same factor that shows up every time you time-average a squared sinusoid. `cos²(ωt)` is 1 half the time and 0 the other half; its mean is ½. Every honest wave intensity formula carries one.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The coax reveal">
+
+Now the textbook-perfect counter-intuition. Take a coaxial cable carrying steady DC: inner conductor at voltage `V`, outer shield grounded, current `I` flowing along the inner wire and returning along the shield. Ask the obvious question: where is the energy that ends up at the far end actually travelling?
+
+The answer every engineer's gut gives is *through the copper*. The copper is what the current runs in, after all. The answer <Term slug="poynting-theorem">Poynting's theorem</Term> gives is that the copper is just the boundary condition — the energy flows through the **space between** the conductors.
+
+<SceneCard caption="FIG.36b — coax cross-section: radial E, circumferential B, axial S. The energy streams through the insulating gap, not through the metal." className="w-full">
+  <CoaxEnergyFlowScene />
+</SceneCard>
+
+Inside the gap, `E` points radially outward, from the positive centre conductor to the grounded shield. `B` wraps around the centre conductor circumferentially, by the right-hand rule around the current. Cross the two and you get `S` pointing purely along the cable's axis — the direction of net power flow. Integrate the axial `S` across the annular gap and you recover `V·I` exactly. Every joule the battery delivers to the load passes through the **empty space** between the conductors. The electrons in the copper are carrying current, but they are not carrying the *energy*; the field in the insulator is.
+
+This is not a curiosity. It is what the equations mean. The copper guides the field at its boundary — like a riverbank guiding water — but the river runs in the gap. And the same picture holds for every pair of parallel wires, every twisted-pair Ethernet cable, every printed circuit trace: the energy flows in the field that the wires shape, not in the metal the wires are made of. The electrons drift at a few millimetres per second; the energy moves at nearly the speed of light. They were never the same thing.
+
+</Section>
+
+<Section index={5} title="Antenna radiation">
+
+In a circuit the fields stay tethered to the conductors. In an antenna the conductor kicks the field loose: oscillating current launches oscillating `E` and `B`, the Poynting vector points outward, and the energy flies off into space. For a short dipole aligned with the vertical axis, the time-averaged far-field Poynting vector takes a beautiful closed form: `⟨S(r,θ)⟩ ∝ sin²θ / r²`, where `θ` is measured from the antenna axis.
+
+<SceneCard caption="FIG.36c — the Hertzian-dipole doughnut: maximum broadside, null along the axis." className="w-full">
+  <AntennaRadiationPatternScene />
+</SceneCard>
+
+The pattern is called the "doughnut" in broadcast engineering — zero power straight up along the antenna, maximum sideways. Vertical antennas on FM towers aim their signal at the horizon on purpose; horizontal broadcast dipoles tip the doughnut to blanket a city. Every directional antenna diagram you have ever seen is a surface of constant `⟨S⟩`.
+
+</Section>
+
+<Section index={6} title="Where the formula comes in">
+
+Every laser-power meter reports `⟨|S|⟩` in watts per square metre. Every solar cell's datasheet quotes efficiency as the fraction of incident `⟨|S|⟩` it converts to electricity. Every photodiode is a Poynting-vector-to-current transducer; every optical-communications link budget is a sum of `⟨|S|⟩` margins along the path. The intensity of an X-ray beam in a CT scanner, the exposure in a silicon photolithography stepper, the flux hitting the receive dish from a communications satellite — one equation, calibrating all of them.
+
+</Section>
+
+<Section index={7} title="The handoff to §07.5">
+
+Energy has a flow; it turns out momentum has a density. If `S` carries joules per second per square metre, then `S/c²` carries kilogram-metres-per-second per cubic metre — and the moment fields can carry momentum, they can push on things. Solar sails, radiation pressure, the tiny recoil of your laser pointer. That is the next topic.
+
+</Section>
+
+</TopicPageLayout>
