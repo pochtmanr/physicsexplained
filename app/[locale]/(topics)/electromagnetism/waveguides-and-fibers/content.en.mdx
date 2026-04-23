@@ -1,0 +1,96 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { StepIndexFiberScene } from "@/components/physics/step-index-fiber-scene";
+import { NumericalApertureScene } from "@/components/physics/numerical-aperture-scene";
+import { TelecomBandScene } from "@/components/physics/telecom-band-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Willebrord Snell", href: "/physicists/willebrord-snell" },
+  { type: "physicist", label: "Oliver Heaviside", href: "/physicists/oliver-heaviside" },
+  { type: "term", label: "Optical fiber", href: "/dictionary/optical-fiber" },
+  { type: "term", label: "Waveguide mode", href: "/dictionary/waveguide-mode" },
+  { type: "term", label: "Numerical aperture", href: "/dictionary/numerical-aperture" },
+  { type: "term", label: "Total internal reflection", href: "/dictionary/total-internal-reflection-term" },
+  { type: "term", label: "Critical angle", href: "/dictionary/critical-angle" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.51 · WAVES IN MATTER & OPTICS"
+  title="WAVEGUIDES AND OPTICAL FIBERS"
+  subtitle="How to keep light inside a pipe for a thousand kilometers."
+/>
+
+<Section index={1} title="A pipe for light">
+
+An undersea internet cable is a fistful of glass strands, each one finer than a human hair, carrying roughly a million simultaneous Zoom calls between continents. The light that does the carrying was launched from a semiconductor laser the size of a grain of rice in Virginia, and it will emerge twelve thousand kilometres later near Bude, Cornwall, having lost maybe four-fifths of its intensity along the way. Nothing in everyday experience suggests this is possible. A flashlight beam attenuates inside a metre of fog. How does anyone get a photon across the Atlantic?
+
+The answer is §09.4 turned into an engineering discipline. A <Term slug="optical-fiber">**step-index optical fiber**</Term> is a cylinder of glass with two regions: an inner **core** of refractive index `n₁` surrounded by a **cladding** of slightly lower index `n₂ < n₁`. Any light ray inside the core that hits the core-cladding wall at an angle steeper than the <Term slug="critical-angle">critical angle</Term> `θ_c = arcsin(n₂/n₁)` is totally internally reflected — it cannot escape, by the same Snell-law geometry that made water surfaces into mirrors. Chain those reflections end to end and a ray can zig-zag down the fiber for kilometres without ever touching the plastic jacket on the outside. The whole internet runs on <Term slug="total-internal-reflection-term">total internal reflection</Term>, exactly as Snell wrote it down in 1621.
+
+</Section>
+
+<Section index={2} title="Numerical aperture: the cone the fiber accepts">
+
+Which rays from the outside world make it *into* the core? A ray striking the flat end-face refracts on entry by Snell, then must satisfy the wall-TIR condition once inside. Chain those two constraints and you get a single angle — the widest off-axis tilt in ambient air that the fiber can capture — whose sine has a clean closed form:
+
+<EquationBlock id="EQ.01">
+  $$ \mathrm{NA} \;=\; \sqrt{\,n_1^{\,2} - n_2^{\,2}\,}, \qquad \theta_a \;=\; \arcsin(\mathrm{NA}). $$
+</EquationBlock>
+
+`NA` is the <Term slug="numerical-aperture">**numerical aperture**</Term>. It has no units; it is a sine. A typical single-mode telecom fiber has `n₁ = 1.4682, n₂ = 1.4629`, giving `NA = √(1.4682² − 1.4629²) ≈ 0.132` — an acceptance cone of only about 7.6° from the axis. A multimode step-index plastic fiber with `NA = 0.5` opens a 30° cone. The tradeoff shows up in every link budget in the industry: wide cones collect more light from an LED but admit more **modes** (many simultaneous ray paths, each taking a different zig-zag length) which smears short pulses into wide ones. Narrow cones are stricter — single-moded, long-distance — and need precise laser alignment.
+
+<SceneCard caption="FIG.51a — a step-index fiber cross-section. Rays inside the internal acceptance cone bounce forever via TIR; outer rays leak through the cladding within one pass." className="w-full">
+  <StepIndexFiberScene />
+</SceneCard>
+
+<SceneCard caption="FIG.51b — the end-face acceptance cone. Pick your glass pair and watch θ_a widen or collapse." className="w-full">
+  <NumericalApertureScene />
+</SceneCard>
+
+Slide `n_core` up and the cone opens — the harder the index contrast, the more off-axis light you can funnel in. Slide the cladding index up toward the core and `NA` collapses to zero: the two glasses become identical and there is no boundary to TIR against. The fiber stops being a waveguide at all.
+
+</Section>
+
+<Section index={3} title="Modal dispersion, and why you parabolise the core">
+
+In a multimode step-index fiber a ray going straight down the axis takes length `L` to cross; a ray bouncing near `θ_c` zig-zags through a total path length `L/cos(90° − θ_c) = L/sinθ_c`. Both paths carry the same data pulse, but they arrive at different times. A short laser flash launched as one pulse splits on arrival into a smear of replicas — **modal dispersion**. Over kilometres of fiber the smear becomes longer than the pulse, and the optical link stops working.
+
+Two fixes, both industry-standard. The first is to thin the core until only a single mode will propagate — below a cutoff diameter `~2.4 · λ / (π · NA)`, all higher-order ray paths are killed off by quantum-like boundary conditions at the core wall, and everything travels as the one remaining ground mode. This is **single-mode fiber**, the workhorse of long-haul telecom. The second is the **graded-index** fiber: instead of a hard step in `n`, the core has a smoothly tapered parabolic index, highest on axis and falling off toward the cladding. Rays spending time off-axis travel through lower-`n` regions where light moves *faster*, so the longer zig-zag paths go at higher speed and arrive at the same time as the axial ray. The arithmetic balances; modal dispersion is beaten without throwing away the multimode advantage of easy launch.
+
+</Section>
+
+<Section index={4} title="Microwaves and metal pipes">
+
+Fibers are not the only waveguide. At microwave wavelengths (centimetres), a hollow rectangular metal tube of internal dimensions `a × b` does the same job by boundary conditions instead of TIR — the transverse electric field must vanish at a perfect conductor, so only standing-wave patterns that fit the cross-section are allowed to propagate. Each allowed pattern is a <Term slug="waveguide-mode">**mode**</Term>, labelled `TE_mn` for transverse-electric with `m` half-wavelengths across `a` and `n` across `b`. Each mode has a sharp **cutoff frequency** below which it simply does not transmit:
+
+<EquationBlock id="EQ.02">
+  $$ f_{c}(m, n) \;=\; \frac{c}{2}\,\sqrt{\left(\tfrac{m}{a}\right)^{2} + \left(\tfrac{n}{b}\right)^{2}}. $$
+</EquationBlock>
+
+The dominant `TE₁₀` mode (lowest cutoff at `c/(2a)`) is the standard operating channel. WR-90, the X-band workhorse used in every airport surveillance radar, is a standardised `22.86 × 10.16 mm` rectangle — which gives `f_c(TE₁₀) = 3·10⁸ / (2 · 0.02286) ≈ 6.56 GHz`. Run it from about 8.2 to 12.4 GHz and the next-higher mode is still below cutoff, so the guide transmits *only* `TE₁₀` and acts exactly like a single-mode optical fiber at its own wavelength. Below 6.56 GHz the pipe is a brick wall.
+
+This is where Heaviside shows up. In §06.7 we met the telegrapher's equations — <Term slug="oliver-heaviside">Oliver Heaviside</Term>'s 1880 model of an undersea cable as a **lumped LC-ladder** of tiny inductors and capacitors stretched along a wire. Take that ladder and shrink the spacing to zero; you get a **distributed** transmission line — the local wave equation on a pair of conductors. Now wrap the two conductors into a rectangular metal pipe: same distributed equations, same reflection coefficients at discontinuities, but with an extra boundary-condition constraint that selects a discrete mode spectrum and imposes a cutoff frequency. Every microwave waveguide, every coaxial cable, every optical fiber is a direct descendant of the transatlantic telegraph cables Heaviside was patching up in the 1870s. The engineering vocabulary — **impedance**, **reflection**, **standing wave** — transferred unchanged.
+
+</Section>
+
+<Section index={5} title="Telecom windows and 1,550 nanometres">
+
+The last piece is why telecom fiber runs at the wavelengths it does. Glass is beautifully transparent in the visible, but not *uniformly*. Silica fiber loss across 800–1700 nm has two sculptors: short-wavelength **Rayleigh scattering** from density fluctuations frozen into the glass during drawing (`α ∝ 1/λ⁴`, the same law that makes daylight skies blue), and long-wavelength **IR absorption** from Si-O bond vibrations (exponentially rising past about 1600 nm). Between them lies a bowl — and inside the bowl, three operating windows.
+
+<SceneCard caption="FIG.51c — silica fiber attenuation from 800 to 1700 nm. 1550 nm sits at the global minimum near 0.17 dB/km — the reason every undersea cable on Earth runs in the C-band." className="w-full">
+  <TelecomBandScene />
+</SceneCard>
+
+**850 nm** was the first usable window — cheap GaAs lasers, short-reach multimode, roughly 2 dB/km loss (half the light gone every 1.5 km). **1310 nm** is the second — standard single-mode fiber has *zero* material dispersion there, so pulses don't spread as they propagate, even though the loss floor is ~0.35 dB/km. **1550 nm** is the promised land: 0.17 dB/km, the absolute minimum of the bowl. A pulse launched at 1550 loses half its intensity every 18 km, which means you can run 100 km of fiber between amplifiers, and the amplifier itself — an **erbium-doped fiber amplifier (EDFA)** — happens to gain cleanly in exactly that band because of an atomic accident of the erbium level diagram.
+
+All three facts — the TIR rule that keeps light inside the core, the `NA`-sized acceptance cone that lets you couple in, the 1550-nm loss minimum that lets you go for a hundred kilometres between repeaters — combine into the cable that carries this paragraph to your screen. Every time you open a video call across an ocean, Snell's arcsin from 1621 and Heaviside's ladder from 1880 are cooperating across a thousand kilometres of hair-thin glass.
+
+The first commercial transatlantic optical cable, TAT-8, went live in 1988 at 1310 nm and carried 40,000 simultaneous voice channels on two fiber pairs — a hundred-fold leap in capacity over its copper predecessor, at a fraction of the power budget. TAT-14, a generation later at 1550 nm with wavelength-division multiplexing, carried the same data rate on a single fiber. The present generation stuffs eighty independent wavelengths into each strand, each wavelength carrying roughly 100 Gb/s, and lights up hundreds of terabits per second between Virginia and Cornwall on a cable the diameter of a garden hose. There is no deep physics in that progression — only the persistent exploitation of a single arcsin and a single loss minimum. The internet is not an abstraction. It is a ray inside a pipe, pretending it is a wave, refusing to leave.
+
+</Section>
+
+</TopicPageLayout>
