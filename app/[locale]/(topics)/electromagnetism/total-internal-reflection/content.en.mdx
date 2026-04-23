@@ -1,0 +1,101 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CriticalAngleScene } from "@/components/physics/critical-angle-scene";
+import { FiberOpticTIRScene } from "@/components/physics/fiber-optic-tir-scene";
+import { EvanescentWaveScene } from "@/components/physics/evanescent-wave-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Willebrord Snell", href: "/physicists/willebrord-snell" },
+  { type: "physicist", label: "Augustin Fresnel", href: "/physicists/augustin-fresnel" },
+  { type: "term", label: "Total internal reflection", href: "/dictionary/total-internal-reflection-term" },
+  { type: "term", label: "Critical angle", href: "/dictionary/critical-angle" },
+  { type: "term", label: "Refractive index", href: "/dictionary/refractive-index" },
+  { type: "term", label: "Snell's law", href: "/dictionary/snells-law" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.45 · WAVES IN MATTER & OPTICS"
+  title="TOTAL INTERNAL REFLECTION"
+  subtitle="The mirror made of an angle."
+/>
+
+<Section index={1} title="A mirror you can make out of nothing">
+
+Hold a glass of water above your head and look up through the underside. The surface you are looking at is a piece of glass-on-air — and from below, beyond a certain tilt, it is a *perfect mirror*. No silver coating. No aluminum backing. Just water, and then air, and an angle steep enough that light refuses to cross the boundary. You are watching **total internal reflection**. Every photon that arrives at the surface bounces back. Losses are essentially zero. Corner-cube retroreflectors on the Moon still beam laser pulses back to Earth half a century after Apollo — reflecting not off metal, but off glass corners geometrically arranged so every ray hits each face above the critical angle. A mirror built from nothing except refractive index.
+
+The rule is a two-line consequence of <Term slug="snells-law">Snell's law</Term>. When a ray travels from a dense medium (index `n₁`) into a less-dense one (`n₂ < n₁`), Snell demands `n₁ sin θ_i = n₂ sin θ_t`. The refracted angle `θ_t` grows faster than the incidence angle `θ_i`, because we are dividing by the smaller index. At some specific incidence angle the right-hand side pins against `sin θ_t = 1` — the refracted ray would graze the surface. Push `θ_i` one degree further and the equation demands `sin θ_t > 1`, which is geometrically impossible. There is no refracted ray to produce. 100% of the light reflects.
+
+</Section>
+
+<Section index={2} title="The critical angle is one arcsin away">
+
+The incidence angle where refraction just barely disappears is the <Term slug="critical-angle">critical angle</Term> `θ_c`. Setting `sin θ_t = 1` in Snell's law and solving:
+
+<EquationBlock id="EQ.01">
+  $$ \theta_c \;=\; \arcsin\!\left(\frac{n_2}{n_1}\right) \qquad (n_1 > n_2) $$
+</EquationBlock>
+
+Two numbers are worth memorising. **Glass-to-air** (crown glass, `n₁ = 1.5`; air, `n₂ = 1.0`) gives `θ_c = arcsin(1/1.5) ≈ 41.81°`. Every 45°-45°-90° glass prism is designed around this fact — the two slanted faces are 45° incidence surfaces, which is steeper than 41.81°, so light entering through the hypotenuse retroreflects twice off the back faces and emerges out the opposite side. **Water-to-air** gives `θ_c = arcsin(1/1.33) ≈ 48.75°` — wider, because water is less of a refractive trap than glass. A fish looking up sees the whole hemisphere above squeezed into a disc with half-angle 48.75°; outside that disc the fish only sees the bottom of the pond reflected off the underside of the water.
+
+If `n₁ ≤ n₂` there is no critical angle at all — the argument of arcsin would exceed unity. Light going air-to-glass refracts at every incidence. TIR is strictly a dense-to-sparse phenomenon.
+
+<SceneCard caption="FIG.45 — incidence angle sweeping past θ_c. The transmitted amber ray fades to nothing, smoothly, on its way to vanishing." className="w-full">
+  <CriticalAngleScene />
+</SceneCard>
+
+Drag the slider. Below `θ_c` you see the amber refracted ray tilt further and further from the normal while a weak Fresnel reflection comes back into the glass. At `θ_c` itself the refracted ray lies flat along the surface with infinitesimal amplitude. One nudge past and it is gone. The reflection is now total — unity magnitude on the Fresnel coefficient, zero transmission, an angle that has become a mirror.
+
+</Section>
+
+<Section index={3} title="The evanescent wave: there's still a field up there">
+
+"Total" is mildly misleading. Past the critical angle, zero *energy* crosses the interface — but the electromagnetic field does not vanish on the air side. Solving Maxwell's equations at the boundary under TIR conditions produces a wave whose phase travels along the interface and whose amplitude decays *exponentially* into the forbidden medium:
+
+<EquationBlock id="EQ.02">
+  $$ E_{\text{air}}(y) \;\propto\; \exp\!\left(-\frac{y}{d}\right),\qquad d \;=\; \frac{\lambda_0}{2\pi\,\sqrt{n_1^2\sin^2\theta_i - n_2^2}} $$
+</EquationBlock>
+
+This is the **evanescent wave**. The decay length `d` is roughly one wavelength — for 550 nm light hitting a glass-air interface well past the critical angle, `d ≈ 0.1–0.5 µm`. Poke a needle into the field within that distance and you will pull light out of it. Touch the TIR face of a prism with your finger and you *will* see the fingerprint — the ridges of your skin come within a wavelength of the glass, and the evanescent field couples out into your oily lipids. That is how fingerprint scanners work.
+
+The evanescent wave is why TIR optics require surgical cleanliness. A speck of dust within `d` of a TIR surface looks, to the field, like a finger. Light leaks out. In laser cavities and optical fibre launches this leakage is called *evanescent-field loss*, and engineers go to absurd lengths (cleanroom assembly, helium atmospheres, optical contacting) to keep the forbidden zone genuinely empty.
+
+</Section>
+
+<Section index={4} title="Frustrated TIR: the optical tunnel">
+
+Now bring a *second* slab of glass up to the TIR interface. As its surface slides into the evanescent field — which is to say, as the gap shrinks below a wavelength — something genuinely strange happens. Some of the evanescent field couples into the second slab and becomes a real, propagating ray on the far side. Light has *tunnelled* across a gap that Snell's law declared forbidden.
+
+<SceneCard caption="FIG.45b — the evanescent wave, and what happens when a second slab of glass touches the field." className="w-full">
+  <EvanescentWaveScene />
+</SceneCard>
+
+This is **frustrated total internal reflection**, and it is the closest optical analog of a genuinely quantum-mechanical process. The field in the gap is the same exponentially-decaying envelope; bringing the receiver close "shortens the barrier" and the transmission grows as
+
+<EquationBlock id="EQ.03">
+  $$ T(d_{\text{gap}}) \;\approx\; \exp\!\left(-\frac{2\,d_{\text{gap}}}{d}\right). $$
+</EquationBlock>
+
+Toggle frustrated mode and sweep the gap. At `gap ≈ 0` the second slab is optically touching the first and the ray walks through as if the interface weren't there. At `gap ≈ d` about `14%` of the intensity makes it. At `gap ≈ 3d` transmission is essentially zero. Commercial **beam-splitter cubes** for laser interferometry and **variable-ratio TIR attenuators** exploit this arithmetic directly — the ratio between reflected and transmitted beams is tuned by regulating a sub-micron gap.
+
+</Section>
+
+<Section index={5} title="Fibers, prisms, and a fish">
+
+Optical fibres are the unambiguous winners of TIR as a design principle. A glass core (`n ≈ 1.48`) is clad in a slightly less-dense glass (`n ≈ 1.46`), giving `θ_c ≈ 81°` at the core-cladding wall. Any ray zig-zagging down the core with an internal angle shallower than `9°` from the axis reflects off every wall collision and propagates forever — the industrial meaning of "no losses" being a few tenths of a decibel per kilometre. The whole internet runs on rays that aren't allowed to leave their glass.
+
+<SceneCard caption="FIG.45c — rays inside a rod of glass. Inside the acceptance cone they guide forever; outside, they leak." className="w-full">
+  <FiberOpticTIRScene />
+</SceneCard>
+
+Sweep the input fan angle. The rays inside the acceptance cone (internal angle ≤ `90° − θ_c`) bounce their way across without leaking; rays outside it refract straight through the wall and are lost within one pass. The ratio `√(n₁² − n₂²)` is the fibre's **numerical aperture** — the sine of the widest outside-air angle the fibre can capture. This is §09.10's main character; here it is a preview.
+
+Back in the pond, the fish's bright disc overhead — the **Snell's window** — is TIR seen from below. Beyond the disc's edge the water surface turns into a mirror reflecting the pebbles on the bottom. Glass prisms steer binoculars and rifle scopes by the same rule. Diamonds sparkle because their critical angle is only `24°`, so facets cut well above that reflect almost every ray that enters, trapping light inside the gem until it leaves through a specific face aimed at your eye. An angle, written down by Snell in 1621, became in turn: an optical communication network, a fingerprint sensor, and the reason your ring glitters.
+
+</Section>
+
+</TopicPageLayout>
