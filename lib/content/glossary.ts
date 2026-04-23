@@ -2077,6 +2077,302 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
     ],
   },
+  {
+    slug: "em-wave-equation-term",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
+    ],
+  },
+  {
+    slug: "transverse-wave-em",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+    ],
+  },
+  {
+    slug: "speed-of-light",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell", "hippolyte-fizeau", "leon-foucault"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+    ],
+  },
+  {
+    slug: "plane-wave-term",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+    ],
+  },
+  {
+    slug: "linear-polarization",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "circular-polarization",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "elliptical-polarization",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "polarization-axis",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "light-polarization",
+    category: "phenomenon",
+    relatedPhysicists: ["augustin-fresnel", "david-brewster"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "em-spectrum",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+    ],
+  },
+  {
+    slug: "wavelength-em",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+    ],
+  },
+  {
+    slug: "wavenumber",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "plane-waves-and-polarization" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+    ],
+  },
+  {
+    slug: "group-velocity-em",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "index-of-refraction" },
+      { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+    ],
+  },
+  {
+    slug: "skin-depth",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "skin-depth-in-conductors" },
+    ],
+  },
+  {
+    slug: "s-polarization",
+    category: "concept",
+    relatedPhysicists: ["augustin-fresnel"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "p-polarization",
+    category: "concept",
+    relatedPhysicists: ["augustin-fresnel"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "total-internal-reflection-term",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "total-internal-reflection" },
+      { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
+    ],
+  },
+  {
+    slug: "critical-angle",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "total-internal-reflection" },
+      { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
+    ],
+  },
+  {
+    slug: "optical-dispersion-term",
+    category: "phenomenon",
+    relatedPhysicists: ["isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+    ],
+  },
+  {
+    slug: "abbe-number",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+    ],
+  },
+  {
+    slug: "anomalous-dispersion",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+    ],
+  },
+  {
+    slug: "snells-law",
+    category: "concept",
+    relatedPhysicists: ["willebrord-snell", "rene-descartes"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+      { branchSlug: "electromagnetism", topicSlug: "geometric-optics" },
+      { branchSlug: "electromagnetism", topicSlug: "total-internal-reflection" },
+    ],
+  },
+  {
+    slug: "thin-lens",
+    category: "instrument",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "geometric-optics" },
+    ],
+  },
+  {
+    slug: "focal-length",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "geometric-optics" },
+    ],
+  },
+  {
+    slug: "constructive-interference",
+    category: "phenomenon",
+    relatedPhysicists: ["thomas-young"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+    ],
+  },
+  {
+    slug: "destructive-interference",
+    category: "phenomenon",
+    relatedPhysicists: ["thomas-young"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+    ],
+  },
+  {
+    slug: "coherence-length",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+    ],
+  },
+  {
+    slug: "diffraction-em",
+    category: "phenomenon",
+    relatedPhysicists: ["christiaan-huygens", "thomas-young", "joseph-fraunhofer"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+    ],
+  },
+  {
+    slug: "huygens-principle",
+    category: "concept",
+    relatedPhysicists: ["christiaan-huygens"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+    ],
+  },
+  {
+    slug: "single-slit-diffraction",
+    category: "phenomenon",
+    relatedPhysicists: ["joseph-fraunhofer"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+    ],
+  },
+  {
+    slug: "double-slit-diffraction",
+    category: "phenomenon",
+    relatedPhysicists: ["thomas-young"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+    ],
+  },
+  {
+    slug: "brewster-angle",
+    category: "concept",
+    relatedPhysicists: ["david-brewster"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+    ],
+  },
+  {
+    slug: "birefringence",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "malus-law",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+    ],
+  },
+  {
+    slug: "optical-fiber",
+    category: "instrument",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
+      { branchSlug: "electromagnetism", topicSlug: "total-internal-reflection" },
+    ],
+  },
+  {
+    slug: "waveguide-mode",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
+    ],
+  },
+  {
+    slug: "numerical-aperture",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

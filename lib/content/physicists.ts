@@ -29,6 +29,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
       { branchSlug: "classical-mechanics", topicSlug: "kepler" },
+      { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
     ],
   },
   {
@@ -39,6 +40,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/christiaan-huygens.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
     ],
   },
   {
@@ -275,6 +278,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/thomas-young.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "energy-and-work" },
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
     ],
   },
   {
@@ -677,6 +682,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "French",
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+      { branchSlug: "electromagnetism", topicSlug: "geometric-optics" },
     ],
   },
   {
@@ -932,6 +938,61 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/john-henry-poynting.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-poynting-vector" },
+    ],
+  },
+  {
+    slug: "willebrord-snell",
+    born: "1580",
+    died: "1626",
+    nationality: "Dutch",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+      { branchSlug: "electromagnetism", topicSlug: "total-internal-reflection" },
+      { branchSlug: "electromagnetism", topicSlug: "geometric-optics" },
+      { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
+    ],
+  },
+  {
+    slug: "augustin-fresnel",
+    born: "1788",
+    died: "1827",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+    ],
+  },
+  {
+    slug: "david-brewster",
+    born: "1781",
+    died: "1868",
+    nationality: "Scottish",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "polarization-phenomena" },
+      { branchSlug: "electromagnetism", topicSlug: "fresnel-equations" },
+    ],
+  },
+  {
+    slug: "joseph-fraunhofer",
+    born: "1787",
+    died: "1826",
+    nationality: "Bavarian",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "diffraction-and-the-double-slit" },
+      { branchSlug: "electromagnetism", topicSlug: "interference" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+    ],
+  },
+  {
+    slug: "hippolyte-fizeau",
+    born: "1819",
+    died: "1896",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+      { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
     ],
   },
 ];
