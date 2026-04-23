@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MediumDelayScene } from "@/components/physics/medium-delay-scene";
+import { DispersionTableScene } from "@/components/physics/dispersion-table-scene";
+import { GroupVsPhaseScene } from "@/components/physics/group-vs-phase-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "term", label: "Refractive index", href: "/dictionary/refractive-index" },
+  { type: "term", label: "Group velocity", href: "/dictionary/group-velocity-em" },
+  { type: "term", label: "Optical dispersion", href: "/dictionary/optical-dispersion-term" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+  { type: "term", label: "Speed of light", href: "/dictionary/speed-of-light" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.42 · WAVES IN MATTER & OPTICS"
+  title="INDEX OF REFRACTION"
+  subtitle="What slows light down when it has somewhere to be."
+/>
+
+<Section index={1} title="One dimensionless number">
+
+Send a plane electromagnetic wave into a glass block and something mildly scandalous happens: its wavefronts advance more slowly than they did in the empty space behind them. Not a little slower — a third slower, in crown glass. Send the same wave into diamond and it loses well over half its speed. The beam is still light, the frequency is unchanged, the energy is still travelling forward, and yet the phase fronts are in visible slow motion compared to vacuum.
+
+The whole of this chapter is a single dimensionless number, the refractive index *n*, that says by exactly how much. Vacuum is the reference: *n* = 1. Every other transparent material is some *n* > 1 (with one surprising exception we'll get to), and its <Term slug="refractive-index">refractive index</Term> is the multiplier that takes the vacuum speed of light *c* and turns it into the phase velocity in that material:
+
+<EquationBlock id="EQ.01">
+  $$ v_{\text{phase}} \;=\; \dfrac{c}{n}. $$
+</EquationBlock>
+
+Water is *n* ≈ 1.33; crown glass 1.52; sapphire 1.77; diamond 2.42. Those four numbers carry every refraction, every lens, every rainbow and every prism in physics.
+
+</Section>
+
+<Section index={2} title="The optical delay">
+
+Before worrying about *why* light slows down, feel what it does.
+
+<SceneCard caption="FIG.42a — two pulses leave the same source at the same instant. One travels through vacuum, the other through a slab of index n. Same geometric distance, different arrival time." className="w-full">
+  <MediumDelayScene />
+</SceneCard>
+
+Drag the slider. At *n* = 1 the two pulses arrive together — the slab is just empty space that happens to be drawn in a box. Push *n* up and the lower pulse falls behind by an amount
+
+<EquationBlock id="EQ.02">
+  $$ \Delta t \;=\; \dfrac{(n-1)\,L}{c}, $$
+</EquationBlock>
+
+where *L* is the slab thickness. For a 1-metre slab of crown glass that is a 1.67-nanosecond lag. In the half-metre of cornea-and-humour in front of your retina the lag is around 900 picoseconds, and every photon you have ever seen accumulated it. That delay is, literally, refraction.
+
+</Section>
+
+<Section index={3} title="The equation that produces it">
+
+Why *n*, and not some other quantity? Because electromagnetic waves in a linear medium still obey <PhysicistLink slug="james-clerk-maxwell">Maxwell's</PhysicistLink> equations — with one edit. The vacuum constants μ₀ and ε₀ get replaced by the medium's μ = μ_r·μ₀ and ε = ε_r·ε₀. Crank the wave equation and the propagation speed comes out
+
+<EquationBlock id="EQ.03">
+  $$ v \;=\; \dfrac{1}{\sqrt{\mu\,\varepsilon}} \;=\; \dfrac{c}{\sqrt{\varepsilon_r\,\mu_r}}, $$
+</EquationBlock>
+
+which is the statement *n* = √(ε_r · μ_r). For almost every transparent optical material μ_r ≈ 1, so *n* ≈ √ε_r at optical frequencies. Water's low-frequency ε_r is 80, its optical-frequency ε_r is 1.77, and 1.77 square-rooted is 1.33 — the index of water, correct to the third decimal. The refractive index is not a new fundamental constant; it is how the medium's response to an oscillating field shows up in the wave equation.
+
+</Section>
+
+<Section index={4} title="What the electrons are doing">
+
+There is a microscopic story behind the equation, and <PhysicistLink slug="hendrik-antoon-lorentz">Lorentz</PhysicistLink> wrote it. Each atom in the glass contains electrons bound by quantum-mechanical springs. When an incident electromagnetic wave sweeps through, its electric field drives those electrons into tiny driven oscillations, and accelerating charges radiate. The glass lights up, not with new frequencies, but with a forest of re-radiated waves at exactly the driving frequency — each one phase-shifted by the physics of a driven oscillator. Below the natural frequency of the electrons that phase lag is nearly a quarter cycle.
+
+The transmitted wave you measure far inside the glass is the *superposition* of the original wave and the re-radiated field from every atom between you and the source. The sum is a wave at the same frequency, same wavelength measured *in the medium* (λ_medium = λ_vacuum / n), and with phase fronts advancing more slowly than *c* by exactly the factor 1/n. No photon is being carried slowly by a spring. The slowdown is collective: a forward-scattered correction that, when you add it up, looks exactly like light moving at c/n.
+
+This is the picture that makes refractive index feel physical and not magical. Above every electronic resonance the phase lag reverses sign; below it, you get the n > 1 we all grew up with.
+
+</Section>
+
+<Section index={5} title="Different wavelengths, different numbers">
+
+Because the electron resonances sit in the ultraviolet for most transparent materials, the closer you push toward the UV the more the oscillators lag, and the larger *n* gets. Refractive index is a *function of wavelength* — the very reason prisms work.
+
+<SceneCard caption="FIG.42b — common optical materials and their n at the sodium-D line (589 nm). Hover a row to see n(λ) across the visible, computed from Cauchy's fit." className="w-full">
+  <DispersionTableScene />
+</SceneCard>
+
+In 1836 <Term slug="optical-dispersion-term">Augustin-Louis Cauchy</Term> gave the world the simple empirical formula that still runs every glass catalogue:
+
+<EquationBlock id="EQ.04">
+  $$ n(\lambda) \;=\; A \;+\; \dfrac{B}{\lambda^2} \;+\; \dfrac{C}{\lambda^4} + \cdots $$
+</EquationBlock>
+
+Two terms are enough across the visible for crown glasses like Schott BK7 (A = 1.5046, B = 4.2×10⁻³ µm²): plug in λ = 0.589 µm and out comes *n* = 1.517, matching the handbook value to three decimal places. Violet light, with a shorter λ, sees a slightly higher *n* — bent more, slowed more — than red. Sort that, and you have a rainbow.
+
+</Section>
+
+<Section index={6} title="Groups and phases, and a thing worth noticing">
+
+A real pulse has many wavelengths, so it has many phase velocities. The envelope of that pulse — the *packet* that carries the energy and the information — moves at the **<Term slug="group-velocity-em">group velocity</Term>** *v_g* = dω/dk, which in a normally-dispersive medium is slower than the individual phase fronts *v_p* = ω/k inside it.
+
+<SceneCard caption="FIG.42c — amber dots are zero-crossings of the carrier wave (phase); the dotted shell is the envelope (group). Flip to 'anomalous' and the phase markers drift backward instead." className="w-full">
+  <GroupVsPhaseScene />
+</SceneCard>
+
+Watch the amber markers: in normal dispersion they appear at the trailing edge of the envelope, race forward through it, and vanish off the leading edge. Near an absorption line the relation flips (anomalous dispersion) and they slide the other way. Either way, the envelope — and therefore the signal — stays within the group velocity.
+
+<Callout>Tuck this one away. For X-rays in ordinary glass, *n* is slightly *less than 1*. The phase velocity is faster than *c*, and no law of physics breaks. Relativity limits the <Term slug="speed-of-light">signal velocity</Term> — the front of the wave that carries information — and that stays at or below c. Phase velocity is an accounting convention: it can, and does, exceed *c* whenever ε_r dips below 1. Everything is fine.</Callout>
+
+</Section>
+
+<Section index={7} title="What changes when n does">
+
+Everything about light inside a medium is scaled by the same number. The phase speed is c/n. The wavelength shrinks to λ/n. The wave's momentum per photon gets multiplied by n inside (a result Abraham and Minkowski fought over for half a century). And the moment a beam crosses an interface between two different n's, it bends — the full content of FIG.43, the next topic, Snell's law. Keep n in hand; it is the pivot for every optical argument for the next ten sections.
+
+</Section>
+
+</TopicPageLayout>
