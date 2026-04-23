@@ -73,8 +73,8 @@ export function verifyWebhook(rawBody: string, signatureHeader: string): boolean
   const cfg = getRevolutConfig();
   const received = signatureHeader.slice(3);
   const expected = createHmac("sha256", cfg.webhookSecret).update(rawBody).digest("hex");
-  const a = Buffer.from(received, "hex");
-  const b = Buffer.from(expected, "hex");
+  const a = new Uint8Array(Buffer.from(received, "hex"));
+  const b = new Uint8Array(Buffer.from(expected, "hex"));
   if (a.length !== b.length) return false;
   return timingSafeEqual(a, b);
 }
