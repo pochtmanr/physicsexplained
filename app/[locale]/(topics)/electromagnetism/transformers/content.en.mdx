@@ -1,0 +1,148 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TransformerCouplingScene } from "@/components/physics/transformer-coupling-scene";
+import { TurnsRatioScene } from "@/components/physics/turns-ratio-scene";
+import { PowerTransmissionScene } from "@/components/physics/power-transmission-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Nikola Tesla", href: "/physicists/nikola-tesla" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "Joseph Henry", href: "/physicists/joseph-henry" },
+  { type: "term", label: "Transformer", href: "/dictionary/transformer" },
+  { type: "term", label: "Turns ratio", href: "/dictionary/turns-ratio" },
+  { type: "term", label: "Mutual inductance", href: "/dictionary/mutual-inductance" },
+  { type: "term", label: "Flux linkage", href: "/dictionary/flux-linkage" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.31 · CIRCUITS & SYSTEMS"
+  title="TRANSFORMERS"
+  subtitle="How one coil teaches another what voltage to be — and why the grid runs at 400 kV."
+/>
+
+<Section index={1} title="The ironhead puzzle">
+
+In 1888, two men were shouting at each other across the New York papers about whose kind of electricity should light America. <PhysicistLink slug="nikola-tesla">Nikola Tesla</PhysicistLink>, backed by Westinghouse, said alternating current. Thomas Edison, sitting on DC patents worth a fortune, said direct current, and spent a decade staging public electrocutions of stray dogs to make AC look deadly. It was called the War of the Currents, and it was fought over something very boring-sounding: how do you get electricity from a generator to a house fifty miles away without losing most of it to heat in the wires?
+
+DC loses it all. At the voltages early Edison generators produced — a few hundred volts — you cannot push much power more than a mile before the copper in between glows red and the customers at the end get nothing. Edison's answer was to build a generator on every block. Tesla's answer was to put a device at each end of the line that could *change the voltage* — step it up to tens of thousands of volts for the long haul, step it back down at the other end for the light bulb.
+
+That device is the transformer. It has no moving parts, costs almost nothing to run, and it is the reason every wall socket on the planet is powered by alternating current today. It works because of a single sentence from §05.3: *a changing current in one coil induces an EMF in a nearby coil*. Wire two coils around the same piece of iron, feed AC into one, and you get a perfectly scaled copy out the other — a copy whose ratio you chose when you wound the coils.
+
+This page is that sentence, unpacked into three equations.
+
+</Section>
+
+<Section index={2} title="Mutual inductance, reprised">
+
+From §05.3: when a current `I_p` runs through a coil (the *primary*), it threads **<Term slug="flux-linkage">flux linkage</Term>** through a second coil sitting nearby (the *secondary*). The linkage grows in proportion — call the proportionality constant `M`, the <Term slug="mutual-inductance">mutual inductance</Term>:
+
+<EquationBlock id="EQ.00">
+  <span className="font-mono text-lg">Φ_s = M · I_p</span>
+</EquationBlock>
+
+`M` depends only on geometry and the stuff between the coils. Wind both coils around the same iron ring and nearly every field line of one threads the other; `M` is at its geometric maximum, `√(L_p · L_s)`, where `L_p` and `L_s` are the self-inductances of the two coils. Pull the coils apart and the flux leaks into empty space; the linkage falls. The dimensionless ratio
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">k = M / √(L_p · L_s),   0 ≤ k ≤ 1</span>
+</EquationBlock>
+
+is the **coupling coefficient**. `k = 1` is the idealisation — every field line shared, nothing leaking. Real power transformers with closed laminated cores run `k ≳ 0.99`, which is close enough to ideal that the idealisation tells you almost everything. That is the model we will now push through Faraday's law.
+
+</Section>
+
+<Section index={3} title="The voltage ratio">
+
+Wind `N_p` turns of wire into a primary coil around an iron core, and `N_s` turns into a secondary on the same core. A changing current in the primary drives a changing flux `Φ(t)` through the core. Because the core is a closed magnetic path with `k ≈ 1`, that same `Φ(t)` threads every turn of *both* coils.
+
+Faraday's law, applied to one coil, says the EMF around the coil equals the negative rate of change of the flux linkage through it. For the primary the linkage is `N_p · Φ`; for the secondary it is `N_s · Φ`. So:
+
+<EquationBlock id="EQ.02">
+  $$ V_p \;=\; N_p \,\frac{d\Phi}{dt}, \qquad V_s \;=\; N_s \,\frac{d\Phi}{dt} $$
+</EquationBlock>
+
+The symbol `dΦ/dt` is just "how fast the flux is changing per second," and `d/dt` in front of anything is the spoken-aloud phrase *the rate of change of*. It is identical in the two equations — the same iron core is doing the same job on both sides. Divide one by the other and the mystery disappears:
+
+<EquationBlock id="EQ.03">
+  $$ \frac{V_s}{V_p} \;=\; \frac{N_s}{N_p} \;\equiv\; n $$
+</EquationBlock>
+
+The secondary voltage is the primary voltage, multiplied by the **<Term slug="turns-ratio">turns ratio</Term>** `n = N_s / N_p`. Wind ten times as many secondary turns and you get ten times the voltage. Wind a tenth as many and you get a tenth. That is the whole device.
+
+<SceneCard caption="FIG.31a — two coils on a shared iron core; slide n to watch V_s track n · V_p in real time" className="w-full">
+  <TransformerCouplingScene />
+</SceneCard>
+
+The slider moves the secondary turn count; the primary is fixed at 10 turns. Watch the amber `V_s` readout: at `n = 1` it matches magenta `V_p`; at `n = 2` it is twice as large; at `n = 0.5` it is half. The cyan arrows around the rectangle are the flux `Φ(t)` doing its round-trip through the iron. No electrical contact between primary and secondary — the iron is the messenger.
+
+</Section>
+
+<Section index={4} title="The current ratio — where power has to go">
+
+If the secondary voltage is `n` times the primary voltage, what happens to the current?
+
+An ideal transformer cannot create energy. Power in must equal power out, instant by instant. Write it as a product:
+
+<EquationBlock id="EQ.04">
+  $$ V_p \cdot I_p \;=\; V_s \cdot I_s $$
+</EquationBlock>
+
+Substitute `V_s = n · V_p` and solve for the current ratio:
+
+<EquationBlock id="EQ.05">
+  $$ \frac{I_s}{I_p} \;=\; \frac{1}{n} \;=\; \frac{N_p}{N_s} $$
+</EquationBlock>
+
+Exactly the reciprocal. Step voltage up by ten, and you must step current down by ten. Step voltage down by ten, and current goes up by ten. The transformer is a *voltage-current lever*: it trades one for the other around a pivot set by the turn count. Energy goes straight through.
+
+<SceneCard caption="FIG.31b — three transformers side by side: 2:1 down, 1:1 isolation, 1:2 up. Same V_p, three V_s." className="w-full">
+  <TurnsRatioScene />
+</SceneCard>
+
+Three cells, one common 120 V primary drive, three different turn counts. The left cell halves the voltage (and doubles the current that a load would draw); the middle passes it through unchanged (an **isolation transformer**, used in medical equipment to break ground loops); the right doubles it. Three turn counts, three levers, zero friction.
+
+</Section>
+
+<Section index={5} title="Why the grid runs at hundreds of kilovolts">
+
+Now for the payoff. Take the same 1 MW of power you need to deliver across a 100 km aluminium line. The line has some resistance `R` — call it 10 Ω. The power lost as heat in the line is
+
+<EquationBlock id="EQ.06">
+  $$ P_{\text{loss}} \;=\; I^2 \cdot R \;=\; \left(\frac{P_{\text{load}}}{V}\right)^2 \cdot R $$
+</EquationBlock>
+
+Read the right-hand side slowly. At fixed delivered power, doubling the transmission voltage `V` *halves* the line current, which *quarters* the I²R loss. Multiply `V` by ten and the loss drops by a factor of one hundred. Multiply by a hundred and the loss drops by ten thousand. The payoff is quadratic, and it never runs out.
+
+So every long-distance grid does the same thing. A generator at the power station puts out around 20 kV at thousands of amps. A step-up <Term slug="transformer">transformer</Term> — a device fifty feet tall, running in a pool of oil to keep cool — multiplies that to 400 kV (in Europe) or 500 kV (in much of the US) at a hundredth of the current. The high-voltage line spans mountains with a trickle of current running through it and almost nothing wasted as heat. At the city, step-down transformers bring it back to 20 kV for the local grid, then 230 V for your flat. Pole transformers on top of wooden poles in American suburbs are doing the last step from 7 kV down to 120/240 V.
+
+<SceneCard caption="FIG.31c — slide the transmission voltage; watch the loss fraction collapse as V² grows" className="w-full">
+  <PowerTransmissionScene />
+</SceneCard>
+
+At 1 kV you lose almost everything — the copper glows, the customers get nothing. At the European standard of 400 kV, loss is well under a percent. The amber marker on the log-log plot is the current working point; the dashed amber line is the 400 kV grid that runs from Scandinavia to the Mediterranean. Every backbone on earth lives in the upper-right of this plot, and every one of them is there because `P_loss = I²R` and the transformer lets you choose what `I` is.
+
+<Callout variant="intuition">
+This is why Tesla won. Edison's DC had no voltage-transforming device — a DC generator's voltage is its output voltage, and that is that. Tesla's AC had the transformer, which *exists because the current is changing*. A static current makes a static flux, which has zero rate of change, which induces zero EMF. Transformers only work on AC. The frequency is the key that lets the ratchet turn.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Losses in real transformers">
+
+Real transformers are almost ideal, but "almost" hides three small bleeders. First, the winding copper is not a superconductor; it has resistance `R_cu`, and when current runs through it, it dissipates `I² · R_cu` as heat — the *copper losses*. Second, every cycle the core's magnetisation sweeps around a [hysteresis loop](/electromagnetism/ferromagnetism-and-hysteresis), and the area enclosed by that loop each cycle is energy converted to heat — the *hysteresis losses*, which is why iron cores are made of silicon steel chosen for a narrow loop. Third, the changing flux in the core induces its own [eddy currents](/electromagnetism/eddy-currents) right there in the iron, and those currents dissipate `I²R` inside the metal — which is why cores are **laminated**: thin insulated sheets stacked flat, breaking up the eddies without blocking the flux. Large grid transformers reach 99.5 % efficiency. A phone charger reaches maybe 90 %. The warmth in your hand when you leave the charger plugged in is these three losses, adding up.
+
+</Section>
+
+<Section index={7} title="From the grid to your phone">
+
+Trace the cascade. 20 kV leaves the turbine hall. Step up to 400 kV for the pylon line. At the city substation, step down to 110 kV for the ring, then 20 kV for the district, then 400 V three-phase for the street, then 230 V single-phase into the flat. Inside your phone charger, a fourth and fifth transformer bring 230 V down to maybe 5 V, regulated by the switching converter chipping the waveform a hundred thousand times a second through a tiny ferrite-core coil. Between the turbine and the USB-C plug there are *five* transformers you used tonight without noticing one of them.
+
+Every one of them is `V_s / V_p = N_s / N_p`. Every one of them is Faraday's law applied twice to a single shared flux. The War of the Currents ended in 1893 when Westinghouse won the contract to light the Chicago World's Fair with Tesla's AC. What made it permanent was the transformer.
+
+</Section>
+
+</TopicPageLayout>

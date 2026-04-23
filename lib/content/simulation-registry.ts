@@ -649,6 +649,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PowerFactorScene: lazyScene(() =>
     import("@/components/physics/power-factor-scene").then((m) => ({ default: m.PowerFactorScene })),
   ),
+
+  // EM §06 — transformers
+  TransformerCouplingScene: lazyScene(() =>
+    import("@/components/physics/transformer-coupling-scene").then((m) => ({ default: m.TransformerCouplingScene })),
+  ),
+  TurnsRatioScene: lazyScene(() =>
+    import("@/components/physics/turns-ratio-scene").then((m) => ({ default: m.TurnsRatioScene })),
+  ),
+  PowerTransmissionScene: lazyScene(() =>
+    import("@/components/physics/power-transmission-scene").then((m) => ({ default: m.PowerTransmissionScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
