@@ -11,6 +11,8 @@ import { checkRateLimit, makeRateLimitDepsForUser } from "@/lib/ask/rate-limit";
 import { sseEncode } from "@/lib/ask/sse";
 import { DEFAULT_MODEL_ID, findModel } from "@/lib/ask/types";
 import type { NeutralMessage } from "@/lib/ask/provider";
+import { checkQuota, type BillingRow } from "@/lib/billing/quota";
+import { weightedTokens } from "@/lib/ask/pricing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +39,22 @@ export async function POST(req: Request) {
 
   const model = findModel(body.modelId);
   const db = getServiceClient();
+
+  // Quota gate (billing) — 402 before streaming
+  const { data: billingRow, error: billingErr } = await db
+    .from("user_billing")
+    .select("plan,status,tokens_allowance,tokens_used,free_questions_used,cycle_end")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (billingErr || !billingRow) {
+    return NextResponse.json({ error: "DB_ERR", message: billingErr?.message ?? "missing billing row" }, { status: 500 });
+  }
+  const quota = checkQuota(billingRow as BillingRow);
+  if (!quota.ok) {
+    return NextResponse.json({ error: "QUOTA_EXHAUSTED", reason: quota.reason }, { status: 402 });
+  }
+
+  // Legacy daily analytics rate limit stays in place
   const rl = makeRateLimitDepsForUser(db, user.id);
   const rlRes = await checkRateLimit(rl);
   if (!rlRes.ok) return NextResponse.json({ error: "RATE_LIMITED", reason: rlRes.reason }, { status: 429 });
@@ -156,6 +174,12 @@ export async function POST(req: Request) {
               p_web_searches: 0,
               p_fetches: 0,
               p_cost_micros: finalUsage.costMicros,
+            });
+            const weighted = weightedTokens(finalUsage.model, finalUsage.inputTokens, finalUsage.outputTokens);
+            await db.rpc("billing_increment", {
+              p_user_id: user.id,
+              p_weighted_tokens: weighted,
+              p_is_free: (billingRow as BillingRow).plan === "free",
             });
             await db.from("ask_conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
 
