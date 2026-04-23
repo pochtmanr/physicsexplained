@@ -1,0 +1,146 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TlDistributedScene } from "@/components/physics/tl-distributed-scene";
+import { ReflectionCoefficientScene } from "@/components/physics/reflection-coefficient-scene";
+import { StandingWaveRatioScene } from "@/components/physics/standing-wave-ratio-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Oliver Heaviside", href: "/physicists/oliver-heaviside" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Transmission line", href: "/dictionary/transmission-line-term" },
+  { type: "term", label: "Characteristic impedance", href: "/dictionary/characteristic-impedance" },
+  { type: "term", label: "Standing wave ratio", href: "/dictionary/standing-wave-ratio" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.32 · CIRCUITS AT HIGH FREQUENCY"
+  title="TRANSMISSION LINES"
+  subtitle="When a wire is long enough that the signal's wave nature takes over."
+/>
+
+<Section index={1} title="When is a wire no longer a wire?">
+
+Every circuit in this module so far has treated a wire as a perfect connector. Voltage at one end equals voltage at the other, instantly. Current is the same everywhere along its length. That is the *lumped* model, and it is a lie — but a very good one, almost always.
+
+The lie breaks when the wire is long enough that the signal's travel time across it becomes comparable to the signal's own period. A rule of thumb: when the line length exceeds roughly `λ/10`, the voltage at the near end and the voltage at the far end can differ by tens of percent at the same instant. Pulse edges that should arrive instantly instead *propagate*, at a speed close to — but always below — the speed of light. Reflections return from the far end. Standing waves set themselves up in the middle. An engineer who ignores this ships a product that looks fine on a benchtop meter and rings uncontrollably on an oscilloscope.
+
+At audio frequencies a household wire is fine; at 2.4 GHz a ten-centimetre trace is already three-quarters of a wavelength in polyethylene and needs design. Between those two extremes is the grey zone where most digital electronics now lives: data rates high enough that every PCB trace longer than a few centimetres has to be treated as a proper line, impedance-controlled, terminated, routed. The wire has become a **<Term slug="transmission-line-term">transmission line</Term>**, and the rules change.
+
+</Section>
+
+<Section index={2} title="Heaviside's distributed model">
+
+The man who wrote the rules was not an academic. <PhysicistLink slug="oliver-heaviside">Oliver Heaviside</PhysicistLink> left school at sixteen, taught himself mathematics from a corner of his brother's house in Camden Town, and worked for years as a telegraph operator on the Anglo-Danish cable. He never held a university post, never earned a degree, published in electrical journals rather than physics ones, lived most of his adult life in poverty, and was written off by half the establishment as a crank. He was also the first person on Earth to understand what <PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink> had actually said.
+
+Maxwell's 1873 *Treatise on Electricity and Magnetism* presented his theory as twenty coupled equations in twenty variables — quaternions, potentials, component-wise. Heaviside, working alone at a kitchen table, rewrote it in the vector notation every physics student learns today and reduced it to the four compact equations now painted on the side of university buildings. In the process he invented operator calculus for circuits (Laplace transforms, basically), coined the word "impedance," introduced the step and impulse functions that bear his name, and — the subject of this page — derived the equations of a long telegraph line. He did all of this because his day job was keeping telegrams legible after they had travelled a thousand miles of cable, and nobody else was going to do it for him.
+
+His model is deceptively simple. Take any small slice `dx` of a wire pair and give it four properties per unit length:
+
+- `L` — series inductance (H/m), because a slice of wire carrying current stores magnetic energy along its length.
+- `C` — shunt capacitance (F/m), because the two conductors store electric energy in the field between them.
+- `R` — series resistance (Ω/m), losses in the conductors.
+- `G` — shunt conductance (S/m), leakage through the dielectric.
+
+A real line is an infinite chain of these cells. In the lossless limit (`R = G = 0`) the math comes out clean and every essential phenomenon still shows up — so we start there.
+
+</Section>
+
+<Section index={3} title="The telegrapher's equations">
+
+Write Kirchhoff's voltage and current laws across one cell, take the limit as `dx → 0`, and two coupled partial differential equations fall out:
+
+<EquationBlock id="EQ.01">
+  $$
+  \frac{\partial V}{\partial x} \;=\; -L\,\frac{\partial I}{\partial t}
+  \qquad
+  \frac{\partial I}{\partial x} \;=\; -C\,\frac{\partial V}{\partial t}
+  $$
+</EquationBlock>
+
+In plain words: the voltage along the line changes because the current through the series inductance is changing (the `∂I/∂t` drives a back-EMF per metre). The current changes along the line because some of it is being diverted into the shunt capacitance (a rising `∂V/∂t` demands a charging current). Two ordinary circuit laws made infinitely local.
+
+Differentiate the first with respect to `x`, the second with respect to `t`, and substitute. Both `V` and `I` obey the one-dimensional wave equation, with propagation velocity
+
+<EquationBlock id="EQ.02">
+  $$ v \;=\; \frac{1}{\sqrt{L\,C}} $$
+</EquationBlock>
+
+Signals on the line propagate as waves. A pulse launched at the left end arrives at the right end a time `τ = length/v` later, undistorted in the lossless limit. For vacuum-dielectric coax, `v` approaches `c`; for a typical polyethylene-filled cable, `v ≈ 0.66·c`, because the dielectric slows the wave down. This is the first fact every high-speed-link designer learns: the signal moves at roughly two-thirds of light-speed, and that budget must fit inside the rise-time of the signal. A 30 cm cable has a one-way delay of about 1.5 ns — comparable to a modern logic edge, already long enough to matter.
+
+</Section>
+
+<Section index={4} title="Characteristic impedance">
+
+The second essential number is the line's **<Term slug="characteristic-impedance">characteristic impedance</Term>**:
+
+<EquationBlock id="EQ.03">
+  $$ Z_0 \;=\; \sqrt{\tfrac{L}{C}} $$
+</EquationBlock>
+
+Read `Z₀` as: if you launch a sinusoidal wave at one end of an infinitely long line, the ratio `V/I` at every point along it equals `Z₀`. The wave needs voltage to drive it through the series `L` and current to charge the shunt `C`; the ratio of the two, at the one frequency-independent value that makes both local equations happy, is `√(L/C)`.
+
+<SceneCard caption="FIG.32a — each cell is a slice dx of series L and shunt C. A pulse propagates at v = 1/√(LC) and the ratio V/I locks to Z₀ = √(L/C).">
+  <TlDistributedScene />
+</SceneCard>
+
+For `50 Ω` coax (L ≈ 250 nH/m, C ≈ 100 pF/m) the geometry is tuned by cable manufacturers so that `√(L/C) = 50`. For `75 Ω` CATV cable, `L/C` is chosen higher. The impedance is entirely a geometric property of the cross-section: inner-conductor diameter, outer-shield diameter, dielectric permittivity. You can change the length of the cable without changing `Z₀`, because both `L` and `C` scale with length in the same way and the ratio is preserved. A hundred metres of `50 Ω` cable is still a `50 Ω` cable.
+
+<Callout variant="intuition">
+Note what `Z₀` is not. It is not resistance — a lossless line dissipates no power, yet `V/I` on a forward wave equals `Z₀` at every instant. It is an impedance in the deeper sense: the ratio at which the line is willing to exchange voltage for current without any wave reflecting back the other way.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Reflection and matching">
+
+Now terminate the far end with a real load. If the load impedance `Z_L` happens to equal `Z₀`, the wave arrives, deposits its energy in the load, and disappears. If `Z_L ≠ Z₀`, the wave cannot satisfy both boundary conditions at once (`V/I = Z_L` at the load, `V/I = Z₀` on the line), so part of it reflects.
+
+<EquationBlock id="EQ.04">
+  $$ \Gamma \;=\; \frac{Z_L - Z_0}{Z_L + Z_0} $$
+</EquationBlock>
+
+`Γ` (uppercase gamma) is the **voltage reflection coefficient**: the fraction of the incident amplitude that travels back toward the source, signed.
+
+- `Z_L = Z₀` → `Γ = 0` — matched line, no reflection.
+- `Z_L → ∞` (open circuit) → `Γ = +1` — full, same-sign reflection; voltage at the open end momentarily doubles.
+- `Z_L = 0` (short circuit) → `Γ = −1` — full, inverted reflection; voltage at the short stays pinned at zero.
+- `Z_L = 2·Z₀` → `Γ = +1/3` — a third of the amplitude comes back.
+
+<SceneCard caption="FIG.32b — incident pulse in amber, reflected pulse in lilac. Slide Z_L; at matched the reflection vanishes, at open it returns unchanged, at short it returns inverted.">
+  <ReflectionCoefficientScene />
+</SceneCard>
+
+Matching is *the* engineering discipline of high-speed electronics. Every Ethernet jack, every antenna feed, every PCB trace carrying a gigahertz signal has been designed so that the source sees `Z₀` and the load looks like `Z₀` — otherwise, power is wasted and echoes ring in the line long after the edge has passed.
+
+</Section>
+
+<Section index={6} title="Standing waves">
+
+A mismatched line driven by a continuous sinusoid carries both a forward wave and its reflection. The two interfere. At some positions the crests add and the envelope peaks at `V₊(1 + |Γ|)`; at positions a quarter wavelength away they cancel and the envelope bottoms out at `V₊(1 − |Γ|)`. The pattern stands still — hence the name.
+
+The single number that captures the severity of the mismatch is the **<Term slug="standing-wave-ratio">standing wave ratio</Term>**:
+
+<EquationBlock id="EQ.05">
+  $$ \text{SWR} \;=\; \frac{1 + \lvert\Gamma\rvert}{1 - \lvert\Gamma\rvert} $$
+</EquationBlock>
+
+SWR = 1 is a flat line — matched. SWR = ∞ is a pure standing wave — full reflection. Amateur-radio operators watch an SWR meter in the shack to decide whether their antenna is healthy; most rigs will fold back their power above SWR ≈ 3 to protect the finals. SWR is handy because it is easy to measure (slide a probe along a slotted line, find max and min) and it captures mismatch with a single dimensionless number that does not depend on the length of the cable.
+
+<SceneCard caption="FIG.32c — cyan = |V(x)| envelope, amber = instantaneous V(x,t). Drag Z_L off Z₀ and the envelope opens into ripples; the nodes stand still.">
+  <StandingWaveRatioScene />
+</SceneCard>
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+Transmission-line physics is the substrate of the modern electromagnetic world. The `50 Ω` coax on every lab bench, the `75 Ω` cable in every wall, the striplines on every gigahertz PCB, the feedline up to every cell tower, the twinax pairs inside every server rack, the undersea telegraph cables Heaviside himself worked on, the trans-Atlantic fibres that replaced them a century later (optical, but the math rhymes) — all of them are his model made physical. Impedance mismatches in a USB-C cable show up as eye-diagram closure; mismatches in an MRI receive coil show up as lost signal-to-noise. Wherever a wire has become long, his self-taught mathematics runs it — delivered, as he delivered all of it, without the blessing of any institution that might have claimed credit.
+
+</Section>
+
+</TopicPageLayout>

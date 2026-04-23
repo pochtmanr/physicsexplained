@@ -660,6 +660,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PowerTransmissionScene: lazyScene(() =>
     import("@/components/physics/power-transmission-scene").then((m) => ({ default: m.PowerTransmissionScene })),
   ),
+
+  // EM §06 — transmission-lines
+  TlDistributedScene: lazyScene(() =>
+    import("@/components/physics/tl-distributed-scene").then((m) => ({ default: m.TlDistributedScene })),
+  ),
+  ReflectionCoefficientScene: lazyScene(() =>
+    import("@/components/physics/reflection-coefficient-scene").then((m) => ({ default: m.ReflectionCoefficientScene })),
+  ),
+  StandingWaveRatioScene: lazyScene(() =>
+    import("@/components/physics/standing-wave-ratio-scene").then((m) => ({ default: m.StandingWaveRatioScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
