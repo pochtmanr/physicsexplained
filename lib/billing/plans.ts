@@ -10,6 +10,20 @@ export interface Plan {
   blurb: string;
 }
 
+// =============================================================================
+// IMPORTANT — MIRROR THE PRICE FIELDS IN THE DATABASE.
+//
+// The authoritative price source is the `public.billing_plans` table
+// (seeded in supabase/migrations/0008_billing_plans.sql). The Deno edge
+// function supabase/functions/billing-renew/index.ts reads the price from
+// that table at runtime (it can't import this file). If you change a
+// priceCents value here, you MUST also update the billing_plans row,
+// preferably by editing migration 0008 and re-applying it in dev, and
+// adding a new follow-up migration for prod.
+//
+// The test in tests/billing/plans.test.ts guards against drift between
+// priceCents below and the seed rows in migration 0008.
+// =============================================================================
 export const PLANS: Record<PlanId, Plan> = {
   free: {
     id: "free",
@@ -23,20 +37,20 @@ export const PLANS: Record<PlanId, Plan> = {
   starter: {
     id: "starter",
     label: "Starter",
-    priceCents: 1200,
+    priceCents: 600,
     currency: "USD",
-    tokensAllowance: 1_500_000,
+    tokensAllowance: 750_000,
     freeQuestions: 0,
-    blurb: "1.5M tokens / month · ≈ 700 medium questions",
+    blurb: "750k tokens / month · ≈ 375 medium questions",
   },
   pro: {
     id: "pro",
     label: "Pro",
-    priceCents: 3500,
+    priceCents: 2000,
     currency: "USD",
-    tokensAllowance: 4_000_000,
+    tokensAllowance: 2_300_000,
     freeQuestions: 0,
-    blurb: "4M tokens / month · ≈ 1,900 medium questions",
+    blurb: "2.3M tokens / month · ≈ 1,150 medium questions",
   },
 };
 

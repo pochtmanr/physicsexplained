@@ -10,13 +10,24 @@ export function MessageBubble({
   role, text, locale,
 }: { role: "user" | "assistant"; text: string; locale: string }) {
   const parts = parseFences(text);
+  const isUser = role === "user";
+
+  if (isUser) {
+    return (
+      <div className="my-3 ml-auto max-w-xl bg-[var(--color-fg-4)]/35 border-l-2 border-[var(--color-cyan-dim)]/60 px-4 py-3">
+        {parts.map((p, i) => renderPart(p, i, locale))}
+      </div>
+    );
+  }
+
   return (
-    <div
-      className={`my-3 px-4 py-3 rounded ${
-        role === "user" ? "ml-auto max-w-xl bg-[var(--color-fg-4)]/20 border border-[var(--color-fg-4)]/50" : "mr-auto max-w-2xl"
-      }`}
-    >
-      {parts.map((p, i) => renderPart(p, i, locale))}
+    <div className="my-4 mr-auto max-w-2xl">
+      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-1.5">
+        Physics.AI
+      </div>
+      <div className="text-[var(--color-fg-0)]">
+        {parts.map((p, i) => renderPart(p, i, locale))}
+      </div>
     </div>
   );
 }
@@ -42,5 +53,9 @@ function Prose({ text }: { text: string }) {
     last = m.index + m[0].length;
   }
   if (last < text.length) nodes.push(<span key={`t${i++}`}>{text.slice(last)}</span>);
-  return <div className="whitespace-pre-wrap leading-relaxed prose-sm">{nodes}</div>;
+  return (
+    <div className="whitespace-pre-wrap leading-relaxed text-[var(--color-fg-0)] text-[15px]">
+      {nodes}
+    </div>
+  );
 }

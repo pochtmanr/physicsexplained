@@ -17,7 +17,11 @@ export default async function AskLayout({
   if (!user) redirect(`/${locale}/sign-in?next=/${locale}/ask`);
 
   const [{ data: convs }, snapshot, { data: orders }] = await Promise.all([
-    db.from("ask_conversations").select("id,title,updated_at").order("updated_at", { ascending: false }).limit(20),
+    db.from("ask_conversations")
+      .select("id,title,updated_at,starred")
+      .order("starred", { ascending: false })
+      .order("updated_at", { ascending: false })
+      .limit(50),
     loadBillingSnapshot(),
     getServiceClient().from("billing_orders")
       .select("id,plan,amount_cents,currency,state,created_at")
@@ -51,10 +55,11 @@ export default async function AskLayout({
           planLabel={snapshot?.plan.label ?? "Free"}
           percentUsed={snapshot?.percentUsed ?? 0}
         />
-        <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
+        <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-w-0">
           {!enabled && <KillSwitchBanner />}
           {children}
         </main>
+        <div className="hidden xl:block w-64 shrink-0" aria-hidden="true" />
       </div>
       <AccountDrawer user={userPayload} snapshot={snapshot} orders={orders ?? []} />
     </AccountDrawerProvider>

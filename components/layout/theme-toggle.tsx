@@ -44,7 +44,7 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={ariaLabel}
-      className="inline-flex h-8 w-8 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-9 md:w-9"
+      className="inline-flex h-6 w-6 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8 md:w-8"
     >
       <IconComponent aria-hidden="true" size={14} strokeWidth={1.5} />
     </button>

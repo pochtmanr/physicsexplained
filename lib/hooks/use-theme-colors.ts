@@ -9,6 +9,7 @@ export interface ThemeColors {
   fg3: string; // border/rule (gridlines, hairlines) — backed by --color-fg-4
   bg0: string;
   bg1: string;
+  cyan: string;
   magenta: string;
 }
 
@@ -21,6 +22,7 @@ function readColors(): ThemeColors {
     fg3: s.getPropertyValue("--color-fg-4").trim(),
     bg0: s.getPropertyValue("--color-bg-0").trim(),
     bg1: s.getPropertyValue("--color-bg-1").trim(),
+    cyan: s.getPropertyValue("--color-cyan").trim(),
     magenta: s.getPropertyValue("--color-magenta").trim(),
   };
 }
@@ -33,6 +35,7 @@ export function useThemeColors(): ThemeColors {
     fg3: "#2A3448",
     bg0: "#07090E",
     bg1: "#07090E",
+    cyan: "#6FB8C6",
     magenta: "#FF6ADE",
   });
 

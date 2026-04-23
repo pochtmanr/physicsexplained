@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSsrClient } from "@/lib/supabase-server";
 import { SignInForm } from "@/components/auth/sign-in-form";
+import { WIDE_CONTAINER } from "@/lib/layout";
 
 export default async function SignInPage({
   searchParams,
@@ -13,13 +14,23 @@ export default async function SignInPage({
   if (user) redirect(next ?? "/");
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <h1 className="text-2xl font-semibold mb-2 text-center">Sign in</h1>
-        <p className="text-sm text-muted-foreground text-center mb-8">
-          Use your email or Google to continue.
+    <div className={`${WIDE_CONTAINER} min-h-[calc(100vh-8rem)] flex items-center justify-center py-16`}>
+      <div className="w-full max-w-md">
+        <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] text-center">
+          Sign in · Physics.explained
+        </div>
+        <h1 className="mt-4 text-3xl md:text-4xl tracking-tight text-[var(--color-fg-0)] text-center">
+          Welcome{" "}
+          <span className="font-display italic text-[var(--color-cyan)]">
+            back
+          </span>
+        </h1>
+        <p className="mt-3 text-sm text-[var(--color-fg-1)] text-center">
+          Continue with email or Google.
         </p>
-        <SignInForm next={next ?? "/"} />
+        <div className="mt-8">
+          <SignInForm next={next ?? "/"} />
+        </div>
       </div>
     </div>
   );

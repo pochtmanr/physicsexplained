@@ -7,11 +7,11 @@ describe("plans", () => {
     expect(PLANS.free.tokensAllowance).toBe(0);
     expect(PLANS.free.freeQuestions).toBe(3);
 
-    expect(PLANS.starter.priceCents).toBe(1200);
-    expect(PLANS.starter.tokensAllowance).toBe(1_500_000);
+    expect(PLANS.starter.priceCents).toBe(600);
+    expect(PLANS.starter.tokensAllowance).toBe(750_000);
 
-    expect(PLANS.pro.priceCents).toBe(3500);
-    expect(PLANS.pro.tokensAllowance).toBe(4_000_000);
+    expect(PLANS.pro.priceCents).toBe(2000);
+    expect(PLANS.pro.tokensAllowance).toBe(2_300_000);
   });
 
   it("getPlan returns canonical plan by id", () => {
@@ -21,7 +21,7 @@ describe("plans", () => {
 
   it("allowanceFor returns tokens for paid, 0 for free", () => {
     expect(allowanceFor("free")).toBe(0);
-    expect(allowanceFor("starter")).toBe(1_500_000);
-    expect(allowanceFor("pro")).toBe(4_000_000);
+    expect(allowanceFor("starter")).toBe(750_000);
+    expect(allowanceFor("pro")).toBe(2_300_000);
   });
 });

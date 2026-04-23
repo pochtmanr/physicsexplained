@@ -1,16 +1,13 @@
 import { Transcript } from "@/components/ask/transcript";
-import { Composer } from "@/components/ask/composer";
+import { ChatScreen } from "@/components/ask/chat-screen";
 
 export default async function ConversationPage({
   params,
 }: { params: Promise<{ locale: string; conversationId: string }> }) {
   const { locale, conversationId } = await params;
   return (
-    <div className="flex flex-col flex-1">
+    <ChatScreen conversationId={conversationId} variant="conversation">
       <Transcript conversationId={conversationId} locale={locale} />
-      <div className="p-4 border-t">
-        <Composer conversationId={conversationId} />
-      </div>
-    </div>
+    </ChatScreen>
   );
 }

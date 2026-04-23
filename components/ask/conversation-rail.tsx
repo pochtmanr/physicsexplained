@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ProfileChip } from "@/components/auth/profile-chip";
+import { ConversationRow } from "./conversation-row";
 
 interface Props {
   locale: string;
-  conversations: Array<{ id: string; title: string | null; updated_at: string }>;
+  conversations: Array<{ id: string; title: string | null; updated_at: string; starred: boolean }>;
   activeId?: string;
   user: { fullName: string | null; email: string | null; avatarUrl: string | null };
   planLabel: string;
@@ -27,44 +28,13 @@ export function ConversationRail({ locale, conversations, activeId, user, planLa
             No chats yet
           </li>
         )}
-        {conversations.map((c) => {
-          const active = c.id === activeId;
-          return (
-            <li key={c.id}>
-              <Link
-                href={`/${locale}/ask/${c.id}`}
-                className={`block px-4 py-2.5 transition-colors border-l-2 ${
-                  active
-                    ? "border-[var(--color-cyan)] bg-[var(--color-fg-4)]/15"
-                    : "border-transparent hover:border-[var(--color-fg-4)] hover:bg-[var(--color-fg-4)]/10"
-                }`}
-              >
-                <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
-                  {formatRelative(c.updated_at)}
-                </div>
-                <div className={`mt-1 text-sm truncate ${active ? "text-[var(--color-fg-0)]" : "text-[var(--color-fg-1)]"}`}>
-                  {c.title ?? "Untitled"}
-                </div>
-              </Link>
-            </li>
-          );
-        })}
+        {conversations.map((c) => (
+          <li key={c.id}>
+            <ConversationRow conv={c} locale={locale} active={c.id === activeId} />
+          </li>
+        ))}
       </ul>
       <ProfileChip user={user} planLabel={planLabel} percentUsed={percentUsed} />
     </aside>
   );
-}
-
-function formatRelative(iso: string): string {
-  const then = new Date(iso).getTime();
-  const now = Date.now();
-  const diff = Math.max(0, now - then);
-  const m = Math.floor(diff / 60_000);
-  if (m < 1) return "just now";
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h ago`;
-  const d = Math.floor(h / 24);
-  if (d < 7) return `${d}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }

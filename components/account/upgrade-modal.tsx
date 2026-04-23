@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useParams } from "next/navigation";
 import { PlanCards } from "./plan-cards";
 import { openRevolutCheckout } from "@/lib/billing/revolut-client";
 import type { PlanId } from "@/lib/billing/plans";
@@ -19,21 +20,37 @@ const TITLES: Record<Props["reason"], string> = {
 
 export function UpgradeModal({ open, onClose, reason, currentPlan }: Props) {
   const [busy, setBusy] = useState<"starter" | "pro" | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const params = useParams<{ locale?: string }>();
+  const locale = params?.locale ?? "en";
   if (!open) return null;
 
   const checkout = async (plan: "starter" | "pro") => {
-    setBusy(plan);
-    const res = await fetch("/api/billing/checkout", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    });
-    if (!res.ok) { setBusy(null); return; }
-    const { publicId } = (await res.json()) as { publicId: string };
-    await openRevolutCheckout(
-      publicId,
-      () => window.location.reload(),
-      () => setBusy(null),
-    );
+    setBusy(plan); setErr(null);
+    try {
+      const res = await fetch("/api/billing/checkout", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
+      if (!res.ok) {
+        const { message } = await res.json().catch(() => ({ message: `HTTP ${res.status}` }));
+        setErr(typeof message === "string" ? message : "Checkout failed");
+        setBusy(null);
+        return;
+      }
+      const { publicId, orderId } = (await res.json()) as { publicId: string; orderId: string };
+      await openRevolutCheckout({
+        publicId,
+        onSuccess: () => {
+          window.location.href = `/${locale}/billing/thank-you?order=${encodeURIComponent(orderId)}`;
+        },
+        onError: (e) => { setErr((e as Error)?.message ?? "Payment error"); setBusy(null); },
+        onCancel: () => setBusy(null),
+      });
+    } catch (e) {
+      setErr((e as Error).message);
+      setBusy(null);
+    }
   };
 
   return (
@@ -56,6 +73,11 @@ export function UpgradeModal({ open, onClose, reason, currentPlan }: Props) {
         <div className="mt-5">
           <PlanCards currentPlan={currentPlan} onSelect={checkout} busy={busy} hideFree />
         </div>
+        {err && (
+          <div className="mt-4 font-mono text-xs uppercase tracking-wider text-[var(--color-magenta)]">
+            {err}
+          </div>
+        )}
         <div className="mt-5 text-right">
           <button
             type="button"

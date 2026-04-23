@@ -1,17 +1,32 @@
 import { NextResponse } from "next/server";
 import { getServiceClient } from "@/lib/supabase-server";
 import { verifyWebhook } from "@/lib/billing/revolut";
-import { applyWebhookEvent, parseRevolutEvent, type DbPort } from "@/lib/billing/webhook-handler";
-import { allowanceFor, type PlanId } from "@/lib/billing/plans";
+import { applyWebhookEvent, parseRevolutEvent } from "@/lib/billing/webhook-handler";
+import { makeDbPort } from "@/lib/billing/db-port";
+import { sendReceiptForOrder } from "@/lib/billing/email";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   const raw = await req.text();
+  // Next.js lowercases header names.
   const sig = req.headers.get("revolut-signature") ?? "";
-  if (!verifyWebhook(raw, sig)) {
-    return NextResponse.json({ error: "INVALID_SIGNATURE" }, { status: 401 });
+  const ts = req.headers.get("revolut-request-timestamp") ?? "";
+
+  const verify = verifyWebhook(raw, sig, ts);
+  if (!verify.ok) {
+    // Log structured error for observability; always return 401 externally so
+    // we never leak the specific verification failure mode to the caller.
+    console.warn("[billing/webhook] signature verification failed", {
+      code: verify.error,
+      hasSignature: Boolean(sig),
+      hasTimestamp: Boolean(ts),
+    });
+    return NextResponse.json(
+      { error: "INVALID_SIGNATURE", code: verify.error ?? "BAD_SIGNATURE" },
+      { status: 401 },
+    );
   }
 
   let parsed: unknown;
@@ -20,38 +35,15 @@ export async function POST(req: Request) {
   if (!event || event.type === "UNKNOWN") return NextResponse.json({ ok: true, skipped: true });
 
   const db = getServiceClient();
-  const port: DbPort = {
-    async getOrder(orderId) {
-      const { data } = await db.from("billing_orders")
-        .select("user_id,plan,state").eq("revolut_order_id", orderId).maybeSingle();
-      return (data as { user_id: string; plan: PlanId; state: string } | null) ?? null;
-    },
-    async updateOrderState(orderId, state) {
-      await db.from("billing_orders").update({ state }).eq("revolut_order_id", orderId);
-    },
-    async activatePlan({ userId, plan, revolutCustomerId, revolutToken }) {
-      const now = new Date();
-      const cycleEnd = new Date(now);
-      cycleEnd.setMonth(cycleEnd.getMonth() + 1);
-      await db.from("user_billing").update({
-        plan,
-        status: "active",
-        tokens_allowance: allowanceFor(plan),
-        tokens_used: 0,
-        free_questions_used: 0,
-        cycle_start: now.toISOString(),
-        cycle_end: cycleEnd.toISOString(),
-        next_charge_at: cycleEnd.toISOString(),
-        canceled_at: null,
-        ...(revolutCustomerId ? { revolut_customer_id: revolutCustomerId } : {}),
-        ...(revolutToken ? { revolut_token: revolutToken } : {}),
-      }).eq("user_id", userId);
-    },
-    async markPastDue(userId) {
-      await db.from("user_billing").update({ status: "past_due" }).eq("user_id", userId);
-    },
-  };
+  const port = makeDbPort(db);
 
   await applyWebhookEvent(event, port);
+
+  if (event.type === "ORDER_COMPLETED") {
+    await sendReceiptForOrder(db, event.orderId).catch((e) => {
+      console.error("[billing/webhook] receipt email failed:", e);
+    });
+  }
+
   return NextResponse.json({ ok: true });
 }

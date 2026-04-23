@@ -8,11 +8,14 @@ declare global {
   }
 }
 
-export async function openRevolutCheckout(
-  publicId: string,
-  onSuccess: () => void,
-  onError?: (e: unknown) => void,
-): Promise<void> {
+export interface OpenCheckoutOptions {
+  publicId: string;
+  onSuccess: () => void;
+  onError?: (e: unknown) => void;
+  onCancel?: () => void;
+}
+
+export async function openRevolutCheckout(opts: OpenCheckoutOptions): Promise<void> {
   if (typeof window === "undefined") return;
   if (!window.RevolutCheckout) {
     await new Promise<void>((resolve, reject) => {
@@ -28,10 +31,11 @@ export async function openRevolutCheckout(
     });
   }
   const mode = (process.env.NEXT_PUBLIC_REVOLUT_ENV === "production" ? "prod" : "sandbox") as "sandbox" | "prod";
-  const inst = await window.RevolutCheckout!(publicId, mode);
+  const inst = await window.RevolutCheckout!(opts.publicId, mode);
   inst.payWithPopup({
     savePaymentMethodFor: "customer",
-    onSuccess,
-    onError: onError ?? ((e: unknown) => console.error("Revolut error", e)),
+    onSuccess: opts.onSuccess,
+    onError: opts.onError ?? ((e: unknown) => console.error("Revolut error", e)),
+    onCancel: opts.onCancel ?? (() => {}),
   });
 }

@@ -32,7 +32,7 @@ export function SearchTrigger() {
       <Search aria-hidden="true" size={14} strokeWidth={1.5} />
       <kbd
         dir="ltr"
-        className="hidden items-center border border-[var(--color-fg-4)] px-1 text-[10px] leading-none md:inline-flex md:h-5"
+        className="hidden items-center px-1 leading-none md:inline-flex md:h-5"
       >
         {isMac ? "⌘K" : "Ctrl+K"}
       </kbd>

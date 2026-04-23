@@ -1,5 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
+import { useParams } from "next/navigation";
 import { UsageMeter } from "./usage-meter";
 import { PlanCards } from "./plan-cards";
 import { OrderHistory } from "./order-history";
@@ -16,6 +17,8 @@ export function BillingTab({ snapshot, orders }: Props) {
   const [busy, setBusy] = useState<"starter" | "pro" | null>(null);
   const [cancelling, startCancel] = useTransition();
   const [err, setErr] = useState<string | null>(null);
+  const params = useParams<{ locale?: string }>();
+  const locale = params?.locale ?? "en";
 
   if (!snapshot) {
     return <div className="text-[var(--color-fg-3)] font-mono text-xs uppercase tracking-wider">No billing data.</div>;
@@ -28,12 +31,23 @@ export function BillingTab({ snapshot, orders }: Props) {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plan }),
       });
-      if (!res.ok) { setErr(`Checkout failed (${res.status})`); return; }
-      const { publicId } = (await res.json()) as { publicId: string };
-      await openRevolutCheckout(publicId, () => window.location.reload());
+      if (!res.ok) {
+        const { message } = await res.json().catch(() => ({ message: `HTTP ${res.status}` }));
+        setErr(typeof message === "string" ? message : "Checkout failed");
+        setBusy(null);
+        return;
+      }
+      const { publicId, orderId } = (await res.json()) as { publicId: string; orderId: string };
+      await openRevolutCheckout({
+        publicId,
+        onSuccess: () => {
+          window.location.href = `/${locale}/billing/thank-you?order=${encodeURIComponent(orderId)}`;
+        },
+        onError: (e) => { setErr((e as Error)?.message ?? "Payment error"); setBusy(null); },
+        onCancel: () => setBusy(null),
+      });
     } catch (e) {
       setErr((e as Error).message);
-    } finally {
       setBusy(null);
     }
   };

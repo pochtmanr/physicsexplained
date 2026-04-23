@@ -41,6 +41,10 @@ export async function applyWebhookEvent(event: WebhookEvent, db: DbPort): Promis
   }
 
   if (event.type === "ORDER_FAILED" || event.type === "ORDER_CANCELLED") {
+    // Success wins: if the order already settled as completed, never flip
+    // it to failed / past_due (guards against out-of-order or replayed
+    // FAILED/CANCELLED events arriving after a COMPLETED).
+    if (order.state === "completed") return;
     if (order.state === "failed") return;
     await db.updateOrderState(event.orderId, "failed");
     await db.markPastDue(order.user_id);

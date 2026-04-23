@@ -61,9 +61,10 @@ export async function POST(req: Request) {
 
   let conversationId = body.conversationId ?? undefined;
   if (!conversationId) {
+    const initialTitle = makeInitialTitle(body.message);
     const { data, error } = await db
       .from("ask_conversations")
-      .insert({ user_id: user.id, locale: body.locale })
+      .insert({ user_id: user.id, locale: body.locale, title: initialTitle })
       .select("id").single();
     if (error) return NextResponse.json({ error: "DB_ERR", message: error.message }, { status: 500 });
     conversationId = data.id as string;
@@ -206,6 +207,15 @@ export async function POST(req: Request) {
       Connection: "keep-alive",
     },
   });
+}
+
+function makeInitialTitle(message: string): string {
+  const clean = message.trim().replace(/\s+/g, " ");
+  if (clean.length <= 60) return clean;
+  const truncated = clean.slice(0, 57);
+  const lastSpace = truncated.lastIndexOf(" ");
+  const cut = lastSpace > 30 ? truncated.slice(0, lastSpace) : truncated;
+  return `${cut}…`;
 }
 
 async function summarizeTitle(

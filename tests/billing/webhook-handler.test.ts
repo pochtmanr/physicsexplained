@@ -57,4 +57,30 @@ describe("applyWebhookEvent", () => {
     expect(db.updateOrderState).toHaveBeenCalledWith("ord_1", "failed");
     expect(db.markPastDue).toHaveBeenCalledWith("u1");
   });
+
+  // C2: a replayed/out-of-order FAILED or CANCELLED event that arrives AFTER
+  // the COMPLETED event must not undo the activation — success wins.
+  it("does not flip completed order to failed when ORDER_FAILED replays", async () => {
+    const db = makeDb({
+      getOrder: vi.fn().mockResolvedValue({ user_id: "u1", plan: "pro", state: "completed" }),
+    });
+    await applyWebhookEvent(
+      { type: "ORDER_FAILED", orderId: "ord_1", externalRef: "u", payload: {} },
+      db,
+    );
+    expect(db.updateOrderState).not.toHaveBeenCalled();
+    expect(db.markPastDue).not.toHaveBeenCalled();
+  });
+
+  it("does not flip completed order to failed when ORDER_CANCELLED replays", async () => {
+    const db = makeDb({
+      getOrder: vi.fn().mockResolvedValue({ user_id: "u1", plan: "pro", state: "completed" }),
+    });
+    await applyWebhookEvent(
+      { type: "ORDER_CANCELLED", orderId: "ord_1", externalRef: "u", payload: {} },
+      db,
+    );
+    expect(db.updateOrderState).not.toHaveBeenCalled();
+    expect(db.markPastDue).not.toHaveBeenCalled();
+  });
 });

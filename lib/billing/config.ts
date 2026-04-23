@@ -7,7 +7,6 @@ export interface RevolutConfig {
   apiBase: string;
   apiKey: string;
   webhookSecret: string;
-  publicKey: string;
 }
 
 function must(name: string): string {
@@ -25,11 +24,14 @@ export function getRevolutConfig(): RevolutConfig {
     env === "production"
       ? "https://merchant.revolut.com/api"
       : "https://sandbox-merchant.revolut.com/api";
+  // Note: NEXT_PUBLIC_REVOLUT_PUBLIC_KEY is intentionally NOT required here.
+  // The browser SDK (lib/billing/revolut-client.ts) uses the per-order
+  // `public_id` returned from createOrder() — there is no "public key" in
+  // Revolut Merchant's flow the way there is with Stripe's `pk_...`.
   return {
     env,
     apiBase,
     apiKey: must("REVOLUT_API_KEY"),
     webhookSecret: must("REVOLUT_WEBHOOK_SECRET"),
-    publicKey: must("NEXT_PUBLIC_REVOLUT_PUBLIC_KEY"),
   };
 }
