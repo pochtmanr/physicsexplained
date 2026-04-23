@@ -116,9 +116,19 @@ export async function POST(req: Request) {
   }));
 
   const encoder = new TextEncoder();
+  const upstreamAbort = new AbortController();
+  const onClientAbort = () => upstreamAbort.abort();
+  req.signal.addEventListener("abort", onClientAbort);
+
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       controller.enqueue(encoder.encode(sseEncode("meta", { conversationId })));
+
+      // Keepalive — SSE comment, ignored by clients, keeps idle LBs from dropping us.
+      const heartbeat = setInterval(() => {
+        try { controller.enqueue(encoder.encode(": ping\n\n")); } catch { /* controller closed */ }
+      }, 15000);
+
       let assistantText = "";
       let flagged = false;
       let finalUsage: { model: string; inputTokens: number; outputTokens: number; cachedTokens: number; costMicros: number } | null = null;
@@ -132,9 +142,11 @@ export async function POST(req: Request) {
             toc, toolset,
             history: pipelineHistory,
             systemTail,
+            signal: upstreamAbort.signal,
           },
           body.message,
         )) {
+          if (upstreamAbort.signal.aborted) break;
           if (chunk.type === "text") {
             assistantText += chunk.delta;
             controller.enqueue(encoder.encode(sseEncode("text", { delta: chunk.delta })));
@@ -146,13 +158,18 @@ export async function POST(req: Request) {
             flagged = true;
           } else if (chunk.type === "usage") {
             finalUsage = chunk.usage;
-          } else if (chunk.type === "done") {
-            controller.enqueue(encoder.encode(sseEncode("done", { conversationId })));
           }
+          // "done" is emitted below, after DB writes commit, so the client's
+          // router.refresh() reads post-increment billing state instead of
+          // racing the finally block.
         }
       } catch (e) {
-        controller.enqueue(encoder.encode(sseEncode("error", { message: (e as Error).message })));
+        if (!upstreamAbort.signal.aborted) {
+          controller.enqueue(encoder.encode(sseEncode("error", { message: (e as Error).message })));
+        }
       } finally {
+        clearInterval(heartbeat);
+        req.signal.removeEventListener("abort", onClientAbort);
         try {
           if (finalUsage) {
             await db.from("ask_messages").insert({
@@ -195,6 +212,10 @@ export async function POST(req: Request) {
         } catch {
           // swallow — stream should still close cleanly
         }
+        // Send "done" only after all DB writes (billing_increment in particular)
+        // have committed. This guarantees the client's router.refresh() reloads
+        // the updated quota counters.
+        try { controller.enqueue(encoder.encode(sseEncode("done", { conversationId }))); } catch { /* already closed */ }
         controller.close();
       }
     },

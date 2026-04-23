@@ -18,6 +18,7 @@ export interface PipelineDeps {
   toolset: Record<string, (args: unknown) => Promise<unknown>>;
   history: NeutralMessage[];
   systemTail?: string;
+  signal?: AbortSignal;
 }
 
 export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIterable<AnswerStreamChunk> {
@@ -48,13 +49,23 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     const pendingToolCalls: Array<{ id: string; name: string; input: unknown }> = [];
     let assistantText = "";
 
+    if (deps.signal?.aborted) return;
+
+    // On the final hop, strip tools so the model is forced to answer from what
+    // it already has. Avoids the "searched 5 times then dead-ended" UX.
+    const isLastHop = hop === MAX_HOPS - 1;
+    const systemDynamicHop = isLastHop
+      ? [systemDynamic, "Final hop: tools are no longer available. Answer now with what you have."].filter(Boolean).join("\n\n")
+      : systemDynamic;
+
     const stream = deps.provider.streamAnswer({
       model: deps.answererModel,
       system: systemFull,
-      systemDynamic,
+      systemDynamic: systemDynamicHop,
       messages,
-      tools: TOOL_SCHEMAS,
+      tools: isLastHop ? [] : TOOL_SCHEMAS,
       maxTokens: deps.answererModel.includes("mini") || deps.answererModel.includes("haiku") ? 800 : 1500,
+      signal: deps.signal,
     });
 
     for await (const delta of stream) {
@@ -114,7 +125,9 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     messages.push({ role: "user", content: toolResultBlocks });
   }
 
-  yield { type: "text", delta: "\n\n(Couldn't complete tool exploration — returning best effort.)" };
+  // Safety net: the last hop strips tools, so we should always reach the early
+  // return above. If we land here, the model emitted no text on the final hop
+  // — don't panic the user; just finalize usage and exit cleanly.
   totalUsage.costMicros = computeCostMicros(totalUsage.model, totalUsage);
   yield { type: "usage", usage: totalUsage };
   yield { type: "done" };

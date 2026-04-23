@@ -5,7 +5,14 @@ export type FencePart =
   | { kind: "plot"; plotId: string; args: Record<string, unknown> }
   | { kind: "cite"; targetKind: "topic" | "physicist" | "glossary"; slug: string };
 
-const FENCE_RE = /:::(scene|plot|cite)\{([^}]*)\}\n:::/g;
+// Accept the canonical fence plus common model-hallucinated variants:
+// - :::scene{...}\n:::     (canonical)
+// - :::scene{...}:::       (no newline)
+// - :::scene{...}\\n:::    (literal "\n" escape from JSON-stringified tool result)
+const FENCE_RE = /:::(scene|plot|cite)\{([^}]*)\}(?:\s|\\n)*:::/g;
+
+// Fallback for [[scene: id]] / [[plot: id]] hallucinations — best-effort only.
+const BRACKET_FALLBACK_RE = /\[\[(scene|plot):\s*([A-Za-z0-9_\-]+)\s*\]\]/g;
 
 export function parseFences(input: string): FencePart[] {
   const out: FencePart[] = [];
@@ -13,13 +20,30 @@ export function parseFences(input: string): FencePart[] {
   let m: RegExpExecArray | null;
   FENCE_RE.lastIndex = 0;
   while ((m = FENCE_RE.exec(input)) !== null) {
-    if (m.index > lastIdx) out.push({ kind: "text", text: input.slice(lastIdx, m.index) });
+    if (m.index > lastIdx) out.push(...splitOnBracketFallback(input.slice(lastIdx, m.index)));
     const part = parseOne(m[1] as "scene" | "plot" | "cite", m[2]);
     out.push(part ?? { kind: "text", text: m[0] });
     lastIdx = m.index + m[0].length;
   }
-  if (lastIdx < input.length) out.push({ kind: "text", text: input.slice(lastIdx) });
+  if (lastIdx < input.length) out.push(...splitOnBracketFallback(input.slice(lastIdx)));
   return out.length ? out : [{ kind: "text", text: input }];
+}
+
+function splitOnBracketFallback(text: string): FencePart[] {
+  const out: FencePart[] = [];
+  let lastIdx = 0;
+  let m: RegExpExecArray | null;
+  BRACKET_FALLBACK_RE.lastIndex = 0;
+  while ((m = BRACKET_FALLBACK_RE.exec(text)) !== null) {
+    if (m.index > lastIdx) out.push({ kind: "text", text: text.slice(lastIdx, m.index) });
+    const kind = m[1] as "scene" | "plot";
+    const id = m[2];
+    if (kind === "scene") out.push({ kind: "scene", id, params: {} });
+    else out.push({ kind: "plot", plotId: id, args: {} });
+    lastIdx = m.index + m[0].length;
+  }
+  if (lastIdx < text.length) out.push({ kind: "text", text: text.slice(lastIdx) });
+  return out.length ? out : (text ? [{ kind: "text", text }] : []);
 }
 
 function parseOne(kind: "scene" | "plot" | "cite", attrs: string): FencePart | null {

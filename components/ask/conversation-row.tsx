@@ -93,7 +93,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
   return (
     <div
       ref={containerRef}
-      className={`group relative border-l-2 transition-colors ${
+      className={`group relative border-s-2 transition-colors ${
         active
           ? "border-[var(--color-cyan)] bg-[var(--color-fg-4)]/15"
           : "border-transparent hover:border-[var(--color-fg-4)] hover:bg-[var(--color-fg-4)]/10"
@@ -121,7 +121,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
       ) : (
         <Link
           href={`/${locale}/ask/${conv.id}`}
-          className="block px-4 py-2.5 pr-9"
+          className="block px-4 py-2.5 pe-9"
         >
           <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
             {formatRelative(conv.updated_at)}
@@ -140,7 +140,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
           type="button"
           aria-label="Conversation actions"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setMenuOpen((v) => !v); }}
-          className={`absolute right-2 top-2 p-1 rounded-sm text-[var(--color-fg-3)] hover:text-[var(--color-fg-0)] hover:bg-[var(--color-fg-4)]/30 transition-opacity ${
+          className={`absolute end-2 top-2 p-1 rounded-sm text-[var(--color-fg-3)] hover:text-[var(--color-fg-0)] hover:bg-[var(--color-fg-4)]/30 transition-opacity ${
             menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100"
           }`}
         >
@@ -151,7 +151,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
       {menuOpen && (
         <div
           role="menu"
-          className="absolute right-2 top-8 z-20 w-40 border border-[var(--color-fg-4)] bg-[var(--color-bg-0)] shadow-lg py-1 font-mono text-xs uppercase tracking-wider"
+          className="absolute end-2 top-8 z-20 w-40 border border-[var(--color-fg-4)] bg-[var(--color-bg-0)] shadow-lg py-1 font-mono text-xs uppercase tracking-wider"
         >
           <button
             type="button"

@@ -34,4 +34,19 @@ describe("checkQuota", () => {
       tokens_allowance: 4_000_000, tokens_used: 100, cycle_end: new Date(Date.now() + 1000).toISOString() }))
       .toEqual({ ok: true });
   });
+  it("bypasses exhausted tokens for paid+active when cycle_end has passed (renewal in flight)", () => {
+    // Renewal window: cron + webhook hasn't landed yet; user paid for next cycle.
+    expect(checkQuota({
+      ...base, plan: "starter", status: "active",
+      tokens_allowance: 1_500_000, tokens_used: 1_500_000,
+      cycle_end: new Date(Date.now() - 60_000).toISOString(),
+    })).toEqual({ ok: true });
+  });
+  it("still blocks past_due even if cycle_end has passed", () => {
+    expect(checkQuota({
+      ...base, plan: "starter", status: "past_due",
+      tokens_allowance: 1_500_000, tokens_used: 1_500_000,
+      cycle_end: new Date(Date.now() - 60_000).toISOString(),
+    })).toEqual({ ok: false, reason: "past_due" });
+  });
 });

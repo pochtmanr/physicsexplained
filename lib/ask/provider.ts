@@ -33,6 +33,7 @@ export interface AnswerRequest {
   tools?: JsonToolDef[];
   maxTokens: number;
   temperature?: number;
+  signal?: AbortSignal;
 }
 
 export interface LLMProvider {
@@ -66,7 +67,7 @@ class AnthropicProvider implements LLMProvider {
       system: system as unknown as Anthropic.Messages.TextBlockParam[],
       tools: tools as unknown as Anthropic.Messages.Tool[],
       messages: req.messages as unknown as Anthropic.Messages.MessageParam[],
-    });
+    }, { signal: req.signal });
 
     const seenToolUses = new Map<string, string>(); // id -> name
     for await (const ev of stream) {
@@ -133,7 +134,7 @@ class OpenAIProvider implements LLMProvider {
       stream: true,
       stream_options: { include_usage: true },
       // GPT-5 family rejects any temperature != 1. Let it default.
-    });
+    }, { signal: req.signal });
 
     const toolAcc = new Map<number, { id: string; name: string; args: string }>();
     const emittedStart = new Set<string>();
