@@ -594,6 +594,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   MagneticBrakeScene: lazyScene(() =>
     import("@/components/physics/magnetic-brake-scene").then((m) => ({ default: m.MagneticBrakeScene })),
   ),
+
+  // EM §06 — dc-circuits-and-kirchhoff
+  ResistorLadderScene: lazyScene(() =>
+    import("@/components/physics/resistor-ladder-scene").then((m) => ({ default: m.ResistorLadderScene })),
+  ),
+  NodeLoopLawScene: lazyScene(() =>
+    import("@/components/physics/node-loop-law-scene").then((m) => ({ default: m.NodeLoopLawScene })),
+  ),
+  VoltageDividerScene: lazyScene(() =>
+    import("@/components/physics/voltage-divider-scene").then((m) => ({ default: m.VoltageDividerScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

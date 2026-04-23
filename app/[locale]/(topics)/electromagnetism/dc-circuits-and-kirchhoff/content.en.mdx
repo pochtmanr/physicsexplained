@@ -1,0 +1,144 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ResistorLadderScene } from "@/components/physics/resistor-ladder-scene";
+import { NodeLoopLawScene } from "@/components/physics/node-loop-law-scene";
+import { VoltageDividerScene } from "@/components/physics/voltage-divider-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Gustav Kirchhoff", href: "/physicists/gustav-kirchhoff" },
+  { type: "physicist", label: "Georg Ohm", href: "/physicists/georg-ohm" },
+  { type: "term", label: "Resistance", href: "/dictionary/resistance" },
+  { type: "term", label: "Resistor", href: "/dictionary/resistor" },
+  { type: "term", label: "Voltage divider", href: "/dictionary/voltage-divider" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.26 · CIRCUITS"
+  title="DC CIRCUITS AND KIRCHHOFF'S LAWS"
+  subtitle="Two sentences that solve almost every schematic you will ever draw."
+/>
+
+<Section index={1} title="From one resistor to a thousand">
+
+Before 1827, "how much current flows through a wire" was a shrug. People knew some materials conducted better than others; nobody had the arithmetic. <PhysicistLink slug="georg-ohm">Georg Ohm</PhysicistLink> — a secondary-school teacher in Cologne, funded out of his own pocket — sat down with thermocouples and copper wires of various lengths and discovered a rule so simple it sounds almost insulting to name it. Double the voltage across a wire: you get double the current. Triple the length of the wire: you get one-third the current. The proportionality constant is a property of the wire, and we call it **<Term slug="resistance">resistance</Term>**.
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">V = I · R</span>
+</EquationBlock>
+
+Ohm published the result in 1827 as *Die galvanische Kette, mathematisch bearbeitet*. The German physics establishment, convinced that electrical conduction had to be more mysterious than algebra, dismissed the work so thoroughly that Ohm resigned his teaching post. Fourteen years later, in 1841, the Royal Society in London gave him the Copley Medal — the Nobel Prize of its day — and Germany hurriedly found him a university chair. The lesson: when a new rule is too simple to be right, the rule is probably right.
+
+A **<Term slug="resistor">resistor</Term>** is any two-terminal component engineered to obey Ohm's law with a known `R`. Inside a pencil lead, inside the tungsten filament of an old bulb, inside the thin-film pad on a surface-mount chip — same equation, different geometries.
+
+</Section>
+
+<Section index={2} title="Kirchhoff's node rule">
+
+One resistor by itself is arithmetic. A *network* of resistors is where the accounting starts. In 1845, while still an undergraduate in Königsberg, <PhysicistLink slug="gustav-kirchhoff">Gustav Kirchhoff</PhysicistLink> wrote down two sentences that turn any schematic — however tangled — into a system of linear equations a schoolchild can solve. They are nothing more than conservation of charge and conservation of energy, restated for wires.
+
+The first is the **<Term slug="kirchhoff-current-law">node rule</Term>**, also called KCL. At every junction where wires meet, the currents flowing in must equal the currents flowing out. Charge does not pile up on a wire; whatever enters a node has to leave through some other branch.
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">Σ I_in = Σ I_out    (equivalently, Σ I at a node = 0)</span>
+</EquationBlock>
+
+That sum symbol `Σ` just means "add up all of them." If three wires carry 2 A, 5 A, and 7 A into a junction and a fourth wire is the only way out, the fourth wire carries exactly 14 A — because every ampere that walks into the node walks right back out of it. There is no secret compartment where charge hides.
+
+<SceneCard caption="FIG.26a — two loops sharing a middle branch: KCL at the shared node and KVL around each loop, verified by the MNA solver live" className="w-full">
+  <NodeLoopLawScene />
+</SceneCard>
+
+In FIG.26a the shared resistor `Rₘ` carries the algebraic sum of the two side-loop currents. Slide the slider: as `Rₘ` grows, the middle branch stops being the easy path and current rearranges itself, but the KCL readout at the central node stays pinned to zero to within the solver's precision. That is the node rule, alive.
+
+</Section>
+
+<Section index={3} title="Kirchhoff's loop rule">
+
+The second sentence is the **<Term slug="kirchhoff-voltage-law">loop rule</Term>**, KVL. Walk around any closed loop in the circuit, adding up the voltage drops as you go. The sum is zero.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">Σ V around any closed loop = 0</span>
+</EquationBlock>
+
+That is energy conservation, whispered into the ear of a circuit. A voltage is the work done per unit charge going from one point to another; if you walk around a loop and end up back where you started, the total work must be zero — otherwise you would have a perpetual-motion machine whose currency was joules instead of motion.
+
+KVL comes with a sign convention that trips up every first-year student. Going *through* a battery from `−` to `+` adds energy: count it as `+V`. Going from `+` to `−` across a resistor spends energy: count it as `−I·R`. Walk the loop once, write every such contribution with its sign, set the total to zero, and solve for whatever is unknown. That is the whole method.
+
+<Callout variant="intuition">
+KCL is "charge doesn't pile up." KVL is "voltage doesn't ratchet up." Two sentences. One is the bookkeeping of particles; the other is the bookkeeping of energy. Every circuit simulator on Earth — SPICE, Falstad, the solver driving the canvases on this page — is ultimately a machine for mechanically applying these two rules to systems large enough that a human couldn't keep the signs straight.
+</Callout>
+
+Kirchhoff's third achievement, less celebrated but equally consequential, was the insight that the two rules together are *sufficient*. Given enough independent loops and nodes, you get as many equations as unknowns, and linear algebra closes the case. That is why engineers stopped being surprised by circuits after 1845.
+
+</Section>
+
+<Section index={4} title="Series and parallel">
+
+Two shortcuts fall out of KVL and KCL so often that students memorise them before they realise what they are.
+
+**Series** — resistors strung end to end, sharing the same current. KVL around the loop says the total voltage across the chain is the sum of the individual drops, so the equivalent resistance is simply
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">R_series = R₁ + R₂ + R₃ + …</span>
+</EquationBlock>
+
+**Parallel** — resistors sharing the same two nodes, each feeling the full voltage. KCL at one of those nodes says the total current is the sum of the individual currents, each equal to `V/R_k`. Divide through by `V` and the reciprocals add:
+
+<EquationBlock id="EQ.05">
+  <span className="font-mono text-lg">1 / R_parallel = 1/R₁ + 1/R₂ + 1/R₃ + …</span>
+</EquationBlock>
+
+Two equal resistors in parallel give `R/2`. Three equal ones give `R/3`. A big resistor in parallel with a tiny one gives (approximately) the tiny one — current preferentially takes the easy path, and the bigger resistor might as well not be there. These two rules fold most practical networks down to a single number with nothing more than schoolyard arithmetic.
+
+<SceneCard caption="FIG.26b — three resistors in series across 12 V; the loop current and individual drops update live as R₂ slides" className="w-full">
+  <ResistorLadderScene />
+</SceneCard>
+
+In FIG.26b, R₁ = 100 Ω and R₃ = 300 Ω are fixed; R₂ is the slider. At R₂ = 200 Ω the total is 600 Ω and Ohm's law delivers 20 mA. The voltage drops — 2 V, 4 V, 6 V — add to 12 V, which is KVL doing its quiet work. Push R₂ above 1 kΩ and watch the current collapse; the majority of the 12 V ends up across R₂, starving the other two.
+
+</Section>
+
+<Section index={5} title="The voltage divider">
+
+Chain two resistors from `V_in` down to ground and tap the midpoint. The tap voltage is, by Ohm plus KVL,
+
+<EquationBlock id="EQ.06">
+  <span className="font-mono text-lg">V_out = V_in · R₂ / (R₁ + R₂)</span>
+</EquationBlock>
+
+Two resistors. Three terminals. One equation. This subcircuit — the **<Term slug="voltage-divider">voltage divider</Term>** — is the single most reused structural motif in all of analog electronics. You will find one at the input of every op-amp that sets a reference level. You will find one at the front of every ADC, scaling a big signal down into the chip's 3.3 V rail. You will find one on the gate of every MOSFET that needs a DC bias. It is the "hello world" that never stops paying rent.
+
+<SceneCard caption="FIG.26c — ratio slider sweeps R₁/R₂ from 1:10 to 10:1; V_out bar tracks in real time" className="w-full">
+  <VoltageDividerScene />
+</SceneCard>
+
+Slide the ratio in FIG.26c and watch the horizontal bar on the left reshape. At R₁/R₂ = 1 the output bar hits 50%. Push R₁/R₂ above 1 and the top resistor starts hogging the voltage, starving the output. Drop R₁/R₂ below 1 and the output hugs V_in. The schematic on the right redraws its tap point in sync, because the geometric midpoint of the column really is a scaled picture of the voltage at that node.
+
+<Callout variant="intuition">
+Dividers only work cleanly when nothing downstream *loads* the tap — no current drawn from it. The moment your next stage draws current, its input impedance is in parallel with R₂, and the divider ratio shifts. This is why op-amps, with their near-infinite input impedance, are the perfect downstream neighbour: they read the tap without taxing it. In §07 when we meet Thevenin explicitly, this "loading" failure mode gets its proper name.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Thevenin's elegance">
+
+Here is a fact that should be miraculous but is somehow taught as a technicality. Any two-terminal linear network — any mess of resistors, voltage sources, and current sources you like — can be exactly replaced by a single ideal source `V_open` in series with a single resistor `R_Thev`. Outside the network, nothing you could possibly measure distinguishes the original tangle from its two-component replacement.
+
+Léon Thevenin, an engineer at the French Postal and Telegraph Administration, published this result in 1883. It was already implicit in Kirchhoff's rules — give linear algebra a rectangular system, it collapses inputs to outputs — but Thevenin made it operational. `V_open` is what you read across the two terminals with nothing connected. `R_Thev` is what you measure between them after turning every independent source off. Two numbers. Done.
+
+Engineers think in Thevenin equivalents because it turns design into composition. Load a source with some circuit? The load "sees" a Thevenin pair; the current it draws is `V_open / (R_Thev + R_load)`. Chain two stages? The output pair of stage A is the input of stage B, and if `R_Thev(A) ≪ R_in(B)`, the chain doesn't sag. Every spec sheet's "output impedance" field is a Thevenin `R`. Every "source resistance" is a Thevenin `R`. It is the lingua franca of the datasheet.
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+The Wheatstone bridge — four resistors in a diamond with a galvanometer across the middle — is a pair of voltage dividers run in opposition; it zeroes out when the ratios match and is still, 180 years later, the cleanest way to measure an unknown resistance. The op-amp input stage is always a divider setting the negative-feedback ratio. Every sensor-to-ADC chain uses a divider to scale the sensor's output into the converter's range. LED current limiters, transistor bias networks, thermistor probes, audio volume pots — all dividers. Thevenin's theorem sits underneath every one of them, promising that however complicated the upstream circuit becomes, what reaches the tap looks like one source in series with one resistance. Ohm and Kirchhoff wrote the grammar; engineering has been composing sentences in it for two centuries.
+
+</Section>
+
+</TopicPageLayout>
