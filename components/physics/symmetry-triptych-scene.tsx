@@ -7,7 +7,18 @@ import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 const RATIO = 0.4;
 const MAX_HEIGHT = 280;
 
-type Mode = "time" | "space" | "rotation";
+export type Mode = "time" | "space" | "rotation";
+export type SymmetryMode = Mode | "auto";
+
+interface Props {
+  /**
+   * Controls which symmetry is displayed.
+   *  - omitted: current interactive behavior (user starts on "time", can click tabs).
+   *  - "time" | "space" | "rotation": tabs hidden, scene locked to that mode.
+   *  - "auto": tabs hidden, cycle through the three modes every 5 s.
+   */
+  mode?: SymmetryMode;
+}
 
 /**
  * Three little vignettes that each illustrate one symmetry of physics and
@@ -19,11 +30,13 @@ type Mode = "time" | "space" | "rotation";
  * Each vignette animates a pair of mechanical setups displaced from each
  * other in the relevant coordinate and shows that they behave identically.
  */
-export function SymmetryTriptychScene() {
+export function SymmetryTriptychScene({ mode: modeProp }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const colors = useThemeColors();
-  const [mode, setMode] = useState<Mode>("time");
+  const initialMode: Mode = modeProp && modeProp !== "auto" ? modeProp : "time";
+  const [mode, setMode] = useState<Mode>(initialMode);
+  const tabsVisible = modeProp === undefined;
   const [size, setSize] = useState({ width: 640, height: 280 });
 
   useEffect(() => {
@@ -40,6 +53,23 @@ export function SymmetryTriptychScene() {
     ro.observe(container);
     return () => ro.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (modeProp !== "auto") return;
+    const ORDER: Mode[] = ["time", "space", "rotation"];
+    const id = setInterval(() => {
+      setMode((prev) => {
+        const i = ORDER.indexOf(prev);
+        return ORDER[(i + 1) % ORDER.length];
+      });
+    }, 5000);
+    return () => clearInterval(id);
+  }, [modeProp]);
+
+  useEffect(() => {
+    if (modeProp === undefined || modeProp === "auto") return;
+    setMode(modeProp);
+  }, [modeProp]);
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -152,29 +182,31 @@ export function SymmetryTriptychScene() {
         style={{ width: size.width, height: size.height }}
         className="block"
       />
-      <div className="mt-2 flex gap-2 px-2">
-        <button
-          type="button"
-          onClick={() => setMode("time")}
-          className={tabStyle(mode === "time")}
-        >
-          time → energy
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("space")}
-          className={tabStyle(mode === "space")}
-        >
-          space → momentum
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("rotation")}
-          className={tabStyle(mode === "rotation")}
-        >
-          rotation → angular L
-        </button>
-      </div>
+      {tabsVisible && (
+        <div className="mt-2 flex gap-2 px-2">
+          <button
+            type="button"
+            onClick={() => setMode("time")}
+            className={tabStyle(mode === "time")}
+          >
+            time → energy
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("space")}
+            className={tabStyle(mode === "space")}
+          >
+            space → momentum
+          </button>
+          <button
+            type="button"
+            onClick={() => setMode("rotation")}
+            className={tabStyle(mode === "rotation")}
+          >
+            rotation → angular L
+          </button>
+        </div>
+      )}
     </div>
   );
 }
