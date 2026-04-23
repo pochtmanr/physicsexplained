@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GitBranch, User, BookOpen, Star } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "./logo";
-import { WIDE_CONTAINER } from "@/lib/layout";
+import { FULL_BLEED } from "@/lib/layout";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 
 const navLinkClass =
@@ -25,7 +25,7 @@ export async function Footer() {
 
   return (
     <footer className="border-t border-[var(--color-fg-4)]/40 mt-8 md:mt-12">
-      <div className={`${WIDE_CONTAINER} pt-10 pb-6 md:py-16`}>
+      <div className={`${FULL_BLEED} pt-10 pb-6 md:py-16`}>
         {/* Logo + socials row */}
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <Link href="/" className="inline-flex items-center gap-2.5 font-display text-xl">
