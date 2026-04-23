@@ -1,0 +1,96 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SpectrumBandsScene } from "@/components/physics/spectrum-bands-scene";
+import { FraunhoferLinesScene } from "@/components/physics/fraunhofer-lines-scene";
+import { VisibleBandZoomScene } from "@/components/physics/visible-band-zoom-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Fraunhofer", href: "/physicists/joseph-fraunhofer" },
+  { type: "physicist", label: "Gustav Kirchhoff", href: "/physicists/gustav-kirchhoff" },
+  { type: "term", label: "Electromagnetic spectrum", href: "/dictionary/em-spectrum" },
+  { type: "term", label: "Wavelength (EM)", href: "/dictionary/wavelength-em" },
+  { type: "term", label: "Wavenumber", href: "/dictionary/wavenumber" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+  { type: "term", label: "Speed of light", href: "/dictionary/speed-of-light" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.41 · EM WAVES IN VACUUM"
+  title="THE ELECTROMAGNETIC SPECTRUM"
+  subtitle="One equation, every wavelength from radio to gamma."
+/>
+
+<Section index={1} title="One equation, every band">
+
+Maxwell's equations, combined in vacuum, produce a single tidy wave equation: ∇²**E** − (1/c²)·∂²**E**/∂t² = 0. The same equation governs **B**. It has one parameter — the speed c = 1/√(μ₀ε₀) ≈ 2.998 × 10⁸ m/s — and a family of plane-wave solutions of the form E(x,t) = E₀·cos(k·x − ω·t). Two numbers label each solution: the wavelength λ = 2π/k (how far the pattern repeats in space) and the frequency f = ω/2π (how fast it repeats in time). They are welded together by
+
+<EquationBlock id="EQ.01">
+  $$ c \;=\; \lambda \, f \quad\Longleftrightarrow\quad f \;=\; c / \lambda $$
+</EquationBlock>
+
+Pick any wavelength between 10⁵ m and 10⁻¹⁵ m and there is exactly one plane-wave solution with that λ, travelling at c, with frequency f. Twenty orders of magnitude of valid solutions, all from one equation. The names we give to different slices of the range — radio, microwave, infrared, visible, ultraviolet, X-ray, gamma — are historical labels for the detectors that first made each slice legible. Physically there is no boundary between them; the spectrum is one continuous ribbon.
+
+</Section>
+
+<Section index={2} title="The spectrum, log-scaled">
+
+Twenty decades doesn't fit on a linear axis — human radio at λ = 10 km and a nuclear gamma ray at λ = 10⁻¹³ m differ by a factor of 10¹⁷. So the spectrum is always drawn log-scaled, with each power of ten getting equal space.
+
+<SceneCard caption="FIG.41a — seven bands, log-λ axis from 10⁵ m to 10⁻¹⁵ m. Hover to read λ, f, and photon energy at any point." className="w-full">
+  <SpectrumBandsScene />
+</SceneCard>
+
+Real-world anchors are stapled to the axis. FM 100 MHz has λ = c/f ≈ 3 m — that is why FM antennas are roughly a metre long. WiFi at 2.4 GHz has λ ≈ 12.5 cm; that fits inside your router. 5G millimetre-wave at 28 GHz sits at λ ≈ 1.07 cm. The **cosmic microwave background** peaks around 1 mm — a fossil from when the universe cooled through 3000 K, now Doppler-redshifted and blackbody-cooled to 2.725 K. Your body radiates thermal infrared at ~10 µm. Green light is 0.55 µm; a medical X-ray sits around 0.1 nm; a nuclear gamma ray is 0.001 nm. The same c = λ·f connects them all.
+
+</Section>
+
+<Section index={3} title="Photons: when the wave acts quantised">
+
+The classical wave picture gets one more layer in 1900, when Planck is forced to quantise the energy of each oscillator to explain blackbody radiation, and Einstein in 1905 extends the quantisation to the field itself. A wave of frequency f carries its energy in discrete packets — photons — of energy h·f.
+
+<EquationBlock id="EQ.02">
+  $$ E \;=\; h\,f \;=\; \frac{h\,c}{\lambda} $$
+</EquationBlock>
+
+Planck's constant h = 6.626 × 10⁻³⁴ J·s makes the packets tiny in SI units, so spectroscopists quote them in electron-volts: E(eV) ≈ 1240 / λ(nm). That short formula does a lot of work. A 550 nm green photon carries 2.25 eV — enough to flip a photosensor but not enough to ionise an oxygen atom. A 200 nm UV photon carries 6.2 eV — enough to break an O–H bond, which is why UV-C sterilises. A 0.1 nm X-ray photon carries 12.4 keV — enough to ionise any atom in your body. A 1 pm gamma photon carries 1.2 MeV, comparable to an electron's rest mass; these are the particles that shoot out of nuclear decays. On the other end, a WiFi photon at 2.4 GHz carries 10⁻⁵ eV — less than the thermal jiggle of a molecule at room temperature. That is why the same wave that warms pizza is also invisible and harmless.
+
+</Section>
+
+<Section index={4} title="The visible band, up close">
+
+Human vision samples one octave out of twenty — roughly 380 to 780 nm. Inside that octave the colour you see is a direct function of wavelength.
+
+<SceneCard caption="FIG.41c — slide the needle across 380–780 nm. The swatch, frequency, and photon energy update live." className="w-full">
+  <VisibleBandZoomScene />
+</SceneCard>
+
+At 450 nm the scene shows blue at 666 THz and 2.75 eV per photon. At 532 nm (the wavelength of a green laser pointer) it reads 563 THz and 2.33 eV. At 700 nm red drops to 428 THz and 1.77 eV. The rainbow you see at sunrise is just this slice of the electromagnetic spectrum sorted by wavelength — the prism sorts it because different λ refract at slightly different angles, and your retinal cones happen to have peaks at ~420, 535, and 565 nm, so three RGB numbers are enough to fool the brain.
+
+</Section>
+
+<Section index={5} title="Fraunhofer's dark lines">
+
+In 1814 a young Bavarian optician, <PhysicistLink slug="joseph-fraunhofer">Joseph Fraunhofer</PhysicistLink>, built a high-precision spectroscope to calibrate optical glass for Napoleon-era telescopes. Pointing it at the sun, he found the continuous rainbow was interrupted by hundreds of razor-thin black lines. He catalogued 576 of them and labelled the strongest with the letters A, B, C, D, E, F, G, H, K. He could not explain them — he was an optician, not a chemist — but he measured the wavelengths to four decimal places and noticed that the Sun's lines matched the (bright) lines of a laboratory flame.
+
+<SceneCard caption="FIG.41b — the solar spectrum with Fraunhofer lines. Dark slits mark where gases in the Sun's atmosphere absorb specific wavelengths." className="w-full">
+  <FraunhoferLinesScene />
+</SceneCard>
+
+Forty-two years later, in 1859, <PhysicistLink slug="gustav-kirchhoff">Gustav Kirchhoff</PhysicistLink> and Robert Bunsen put the explanation together in Heidelberg. They discovered that every element, when heated, emits light at a unique fingerprint of wavelengths; and when light passes through a cooler gas of the same element, it *absorbs* at the same wavelengths. The D-line at 589 nm was sodium. C at 656 nm was hydrogen's red Balmer line. H and K at 396 and 393 nm were calcium. The Sun had the chemistry of a physics lab on Earth — iron, magnesium, hydrogen, helium (found in the Sun before it was found on Earth, from the D3 line in 1868).
+
+That was the moment astrophysics became quantitative. Every star we have ever studied, every exoplanet atmosphere ever detected, every redshift ever measured — all of it rides on the same trick Fraunhofer stumbled onto with a piece of flint glass: the dark lines in a spectrum are the fingerprint of the matter the light passed through. One wave equation, one quantum relation, and a ladder of element-specific resonances that reaches from a laboratory burner to the far edge of the observable universe.
+
+</Section>
+
+<Section index={6} title="What you just earned">
+
+Three numbers — λ, f, E — welded by two relations — c = λ·f and E = h·f. That bundle labels every photon that has ever been emitted, absorbed, reflected, or detected. FIG.42 takes the next step: what happens when the wave enters matter, and how the same spectrum splits into bound, scattering, and absorbing regimes on the far side of the vacuum idealisation.
+
+</Section>
+
+</TopicPageLayout>
