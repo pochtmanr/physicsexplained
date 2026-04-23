@@ -627,6 +627,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   RlFlybackScene: lazyScene(() =>
     import("@/components/physics/rl-flyback-scene").then((m) => ({ default: m.RlFlybackScene })),
   ),
+
+  // EM §06 — rlc-circuits-and-resonance
+  RlcResonanceScene: lazyScene(() =>
+    import("@/components/physics/rlc-resonance-scene").then((m) => ({ default: m.RlcResonanceScene })),
+  ),
+  QFactorScene: lazyScene(() =>
+    import("@/components/physics/q-factor-scene").then((m) => ({ default: m.QFactorScene })),
+  ),
+  RlcBandpassScene: lazyScene(() =>
+    import("@/components/physics/rlc-bandpass-scene").then((m) => ({ default: m.RlcBandpassScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

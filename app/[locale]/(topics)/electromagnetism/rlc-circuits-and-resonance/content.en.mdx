@@ -1,0 +1,130 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RlcResonanceScene } from "@/components/physics/rlc-resonance-scene";
+import { QFactorScene } from "@/components/physics/q-factor-scene";
+import { RlcBandpassScene } from "@/components/physics/rlc-bandpass-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Gustav Kirchhoff", href: "/physicists/gustav-kirchhoff" },
+  { type: "physicist", label: "James Prescott Joule", href: "/physicists/james-prescott-joule" },
+  { type: "term", label: "Quality factor", href: "/dictionary/quality-factor" },
+  { type: "term", label: "Self-inductance", href: "/dictionary/self-inductance" },
+  { type: "term", label: "Capacitance", href: "/dictionary/capacitance" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.29 · CIRCUITS"
+  title="RLC CIRCUITS AND RESONANCE"
+  subtitle="Two stores of energy, one frequency that loves them both."
+/>
+
+<Section index={1} title="Two energy reservoirs">
+
+Every circuit you have met so far stored energy in one place at a time. A capacitor keeps energy in the electric field between its plates: pump charge onto it and you are paying the work it takes to build that field. An inductor keeps energy in the magnetic field surrounding its coil: ramp current through it and you are paying the work it takes to build that field. Both quantities are simple, quadratic, and well-behaved:
+
+<EquationBlock id="EQ.01">
+  $$ U_C \;=\; \tfrac{1}{2}\,C\,V^{2}, \qquad U_L \;=\; \tfrac{1}{2}\,L\,I^{2} $$
+</EquationBlock>
+
+Wire them together and something new happens. A charged capacitor, released into an inductor, dumps its charge as a current. But that current doesn't stop when the capacitor is empty — the inductor is now full of magnetic energy and, like a flywheel, keeps the current going. The current then *recharges* the capacitor with the opposite polarity. And the whole cycle reverses. Energy sloshes between the two reservoirs: electric → magnetic → electric → magnetic, back and forth, in an oscillation that (for a perfect LC pair) never stops.
+
+It is the purest kind of oscillator in the electromagnetic world. A single state variable for the electric reservoir, a single state variable for the magnetic reservoir, and a lossless exchange between them that looks exactly like a mass bouncing on a spring — once you notice that `½ k x²` is the spring's `½ C V²` and `½ m v²` is the inductor's `½ L I²`.
+
+</Section>
+
+<Section index={2} title="The resonant frequency">
+
+The rate at which energy sloshes between the two reservoirs is set by how much of each you have. A large capacitor takes a long time to recharge; a large inductor resists current changes with a heavy hand. The natural **angular frequency** — the number of radians of phase advanced per second — comes out clean:
+
+<EquationBlock id="EQ.01b">
+  $$ \omega_{0} \;=\; \frac{1}{\sqrt{L\,C}} $$
+</EquationBlock>
+
+Two sentences will solve almost every schematic a beginning circuit designer meets. The first is Ohm's law. The second is this: if you see a capacitor and an inductor in a loop, they will try to oscillate at `1/√(LC)`, and that is the frequency the whole circuit wants to talk about.
+
+The square root tells you what to expect from the numbers. A picofarad capacitor with a microhenry inductor — the parts a radio tuner chooses — gives ω₀ around 10⁹ rad/s, or 160 MHz: the FM band. A microfarad capacitor with a 10-millihenry inductor — the parts an audio crossover chooses — gives around 10⁴ rad/s, or 1.6 kHz: the middle of the speaking voice. A farad-sized ultracapacitor with a henry-sized transformer primary runs at fractions of a hertz. Every LC pair has its own voice.
+
+<Callout variant="intuition">
+`ω₀ = 1/√(LC)` is the rate at which energy naturally sloshes between the inductor and the capacitor. The circuit has one preferred rhythm; drive it at any other rhythm and you are fighting the clock.
+</Callout>
+
+The plain-English version: ω₀ is how often the loop *wants* to ring. Any push you apply at that rate gets amplified. Any push you apply off that rate fights the circuit and gets absorbed quietly. That single idea is what every radio, every quartz watch, every resonant wireless charger is built on.
+
+</Section>
+
+<Section index={3} title="Damping: resistance steals the energy">
+
+A real LC loop has a resistor in it whether you installed one or not — the wires have some resistance, the capacitor leaks, the inductor's copper dissipates. Call the total `R` and the loop is now an **RLC circuit**.
+
+Every radian the oscillation advances, a little energy leaves the two reservoirs and becomes heat in the resistor. The stored energy decays exponentially; the oscillation amplitude follows an envelope `e^{−α t}` with decay rate `α = R / (2L)`. But whether the circuit rings at all depends on whether the resistor steals energy faster than the two reservoirs can hand it back and forth. Three regimes, set by the dimensionless damping ratio ζ = (R/2)·√(C/L):
+
+- **Underdamped** (ζ < 1, small R). The oscillation rings, at a slightly lower frequency `ω_d = √(ω₀² − α²)`, and dies on the 1/α timescale. This is what you normally mean by an "RLC circuit."
+- **Critically damped** (ζ = 1, R = 2·√(L/C)). No ringing at all — the circuit returns to rest as fast as physically possible without overshooting. This is what a designer *targets* when they want a meter needle, a car shock absorber, or an automatic door closer to settle cleanly.
+- **Overdamped** (ζ > 1, large R). Two real exponential decays. Sluggish, no ringing, never overshoots.
+
+<SceneCard caption="FIG.29a — underdamped series RLC: peak at ω₀, width set by R" className="w-full">
+  <RlcResonanceScene />
+</SceneCard>
+
+Turn up R and the resonance peak flattens; turn it down and the peak sharpens. The shape of that curve is what every radio tuner, every crystal oscillator, every metal detector lives on.
+
+</Section>
+
+<Section index={4} title="The quality factor Q">
+
+There is a dimensionless number that summarises everything about how resonant a resonance really is. We call it the **<Term slug="quality-factor">quality factor</Term>**, usually written `Q`.
+
+<EquationBlock id="EQ.02">
+  $$ Q \;=\; \frac{1}{R}\,\sqrt{\frac{L}{C}} \;=\; \frac{\omega_{0}\,L}{R} $$
+</EquationBlock>
+
+The plain-English version: Q tells you how many radians the circuit rings before the amplitude drops to 1/e of where it started. Divide by 2π and you get the number of complete cycles. A Q of 10 is a dozen-cycle ring-down. A Q of 1000 is a tuning fork you can hear across a concert hall. A Q of 10⁶ is a quartz crystal in your wristwatch holding time for months.
+
+That same Q counts several other things at once. It is ω₀ divided by the width of the resonance peak (so high-Q means narrow). It is 2π times the ratio of energy stored to energy lost per cycle. At the resonant frequency, the voltage across the capacitor is `Q` times the driving voltage — the capacitor "amplifies" the drive at resonance, which is both useful (how AM radios lift a microvolt signal to something audible) and dangerous (how a poorly designed filter blows its own capacitor on power-on).
+
+<PhysicistLink slug="gustav-kirchhoff">Gustav Kirchhoff</PhysicistLink>'s laws, combined with the voltage-current rules for L and C, are the whole machinery for deriving Q. Write down the loop equation, look for the eigenfrequencies, read off the damping rate. The derivation is four lines; the consequences fill a textbook.
+
+<SceneCard caption="FIG.29b — three peaks sharing ω₀, differing only in Q. Sharpness is all R." className="w-full">
+  <QFactorScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The resonance curve">
+
+Plot the driven current amplitude `|I(ω)|` against the drive frequency `ω` and you get the famous resonance curve: a bump centered on ω₀, tall and narrow for small R, wide and flat for large R. The curve's **full width at half-power** is the bandwidth
+
+<EquationBlock id="EQ.03">
+  $$ \Delta\omega \;\approx\; \frac{R}{L} \;=\; \frac{\omega_{0}}{Q} $$
+</EquationBlock>
+
+High-Q → narrow bandwidth: the circuit only responds to a very narrow slice of frequencies around ω₀. This is the definition of a radio channel. AM broadcast stations in the 530–1700 kHz band are spaced 10 kHz apart; a receiver needs Q ≈ 100 just to separate them.
+
+Read the same circuit across the capacitor instead of the resistor and you see the other face of the same physics: a bandpass filter. Low frequencies pass through with gain 1 (the capacitor sees the whole source across itself). High frequencies are shunted (the capacitor shorts). In between, near ω₀, the gain rises to `Q`.
+
+<SceneCard caption="FIG.29c — capacitor voltage as a function of drive ω. The bandpass reading." className="w-full">
+  <RlcBandpassScene />
+</SceneCard>
+
+That is the whole story of a radio front-end in one picture. An antenna grabs every frequency at once; a high-Q RLC filter picks out one and throws away the rest; the demodulator reads the envelope. Change ω₀ (by rotating a variable capacitor, say) and you change stations.
+
+</Section>
+
+<Section index={6} title="Where it shows up">
+
+Every radio front-end, every signal generator, every oscilloscope probe compensation network lives on RLC resonance. So does every quartz-crystal oscillator running the clock in your phone and laptop — the crystal is a mechanical resonator with a Q of 10⁴ to 10⁶, modeled electrically as a high-Q LC equivalent.
+
+MRI scanners use resonant coils tuned to the Larmor frequency of a proton in their superstrong magnet; a 3-tesla machine needs about 128 MHz, and the receive coils are RLC tanks measured in nanohenries and picofarads. Wireless charging pads run two resonant LC loops — one in the charger, one in the phone — tuned to the same ω₀ so energy hands off efficiently between them. The principle, named **resonant inductive coupling**, is the same trick from 1914 <PhysicistLink slug="james-prescott-joule">Joule</PhysicistLink>-era spark-gap transmitters pushed to kilowatt scale.
+
+Crystal-based quartz-oven clocks in GPS satellites hold Q around 10⁵ for the ovenised cut and keep time to a billionth per day. In the other direction, bass reflex speaker cabinets are deliberately low-Q LC analogs — an enclosed volume of air and the ducted port work as C and L, tuned to give the loudspeaker a gentle cutoff below which the bump of a resonance fills in the missing bass.
+
+The deep move is always the same: two reservoirs, one rate of exchange, and an R that sets how sharply the circuit remembers that rate. Change R to change Q; change LC to change ω₀. The next topic — AC steady-state analysis — rotates this whole picture ninety degrees in the complex plane and gives us **phasors**, a way to compute all of this without ever writing a differential equation.
+
+</Section>
+
+</TopicPageLayout>
