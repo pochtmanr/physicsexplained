@@ -22,21 +22,18 @@ export function SearchTrigger() {
     );
   };
 
+  // isMac state kept in case we want to show the kbd again later without a
+  // re-render churn; currently unused in the icon-only variant.
+  void isMac;
+
   return (
     <button
       type="button"
       onClick={open}
       aria-label={t("triggerLabel")}
-      className="flex items-center gap-2 border border-[var(--color-fg-4)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:px-3"
+      className="inline-flex h-6 w-6 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8 md:w-8"
     >
       <Search aria-hidden="true" size={14} strokeWidth={1.5} />
-      <span className="hidden md:inline">{t("triggerText")}</span>
-      <kbd
-        dir="ltr"
-        className="hidden rounded border border-[var(--color-fg-4)] px-1 py-0.5 text-[10px] leading-none md:inline"
-      >
-        {isMac ? "⌘" : "Ctrl+"}K
-      </kbd>
     </button>
   );
 }

@@ -36,14 +36,14 @@ export async function Nav() {
           <NavBranchMenu />
           <Link
             href="/physicists"
-            className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
           >
             <User aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("physicists")}</span>
           </Link>
           <Link
             href="/dictionary"
-            className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
           >
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("dictionary")}</span>
@@ -53,7 +53,7 @@ export async function Nav() {
           <ThemeToggle />
           <Link
             href="/ask"
-            className="nav-link inline-flex items-center gap-2 border border-[var(--color-cyan)] bg-[var(--color-cyan)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-bg-0)] transition-colors hover:bg-[var(--color-cyan-dim)] hover:border-[var(--color-cyan-dim)]"
+            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-cyan)] bg-[var(--color-cyan)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-bg-0)] transition-colors hover:bg-[var(--color-cyan-dim)] hover:border-[var(--color-cyan-dim)] md:h-8"
           >
             <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>Ask</span>

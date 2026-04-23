@@ -66,7 +66,7 @@ export function NavBranchMenu() {
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 border border-[var(--color-fg-4)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:px-3"
+        className="flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8 md:px-3"
       >
         <GitBranch aria-hidden="true" size={14} strokeWidth={1.5} />
         <span className="hidden md:inline">{t("menuLabel")}</span>
