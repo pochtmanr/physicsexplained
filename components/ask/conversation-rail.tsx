@@ -13,7 +13,7 @@ interface Props {
 
 export function ConversationRail({ locale, conversations, activeId, user, planLabel, percentUsed }: Props) {
   return (
-    <aside className="w-64 border-r border-[var(--color-fg-4)] hidden md:flex flex-col shrink-0">
+    <aside className="w-64 border-r border-[var(--color-fg-4)] flex flex-col shrink-0">
       <div className="p-3 border-b border-[var(--color-fg-4)]">
         <Link
           href={`/${locale}/ask`}

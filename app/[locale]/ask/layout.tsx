@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
 import { ConversationRail } from "@/components/ask/conversation-rail";
+import { RailShell } from "@/components/ask/rail-shell";
 import { KillSwitchBanner } from "@/components/ask/kill-switch-banner";
 import { AccountDrawerProvider } from "@/components/account/account-drawer-context";
 import { AccountDrawer } from "@/components/account/account-drawer";
@@ -48,18 +49,19 @@ export default async function AskLayout({
         initial={(userPayload.fullName ?? userPayload.email ?? "?").slice(0, 1).toUpperCase()}
       />
       <div className="flex h-[calc(100dvh-3rem)] md:h-[calc(100dvh-3.5rem)] overflow-hidden">
-        <ConversationRail
-          locale={locale}
-          conversations={convs ?? []}
-          user={{ fullName: userPayload.fullName, email: userPayload.email, avatarUrl: userPayload.avatarUrl }}
-          planLabel={snapshot?.plan.label ?? "Free"}
-          percentUsed={snapshot?.percentUsed ?? 0}
-        />
-        <main className="flex-1 flex flex-col max-w-4xl mx-auto w-full min-w-0 min-h-0">
+        <RailShell>
+          <ConversationRail
+            locale={locale}
+            conversations={convs ?? []}
+            user={{ fullName: userPayload.fullName, email: userPayload.email, avatarUrl: userPayload.avatarUrl }}
+            planLabel={snapshot?.plan.label ?? "Free"}
+            percentUsed={snapshot?.percentUsed ?? 0}
+          />
+        </RailShell>
+        <main className="flex-1 flex flex-col w-full min-w-0 min-h-0">
           {!enabled && <KillSwitchBanner />}
           {children}
         </main>
-        <div className="hidden xl:block w-64 shrink-0" aria-hidden="true" />
       </div>
       <AccountDrawer user={userPayload} snapshot={snapshot} orders={orders ?? []} />
     </AccountDrawerProvider>

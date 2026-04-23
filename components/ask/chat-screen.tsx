@@ -74,36 +74,37 @@ export function ChatScreen({ conversationId, variant, children }: Props) {
           <EmptyState onPick={(p) => submit(p)} />
         </div>
       ) : (
-        <div
-          ref={scrollRef}
-          className="flex-1 overflow-y-auto px-4 md:px-6 py-6"
-        >
-          {children}
-          {pending && (
-            <>
-              <MessageBubble role="user" text={pending.user} locale={locale} />
-              <StreamingMessage
-                key={pending.user}
-                conversationId={conversationId}
-                message={pending.user}
-                locale={locale}
-                modelId={modelId}
-                onSettled={onSettled}
-                onQuotaExhausted={onQuotaExhausted}
-              />
-            </>
-          )}
+        <div ref={scrollRef} className="flex-1 overflow-y-auto">
+          <div className="mx-auto w-full max-w-4xl px-4 md:px-6 py-6">
+            {children}
+            {pending && (
+              <>
+                <MessageBubble role="user" text={pending.user} locale={locale} />
+                <StreamingMessage
+                  key={pending.user}
+                  conversationId={conversationId}
+                  message={pending.user}
+                  locale={locale}
+                  modelId={modelId}
+                  onSettled={onSettled}
+                  onQuotaExhausted={onQuotaExhausted}
+                />
+              </>
+            )}
+          </div>
         </div>
       )}
-      <div className="px-4 md:px-6 pb-4 pt-2 shrink-0">
-        <Composer
-          value={text}
-          onChange={setText}
-          onSubmit={() => submit()}
-          modelId={modelId}
-          onModelChange={onModelChange}
-          disabled={!!pending}
-        />
+      <div className="shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
+        <div className="mx-auto w-full max-w-4xl px-4 md:px-6 pb-4 pt-2">
+          <Composer
+            value={text}
+            onChange={setText}
+            onSubmit={() => submit()}
+            modelId={modelId}
+            onModelChange={onModelChange}
+            disabled={!!pending}
+          />
+        </div>
       </div>
       <UpgradeModal
         open={quotaModal !== null}
