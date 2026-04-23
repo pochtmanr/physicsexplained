@@ -1,0 +1,141 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PolarizationMorphScene } from "@/components/physics/polarization-morph-scene";
+import { PolarizationAxisScene } from "@/components/physics/polarization-axis-scene";
+import { JonesVectorsScene } from "@/components/physics/jones-vectors-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Augustin Fresnel", href: "/physicists/augustin-fresnel" },
+  { type: "term", label: "Plane wave", href: "/dictionary/plane-wave-term" },
+  { type: "term", label: "Linear polarization", href: "/dictionary/linear-polarization" },
+  { type: "term", label: "Circular polarization", href: "/dictionary/circular-polarization" },
+  { type: "term", label: "Elliptical polarization", href: "/dictionary/elliptical-polarization" },
+  { type: "term", label: "Polarization axis", href: "/dictionary/polarization-axis" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+  { type: "term", label: "Transverse EM wave", href: "/dictionary/transverse-wave-em" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.39 · EM WAVES IN VACUUM"
+  title="PLANE WAVES AND POLARIZATION"
+  subtitle="The shape of a ray of light, written in two transverse fields."
+/>
+
+<Section index={1} title="Three rules in vacuum, no exceptions">
+
+Last topic pulled a wave equation out of Maxwell's four laws and read the propagation speed, c = 1/√(μ₀ε₀), straight off the coefficients. That told us *how fast* a disturbance moves through empty space. It did not tell us what one looks like. This topic does.
+
+Start with the simplest shape: a <Term slug="plane-wave-term">plane wave</Term>. Every point on any surface perpendicular to a single direction **k̂** sees the same field at the same moment; the surfaces of constant phase are infinite flat planes marching at speed c. No real source produces one, but far from any source every wave looks locally plane, and every EM wave in vacuum is a sum of plane-wave pieces.
+
+For that shape, Maxwell's vacuum equations lock three rules into place, no exceptions:
+
+1. **E is perpendicular to k̂.**  ∇·**E** = 0 in vacuum collapses, for a plane wave, to **k**·**E** = 0. No component along the direction of travel.
+2. **B is perpendicular to k̂ and perpendicular to E.**  The curl equations close the triad: **B** = (1/c)·**k̂ × E**. Right-hand rule — fingers from E toward B, thumb along k̂.
+3. **E and B oscillate in phase, with |B| = |E|/c.**  They peak together, they cross zero together, and the magnetic amplitude is the electric amplitude divided by c.
+
+Those three rules are the skeleton of every <Term slug="electromagnetic-wave">wave</Term> that ever travelled through empty space: sunlight, the Wi-Fi in your walls, the photons that carried this page to your screen. The only remaining freedom is *the direction E is allowed to point inside the plane perpendicular to k*. That freedom is called **polarization**.
+
+</Section>
+
+<Section index={2} title="Watch the triad lock">
+
+<SceneCard caption="FIG.39 — E ⊥ B ⊥ k̂, in phase, every frame. Drag the two sliders to morph polarisation from linear through elliptical to circular. The classifier in the bottom bar calls the state live." className="w-full">
+  <PolarizationMorphScene />
+</SceneCard>
+
+The scene renders a plane wave along +x̂. Magenta is E, cyan is B, amber is k. At every point along the ray the three arrows satisfy **E · k̂** = 0 and **B · k̂** = 0 — the two fields live inside the plane perpendicular to propagation, which is the meaning of **transverse**. Cross-check the phase: when E peaks, B peaks; when E crosses zero, so does B. That is the vacuum signature. (Inside matter those two fields do get shuffled out of phase — that is §09.1's problem.)
+
+The *polarisation* is the trajectory the tip of E traces in that transverse plane over one period. Slide **ellipticity** from 0 to 1 and **phase δ** from 0 to π, and watch the shape morph:
+
+- **(χ = 0, δ = 0)** — E stays on one axis, sweeping back and forth along a line. **Linear polarisation**.
+- **(χ = 1, δ = π/2)** — both transverse components have equal amplitude, the second lagging by a quarter wavelength. The tip traces a circle. **Circular polarisation** — right-handed for positive δ, left-handed for negative.
+- **(χ = 1, δ = π)** — equal amplitudes back in phase (a half-wave shift is the same as the two components flipping sign). The tip traces a line along the other diagonal. Linear, rotated.
+- Everything in between — **elliptical polarisation**, whose eccentricity and orientation slide continuously with the two parameters.
+
+There is no fourth kind. Linear and circular are the two degenerate edges of the ellipse family — one family, two real parameters, the whole space of what light in vacuum can be. That is the point worth sitting with. A single plane wave, with a fixed wavelength and a fixed direction of travel, carries an extra bit of structure that the scalar wave equation you met in §04 did not have. Scalar waves have amplitude and phase. Vector waves have amplitude, phase, and a polarisation. The polariser in front of your sunglasses is a device that cares about the difference.
+
+</Section>
+
+<Section index={3} title="Two components, one phase difference">
+
+Underneath the morph is a piece of 2D bookkeeping. Fix **k̂** = x̂. Then E(x, t) lives inside the (ŷ, ẑ) plane and splits into two orthogonal real oscillators:
+
+<EquationBlock id="EQ.01">
+  $$ \mathbf{E}(x, t) \;=\; E_y\,\hat{\mathbf{y}}\cos(kx - \omega t) \;+\; E_z\,\hat{\mathbf{z}}\cos(kx - \omega t + \delta) $$
+</EquationBlock>
+
+Three real numbers describe the polarisation: the amplitudes E_y and E_z, and the phase delay δ between them. Everything follows from those three:
+
+- δ = 0 or δ = π (mod 2π): the two components peak and cross zero together. They add up to a single sinusoid along a fixed diagonal — **linear**, at angle arctan(E_z/E_y) to the y-axis.
+- δ = ±π/2 with E_y = E_z: one component peaks when the other is zero. The tip sweeps a circle — **circular**, handedness set by the sign of δ.
+- anything else: **elliptical** — an ellipse whose major axis is not, in general, aligned with either lab axis.
+
+The kernel exposes a classifier `polarizationState({Ex_amplitude, Ey_amplitude, phaseDelta})` that returns exactly those three labels by reducing δ to (−π, π] and bucketing against the special cases. It drives both scenes above and below. A companion helper, `isTransverse(k, E)`, checks that a candidate E is perpendicular to k to within a tolerance — the tests use it to verify that every E chosen in the transverse plane for k = x̂ actually satisfies Gauss's constraint.
+
+</Section>
+
+<Section index={4} title="Malus, and what a polariser actually does">
+
+Light from the sun, from a bulb, from a fire is *unpolarised* — a chaotic superposition of modes with all polarisations averaged incoherently. A linear **polariser** transmits the component of E along its <Term slug="polarization-axis">polarisation axis</Term> and blocks the perpendicular component. The beam emerges linearly polarised, at half the original intensity (the average of cos²θ over random θ is ½).
+
+Put a second polariser behind the first, with its axis at angle θ to the first. The component of the now-linearly-polarised E along the second axis is E₀·cos(θ). The intensity — proportional to E² — that emerges is E₀²·cos²(θ). This is **Malus's law**, written down in 1809 by the French army engineer Étienne-Louis Malus while, the legend goes, watching sunset reflect off the Luxembourg Palace through Iceland spar:
+
+<EquationBlock id="EQ.02">
+  $$ I(\theta) \;=\; I_0 \,\cos^{2}(\theta - \alpha) $$
+</EquationBlock>
+
+<SceneCard caption="FIG.39b — Malus's law in motion. Rotate the analyser; watch cos²(θ − α) track the transmitted intensity." className="w-full">
+  <PolarizationAxisScene />
+</SceneCard>
+
+When the analyser lines up with the incoming polarisation (θ = α), everything gets through. When it is crossed (θ = α ± π/2), nothing does. Between those, cos² squeezes the beam continuously — a clean experimental handle on a property a person cannot see directly.
+
+Polaroid sunglasses use this. The filter axis is vertical, so the horizontally-polarised glare reflected off roads and water (preferentially so, per §09.3's Fresnel equations) is attenuated. The vertically-polarised part of skylight still gets through, so the world stays visible. Two crossed polarisers in sequence let nothing through; insert a third polariser between them at 45° and suddenly a sixteenth of the original intensity emerges — the quantum-mechanical version of this puzzle is the standard first-lecture trick, but the classical cos²-law explanation has already delivered the answer.
+
+</Section>
+
+<Section index={5} title="The map of Jones vectors">
+
+Any 2D polarisation state can be specified by a **Jones vector** — a two-component complex amplitude (E_y, E_z·e^{iδ}) — or, equivalently, by the real triple (|E_y|, |E_z|, δ). Normalise by the larger amplitude and two parameters remain: the ratio r = |E_z|/|E_y| and the phase delay δ. Every plane-polarised state in vacuum sits at one point of that 2D map.
+
+<SceneCard caption="FIG.39c — parameter-space map. Click anywhere to set the state; the right panel animates the tip of E in the transverse plane. Magenta = linear, amber = elliptical, green = circular." className="w-full">
+  <JonesVectorsScene />
+</SceneCard>
+
+Three features of the map are worth holding in your head:
+
+- Horizontal stripes along δ = 0 and δ = π — the linear families, with r picking the angle.
+- Two small green dots at (r = 1, δ = ±π/2) — the circular states. Nudge the phase and the circle squishes into an ellipse.
+- Everything else — the amber field — is elliptical. Elliptical is the generic case; linear and circular are measure-zero special cases that happen to be easy to describe.
+
+The `jonesVector(ellipticity, orientation)` helper goes the other way: given χ ∈ [0, 1] and a major-axis angle θ, it builds the (|Ex|, |Ey|, δ) triple. χ = 0 gives linear along θ; χ = 1 gives circular; in between lives the ellipse continuum. The tests verify the round-trip: feed `jonesVector` into `polarizationState`, get the label you asked for.
+
+</Section>
+
+<Section index={6} title="Transverse is a Gauss's-law fact">
+
+One last sanity check, because the transversality rule is the spine of everything above. Take a candidate plane-wave along a general direction:
+
+<EquationBlock id="EQ.03">
+  $$ \mathbf{E}(\mathbf{r}, t) \;=\; \mathbf{E}_0\,\cos(\mathbf{k}\cdot\mathbf{r} - \omega t) $$
+</EquationBlock>
+
+Take the divergence. The gradient of the cosine brings down a factor of **k**, so ∇·**E** = −**k**·**E₀**·sin(**k**·**r** − ωt). In vacuum ∇·**E** = 0 identically, at every r and t. The sine oscillates; the only way to keep the product zero everywhere is to force **k**·**E₀** = 0. **E₀ ⊥ k** — not an approximation, just Gauss's law applied to a plane wave. The same argument on Gauss-for-magnetism gives **B₀ ⊥ k**, and Faraday's law locks the magnitude and phase together. What remains is exactly two real numbers in the transverse plane — the polarisation.
+
+</Section>
+
+<Section index={7} title="Where this goes next">
+
+Polarisation is structural. It becomes *operational* the moment the wave hits a boundary. In §09.3 (<Term slug="fresnel-equations">Fresnel's equations</Term>) the components parallel and perpendicular to the plane of incidence reflect and refract with completely different coefficients — which is why glare off water is polarised, why polarising filters work, and how <Term slug="brewster-angle">Brewster's angle</Term> exists. In §09.9 (polarisation phenomena) Malus meets <Term slug="birefringence">birefringence</Term>, optical rotation, and the fact that sugar water can rotate a beam's polarisation by a measurable angle per centimetre.
+
+Circular polarisation comes back as the natural basis for photon spin, antenna handedness, and the way radar distinguishes round raindrops from jagged ice crystals — circular light survives the scattering, linear light doesn't. For now, §08.2's payoff is the reveal: a plane wave is two fields and a direction, locked perpendicular, locked in phase, with one remaining degree of design. The rest of classical optics is what you do with it.
+
+</Section>
+
+</TopicPageLayout>
