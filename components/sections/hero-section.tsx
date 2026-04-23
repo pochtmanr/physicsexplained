@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { EpicycleScene } from "@/components/physics/epicycle-scene";
-import { SymmetryTriptychScene } from "@/components/physics/symmetry-triptych-scene";
 import { FramedCard } from "@/components/layout/framed-card";
 import { FULL_BLEED } from "@/lib/layout";
 import { HeroBackground } from "./hero-background";
@@ -10,10 +9,10 @@ export async function HeroSection() {
   const t = await getTranslations("home.hero");
 
   return (
-    <section className="relative isolate overflow-hidden pt-8 pb-12 md:pt-20 md:pb-32 md:min-h-[640px] lg:min-h-[90vh] flex items-center">
+    <section className="relative isolate overflow-hidden pt-12 pb-12 md:pt-24 md:pb-32">
       <HeroBackground />
       <div className={`${FULL_BLEED} relative z-10`}>
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-start">
           <div className="min-w-0">
             <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
               {t("tag")}
@@ -47,12 +46,9 @@ export async function HeroSection() {
             </div>
           </div>
 
-          <div className="hidden lg:flex flex-col gap-12 min-w-0">
+          <div className="hidden lg:block min-w-0">
             <FramedCard figLabel={t("fig1Label")}>
               <EpicycleScene />
-            </FramedCard>
-            <FramedCard figLabel={t("fig2Label")}>
-              <SymmetryTriptychScene mode="auto" />
             </FramedCard>
           </div>
         </div>
