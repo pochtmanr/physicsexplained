@@ -1,0 +1,119 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FermatPathTimeScene } from "@/components/physics/fermat-path-time-scene";
+import { ThinLensRayDiagramScene } from "@/components/physics/thin-lens-ray-diagram-scene";
+import { ConcaveMirrorScene } from "@/components/physics/concave-mirror-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pierre de Fermat", href: "/physicists/pierre-de-fermat" },
+  { type: "physicist", label: "Willebrord Snell", href: "/physicists/willebrord-snell" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Fermat's principle", href: "/dictionary/fermats-principle" },
+  { type: "term", label: "Snell's law", href: "/dictionary/snells-law" },
+  { type: "term", label: "Thin lens", href: "/dictionary/thin-lens" },
+  { type: "term", label: "Focal length", href: "/dictionary/focal-length" },
+  { type: "term", label: "Refractive index", href: "/dictionary/refractive-index" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.47 · WAVES IN MATTER & OPTICS"
+  title="GEOMETRIC OPTICS"
+  subtitle="When the wavelength is small enough to forget."
+/>
+
+<Section index={1} title="The short-wavelength shortcut">
+
+Maxwell's equations are *expensive*. To predict the field in even the simplest lens system — one curved surface, a few millimetres across — you would have to solve a coupled wave equation in three dimensions, with boundary conditions on every interface. For every colour. In every polarisation. You would get the right answer, to absurd precision, and you would also lose your entire afternoon. The camera in your phone has thirty surfaces.
+
+You do not need any of that. As long as the wavelength of the light is *small* compared to every feature in the optical system — which for visible light at λ ≈ 0.55 µm means "basically always, except at slits and aperture edges" — the wave equation collapses into something dramatically simpler. Waves become *rays*: straight lines that propagate through homogeneous media and kink at sharp interfaces. Interference averages out. Polarisation decouples from the geometry. What remains is a set of rules clean enough to fit on a napkin, powerful enough to design a microscope, and old enough that the first three were nailed down before Newton was born.
+
+This is **geometric optics** — the short-wavelength limit of electromagnetism, handed to engineers as a design language. Every camera, every microscope, every pair of glasses, every telescope you have ever looked through was designed in the language of rays. The full wave theory is still lurking underneath (and we will come back to it in §09.7 onwards when slits and apertures start mattering again), but for now we get to throw away the wave equation and keep just the parts that behave like lines.
+
+</Section>
+
+<Section index={2} title="Fermat's principle: the ray is lazy">
+
+Here is the deep statement, published by Pierre de <Term slug="fermats-principle">Fermat</Term> in 1662: **light takes the path of stationary travel time between two points**. For almost every real ray, "stationary" means "minimum" — the photon picks the quickest route through the medium it happens to find itself in. When the medium is uniform, the quickest route is a straight line. When the medium has two regions with different refractive indices, the quickest route is *bent*, and the bend angle is exactly what Snell's law describes.
+
+<SceneCard caption="FIG.47a — source S in air, observer O in water. Drag the crossing and watch total travel time t(y). The minimum is the real ray." className="w-full">
+  <FermatPathTimeScene />
+</SceneCard>
+
+Drag the amber dot. Seven ghost paths show you what Fermat is *not* picking. The `t(y)` curve beneath the scene is convex with a single bottom, and the minimum sits exactly where the readout `sin θ₁ / v₁ = sin θ₂ / v₂` goes to zero — that is, where <Term slug="snells-law">Snell's law</Term> is satisfied. A two-line derivation: set the derivative `dt/dy = 0`, work out the geometry, and the stationarity condition **is** `n₁ sin θ₁ = n₂ sin θ₂`. The ray isn't computing this in real time — there is no optimiser hiding in the photon — but the same calculation that tells the field how to match its phase across the boundary *happens to be* the same calculation that minimises travel time. The universe runs the optimisation for free.
+
+<Callout variant="intuition">
+Fermat's principle is the optical sibling of the [**principle of least action**](/classical-mechanics/the-principle-of-least-action)  in classical mechanics. Both say: nature picks out one trajectory from a continuous family of possibilities by making some integral stationary. Optics minimises `∫ n · ds` (optical path length). Mechanics extremises `∫ L · dt` (action). They share the same mathematical machinery — variational calculus — because deep down they are the same idea applied to different substrates.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Thin lenses and the 1/f = 1/s_o + 1/s_i rule">
+
+Real lenses are wedges of glass with two curved surfaces. Tracking a ray through two refractions — one at each surface — is Snell twice, with the bookkeeping nobody enjoys. The **thin-lens approximation** collapses the two surfaces into a single kink at a single plane, which is accurate whenever the lens thickness is much smaller than its focal length. Once you accept the approximation, one equation governs every imaging problem you will ever meet in an undergraduate course:
+
+<EquationBlock id="EQ.01">
+  $$ \frac{1}{s_o} \;+\; \frac{1}{s_i} \;=\; \frac{1}{f} $$
+</EquationBlock>
+
+`s_o` is the object distance (in front of the lens), `s_i` is the image distance (behind), and `f` is the <Term slug="focal-length">focal length</Term> — the distance at which parallel incoming rays converge to a point. Transverse <Term slug="thin-lens">magnification</Term> falls out of similar triangles:
+
+<EquationBlock id="EQ.02">
+  $$ m \;=\; -\frac{s_i}{s_o} $$
+</EquationBlock>
+
+The minus sign is load-bearing. It says that real images (`s_i > 0`) formed by a converging lens are *inverted*. Point a camera at a candle and the image on the sensor is upside down; your camera's firmware flips it back.
+
+<SceneCard caption="FIG.47b — object, converging lens, image. Drag s_o across f and watch the image flip from real-and-inverted to virtual-and-upright." className="w-full">
+  <ThinLensRayDiagramScene />
+</SceneCard>
+
+Three **principal rays** carry the whole construction:
+
+1. **Parallel-in → through-focus-out.** A ray coming in parallel to the axis leaves through the far focal point `F'`.
+2. **Through-centre → undeflected.** The chief ray through the lens centre passes straight. (The two surfaces are locally parallel at the centre — the thin slab introduces a tiny lateral displacement that the thin-lens approximation neglects.)
+3. **Through-focus-in → parallel-out.** A ray aimed at the near focal point `F` emerges horizontal.
+
+Any two of the three is enough to locate the image. Slide `s_o` through the slider and watch the transition at `s_o = f`: when the object sits outside the focal point the three rays converge to a *real* image on the far side (you can catch it on a screen). When `s_o < f` they *diverge*, and their back-extended prolongations meet on the *near* side — a **virtual** image, upright and magnified. That is a magnifying glass. Same lens, same equation, different regime.
+
+</Section>
+
+<Section index={4} title="The lensmaker's equation: f from glass">
+
+Where does `f` come from? You do not get to pick it arbitrarily — it is determined by the geometry of the two curved surfaces and the index of the glass. For a thin lens in air:
+
+<EquationBlock id="EQ.03">
+  $$ \frac{1}{f} \;=\; (n - 1)\left(\frac{1}{R_1} \;-\; \frac{1}{R_2}\right) $$
+</EquationBlock>
+
+The sign convention: `R` is positive when the centre of curvature sits on the far (transmitted) side of the surface. A **double-convex** lens — the one in every textbook — has `R₁ > 0` (front surface bulges toward the object) and `R₂ < 0` (back surface bulges toward the image). Feed `R₁ = +10`, `R₂ = −10`, `n = 1.5` into the formula and you get `f = 10` — a symmetric biconvex lens whose focal length equals its radius of curvature. A piece of BK7 crown glass ground to 10 cm radii on both sides will focus parallel light to a point 10 cm behind it, down to the precision of "the thin-lens approximation is good enough," which is good enough for most of what optics needs.
+
+The lensmaker's equation is where **refractive index** buys you something concrete. Higher `n` means a given curvature bends light more strongly, so you can get the same focal length with shallower surfaces — thinner, lighter, cheaper lenses. That is why fancy camera glass is flint, not water.
+
+</Section>
+
+<Section index={5} title="Concave mirrors — the same equation, no glass needed">
+
+Mirrors do the same job by reflection. For a spherical concave mirror of radius `R`, the paraxial focal length is `f = R / 2`, and the same imaging equation `1/s_o + 1/s_i = 1/f` works — sign conventions adjusted so that both distances are measured in front of the mirror. The three principal rays re-skin themselves for reflection: *parallel-in → through-focus-out, through-focus-in → parallel-out, and a chief ray through the centre of curvature `C` retraces itself* (because it strikes the sphere along a radius, perpendicular to the surface).
+
+<SceneCard caption="FIG.47c — concave mirror with C and F marked. Slide s_o inside f and the image goes virtual." className="w-full">
+  <ConcaveMirrorScene />
+</SceneCard>
+
+Parabolic mirrors — the genuine article used in telescopes — do one better: they focus *every* parallel ray to an exact point, not just the paraxial ones. Spherical mirrors suffer from **spherical aberration**, a smearing of the focus that comes from the sphere's shape not quite matching the ideal paraboloid. The geometry is a constant low-grade war between "easy to manufacture" (sphere) and "ideal optics" (paraboloid), and every serious astronomical instrument from Hubble onward has been paraboloidal.
+
+</Section>
+
+<Section index={6} title="When rays break">
+
+Geometric optics is wrong in exactly the circumstances where waves remember they are waves. Shine coherent light through a slit narrower than a few wavelengths and the rays refuse to stay straight — they fan out into a diffraction pattern. Overlap two coherent beams and you see interference fringes that no ray model predicts. Look at a laser speckle on a matte wall and you are seeing the wave phase, granular and uncancelled, defeating every straight line. The short-wavelength approximation fails whenever the thing the light is interacting with gets comparable to `λ`: slits, hairs, dust motes, cell membranes.
+
+This is the moment to remember that `λ` for visible light is about half a micrometre. Bigger than a cell. Much smaller than your eyelashes. For the world at arm's length the approximation holds with astonishing precision, which is why human vision — and every camera, every telescope, every microscope ever built for macroscopic use — can be designed entirely in lines on paper. The failures at the wavelength scale are not weaknesses of the theory; they are announcing that waves are still underneath. In the next topics we will let them back out.
+
+</Section>
+
+</TopicPageLayout>
