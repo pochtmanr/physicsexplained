@@ -671,6 +671,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   StandingWaveRatioScene: lazyScene(() =>
     import("@/components/physics/standing-wave-ratio-scene").then((m) => ({ default: m.StandingWaveRatioScene })),
   ),
+
+  // EM §07 — displacement-current
+  AmpereSurfaceMorphScene: lazyScene(() =>
+    import("@/components/physics/ampere-surface-morph-scene").then((m) => ({ default: m.AmpereSurfaceMorphScene })),
+  ),
+  DisplacementFieldBuildupScene: lazyScene(() =>
+    import("@/components/physics/displacement-field-buildup-scene").then((m) => ({ default: m.DisplacementFieldBuildupScene })),
+  ),
+  CapacitorCurrentContinuityScene: lazyScene(() =>
+    import("@/components/physics/capacitor-current-continuity-scene").then((m) => ({ default: m.CapacitorCurrentContinuityScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

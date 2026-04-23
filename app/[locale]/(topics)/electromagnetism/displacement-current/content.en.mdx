@@ -1,0 +1,126 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { AmpereSurfaceMorphScene } from "@/components/physics/ampere-surface-morph-scene";
+import { DisplacementFieldBuildupScene } from "@/components/physics/displacement-field-buildup-scene";
+import { CapacitorCurrentContinuityScene } from "@/components/physics/capacitor-current-continuity-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "André-Marie Ampère", href: "/physicists/andre-marie-ampere" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Displacement current", href: "/dictionary/displacement-current" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.33 · MAXWELL'S SYNTHESIS"
+  title="DISPLACEMENT CURRENT"
+  subtitle="The missing term Maxwell put in — and the paradox that collapses the moment you do."
+/>
+
+<Section index={1} title="Ampère's law has a bug">
+
+<PhysicistLink slug="andre-marie-ampere">Ampère</PhysicistLink> wrote his law in 1826 in a form that is still on every electromagnetism blackboard today: the line integral of the magnetic field around any closed loop equals μ₀ times the current threading that loop. In symbols, ∮**B**·d**ℓ** = μ₀·I_enclosed. The symbol ∮ means *integrate once around the whole closed path*; a tiny circle on the integral sign to remind you the ends meet.
+
+The law is beautiful and, for a charging capacitor, broken. Take a parallel-plate capacitor hooked up to a battery through a wire. Current flows in the wire, charge piles up on the plates, and no current flows between the plates themselves — nothing conductive lives there, just empty space or an insulator. Now draw an Amperian loop around the wire, upstream of the capacitor. The line integral ∮**B**·d**ℓ** along that loop is a fixed number: it is a property of the loop and the field, and it does not care what else exists in the universe. The right-hand side μ₀·I_enclosed, on the other hand, is the current piercing *some surface bounded by that loop*. Stokes' theorem — the mathematical plumbing behind Ampère's law — says any surface bounded by the loop should give the same answer.
+
+It doesn't. Choose a flat disc of a surface, threaded straight through by the wire: I_enclosed = I, the conduction current. Now choose a different surface bounded by the same loop — one that bulges outward like a soap bubble and passes between the capacitor plates rather than through the wire. No conduction current crosses that surface anywhere. I_enclosed = 0.
+
+Two surfaces, one loop, two different answers for μ₀·I_enclosed. One of them must be wrong, and Stokes' theorem insists neither is. That is a paradox, and it sat inside classical electromagnetism for nearly forty years before anyone knew what to do with it.
+
+</Section>
+
+<Section index={2} title="Two surfaces, two answers">
+
+Before fixing the law, see the paradox up close.
+
+<SceneCard caption="FIG.33a — the same Ampère loop, two surfaces, morphing between them. Flip Maxwell's correction OFF to watch the readouts diverge; flip it ON to watch them lock together." className="w-full">
+  <AmpereSurfaceMorphScene />
+</SceneCard>
+
+On the left panel, the surface is a flat disc threaded by the wire. Amber dots stream through it: this is the conduction current. The right-hand side of Ampère's law — the surface integral of J, the current density — evaluates to exactly the wire current I, and the HUD reads ∮**B**·d**ℓ** = μ₀·I. Nothing controversial.
+
+On the right panel, the surface has ballooned outward into a three-dimensional bag that slips around the wire and terminates between the capacitor plates. Watch it morph. No conduction current lives in that gap — the plates are separated by nothing that conducts — so the integral of J over this surface is zero. Without any correction to Ampère's law, the right-panel readout reads ∮**B**·d**ℓ** = 0.
+
+The left-panel loop and the right-panel loop are the *same loop*. The line integral ∮**B**·d**ℓ** depends only on that loop and the field. It cannot be one number if you imagine one surface bounded by the loop and a different number if you imagine another. When the toggle is OFF, the overlay reads **PARADOX** and the two HUD readouts diverge — because the naïve Ampère's law is forcing a single physical quantity to take two different values depending on a bookkeeping choice no physical apparatus has access to.
+
+This is the symptom of a missing term. The right-hand side of Ampère's law is incomplete: it tracks only one kind of source for the magnetic field, and it misses a second kind that happens to be identically zero in the static cases Ampère originally studied but not zero here.
+
+</Section>
+
+<Section index={3} title="What's between the plates">
+
+Something does live in the capacitor gap: an electric field. As charge accumulates on the plates, the field between them grows.
+
+<EquationBlock id="EQ.01">
+  $$ E \;=\; \frac{\sigma}{\varepsilon_0} \;=\; \frac{Q}{A\,\varepsilon_0} $$
+</EquationBlock>
+
+Here σ is the surface charge density on one plate (Q spread over area A) and ε₀ is the vacuum permittivity — the same constant that scaled Coulomb's law and Gauss's law. While current flows in the wire, Q is rising, so E between the plates is rising with it.
+
+<SceneCard caption="FIG.33b — E grows linearly between the plates while the wire carries conduction current." className="w-full">
+  <DisplacementFieldBuildupScene />
+</SceneCard>
+
+Nothing flows between the plates in the usual sense — no electrons, no ions, nothing with mass or charge crossing from one side to the other. And yet the state of that region is changing at a definite rate. The rate is dE/dt, and its value follows from the definition of E above: whatever rate dQ/dt the wire delivers to the plate, dE/dt = (dQ/dt)/(A·ε₀) is the rate at which the field strengthens in the gap.
+
+That rate of change, it turns out, is exactly what Ampère's law was missing.
+
+</Section>
+
+<Section index={4} title="Maxwell's correction">
+
+<PhysicistLink slug="james-clerk-maxwell">James Clerk Maxwell</PhysicistLink> published the fix in 1865, in his paper *A Dynamical Theory of the Electromagnetic Field*. He added a second source to the right-hand side of Ampère's law — a source that is nothing like a current of charge, but mathematically enters the equation in the same slot.
+
+<EquationBlock id="EQ.02">
+  $$ \oint \mathbf{B} \cdot d\boldsymbol{\ell} \;=\; \mu_0 \left( I_{\text{enc}} + \varepsilon_0 \,\frac{\partial \Phi_E}{\partial t} \right) $$
+</EquationBlock>
+
+The new term ε₀·∂Φ_E/∂t is the **displacement current**. The symbol ∂/∂t means "the rate of change with respect to time, holding everything else fixed" — we use the curly ∂ instead of a plain d because Φ_E depends on both space and time and we want the reader to know only time is being differentiated. Φ_E is the electric flux through the same surface bounded by the loop: ∬**E**·d**A**, the total amount of E-field piercing the surface. In the flat-disc case of a wire with no capacitor in sight, Φ_E is either zero or constant, so ∂Φ_E/∂t vanishes and Maxwell's extra term contributes nothing — the old Ampère's law is recovered unchanged, and all his 1826 geometry still works.
+
+In the through-the-gap case, the surface has Φ_E changing rapidly as E ramps up. Flip Maxwell's correction ON in the scene above: the right-panel readout now computes ε₀·∂Φ_E/∂t and finds exactly the same number as the left panel's μ₀·I. Both HUDs lock together. Overlay: **RESOLVED.**
+
+The name "displacement" comes from Maxwell's own mechanical picture of the ether: he imagined a rising E-field as the physical *displacement* of something elastic, and a time-varying displacement as a kind of flow. The ether is gone; the term survived because the mathematics works. A changing electric field acts, in Ampère's law, exactly as if it were a current of charge.
+
+</Section>
+
+<Section index={5} title="Why the fix is exact">
+
+The balance is not approximate — it is identically exact. Start from the definition of E in the gap, multiply both sides by A to get Φ_E = Q/ε₀, differentiate with respect to time: ∂Φ_E/∂t = (1/ε₀)·dQ/dt. Multiply by ε₀ to get the displacement current: ε₀·∂Φ_E/∂t = dQ/dt. And dQ/dt is exactly the conduction current in the wire.
+
+<SceneCard caption="FIG.33c — one closed surface wrapping one plate: amber conduction current enters, lilac displacement current exits, residual = 0." className="w-full">
+  <CapacitorCurrentContinuityScene />
+</SceneCard>
+
+Think of it as current continuity. Wrap a closed surface around just the positive plate. On the wire side, amber conduction current enters: dQ/dt amperes. On the gap side, lilac displacement current exits: ε₀·∂Φ_E/∂t amperes, equal by construction. Nothing accumulates. The generalised current — J + ε₀·∂E/∂t, conduction plus displacement — has zero divergence, which is exactly the mathematical condition Ampère's law needs in order to be consistent with Stokes' theorem for any bounded surface. The conduction current stops at the plate; the changing flux in the gap picks up the shortfall; total current is continuous across the plate boundary, and the line integral ∮**B**·d**ℓ** is independent of the surface you chose, as it had to be.
+
+</Section>
+
+<Section index={6} title="The consequence nobody saw coming">
+
+Fixing Ampère's law was the immediate motivation, and if that were all, Maxwell's 1865 paper would be a tidy footnote. Instead, the new term quietly demolished the wall between electricity and magnetism — and delivered the greatest surprise in the history of physics.
+
+Here is the chain. <PhysicistLink slug="michael-faraday">Faraday's</PhysicistLink> law, written the same year, says a changing magnetic field produces a circulating electric field: ∇×**E** = −∂**B**/∂t. Maxwell's corrected Ampère law says a changing electric field produces a circulating magnetic field: ∇×**B** = μ₀**J** + μ₀ε₀·∂**E**/∂t. In empty space there is no J, so the two laws are now *symmetric*: a rippling E creates a B, and a rippling B creates an E. The two can sustain each other with no charges and no wires anywhere in sight. A disturbance in E becomes a disturbance in B, which becomes a disturbance in E, and the pattern propagates through empty space.
+
+Combine the two curl equations algebraically and a wave equation falls out, with propagation speed
+
+<EquationBlock id="EQ.03">
+  $$ c \;=\; \frac{1}{\sqrt{\mu_0\,\varepsilon_0}} \;\approx\; 2.998 \times 10^{8}\ \text{m/s} $$
+</EquationBlock>
+
+Plug in the values of μ₀ and ε₀ — measured a decade earlier in experiments that had nothing to do with light — and the speed of a self-sustaining electromagnetic ripple comes out to 300 million metres per second. That number was already known from optics: <PhysicistLink slug="leon-foucault">Foucault</PhysicistLink> and Fizeau had measured the speed of light with rotating mirrors and toothed wheels. Maxwell, reviewing his calculation, wrote the line that changed physics forever: *"we can scarcely avoid the inference that light consists in the transverse undulations of the same medium which is the cause of electric and magnetic phenomena."* Light is an <Term slug="electromagnetic-wave">electromagnetic wave</Term>, and the displacement current is the term that makes the whole construction possible.
+
+</Section>
+
+<Section index={7} title="Look at what you just earned">
+
+Three topics ago you had circuits with lumped resistors and capacitors; one topic ago you had Faraday's law and the induced EMF; this topic stitched in the missing piece and set up the identity c = 1/√(μ₀ε₀) that the rest of §07 will unfold. FIG.34 gathers the whole set — Gauss, Gauss-for-magnetism, Faraday, Maxwell–Ampère — into four lines of text that account for every classical electromagnetic phenomenon. FIG.35 asks what freedom is left in the potentials; FIG.36 tracks the flow of energy that these equations imply. Everything else in the module so far has been a rehearsal. The synthesis is three topics away.
+
+</Section>
+
+</TopicPageLayout>
