@@ -5,6 +5,7 @@ import { KillSwitchBanner } from "@/components/ask/kill-switch-banner";
 import { AccountDrawerProvider } from "@/components/account/account-drawer-context";
 import { AccountDrawer } from "@/components/account/account-drawer";
 import { OpenDrawerFromQuery } from "@/components/account/open-drawer-from-query";
+import { MobileAccountButton } from "@/components/auth/mobile-account-button";
 import { loadBillingSnapshot } from "@/app/actions/account";
 
 export default async function AskLayout({
@@ -38,6 +39,10 @@ export default async function AskLayout({
   return (
     <AccountDrawerProvider>
       <OpenDrawerFromQuery />
+      <MobileAccountButton
+        avatarUrl={userPayload.avatarUrl}
+        initial={(userPayload.fullName ?? userPayload.email ?? "?").slice(0, 1).toUpperCase()}
+      />
       <div className="flex min-h-[calc(100vh-4rem)]">
         <ConversationRail
           locale={locale}
