@@ -1,0 +1,162 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MaxwellFourLinesScene } from "@/components/physics/maxwell-four-lines-scene";
+import { VacuumWaveScene } from "@/components/physics/vacuum-wave-scene";
+import { SpeedMeasurementScene } from "@/components/physics/speed-measurement-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "physicist", label: "André-Marie Ampère", href: "/physicists/andre-marie-ampere" },
+  { type: "physicist", label: "Hippolyte Fizeau", href: "/physicists/hippolyte-fizeau" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+  { type: "term", label: "Wave equation", href: "/dictionary/em-wave-equation-term" },
+  { type: "term", label: "Transverse wave", href: "/dictionary/transverse-wave-em" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.38 · EM WAVES IN VACUUM"
+  title="DERIVING THE EM WAVE EQUATION"
+  subtitle="Four equations, two fields, and light falling out the other side."
+/>
+
+<Section index={1} title="Four equations in empty space">
+
+The hardest part of this derivation is already behind us. For six topics we watched <PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink> collect the laws of electricity and magnetism into four lines of mathematics. We saw <PhysicistLink slug="andre-marie-ampere">Ampère's</PhysicistLink> law, patched with the displacement current, come out symmetric with <PhysicistLink slug="michael-faraday">Faraday's</PhysicistLink>. We saw the two Gauss laws pin down what the divergences of **E** and **B** do around charges and currents. Now comes the payoff — the one page where all of that turns into light.
+
+We work in vacuum. No charges anywhere (ρ = 0), no currents anywhere (**J** = 0). Under those two cancellations, Maxwell's four equations collapse to their cleanest form:
+
+<EquationBlock id="EQ.01">
+$$ \nabla \cdot \mathbf{E} = 0, \qquad \nabla \cdot \mathbf{B} = 0, \qquad \nabla \times \mathbf{E} = -\frac{\partial \mathbf{B}}{\partial t}, \qquad \nabla \times \mathbf{B} = \mu_0 \varepsilon_0 \, \frac{\partial \mathbf{E}}{\partial t}. $$
+</EquationBlock>
+
+The two divergences both vanish because nothing lives in empty space that could source an electric or magnetic field. The two curls each tie one field to the *time derivative* of the other — a changing **B** wraps an **E** around it, a changing **E** wraps a **B** around it. And the second one carries inside it, hiding in plain sight, the two fundamental constants of electromagnetism: μ₀, which sets the strength of the magnetic response, and ε₀, which sets the strength of the electric response. Keep an eye on that product. It is going to matter in a minute.
+
+<SceneCard caption="FIG.38a — the derivation in six steps, from the four vacuum equations down to c = 1/√(μ₀ε₀).">
+  <MaxwellFourLinesScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Take the curl of Faraday">
+
+The trick is an old one: when two equations each give you one rotational derivative of a field, you can eliminate one field by taking another curl. We reach for Faraday's law and apply the curl operator ∇× to both sides:
+
+<EquationBlock id="EQ.02">
+$$ \nabla \times (\nabla \times \mathbf{E}) \;=\; \nabla \times \left(-\frac{\partial \mathbf{B}}{\partial t}\right) \;=\; -\frac{\partial}{\partial t}\,(\nabla \times \mathbf{B}). $$
+</EquationBlock>
+
+Partial derivatives with respect to time commute with spatial derivatives under mild smoothness assumptions, so the curl slides past the ∂/∂t freely — that is the move in going from the middle expression to the right-hand one. Now the right-hand side contains ∇×**B**, which Maxwell's fourth equation already gives us. Substituting:
+
+<EquationBlock id="EQ.03">
+$$ \nabla \times (\nabla \times \mathbf{E}) \;=\; -\frac{\partial}{\partial t}\!\left(\mu_0 \varepsilon_0 \,\frac{\partial \mathbf{E}}{\partial t}\right) \;=\; -\mu_0 \varepsilon_0 \, \frac{\partial^2 \mathbf{E}}{\partial t^2}. $$
+</EquationBlock>
+
+Two partial-time derivatives have appeared on the right, and no magnetic field on either side. That is what we wanted — we have converted a first-order system in two coupled fields into a second-order equation in **E** alone. The same move, applied to Ampère–Maxwell instead of Faraday, gives the twin equation for **B**; both fields satisfy the same second-order law, which is why there is only one speed to talk about.
+
+The left-hand side is still ugly. Fixing it takes one identity from vector calculus.
+
+</Section>
+
+<Section index={3} title="BAC–CAB on the left-hand side">
+
+There is a general identity, sometimes called the "BAC–CAB rule" by its algebraic cousin, for the double curl of any vector field **F**:
+
+<EquationBlock id="EQ.04">
+$$ \nabla \times (\nabla \times \mathbf{F}) \;=\; \nabla (\nabla \cdot \mathbf{F}) \;-\; \nabla^2 \mathbf{F}. $$
+</EquationBlock>
+
+The gradient-of-divergence and vector-Laplacian pieces both appear because the curl of a curl pulls out the "rotational part" while the full second-derivative content of **F** is the Laplacian. Apply this to **F** = **E**:
+
+<EquationBlock id="EQ.05">
+$$ \nabla \times (\nabla \times \mathbf{E}) \;=\; \nabla (\nabla \cdot \mathbf{E}) \;-\; \nabla^2 \mathbf{E}. $$
+</EquationBlock>
+
+In *generic* space this is where the calculation would get bogged down. In vacuum it does not, because the first Maxwell equation ∇·**E** = 0 kills the gradient-of-divergence term outright. The whole first piece collapses to zero and we are left with just the Laplacian:
+
+<EquationBlock id="EQ.06">
+$$ \nabla \times (\nabla \times \mathbf{E}) \;=\; -\nabla^2 \mathbf{E} \qquad \text{(vacuum only)}. $$
+</EquationBlock>
+
+<Callout variant="math">
+Both terms on the right of the BAC–CAB identity are needed in media with bound charges, where ∇·**E** ≠ 0 and a gradient of charge density feeds back into the wave story. In vacuum the gradient term is simply absent, which is why the wave equation has the clean Laplacian form above. The same fact is why charged media disperse and attenuate light, while empty space does not.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The wave equation falls out">
+
+Now equate the two expressions for ∇×(∇×**E**). From EQ.03 we have −μ₀ε₀·∂²**E**/∂t². From EQ.06 we have −∇²**E**. Setting them equal and cancelling the minus signs:
+
+<EquationBlock id="EQ.07">
+$$ \nabla^2 \mathbf{E} \;=\; \mu_0\,\varepsilon_0 \, \frac{\partial^2 \mathbf{E}}{\partial t^2}. $$
+</EquationBlock>
+
+That is a wave equation. The general form of a scalar wave equation in one dimension is ∂²ψ/∂x² = (1/v²)·∂²ψ/∂t², and its solutions are functions of the form ψ(x − v·t) and ψ(x + v·t) — disturbances that move at speed v without changing shape. Pattern-matching EQ.07 against this template, the propagation speed v satisfies
+
+<EquationBlock id="EQ.08">
+$$ \frac{1}{v^2} \;=\; \mu_0\,\varepsilon_0 \qquad \Longrightarrow \qquad v \;=\; \frac{1}{\sqrt{\mu_0\,\varepsilon_0}}. $$
+</EquationBlock>
+
+Running the same curl-of-Ampère-Maxwell derivation on the other side gives the paired equation ∇²**B** = μ₀ε₀·∂²**B**/∂t², so the magnetic field rides at exactly the same speed as the electric field. They are locked together — and locked to each other in phase, as the next section makes concrete.
+
+<SceneCard caption="FIG.38b — the plane-wave solution. E (magenta) along ŷ, B (cyan) along ẑ, both cosines of (k·x − ω·t). Perpendicular, in phase, and sharing one velocity.">
+  <VacuumWaveScene />
+</SceneCard>
+
+A quick sanity check. If we try the plane-wave ansatz **E**(x, t) = E₀·cos(k·x − ω·t)·ŷ and plug it into EQ.07, the Laplacian returns −k²·**E** and the second time derivative returns −ω²·**E**. The wave equation is satisfied iff k² = μ₀ε₀·ω², which rearranges to ω/k = 1/√(μ₀ε₀). The phase velocity comes out identical to v above, regardless of wavelength — empty space has no dispersion. A 500-nanometre green wave and a kilometre-long radio wave travel at exactly the same speed.
+
+</Section>
+
+<Section index={5} title="Why E and B lock together">
+
+We now have the wave equation, but we haven't yet seen *why* the electric and magnetic pieces of the ride are stitched to one another. The answer comes straight from Faraday's law applied to the plane-wave ansatz. If **E** = E₀·cos(k·x − ω·t)·ŷ, then ∇×**E** points along ẑ with magnitude −k·E₀·sin(k·x − ω·t). Setting that equal to −∂**B**/∂t forces
+
+<EquationBlock id="EQ.09">
+$$ \mathbf{B}(x, t) \;=\; \frac{E_0}{c}\,\cos(k\,x - \omega\,t)\,\hat{\mathbf{z}}, \qquad |\mathbf{B}| \;=\; \frac{|\mathbf{E}|}{c}. $$
+</EquationBlock>
+
+Three facts drop out. First, **B** oscillates in ẑ — perpendicular to **E** (along ŷ) and perpendicular to the propagation direction k̂ (along x̂). The EM wave is <Term slug="transverse-wave-em">transverse</Term>. Second, the cosines on both sides have the same argument (k·x − ω·t), so **E** and **B** reach their peaks at the same (x, t); they are *in phase*, never 90° apart as they would be in a near-field dipole. Third, the amplitude ratio is locked to c: pick any physical E₀, and B₀ = E₀/c is settled for you. There is no free parameter in the magnetic leg — it is entirely determined by the electric one.
+
+<Callout variant="math">
+The orthogonality triple k̂ × Ê = B̂ is built into the derivation. It is what distinguishes a travelling EM wave from near-field oscillations around an antenna, where E and B can be out of phase and along overlapping axes. At distances well beyond a wavelength, any antenna field asymptotes to this transverse plane-wave pattern — which is why the far-field radiation pattern of FIG.40 looks the way it does.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Plug in the numbers — and flinch">
+
+All that is left is arithmetic. The CODATA values of the vacuum permittivity and permeability are
+
+<EquationBlock id="EQ.10">
+$$ \varepsilon_0 \;=\; 8.854\,187\,813 \times 10^{-12}\ \text{F/m}, \qquad \mu_0 \;=\; 1.256\,637\,062 \times 10^{-6}\ \text{H/m}. $$
+</EquationBlock>
+
+Multiply them: μ₀·ε₀ ≈ 1.113 × 10⁻¹⁷ s²/m². Take the reciprocal square root: 1/√(μ₀·ε₀) ≈ 2.998 × 10⁸ m/s. That number is, to the resolution of the constants given, exactly the measured speed of light.
+
+The speed of light had been a known quantity in optics since at least 1676, when Rømer inferred it from eclipses of Jupiter's moon Io; <PhysicistLink slug="hippolyte-fizeau">Hippolyte Fizeau</PhysicistLink> measured it to about 5% accuracy in 1849 by shining a beam between Paris and the hills of Montmartre, 8.63 km away, and chopping the beam with a rapidly spinning toothed wheel. (Foucault improved the measurement soon after using a rotating mirror.) Nobody expected that number to have anything whatsoever to do with electricity or magnetism. Optics was one field; electromagnetism was another.
+
+<SceneCard caption="FIG.38c — Fizeau's 1849 apparatus. Source on the left; 720-tooth wheel chopping the beam; 8.63 km path to a return mirror; first extinction at ≈ 12.6 rev/s gives c ≈ 3.15 × 10⁸ m/s.">
+  <SpeedMeasurementScene />
+</SceneCard>
+
+Maxwell, in his 1862 paper *On Physical Lines of Force*, noticed the coincidence and wrote the cautious line that changed physics forever: *"we can scarcely avoid the inference that light consists in the transverse undulations of the same medium which is the cause of electric and magnetic phenomena."* In a sentence: light is an <Term slug="electromagnetic-wave">electromagnetic wave</Term>. The visible spectrum that reaches your eye, the radio waves that carry your phone call, the X-rays in a hospital scanner — all of them are solutions of EQ.07, differing only in ω and k.
+
+Twenty-six years later, in 1888, Heinrich Hertz closed the case experimentally. He built a spark-gap oscillator, tuned a resonant loop some metres across the room, and detected radio waves travelling at exactly c through empty air. No light, no photons in the optical sense — just pure Maxwell ripples, visible only as a spark at the receiver. Hertz's remark was characteristically modest: "It's of no use whatsoever." Guglielmo Marconi, seven years later, disagreed.
+
+</Section>
+
+<Section index={7} title="What we just earned">
+
+You now own the wave equation of the electromagnetic branch — the one equation that ties three decades of experimental electromagnetism to every photon in the universe. From this one identity c = 1/√(μ₀·ε₀) the rest of §08 unspools: energy density u = ½ε₀E² + B²/(2μ₀), the Poynting vector **S** = (1/μ₀)·**E**×**B** that carries that energy at speed c, radiation pressure, polarisation, dispersion in matter, and the refractive index n = √(μ_r·ε_r) that slows light down inside glass. Every one of them lives downstream of the four lines in EQ.01. The next topic, §08.2, takes up the energy and momentum story; §09 walks light into matter and out the other side; §10 hands you the antenna.
+
+Two lines of vector calculus, one identity, one substitution. The whole thing is four moves. And at the end you have derived the existence of electromagnetic radiation, you have identified its speed, you have matched that speed to the measured speed of light, and you have learned that light itself was never a separate phenomenon — it was always a consequence of Coulomb's law meeting Ampère's law meeting the instinct that the two must be symmetric. That instinct belonged to Maxwell. The identity 1/√(μ₀·ε₀) = c belongs to everyone who writes those four equations down.
+
+</Section>
+
+</TopicPageLayout>

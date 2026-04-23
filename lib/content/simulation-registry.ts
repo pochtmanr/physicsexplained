@@ -726,6 +726,160 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   FieldMomentumScene: lazyScene(() =>
     import("@/components/physics/field-momentum-scene").then((m) => ({ default: m.FieldMomentumScene })),
   ),
+
+  // EM §09 — fresnel-equations
+  FresnelCurvesScene: lazyScene(() =>
+    import("@/components/physics/fresnel-curves-scene").then((m) => ({ default: m.FresnelCurvesScene })),
+  ),
+  BrewsterAngleScene: lazyScene(() =>
+    import("@/components/physics/brewster-angle-scene").then((m) => ({ default: m.BrewsterAngleScene })),
+  ),
+  WaterGlassScene: lazyScene(() =>
+    import("@/components/physics/water-glass-scene").then((m) => ({ default: m.WaterGlassScene })),
+  ),
+
+  // EM §09 — diffraction-and-the-double-slit
+  DoubleSlitBuildupScene: lazyScene(() =>
+    import("@/components/physics/double-slit-buildup-scene").then((m) => ({ default: m.DoubleSlitBuildupScene })),
+  ),
+  SingleSlitScene: lazyScene(() =>
+    import("@/components/physics/single-slit-scene").then((m) => ({ default: m.SingleSlitScene })),
+  ),
+  DiffractionGratingScene: lazyScene(() =>
+    import("@/components/physics/diffraction-grating-scene").then((m) => ({ default: m.DiffractionGratingScene })),
+  ),
+
+  // EM §09 — polarization-phenomena
+  MalusLawScene: lazyScene(() =>
+    import("@/components/physics/malus-law-scene").then((m) => ({ default: m.MalusLawScene })),
+  ),
+  BrewsterAngleDemoScene: lazyScene(() =>
+    import("@/components/physics/brewster-angle-demo-scene").then((m) => ({ default: m.BrewsterAngleDemoScene })),
+  ),
+  CalciteBirefringenceScene: lazyScene(() =>
+    import("@/components/physics/calcite-birefringence-scene").then((m) => ({ default: m.CalciteBirefringenceScene })),
+  ),
+
+  // EM §08 — deriving-the-em-wave-equation
+  MaxwellFourLinesScene: lazyScene(() =>
+    import("@/components/physics/maxwell-four-lines-scene").then((m) => ({ default: m.MaxwellFourLinesScene })),
+  ),
+  VacuumWaveScene: lazyScene(() =>
+    import("@/components/physics/vacuum-wave-scene").then((m) => ({ default: m.VacuumWaveScene })),
+  ),
+  SpeedMeasurementScene: lazyScene(() =>
+    import("@/components/physics/speed-measurement-scene").then((m) => ({ default: m.SpeedMeasurementScene })),
+  ),
+
+  // EM §08 — plane-waves-and-polarization
+  PolarizationMorphScene: lazyScene(() =>
+    import("@/components/physics/polarization-morph-scene").then((m) => ({ default: m.PolarizationMorphScene })),
+  ),
+  PolarizationAxisScene: lazyScene(() =>
+    import("@/components/physics/polarization-axis-scene").then((m) => ({ default: m.PolarizationAxisScene })),
+  ),
+  JonesVectorsScene: lazyScene(() =>
+    import("@/components/physics/jones-vectors-scene").then((m) => ({ default: m.JonesVectorsScene })),
+  ),
+
+  // EM §08 — radiation-pressure
+  PhotonMomentumScene: lazyScene(() =>
+    import("@/components/physics/photon-momentum-scene").then((m) => ({ default: m.PhotonMomentumScene })),
+  ),
+  SolarSailScene: lazyScene(() =>
+    import("@/components/physics/solar-sail-scene").then((m) => ({ default: m.SolarSailScene })),
+  ),
+  NicholsRadiometerScene: lazyScene(() =>
+    import("@/components/physics/nichols-radiometer-scene").then((m) => ({ default: m.NicholsRadiometerScene })),
+  ),
+
+  // EM §08 — the-electromagnetic-spectrum
+  SpectrumBandsScene: lazyScene(() =>
+    import("@/components/physics/spectrum-bands-scene").then((m) => ({ default: m.SpectrumBandsScene })),
+  ),
+  FraunhoferLinesScene: lazyScene(() =>
+    import("@/components/physics/fraunhofer-lines-scene").then((m) => ({ default: m.FraunhoferLinesScene })),
+  ),
+  VisibleBandZoomScene: lazyScene(() =>
+    import("@/components/physics/visible-band-zoom-scene").then((m) => ({ default: m.VisibleBandZoomScene })),
+  ),
+
+  // EM §09 — index-of-refraction
+  MediumDelayScene: lazyScene(() =>
+    import("@/components/physics/medium-delay-scene").then((m) => ({ default: m.MediumDelayScene })),
+  ),
+  DispersionTableScene: lazyScene(() =>
+    import("@/components/physics/dispersion-table-scene").then((m) => ({ default: m.DispersionTableScene })),
+  ),
+  GroupVsPhaseScene: lazyScene(() =>
+    import("@/components/physics/group-vs-phase-scene").then((m) => ({ default: m.GroupVsPhaseScene })),
+  ),
+
+  // EM §09 — skin-depth-in-conductors
+  SkinDepthDecayScene: lazyScene(() =>
+    import("@/components/physics/skin-depth-decay-scene").then((m) => ({ default: m.SkinDepthDecayScene })),
+  ),
+  CrossSectionScene: lazyScene(() =>
+    import("@/components/physics/cross-section-scene").then((m) => ({ default: m.CrossSectionScene })),
+  ),
+  CoaxSkinEffectScene: lazyScene(() =>
+    import("@/components/physics/coax-skin-effect-scene").then((m) => ({ default: m.CoaxSkinEffectScene })),
+  ),
+
+  // EM §09 — total-internal-reflection
+  CriticalAngleScene: lazyScene(() =>
+    import("@/components/physics/critical-angle-scene").then((m) => ({ default: m.CriticalAngleScene })),
+  ),
+  FiberOpticTIRScene: lazyScene(() =>
+    import("@/components/physics/fiber-optic-tir-scene").then((m) => ({ default: m.FiberOpticTIRScene })),
+  ),
+  EvanescentWaveScene: lazyScene(() =>
+    import("@/components/physics/evanescent-wave-scene").then((m) => ({ default: m.EvanescentWaveScene })),
+  ),
+
+  // EM §09 — optical-dispersion
+  PrismSpectrumScene: lazyScene(() =>
+    import("@/components/physics/prism-spectrum-scene").then((m) => ({ default: m.PrismSpectrumScene })),
+  ),
+  RainbowFormationScene: lazyScene(() =>
+    import("@/components/physics/rainbow-formation-scene").then((m) => ({ default: m.RainbowFormationScene })),
+  ),
+  AbbeDiagramScene: lazyScene(() =>
+    import("@/components/physics/abbe-diagram-scene").then((m) => ({ default: m.AbbeDiagramScene })),
+  ),
+
+  // EM §09 — geometric-optics
+  FermatPathTimeScene: lazyScene(() =>
+    import("@/components/physics/fermat-path-time-scene").then((m) => ({ default: m.FermatPathTimeScene })),
+  ),
+  ThinLensRayDiagramScene: lazyScene(() =>
+    import("@/components/physics/thin-lens-ray-diagram-scene").then((m) => ({ default: m.ThinLensRayDiagramScene })),
+  ),
+  ConcaveMirrorScene: lazyScene(() =>
+    import("@/components/physics/concave-mirror-scene").then((m) => ({ default: m.ConcaveMirrorScene })),
+  ),
+
+  // EM §09 — interference
+  TwoSourceInterferenceScene: lazyScene(() =>
+    import("@/components/physics/two-source-interference-scene").then((m) => ({ default: m.TwoSourceInterferenceScene })),
+  ),
+  NewtonsRingsScene: lazyScene(() =>
+    import("@/components/physics/newtons-rings-scene").then((m) => ({ default: m.NewtonsRingsScene })),
+  ),
+  ThinFilmScene: lazyScene(() =>
+    import("@/components/physics/thin-film-scene").then((m) => ({ default: m.ThinFilmScene })),
+  ),
+
+  // EM §09 — waveguides-and-fibers
+  StepIndexFiberScene: lazyScene(() =>
+    import("@/components/physics/step-index-fiber-scene").then((m) => ({ default: m.StepIndexFiberScene })),
+  ),
+  NumericalApertureScene: lazyScene(() =>
+    import("@/components/physics/numerical-aperture-scene").then((m) => ({ default: m.NumericalApertureScene })),
+  ),
+  TelecomBandScene: lazyScene(() =>
+    import("@/components/physics/telecom-band-scene").then((m) => ({ default: m.TelecomBandScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
