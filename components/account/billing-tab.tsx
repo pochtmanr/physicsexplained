@@ -3,6 +3,7 @@ import { useState, useTransition } from "react";
 import { UsageMeter } from "./usage-meter";
 import { PlanCards } from "./plan-cards";
 import { OrderHistory } from "./order-history";
+import { openRevolutCheckout } from "@/lib/billing/revolut-client";
 import type { BillingSnapshot } from "@/lib/billing/snapshot";
 import type { PlanId } from "@/lib/billing/plans";
 
@@ -29,7 +30,7 @@ export function BillingTab({ snapshot, orders }: Props) {
       });
       if (!res.ok) { setErr(`Checkout failed (${res.status})`); return; }
       const { publicId } = (await res.json()) as { publicId: string };
-      await openRevolutCheckout(publicId);
+      await openRevolutCheckout(publicId, () => window.location.reload());
     } catch (e) {
       setErr((e as Error).message);
     } finally {
@@ -108,29 +109,3 @@ function StatusPill({ status }: { status: "active" | "past_due" | "canceled" }) 
   );
 }
 
-// Inline loader — extracted into lib/billing/revolut-client.ts in Task 20.
-declare global {
-  interface Window { RevolutCheckout?: (publicId: string, mode: "sandbox" | "prod") => Promise<{ payWithPopup: (opts: Record<string, unknown>) => void }>; }
-}
-
-async function openRevolutCheckout(publicId: string): Promise<void> {
-  if (typeof window === "undefined") return;
-  if (!window.RevolutCheckout) {
-    await new Promise<void>((resolve, reject) => {
-      const s = document.createElement("script");
-      const isProd = process.env.NEXT_PUBLIC_REVOLUT_ENV === "production";
-      s.src = isProd ? "https://merchant.revolut.com/embed.js" : "https://sandbox-merchant.revolut.com/embed.js";
-      s.async = true;
-      s.onload = () => resolve();
-      s.onerror = () => reject(new Error("Failed to load Revolut Checkout"));
-      document.head.appendChild(s);
-    });
-  }
-  const mode = (process.env.NEXT_PUBLIC_REVOLUT_ENV === "production" ? "prod" : "sandbox") as "sandbox" | "prod";
-  const instance = await window.RevolutCheckout!(publicId, mode);
-  instance.payWithPopup({
-    savePaymentMethodFor: "customer",
-    onSuccess() { window.location.reload(); },
-    onError(msg: unknown) { console.error("Revolut error", msg); },
-  });
-}
