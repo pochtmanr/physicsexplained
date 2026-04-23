@@ -1,0 +1,137 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PhotonMomentumScene } from "@/components/physics/photon-momentum-scene";
+import { SolarSailScene } from "@/components/physics/solar-sail-scene";
+import { NicholsRadiometerScene } from "@/components/physics/nichols-radiometer-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Radiation pressure", href: "/dictionary/radiation-pressure-term" },
+  { type: "term", label: "Electromagnetic wave", href: "/dictionary/electromagnetic-wave" },
+  { type: "term", label: "Poynting vector", href: "/dictionary/poynting-vector" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.40 · EM WAVES IN VACUUM"
+  title="ENERGY, MOMENTUM, AND RADIATION PRESSURE"
+  subtitle="Light pushes. Measurably."
+/>
+
+<Section index={1} title="A promise coming due">
+
+Three topics ago, in FIG.37, the Maxwell stress tensor made a quiet promise: electromagnetic fields carry **momentum**, not only energy. The Poynting vector gives you the energy flux, but *field momentum density* g = ε₀(**E** × **B**) is a separate, measurable quantity. Energy comes out in <Term slug="poynting-vector">joules per second per square metre</Term>; momentum comes out in kilogram-metres per second per square metre, which if you stare at the units is the same thing as a **pressure**.
+
+A wave that carries momentum and then meets an obstacle must hand that momentum over. Newton's third law is not a suggestion. The obstacle gets pushed.
+
+This topic is the cash-out. A plane <Term slug="electromagnetic-wave">electromagnetic wave</Term> of intensity I (in W/m²) striking a flat surface at normal incidence exerts a force per unit area — a radiation pressure — whose value is set entirely by what happens to the wave after it hits.
+
+<EquationBlock id="EQ.01">
+  $$ P_{\text{absorber}} = \frac{I}{c}, \qquad P_{\text{reflector}} = \frac{2I}{c}, \qquad P_{\text{partial}} = (1 + \rho)\,\frac{I}{c} $$
+</EquationBlock>
+
+Three lines; we will earn all three before this page ends. The factor of 2 for a mirror is a conservation-of-momentum gift. The ρ ∈ [0, 1] in the third line interpolates — aluminium-coated Mylar lives around ρ ≈ 0.9; freshly evaporated silver can top 0.98; matte black carbon sits near 0.02.
+
+</Section>
+
+<Section index={2} title="Why I/c? The one-line derivation">
+
+The fastest route is through photons, even though Maxwell never needed them.
+
+A photon of energy E carries momentum p = E/c. That is special relativity for any massless particle: E² = (pc)² + (mc²)², and m = 0 leaves p = E/c. A stream of photons delivering energy at rate I per unit area is delivering momentum at rate I/c per unit area. Rate of momentum transfer per unit area is exactly a pressure. Done.
+
+<Callout variant="math">
+You do not actually need quantum mechanics here. The same result falls out of the classical stress tensor. For a plane wave propagating in z-hat, the component T_zz of the Maxwell stress tensor evaluated at the surface of an absorber equals minus the <Term slug="radiation-pressure-term">radiation pressure</Term>: T_zz = −ε₀E²/2 − B²/(2μ₀) = −I/c, where the last equality uses the plane-wave relation u = I/c between energy density and Poynting flux. Maxwell published this in *On Physical Lines of Force* (1862), two decades before the photon existed. The photon argument is a shortcut, not the physics.
+</Callout>
+
+For a mirror the algebra doubles because the photon does not just stop — it reverses. Incoming momentum +p, outgoing momentum −p, so the mirror absorbed Δp = 2p. Every second, per square metre, twice as much momentum as an absorber. Hence P = 2I/c.
+
+<SceneCard caption="FIG.40a — one photon hits either an absorber or a mirror. The surface picks up Δp = p or Δp = 2p respectively." className="w-full">
+  <PhotonMomentumScene />
+</SceneCard>
+
+Interact with the scene and the wavelength slider does what it must: photon momentum p = h/λ scales with how *blue* the light is. Visible green at 550 nm gives p ≈ 1.2 × 10⁻²⁷ kg·m/s per photon — about a million times less momentum than a single room-temperature air molecule carries. One photon does nothing. Many photons per second per square metre, averaged, do Maxwell's pressure.
+
+</Section>
+
+<Section index={3} title="The number at Earth's orbit">
+
+Sunlight at 1 AU is about 1361 W/m² — the "solar constant". Plug it in.
+
+<EquationBlock id="EQ.02">
+  $$ P_{\text{sun, black sheet}} = \frac{1361}{2.998 \times 10^{8}} \approx 4.54\ \mu\text{Pa} $$
+</EquationBlock>
+
+A black sheet of paper in direct sunlight at Earth's distance from the sun is being pushed at about 4.5 **micro**-pascals. For comparison, atmospheric pressure at sea level is 10¹¹ times bigger. You cannot feel this with your skin. You cannot feel it with an analytical balance. You *can* feel it with a torsion balance finer than your patience, which is what Nichols built in 1901.
+
+A mirror at the same distance takes 2I/c ≈ 9 µPa. Still microscopic. Still relentless.
+
+</Section>
+
+<Section index={4} title="Solar sails — turning micropascals into delta-v">
+
+Micropascals are boring on Earth because gravity and friction eat them for breakfast. In a vacuum, with no rocket fuel, with months of exposure time, they are not boring at all.
+
+<PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink>'s 1862 prediction is the theoretical foundation; the engineering enabler is that sunlight delivers force *per unit area*, which means making your spacecraft mostly sail scales the acceleration without scaling the mass.
+
+<EquationBlock id="EQ.03">
+  $$ a_{\text{sail}} \;=\; (1 + \rho)\,\frac{I(r)\,A}{m\,c}, \qquad I(r) \;=\; \frac{L_{\odot}}{4\pi r^{2}} $$
+</EquationBlock>
+
+Two obvious moves: increase A/m (the **area-to-mass ratio**, the defining figure of merit for sails), and go close to the sun where I(r) climbs as 1/r². JAXA's IKAROS (2010) flew a 14 × 14 m aluminized polyimide sail at m/A ≈ 10 g/m²; the Planetary Society's LightSail 2 (2019–2022) sustained measurable orbital boost for years on a CubeSat-scale budget.
+
+<SceneCard caption="FIG.40b — drag the sliders. At 1 kg / 100 m² / ρ = 0.9 the sail produces ~10⁻⁴ m/s² at 1 AU; solar gravity at the same distance is 6 × 10⁻³ m/s². Gravity is still winning — unless you push m down or A up by another factor of ten." className="w-full">
+  <SolarSailScene />
+</SceneCard>
+
+At 1 AU, solar gravity is 5.93 × 10⁻³ m/s². For a sail to overpower gravity — the break-even condition that would let you *spiral out* of the solar system purely by pointing the right way — you need a_sail > g_sun. Solving algebraically:
+
+<EquationBlock id="EQ.04">
+  $$ \frac{A}{m} \;>\; \frac{GM_{\odot}\,c}{(1 + \rho)\,L_{\odot} / (4\pi)} \;\approx\; 780\ \text{m}^{2}/\text{kg}\quad(\rho = 0.9). $$
+</EquationBlock>
+
+Seven hundred and eighty square metres per kilogram. IKAROS had about 36 m²/kg. Breakthrough Starshot's proposed chip-scale "StarChip" targets ~10⁵ m²/kg and would ride a ground-based laser, not sunlight — a different game at a different intensity. For sunlight alone, the bar is brutal, and no one has cleared it yet for a spacecraft that also needs room for cameras, radios, and silicon.
+
+</Section>
+
+<Section index={5} title="Nichols 1901 — the first direct measurement">
+
+Maxwell predicted radiation pressure in 1862. <PhysicistLink slug="james-clerk-maxwell">He</PhysicistLink> did not measure it; he died in 1879 without seeing the confirmation. For thirty-nine years radiation pressure was a mathematical consequence of an already-beautiful theory, waiting for an apparatus delicate enough to pick up a 9 µPa signal against orders of magnitude more thermal noise.
+
+The American physicist Ernest F. Nichols and his collaborator Gordon Ferrie Hull built that apparatus in 1901 at Dartmouth. A fine quartz fibre — thinner than a human hair, carefully annealed — suspended a horizontal bar. On one end of the bar: a silvered glass vane. On the other: a blackened carbon-soot vane, for balance. The whole assembly sealed inside an evacuated glass bulb, pumped down hard with a mercury-diffusion pump.
+
+Focus a carbon-arc lamp onto the silvered vane through a side window. The quartz fibre twists by a microscopic angle. Reflect a light pointer off a tiny mirror on the fibre onto a wall meters away, and that microscopic angle becomes a few centimetres of deflection. Calibrate the fibre's torsion constant against a known force. Read off the pressure. Nichols and Hull got answers within a few percent of Maxwell's prediction; Pyotr Lebedev in Moscow, working simultaneously, published a similar result the same year.
+
+<SceneCard caption="FIG.40c — toggle between Nichols's torsion balance (left) and Crookes's radiometer (right). Same beam, same light, completely different physics." className="w-full">
+  <NicholsRadiometerScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="The Crookes-radiometer myth (do not skip this)">
+
+If you have ever seen a little glass bulb on a Victorian desk with four black-and-white vanes that spin in sunlight, you have seen a Crookes radiometer. Everyone who has ever seen one has been told, at some point, that it is driven by radiation pressure. **This is wrong.**
+
+William Crookes built his radiometer in 1873. At the residual-gas pressure he could actually achieve (about 10 Pa — a soft, not hard, vacuum), radiation pressure is roughly a thousand times too weak to overcome the bearing friction on his axle. More embarrassingly, the vanes spin *the wrong way* for radiation pressure: the blackened face ends up **trailing**, not leading. If radiation pressure were the drive, the reflective face would trail (because it takes twice the momentum per photon) and the black face would lead.
+
+<Callout variant="warning">
+The Crookes radiometer is driven by **thermal transpiration**. The blackened face heats faster than the silvered face because it absorbs more light. The warm face imparts more momentum to residual gas molecules bouncing off it than the cool face does, and the reaction force pushes the warm (black) face *back* — making the black side trail. Evacuate the bulb far below Crookes's ~10 Pa and the rotation stops; no gas, no thermal drive, and radiation pressure alone cannot overcome the bearing friction. This is a pedagogical landmine. In any lecture where someone points to a radiometer and says "radiation pressure," a quiet voice should mutter "at this vacuum, no."
+</Callout>
+
+Nichols's apparatus was much harder to build precisely because he had to push the vacuum far enough that thermal transpiration *stopped* dominating, then measure the genuine µPa-scale radiation signal on a quartz fibre that would flex for free. That is why the gap between Maxwell's 1862 prediction and Nichols's 1901 confirmation is thirty-nine years. The physics was trivial. The apparatus was not.
+
+</Section>
+
+<Section index={7} title="What you earned, what's next">
+
+Two facts from this page are now part of your permanent working vocabulary. First: electromagnetic waves carry momentum at the rate I/c per unit area, delivered as pressure on whatever absorbs them and twice that on whatever reflects them. Second: single photons carry momentum p = E/c, and this is the same fact at the quantum level — Compton scattering (Δλ = (h/m_e c)(1 − cos θ)) is its signature in X-ray physics.
+
+FIG.41 closes §08 with the electromagnetic spectrum — what changes when we sweep λ from kilometres to femtometres and the same wave equation solves radio broadcasts, microwave ovens, visible vision, X-ray imaging, and gamma-ray astronomy. The pressure scales the same way; the interaction with matter does not, which is why §09 begins.
+
+</Section>
+
+</TopicPageLayout>
