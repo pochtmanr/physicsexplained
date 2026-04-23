@@ -9,9 +9,10 @@ interface Props {
   locale: string;
   modelId: string;
   onSettled: (convId: string) => void;
+  onQuotaExhausted?: (reason: "free_quota_exhausted" | "tokens_exhausted" | "past_due") => void;
 }
 
-export function StreamingMessage({ conversationId, message, locale, modelId, onSettled }: Props) {
+export function StreamingMessage({ conversationId, message, locale, modelId, onSettled, onQuotaExhausted }: Props) {
   const [text, setText] = useState("");
   const [tools, setTools] = useState<Array<{ id: string; name: string; status: "running" | "ok" | "error" }>>([]);
   const [err, setErr] = useState<string | null>(null);
@@ -27,6 +28,12 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ conversationId, message, locale, modelId }),
         });
+        if (res.status === 402) {
+          const body = await res.json().catch(() => ({ reason: "tokens_exhausted" as const }));
+          onQuotaExhausted?.(body.reason as "free_quota_exhausted" | "tokens_exhausted" | "past_due");
+          onSettled(conversationId ?? "");
+          return;
+        }
         if (!res.ok || !res.body) {
           const body = await res.text().catch(() => "");
           setErr(`Error ${res.status}: ${body.slice(0, 200)}`);
@@ -70,12 +77,12 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
       }
     })();
     return () => ac.abort();
-  }, [conversationId, message, locale, modelId, onSettled]);
+  }, [conversationId, message, locale, modelId, onSettled, onQuotaExhausted]);
 
   return (
     <div className="mr-auto max-w-2xl">
       {tools.length > 0 && (
-        <div className="flex gap-2 flex-wrap my-2 px-4">
+        <div className="flex gap-2 flex-wrap my-2">
           {tools.map((t) => <ToolBadge key={t.id} name={t.name} status={t.status} />)}
         </div>
       )}
@@ -86,7 +93,16 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
           locale={locale}
         />
       )}
-      {!text && !err && <div className="px-4 py-2 text-sm text-muted-foreground">Thinking…</div>}
+      {!text && !err && (
+        <div className="my-3 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
+          <span>Streaming</span>
+          <span className="inline-flex gap-0.5">
+            <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse [animation-delay:-0.3s]" />
+            <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse [animation-delay:-0.15s]" />
+            <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse" />
+          </span>
+        </div>
+      )}
     </div>
   );
 }
