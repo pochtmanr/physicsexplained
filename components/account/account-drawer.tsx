@@ -30,16 +30,16 @@ export function AccountDrawer({ user, snapshot, orders }: Props) {
       <div className="absolute inset-0 bg-[var(--color-bg-0)]/60 backdrop-blur-sm" onClick={closeDrawer} />
       <aside className="absolute right-0 top-0 h-full w-full md:w-[420px] bg-[var(--color-bg-1)] border-l border-[var(--color-fg-4)] flex flex-col">
         <div className="flex items-center justify-between border-b border-[var(--color-fg-4)] px-4 py-3">
-          <div className="flex gap-2">
+          <div className="inline-flex items-stretch rounded-sm border border-[var(--color-fg-4)] overflow-hidden">
             {(["profile", "billing"] as const).map((t) => (
               <button
                 key={t}
                 type="button"
                 onClick={() => setTab(t)}
-                className={`font-mono text-xs uppercase tracking-wider px-2 py-1 border ${
+                className={`font-mono text-xs uppercase tracking-[0.15em] px-4 py-1.5 transition-colors ${
                   tab === t
-                    ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                    : "border-transparent text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
+                    ? "bg-[var(--color-cyan)] text-[var(--color-bg-0)]"
+                    : "bg-transparent text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/20"
                 }`}
               >
                 {t}

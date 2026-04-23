@@ -4,6 +4,7 @@ import { DeleteConfirm } from "./delete-confirm";
 import { UsageMeter } from "./usage-meter";
 import type { BillingSnapshot } from "@/lib/billing/snapshot";
 import { deleteAllChats, deleteAccount } from "@/app/actions/account";
+import { useAccountDrawer } from "./account-drawer-context";
 
 interface Props {
   user: { id: string; email: string | null; fullName: string | null; avatarUrl: string | null; provider: string; joined: string };
@@ -12,6 +13,7 @@ interface Props {
 
 export function ProfileTab({ user, snapshot }: Props) {
   const [modal, setModal] = useState<"none" | "chats" | "account">("none");
+  const { setTab } = useAccountDrawer();
 
   return (
     <div className="space-y-6">
@@ -32,8 +34,31 @@ export function ProfileTab({ user, snapshot }: Props) {
 
       {snapshot && (
         <section>
-          <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-3">Usage</div>
+          <div className="flex items-baseline justify-between mb-3">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">Usage</div>
+            <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
+              Plan: <span className="text-[var(--color-fg-0)]">{snapshot.plan.label}</span>
+            </div>
+          </div>
           <UsageMeter snapshot={snapshot} />
+          {snapshot.plan.id === "free" && (
+            <button
+              type="button"
+              onClick={() => setTab("billing")}
+              className="mt-4 w-full bg-[var(--color-cyan)] text-[var(--color-bg-0)] px-4 py-2.5 font-mono text-xs uppercase tracking-[0.2em] hover:opacity-90"
+            >
+              Upgrade plan →
+            </button>
+          )}
+          {snapshot.plan.id !== "free" && (
+            <button
+              type="button"
+              onClick={() => setTab("billing")}
+              className="mt-4 w-full border border-[var(--color-cyan-dim)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/10"
+            >
+              Manage subscription →
+            </button>
+          )}
         </section>
       )}
 
