@@ -48,16 +48,16 @@ export async function Nav() {
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("dictionary")}</span>
           </Link>
+          <SearchTrigger />
+          <LocaleSwitcher />
+          <ThemeToggle />
           <Link
             href="/ask"
-            className="nav-link inline-flex items-center gap-2 border border-[var(--color-cyan-dim)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] transition-colors hover:bg-[var(--color-cyan-dim)]/10"
+            className="nav-link inline-flex items-center gap-2 border border-[var(--color-cyan)] bg-[var(--color-cyan)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-bg-0)] transition-colors hover:bg-[var(--color-cyan-dim)] hover:border-[var(--color-cyan-dim)]"
           >
             <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>Ask</span>
           </Link>
-          <SearchTrigger />
-          <LocaleSwitcher />
-          <ThemeToggle />
         </div>
         <MobileNav />
       </div>

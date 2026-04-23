@@ -35,11 +35,6 @@ export function ThemeToggle() {
     }
   };
 
-  const label = mounted
-    ? theme === "dark"
-      ? t("light")
-      : t("dark")
-    : t("initial");
   const IconComponent = mounted ? (theme === "dark" ? Sun : Moon) : Sun;
   const ariaLabel =
     theme === "dark" ? t("switchToLight") : t("switchToDark");
@@ -49,10 +44,9 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={ariaLabel}
-      className="flex items-center gap-2 border border-[var(--color-fg-4)] px-2 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:px-3"
+      className="inline-flex h-8 w-8 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-9 md:w-9"
     >
       <IconComponent aria-hidden="true" size={14} strokeWidth={1.5} />
-      <span className="hidden md:inline">{label}</span>
     </button>
   );
 }
