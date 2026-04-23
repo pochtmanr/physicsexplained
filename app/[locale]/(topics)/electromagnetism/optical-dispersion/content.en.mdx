@@ -1,0 +1,106 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PrismSpectrumScene } from "@/components/physics/prism-spectrum-scene";
+import { RainbowFormationScene } from "@/components/physics/rainbow-formation-scene";
+import { AbbeDiagramScene } from "@/components/physics/abbe-diagram-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Augustin Fresnel", href: "/physicists/augustin-fresnel" },
+  { type: "term", label: "Optical dispersion", href: "/dictionary/optical-dispersion-term" },
+  { type: "term", label: "Abbe number", href: "/dictionary/abbe-number" },
+  { type: "term", label: "Anomalous dispersion", href: "/dictionary/anomalous-dispersion" },
+  { type: "term", label: "Refractive index", href: "/dictionary/refractive-index" },
+  { type: "term", label: "Group velocity (EM)", href: "/dictionary/group-velocity-em" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.46 · WAVES IN MATTER & OPTICS"
+  title="OPTICAL DISPERSION"
+  subtitle="Why a prism splits white light — and why a rainbow has an order."
+/>
+
+<Section index={1} title="A single index is a lie of convenience">
+
+§09.1 handed you a refractive index as one number: n for glass, n for water, a scalar constant that slowed light down and bent it at boundaries. That was a lie of convenience. The real object is a *function* — n(λ) — and in every transparent material, that function is not flat. Red light sees one value, blue sees another, and the difference is the whole story of how a prism works, how a rainbow forms, and why every decent camera lens has between six and sixteen glass elements instead of one.
+
+The microscopic reason, already sketched in <Term slug="refractive-index">§09.1</Term>: bound electrons in the material ring at their own frequencies, and a driven oscillator lags its drive by a phase that depends on how close the drive sits to resonance. Shorter wavelengths sit closer to the electronic UV resonance of most glasses than longer ones, so they accumulate more phase lag per unit length — which is exactly what a higher refractive index *is*. That monotonic slope — n larger for smaller λ, well away from any absorption band — is <Term slug="optical-dispersion-term">**normal dispersion**</Term>. Its sign flips inside an absorption band; the name for that is **anomalous dispersion**. In the visible, crown glass and water and your prescription lenses all live on the normal side.
+
+</Section>
+
+<Section index={2} title="Newton's two prisms, 1672">
+
+Before the microscopic story, the phenomenon. Isaac Newton, 1672, sent sunlight through a hole in his Cambridge shutter onto a glass prism. The emerging beam wasn't a white disc shifted sideways — it was a **spectrum**: a stretched band of red, orange, yellow, green, blue, violet, fanning out by roughly 2°. Prisms had been known for a century; the received opinion, going back to Aristotle, was that the prism *modified* white light — coloured it by some staining action from the glass.
+
+Newton settled that with a second prism. He let the first prism's spectrum fall on a board with a small hole. The hole isolated one colour — a narrow band of red. He passed that monochromatic beam through a second prism. **Nothing changed.** Red stayed red. A second prism cannot split red further, because there is nothing inside red to split. So:
+
+- The first prism *separated* components that were already there.
+- White light is a **composition** of colours, not a featureless substance.
+- Each colour is a monochromatic entity with its own refractive index, and the prism sorts them because n depends on colour.
+
+The second-prism move is the experimental backbone of every dispersion argument since. It is also the first decisive demonstration that a beam of light is an *ensemble* of modes that linear optics can disentangle — the same move, dressed up, is how a diffraction grating works and how Fraunhofer read the absorption lines of the Sun in 1814.
+
+<SceneCard caption="FIG.46 — white ray in, rainbow out. Each wavelength sees its own n from a Cauchy fit, so each colour refracts through its own geometry. Slide A and B to see a flinty-wide spread or a crown-tight bundle." className="w-full">
+  <PrismSpectrumScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Cauchy's fit, and Abbe's number">
+
+Augustin Cauchy, 1836, wanted a formula. He noticed that across the visible — well away from the ultraviolet resonance — n(λ) is well-approximated by a short power series in 1/λ²:
+
+<EquationBlock id="EQ.01">
+  $$ n(\lambda) \;=\; A \;+\; \frac{B}{\lambda^{2}} \;+\; \frac{C}{\lambda^{4}} \;+\; \ldots $$
+</EquationBlock>
+
+Two terms are plenty for most optical glasses — C vanishes at the precision of handbook tables, and even for steep flints the cubic term is a small correction. The coefficients are pure fits: A is the asymptotic index at infinite wavelength, B encodes the curvature, and they are tabulated in every glass catalogue to four decimal places. Schott's N-BK7 crown glass, for example, lives at (A, B) = (1.5046, 4.2×10⁻³ µm²) — plug in λ = 589 nm (the sodium D line, the classical reference) and you get n = 1.517, exactly the handbook value. That is the calculation the prism scene above runs, once per wavelength.
+
+To talk about how *strongly* a glass disperses without the two-coefficient chatter, opticians use a single scalar — Ernst **Abbe's number**:
+
+<EquationBlock id="EQ.02">
+  $$ V_{d} \;=\; \frac{n_{d} - 1}{n_{F} - n_{C}} $$
+</EquationBlock>
+
+The three reference wavelengths are Fraunhofer's d-line (helium, 587.6 nm), F-line (hydrogen, 486.1 nm), and C-line (hydrogen, 656.3 nm). The numerator is the index's departure from vacuum; the denominator is the index's spread across the visible. **Higher V = weaker dispersion.** Crowns cluster near V ≈ 60; dense flints near V ≈ 25. A lens designer needs both numbers to pick a glass: n for the focusing power, V for the colour discipline.
+
+<SceneCard caption="The Abbe diagram — one point per catalogue glass, plotted n_d (vertical) against V_d (horizontal, decreasing to the right). Hover a point to read the family, the chemistry, and the numbers." className="w-full">
+  <AbbeDiagramScene />
+</SceneCard>
+
+The families are chemistry: crowns are silicate plus alkali (K, Na) plus B₂O₃; flints add lead oxide, which raises n but drops V because the heavy Pb atoms put their resonances closer to the visible. Lanthanum glasses swap in La₂O₃ and sit at high n with surprisingly high V — focusing power without the chromatic penalty of lead. Fluorite (CaF₂) is the aristocrat: V ≈ 95, vanishing dispersion, which is why high-end telephoto lenses list "one element of fluorite" in their specs at eye-watering markup.
+
+An **achromatic doublet** pairs a positive crown with a negative flint so the focal lengths add but first-order chromatic aberration cancels. The Dollond condition (1758): f_crown · V_flint = −f_flint · V_crown — two Abbe numbers glued together by a sign.
+
+</Section>
+
+<Section index={4} title="The rainbow has an order — here's why">
+
+The clearest confirmation of all of this is overhead, roughly once per rain shower. A rainbow is a <Term slug="optical-dispersion-term">dispersion</Term> experiment at cloud scale: millions of ~1 mm spheres of water, each one acting as a miniature prism that also reflects internally. The geometry was solved by René Descartes in 1637 and polished by Newton.
+
+Trace a ray into a spherical drop. It refracts at the front surface (air → water), reflects once off the back, and refracts out the front again (water → air). The total **deviation** — the angle between the outgoing and incoming rays — is a function of the impact parameter b (how far off-centre the ray enters). Descartes computed D(b) and found it has a **minimum** at cos²θ_i = (n² − 1)/3, where θ_i is the angle of incidence at the first surface. At that minimum, drops at many different impacts all send light into the same exit angle — a *caustic*, a piling-up of rays that makes the bow bright only near one specific angle from the antisolar point.
+
+For n = 1.333 (red), that angle is ≈ 42.4°. For n = 1.344 (violet), it is ≈ 40.5°. Red ends up on the **outside** of the arc; violet on the **inside**. That is the primary rainbow.
+
+The **secondary rainbow**, visible on perhaps one bow in three, comes from rays that reflect *twice* off the back before exiting. An extra bounce changes the Descartes formula to cos²θ_i = (n² − 1)/8, which gives ≈ 51° for water. The colour order is **reversed** — red on the inside, violet on the outside — because the second bounce flips the sorting. The dark gap between the two bows is Alexander's dark band: no geometry sends primary or secondary rays into it.
+
+<SceneCard caption="A spherical raindrop. Solid rays take the primary path (one internal reflection, ≈ 42°). Dashed rays take the secondary path (two internal reflections, ≈ 51°). Watch the colour order flip." className="w-full">
+  <RainbowFormationScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Where this connects">
+
+This is the chromatic specialisation of a much more general idea. In <Term slug="group-velocity-em">classical mechanics §23 — dispersion and group velocity</Term> you met dispersion as the statement that ω(k) is not linear: a pulse spreads because its Fourier components travel at different speeds. Optical dispersion is *exactly* that, with the wavelength dependence packed into n(λ) and reflected into ω(k) via k = n(λ)·ω/c. Near an absorption band, anomalous dispersion can briefly send the phase velocity above c — not a relativity violation, because the signal velocity stays ≤ c.
+
+Downstream: achromats and apochromats in §09.6 geometric optics, and the fact that fibre-optic cable budgets include a "chromatic dispersion" line-item because a pulse that starts Gaussian at the transmitter arrives smeared at the receiver after 100 km of silica. A prism separates colours because n depends on λ; a lens softens an image because the same does; a rainbow paints the sky because a raindrop is just a sphere of material that won't treat red and violet the same way.
+
+</Section>
+
+</TopicPageLayout>
