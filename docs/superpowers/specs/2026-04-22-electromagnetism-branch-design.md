@@ -1,7 +1,7 @@
 # Electromagnetism — Branch Design
 
 **Date:** 2026-04-22
-**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23; §06 + §07 shipped 2026-04-23
+**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23; §06 + §07 shipped 2026-04-23; §08 + §09 shipped 2026-04-23
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:351-361`.
@@ -318,12 +318,12 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §05 Electrodynamics & induction | 5 | 5 | ☑ complete |
 | §06 Circuits | 7 | 7 | ☑ complete |
 | §07 Maxwell's equations | 5 | 5 | ☑ complete |
-| §08 EM waves in vacuum | 4 | 0 | ☐ not started |
-| §09 Waves in matter & optics | 10 | 0 | ☐ not started |
+| §08 EM waves in vacuum | 4 | 4 | ☑ complete |
+| §09 Waves in matter & optics | 10 | 10 | ☑ complete |
 | §10 Radiation | 6 | 0 | ☐ not started |
 | §11 EM & relativity | 5 | 0 | ☐ not started |
 | §12 Foundations | 4 | 0 | ☐ not started |
-| **Total** | **66** | **37** | **56% complete** |
+| **Total** | **66** | **51** | **77% complete** |
 
 ### Per-topic checklist
 
@@ -381,22 +381,22 @@ Check off as each topic ships.
 - [x] 37 `maxwell-stress-tensor`
 
 **§08 EM waves in vacuum**
-- [ ] 38 `deriving-the-em-wave-equation`
-- [ ] 39 `plane-waves-and-polarization`
-- [ ] 40 `radiation-pressure`
-- [ ] 41 `the-electromagnetic-spectrum`
+- [x] 38 `deriving-the-em-wave-equation`
+- [x] 39 `plane-waves-and-polarization`
+- [x] 40 `radiation-pressure`
+- [x] 41 `the-electromagnetic-spectrum`
 
 **§09 Waves in matter & optics**
-- [ ] 42 `index-of-refraction`
-- [ ] 43 `skin-depth-in-conductors`
-- [ ] 44 `fresnel-equations`
-- [ ] 45 `total-internal-reflection`
-- [ ] 46 `optical-dispersion`
-- [ ] 47 `geometric-optics`
-- [ ] 48 `interference`
-- [ ] 49 `diffraction-and-the-double-slit`
-- [ ] 50 `polarization-phenomena`
-- [ ] 51 `waveguides-and-fibers`
+- [x] 42 `index-of-refraction`
+- [x] 43 `skin-depth-in-conductors`
+- [x] 44 `fresnel-equations`
+- [x] 45 `total-internal-reflection`
+- [x] 46 `optical-dispersion`
+- [x] 47 `geometric-optics`
+- [x] 48 `interference`
+- [x] 49 `diffraction-and-the-double-slit`
+- [x] 50 `polarization-phenomena`
+- [x] 51 `waveguides-and-fibers`
 
 **§10 Radiation**
 - [ ] 52 `larmor-formula`
