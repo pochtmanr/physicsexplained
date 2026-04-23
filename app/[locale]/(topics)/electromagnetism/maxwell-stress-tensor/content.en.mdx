@@ -1,0 +1,135 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { StressTensorFacesScene } from "@/components/physics/stress-tensor-faces-scene";
+import { FieldPressureScene } from "@/components/physics/field-pressure-scene";
+import { FieldMomentumScene } from "@/components/physics/field-momentum-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Michael Faraday", href: "/physicists/michael-faraday" },
+  { type: "term", label: "Maxwell stress tensor", href: "/dictionary/maxwell-stress-tensor" },
+  { type: "term", label: "Field momentum", href: "/dictionary/field-momentum" },
+  { type: "term", label: "Radiation pressure", href: "/dictionary/radiation-pressure-term" },
+  { type: "term", label: "Back-reaction", href: "/dictionary/back-reaction" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.37 · MAXWELL'S EQUATIONS"
+  title="MOMENTUM AND THE MAXWELL STRESS TENSOR"
+  subtitle="Fields carry momentum — and push on what they touch."
+/>
+
+<Section index={1} title="If fields carry energy, why not momentum?">
+
+In §07.4 the <Term slug="poynting-vector">Poynting vector</Term> carried energy across empty space. Sunlight warms a thermometer; a radio wave heats a resistor. Energy has a direction of flow and a density per cubic metre — real, locatable stuff.
+
+Momentum is conserved too. When a flashlight beam lands on a sheet of paper and the paper absorbs it, the energy becomes heat — and Newton's second law insists the paper must recoil. A laser pointer on your palm deposits roughly `6 nN`. Small, but real. The photon is momentum in a red envelope. Which means, between being emitted and absorbed, that momentum was stored in the **field**. Energy and momentum live in the same place.
+
+This is the last move §07 makes: we write down the bookkeeping for how <Term slug="electromagnetic-field">electromagnetic fields</Term> carry momentum, and every clean result from mechanics — Newton's third law, conservation of momentum, the idea of stress — extends out of matter into pure fields. <PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink>, in his *Treatise* (1873), wrote the tensor down before anyone had measured the force. He called it "tension along lines of force, pressure across them" — <PhysicistLink slug="michael-faraday">Faraday's</PhysicistLink> mechanical intuition, now algebraically exact.
+
+</Section>
+
+<Section index={2} title="The stress tensor">
+
+A stress tensor is a 3×3 matrix `T_ij` that books-keeps the **flow of momentum** through surfaces. The number `T_ij` reads as: "the rate at which the j-component of momentum crosses a surface whose outward normal points along î, per unit area." Diagonal entries `T_ii` are **normal stresses** (pressure if they push inward, tension if they pull outward). Off-diagonal entries `T_ij` for `i ≠ j` are **shears**.
+
+For the electromagnetic field in vacuum, <PhysicistLink slug="james-clerk-maxwell">Maxwell's</PhysicistLink> expression is:
+
+<EquationBlock id="EQ.01">
+  <span className="font-mono text-lg">T_ij = ε₀ (E_i E_j − ½ δ_ij E²) + (1/μ₀) (B_i B_j − ½ δ_ij B²)</span>
+</EquationBlock>
+
+Read it in two parts. The electric part `ε₀(E_i E_j − ½ δ_ij E²)` is everything the E field contributes; the magnetic part is the same formula with `E → B` and `ε₀ → 1/μ₀`. The Kronecker delta `δ_ij` is `1` when the indices match and `0` otherwise — it's the bookkeeping symbol that subtracts the "isotropic half" from the diagonal.
+
+<Callout variant="intuition">
+Along a field line: the diagonal component `T_ii` with `î` parallel to `E` is `+½ε₀E²` — **positive**. The field line pulls the two end faces of a small cube toward each other, like a stretched rubber band.
+
+Across a field line: the diagonal component `T_jj` with `ĵ` perpendicular to `E` is `−½ε₀E²` — **negative**. The field line pushes the side faces apart, like packed balloons.
+
+Tension along, pressure across. That's the whole picture in words.
+</Callout>
+
+<SceneCard caption="FIG.37a — tilt E and watch which faces feel tension, pressure, and shear. The <Term slug='maxwell-stress-tensor'>Maxwell stress tensor</Term> makes Faraday's mechanical picture literal." className="w-full">
+  <StressTensorFacesScene />
+</SceneCard>
+
+The force per unit volume on matter in this field is the divergence of `T_ij` (plus a small `−∂g/∂t` correction when things vary in time). Stress in, force out — the same arithmetic as elastic continua. The field has become a medium with its own elastic properties, and all we did was write a 3×3 matrix of quadratic combinations of `E` and `B`.
+
+</Section>
+
+<Section index={3} title="Field momentum density">
+
+Alongside the stress tensor lives a second quantity: the **field momentum density**, `g`. This is the momentum stored per unit volume in the field itself. The expression is:
+
+<EquationBlock id="EQ.02">
+  <span className="font-mono text-lg">g = ε₀ · (E × B) = S / c²</span>
+</EquationBlock>
+
+It points in the direction the field is carrying energy (because `S = (1/μ₀)·E × B` does, and `g` is the same cross product scaled down by `ε₀μ₀ = 1/c²`). Its magnitude is tiny — sunlight's energy flux of `1361 W/m²` corresponds to a momentum density of about `1.5 × 10⁻¹⁴ kg/(m²·s)` — but over time and volume it adds up to real, measurable effects.
+
+<SceneCard caption="FIG.37b — a plane-wave packet. E (magenta), B (cyan) and the energy flux S (amber) travel together; <Term slug='field-momentum'>field momentum</Term> g = S/c² (lilac) points the same way." className="w-full">
+  <FieldMomentumScene />
+</SceneCard>
+
+Two checks the scene makes visual. First, `E × B` points along the beam — right-hand rule with E vertical and B into the page. Second, `g` is not separate from `S`; they are two names for the same stuff related by a factor of `c²`. You've met `S` first for historical reasons: energy flow was discovered before momentum flow, and the `c²` is large enough that momentum effects were hard to see with Victorian instruments.
+
+</Section>
+
+<Section index={4} title="Radiation pressure">
+
+Fold the stress tensor and the momentum density into a single sentence: **a wave that delivers energy flux `I` to a surface also delivers a momentum flux of `I/c`.** Conservation of momentum then requires the surface to push back with the same flux — a pressure.
+
+<EquationBlock id="EQ.03">
+  <span className="font-mono text-lg">P_absorber = I / c</span>
+</EquationBlock>
+
+That's the pressure on a perfectly black (perfectly absorbing) surface. If the surface is instead a perfect mirror, the photons bounce back with their momentum reversed, so the total momentum change is **doubled**:
+
+<EquationBlock id="EQ.04">
+  <span className="font-mono text-lg">P_reflector = 2 I / c</span>
+</EquationBlock>
+
+This is the quantity spaceflight engineers call <Term slug="radiation-pressure-term">radiation pressure</Term>. At Earth-orbit sunlight (`I ≈ 1361 W/m²`), the reflector formula gives roughly `9.1 µPa`. That's a millionth the pressure of a light breeze — ignore it in a bridge truss, budget for it in a space telescope's pointing system.
+
+<SceneCard caption="FIG.37c — laser onto a perfect mirror. Slide intensity from Lebedev's tabletop regime up to pulsed-laser territory." className="w-full">
+  <FieldPressureScene />
+</SceneCard>
+
+The `1/c` is why we discovered radiation pressure late. Divide a respectable sunlight flux by the speed of light and you get micropascals; divide by the speed of sound and you'd get reasonable pressures — but light goes a million times faster than sound, so the conversion factor is brutal. Kepler guessed radiation pressure was why comet tails point away from the Sun (1619) — he was right for the *dust* tails, centuries before the physics was in place.
+
+</Section>
+
+<Section index={5} title="Solar sails, IKAROS, and the Lebedev experiment">
+
+Radiation pressure became a lab fact on <PhysicistLink slug="james-clerk-maxwell">Maxwell's</PhysicistLink> terms in 1900. Pyotr Lebedev, in Moscow, built a torsion balance with a pair of thin mica vanes — one side blackened, the other silvered — suspended in a high vacuum. Carbon-arc light focused on the silvered vane deflected the balance by microradians. He read the deflection with a mirror and a scale; the numbers agreed with `P = 2I/c` to within experimental error. Fields push on mirrors. Confirmed.
+
+The engineering version arrived a century later. In May 2010, JAXA launched **IKAROS** — Interplanetary Kite-craft Accelerated by Radiation Of the Sun — a 14-metre square aluminized polyimide sail massing 310 kg total. On the way to Venus, with no propellant burned, sunlight alone changed its orbital velocity by roughly `100 m/s`. The acceleration at 1 AU was about `6 × 10⁻⁵ m/s²` — feeble, but free, and cumulative. The Planetary Society's LightSail-2 (2019) followed with a similar demonstration in Earth orbit.
+
+The math: a sail of area `A`, mass `m`, reflectivity `ρ`, at distance `r` from the Sun, accelerates at `a = (1 + ρ) · I(r) · A / (m c)` with `I(r) = L☉ / (4πr²)`. Slide the sail toward `0.3 AU` (Mercury's orbit) and the number climbs by `1/0.3² ≈ 11×`. Solar sails want to be close to the Sun.
+
+</Section>
+
+<Section index={6} title="Field momentum in static cases">
+
+Here is the subtlest case. Place a stationary charge `q` next to a stationary magnetic dipole `m`. Nothing moves, nothing emits. No Poynting flux crosses a large sphere around the pair. So where's the momentum?
+
+Compute `g = ε₀·E × B` everywhere around the two. The charge's E-field, crossed with the dipole's B-field, gives a nonzero density at nearly every point. Integrate over all space — the total is **not zero**.
+
+Static momentum stored in the field between static objects. If you suddenly extinguish the dipole's current, that stored momentum has to go somewhere — and it shows up as mechanical momentum in the wire, kicked into motion by an induced E-field that is exactly the <Term slug="back-reaction">back-reaction</Term> of the vanishing field momentum. What looks like a free kick is paid for by the field's bookkeeping. This classical "hidden momentum" effect is one of the clean tests that convinced people the stress tensor is not a formal device — it is the actual accountant for Newton's third law when pieces of the system live in empty space.
+
+</Section>
+
+<Section index={7} title="The unification you just earned">
+
+Five topics in §07 and electromagnetism is now a complete, self-consistent **field theory**. §07.1 found the <Term slug="displacement-current">displacement current</Term> that patches <PhysicistLink slug="andre-marie-ampere">Ampère's</PhysicistLink> law. §07.2 consolidated the result into four equations that fit on a postcard. §07.3 showed the potentials `(φ, A)` are not unique but the physics is — <Term slug="gauge-invariance">gauge freedom</Term>. §07.4 discovered that energy flows locally through space as `S = (1/μ₀)·E × B`. And this page closes the loop: momentum flows too, at `S/c²`, and the matter-field system obeys Newton's third law once `T_ij` is in the accounting.
+
+What we get next for free: <Term slug="electromagnetic-wave">light</Term>. Take Maxwell's equations in a source-free region, take a curl, and the wave equation falls out with speed `c = 1/√(ε₀μ₀) = 299,792,458 m/s` — the speed of light, from electricity and magnetism alone. §08 turns that crank.
+
+</Section>
+
+</TopicPageLayout>

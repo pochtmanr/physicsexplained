@@ -715,6 +715,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   AntennaRadiationPatternScene: lazyScene(() =>
     import("@/components/physics/antenna-radiation-pattern-scene").then((m) => ({ default: m.AntennaRadiationPatternScene })),
   ),
+
+  // EM §07 — maxwell-stress-tensor
+  StressTensorFacesScene: lazyScene(() =>
+    import("@/components/physics/stress-tensor-faces-scene").then((m) => ({ default: m.StressTensorFacesScene })),
+  ),
+  FieldPressureScene: lazyScene(() =>
+    import("@/components/physics/field-pressure-scene").then((m) => ({ default: m.FieldPressureScene })),
+  ),
+  FieldMomentumScene: lazyScene(() =>
+    import("@/components/physics/field-momentum-scene").then((m) => ({ default: m.FieldMomentumScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
