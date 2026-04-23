@@ -1,0 +1,142 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MalusLawScene } from "@/components/physics/malus-law-scene";
+import { BrewsterAngleDemoScene } from "@/components/physics/brewster-angle-demo-scene";
+import { CalciteBirefringenceScene } from "@/components/physics/calcite-birefringence-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "David Brewster", href: "/physicists/david-brewster" },
+  { type: "physicist", label: "Augustin Fresnel", href: "/physicists/augustin-fresnel" },
+  { type: "physicist", label: "Willebrord Snell", href: "/physicists/willebrord-snell" },
+  { type: "term", label: "Polarization (optical)", href: "/dictionary/polarization" },
+  { type: "term", label: "Linear polarization", href: "/dictionary/linear-polarization" },
+  { type: "term", label: "Circular polarization", href: "/dictionary/circular-polarization" },
+  { type: "term", label: "Malus's law", href: "/dictionary/malus-law" },
+  { type: "term", label: "Brewster's angle", href: "/dictionary/brewster-angle" },
+  { type: "term", label: "Birefringence", href: "/dictionary/birefringence" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.50 · WAVES IN MATTER & OPTICS"
+  title="POLARIZATION, BREWSTER, AND BIREFRINGENCE"
+  subtitle="When the direction the field points starts to matter."
+/>
+
+<Section index={1} title="A wave has two transverse directions, and it uses them">
+
+A light wave is a transverse thing: the electric field **E** sits in the plane perpendicular to the direction of travel, with the magnetic field **B** at ninety degrees to both. That leaves E two independent directions inside its transverse plane, and the ratio and phase of those two components is what we call <Term slug="polarization">polarisation</Term>. Vertical linear, horizontal linear, 45° diagonal, right-handed circular, left-handed circular, elliptical — all of these are legal polarisation states, and ordinary sunlight is an incoherent soup of all of them simultaneously.
+
+Your eye cannot tell them apart. Most detectors cannot either — a photodiode averages |E|² over many cycles and throws the polarisation away. But anisotropic matter sees the whole picture. A polarising filter, a glass interface at the right angle, a crystal of calcite: each of these treats the two transverse directions *differently*, and that difference is what this topic is about. Three phenomena, one theme — what happens when the direction the field points starts to matter.
+
+</Section>
+
+<Section index={2} title="Malus's law — the cos² that controls every polariser">
+
+The simplest measurement you can make on a polarised beam is to stick another polariser in front of it. If the two transmission axes are aligned, everything gets through; if they are crossed at 90°, nothing does. In between, the fraction that makes it through is given by Malus's law:
+
+<EquationBlock id="EQ.01">
+  $$ I(\theta) \;=\; I_0 \cos^2\theta $$
+</EquationBlock>
+
+Étienne-Louis Malus wrote this down in 1809 after watching sunset reflections off the windows of the Luxembourg Palace through a calcite rhomb and noticing that one of the two images came and went as he rotated his view. The proof is a single-line projection: a linear polariser with axis n̂ transmits only the component E·n̂ of the incident field, so the transmitted amplitude is |E| cosθ, and intensity is amplitude squared.
+
+<SceneCard caption="FIG.50a — linearly polarised light passes through a rotating analyser. Move the slider to watch I(θ) trace cos²θ. At 0° everything passes; at 45° exactly half; at 90° nothing." className="w-full">
+  <MalusLawScene />
+</SceneCard>
+
+Two operational consequences fall out immediately. First, an **unpolarised** input beam through a single linear polariser gives I₀/2 — averaging cos²θ over a uniform distribution of input polarisations gives 1/2, independent of the polariser's axis. Second, if you hand-roll a polariser out of anything that satisfies Malus's law — a wire grid, a stretched polymer sheet, a Glan–Thompson prism, a stack of glass plates at Brewster — it behaves identically once you write the transmission as cos²θ.
+
+</Section>
+
+<Section index={3} title="The three-polariser trick (the one that feels wrong)">
+
+Here is a party trick that still catches physics undergraduates out. Take two crossed polarisers — axes at 0° and 90°. Shine unpolarised light at them. Nothing gets through: the first polariser picks out the vertical component (I₀/2), and the second blocks it entirely (cos²90° = 0). That matches intuition.
+
+Now insert a *third* polariser between them, with its axis at 45°. And light comes through.
+
+The bookkeeping is just three applications of Malus:
+
+<EquationBlock id="EQ.02">
+  $$ I_{\text{out}} \;=\; \frac{I_0}{2} \cdot \cos^2(45^\circ) \cdot \cos^2(45^\circ) \;=\; \frac{I_0}{8}. $$
+</EquationBlock>
+
+The first polariser halves the intensity and outputs vertically polarised light. The middle polariser *projects* that onto its 45° axis — discarding half the amplitude, a quarter of the intensity — and the light that emerges is *now polarised at 45°*, not vertically. The last polariser sees a beam polarised 45° from its own axis, so it transmits cos²(45°) = 1/2 again. Total: I₀/8.
+
+The middle polariser is not passive; it *rotates the polarisation state* by projecting and re-emitting. You cannot add more polarisers and remove light that was blocked — each projection is irreversible — but you can insert them to create polarisation components that did not exist a moment earlier. Each polariser is both a filter and a basis rotation.
+
+</Section>
+
+<Section index={4} title="Brewster's angle — the polariser you get for free from a window">
+
+§09.3 proved that at the <Term slug="brewster-angle">Brewster angle</Term>
+
+<EquationBlock id="EQ.03">
+  $$ \theta_B \;=\; \arctan(n_2 / n_1) $$
+</EquationBlock>
+
+the p-polarisation reflectance vanishes identically. Translation: a beam reflected off a dielectric surface at θ_B is *purely s-polarised*. Air → crown glass (n = 1.5) gives 56.3°; air → water (n = 1.33) gives 53.1°. <PhysicistLink slug="david-brewster">David Brewster</PhysicistLink> found the rule empirically in 1815 by painstaking measurement across dozens of materials; <PhysicistLink slug="augustin-fresnel">Fresnel</PhysicistLink> derived it a few years later from the boundary-condition algebra <PhysicistLink slug="willebrord-snell">Snell</PhysicistLink>'s law supplies.
+
+The photographer's upgrade follows directly. Point a camera at a lake, a car windshield, a shop window — anything flat and dielectric, lit obliquely. The glare is reflected light near Brewster's angle, and by the time it reaches your lens it is almost entirely s-polarised with its E-vector parallel to the reflecting surface (i.e. horizontal off a puddle). Screw a linear polariser onto the lens with its transmission axis vertical, and the glare disappears. Rotate the polariser 90° and the glare comes back at full intensity.
+
+<SceneCard caption="FIG.50b — an unpolarised beam hits a surface at Brewster's angle. The reflected beam is nearly pure s-polarisation. Rotate the polariser on the camera to watch the 'photograph' dim as the glare vanishes." className="w-full">
+  <BrewsterAngleDemoScene />
+</SceneCard>
+
+The same trick runs in every laser built with a Brewster-window gas tube, every polarising beamsplitter, and every piece of anti-glare eyewear ever sold. It is probably the most valuable angle in applied optics.
+
+</Section>
+
+<Section index={5} title="Birefringence — one ray in, two rays out">
+
+Now glue up a crystal in which the electrons are bound more stiffly in one direction than in another. An **anisotropic** dielectric no longer has a single refractive index — it has *two*, depending on which way the wave's E-vector happens to point. Calcite is the textbook example. Along its *optic axis* the index is n_e = 1.486; perpendicular to it the index is n_o = 1.658. Two indices in one crystal: this is <Term slug="birefringence">birefringence</Term>.
+
+An unpolarised ray entering calcite splits. The component of E perpendicular to the plane containing the optic axis (the *ordinary ray*, o-ray) refracts with n_o by plain Snell's law. The component parallel to that plane (the *extraordinary ray*, e-ray) refracts with n_e, which is *different*. The two rays take separate internal paths and emerge from the opposite face displaced laterally from each other by
+
+<EquationBlock id="EQ.04">
+  $$ \Delta x \;=\; d \cdot \big[\,\tan\theta_o - \tan\theta_e\,\big], $$
+</EquationBlock>
+
+for a slab of thickness d. A 1 mm plate of calcite at 60° incidence splits by about 0.1 mm — visible to the naked eye as a crisp double image of anything you put behind it.
+
+<SceneCard caption="FIG.50c — calcite slab, unpolarised light in, two rays out. Tilt the crystal; watch Δx grow from zero at normal incidence." className="w-full">
+  <CalciteBirefringenceScene />
+</SceneCard>
+
+Birefringence is not esoteric. The stress-induced version — where mechanical strain produces a tiny Δn — is how engineers read out stress patterns in transparent plastics with crossed polarisers. Liquid-crystal displays modulate birefringence with an applied voltage to turn pixels on and off. The Nicol prism (two calcite wedges glued together) is the historical ancestor of every polariser on every modern camera.
+
+</Section>
+
+<Section index={6} title="Wave plates — from linear to circular in one flat slab">
+
+Inside a birefringent slab the o-ray and e-ray travel at different phase velocities (c/n_o vs c/n_e), so after a thickness d they pick up a relative phase shift
+
+<EquationBlock id="EQ.05">
+  $$ \Delta\varphi \;=\; \frac{2\pi}{\lambda}\,(n_e - n_o)\,d. $$
+</EquationBlock>
+
+Cut the slab so Δφ = π/2 and you get a **quarter-wave plate**. Send linearly polarised light at 45° to the crystal axes through it: the two equal-amplitude components emerge 90° out of phase, which is the definition of <Term slug="circular-polarization">circular polarisation</Term>. Pass circular light back through the same plate and you get linear out. Cut the slab twice as thick (Δφ = π) and you have a **half-wave plate**, which flips linear polarisation through 2α around the fast axis — the polariser's equivalent of a mirror.
+
+For quartz (Δn ≈ 0.009) at λ = 550 nm the quarter-wave thickness is 550 / (4·0.009) ≈ 15.3 µm. That single 15-micron chip is how a CD player reads circularly polarised light off a reflective disc without the outgoing beam walking back into the laser, and how every 3D cinema distinguishes the two eye-channels. It is also — in cheaper plastic incarnations — the polariser-flipping film inside every LCD.
+
+<Callout tone="info">
+The circular polarisation conversion is reversible: a quarter-wave plate turns linear into circular, and circular back into linear. Put a linear polariser behind the plate rotated 90° from the input and you will block nothing; rotate it to match the input and you block circular light oriented the other way. Every bit of 3D-glasses engineering follows from that.
+</Callout>
+
+</Section>
+
+<Section index={7} title="The picture behind all three">
+
+Three phenomena, one physical statement: light carries a direction in the transverse plane, and matter that is itself *directional* — a polariser's preferred axis, an interface's plane of incidence, a crystal's optic axis — couples to that direction. Malus's law is what happens when you project onto a single axis. Brewster's angle is what happens when the radiation-reaction geometry picks a unique null for one of the two channels. Birefringence is what happens when the bound electrons of a crystal respond more stiffly in one direction than in another, and the two polarisation channels literally travel at different speeds through the same material.
+
+Downstream of this topic are two practical worlds. The first is instrumentation: polarising microscopes that read mineral identity off a thin section, stress-photoelasticity rigs that visualise the load paths inside a plastic hook, ellipsometers that measure a 10 nm oxide layer by timing the phase shift it imparts to a reflected beam. The second is display: every LCD panel you have ever looked at is a voltage-controlled birefringent layer sandwiched between crossed polarisers, turning the three-polariser trick into pixels you can read in daylight. Under the hood it is all Malus, all Brewster, all Fresnel, all <PhysicistLink slug="david-brewster">Brewster</PhysicistLink> and <PhysicistLink slug="augustin-fresnel">Fresnel</PhysicistLink>.
+
+Light was transverse all along; matter just finally noticed.
+
+</Section>
+
+</TopicPageLayout>
