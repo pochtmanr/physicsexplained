@@ -6,7 +6,8 @@
     "subtitle": "From pendulums to planets — real physics, real simulations, no videos.",
     "ctaPrimary": "Start with classical mechanics →",
     "ctaSecondary": "Or browse all six branches ↓",
-    "figLabel": "РИС.01 · ЭПИЦИКЛ"
+    "fig1Label": "РИС.01 · ЭПИЦИКЛ",
+    "fig2Label": "РИС.02 · СИММЕТРИЯ И СОХРАНЕНИЕ"
   },
   "branches": {
     "tag": "§ BRANCHES"

@@ -6,7 +6,8 @@
     "subtitle": "Physics isn't just formulas. It's the language the universe speaks. We made it visible.",
     "ctaPrimary": "Start with classical mechanics",
     "ctaSecondary": "Or browse all six branches",
-    "figLabel": "FIG.01 · THE EPICYCLE"
+    "fig1Label": "FIG.01 · THE EPICYCLE",
+    "fig2Label": "FIG.02 · SYMMETRY & CONSERVATION"
   },
   "branches": {
     "tag": "§ BRANCHES",
