@@ -1,0 +1,154 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FresnelCurvesScene } from "@/components/physics/fresnel-curves-scene";
+import { BrewsterAngleScene } from "@/components/physics/brewster-angle-scene";
+import { WaterGlassScene } from "@/components/physics/water-glass-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Augustin Fresnel", href: "/physicists/augustin-fresnel" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Fresnel equations", href: "/dictionary/fresnel-equations" },
+  { type: "term", label: "s-polarization", href: "/dictionary/s-polarization" },
+  { type: "term", label: "p-polarization", href: "/dictionary/p-polarization" },
+  { type: "term", label: "Brewster's angle", href: "/dictionary/brewster-angle" },
+  { type: "term", label: "Refractive index", href: "/dictionary/refractive-index" },
+  { type: "term", label: "Polarization", href: "/dictionary/polarization" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.44 · WAVES IN MATTER & OPTICS"
+  title="THE FRESNEL EQUATIONS"
+  subtitle="What reflects, what goes through, and at what angle."
+/>
+
+<Section index={1} title="The question a plane wave asks at a boundary">
+
+A plane EM wave is three locked things: a direction k̂, a pair of perpendicular transverse fields (E ⊥ B ⊥ k̂), and a polarisation — the direction E picks inside the transverse plane. §08.2 gave us that shape in vacuum. §09.1 gave us how it moves through a single dielectric: slower, by a factor 1/n. This topic handles the next unavoidable moment — the one where the wave meets a wall.
+
+A ray hits the surface between two dielectrics. What happens next is not arbitrary. Four things must be true at every point of the interface, at every instant, for every frequency: the tangential components of **E** and **H** must be continuous across the boundary, and the normal components of **D** and **B** must be continuous. That is just Maxwell's equations applied to an infinitesimally thin Gaussian pillbox and an infinitesimally narrow Amperian loop straddling the surface. The free-charge and free-current terms are zero on a clean dielectric interface, so the four conditions collapse into a 4-equation linear system relating the incident, reflected, and transmitted amplitudes.
+
+Solve that system and out pops a set of formulas that tell you — for any incidence angle, for any polarisation, for any index pair — the amplitude of the reflected wave and the amplitude of the transmitted wave. They were written down by <Term slug="augustin-fresnel">Augustin Fresnel</Term> in 1821, a decade before Maxwell proved that light was what they were talking about. They are called the <Term slug="fresnel-equations">Fresnel equations</Term>, and they are the answer to every reflection question a classical beam can ask.
+
+</Section>
+
+<Section index={2} title="Split the field; the two polarisations decouple">
+
+The plane containing the incident ray and the surface normal is the **plane of incidence**. Pick any E-vector in the transverse plane of the incoming wave and decompose it into two orthogonal pieces:
+
+- **<Term slug="s-polarization">s-polarisation</Term>** (from the German *senkrecht*, "perpendicular") — E sticks out of the plane of incidence. Relative to a flat horizontal surface, this is the *horizontally* polarised component.
+- **<Term slug="p-polarization">p-polarisation</Term>** (parallel) — E lies inside the plane of incidence. This is the *vertically* polarised component relative to a horizontal surface.
+
+That decomposition is not a trick. It decouples the boundary-condition algebra. The tangential E for an s-polarised wave is just the full E (it is already in the surface plane); for a p-polarised wave only the component parallel to the surface survives the continuity check, and there is an extra cos θ factor. The two polarisations solve two *independent* 2×2 linear systems, and the answers come out different. That is the whole reason reflected light looks polarised at a glancing angle — the wall treats the two channels differently.
+
+Snell's law stays the same for both: n₁ sin θ_i = n₂ sin θ_t. That is a geometric statement about phase-matching across the interface — the tangential component of the wavevector is preserved, independent of polarisation. What differs is the *amplitude* in each channel.
+
+</Section>
+
+<Section index={3} title="Solve the boundary conditions">
+
+Put the interface along y = 0, with medium 1 (index n₁) above and medium 2 (index n₂) below. Incident, reflected, and transmitted waves have amplitudes E_i, E_r, E_t; angles θ_i, θ_i, θ_t (the reflected angle equals the incident one by symmetry — phase-matching again). For **s-polarisation**, E is along ẑ (out of the page); the magnetic field lies in the plane of incidence.
+
+Tangential E continuous at y = 0:
+
+<EquationBlock id="EQ.01">
+  $$ E_i + E_r \;=\; E_t $$
+</EquationBlock>
+
+Tangential H continuous requires equating H_x on the two sides. Since H = √(ε/μ) · E = n E / (μ₀ c) for a plane wave, and H_x contributes a factor of ±cos θ depending on propagation direction:
+
+<EquationBlock id="EQ.02">
+  $$ n_1 (E_i - E_r)\cos\theta_i \;=\; n_2\, E_t\cos\theta_t $$
+</EquationBlock>
+
+Two equations, two unknowns (E_r and E_t in terms of E_i). Solve:
+
+<EquationBlock id="EQ.03">
+  $$ r_s \;=\; \frac{E_r}{E_i} \;=\; \frac{n_1\cos\theta_i - n_2\cos\theta_t}{n_1\cos\theta_i + n_2\cos\theta_t}, \qquad t_s \;=\; \frac{E_t}{E_i} \;=\; \frac{2\,n_1\cos\theta_i}{n_1\cos\theta_i + n_2\cos\theta_t} $$
+</EquationBlock>
+
+For **p-polarisation** E lies in the plane of incidence and H is along ẑ. The tangential-E continuity now picks up cos θ factors (the in-plane component of E is E cos θ), while tangential-H continuity becomes n_1(E_i + E_r) = n_2 E_t. Solving the analogous 2×2 system:
+
+<EquationBlock id="EQ.04">
+  $$ r_p \;=\; \frac{n_1\cos\theta_t - n_2\cos\theta_i}{n_1\cos\theta_t + n_2\cos\theta_i}, \qquad t_p \;=\; \frac{2\,n_1\cos\theta_i}{n_2\cos\theta_i + n_1\cos\theta_t} $$
+</EquationBlock>
+
+Those are the Fresnel amplitude coefficients. At normal incidence (θ_i = 0) the two reduce to the same magnitude — cos θ_i = cos θ_t = 1, so r_s = r_p (up to the conventional sign flip on r_p). At every other angle they diverge. The divergence is the operational content of "polarisation matters at an interface."
+
+</Section>
+
+<Section index={4} title="From amplitudes to intensities — energy bookkeeping">
+
+Real detectors measure intensity, not amplitude. Intensity goes as |E|² times the in-phase power-flow prefactor. On the reflected side the geometry is unchanged, so **reflectance** is just:
+
+<EquationBlock id="EQ.05">
+  $$ R \;=\; \lvert r\rvert^{2} $$
+</EquationBlock>
+
+On the transmitted side the beam cross-section changes because the refracted angle differs, and the impedance ratio n₂/n₁ rescales the Poynting vector. The correct **transmittance** is:
+
+<EquationBlock id="EQ.06">
+  $$ T \;=\; \frac{n_2 \cos\theta_t}{n_1 \cos\theta_i}\,\lvert t\rvert^{2} $$
+</EquationBlock>
+
+With that geometric weight, energy conservation R + T = 1 holds identically at every sub-critical angle for both polarisations — a stiff test the pure helpers in `lib/physics/electromagnetism/fresnel.ts` pass to eight decimal places in the unit tests.
+
+</Section>
+
+<Section index={5} title="The money shot — curves, rays, and the angle that matters">
+
+<SceneCard caption="FIG.44 — Fresnel curves. Slide θᵢ and see R_s, R_p track their curves. Jump to θ_B to watch R_p crash to zero." className="w-full">
+  <FresnelCurvesScene />
+</SceneCard>
+
+Two curves, one pair of media, one angle slider. At θ_i = 0 both R_s and R_p sit at the same value — ((n₂−n₁)/(n₂+n₁))² = 0.04 for air-to-glass — the famous "4% reflection off a clean window." As the angle grows, R_s climbs monotonically toward 1. R_p dips, and somewhere around 56° for air-glass it *hits zero* — Fresnel's most celebrated result. Then it climbs again, reaching 1 at grazing. Both polarisations converge on perfect reflection as θ_i → 90°, which is why a pond at noon is transparent from above and a mirror from the far shore.
+
+The angle where R_p = 0 is <Term slug="brewster-angle">Brewster's angle</Term>. From r_p = 0 and Snell's law:
+
+<EquationBlock id="EQ.07">
+  $$ \theta_B \;=\; \arctan\!\big(n_2 / n_1\big) $$
+</EquationBlock>
+
+Air → glass (n₂ = 1.5) gives θ_B = 56.31°. Air → water (n = 1.33) gives 53.06°. Air → diamond (n = 2.42) gives 67.54°. Polarised sunglasses exploit this: glare off roads and lake surfaces near θ_B is almost purely s-polarised, so a vertical-axis filter kills it.
+
+</Section>
+
+<Section index={6} title="At Brewster, only one polarisation bounces">
+
+<SceneCard caption="FIG.44b — at Brewster, the reflected beam is purely s-polarised. p slips through." className="w-full">
+  <BrewsterAngleScene />
+</SceneCard>
+
+There is a pretty geometric fact sitting inside EQ.07: at Brewster, the reflected and transmitted rays are exactly perpendicular. A classical-radiation argument makes this obvious — the p-polarised transmitted wave would need to radiate along its own direction of oscillation, which a dipole cannot do. That "zero along the axis" null is the reason r_p vanishes. Fresnel derived the relation from boundary-condition algebra; Maxwell, thirty-odd years later, gave it a field-theoretic reason.
+
+Operationally: an unpolarised beam hitting a dielectric at θ_B emerges polarised in reflection. Put a stack of glass plates at θ_B and you get a polariser that works by *subtraction* — every plate strips a little more s, leaving the transmitted beam more and more p. This is how lasers get polarised output from a Brewster-window gas tube. Laser polarisers, glare-cutting sunglasses, anti-reflection polarising filters for camera lenses — all of it is §09.3.
+
+</Section>
+
+<Section index={7} title="Two interfaces, three media — the compound case">
+
+<SceneCard caption="FIG.44c — air → water → glass. Each interface splits the ray; widths track intensity." className="w-full">
+  <WaterGlassScene />
+</SceneCard>
+
+Real optical systems have many interfaces. The Fresnel machinery applies at every one of them, independently, with the local (n₁, n₂, θ). At each surface a fraction R of the intensity bounces back and a fraction T = 1 − R continues forward. After a stack of m interfaces the surviving fraction is ∏ T_k. For a clean air-water-glass sandwich at 35° incidence, the scene above reads T₁·T₂ ≈ 97% — so only about 3% of an unpolarised beam never makes it into the glass, split between the two reflections.
+
+This compound bookkeeping is why lens coatings matter. A single uncoated air-glass surface loses about 4% per face at normal incidence; a camera lens with twelve surfaces loses close to 40% of the incoming light just to reflection. Anti-reflective (AR) coatings, a quarter-wave layer of an index between n₁ and n₂, use destructive interference between the two reflected amplitudes to drop R at one wavelength essentially to zero. Broadband AR stacks (the "multicoated" label) use many layers chosen so the reflectance is low across the visible band. All of that optical engineering sits on top of the two equations you just derived.
+
+</Section>
+
+<Section index={8} title="Edge cases — TIR, complex media, and where this goes next">
+
+Plug n₁ > n₂ into Snell's law and push θ_i past arcsin(n₂/n₁) and sin θ_t formally exceeds 1. There is no real transmitted angle: that is **total internal reflection** — the §09.4 topic. Fresnel's formulas still apply, but cos θ_t goes imaginary, and r_s and r_p both acquire magnitude 1 with a phase shift that depends on polarisation. The wave does not enter medium 2; an evanescent field leaks in, exponentially damped, carrying zero net energy across. Fiber optics run on this.
+
+Plug a *complex* refractive index (absorbing medium — metal, strong dye) into the same formulas and r_p no longer vanishes identically at any real angle; instead it reaches a minimum at the **pseudo-Brewster angle** with a sharp but nonzero reflectance. Ellipsometry — measuring a thin film by watching how it changes polarisation in reflection — is the industrial application. Semiconductor fabs live on it.
+
+Those extensions need complex arithmetic, not new physics. The derivation you did in §3 is good for every case the classical Maxwell equations can handle. What follows in §09.4 (TIR), §09.5 (thin films and interference), and §09.9 (polarisation phenomena in materials) is all downstream of the four lines above — boundary conditions, solve, separate the two polarisations, read off R and T. The Fresnel equations are, genuinely, what reflects, what goes through, and at what angle.
+
+</Section>
+
+</TopicPageLayout>
