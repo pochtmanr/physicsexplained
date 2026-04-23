@@ -24,13 +24,13 @@ describe("FramedCard", () => {
   });
 
   it("omits the FIG label when not provided", () => {
-    const { container } = render(
+    render(
       <FramedCard>
         <span>content</span>
       </FramedCard>,
     );
     // No element should contain "FIG." text
-    expect(container.textContent).not.toMatch(/^FIG\./);
+    expect(screen.queryByText(/FIG\./)).not.toBeInTheDocument();
   });
 
   it("renders the four corner accent spans", () => {

@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import styles from "@/components/sections/section-frame.module.css";
 
 interface Props {
@@ -17,7 +18,7 @@ interface Props {
  */
 export function FramedCard({ figLabel, className, innerClassName, children }: Props) {
   return (
-    <div className={`${styles.shell} relative${className ? ` ${className}` : ""}`}>
+    <div className={clsx(styles.shell, "relative", className)}>
       <span className={`${styles.shellCorner} ${styles.scTl}`} aria-hidden="true" />
       <span className={`${styles.shellCorner} ${styles.scTr}`} aria-hidden="true" />
       <span className={`${styles.shellCorner} ${styles.scBl}`} aria-hidden="true" />
@@ -27,7 +28,7 @@ export function FramedCard({ figLabel, className, innerClassName, children }: Pr
           {figLabel}
         </div>
       ) : null}
-      <div className={`${styles.shellInner} p-4 md:p-6${innerClassName ? ` ${innerClassName}` : ""}`}>
+      <div className={clsx(styles.shellInner, "p-4 md:p-6", innerClassName)}>
         {children}
       </div>
     </div>
