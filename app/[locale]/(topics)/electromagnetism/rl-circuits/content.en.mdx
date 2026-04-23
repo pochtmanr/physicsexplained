@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RlRampScene } from "@/components/physics/rl-ramp-scene";
+import { RlDecayScene } from "@/components/physics/rl-decay-scene";
+import { RlFlybackScene } from "@/components/physics/rl-flyback-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Henry", href: "/physicists/joseph-henry" },
+  { type: "physicist", label: "Heinrich Lenz", href: "/physicists/heinrich-lenz" },
+  { type: "term", label: "RL time constant", href: "/dictionary/rl-time-constant" },
+  { type: "term", label: "Self-inductance", href: "/dictionary/self-inductance" },
+  { type: "term", label: "Back-EMF", href: "/dictionary/back-emf" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.28 · CIRCUITS"
+  title="RL CIRCUITS AND BACK-EMF"
+  subtitle="The coil's version of hesitation. Open a switch and pay in kilovolts."
+/>
+
+<Section index={1} title="A coil resists its own current change">
+
+Replace the capacitor from FIG.27 with an inductor and you get the mirror circuit: a source, a resistor, and a coil in series. Close the switch and you might expect the current to snap to its Ohm's-law value `V₀/R` the way a bulb snaps to full brightness. It doesn't. The current *eases* up, climbing an exponential that slows as it approaches the steady state, and — same as the capacitor's voltage — it never quite arrives in finite time.
+
+The reason is Lenz, not Ohm. A rising current threads a rising magnetic flux through its own coil. By <PhysicistLink slug="michael-faraday">Faraday</PhysicistLink>'s law, a changing flux induces an EMF, and by Lenz's rule that EMF has a sign: it **opposes the change**. A coil whose current is on the rise presents a voltage *back against the source*, as if fighting to keep things the way they were. <PhysicistLink slug="joseph-henry">Joseph Henry</PhysicistLink> discovered this phenomenon on the same laboratory timetable as Faraday and named what an engineer now calls **<Term slug="back-emf">back-EMF</Term>**. The SI unit of inductance — the henry — is his.
+
+A capacitor cannot change its voltage discontinuously because `V = Q/C` and charge takes time to arrive. An inductor cannot change its current discontinuously because `V = L · dI/dt` and an infinite `dI/dt` would demand an infinite voltage. The two primitives are duals: the capacitor is an electrical spring, the inductor is an electrical flywheel, and both hold their state until something pays the toll to change it.
+
+</Section>
+
+<Section index={2} title="The ODE">
+
+Take the loop. Battery `V₀`, resistor `R`, inductor `L`, all in series. Apply Kirchhoff's voltage law — the sum of voltage drops around a closed loop equals zero, or equivalently, the source EMF equals the sum of the drops across each element:
+
+<EquationBlock id="EQ.01" tex="V_0 \;=\; I\,R \;+\; L\,\dfrac{dI}{dt}">
+  Kirchhoff's voltage law around the RL loop. The `d/dt` symbol means "rate of change per second" — how fast `I` is rising or falling at this instant.
+</EquationBlock>
+
+That is a first-order linear ODE in `I(t)`. Rearrange to `dI/dt = (V₀ − I·R)/L`, separate variables, integrate with the initial condition `I(0) = 0`, and you land on the clean exponential:
+
+<EquationBlock id="EQ.02" tex="I(t) \;=\; \dfrac{V_0}{R}\,\bigl(1 - e^{-t/\tau_L}\bigr), \qquad \tau_L \;=\; \dfrac{L}{R}">
+  The current in a series RL circuit driven from rest. The characteristic timescale is the **<Term slug="rl-time-constant">RL time constant</Term>** τ_L = L/R.
+</EquationBlock>
+
+Compare to the RC charge-up, `V_c(t) = V₀(1 − e^(−t/RC))`, and the duality lines up term by term: `V_c → I`, `V₀ → V₀/R`, `RC → L/R`. The coil plays the role the capacitor played, but the variable being held in check has flipped from voltage to current. This is why `τ_L` has seconds as its units — check it: henrys/ohms = V·s/A ÷ V/A = s. The arithmetic of dimensional analysis always has the final word.
+
+</Section>
+
+<Section index={3} title="Rise — the 63 % mark">
+
+The current climbs slowly at first because the inductor is fighting hardest when the current is rising fastest. As the current approaches its asymptote `V₀/R`, the back-EMF dies away, and the resistor eventually absorbs the whole source voltage at steady state. At that point the inductor is a wire — a zero-volt short — and all the drop sits on `R`.
+
+<SceneCard caption="FIG.28a — current rises on 1 − e^(−t/τ); back-EMF decays on e^(−t/τ); together they always sum to V₀" className="w-full">
+  <RlRampScene />
+</SceneCard>
+
+Watch the amber `I(t)` trace climb and the green back-EMF trace fall. They are two faces of the same exponential. At `t = τ_L` the current has reached 63.2 % of its final value — the universal marker, same as RC. At `2τ`, 86.5 %. At `5τ`, 99.3 %. That "5 τ settling time" rule of thumb every datasheet recites applies here too, because the mathematics is the same mathematics.
+
+Slide the `L` slider. A bigger inductor means a bigger `τ_L`, which means a lazier ramp — the coil's flywheel weighs more, so it takes longer to spin up. Cut `L` in half and everything speeds up linearly. This is a knob engineers use every day when sizing inductors for switching supplies.
+
+</Section>
+
+<Section index={4} title="Decay — the mirror">
+
+Cut the source off while current is flowing and leave a resistor in the path to let the current continue. The loop equation becomes `0 = I·R + L · dI/dt`, the same ODE with no forcing term. The solution is the naked exponential:
+
+<EquationBlock id="EQ.02b" tex="I(t) \;=\; I_0 \, e^{-t/\tau_L}">
+  Decay of current through a freewheeling resistor after the source is removed.
+</EquationBlock>
+
+<SceneCard caption="FIG.28b — source removed; current freewheels through R and decays exponentially" className="w-full">
+  <RlDecayScene />
+</SceneCard>
+
+At `t = τ_L` the current has dropped to `1/e ≈ 36.8 %` of its initial value. At `5τ_L`, below 1 %. Every joule of the `½LI²` that was stored in the magnetic field drains out through the resistor as `I²R` heat — the same way a spinning flywheel with a brake loses its kinetic energy to the brake pad. The inductor, for its part, is now the *source*: it pushes current in the direction it was already flowing, because that is what "opposing the change" means when the change is a fall toward zero.
+
+</Section>
+
+<Section index={5} title="Stored energy — ½ L I²">
+
+The question "where did the energy go while the current was ramping?" has a clean answer: into the magnetic field the coil was building. Integrate the source's delivered power `P = V · I` across the ramp and the usual factor of ½ drops out:
+
+<EquationBlock id="EQ.03" tex="U \;=\; \int_0^I L\,i\,di \;=\; \tfrac{1}{2}\,L\,I^2">
+  Energy stored in an inductor. The magnetic mirror of the capacitor's ½·C·V².
+</EquationBlock>
+
+This is the same `½LI²` derived in FIG.24 (Energy in Magnetic Fields), here re-seen from the circuit side. An ideal inductor is a perfect reservoir: nothing is dissipated in `L` itself, and every joule that went in came *from* the source, doing work against the back-EMF. FIG.24 also showed that this energy lives in the field's volume at density `u = B²/(2μ₀)`. FIG.35 (Poynting's theorem, §07.4) will show that when the current changes, energy *flows* through the surrounding space to or from that reservoir — the radiation picture. For now hold onto the circuit-level fact: the inductor holds `½LI²` and will hand it back the instant you give it a path.
+
+</Section>
+
+<Section index={6} title="Flyback — the spark-plug reveal">
+
+Here is where the coil's refusal to change its current becomes spectacularly visible. Steady current `I_steady = V₀/R` is flowing through an RL circuit. You yank the switch open. What *should* happen to the current? In a lump-element world with an open switch, it should go to zero instantly. But the inductor refuses — `V = L · dI/dt` says that forcing `dI/dt → ∞` demands `V → ∞`, and physics offers a compromise: whatever voltage the coil can build, it will, until the open gap ionises and the current gets to keep flowing through an **arc**.
+
+<SceneCard caption="FIG.28c — open the switch on an inductive circuit. dI/dt goes huge; V_L = L·dI/dt goes huge; a lilac arc forms across the gap" className="w-full">
+  <RlFlybackScene />
+</SceneCard>
+
+Click "open switch" and watch what happens. The animation models a 10 mH coil carrying 3 A with a 20 µs mechanical cut. That gives `dI/dt ≈ −1.5 × 10⁵ A/s` and `V_L ≈ −1500 V` — a *kilovolt-scale* spike across a coil that moments ago was dropping 12 V. The spike jumps the switch gap as an arc, the air ionises, and the current finishes its ramp-down through the spark instead of through the wire. That arc is not a malfunction. That arc is **the physics refusing to let the magnetic energy disappear in zero time**.
+
+<Callout variant="intuition">
+Every gasoline engine since 1908 uses this. The ignition coil is a step-up transformer with a primary inductance around 5–10 mH carrying about 4 A. The "points" (or a modern transistor) cut the current in a few microseconds. L·dI/dt rises to 300 V on the primary, the turns ratio multiplies it to 25 kV on the secondary, and that jumps the spark plug gap and lights the fuel mixture. Flyback — the same phenomenon — is also how CRTs deflected electrons and how the line-output transformer in every pre-2005 television built its high voltage. Open an inductive branch fast and you have made a voltage booster for free.
+</Callout>
+
+The engineering corollary is safety. Relay coils, motor windings, solenoids — anything with meaningful `L` — will kick out a huge spike every time you de-energise them. A **flyback diode** across the coil, reverse-biased in normal operation, clamps the spike the instant `V_L` reverses and lets the current decay through the diode at a safe voltage. Every MOSFET driver, every IGBT inverter, every CMOS microcontroller pin driving a solenoid has one. Skip it and the semiconductor dies the first time the coil kicks.
+
+</Section>
+
+<Section index={7} title="Where it shows up">
+
+RL transients sit inside every piece of switched electronics you own. **Switched-mode power supplies** — the brick on your laptop cable — cycle an inductor through ramp-and-release twenty to a hundred thousand times a second, transferring the `½LI²` reservoir to a capacitor on the output. **Relays and solenoids** live and die on their flyback; the diode across the coil is mandatory. **Plasma generators** and **induction heating** rely on the same spike in deliberately extreme form to ionise gas or to drive eddy currents in a workpiece. **Ignition coils** are flyback running on purpose, scaled up with a turns ratio. And the most quietly consequential: **every ignition spark, every time a car engine fires**, is one cylinder of one coil `L · dI/dt` clipped out of the air.
+
+</Section>
+
+</TopicPageLayout>

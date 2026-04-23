@@ -616,6 +616,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   RcTimeConstantScene: lazyScene(() =>
     import("@/components/physics/rc-time-constant-scene").then((m) => ({ default: m.RcTimeConstantScene })),
   ),
+
+  // EM §06 — rl-circuits
+  RlRampScene: lazyScene(() =>
+    import("@/components/physics/rl-ramp-scene").then((m) => ({ default: m.RlRampScene })),
+  ),
+  RlDecayScene: lazyScene(() =>
+    import("@/components/physics/rl-decay-scene").then((m) => ({ default: m.RlDecayScene })),
+  ),
+  RlFlybackScene: lazyScene(() =>
+    import("@/components/physics/rl-flyback-scene").then((m) => ({ default: m.RlFlybackScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
