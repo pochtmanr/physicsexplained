@@ -1,0 +1,132 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GaugeTransformScene } from "@/components/physics/gauge-transform-scene";
+import { LorenzVsCoulombGaugeScene } from "@/components/physics/lorenz-vs-coulomb-gauge-scene";
+import { PotentialFreedomScene } from "@/components/physics/potential-freedom-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "term", label: "Gauge transformation", href: "/dictionary/gauge-transformation" },
+  { type: "term", label: "Lorenz gauge", href: "/dictionary/lorenz-gauge" },
+  { type: "term", label: "Coulomb gauge", href: "/dictionary/coulomb-gauge" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.35 · MAXWELL'S EQUATIONS"
+  title="GAUGE FREEDOM AND POTENTIALS"
+  subtitle="The parts of the potential the field can't see — and why that quiet redundancy is the template for every fundamental force."
+/>
+
+<Section index={1} title="Where we left the potentials">
+
+Back in §03 we turned the magnetic field into a curl: **B** = ∇×**A**. One equation, one definition, one clean replacement of three numbers per point with three others. And we noticed, almost in passing, that this replacement was *not unique*. Add the gradient of any scalar function to **A** and the curl is unchanged, because the curl of a gradient is zero. We filed that under "a quirk of magnetostatics" and moved on.
+
+Now the magnetic world has a time-varying partner. Faraday's law (§04.1) says a changing flux drives an EMF; in potential language that means **E** isn't just −∇V anymore, it has to pick up a term from ∂**A**/∂t. The two potentials now dance together. And the quirk — that scalar function you can slide under the rug without anyone noticing — comes along for the ride. Only now it can slide under both potentials at once.
+
+This topic is about that freedom. What it is, why it's there, how to pin it down, and — the preview — why physics in the twentieth century turned out to care about it more than anyone in the nineteenth could have guessed.
+
+</Section>
+
+<Section index={2} title="Redundancy in the potentials">
+
+In electrodynamics the two fields come from the two potentials by a pair of rules. For **B** we reuse the old definition. For **E** we add a time-derivative term:
+
+<EquationBlock id="EQ.01">
+  $$ \mathbf{B} \;=\; \nabla \times \mathbf{A}, \qquad \mathbf{E} \;=\; -\nabla V \;-\; \frac{\partial \mathbf{A}}{\partial t}. $$
+</EquationBlock>
+
+Read those in plain language. **B** is the curl of **A** — how much **A** swirls around a point. **E** has two sources: the steepness of the scalar *V* (how fast *V* falls as you walk forward), and the rate at which **A** is changing with time (how fast the vector field itself is reshuffling). Together, (V, **A**) carry four numbers per point and describe the whole electromagnetic field.
+
+Now pick any smooth scalar function *f(x, y, z, t)* — literally any. Define a new pair of potentials by
+
+<EquationBlock id="EQ.02">
+  $$ \mathbf{A}' \;=\; \mathbf{A} + \nabla f, \qquad V' \;=\; V - \frac{\partial f}{\partial t}. $$
+</EquationBlock>
+
+The symbol ∇*f* means "the vector whose components are the rates at which *f* changes in each direction" — how steep the terrain *f* is. ∂*f*/∂*t* is how fast *f* is changing at a fixed point as time passes. Plug the primed pair back into EQ.01 and watch what happens. **B**′ = ∇×**A**′ = ∇×**A** + ∇×(∇*f*) = **B** + 0, because the curl of a gradient is identically zero. And **E**′ = −∇*V*′ − ∂**A**′/∂*t* = −∇*V* + ∇(∂*f*/∂*t*) − ∂**A**/∂*t* − ∂(∇*f*)/∂*t* = **E**. The two correction terms cancel exactly — they're the same mixed partial derivative, written in opposite signs.
+
+So **E** and **B** — the fields that actually push on charges — are blind to the choice of *f*. The potentials shift; the fields don't. Every measurement anyone ever made with a voltmeter, a compass, a Hall probe, or an oscilloscope is stubbornly insensitive to which *f* you picked.
+
+</Section>
+
+<Section index={3} title="Why this is good news">
+
+Underdetermined theories aren't usually something to celebrate. But the kind of underdetermination the potentials have is the friendly kind: it's a *freedom*, not an ambiguity. You get to use it.
+
+A concrete example. The potentials of an arbitrary time-varying charge-and-current distribution normally satisfy a pair of messy coupled wave equations — wave equations with cross-terms linking V and **A**, so you can't solve one without the other. Apply a clever **<Term slug="gauge-transformation">gauge transformation</Term>**, chosen so that the cross-terms vanish, and suddenly V and **A** each solve a plain wave equation independently. We went from "two tangled partial differential equations" to "two identical decoupled ones". No physics changed — we still describe the exact same field — but the *bookkeeping* collapsed from hard to easy.
+
+This is how gauge freedom is used in practice across every corner of electrodynamics, quantum mechanics, and field theory: as a knob you turn to simplify whatever equation is in front of you.
+
+<SceneCard caption="FIG.35a — slide α and β through an arbitrary f(x,t) = α·x + β·t. The potentials move; the field E sits perfectly still." className="w-full">
+  <PotentialFreedomScene />
+</SceneCard>
+
+The top panel is *V(x)* — a line that tilts and slides as you change the sliders. The bottom panel is *A(x)* — a row of arrows that grow, flip, shrink. The number in the HUD is the physical field *E*. It never moves. That's gauge invariance with your own hands on it: the potentials are a house of cards; the field is the floor underneath them.
+
+</Section>
+
+<Section index={4} title="The Lorenz gauge">
+
+Two specific choices of gauge show up everywhere. The first — and the one physicists quietly default to when special relativity is in the room — is the **<Term slug="lorenz-gauge">Lorenz gauge</Term>**:
+
+<EquationBlock id="EQ.03">
+  $$ \nabla \cdot \mathbf{A} \;+\; \frac{1}{c^{2}} \frac{\partial V}{\partial t} \;=\; 0. $$
+</EquationBlock>
+
+Read ∇·**A** as "how much **A** is flowing outward from a point" — the divergence, the same operator as in Gauss's law. The whole condition says: whatever net outward flow the vector potential has at a point, it must be precisely cancelled by the rate at which *V* is changing there, divided by c². A balance equation between the two potentials, tying them together.
+
+Why this particular balance? Because under it the messy coupled wave equations for V and **A** fall apart into two decoupled wave equations with the same d'Alembertian operator — the relativistically natural one — on each side. Sources (ρ, **J**) in; potentials (V, **A**) out; one equation each; light speed baked in.
+
+The gauge is named after the Danish physicist **Ludvig Lorenz**, not after Hendrik Antoon <PhysicistLink slug="hendrik-antoon-lorentz">Lorentz</PhysicistLink> of the Lorentz force and Lorentz transformation. Their names differ by one consonant and they lived at the same time, which has spawned more than a century of textbook typos. Ludvig got there first by a couple of decades; the "z" variant is the one that belongs on this gauge.
+
+<SceneCard caption="FIG.35b — same physical V(t), two gauges: ∇·A is flat in Coulomb, swings through zero in Lorenz." className="w-full">
+  <LorenzVsCoulombGaugeScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The Coulomb gauge">
+
+The second standard choice is the **<Term slug="coulomb-gauge">Coulomb gauge</Term>**:
+
+<EquationBlock id="EQ.04">
+  $$ \nabla \cdot \mathbf{A} \;=\; 0. $$
+</EquationBlock>
+
+Flat. Simple. **A** is divergence-free everywhere, full stop — it loops but it doesn't spread. Under this constraint *V* drops the time-derivative partner in its equation and obeys the plain Poisson equation of electrostatics, as <PhysicistLink slug="simeon-denis-poisson">Poisson</PhysicistLink> wrote it in 1812:
+
+<EquationBlock id="EQ.05">
+  $$ \nabla^{2} V \;=\; -\frac{\rho}{\varepsilon_{0}}. $$
+</EquationBlock>
+
+So if you know where the charge is *right now*, you know *V* right now — no waiting, no retardation, no wave equation. That looks as if the theory is faster than light. It isn't: the catch is that **A** in this gauge picks up the difference and propagates the causal, delayed part of the field. The measurable combination −∇V − ∂**A**/∂t still travels at c. Coulomb gauge is the toolkit of choice for bound-state problems, atomic physics, and anywhere the sources are essentially stationary — because half the equation becomes trivial.
+
+</Section>
+
+<Section index={6} title="The choice doesn't matter (locally)">
+
+Here's the test. Pick a pair of potentials in the Coulomb gauge. Compute the force on a charge at some point: **F** = q(**E** + **v**×**B**). Write down the answer. Now pick a *different* pair — same physical field, shifted by ∇*f* and ∂*f*/∂*t* into, say, the Lorenz gauge. Recompute **F**. Identical.
+
+<SceneCard caption="FIG.35c — same dipole, two gauges. The scalar V-map is different in the two panels; the white E-field arrows are identical." className="w-full">
+  <GaugeTransformScene />
+</SceneCard>
+
+The left panel carries a heavy scalar potential (Coulomb-style: V does all the work). The right panel has a lighter V and a set of amber **A**-arrows (Lorenz-style: the vector potential carries part of the load). The white E-field arrows — the thing a charge would actually feel — are in exactly the same places, pointing the same way, with the same lengths. What differs is the accounting; what stays is the physics. Any local, classical measurement — a force on a test charge, a current in a wire, a voltage between two terminals — is a gauge-invariant quantity and cannot tell the two panels apart.
+
+</Section>
+
+<Section index={7} title="Why physicists care anyway">
+
+If gauge freedom is invisible, why is it one of the deepest ideas in modern physics? Because in the twentieth century it turned out that gauge invariance isn't a peculiarity of electromagnetism — it's the *template* the universe uses to generate fundamental forces. Demand that a quantum field theory be invariant under a local phase change (a position-dependent gauge transformation) and a force-carrying boson *must* appear to keep the bookkeeping consistent. Demand it for the electron's wavefunction and the photon drops out of the maths. Demand it for broader symmetry groups and you get the W and Z bosons (weak force) and the gluons (strong force).
+
+Every fundamental force in the Standard Model is a gauge theory. We'll take this apart in §12.1; the thing to carry away now is that the quiet "the potentials are redundant by ∇*f*" of this topic is the small end of a wedge whose large end is the entire modern picture of fundamental interactions.
+
+</Section>
+
+</TopicPageLayout>

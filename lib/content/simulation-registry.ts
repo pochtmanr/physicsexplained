@@ -693,6 +693,17 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SourceSinkFieldScene: lazyScene(() =>
     import("@/components/physics/source-sink-field-scene").then((m) => ({ default: m.SourceSinkFieldScene })),
   ),
+
+  // EM §07 — gauge-freedom-and-potentials
+  GaugeTransformScene: lazyScene(() =>
+    import("@/components/physics/gauge-transform-scene").then((m) => ({ default: m.GaugeTransformScene })),
+  ),
+  LorenzVsCoulombGaugeScene: lazyScene(() =>
+    import("@/components/physics/lorenz-vs-coulomb-gauge-scene").then((m) => ({ default: m.LorenzVsCoulombGaugeScene })),
+  ),
+  PotentialFreedomScene: lazyScene(() =>
+    import("@/components/physics/potential-freedom-scene").then((m) => ({ default: m.PotentialFreedomScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
