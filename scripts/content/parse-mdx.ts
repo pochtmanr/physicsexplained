@@ -137,12 +137,35 @@ function mapSection(node: any): Block {
 
 function mapEquationBlock(node: any): Block {
   const id = getAttr(node, "id") as string | undefined;
-  let tex = "";
+  // 1) Prefer explicit attribute: `<EquationBlock tex="..." />` or `latex="..."`.
+  const attrTex =
+    (getAttr(node, "tex") as string | undefined) ??
+    (getAttr(node, "latex") as string | undefined);
+  let tex = typeof attrTex === "string" ? attrTex : "";
   let prose = "";
+  // 2) Walk children. Accept block `math` OR `inlineMath` (the most common
+  //    shape in production MDX, where authors write `$$ ... $$` indented
+  //    inside the JSX tag and remark-math parses it as inline math wrapped
+  //    in a paragraph). Recurse one level into paragraphs to catch it.
   for (const child of node.children ?? []) {
-    if (child.type === "math") {
+    if (tex) break;
+    if (child.type === "math" || child.type === "inlineMath") {
       tex = String(child.value ?? "");
-    } else {
+      continue;
+    }
+    if (child.type === "paragraph") {
+      for (const grand of child.children ?? []) {
+        if (grand.type === "inlineMath" || grand.type === "math") {
+          tex = String(grand.value ?? "");
+          break;
+        }
+      }
+      if (tex) continue;
+    }
+  }
+  // 3) Fallback prose (when no math anywhere): collect text from children.
+  if (!tex) {
+    for (const child of node.children ?? []) {
       const txt = collectText(child);
       if (txt) prose += txt;
     }

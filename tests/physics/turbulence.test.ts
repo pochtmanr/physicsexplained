@@ -45,8 +45,11 @@ describe("kolmogorovMicroscale η = (ν³/ε)^(1/4)", () => {
     const eta = kolmogorovMicroscale(nu, epsilon);
     const expected = Math.pow((nu * nu * nu) / epsilon, 0.25);
     expect(eta).toBeCloseTo(expected, 12);
-    // Air at this dissipation rate: sub-millimetre, as advertised.
-    expect(eta).toBeLessThan(1e-3);
+    // Air at this mild dissipation rate (ε = 1e-3 W/kg, typical boundary
+    // layer at rest): η ≈ 1.36 mm. A few-millimetre scale is correct for
+    // such low ε. Active atmospheric turbulence (ε ~ 1e-2 to 1e-1 W/kg)
+    // gives sub-millimetre η — but not at the gentle ε chosen here.
+    expect(eta).toBeLessThan(2e-3);
   });
 
   it("shrinks as dissipation grows", () => {

@@ -76,7 +76,8 @@
         {
           "type": "equation",
           "id": "EQ.01",
-          "tex": ""
+          "tex": "",
+          "prose": "F = −kx"
         },
         {
           "type": "paragraph",
@@ -179,7 +180,8 @@
         {
           "type": "equation",
           "id": "EQ.02",
-          "tex": ""
+          "tex": "",
+          "prose": "T = 2π √(L / g)"
         },
         {
           "type": "paragraph",
@@ -244,7 +246,7 @@
             "kind": "simulation",
             "component": "PendulumScene",
             "props": {
-              "theta0": "(10 * Math.PI) / 180",
+              "theta0": 0.17453292519943295,
               "length": 1.2
             }
           }
@@ -256,7 +258,7 @@
             "kind": "simulation",
             "component": "PendulumScene",
             "props": {
-              "theta0": "(25 * Math.PI) / 180",
+              "theta0": 0.4363323129985824,
               "length": 1.2,
               "bobRadius": 14
             }
@@ -269,7 +271,7 @@
             "kind": "simulation",
             "component": "PendulumScene",
             "props": {
-              "theta0": "(40 * Math.PI) / 180",
+              "theta0": 0.6981317007977318,
               "length": 1.2,
               "bobRadius": 18
             }

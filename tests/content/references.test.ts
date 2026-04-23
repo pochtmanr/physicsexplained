@@ -20,18 +20,20 @@ const PROJECT_ROOT = path.resolve(__dirname, "../..");
 const PENDULUM_MDX_PATH = path.join(
   PROJECT_ROOT,
   "app",
+  "[locale]",
   "(topics)",
   "classical-mechanics",
-  "pendulum",
-  "page.mdx",
+  "the-simple-pendulum",
+  "content.en.mdx",
 );
 const KEPLER_MDX_PATH = path.join(
   PROJECT_ROOT,
   "app",
+  "[locale]",
   "(topics)",
   "classical-mechanics",
   "kepler",
-  "page.mdx",
+  "content.en.mdx",
 );
 
 describe("physicists", () => {
