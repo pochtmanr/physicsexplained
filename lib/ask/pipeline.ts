@@ -1,29 +1,56 @@
 import type { LLMProvider, NeutralMessage } from "./provider";
 import type { AnswerStreamChunk, ClassifierLabel, UsageRow } from "./types";
 import { TOOL_SCHEMAS, type JsonToolDef } from "./tool-schemas";
-import { CLASSIFIER_PROMPT, SYSTEM_PROMPT_BASE, OFF_TOPIC_REFUSAL, INJECTION_RE } from "./prompts";
+import { SYSTEM_PROMPT_BASE, OFF_TOPIC_REFUSAL, INJECTION_RE } from "./prompts";
 import { renderToc, type TocData } from "./toc";
 import { computeCostMicros } from "./cost";
+import { selectInitialTools } from "./router";
 
 const MAX_HOPS = 6;
-const LABELS: ClassifierLabel[] = [
-  "glossary-lookup", "article-pointer", "conceptual-explain", "calculation", "viz-request", "off-topic",
-];
 
-// Router — narrow the tool set based on classifier label. Fewer tools in the
-// system prompt = smaller payload = faster TTFB + cheaper. The full set is a
-// safety net for conceptual-explain (the broadest category).
+// Per-model output budget. For reasoning models (GPT-5 family, o-series) this
+// counts reasoning tokens + visible output together, so the number must leave
+// room for both. The previous blanket 800/1500 split forced gpt-5-mini into
+// 800 via includes("mini"), which with any reasoning would yield an empty
+// response — the user-visible "loads forever, never returns" bug.
+function pickMaxTokens(modelId: string): number {
+  if (modelId === "gpt-5") return 6000;
+  if (modelId.startsWith("gpt-5-mini") || modelId.startsWith("gpt-5-nano")) return 4000;
+  if (modelId.startsWith("o1") || modelId.startsWith("o3")) return 6000;
+  if (modelId.includes("haiku")) return 800;
+  return 1500;
+}
+
+// Per-label toolsets. Philosophy: the model answers from its own expertise;
+// tools are opt-in decoration (cite lookups, plots) or explicit user asks
+// (pointer questions, web freshness). Keeping the toolset small also shrinks
+// the system prompt — each tool schema is ~200 tokens.
+//
+// conceptual-explain deliberately does NOT include searchSiteContent /
+// getContentEntry / webSearch: those pull heavy JSON blobs or force
+// round-trips that block the first text token on a trivially-answerable
+// physics question. article-pointer is the label that offers full content
+// retrieval when the user explicitly asks "where can I read about X".
 const TOOLS_BY_LABEL: Record<Exclude<ClassifierLabel, "off-topic">, readonly string[]> = {
-  "glossary-lookup": ["searchGlossary", "listGlossaryByCategory", "getContentEntry", "searchSiteContent"],
+  "glossary-lookup": ["searchGlossary"],
   "article-pointer": ["searchSiteContent", "getContentEntry", "searchGlossary"],
   "conceptual-explain": [
-    "searchSiteContent", "getContentEntry", "searchGlossary",
+    "searchGlossary",
     "searchScenes", "showScene", "plotFunction", "plotParametric",
-    "webSearch", "fetchUrl",
   ],
-  "calculation": ["searchSiteContent", "getContentEntry", "plotFunction", "plotParametric"],
-  "viz-request": ["searchScenes", "showScene", "plotFunction", "plotParametric", "searchSiteContent"],
+  "calculation": ["plotFunction", "plotParametric", "searchGlossary"],
+  "viz-request": ["searchScenes", "showScene", "plotFunction", "plotParametric", "searchGlossary"],
 };
+
+// Hard cap on tool_result payload fed back into the model. Prevents a single
+// getContentEntry result from blowing past the prompt window and stalling
+// prefill on subsequent hops.
+const MAX_TOOL_RESULT_BYTES = 20_000;
+
+function capToolResult(s: string): string {
+  if (s.length <= MAX_TOOL_RESULT_BYTES) return s;
+  return s.slice(0, MAX_TOOL_RESULT_BYTES) + '…<truncated by tutor: tool result exceeded 20KB>';
+}
 
 function pickTools(label: ClassifierLabel): JsonToolDef[] {
   if (label === "off-topic") return [];
@@ -51,15 +78,20 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     return;
   }
 
-  // Router: classify only on the first user turn of a conversation. Follow-ups
-  // are implicitly treated as continuations of an already-accepted physics
-  // discussion — this saves a full classifier round-trip (~300ms) and, more
-  // importantly, stops follow-ups like "why?" from being mis-classified as
-  // off-topic (which would refuse before history even entered the picture).
+  // Routing is 100% heuristic now. Follow-ups default to conceptual-explain
+  // (they're continuations of an already-accepted physics thread). First-turn
+  // messages go through the keyword heuristic; anything it can't classify
+  // defaults to conceptual-explain too.
+  //
+  // The classifier LLM call used to gate every first turn with Haiku — even on
+  // the happy path that was a full round-trip of latency cost before any text
+  // could stream. Off-topic detection now relies on SYSTEM_PROMPT_BASE telling
+  // the model to refuse politely in one sentence, which is a much smaller tax
+  // than making every user wait for a classification token.
   const isFollowUp = deps.history.length > 0;
   const label: ClassifierLabel = isFollowUp
     ? "conceptual-explain"
-    : await deps.provider.classify(deps.classifierModel, CLASSIFIER_PROMPT, userMsg, LABELS);
+    : (selectInitialTools(userMsg) ?? "conceptual-explain");
 
   if (label === "off-topic") {
     yield { type: "text", delta: OFF_TOPIC_REFUSAL };
@@ -69,8 +101,12 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
   }
 
   const systemFull = renderToc(deps.toc) + "\n\n" + SYSTEM_PROMPT_BASE;
-  const systemDynamic = [deps.systemTail ?? "", `Classifier label: ${label}`].filter(Boolean).join("\n\n");
+  const systemDynamic = [deps.systemTail ?? "", `Route: ${label}`].filter(Boolean).join("\n\n");
   const scopedTools = pickTools(label);
+
+  if (process.env.ASK_SILENT !== "1") {
+    console.log(`[ask pipeline] label=${label} tools=${scopedTools.map((t) => t.name).join(",")} systemBytes=${systemFull.length}`);
+  }
 
   const messages: NeutralMessage[] = [...deps.history, { role: "user", content: [{ type: "text", text: userMsg }] }];
   let totalUsage: UsageRow = { model: deps.answererModel, inputTokens: 0, outputTokens: 0, cachedTokens: 0, costMicros: 0 };
@@ -88,17 +124,28 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
       ? [systemDynamic, "Final hop: tools are no longer available. Answer now with what you have."].filter(Boolean).join("\n\n")
       : systemDynamic;
 
+    const hopT0 = Date.now();
+    if (process.env.ASK_SILENT !== "1") {
+      console.log(`[ask pipeline] hop=${hop} messages=${messages.length} → requesting provider…`);
+    }
     const stream = deps.provider.streamAnswer({
       model: deps.answererModel,
       system: systemFull,
       systemDynamic: systemDynamicHop,
       messages,
       tools: isLastHop ? [] : scopedTools,
-      maxTokens: deps.answererModel.includes("mini") || deps.answererModel.includes("haiku") ? 800 : 1500,
+      maxTokens: pickMaxTokens(deps.answererModel),
       signal: deps.signal,
     });
 
+    let firstDeltaLogged = false;
     for await (const delta of stream) {
+      if (!firstDeltaLogged) {
+        firstDeltaLogged = true;
+        if (process.env.ASK_SILENT !== "1") {
+          console.log(`[ask pipeline] hop=${hop} first-provider-event after ${Date.now() - hopT0}ms kind=${delta.kind}`);
+        }
+      }
       switch (delta.kind) {
         case "text-delta":
           if (delta.text) { assistantText += delta.text; yield { type: "text", delta: delta.text }; }
@@ -117,10 +164,28 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
         case "usage":
           if (delta.usage) totalUsage = mergeUsage(totalUsage, delta.usage);
           break;
+        case "flag":
+          if (delta.reason) yield { type: "flag", reason: delta.reason };
+          break;
       }
     }
 
     if (pendingToolCalls.length === 0) {
+      // Empty completion safety net: if the provider returned with no text,
+      // no tool calls, and no existing flag (e.g. reasoning budget blown on a
+      // reasoning model, or OpenAI returning a zero-content response for any
+      // reason), surface a visible error instead of silently closing with an
+      // empty bubble.
+      if (assistantText.length === 0 && hop === 0) {
+        yield {
+          type: "flag",
+          reason: "empty-completion",
+        };
+        yield {
+          type: "text",
+          delta: "The model returned an empty response. This can happen on reasoning models when the output budget is exhausted, or on transient provider errors. Try a shorter question or switch model.",
+        };
+      }
       totalUsage.costMicros = computeCostMicros(totalUsage.model, totalUsage);
       yield { type: "usage", usage: totalUsage };
       yield { type: "done" };
@@ -135,22 +200,33 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
       ],
     });
 
-    const toolResultBlocks: import("./provider").NeutralContent[] = [];
-    for (const call of pendingToolCalls) {
-      const fn = deps.toolset[call.name];
-      let outStr: string; let isErr = false; let preview: string | undefined;
-      if (!fn) { outStr = JSON.stringify({ error: `Unknown tool ${call.name}` }); isErr = true; }
-      else {
+    // Run independent tool calls concurrently. Each has its own try/catch so
+    // one failure never cancels siblings. Preserve call order in the
+    // tool_result blocks and yield tool-call-end events in the same order so
+    // the client's ProgressTree stays in sync.
+    const settled = await Promise.all(
+      pendingToolCalls.map(async (call) => {
+        const fn = deps.toolset[call.name];
+        if (!fn) {
+          return { call, outStr: JSON.stringify({ error: `Unknown tool ${call.name}` }), isErr: true, preview: undefined as string | undefined };
+        }
         try {
           const result = await fn((call.input ?? {}) as never);
-          outStr = JSON.stringify(result);
-          if ((result as { ok?: boolean } | null)?.ok === false) isErr = true;
-          preview = summarizeToolResult(call.name, result);
+          const isErr = (result as { ok?: boolean } | null)?.ok === false;
+          return {
+            call,
+            outStr: capToolResult(JSON.stringify(result)),
+            isErr,
+            preview: summarizeToolResult(call.name, result),
+          };
         } catch (e) {
-          outStr = JSON.stringify({ error: (e as Error).message });
-          isErr = true;
+          return { call, outStr: JSON.stringify({ error: (e as Error).message }), isErr: true, preview: undefined };
         }
-      }
+      }),
+    );
+
+    const toolResultBlocks: import("./provider").NeutralContent[] = [];
+    for (const { call, outStr, isErr, preview } of settled) {
       toolResultBlocks.push({ type: "tool_result", tool_use_id: call.id, content: outStr, is_error: isErr });
       yield { type: "tool-call-end", toolCallId: call.id, ok: !isErr, resultPreview: preview };
     }

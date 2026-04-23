@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface ProgressStep {
   id: string;
@@ -7,6 +7,24 @@ export interface ProgressStep {
   status: "running" | "ok" | "error";
   args?: Record<string, unknown>;
   preview?: string;
+  startedAt?: number;  // ms epoch
+  endedAt?: number;    // ms epoch
+}
+
+function useTick(active: boolean, periodMs = 500): number {
+  const [, force] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    const i = window.setInterval(() => force((n) => n + 1), periodMs);
+    return () => window.clearInterval(i);
+  }, [active, periodMs]);
+  return 0;
+}
+
+function formatElapsed(ms: number): string {
+  if (ms < 1000) return `${ms}ms`;
+  const s = ms / 1000;
+  return s < 10 ? `${s.toFixed(1)}s` : `${Math.round(s)}s`;
 }
 
 const LABELS: Record<string, (args?: Record<string, unknown>) => string> = {
@@ -45,6 +63,28 @@ export function ProgressTree({ steps }: { steps: ProgressStep[] }) {
   );
 }
 
+/**
+ * Live "Thinking…" chip shown before the first text_delta lands. Ticks the
+ * elapsed counter so users always see progress — replaces the old silent
+ * "Streaming…" spinner that could sit idle for >10s when the model was
+ * reasoning hard or waiting on a slow tool.
+ */
+export function ThinkingChip({ startedAt, label = "Thinking" }: { startedAt: number; label?: string }) {
+  useTick(true, 500);
+  const elapsed = Date.now() - startedAt;
+  return (
+    <div className="my-3 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
+      <span>{label}</span>
+      <span className="inline-flex gap-0.5">
+        <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse [animation-delay:-0.3s]" />
+        <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse [animation-delay:-0.15s]" />
+        <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse" />
+      </span>
+      <span className="opacity-60 lowercase tracking-normal">{formatElapsed(elapsed)}</span>
+    </div>
+  );
+}
+
 function ProgressRow({ step }: { step: ProgressStep }) {
   const [open, setOpen] = useState(false);
   const subItems = getSubItems(step);
@@ -53,6 +93,13 @@ function ProgressRow({ step }: { step: ProgressStep }) {
 
   const dim = step.status === "running";
   const errored = step.status === "error";
+
+  // Live-tick elapsed time while running; freeze at final duration once done.
+  useTick(dim);
+  const elapsedMs = step.startedAt
+    ? (step.endedAt ?? Date.now()) - step.startedAt
+    : 0;
+  const showElapsed = step.startedAt !== undefined && (dim || elapsedMs >= 150);
 
   return (
     <div>
@@ -71,6 +118,11 @@ function ProgressRow({ step }: { step: ProgressStep }) {
           {label}
           {dim && <span className="ml-1 opacity-60">…</span>}
         </span>
+        {showElapsed && (
+          <span className="ml-1 font-mono text-[11px] tracking-normal text-[var(--color-fg-3)]">
+            {formatElapsed(elapsedMs)}
+          </span>
+        )}
         {hasSub && (
           <span
             className={[

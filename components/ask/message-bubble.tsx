@@ -1,11 +1,27 @@
 "use client";
 import katex from "katex";
-import type { JSX } from "react";
+import { lazy, Suspense, type JSX } from "react";
 import { parseFences, type FencePart } from "@/lib/ask/render";
-import { InlineScene } from "./inline-scene";
-import { MathPlot } from "./math-plot";
 import { Cite } from "./cite";
 import { FurtherReading } from "./further-reading";
+
+// Heavy renderers (jsxgraph, mathjs, full simulation registry) are split out of
+// the message bundle so the initial paint of a streamed answer doesn't wait on
+// hundreds of KB of visualization code. Placeholders below mimic the final
+// footprint to avoid layout shift when the real component hydrates.
+const InlineScene = lazy(() => import("./inline-scene").then((m) => ({ default: m.InlineScene })));
+const MathPlot = lazy(() => import("./math-plot").then((m) => ({ default: m.MathPlot })));
+
+function ScenePlaceholder() {
+  return (
+    <div className="my-3 border rounded p-2 h-[220px] animate-pulse bg-[var(--color-fg-4)]/10" aria-label="Loading scene…" />
+  );
+}
+function PlotPlaceholder() {
+  return (
+    <div className="my-4 border rounded p-2 h-72 animate-pulse bg-[var(--color-fg-4)]/10" aria-label="Loading plot…" />
+  );
+}
 
 export function MessageBubble({
   role, text, locale,
@@ -44,8 +60,20 @@ export function MessageBubble({
 
 function renderPart(p: FencePart, key: number, locale: string): JSX.Element {
   if (p.kind === "text") return <Prose key={key} text={p.text} />;
-  if (p.kind === "scene") return <InlineScene key={key} id={p.id} params={p.params} />;
-  if (p.kind === "plot") return <MathPlot key={key} args={p.args} />;
+  if (p.kind === "scene") {
+    return (
+      <Suspense key={key} fallback={<ScenePlaceholder />}>
+        <InlineScene id={p.id} params={p.params} />
+      </Suspense>
+    );
+  }
+  if (p.kind === "plot") {
+    return (
+      <Suspense key={key} fallback={<PlotPlaceholder />}>
+        <MathPlot args={p.args} />
+      </Suspense>
+    );
+  }
   if (p.kind === "cite") {
     // Glossary citations surface as rich cards in <FurtherReading/> below the
     // message — skip the inline chip so it doesn't duplicate.

@@ -36,13 +36,6 @@ function fenceAttrs(obj: Record<string, unknown>): string {
   return parts.length ? "{" + parts.join(" ") + "}" : "";
 }
 
-function snippetFromBlocks(blocks: unknown, q: string): string {
-  const flat = JSON.stringify(blocks ?? "");
-  const idx = flat.toLowerCase().indexOf(q.toLowerCase());
-  if (idx < 0) return flat.slice(0, 160).replace(/[{}"\\]/g, " ").trim();
-  return flat.slice(Math.max(0, idx - 60), idx + 100).replace(/[{}"\\]/g, " ").trim();
-}
-
 function buildSceneFence(id: string, params: Record<string, unknown>): string {
   const attrs = Object.entries(params).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(" ");
   return `:::scene{id=${JSON.stringify(id)}${attrs ? " " + attrs : ""}}\n:::`;
@@ -55,9 +48,14 @@ export function makeToolset(deps: ToolsetDeps) {
     async searchSiteContent(args: { q: string; kind?: z.infer<typeof Kind>; limit?: number }) {
       const q = z.string().min(1).max(200).parse(args.q);
       const limit = Math.min(args.limit ?? 5, 10);
+      // Intentionally NOT selecting `blocks`. That column is a large JSONB
+      // payload; pulling it for every FTS hit blew 500KB+ over the wire per
+      // call and then turned into tens of thousands of tool_result tokens fed
+      // back to the model. The model only needs slug/title/subtitle to decide
+      // whether to cite or to call getContentEntry next.
       let query = db
         .from("content_entries")
-        .select("kind,slug,title,subtitle,blocks")
+        .select("kind,slug,title,subtitle")
         .eq("locale", locale);
       if (args.kind) query = query.eq("kind", args.kind);
       const { data, error } = await query
@@ -69,7 +67,6 @@ export function makeToolset(deps: ToolsetDeps) {
         slug: r.slug,
         title: r.title,
         subtitle: r.subtitle ?? null,
-        snippet: snippetFromBlocks(r.blocks, q),
       }));
     },
 

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { MessageBubble } from "./message-bubble";
-import { ProgressTree, type ProgressStep } from "./progress-tree";
+import { ProgressTree, ThinkingChip, type ProgressStep } from "./progress-tree";
 
 interface Props {
   conversationId: string | null;
@@ -17,15 +17,20 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
   const [tools, setTools] = useState<ProgressStep[]>([]);
   const [err, setErr] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
-  const firedRef = useRef(false);
+  const startedAtRef = useRef<number>(Date.now());
   const onSettledRef = useRef(onSettled);
   const onQuotaExhaustedRef = useRef(onQuotaExhausted);
   onSettledRef.current = onSettled;
   onQuotaExhaustedRef.current = onQuotaExhausted;
 
+  // Do NOT guard with a "firedRef" — React strict mode in dev mounts → cleans
+  // up → remounts, and a firedRef guard would let the cleanup abort the first
+  // fetch while permanently blocking the second mount from retrying. Result:
+  // silent spinner forever (no response, no error — because AbortError is
+  // swallowed below). The route has its own 10s dedup (see app/api/ask/stream
+  // /route.ts "Dedup") so strict-mode double-mount is server-safe: the second
+  // request sees the first conversation and reuses it.
   useEffect(() => {
-    if (firedRef.current) return;
-    firedRef.current = true;
     const ac = new AbortController();
     abortRef.current = ac;
     (async () => {
@@ -69,7 +74,8 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
             else if (name === "tool-start") {
               const id = String(d.id ?? ""); const n = String(d.name ?? "");
               const args = (d.args as Record<string, unknown> | undefined) ?? undefined;
-              setTools((ts) => ts.some((t) => t.id === id) ? ts : [...ts, { id, name: n, status: "running", args }]);
+              const now = Date.now();
+              setTools((ts) => ts.some((t) => t.id === id) ? ts : [...ts, { id, name: n, status: "running", args, startedAt: now }]);
             } else if (name === "tool-args") {
               const id = String(d.id ?? "");
               const args = (d.args as Record<string, unknown> | undefined) ?? undefined;
@@ -77,9 +83,21 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
             } else if (name === "tool-end") {
               const id = String(d.id ?? ""); const ok = Boolean(d.ok);
               const preview = typeof d.preview === "string" ? d.preview : undefined;
-              setTools((ts) => ts.map((t) => t.id === id ? { ...t, status: ok ? "ok" : "error", preview } : t));
+              const now = Date.now();
+              setTools((ts) => ts.map((t) => t.id === id ? { ...t, status: ok ? "ok" : "error", preview, endedAt: now } : t));
             } else if (name === "done") {
               onSettledRef.current(resolvedId);
+            } else if (name === "flag") {
+              // Model ran out of output budget or refused. If no text has
+              // streamed, turn it into a visible error so the user isn't
+              // staring at an empty bubble. If some text did stream, append
+              // a truncation note below it.
+              const reason = String(d.reason ?? "");
+              const msg = reason.includes("max")
+                ? "The model hit its output budget before finishing. Try a shorter question, or switch model (e.g. Claude Sonnet or GPT-5 mini)."
+                : `Model flagged: ${reason}`;
+              setText((t) => t ? `${t}\n\n_${msg}_` : "");
+              setErr((prev) => prev ?? msg);
             } else if (name === "error") {
               setErr(String(d.message ?? "unknown"));
             }
@@ -92,6 +110,12 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
     return () => ac.abort();
   }, [conversationId, message, locale, modelId]);
 
+  // Label the thinking chip with the last active tool when we have one, so
+  // users see "searching site …" rather than a generic "Streaming…" that
+  // doesn't move for >10s on complex turns.
+  const lastRunning = [...tools].reverse().find((t) => t.status === "running");
+  const chipLabel = lastRunning ? "Working" : tools.length > 0 ? "Finishing" : "Thinking";
+
   return (
     <div className="mr-auto max-w-2xl">
       {tools.length > 0 && <ProgressTree steps={tools} />}
@@ -103,14 +127,7 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
         />
       )}
       {!text && !err && (
-        <div className="my-3 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
-          <span>Streaming</span>
-          <span className="inline-flex gap-0.5">
-            <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse [animation-delay:-0.3s]" />
-            <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse [animation-delay:-0.15s]" />
-            <span className="w-1 h-1 rounded-full bg-[var(--color-cyan-dim)] animate-pulse" />
-          </span>
-        </div>
+        <ThinkingChip startedAt={startedAtRef.current} label={chipLabel} />
       )}
     </div>
   );

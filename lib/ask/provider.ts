@@ -17,12 +17,13 @@ export interface NeutralMessage {
 }
 
 export interface StreamDelta {
-  kind: "text-delta" | "tool-call-start" | "tool-call-end" | "stop" | "usage";
+  kind: "text-delta" | "tool-call-start" | "tool-call-end" | "stop" | "usage" | "flag";
   toolCallId?: string;
   toolName?: string;
   text?: string;
   finalInput?: unknown;
   usage?: UsageRow;
+  reason?: string;
 }
 
 export interface AnswerRequest {
@@ -48,7 +49,11 @@ class AnthropicProvider implements LLMProvider {
   constructor() {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) throw new Error("ANTHROPIC_API_KEY missing");
-    this.client = new Anthropic({ apiKey });
+    // maxRetries=1 caps cascade backoff from transient 529/5xx (default is 2
+    // with exponential delay, which can stretch a bad request to 90s+ silent).
+    // timeout=60s is a per-request ceiling; the upstream silence watchdog in
+    // app/api/ask/stream/route.ts enforces a stricter 45s user-visible ceiling.
+    this.client = new Anthropic({ apiKey, maxRetries: 1, timeout: 60_000 });
   }
 
   async *streamAnswer(req: AnswerRequest): AsyncIterable<StreamDelta> {
@@ -84,6 +89,9 @@ class AnthropicProvider implements LLMProvider {
         yield { kind: "tool-call-end", toolCallId: blk.id, toolName: blk.name, finalInput: blk.input };
       }
     }
+    if (final.stop_reason === "max_tokens") {
+      yield { kind: "flag", reason: "anthropic-max-tokens-exhausted" };
+    }
     const u = final.usage as Anthropic.Messages.Usage & { cache_read_input_tokens?: number };
     yield {
       kind: "usage",
@@ -115,7 +123,7 @@ class OpenAIProvider implements LLMProvider {
   constructor() {
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) throw new Error("OPENAI_API_KEY missing");
-    this.client = new OpenAI({ apiKey });
+    this.client = new OpenAI({ apiKey, maxRetries: 1, timeout: 60_000 });
   }
 
   async *streamAnswer(req: AnswerRequest): AsyncIterable<StreamDelta> {
@@ -126,23 +134,40 @@ class OpenAIProvider implements LLMProvider {
       function: { name: t.name, description: t.description, parameters: t.parameters as Record<string, unknown> },
     }));
 
-    const stream = await this.client.chat.completions.create({
+    // GPT-5 family are reasoning models. `max_completion_tokens` counts
+    // reasoning tokens + visible output together, and the default
+    // `reasoning_effort: medium` can burn 1000-3000 tokens thinking silently
+    // before any visible text — long enough that a 1500 budget routinely
+    // returns empty with finish_reason=length (user sees "loads forever").
+    // Force `minimal` for a chat tutor; the caller picks a budget that leaves
+    // room for the answer after reasoning (see pickMaxTokens in pipeline.ts).
+    const isReasoningModel = req.model.startsWith("gpt-5") || req.model.startsWith("o1") || req.model.startsWith("o3");
+    const params: Record<string, unknown> = {
       model: req.model,
-      messages: openaiMessages as unknown as OpenAI.Chat.ChatCompletionMessageParam[],
+      messages: openaiMessages,
       tools: tools.length ? tools : undefined,
       max_completion_tokens: req.maxTokens,
       stream: true,
       stream_options: { include_usage: true },
-      // GPT-5 family rejects any temperature != 1. Let it default.
-    }, { signal: req.signal });
+    };
+    if (isReasoningModel) {
+      params.reasoning_effort = "minimal";
+    }
+    // GPT-5 family rejects any temperature != 1. Let it default.
+    const stream = await this.client.chat.completions.create(
+      params as unknown as OpenAI.Chat.ChatCompletionCreateParamsStreaming,
+      { signal: req.signal },
+    );
 
     const toolAcc = new Map<number, { id: string; name: string; args: string }>();
     const emittedStart = new Set<string>();
     let usage: UsageRow | null = null;
+    let finishReason: string | null = null;
 
     for await (const chunk of stream) {
       const choice = chunk.choices?.[0];
       const delta = choice?.delta;
+      if (choice?.finish_reason) finishReason = choice.finish_reason;
       if (delta?.content) yield { kind: "text-delta", text: delta.content };
 
       if (delta?.tool_calls) {
@@ -179,6 +204,14 @@ class OpenAIProvider implements LLMProvider {
       let parsed: unknown;
       try { parsed = JSON.parse(v.args || "{}"); } catch { parsed = {}; }
       yield { kind: "tool-call-end", toolCallId: v.id, toolName: v.name, finalInput: parsed };
+    }
+
+    // finish_reason=length means the model hit max_completion_tokens. On
+    // reasoning models this can happen mid-thinking, returning zero visible
+    // tokens. Surface it so the route can log it and the client can show a
+    // helpful error instead of an empty bubble.
+    if (finishReason === "length") {
+      yield { kind: "flag", reason: "openai-max-completion-tokens-exhausted" };
     }
 
     if (usage) {

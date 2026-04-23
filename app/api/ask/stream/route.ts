@@ -29,9 +29,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "ASK_DISABLED" }, { status: 503 });
   }
 
+  // Single request id threaded through every timing log so you can grep one
+  // request's journey end-to-end when diagnosing a hang.
+  const reqId = Math.random().toString(36).slice(2, 8);
+  const t0 = Date.now();
+  const mark = (label: string) => {
+    const ms = Date.now() - t0;
+    // Always log — set ASK_SILENT=1 to suppress once the system is stable.
+    if (process.env.ASK_SILENT !== "1") {
+      console.log(`[ask ${reqId}] +${ms.toString().padStart(5)}ms  ${label}`);
+    }
+  };
+
+  mark("req-in");
+
   const ssr = await getSsrClient();
   const { data: { user } } = await ssr.auth.getUser();
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
+  mark("auth-ok");
 
   let body: z.infer<typeof BodySchema>;
   try { body = BodySchema.parse(await req.json()); }
@@ -40,12 +55,18 @@ export async function POST(req: Request) {
   const model = findModel(body.modelId);
   const db = getServiceClient();
 
-  // Quota gate (billing) — 402 before streaming
-  const { data: billingRow, error: billingErr } = await db
-    .from("user_billing")
-    .select("plan,status,tokens_allowance,tokens_used,free_questions_used,cycle_end")
-    .eq("user_id", user.id)
-    .maybeSingle();
+  // Billing quota gate and the legacy daily rate-limit gate are independent.
+  // Run them in parallel — both must pass, so we gain the max(latency) instead
+  // of the sum.
+  const [billingQuery, rlRes] = await Promise.all([
+    db.from("user_billing")
+      .select("plan,status,tokens_allowance,tokens_used,free_questions_used,cycle_end")
+      .eq("user_id", user.id)
+      .maybeSingle(),
+    checkRateLimit(makeRateLimitDepsForUser(db, user.id)),
+  ]);
+  mark("gates-ok");
+  const { data: billingRow, error: billingErr } = billingQuery;
   if (billingErr || !billingRow) {
     return NextResponse.json({ error: "DB_ERR", message: billingErr?.message ?? "missing billing row" }, { status: 500 });
   }
@@ -53,11 +74,14 @@ export async function POST(req: Request) {
   if (!quota.ok) {
     return NextResponse.json({ error: "QUOTA_EXHAUSTED", reason: quota.reason }, { status: 402 });
   }
-
-  // Legacy daily analytics rate limit stays in place
-  const rl = makeRateLimitDepsForUser(db, user.id);
-  const rlRes = await checkRateLimit(rl);
-  if (!rlRes.ok) return NextResponse.json({ error: "RATE_LIMITED", reason: rlRes.reason }, { status: 429 });
+  // The legacy daily message/token bucket (ASK_RATE_LIMIT_FREE_*) is abuse
+  // protection for free-tier users only. Paid plans buy a per-cycle allowance
+  // via user_billing.tokens_allowance; checkQuota above already enforces that.
+  // Subjecting a paid user to a 60k/day input-token bucket contradicts what
+  // they paid for. Free users still get the daily cap.
+  if ((billingRow as BillingRow).plan === "free" && !rlRes.ok) {
+    return NextResponse.json({ error: "RATE_LIMITED", reason: rlRes.reason }, { status: 429 });
+  }
 
   let conversationId = body.conversationId ?? undefined;
   let dedupedExisting = false;
@@ -91,27 +115,34 @@ export async function POST(req: Request) {
       conversationId = data.id as string;
     }
   }
+  mark("conv-resolved");
 
-  const { data: historyRows } = await db
-    .from("ask_messages")
-    .select("role,content,created_at")
-    .eq("conversation_id", conversationId)
-    .order("created_at", { ascending: true });
-
-  const summaryRow = await db
-    .from("ask_conversations")
-    .select("summary")
-    .eq("id", conversationId)
-    .maybeSingle();
+  // History + summary + TOC are all independent — fire them concurrently.
+  // User-message insert is fire-and-forget (nothing downstream reads it in
+  // this request); we still await it before returning to make sure Supabase
+  // RLS errors don't slip through silently, but it runs alongside the reads.
+  const tHist = Date.now();
+  const [historyResult, summaryResult, toc] = await Promise.all([
+    db.from("ask_messages")
+      .select("role,content,created_at")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: true }),
+    db.from("ask_conversations")
+      .select("summary")
+      .eq("id", conversationId)
+      .maybeSingle(),
+    buildToc(body.locale),
+  ]);
+  mark(`ctx-loaded (${Date.now() - tHist}ms) hist=${historyResult.data?.length ?? 0} scenes=${toc.scenes.length}`);
 
   const { systemTail, kept } = assembleHistory(
-    (historyRows ?? [])
+    (historyResult.data ?? [])
       .filter((r) => r.role === "user" || r.role === "assistant")
       .map((r) => ({
         role: r.role as "user" | "assistant",
         text: (r.content as { text?: string } | null)?.text ?? "",
       })),
-    summaryRow.data?.summary ?? null,
+    summaryResult.data?.summary ?? null,
   );
 
   if (!dedupedExisting) {
@@ -131,7 +162,6 @@ export async function POST(req: Request) {
     Object.entries(toolsetImpl).map(([k, v]) => [k, v as (args: unknown) => Promise<unknown>])
   );
 
-  const toc = await buildToc(body.locale);
   const { provider } = getProviderForModel(model.id);
 
   const pipelineHistory: NeutralMessage[] = kept.map((k) => ({
@@ -144,14 +174,40 @@ export async function POST(req: Request) {
   const onClientAbort = () => upstreamAbort.abort();
   req.signal.addEventListener("abort", onClientAbort);
 
+  const timings: Record<string, number> = {};
+
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
+      mark("sse-open");
       controller.enqueue(encoder.encode(sseEncode("meta", { conversationId })));
 
       // Keepalive — SSE comment, ignored by clients, keeps idle LBs from dropping us.
       const heartbeat = setInterval(() => {
         try { controller.enqueue(encoder.encode(": ping\n\n")); } catch { /* controller closed */ }
       }, 15000);
+
+      // Inactivity watchdog: if no useful pipeline event (text/tool-*/usage)
+      // arrives for 20s, assume the upstream provider stalled and abort. This
+      // is what rescues the stream from silent hangs when a provider goes quiet
+      // mid-prefill or a tool call deadlocks. Every real event below resets
+      // `lastEventAt`. 20s is enough even for GPT-5 at reasoning_effort=minimal
+      // on a long system prompt; longer than that and something's genuinely
+      // stuck and the user should see an error.
+      const INACTIVITY_MS = 20_000;
+      let lastEventAt = Date.now();
+      let watchdogFired = false;
+      const watchdog = setInterval(() => {
+        if (Date.now() - lastEventAt > INACTIVITY_MS && !upstreamAbort.signal.aborted) {
+          watchdogFired = true;
+          try {
+            controller.enqueue(encoder.encode(sseEncode("error", {
+              message: `Upstream stalled — no events for ${Math.round(INACTIVITY_MS / 1000)}s. Please retry.`,
+              code: "UPSTREAM_STALL",
+            })));
+          } catch { /* already closed */ }
+          upstreamAbort.abort();
+        }
+      }, 5000);
 
       let assistantText = "";
       let flagged = false;
@@ -171,10 +227,19 @@ export async function POST(req: Request) {
           body.message,
         )) {
           if (upstreamAbort.signal.aborted) break;
+          lastEventAt = Date.now();
           if (chunk.type === "text") {
+            if (timings.first_text_delta === undefined) {
+              timings.first_text_delta = Date.now() - t0;
+              mark("first-text");
+            }
             assistantText += chunk.delta;
             controller.enqueue(encoder.encode(sseEncode("text", { delta: chunk.delta })));
           } else if (chunk.type === "tool-call-start") {
+            if (timings.first_tool_use === undefined) {
+              timings.first_tool_use = Date.now() - t0;
+              mark(`first-tool (${chunk.name})`);
+            }
             controller.enqueue(encoder.encode(sseEncode("tool-start", { name: chunk.name, id: chunk.toolCallId })));
           } else if (chunk.type === "tool-call-args") {
             controller.enqueue(encoder.encode(sseEncode("tool-args", { id: chunk.toolCallId, args: chunk.args })));
@@ -186,6 +251,10 @@ export async function POST(req: Request) {
             })));
           } else if (chunk.type === "flag") {
             flagged = true;
+            // Surface model-side failures (e.g. GPT-5 reasoning token budget
+            // exhausted, Claude stop_reason=max_tokens) to the client so the
+            // UI can show a helpful note instead of a silent empty bubble.
+            controller.enqueue(encoder.encode(sseEncode("flag", { reason: chunk.reason })));
           } else if (chunk.type === "usage") {
             finalUsage = chunk.usage;
           }
@@ -194,11 +263,12 @@ export async function POST(req: Request) {
           // racing the finally block.
         }
       } catch (e) {
-        if (!upstreamAbort.signal.aborted) {
+        if (!upstreamAbort.signal.aborted && !watchdogFired) {
           controller.enqueue(encoder.encode(sseEncode("error", { message: (e as Error).message })));
         }
       } finally {
         clearInterval(heartbeat);
+        clearInterval(watchdog);
         req.signal.removeEventListener("abort", onClientAbort);
         try {
           if (finalUsage) {
@@ -246,6 +316,13 @@ export async function POST(req: Request) {
         // have committed. This guarantees the client's router.refresh() reloads
         // the updated quota counters.
         try { controller.enqueue(encoder.encode(sseEncode("done", { conversationId }))); } catch { /* already closed */ }
+        timings.stop = Date.now() - t0;
+        mark(
+          `done model=${model.id} ttft=${timings.first_text_delta ?? "—"} ` +
+          `ttt=${timings.first_tool_use ?? "—"} total=${timings.stop} ` +
+          `in=${finalUsage?.inputTokens ?? 0} out=${finalUsage?.outputTokens ?? 0} ` +
+          `cached=${finalUsage?.cachedTokens ?? 0}`,
+        );
         controller.close();
       }
     },
