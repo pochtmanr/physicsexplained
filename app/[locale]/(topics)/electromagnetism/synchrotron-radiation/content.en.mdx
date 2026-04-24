@@ -1,0 +1,109 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SynchrotronTangentConeScene } from "@/components/physics/synchrotron-tangent-cone-scene";
+import { SynchrotronSpectrumScene } from "@/components/physics/synchrotron-spectrum-scene";
+import { RelativisticBeamingScene } from "@/components/physics/relativistic-beaming-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Larmor", href: "/physicists/joseph-larmor" },
+  { type: "term", label: "Synchrotron radiation", href: "/dictionary/synchrotron-radiation" },
+  { type: "term", label: "Relativistic beaming", href: "/dictionary/relativistic-beaming" },
+  { type: "term", label: "Larmor formula", href: "/dictionary/larmor-formula" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.55 · RADIATION"
+  title="SYNCHROTRON RADIATION"
+  subtitle="Light made on purpose by bending electrons in a circle."
+/>
+
+<Section index={1} title="An electron that will not go straight">
+
+In §10.1 we proved that any accelerating charge radiates. The simplest acceleration to arrange in a laboratory is not a back-and-forth oscillation — it is a steady magnetic bend. Drop an electron into a uniform magnetic field `B` perpendicular to its velocity and the Lorentz force does two things at once: it keeps the speed constant, and it curves the path into a circle of radius `R = p/(eB)`. The electron is accelerating every instant — not changing speed, but perpetually changing direction — and by <PhysicistLink slug="joseph-larmor" />'s formula it therefore radiates every instant. This is <Term slug="synchrotron-radiation">synchrotron radiation</Term>, so named because the first accidental observation came out of General Electric's 70 MeV synchrotron in April 1947, where the crew noticed a pencil-thin arc of blue-white glow leaking out of the vacuum chamber.
+
+The non-relativistic version of this story is Larmor's doughnut, rotated slowly in a horizontal plane: the dipole lobe `sin²θ` aims outward, the total power is small, and nothing about the scene is startling. The relativistic version is a completely different animal. When the electron's energy climbs to a few hundred MeV and its Lorentz factor `γ` reaches into the thousands, two things happen at once that transform the emission from laboratory curiosity into industrial tool: the total power radiated scales as `γ⁴`, and the pattern collapses from the broad doughnut into a pencil-thin forward cone of half-angle roughly `1/γ`. The result is a searchlight of broadband light so bright, so collimated, and so tunable that an entire class of modern laboratory — the **third-generation light source** — exists to produce it, one photon at a time.
+
+</Section>
+
+<Section index={2} title="Minimal relativity — γ in two sentences">
+
+We need one piece of special relativity and only one. Define the Lorentz factor `γ = 1/√(1 − β²)` where `β = v/c`; at `β = 0` it equals 1, at `β = 0.99` it equals 7.09, and at the 3 GeV electron energy of a typical synchrotron light source it reaches about 6000. For the rest of this topic treat `γ` as a dial that quantifies "how relativistic" the electron is — a factor that appears multiplicatively in every relativistic correction we will need. The full Lorentz-transformation machinery that *derives* these factors from first principles lives in §11; everything here works fine with the one-line definition.
+
+Two results from §11, quoted without proof here:
+
+- **Relativistic Larmor.** For a charge accelerating perpendicular to its velocity (circular motion is the textbook case), the radiated power picks up a factor `γ⁴`:
+
+<EquationBlock id="EQ.01">
+  $$ P \;=\; \frac{q^{2}\,c\;\beta^{4}\,\gamma^{4}}{6\pi\,\varepsilon_{0}\,R^{2}}. $$
+</EquationBlock>
+
+At `γ = 6000` the enhancement is `γ⁴ ≈ 1.3 × 10¹⁵`. The same electron moving at `v ≪ c` in the same circle would radiate fifteen orders of magnitude less power. Once you force a charge close to the speed of light, it becomes spectacularly easy to extract light from it.
+
+- **Forward beaming.** The `sin²θ` dipole pattern you measure in the electron's rest frame, when Lorentz-transformed into the lab frame, compresses almost entirely into a cone of half-angle `Δθ ≈ 1/γ` along the instantaneous velocity. At `γ = 10⁴` that is 100 μrad — narrower than the divergence of a cheap laser pointer. The radiation emerges tangent to the orbit, as a slice of arc sweeping round the ring.
+
+<SceneCard caption="FIG.55a — Electron in a storage-ring orbit with the instantaneous tangent emission cone. Toggle γ. The rendered cone is a logarithmic caricature because 1/γ at γ = 1000 would be a single pixel." className="w-full">
+  <SynchrotronTangentConeScene />
+</SceneCard>
+
+The geometry is the whole topic in one picture. An observer standing tangent to the ring sees a flash each time the electron's cone sweeps over them — one flash per orbit. Put a slit in the wall of the storage ring at that tangent and a continuous beam of light comes out, day and night, as long as the ring has electrons in it.
+
+</Section>
+
+<Section index={3} title="The universal spectrum and the critical frequency">
+
+The emission is not monochromatic. Because the electron emits only during the small fraction of its orbit when the cone happens to point at the observer — roughly `Δφ ≈ 1/γ` of a full revolution — the time structure of the pulse at the observer is extraordinarily short, a few picoseconds for a typical machine. A short pulse in the time domain is a broadband spectrum in the frequency domain: synchrotron radiation extends from radio frequencies up to a sharp cutoff called the **critical frequency**,
+
+<EquationBlock id="EQ.02">
+  $$ \omega_{c} \;=\; \frac{3}{2}\,\gamma^{3}\,\frac{c}{R}. $$
+</EquationBlock>
+
+Below `ω_c` the spectrum rises slowly as `ω^(1/3)`; above it, falls exponentially as `√ω · e^(−ω/ω_c)`. Plot `ω` horizontally on a log axis and the power per logarithmic frequency interval collapses onto a single universal curve `F(ω/ω_c)` that describes every synchrotron source in existence. Scale horizontally by `ω_c` and you slide the curve to wherever the machine in question happens to put its cutoff — millimetre-wave for a 1 GeV ring bending in a 30 m radius, hard X-ray at 10 keV for a 6 GeV machine like ESRF or APS, soft gamma-ray for the Crab Nebula pulsar wind at `γ ≈ 10⁶`.
+
+<SceneCard caption="FIG.55b — the universal synchrotron spectrum F(ω/ω_c). One shape covers every machine; the critical frequency ω_c = (3/2) γ³ c/R scales it horizontally." className="w-full">
+  <SynchrotronSpectrumScene />
+</SceneCard>
+
+<Callout variant="math">
+The `ω^(1/3)` rise and the exponential cutoff both drop out of the same calculation — a Fourier transform of the sharp-pulse time trace produced by the `1/γ` cone geometry. The `1/3` power is the Bessel-function `K_(5/3)` coming for you from the full calculation of the emitted fields; the exponential is the high-frequency tail of a smoothly pulsed signal. Details are in Jackson §14.6. For this topic the numbers are enough: `ω_c` marks the characteristic roll-off, and one plot per machine shows where in the spectrum the interesting physics ends.
+</Callout>
+
+This is why synchrotrons are chosen for X-ray crystallography and for every experiment that needs a tunable, intense, collimated broadband photon beam. A rotating-anode X-ray tube produces perhaps `10⁹` photons per second per unit solid angle per 0.1% bandwidth. A third-generation synchrotron beamline produces `10²⁰` in the same units — an increase of 100 billion. The user picks a wavelength, slots in a monochromator, and walks away with a coherent X-ray beam that resolves single-atom positions inside a protein.
+
+</Section>
+
+<Section index={4} title="Beaming and the pulsar lighthouse">
+
+The same `γ²` forward boost that collimates the synchrotron beam also explains why pulsars are seen as pulses. A pulsar is a neutron star whose magnetosphere forces outflowing electrons into tight helical paths. At TeV electron energies, `γ` comfortably exceeds `10⁶`: the emission cone half-angle is under a microradian, the light is a pencil that sweeps across the sky as the star rotates, and an observer on Earth sees a regular flash only when the cone crosses their line of sight.
+
+<SceneCard caption="FIG.55c — non-relativistic dipole doughnut (left) vs γ = 5 forward-boosted lobe (right). Same electron, different regime. Watch the observer icon on the right panel light up each time the cone sweeps past." className="w-full">
+  <RelativisticBeamingScene />
+</SceneCard>
+
+The term of art for this phenomenon is <Term slug="relativistic-beaming">relativistic beaming</Term>. It is a direct geometric consequence of the Lorentz transformation of solid angles — a detail that belongs to §11. Its observable signature is the two-regime contrast visible in the figure above. In the non-relativistic panel, an observer standing anywhere round the orbit sees a steady glow, waxing and waning as the lobe rotates but never extinguishing. In the `γ = 5` panel, the lobe points somewhere specific in space at each instant; most of the time the observer sits in a quiet region with essentially zero flux, and once per orbit the cone aligns and they catch a sharp flash. Crank `γ` up to a million and the on-to-off contrast ratio approaches `γ⁴ ~ 10²⁴`. The pulsar is born.
+
+Astrophysically the dominant site of synchrotron radiation is the pulsar wind nebula — the cloud of relativistic electrons driven out of a pulsar magnetosphere and injected into the surrounding supernova remnant. The Crab Nebula, powered by PSR B0531+21, is the textbook example: its blue optical glow, its radio continuum, and its hard X-ray emission are all parts of a single synchrotron spectrum from electrons with a broad distribution of Lorentz factors bending in the nebular magnetic field. Every image of the Crab that shows a filamentary blue wisp is showing synchrotron radiation live on the sky.
+
+</Section>
+
+<Section index={5} title="Why we build them anyway">
+
+There is a practical postscript. The very `γ⁴` scaling that makes synchrotron radiation useful also makes it a nuisance for the accelerator physicists who would rather their electrons keep all their energy. A circulating electron loses energy every turn:
+
+<EquationBlock id="EQ.03">
+  $$ \Delta E_{\text{turn}} \;=\; \frac{e^{2}\,\gamma^{4}}{3\,\varepsilon_{0}\,R}. $$
+</EquationBlock>
+
+At LEP — the 27 km electron–positron collider at CERN — this loss hit roughly 3 GeV per electron per turn at 104 GeV beam energy, more than the gain some RF cavities could plausibly replace. That is why CERN retired LEP and built the LHC (a *proton* collider) in the same tunnel: protons are 1836 times heavier, so their `γ` at fixed energy is 1836 times smaller. An electron collider does not scale past a few hundred GeV in a ring of fixable size; a proton collider does.
+
+The same `γ⁴` is a gift to anyone who *wants* the light. Third-generation light sources — ESRF in Grenoble, APS in Argonne, SPring-8 in Japan, DIAMOND in Oxfordshire, Petra III in Hamburg — are built deliberately to radiate. They use **insertion devices**: periodic arrays of alternating magnets called **wigglers** and **undulators** that steer the electron through a snake path whose each kink throws off its own tight cone, and the cones from consecutive kinks overlap and interfere constructively to produce beams thousands of times brighter than a plain bend magnet could provide. A modern undulator beamline is in practice an X-ray laser with tunable colour and a coherence length long enough to image biomolecules one frame at a time.
+
+Every such machine is an application of three short lines: the relativistic Larmor formula for the total emitted power, the `1/γ` opening angle that makes it collimated, and the `ω_c = (3/2) γ³ c/R` critical frequency that puts the power exactly where the user wants it in the electromagnetic spectrum. Three equations out of Maxwell and Lorentz, and from them an entire wing of experimental physics.
+
+</Section>
+
+</TopicPageLayout>
