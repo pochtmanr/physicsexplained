@@ -1,0 +1,132 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { AbrahamLorentzPhaseScene } from "@/components/physics/abraham-lorentz-phase-scene";
+import { RunawayVsReducedOrderScene } from "@/components/physics/runaway-vs-reduced-order-scene";
+import { RadiationReactionTimescaleScene } from "@/components/physics/radiation-reaction-timescale-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Paul Dirac", href: "/physicists/paul-dirac" },
+  { type: "term", label: "Abraham-Lorentz equation", href: "/dictionary/abraham-lorentz-equation" },
+  { type: "term", label: "Runaway solution", href: "/dictionary/runaway-solution" },
+  { type: "term", label: "Self-energy divergence", href: "/dictionary/self-energy-divergence" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.57 · RADIATION"
+  title="RADIATION REACTION"
+  subtitle="The force that a charge exerts back on itself."
+/>
+
+<Section index={1} title="The obligation of the accelerating charge">
+
+§10.1 gave us Larmor's formula: an accelerating point charge of charge q radiates power P = q²a² / (6π ε₀ c³). Power is energy per second. Every joule the field carries away to infinity has to come from somewhere. There is only one reservoir available — the charge's own kinetic energy. So the charge must feel a force, pushed back on it by its own emitted radiation, that drains that kinetic energy at exactly the Larmor rate. Call it the radiation-reaction force.
+
+The clean question: what is that force?
+
+Max Abraham wrote the first computation in 1903. <PhysicistLink slug="hendrik-antoon-lorentz" /> pushed it into its modern form in 1904. The procedure is conceptually direct: model the electron as a small charged sphere of radius a, compute the self-force of the sphere on itself (each patch of charge exerts an electromagnetic force on every other patch, including via retarded effects), take the limit a → 0, and throw away the piece that just renormalises the mass. What is left is a finite, computable force. It is called the <Term slug="abraham-lorentz-equation">Abraham-Lorentz force</Term>, and it is:
+
+<EquationBlock id="EQ.01">
+  $$ F_{\mathrm{rad}} \;=\; \frac{\mu_0\, q^2}{6\pi c}\,\dot{a} $$
+</EquationBlock>
+
+That is the money line. Read the right-hand side. The force on the charge depends not on its velocity, not on its acceleration, but on the *derivative* of its acceleration — the jerk. Newton's second law F = m·a relates force to the second derivative of position. Adding Abraham-Lorentz to the picture gives:
+
+<EquationBlock id="EQ.02">
+  $$ m\,\ddot{x} \;=\; F_{\mathrm{ext}}(t) \;+\; \frac{\mu_0\, q^2}{6\pi c}\, \dddot{x} $$
+</EquationBlock>
+
+A third-order ordinary differential equation. Classical mechanics is second-order — two initial conditions, position and velocity. Three time derivatives means three initial conditions, and the solution space has a qualitatively different shape. That alone should make you nervous.
+
+</Section>
+
+<Section index={2} title="Pathology one — the runaway">
+
+Turn off the external force. Set F_ext = 0. The Abraham-Lorentz equation becomes
+
+<EquationBlock id="EQ.03">
+  $$ \tau_0\,\dot{a} \;=\; a, \qquad \tau_0 \;\equiv\; \frac{q^2}{6\pi\,\varepsilon_0\,m\,c^3} $$
+</EquationBlock>
+
+with τ₀ — the characteristic radiation-reaction timescale — equal to 6.27 × 10⁻²⁴ s for the electron. That is an ordinary linear first-order equation in a(t), and its general solution is:
+
+<EquationBlock id="EQ.04">
+  $$ a(t) \;=\; a_0\,\exp\!\big(t/\tau_0\big) $$
+</EquationBlock>
+
+A free charge with any nonzero initial acceleration sees that acceleration grow without bound, exponentially, over a timescale of τ₀. No external force. No energy source. The charge just accelerates faster and faster forever. This is the <Term slug="runaway-solution">runaway solution</Term>, and it is the single most famous pathology in classical electrodynamics.
+
+<SceneCard caption="FIG.57 — phase plane (a, ȧ). Every nontrivial trajectory runs outward along the magenta ȧ = a/τ₀ line. The origin is an unstable fixed point." className="w-full">
+  <AbrahamLorentzPhaseScene />
+</SceneCard>
+
+The phase-plane portrait makes the geometry obvious. The equation ȧ = a/τ₀ is a straight line through the origin of slope 1/τ₀. Every trajectory lies on that line. All trajectories flow away from the origin. The origin — the only bounded fixed point — is unstable. Any perturbation, including the floating-point round-off in a numerical integrator, fires the runaway. This is not a numerical artifact; it is what the equation says.
+
+</Section>
+
+<Section index={3} title="Pathology two — pre-acceleration">
+
+There is a way to select against the runaway, at a cost. Declare by fiat the boundary condition a(∞) = 0 — demand the acceleration die out at late times. That single-handedly excludes the runaway branch and leaves one physical solution. Now switch on an external force at t = 0.
+
+The surviving solution predicts that the charge begins to accelerate *before* t = 0.
+
+Cause precedes effect by no more than a time of order τ₀, with the pre-acceleration decaying back to zero as you move earlier into the past. It is not a paradox in the mathematical sense — the equation is perfectly consistent. But it is a plain violation of classical causality. The charge anticipates the force. An electron knows 6 × 10⁻²⁴ seconds in advance that a photon is about to hit it, and starts moving.
+
+τ₀ is a tiny number. Pre-acceleration is unobservable at any macroscopic scale; no experiment can resolve 10⁻²⁴ s, and long before you got there quantum mechanics would have taken over. But the equation still predicts it. That is a statement about classical electrodynamics, not about measurement.
+
+</Section>
+
+<Section index={4} title="Pathology three — the self-energy divergence">
+
+Stand back from the equation for a moment. Ask the more basic question: what is the electrostatic energy of a point charge?
+
+<EquationBlock id="EQ.05">
+  $$ U \;=\; \int \frac{\varepsilon_0}{2}\,|\mathbf{E}|^2\,dV \;=\; \int_0^\infty \frac{\varepsilon_0}{2}\,\left(\frac{q}{4\pi\varepsilon_0 r^2}\right)^{\!2} 4\pi r^2\,dr $$
+</EquationBlock>
+
+That integral diverges at r → 0. The field of a point charge stores infinite energy in the neighbourhood of the charge itself. This is the <Term slug="self-energy-divergence">self-energy divergence</Term>, and it is the root of the whole mess. The classical electron radius r_e = q² / (4π ε₀ m c²) ≈ 2.82 × 10⁻¹⁵ m is the radius at which the stored field energy equals the rest energy m·c². Below r_e the field energy exceeds the rest energy. Something is already very wrong down there before radiation reaction enters the picture.
+
+One way to read the Abraham-Lorentz coefficient is that it is the finite piece of the self-interaction that survives *after* the divergent self-energy has been absorbed into the bare electron mass. This is already renormalisation, and Abraham and Lorentz did it without a name in 1903.
+
+</Section>
+
+<Section index={5} title="Landau-Lifshitz — the practical patch">
+
+<SceneCard caption="FIG.57b — same square-pulse F_ext. Left: full Abraham-Lorentz acceleration explodes after the pulse. Right: Landau-Lifshitz reduced-order a(t) tracks the pulse with finite edge spikes." className="w-full">
+  <RunawayVsReducedOrderScene />
+</SceneCard>
+
+In 1962 Lev Landau and Evgeny Lifshitz wrote down a reduced-order form. The idea is an approximation that is valid whenever the external force's timescale τ_ext is much longer than τ₀ — which, for any physically reasonable force acting on an electron, is basically always. To leading order Newton's law gives a ≈ F_ext/m, so ȧ ≈ Ḟ_ext/m, and substituting this into Abraham-Lorentz collapses the third-order ODE back to a second-order one:
+
+<EquationBlock id="EQ.06">
+  $$ a(t) \;\approx\; \frac{F_{\mathrm{ext}}(t)}{m} \;+\; \frac{\tau_0}{m}\,\dot{F}_{\mathrm{ext}}(t) $$
+</EquationBlock>
+
+This is the Landau-Lifshitz form. It is bounded. It is runaway-free. It is pre-acceleration-free. For any smooth external force it is numerically stable and physically reasonable. Modern laser-plasma simulations at the radiation-reaction-dominated intensity frontier use exactly this equation.
+
+It does not solve the problem. It throws away the runaway branch by construction. The underlying third-order equation is still sitting there — Landau and Lifshitz simply declared the pathological branch out-of-bounds and kept the other one. That is a practical patch, not a fundamental resolution.
+
+</Section>
+
+<Section index={6} title="Dirac's relativistic version, and the open problem below it">
+
+In 1938 <PhysicistLink slug="paul-dirac" /> extended the Abraham-Lorentz force to a fully Lorentz-covariant relativistic equation, now called the Abraham-Lorentz-Dirac (ALD) equation. The covariant form has the same pathologies. Relativity does not rescue classical radiation reaction.
+
+QED does — partially. Quantum electrodynamics, armed with renormalisation, absorbs the divergent self-energy into the bare electron mass and produces finite, testable predictions (the electron anomalous magnetic moment agrees with experiment to more than ten decimal places). The price is admitting that the "bare" mass in the Lagrangian is formally infinite and must be regularised away. QED works because the divergence is tamed systematically; it does not make the classical divergence go away.
+
+<SceneCard caption="FIG.57c — the timescale landscape. Below τ₀ ≈ 6×10⁻²⁴ s classical EM fails; QED must take over." className="w-full">
+  <RadiationReactionTimescaleScene />
+</SceneCard>
+
+Here is the honest summary. At the classical level, radiation reaction remains an open problem. Classical electrodynamics is *incomplete* at the self-interaction of a point charge — the third-order equation, the runaway, the pre-acceleration, the divergent self-energy, the need for a bare-mass renormalisation to even write the finite reaction force. The classical seam is what motivated the renormalisation programme in QED; gauge-theory is the modern language for how the quantum theory handles it, and §12.1 will pick up that thread. But at the classical level physicists have made peace with a theory that is incomplete at small scales, not because the incompleteness has been resolved, but because the regime where it matters — times near τ₀, energies near the classical electron radius — is exactly where quantum mechanics takes over and classical language stops applying.
+
+This is the seam in the fabric. It is not a minor footnote. Classical electrodynamics is one of the most predictively successful theories physics has ever built — it gets everything from the power radiated by a cellphone antenna to the spectrum of synchrotron light right — and it has this hole at its center. Do not mistake the comfort of a practical workaround for a resolution. The hole is real. And it is what made QED necessary.
+
+</Section>
+
+</TopicPageLayout>
