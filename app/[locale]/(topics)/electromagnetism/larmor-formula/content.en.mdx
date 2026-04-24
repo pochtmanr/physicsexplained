@@ -1,0 +1,140 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { LarmorRadiationLobeScene } from "@/components/physics/larmor-radiation-lobe-scene";
+import { LarmorPowerVsAccelerationScene } from "@/components/physics/larmor-power-vs-acceleration-scene";
+import { LarmorRelativisticComparisonScene } from "@/components/physics/larmor-relativistic-comparison-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Larmor", href: "/physicists/joseph-larmor" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Larmor formula", href: "/dictionary/larmor-formula" },
+  { type: "term", label: "Larmor power", href: "/dictionary/larmor-power" },
+  { type: "term", label: "Radiation pattern", href: "/dictionary/radiation-pattern" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.52 · RADIATION"
+  title="THE LARMOR FORMULA"
+  subtitle="Why every accelerating charge leaves light behind."
+/>
+
+<Section index={1} title="The question every antenna asks">
+
+§08 and §09 walked a plane wave from free space through a dielectric and out again. Neither section answered the obvious follow-up: where does the wave come from in the first place? Maxwell's equations allow electromagnetic waves; they do not, by themselves, tell you which *motion* of charge actually launches one.
+
+This is the content of §10. Every broadcast, every X-ray tube, every synchrotron beam line, every star's luminosity — all of it is one result, written down in 1897 by the Irish mathematician <PhysicistLink slug="joseph-larmor">Joseph Larmor</PhysicistLink>:
+
+<EquationBlock id="EQ.01">
+$$ P \;=\; \frac{q^{2}\,a^{2}}{6\,\pi\,\varepsilon_{0}\,c^{3}}. $$
+</EquationBlock>
+
+That is the total electromagnetic power radiated by a point charge q with non-relativistic acceleration magnitude a. Three features worth staring at. First, P is proportional to *acceleration* squared, not velocity — a coasting charge radiates nothing. Second, there is no reference to how far away you measure; P is a global number, the total flux through any enclosing sphere, and the sphere's radius drops out. Third, everything that varies between topics in this module hides inside that `a²`. Circular acceleration gives synchrotron radiation; sinusoidal gives dipole radiation; sudden gives bremsstrahlung. Same formula, different stories about how `a` is produced.
+
+</Section>
+
+<Section index={2} title="Where the formula comes from">
+
+The cleanest derivation starts from the retarded potentials, pulls out the far-field limit, and invokes the <Term slug="poynting-vector">Poynting vector</Term> to book the energy flux. For an accelerating point charge, the electric field at a distant observer splits into two pieces: a "velocity field" (quasi-static Coulomb, 1/r², locked to the retarded position) and an "acceleration field" proportional to $a_\perp$ that falls off only as 1/r.
+
+<EquationBlock id="EQ.02">
+$$ \mathbf{E}_{\text{rad}}(\mathbf{r},t) \;=\; \frac{q}{4\pi\varepsilon_{0}\,c^{2}\,r}\,\hat{\mathbf{n}}\times\bigl[\hat{\mathbf{n}}\times\mathbf{a}_{\text{ret}}\bigr]. $$
+</EquationBlock>
+
+Here $\hat{\mathbf{n}}$ points from the charge's retarded position to the observer, and $\mathbf{a}_{\text{ret}}$ is the charge's acceleration at the retarded time $t_{\text{ret}} = t - r/c$. The double cross-product is just the projection of $\mathbf{a}$ onto the plane perpendicular to $\hat{\mathbf{n}}$ (with a sign flip); what survives in magnitude is $a\sin\theta$, where $\theta$ is the angle between $\hat{\mathbf{n}}$ and the acceleration.
+
+Because $|\mathbf{E}_{\text{rad}}|\sim 1/r$, the Poynting flux $|\mathbf{S}| = |\mathbf{E}|^{2}/\mu_{0}c$ scales as $1/r^{2}$, and integrated power through a sphere is *independent* of r. That is what radiation means operationally — the far-field contribution that survives to infinity. The velocity field's flux falls off as $1/r^{4}$ and integrates to zero at the horizon.
+
+Substituting $|\mathbf{E}_{\text{rad}}| = (q\,a\sin\theta)/(4\pi\varepsilon_{0}c^{2}r)$ and integrating over the sphere:
+
+<EquationBlock id="EQ.03">
+$$ P \;=\; \oint |\mathbf{S}|\,dA \;=\; \frac{q^{2}a^{2}}{16\pi^{2}\varepsilon_{0}c^{3}}\int_{0}^{2\pi}\!\!\int_{0}^{\pi}\sin^{2}\theta\cdot\sin\theta\,d\theta\,d\varphi. $$
+</EquationBlock>
+
+The angular integral is standard: $\int_{0}^{\pi}\sin^{3}\theta\,d\theta = 4/3$ and $\int_{0}^{2\pi}d\varphi = 2\pi$, for a solid-angle factor $8\pi/3$. So
+
+<EquationBlock id="EQ.04">
+$$ P \;=\; \frac{q^{2}a^{2}}{16\pi^{2}\varepsilon_{0}c^{3}}\cdot\frac{8\pi}{3} \;=\; \frac{q^{2}a^{2}}{6\pi\varepsilon_{0}c^{3}}. $$
+</EquationBlock>
+
+One line of algebra after the far-field substitution, and Larmor falls out.
+
+<Callout variant="math">
+The angular density inside the integral is the <Term slug="radiation-pattern">radiation pattern</Term> itself: $dP/d\Omega = (q^{2}a^{2}/16\pi^{2}\varepsilon_{0}c^{3})\cdot\sin^{2}\theta$. Zero along the acceleration axis, maximal broadside. This is the "doughnut" — the same angular profile the Hertzian dipole antenna of §10.3 produces, because a small oscillating dipole is a charge accelerating sinusoidally along a line.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The doughnut">
+
+A picture is cheaper than the algebra for remembering the shape.
+
+<SceneCard caption="FIG.52a — sin²θ lobe about the instantaneous acceleration vector. Null along the axis of a, maximum broadside. Lobe-fill density tracks a² so the quadratic scaling is legible — double the acceleration, quadruple the radiated power.">
+  <LarmorRadiationLobeScene />
+</SceneCard>
+
+The lobe is rotationally symmetric about the acceleration axis in 3D; this 2D slice is the cross-section edge-on to the charge. The null along $\mathbf{a}$ is exact — a charge accelerating straight at you radiates *nothing* in your direction — the maximum is broadside, and the integral of sin²θ over the full sphere (with the sin θ from dΩ) is 8π/3, not 4π.
+
+The pattern is referenced to the instantaneous acceleration vector, not the velocity. For a charge moving in a circle, the acceleration is centripetal and the lobe sweeps with it. Above β ≈ 0.3 a second effect — Doppler beaming in the direction of motion — tilts the lobe forward along $\mathbf{v}$, which is how synchrotron light gets its narrow forward cone (§10.4).
+
+</Section>
+
+<Section index={4} title="The number has to be small — and it is">
+
+Plug in an electron's charge and an acceleration of exactly 1 m/s², and Larmor returns $P \approx 5.71\times10^{-54}$ W — roughly $10^{36}$ times smaller than a dim LED. The cube of the speed of light in the denominator kills the prefactor; classical radiation at human-scale accelerations is unmeasurable. You need astronomical accelerations to see astronomical power.
+
+The benchmark plot sets the scale. On a log-log axis log P is a straight line of slope 2 against log a.
+
+<SceneCard caption="FIG.52b — P vs |a| for an electron, log-log. Slope-2 line since P ∝ a². Benchmarks marked: car 0–100 km/h (a ≈ 2.8 m/s²), rifle muzzle (5 × 10⁵), 1 MV/m linac (1.8 × 10¹⁷), LHC beam-bend (10²⁰), electron in hydrogen ground state (9 × 10²²).">
+  <LarmorPowerVsAccelerationScene />
+</SceneCard>
+
+Two numbers on that chart are worth reading carefully. The electron in the hydrogen ground state sits at $a \approx 9 \times 10^{22}$ m/s² — the Coulomb attraction at a 0.5 Å radius is that fierce — and Larmor then predicts a continuous $\sim\!10^{-7}$ W of radiated power. If that were correct the electron would spiral into the proton in about $10^{-11}$ s, the atom would not exist, and you would not be reading this. Classical electrodynamics applied to the atom gives a *catastrophic* prediction; Bohr (1913) and Schrödinger (1926) resolved it in the quantum branch. The formula is not wrong — it is being applied outside its domain. For any charge not bound in a quantum ground state (beam, antenna, pulsar magnetosphere), Larmor is exactly right.
+
+</Section>
+
+<Section index={5} title="Relativistic extension: the Liénard formula">
+
+The formula above assumes β = v/c is small enough to drop retardation corrections at leading order. Liénard in 1898 handled the fully relativistic case. For acceleration aligned with or perpendicular to velocity, the answer splits cleanly:
+
+<EquationBlock id="EQ.05">
+$$ P_{\perp} \;=\; \gamma^{4}\,\frac{q^{2}a^{2}}{6\pi\varepsilon_{0}c^{3}}, \qquad P_{\parallel} \;=\; \gamma^{6}\,\frac{q^{2}a^{2}}{6\pi\varepsilon_{0}c^{3}}, \qquad \gamma \;=\; \frac{1}{\sqrt{1 - \beta^{2}}}. $$
+</EquationBlock>
+
+Perpendicular acceleration picks up γ⁴, parallel γ⁶ — a γ² multiplier that says parallel radiates harder. Physically, parallel acceleration compresses the retarded-time pulse of radiation by a factor γ, which appears twice in the Poynting flux and once more in the solid-angle factor, totalling γ⁶.
+
+<SceneCard caption="FIG.52c — P/P₀ vs β = v/c. Non-relativistic Larmor is flat at 1. Perpendicular (synchrotron) goes as γ⁴; parallel (linear accelerator) as γ⁶. At β = 0.999 the parallel curve already reads 10⁸.">
+  <LarmorRelativisticComparisonScene />
+</SceneCard>
+
+This gap drives modern accelerator architecture. Protons are heavy enough that circular colliders like the LHC (γ ≈ 7500, acceleration perpendicular) bleed tolerable power. Electrons are so light that a machine of the LHC's size would radiate away the full beam energy in under a millisecond — so circular *electron* machines are run deliberately as light sources (synchrotron, §10.4) and electron *colliders* are built straight (parallel acceleration, γ⁶ beaten by nobody bending the beam).
+
+</Section>
+
+<Section index={6} title="Thomson scattering — one more cash-out">
+
+One corollary before the next topic. If a free electron sits in an electromagnetic wave of intensity $I$, the wave's E-field drives the electron sinusoidally at the wave frequency; the electron re-radiates via Larmor. Re-radiated power divided by incoming flux defines a scattering cross-section:
+
+<EquationBlock id="EQ.06">
+$$ \sigma_{T} \;=\; \frac{8\pi}{3}\,r_{e}^{2}, \qquad r_{e} \;\equiv\; \frac{q^{2}}{4\pi\varepsilon_{0}\,m_{e}\,c^{2}} \;\approx\; 2.818\times10^{-15}\ \text{m}. $$
+</EquationBlock>
+
+$r_e$ is the classical electron radius — the scale at which a uniform ball of charge would have Coulomb self-energy equal to $m_e c^{2}$. (It is not the "actual radius" of an electron; the electron is point-like to every measurement we have. It is the scale below which the classical theory visibly stops making sense.) Plugging in gives $\sigma_{T} \approx 6.65\times10^{-29}$ m² — the opacity of a plasma of free electrons to low-frequency light, why the Sun's interior is opaque, and one of the handful of cross-sections in physics computable exactly without quantum theory.
+
+Thomson is the low-energy limit of Compton scattering. Above $\sim\!m_{e}c^{2}/10$ photon recoil becomes measurable, the wavelength shift $\Delta\lambda = (h/m_{e}c)(1-\cos\theta)$ kicks in, and the classical picture needs a quantum patch (see §08.3). Below that crossover, $\sigma_T$ is exact.
+
+</Section>
+
+<Section index={7} title="What §10 takes from here">
+
+Every remaining topic in the module specialises the formula. §10.2 plugs in the sinusoidal acceleration of an oscillating dipole and picks out the near-field / far-field split — the moment electromagnetic energy *leaves* its source. §10.3 turns that dipole into an antenna, adds resonance, and closes the loop from Maxwell (1862) to Hertz (1888) to Marconi (1901). §10.4 bends the charge in a ring, cashes in the γ⁴, and makes X-rays on purpose. §10.5 replaces gentle acceleration with a hard Coulomb deflection and gets the continuous bremsstrahlung spectrum. §10.6 asks the honest next question — if an accelerating charge radiates, the charge itself must feel a drag force — and finds classical electrodynamics does not quite manage to write that force down without runaway solutions or an infinite self-energy. That is the seam in the fabric of classical EM, and we will look at it directly.
+
+Hold onto the one identity: power radiated by an accelerating charge is $q^{2}a^{2}/(6\pi\varepsilon_{0}c^{3})$, with a $\sin^{2}\theta$ lobe about the acceleration axis, boosted by $\gamma^{4}$ or $\gamma^{6}$ at high velocities, and proportional to intensity times $\sigma_{T}$ for scattering off a free electron. The rest of §10 is how the acceleration gets set up.
+
+</Section>
+
+</TopicPageLayout>

@@ -880,6 +880,72 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   TelecomBandScene: lazyScene(() =>
     import("@/components/physics/telecom-band-scene").then((m) => ({ default: m.TelecomBandScene })),
   ),
+
+  // EM §10 — larmor-formula
+  LarmorRadiationLobeScene: lazyScene(() =>
+    import("@/components/physics/larmor-radiation-lobe-scene").then((m) => ({ default: m.LarmorRadiationLobeScene })),
+  ),
+  LarmorPowerVsAccelerationScene: lazyScene(() =>
+    import("@/components/physics/larmor-power-vs-acceleration-scene").then((m) => ({ default: m.LarmorPowerVsAccelerationScene })),
+  ),
+  LarmorRelativisticComparisonScene: lazyScene(() =>
+    import("@/components/physics/larmor-relativistic-comparison-scene").then((m) => ({ default: m.LarmorRelativisticComparisonScene })),
+  ),
+
+  // EM §10 — electric-dipole-radiation
+  DipoleFieldLinesScene: lazyScene(() =>
+    import("@/components/physics/dipole-field-lines-scene").then((m) => ({ default: m.DipoleFieldLinesScene })),
+  ),
+  NearFarFieldTransitionScene: lazyScene(() =>
+    import("@/components/physics/near-far-field-transition-scene").then((m) => ({ default: m.NearFarFieldTransitionScene })),
+  ),
+  DipolePolarPatternScene: lazyScene(() =>
+    import("@/components/physics/dipole-polar-pattern-scene").then((m) => ({ default: m.DipolePolarPatternScene })),
+  ),
+
+  // EM §10 — antennas-and-radio
+  Hertz1888ApparatusScene: lazyScene(() =>
+    import("@/components/physics/hertz-1888-apparatus-scene").then((m) => ({ default: m.Hertz1888ApparatusScene })),
+  ),
+  HalfWaveDipolePatternScene: lazyScene(() =>
+    import("@/components/physics/half-wave-dipole-pattern-scene").then((m) => ({ default: m.HalfWaveDipolePatternScene })),
+  ),
+  RadioPathLossScene: lazyScene(() =>
+    import("@/components/physics/radio-path-loss-scene").then((m) => ({ default: m.RadioPathLossScene })),
+  ),
+
+  // EM §10 — synchrotron-radiation
+  SynchrotronTangentConeScene: lazyScene(() =>
+    import("@/components/physics/synchrotron-tangent-cone-scene").then((m) => ({ default: m.SynchrotronTangentConeScene })),
+  ),
+  SynchrotronSpectrumScene: lazyScene(() =>
+    import("@/components/physics/synchrotron-spectrum-scene").then((m) => ({ default: m.SynchrotronSpectrumScene })),
+  ),
+  RelativisticBeamingScene: lazyScene(() =>
+    import("@/components/physics/relativistic-beaming-scene").then((m) => ({ default: m.RelativisticBeamingScene })),
+  ),
+
+  // EM §10 — bremsstrahlung
+  CoulombDeflectionScene: lazyScene(() =>
+    import("@/components/physics/coulomb-deflection-scene").then((m) => ({ default: m.CoulombDeflectionScene })),
+  ),
+  ContinuousXraySpectrumScene: lazyScene(() =>
+    import("@/components/physics/continuous-xray-spectrum-scene").then((m) => ({ default: m.ContinuousXraySpectrumScene })),
+  ),
+  ThickTargetShapeScene: lazyScene(() =>
+    import("@/components/physics/thick-target-shape-scene").then((m) => ({ default: m.ThickTargetShapeScene })),
+  ),
+
+  // EM §10 — radiation-reaction
+  AbrahamLorentzPhaseScene: lazyScene(() =>
+    import("@/components/physics/abraham-lorentz-phase-scene").then((m) => ({ default: m.AbrahamLorentzPhaseScene })),
+  ),
+  RunawayVsReducedOrderScene: lazyScene(() =>
+    import("@/components/physics/runaway-vs-reduced-order-scene").then((m) => ({ default: m.RunawayVsReducedOrderScene })),
+  ),
+  RadiationReactionTimescaleScene: lazyScene(() =>
+    import("@/components/physics/radiation-reaction-timescale-scene").then((m) => ({ default: m.RadiationReactionTimescaleScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
