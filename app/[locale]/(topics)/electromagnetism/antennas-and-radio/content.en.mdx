@@ -1,0 +1,106 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { Hertz1888ApparatusScene } from "@/components/physics/hertz-1888-apparatus-scene";
+import { HalfWaveDipolePatternScene } from "@/components/physics/half-wave-dipole-pattern-scene";
+import { RadioPathLossScene } from "@/components/physics/radio-path-loss-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Heinrich Hertz", href: "/physicists/heinrich-hertz" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Hertzian dipole", href: "/dictionary/hertzian-dipole" },
+  { type: "term", label: "Antenna gain", href: "/dictionary/antenna-gain" },
+  { type: "term", label: "Radiation pattern", href: "/dictionary/radiation-pattern" },
+  { type: "term", label: "Far-field zone", href: "/dictionary/far-field-zone" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.54 · RADIATION"
+  title="ANTENNAS AND RADIO"
+  subtitle="The difference between a wire and a broadcast."
+/>
+
+<Section index={1} title="Karlsruhe, 1888 — making Maxwell visible">
+
+By 1886, Maxwell's equations had been on the blackboard for twenty-four years and nobody had ever *made* an electromagnetic wave on purpose. The equations predicted them; lab instruments were built for steady circuits, not wiggling charges. Telegraph engineers worked with kilohertz pulses on long wires; none of them thought in terms of radiation. <PhysicistLink slug="heinrich-hertz">Heinrich Hertz</PhysicistLink>, a young professor at the Karlsruhe Polytechnic — pushed by his mentor Helmholtz, who had offered a Prussian Academy prize for an experimental confirmation of Maxwell's theory — decided to try.
+
+His transmitter was crude and decisive. An induction coil — a step-up transformer driven by a lead-acid battery — charged two brass balls separated by a small air gap until the voltage broke down the gap and a spark jumped across. The discharge rang at the natural frequency of the wire-plus-ball LC circuit, a few tens of megahertz, radiating a brief train of damped oscillations before the coil reset and fired again at about 8 Hz repetition. On the far side of the room Hertz placed a simple loop of wire with a second, nearly-closed micro-gap. If <PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink> was right, the EM wave would arrive at the loop, drive an oscillating current in it, and produce a voltage across the gap strong enough to jump across as a faint secondary spark.
+
+It did. In a darkened lab, a faint answering spark appeared across the receiver, synchronised to the transmitter. Moving the receiver a few metres changed the spark's brightness. Placing a zinc sheet between transmitter and receiver killed it — the sheet reflected the wave cleanly. Rotating the loop changed the response — the radiation had a polarization, exactly as Maxwell's transverse-wave solutions required. Hertz went on to bounce the waves off metal plates, focus them with parabolic zinc reflectors, refract them through a huge prism of pitch, measure their wavelength directly from standing-wave nulls along a conducting wall, and confirm that they travelled at the speed of light. Over three years of papers published in 1887–1888 he had manufactured light of an invisible colour, and he could interrogate it with carpentry.
+
+<SceneCard caption="FIG.54a — schematic of Hertz's 1888 setup. Transmitter spark-gap dipole on the left; receiver loop antenna on the right; expanding wavefronts propagate at c; the voltage trace at the bottom shows the receiver's damped ring after each pulse." className="w-full">
+  <Hertz1888ApparatusScene />
+</SceneCard>
+
+When asked what his discovery was good for, Hertz famously replied "nothing, I guess." He died of a vasculitis in 1894, aged 36, convinced his work was pure physics with no application. Within seven years an Italian electrical tinkerer with no academic appointment would prove otherwise. Guglielmo Marconi read Hertz's papers as a teenager, noticed that Hertz had kept the transmitter and receiver in the same room, and asked the obvious engineering question: how far can the spark be heard? The answer, by stretching the antennas taller, raising the voltage, and replacing Hertz's loop with a coherer and a ground connection, turned out to be the entire ocean.
+
+</Section>
+
+<Section index={2} title="The antenna as a dipole with a feed">
+
+Every antenna in the radio chapter of §10 is a variation on the same trick: shape a conductor so that a time-varying current on its surface couples efficiently to the far-field of an oscillating <Term slug="hertzian-dipole">Hertzian dipole</Term> — the point-source idealisation analysed in §10.2. The real conductor has length, finite impedance, and a "feed" where the transmitter connects. The physics in the far field is the same sin²θ doughnut as the point dipole; the engineering is all about matching — getting the transmitter's power off the feed line and into the radiation field instead of dissipating it as heat, and doing the reverse on the receive side.
+
+The starting number is the *radiation resistance*. If a current of amplitude $I_0$ flows on the dipole and the antenna radiates a time-averaged power $P$, define $R_{\text{rad}}$ by $P = \tfrac12 I_0^2 R_{\text{rad}}$. For a short dipole of length $L \ll \lambda$ one can integrate the far-field Poynting flux (§07.4) over a sphere and find
+
+<EquationBlock>
+  $$ R_{\text{rad}} \;=\; \frac{2\pi}{3}\,\mu_0\,c\,\bigl(L/\lambda\bigr)^2 \;\approx\; 790\,(L/\lambda)^2 \;\Omega. $$
+</EquationBlock>
+
+At $L/\lambda = 0.1$ this is only 7.9 Ω. Shrink the antenna another factor of ten, to $L/\lambda = 0.01$, and $R_{\text{rad}}$ drops to 0.08 Ω — smaller than the ohmic resistance of the wire itself, so most of the delivered power becomes heat rather than radiation. That is why AM broadcast towers are hundreds of metres tall (λ ≈ 300 m at 1 MHz) and why the folded copper whip in a handheld FM radio picks up only the strongest local stations: the physics of the short-dipole formula punishes small antennas quadratically, and at 100 MHz with a 10 cm whip you are sitting at $L/\lambda \approx 0.03$ with just under 1 Ω of radiation resistance to work with.
+
+The canonical compromise is the centre-fed half-wave dipole, $L = \lambda/2$. Its current distribution is approximately sinusoidal with a node at each end, its feed-point impedance comes out to $R_{\text{rad}} \approx 73\,\Omega$ — conveniently close to the characteristic impedance of everyday coaxial cable — and its <Term slug="radiation-pattern">radiation pattern</Term> is the exact
+
+<EquationBlock>
+  $$ F(\theta) \;=\; \left|\,\frac{\cos\!\bigl(\tfrac{\pi}{2}\cos\theta\bigr)}{\sin\theta}\,\right|^{2}. $$
+</EquationBlock>
+
+Two pinched lobes, perpendicular to the wire, with a broadside peak <Term slug="antenna-gain">antenna gain</Term> of $G = 1.64$ (2.15 dBi). That extra 0.4 dB over the short-dipole doughnut is the entire reason the λ/2 is the textbook reference antenna.
+
+<SceneCard caption="FIG.54b — polar pattern of a half-wave dipole (amber) overlaid with the short-dipole sin²θ doughnut (lilac). Both are zero along the wire and peak broadside; the half-wave lobes are slightly pinched." className="w-full">
+  <HalfWaveDipolePatternScene />
+</SceneCard>
+
+Any time-varying current distribution can be decomposed into dipole plus higher-order multipoles, and any real antenna — Yagi, log-periodic, helical, patch, parabolic dish — has a geometry-dependent $G$ and $R_{\text{rad}}$ that tabulate into a datasheet. But the two numbers above set the whole game. A parabolic dish is still a "dipole" in the sense that its far field is coherent superposition of dipole contributions from each current element on the reflector; the dish just engineers the phases so that the far-field lobes are almost entirely in one narrow beam. A cellular base-station sector antenna is a vertical stack of half-wave dipoles fed in phase, so the lobes squeeze into a fan parallel to the horizon instead of broadside to a single wire. Each geometry trades size for directivity by the same rules.
+
+</Section>
+
+<Section index={3} title="Friis, Marconi, and why frequency matters">
+
+On the receive side the key object is the *effective aperture*. Any antenna with directive gain $G$, dropped into a plane wave of intensity $S$, delivers power $P_r = S \cdot A_{\text{eff}}$ to a matched load, where
+
+<EquationBlock>
+  $$ A_{\text{eff}} \;=\; \frac{G\,\lambda^2}{4\pi}. $$
+</EquationBlock>
+
+The factor of $\lambda^2$ has counterintuitive consequences: at low frequencies a modest-gain antenna has a huge effective collecting area, which is why a wire hanging out a bedroom window can pick up a 20-metre shortwave broadcast from across an ocean. A short-dipole receive whip at 100 MHz has $A_{\text{eff}} \approx 1.1\,\text{m}^2$ — an effective window much larger than the whip itself. The wave, of course, does not care what physical size your antenna is; it couples to the induced current. Combine the transmit Friis relation, the spherical-spreading $S = P_t G_t/(4\pi r^2)$ of a <Term slug="far-field-zone">far-field</Term> radiator, and the receive aperture, and you get the full Friis link budget,
+
+<EquationBlock>
+  $$ P_r \;=\; P_t\,G_t\,G_r\,\Bigl(\tfrac{\lambda}{4\pi r}\Bigr)^{2}, $$
+</EquationBlock>
+
+or in decibels the *free-space path loss*,
+
+<EquationBlock>
+  $$ \mathrm{FSPL} \;=\; 20\,\log_{10}\!\bigl(4\pi r/\lambda\bigr) \;\;\mathrm{dB}. $$
+</EquationBlock>
+
+Double the distance, add 6 dB of loss. Double the frequency at fixed distance (halve λ), add another 6 dB. That is the fundamental reason long-wavelength radio hauls so far: at 1 MHz (λ = 300 m) a 1 km link loses only 32 dB, but at 2.4 GHz the same 1 km costs 100 dB. To recover that 68 dB you need either higher-gain antennas at both ends, more transmit power, a more sensitive receiver, or — the usual solution — all three at once.
+
+<SceneCard caption="FIG.54c — free-space path loss vs distance at 100 MHz FM (λ ≈ 3 m) and 2.4 GHz Wi-Fi (λ ≈ 12.5 cm). The Wi-Fi curve sits about 27 dB above the FM curve at every distance — the λ² penalty of the shorter wavelength." className="w-full">
+  <RadioPathLossScene />
+</SceneCard>
+
+In December 1901, Marconi claimed to have received a Morse "S" — three dots — transmitted from Poldhu, Cornwall, at a kite-suspended wire in St John's, Newfoundland, 3 500 km away. The straight-line path loss at his roughly 850 kHz carrier over that distance is severe: Friis in vacuum predicts attenuation of order 100 dB by spreading alone, and that assumes the wave could travel in a straight line through a spherical Earth, which it cannot. The ionosphere — a layer of solar-UV-ionised plasma 60 to 400 km up, first theorised in the 1920s by Heaviside and Appleton — turned out to reflect medium-frequency waves back down, and by bouncing between the ionosphere and the ocean surface in a series of hops the signal could circle the globe. Marconi had no idea this propagation mode existed; he simply fired the biggest spark transmitter he could build at the sky and listened. Whether his first signal was a real "S" or thermal noise, statisticians still argue about a century later; what matters is that within a decade transatlantic wireless was routine commerce. The technology was an antenna tall enough to make $R_{\text{rad}}$ usable, a spark gap loud enough to light it, a frequency low enough that the ionosphere helped, and a receiver tuned tightly enough to pick the signal out of the atmospheric hiss.
+
+<Callout variant="note">
+Everything that came after — FM in the 1930s, television in the 1940s, radar and microwave relays in World War II, satellite downlinks in the 1960s, mobile phones in the 1980s, Wi-Fi and GPS in the 1990s, 5G millimetre wave today — is engineering commentary on the same four numbers: $R_{\text{rad}}$, $G$, $A_{\text{eff}}$, and $\mathrm{FSPL}$. The waves are the same Maxwell equations Hertz confirmed in 1888. Only the detectors, the modulation schemes, and the signal-processing stacks got cleverer.
+</Callout>
+
+The resonant LC circuits of §06.5 sit directly behind every antenna feed — they are how you select a single band out of the spectral soup and reject the rest. The wave equation of §08.1 is what the antenna emits once driven, and the Larmor formula of §10.1 is the underlying reason the radiation exists at all: a sinusoidal current on the wire is an accelerating charge distribution, and every accelerating charge must radiate. The §10.2 dipole radiation is simply the dominant multipole of that emission in the far zone. FIG.55 steps up one more rung: what happens when the accelerated charge is not oscillating in place but sweeping around a synchrotron ring at relativistic speed, and the doughnut collapses into a tight forward cone.
+
+</Section>
+
+</TopicPageLayout>
