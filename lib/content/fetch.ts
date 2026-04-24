@@ -67,43 +67,56 @@ export const getContentEntry = cache(
 async function fetchMany(
   kind: ContentKind,
   locale: string,
+  includeBlocks: boolean,
 ): Promise<Omit<ContentEntry, "localeFallback">[]> {
+  const columns = includeBlocks
+    ? "*"
+    : "kind, slug, locale, title, subtitle, meta, source_hash";
   const { data, error } = await supabase
     .from("content_entries")
-    .select("*")
+    .select(columns)
     .eq("kind", kind)
     .eq("locale", locale);
 
   if (error) throw error;
   if (!data) return [];
 
-  return data.map((row) => ({
+  return (data as unknown as Array<Record<string, unknown>>).map((row) => ({
     kind: row.kind as ContentKind,
-    slug: row.slug,
-    locale: row.locale,
-    title: row.title,
-    subtitle: row.subtitle,
-    blocks: (row.blocks ?? []) as Block[],
-    asideBlocks: (row.aside_blocks ?? []) as Block[],
+    slug: row.slug as string,
+    locale: row.locale as string,
+    title: row.title as string,
+    subtitle: (row.subtitle as string | null) ?? null,
+    blocks: (includeBlocks ? (row.blocks ?? []) : []) as Block[],
+    asideBlocks: (includeBlocks ? (row.aside_blocks ?? []) : []) as Block[],
     meta: (row.meta ?? {}) as Record<string, unknown>,
-    sourceHash: row.source_hash,
+    sourceHash: (row.source_hash as string | null) ?? null,
   }));
 }
 
 /**
  * Fetch all entries of a given kind for a given locale, falling back to the
- * English row for any slug that lacks a translation.
+ * English row for any slug that lacks a translation. Listing pages (index
+ * grids) never read block JSON — pass `includeBlocks: false` (the default) to
+ * skip those columns and keep RSC payload small.
  */
 export const getContentEntriesByKind = cache(
-  async (kind: ContentKind, locale: string): Promise<ContentEntry[]> => {
-    const primary = await fetchMany(kind, locale);
-    const primaryBySlug = new Map(primary.map((e) => [e.slug, e]));
-
+  async (
+    kind: ContentKind,
+    locale: string,
+    includeBlocks = false,
+  ): Promise<ContentEntry[]> => {
     if (locale === "en") {
+      const primary = await fetchMany(kind, locale, includeBlocks);
       return primary.map((e) => ({ ...e, localeFallback: false }));
     }
 
-    const english = await fetchMany(kind, "en");
+    const [primary, english] = await Promise.all([
+      fetchMany(kind, locale, includeBlocks),
+      fetchMany(kind, "en", includeBlocks),
+    ]);
+    const primaryBySlug = new Map(primary.map((e) => [e.slug, e]));
+
     const merged: ContentEntry[] = [];
     for (const enEntry of english) {
       const localized = primaryBySlug.get(enEntry.slug);

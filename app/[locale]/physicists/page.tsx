@@ -5,6 +5,7 @@ import { locales } from "@/i18n/config";
 import { getContentEntriesByKind } from "@/lib/content/fetch";
 import type { ContentEntry } from "@/lib/content/fetch";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { CenturyChips } from "@/components/layout/century-chips";
 
 export const metadata: Metadata = {
   title: "Physicists — physics",
@@ -37,8 +38,13 @@ function buildCenturyLabel(
 
 interface CenturyBlock {
   century: number;
+  slug: string;
   label: string;
   entries: ContentEntry[];
+}
+
+function centurySlug(century: number): string {
+  return century <= 0 ? "ancient" : `c${century}`;
 }
 
 export function generateStaticParams() {
@@ -52,11 +58,13 @@ export default async function PhysicistsIndexPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("common.pages.physicists");
-  const all = await getContentEntriesByKind("physicist", locale);
-  const messages = (await getMessages()) as {
-    common?: { pages?: { physicists?: { nationalities?: Record<string, string> } } };
-  };
+  const [t, all, messages] = await Promise.all([
+    getTranslations("common.pages.physicists"),
+    getContentEntriesByKind("physicist", locale),
+    getMessages() as Promise<{
+      common?: { pages?: { physicists?: { nationalities?: Record<string, string> } } };
+    }>,
+  ]);
   const nationalityMap =
     messages.common?.pages?.physicists?.nationalities ?? {};
 
@@ -73,9 +81,16 @@ export default async function PhysicistsIndexPage({
     .sort(([a], [b]) => a - b)
     .map(([century, entries]) => ({
       century,
+      slug: centurySlug(century),
       label: buildCenturyLabel(century, t),
       entries,
     }));
+
+  const chipItems = blocks.map((b) => ({
+    slug: b.slug,
+    label: b.label,
+    count: b.entries.length,
+  }));
 
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
@@ -94,9 +109,15 @@ export default async function PhysicistsIndexPage({
         </div>
       </div>
 
+      {chipItems.length > 1 ? <CenturyChips centuries={chipItems} /> : null}
+
       <div className="mt-16 space-y-16">
         {blocks.map((block) => (
-          <section key={block.century}>
+          <section
+            key={block.century}
+            id={`century-${block.slug}`}
+            className="scroll-mt-28"
+          >
             <h2 className="mb-8 font-mono text-sm uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
               {t("centuryHeader", {
                 label: block.label,

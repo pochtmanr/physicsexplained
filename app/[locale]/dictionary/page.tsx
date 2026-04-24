@@ -12,19 +12,16 @@ export const metadata: Metadata = {
     "Instruments, concepts, and phenomena referenced across the site.",
 };
 
-interface CategoryBlock {
-  category: GlossaryCategory;
-  id: string;
-  label: string;
-  entries: ContentEntry[];
-}
+type CategoryFilter = GlossaryCategory | "all";
 
-const CATEGORY_ORDER: readonly { category: GlossaryCategory; id: string }[] = [
-  { category: "instrument", id: "cat-instruments" },
-  { category: "concept", id: "cat-concepts" },
-  { category: "phenomenon", id: "cat-phenomena" },
-  { category: "unit", id: "cat-units" },
-];
+const CATEGORIES: readonly GlossaryCategory[] = [
+  "concept",
+  "phenomenon",
+  "instrument",
+  "unit",
+] as const;
+
+const PER_PAGE = 30;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -42,34 +39,82 @@ function readCategory(value: unknown): GlossaryCategory | null {
   return null;
 }
 
+function parseFilter(raw: string | string[] | undefined): CategoryFilter {
+  const v = Array.isArray(raw) ? raw[0] : raw;
+  if (v && CATEGORIES.includes(v as GlossaryCategory)) {
+    return v as GlossaryCategory;
+  }
+  return "all";
+}
+
+function parsePage(raw: string | string[] | undefined): number {
+  const v = Array.isArray(raw) ? raw[0] : raw;
+  const n = parseInt(v ?? "1", 10);
+  return Number.isFinite(n) && n >= 1 ? n : 1;
+}
+
+function buildHref(filter: CategoryFilter, page: number): string {
+  const params = new URLSearchParams();
+  if (filter !== "all") params.set("category", filter);
+  if (page > 1) params.set("page", String(page));
+  const qs = params.toString();
+  return `/dictionary${qs ? `?${qs}` : ""}`;
+}
+
 export default async function DictionaryIndexPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ category?: string | string[]; page?: string | string[] }>;
 }) {
   const { locale } = await params;
+  const sp = await searchParams;
   setRequestLocale(locale);
-  const t = await getTranslations("common.pages.dictionary");
 
-  const entries = await getContentEntriesByKind("glossary", locale);
+  const selected: CategoryFilter = parseFilter(sp.category);
+  const requestedPage = parsePage(sp.page);
 
-  const byCategory = new Map<GlossaryCategory, ContentEntry[]>();
-  for (const entry of entries) {
-    const category = readCategory(entry.meta.category);
-    if (!category) continue;
-    const list = byCategory.get(category) ?? [];
-    list.push(entry);
-    byCategory.set(category, list);
+  const [t, all] = await Promise.all([
+    getTranslations("common.pages.dictionary"),
+    getContentEntriesByKind("glossary", locale),
+  ]);
+
+  const sorted: ContentEntry[] = [...all].sort((a, b) =>
+    a.title.localeCompare(b.title, locale),
+  );
+
+  const counts: Record<GlossaryCategory, number> = {
+    concept: 0,
+    phenomenon: 0,
+    instrument: 0,
+    unit: 0,
+  };
+  for (const e of sorted) {
+    const cat = readCategory(e.meta.category);
+    if (cat) counts[cat]++;
   }
 
-  const blocks: CategoryBlock[] = CATEGORY_ORDER.map(({ category, id }) => ({
-    category,
-    id,
-    label: t(`categoryLabels.${category}`),
-    entries: byCategory.get(category) ?? [],
-  })).filter((b) => b.entries.length > 0);
+  const filtered =
+    selected === "all"
+      ? sorted
+      : sorted.filter((e) => readCategory(e.meta.category) === selected);
 
-  const total = blocks.reduce((s, b) => s + b.entries.length, 0);
+  const total = sorted.length;
+  const filteredTotal = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(filteredTotal / PER_PAGE));
+  const currentPage = Math.min(Math.max(1, requestedPage), totalPages);
+  const start = (currentPage - 1) * PER_PAGE;
+  const pageEntries = filtered.slice(start, start + PER_PAGE);
+
+  const tabs: { value: CategoryFilter; label: string; count: number }[] = [
+    { value: "all", label: t("filterAll"), count: total },
+    ...CATEGORIES.map((c) => ({
+      value: c as CategoryFilter,
+      label: t(`categoryLabels.${c}`),
+      count: counts[c],
+    })),
+  ];
 
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
@@ -84,58 +129,122 @@ export default async function DictionaryIndexPage({
           {t("subtitle")}
         </p>
         <div className="mt-8 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
-          {t("stats", { total, categories: blocks.length })}
+          {t("statsFiltered", {
+            shown: filteredTotal,
+            total,
+            page: currentPage,
+            pages: totalPages,
+          })}
         </div>
       </div>
 
-      <div className="mt-16 space-y-20">
-        {blocks.map((block, blockIdx) => (
-          <section key={block.category}>
-            <div className="mb-8 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="text-2xl font-semibold tracking-tight text-[var(--color-cyan)] tabular-nums md:text-3xl">
-                §&#8239;{String(blockIdx + 1).padStart(2, "0")}
-              </span>
-              <h2 className="text-2xl text-[var(--color-fg-0)] md:text-3xl">
-                {block.label}
-              </h2>
-              <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
-                · {block.entries.length}
-              </span>
-            </div>
-            <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
-              {block.entries.map((entry) => {
-                const displayTerm = entry.title;
-                const displayShort = entry.subtitle ?? "";
-                return (
-                  <Link
-                    key={entry.slug}
-                    href={`/dictionary/${entry.slug}`}
-                    className="group relative flex h-full min-h-[200px] flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-8 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)]"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
-                        {t(`categorySingular.${block.category}`)}
-                      </div>
-                      <span
-                        aria-hidden="true"
-                        className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-xl leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
-                      >
-                        →
-                      </span>
+      <nav
+        aria-label="Filter by category"
+        className="mt-10 -mx-6 md:-mx-8 sticky top-12 md:top-14 z-40 border-y border-[var(--color-fg-4)]/60 bg-[var(--color-bg-0)]/95 backdrop-blur supports-[backdrop-filter]:bg-[var(--color-bg-0)]/85"
+      >
+        <div className="no-scrollbar flex items-center gap-2 overflow-x-auto px-6 py-2.5 md:px-8">
+          {tabs.map((tab) => {
+            const isActive = tab.value === selected;
+            return (
+              <Link
+                key={tab.value}
+                href={buildHref(tab.value, 1)}
+                aria-current={isActive ? "true" : undefined}
+                className={`nav-link inline-flex shrink-0 items-center gap-2 border px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider transition-colors ${
+                  isActive
+                    ? "border-[var(--color-cyan)] bg-[var(--color-cyan)] text-[var(--color-bg-0)] shadow-[0_0_0_1px_var(--color-cyan),0_8px_24px_-12px_var(--color-glow)]"
+                    : "border-[var(--color-fg-4)] text-[var(--color-fg-2)] hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+                }`}
+              >
+                <span>{tab.label}</span>
+                <span
+                  className={`font-semibold tabular-nums ${
+                    isActive
+                      ? "text-[var(--color-bg-0)] opacity-70"
+                      : "text-[var(--color-fg-3)]"
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      <div className="mt-16">
+        {pageEntries.length === 0 ? (
+          <p className="text-[var(--color-fg-2)]">{t("emptyCategory")}</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
+            {pageEntries.map((entry) => {
+              const category = readCategory(entry.meta.category);
+              return (
+                <Link
+                  key={entry.slug}
+                  href={`/dictionary/${entry.slug}`}
+                  className="group relative flex h-full min-h-[200px] flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-8 transition-colors duration-[180ms] hover:z-10 hover:border-[var(--color-cyan)]"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
+                      {category ? t(`categorySingular.${category}`) : ""}
                     </div>
-                    <h3 className="mt-4 text-xl md:text-2xl uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
-                      {displayTerm}
-                    </h3>
-                    <p className="mt-3 text-sm text-[var(--color-fg-1)]">
-                      {displayShort}
-                    </p>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
-        ))}
+                    <span
+                      aria-hidden="true"
+                      className="inline-flex h-6 w-6 shrink-0 items-center justify-center text-xl leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
+                    >
+                      →
+                    </span>
+                  </div>
+                  <h3 className="mt-4 text-xl md:text-2xl uppercase tracking-tight text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+                    {entry.title}
+                  </h3>
+                  <p className="mt-3 text-sm text-[var(--color-fg-1)]">
+                    {entry.subtitle ?? ""}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
+
+      {totalPages > 1 ? (
+        <nav
+          aria-label="Pagination"
+          className="mt-12 flex items-center justify-between gap-3"
+        >
+          {currentPage > 1 ? (
+            <Link
+              href={buildHref(selected, currentPage - 1)}
+              className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+            >
+              <span aria-hidden="true" className="rtl:-scale-x-100">
+                ←
+              </span>
+              <span>{t("pagePrevious")}</span>
+            </Link>
+          ) : (
+            <div />
+          )}
+          <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
+            {t("pageLabel", { page: currentPage, pages: totalPages })}
+          </div>
+          {currentPage < totalPages ? (
+            <Link
+              href={buildHref(selected, currentPage + 1)}
+              className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+            >
+              <span>{t("pageNext")}</span>
+              <span aria-hidden="true" className="rtl:-scale-x-100">
+                →
+              </span>
+            </Link>
+          ) : (
+            <div />
+          )}
+        </nav>
+      ) : null}
     </main>
   );
 }
