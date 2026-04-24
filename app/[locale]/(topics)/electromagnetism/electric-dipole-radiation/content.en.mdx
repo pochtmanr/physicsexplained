@@ -1,0 +1,136 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DipoleFieldLinesScene } from "@/components/physics/dipole-field-lines-scene";
+import { NearFarFieldTransitionScene } from "@/components/physics/near-far-field-transition-scene";
+import { DipolePolarPatternScene } from "@/components/physics/dipole-polar-pattern-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Heinrich Hertz", href: "/physicists/heinrich-hertz" },
+  { type: "term", label: "Near-field zone", href: "/dictionary/near-field-zone" },
+  { type: "term", label: "Far-field zone", href: "/dictionary/far-field-zone" },
+  { type: "term", label: "Retarded time", href: "/dictionary/retarded-time" },
+  { type: "term", label: "Radiation pattern", href: "/dictionary/radiation-pattern" },
+  { type: "term", label: "Larmor formula", href: "/dictionary/larmor-formula" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.53 · RADIATION"
+  title="ELECTRIC DIPOLE RADIATION"
+  subtitle="The simplest antenna in the universe."
+/>
+
+<Section index={1} title="Two regions, one dipole">
+
+Take the simplest arrangement that can possibly radiate. A tiny rod with a positive charge at the top, a negative charge at the bottom, and a current that sloshes between them at a fixed angular frequency ω. Write the whole thing as a single number that oscillates:
+
+<EquationBlock id="EQ.01">
+$$ \mathbf{p}(t) \;=\; p_0 \cos(\omega t)\,\hat{\mathbf{z}} $$
+</EquationBlock>
+
+That is an **oscillating electric dipole**. Its magnitude is the charge on the rod times the separation; in plain words, p is the "how far apart, how much charge" number that measures how strongly the system pulls on a distant test charge. The moment you demand that p changes with time, Maxwell's equations oblige — they produce a field everywhere in space, and that field splits cleanly into two regimes with very different physics.
+
+Close to the dipole (r much smaller than λ) the field looks like a frozen instantaneous dipole field that breathes in place as p flips sign. Energy flows out on one quarter-cycle and back in on the next, exactly the way energy sloshes between a capacitor's plates — it is stored, not radiated. Nothing escapes. This is the **<Term slug="near-field-zone">near-field zone</Term>**, and its amplitude falls off as 1 / r³. Cube the distance and you have killed the field; the near-field dies too fast to reach anyone.
+
+Far from the dipole (r much larger than λ) the field looks like an outgoing spherical wave. Energy flows outward radially and never comes back. The amplitude falls as 1 / r — slow enough that integrating the Poynting flux over a sphere of radius r gives a result *independent* of r, because 1/r² × (area of sphere) = 1/r² × 4πr² = 4π. The same power leaves every concentric shell, forever. This is the **<Term slug="far-field-zone">far-field zone</Term>**, the *radiation zone*, and it is literally light — or radio waves, or microwaves, depending on the frequency.
+
+Between them is a single crossover radius:
+
+<EquationBlock id="EQ.02">
+$$ r_t \;=\; \frac{c}{\omega} \;=\; \frac{\lambda}{2\pi} $$
+</EquationBlock>
+
+Inside r_t the dipole "owns" its field. Outside r_t the field has forgotten where it came from — it is just a wave, heading for the stars.
+
+</Section>
+
+<Section index={2} title="Watch the fields leave their source">
+
+<SceneCard caption="FIG.53 — the money shot. Oscillating vertical dipole at the origin. Lilac loops are the near-field, breathing in place. At r = c/ω they pinch off (amber) and propagate outward as pale-blue wavefronts — radiation. Drag the slider to change ω; the whole topology rescales." className="w-full">
+  <DipoleFieldLinesScene />
+</SceneCard>
+
+Inside the transition ring the lilac loops wrap tightly around the dipole and close back onto themselves. Every loop is a section of the instantaneous dipole field at some retarded time — think of it as a photograph of the dipole's field the way a nearby observer would see it, propagated outward at speed c. The loops breathe: they grow, shrink, and flip polarity as the dipole does.
+
+Now look at a loop as it approaches the dashed ring at r = c/ω. Just as it reaches that radius, the next half-cycle of the dipole reverses polarity. A *new* loop starts forming right at the source with the opposite orientation, and pushes against the old one. **The two loops cannot coexist in contact** — so the old one **pinches off**, detaches cleanly, and begins propagating outward. That is the moment fields leave their source. One half-cycle later the same thing happens again with the opposite polarity. The dipole emits an outgoing wavefront every half period, pinched off at the same ring.
+
+That pinch-off is the whole story of radiation. Without oscillation there is no pinching — the quasi-static field just hugs the source forever, which is exactly what a permanently polarised molecule does. Without the transition radius there is no topological handle on where the loop can detach — a slow oscillation gives the loop time to reach infinity before the source changes its mind, and a fast oscillation pinches it off almost immediately. With both, you get a periodic stream of outgoing loops. By the time they reach the eye they have fused into a smooth far-field that the human brain recognises as "a wave", but the origin of every wave is a single loop that once wrapped a source and then let go.
+
+The <PhysicistLink slug="james-clerk-maxwell">Maxwell</PhysicistLink> equations made the prediction in 1865: if current can accelerate in a wire, it must radiate, and the radiation must travel at the speed calculated from ε₀ and μ₀ alone. <PhysicistLink slug="heinrich-hertz">Heinrich Hertz</PhysicistLink> believed it enough to design the experiment, built a spark-gap dipole in 1887, and measured the first radio waves at Karlsruhe in 1888. He spaced a reflector a known distance behind his transmitter, found the nodes of the resulting standing wave, and computed c from the measurement. It agreed with Maxwell's prediction to within his error bars. Three years later Marconi was turning the demonstration into a commercial product, and the whole of twentieth-century radio was born out of the pinch-off you are looking at in the figure above.
+
+</Section>
+
+<Section index={3} title="The two asymptotes">
+
+Write the exact retarded-time solution of an oscillating dipole and expand in powers of (ωr/c) = 2π r/λ. The result is a sum of terms with different powers of 1/r. Keep only the dominant one in each regime and you get a clean asymptotic picture.
+
+The near-zone, quasi-static limit gives
+
+<EquationBlock id="EQ.03">
+$$ E_r^{\text{near}} \;=\; \frac{2\,p(t)\cos\theta}{4\pi\varepsilon_0\, r^3}, \qquad E_\theta^{\text{near}} \;=\; \frac{p(t)\sin\theta}{4\pi\varepsilon_0\, r^3} $$
+</EquationBlock>
+
+where p(t) = p₀ cos(ω·t) evaluated at the point's **<Term slug="retarded-time">retarded time</Term>** t − r/c (a signal travelling at speed c takes r/c seconds to arrive, so "now here" is tied to "then there"). These are exactly the components of an electrostatic dipole — dressed up with a slow time dependence. The fall-off goes as 1/r³.
+
+The far-zone, radiation limit gives a single transverse component:
+
+<EquationBlock id="EQ.04">
+$$ E_\theta^{\text{far}}(r,\theta,t) \;=\; -\frac{\mu_0\, p_0\, \omega^2}{4\pi}\,\frac{\sin\theta}{r}\,\cos\!\bigl(\omega(t - r/c)\bigr) $$
+</EquationBlock>
+
+and the magnetic far-field is locked to it by the vacuum triad B_φ = E_θ / c. Those two fields, transverse and in phase, are a plane wave in the local patch of sky — exactly the thing §08.2 described. The fall-off goes as 1/r. Energy flows outward as an honest radial Poynting flux, and no amount of waiting gets it back.
+
+<SceneCard caption="FIG.53b — the two asymptotes on one log–log plot. The 1/r³ near-field dominates inside r = c/ω; the 1/r far-field dominates outside. Only the far-field carries energy to infinity." className="w-full">
+  <NearFarFieldTransitionScene />
+</SceneCard>
+
+At r = r_t the two terms are comparable; inside, one wins by factors of (λ/r)², outside, the other wins by the same factor. The eye is happy treating the transition as a clean edge even though the exact solution is smooth — the regimes are separated by three orders of magnitude within half a wavelength either side.
+
+<Callout variant="math">
+
+Why "retarded" time and not "instantaneous" time? Because a signal from the source takes r/c seconds to arrive at the observation point. Substituting t → t − r/c into p(t) is Maxwell's way of saying "use the dipole moment that had already happened by the time this ripple was emitted from here". For the near-field terms the delay is negligible (r is small, so r/c is small, so cos(ω(t − r/c)) ≈ cos(ω t)). For the far-field terms the delay is **everything** — it is the phase of the outgoing wave.
+
+</Callout>
+
+</Section>
+
+<Section index={4} title="The doughnut and the total power">
+
+Take the time-averaged Poynting vector of the far-field expression and you get the angular distribution of radiated power:
+
+<EquationBlock id="EQ.05">
+$$ \frac{dP}{d\Omega} \;=\; \frac{\mu_0\, p_0^2\, \omega^4}{32\pi^2 c}\,\sin^2\theta $$
+</EquationBlock>
+
+The sin²θ factor is the famous **<Term slug="radiation-pattern">radiation pattern</Term>** of a Hertzian dipole. It is zero along the dipole axis (no radiation straight up or straight down), and maximum broadside (θ = π/2, around the equator). The 3D surface of constant dP/dΩ is a torus with its hole threaded by the dipole — the "doughnut".
+
+<SceneCard caption="FIG.53c — the sin²θ doughnut, rotating slowly. Zero along the dipole axis, peak broadside. Every AM/FM dipole antenna broadcasts this exact pattern." className="w-full">
+  <DipolePolarPatternScene />
+</SceneCard>
+
+Integrate over the full sphere using ∫ sin³θ dθ dφ = 8π/3 and the total radiated power drops out:
+
+<EquationBlock id="EQ.06">
+$$ \langle P\rangle \;=\; \frac{\mu_0\, p_0^2\, \omega^4}{12\pi c} $$
+</EquationBlock>
+
+Two features are worth sitting with. First, the dependence on ω is **quartic** — double the frequency and the radiated power shoots up by a factor of sixteen. That is Rayleigh's ω⁴ law and it is why the sky is blue: air molecules acting as driven dipoles scatter short-wavelength light sixteen-ish times more efficiently than long-wavelength light, so the scattered component of sunlight we see by looking away from the Sun is tilted toward the blue end. Second, the dependence on p₀ is quadratic: double the charge or double the separation and you get four times the power out. That is the classical antenna-design trade-off, and it is the reason FM stations run kilowatt transmitters on tall masts.
+
+The total-power expression is also the Larmor formula in disguise — §10.1 writes it as P = q²a²/(6πε₀c³) for an accelerating point charge. Substitute a = ω²·d (the peak acceleration of a charge q oscillating with amplitude d at frequency ω, so p₀ = q·d) and the two formulas are identical. Every radiator in §10 is Larmor specialised to some particular charge motion.
+
+</Section>
+
+<Section index={5} title="What this unlocks">
+
+The oscillating dipole is the simplest complete radiator — source term, near-field, pinch-off, far-field, angular pattern, total power — all of it follows from one time-dependent p(t). §10.3 scales it up into a practical antenna, swapping the idealised point dipole for a half-wavelength wire that accelerates real electrons and picks up a radiation resistance of 73 Ω. §10.4 takes a relativistic charge bent in a circle, where the same machinery produces the sharp forward cone of synchrotron light. §10.5 takes a non-relativistic charge deflected by another, which is bremsstrahlung — a broadband version of the same pinch-off. And §10.6 finally closes the loop by asking what the radiated field does back to the source — the radiation-reaction seam of classical electrodynamics.
+
+For now, the picture to carry forward is the one the money-shot scene draws: a source, a ring at r = c/ω, and a steady stream of wavefronts pinching off at that ring and disappearing into the sky. That is what an antenna does. That is how light is made.
+
+</Section>
+
+</TopicPageLayout>
