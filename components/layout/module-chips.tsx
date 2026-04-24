@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useActiveSection } from "@/lib/hooks/use-active-section";
 
 interface ModuleChipsProps {
   modules: { slug: string; index: number; title: string }[];
@@ -9,47 +10,11 @@ interface ModuleChipsProps {
 }
 
 export function ModuleChips({ modules, scrollOffset = 120 }: ModuleChipsProps) {
-  const [activeSlug, setActiveSlug] = useState<string>(modules[0]?.slug ?? "");
   const containerRef = useRef<HTMLDivElement>(null);
-  // Pins the active chip while a click-initiated smooth scroll is in flight,
-  // so IntersectionObserver doesn't flicker to intermediate sections.
-  const lockedSlugRef = useRef<string | null>(null);
-  const scrollEndTimerRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    const sections = modules
-      .map((m) => document.getElementById(`module-${m.slug}`))
-      .filter((el): el is HTMLElement => el !== null);
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (lockedSlugRef.current) return;
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) {
-          const id = visible[0].target.id.replace(/^module-/, "");
-          setActiveSlug(id);
-        }
-      },
-      {
-        rootMargin: "-140px 0px -55% 0px",
-        threshold: [0, 0.1, 0.25, 0.5],
-      },
-    );
-
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, [modules]);
-
-  useEffect(() => {
-    return () => {
-      if (scrollEndTimerRef.current !== null) {
-        window.clearTimeout(scrollEndTimerRef.current);
-      }
-    };
-  }, []);
+  const slugs = useMemo(() => modules.map((m) => m.slug), [modules]);
+  const { activeSlug, lock } = useActiveSection(slugs, "module-", {
+    activationOffset: 160,
+  });
 
   // Keep the active chip in view as the user scrolls.
   useEffect(() => {
@@ -75,30 +40,9 @@ export function ModuleChips({ modules, scrollOffset = 120 }: ModuleChipsProps) {
     if (!target) return;
     e.preventDefault();
     const y = target.getBoundingClientRect().top + window.scrollY - scrollOffset;
-
-    // Lock the active chip while smooth-scroll is in flight.
-    lockedSlugRef.current = slug;
-    setActiveSlug(slug);
+    lock(slug);
     history.replaceState(null, "", `#module-${slug}`);
-
     window.scrollTo({ top: y, behavior: "smooth" });
-
-    // Release the lock when scrolling settles. `scrollend` is the precise
-    // signal in modern browsers; a timer falls back for Safari and covers
-    // the edge case where we're already at the target (no scrollend fires).
-    if (scrollEndTimerRef.current !== null) {
-      window.clearTimeout(scrollEndTimerRef.current);
-    }
-    const release = () => {
-      lockedSlugRef.current = null;
-      window.removeEventListener("scrollend", release);
-      if (scrollEndTimerRef.current !== null) {
-        window.clearTimeout(scrollEndTimerRef.current);
-        scrollEndTimerRef.current = null;
-      }
-    };
-    window.addEventListener("scrollend", release, { once: true });
-    scrollEndTimerRef.current = window.setTimeout(release, 1200);
   }
 
   return (

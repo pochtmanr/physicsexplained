@@ -201,11 +201,7 @@ table tbody tr:last-child td {
   100% { transform: translateX(100%); }
 }
 
-/* Page loader — slow logo spin with a gentle breathing glow */
+/* Route progress pill — small logo spin */
 @keyframes page-loader-spin {
   to { transform: rotate(360deg); }
-}
-@keyframes page-loader-pulse {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 1; }
 }

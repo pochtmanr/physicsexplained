@@ -7,6 +7,8 @@ import { Nav } from "@/components/layout/nav";
 import { Footer } from "@/components/layout/footer";
 import { FooterGate } from "@/components/layout/footer-gate";
 import { HtmlDirSync } from "@/components/layout/html-dir-sync";
+import { RouteScrollManager } from "@/components/layout/route-scroll-manager";
+import { RouteProgress } from "@/components/layout/route-progress";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -27,6 +29,8 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <HtmlDirSync />
+      <RouteScrollManager />
+      <RouteProgress />
       <Nav />
       <div className="flex-1">{children}</div>
       <FooterGate>
