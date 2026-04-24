@@ -7,6 +7,7 @@ import { makeToolset } from "@/lib/ask/toolset";
 import { braveSearch, fetchAllowlistedUrl } from "@/lib/ask/web-search";
 import { runPipeline } from "@/lib/ask/pipeline";
 import { assembleHistory } from "@/lib/ask/context";
+import { buildCandidateRefs } from "@/lib/ask/candidate-refs";
 import { checkRateLimit, makeRateLimitDepsForUser } from "@/lib/ask/rate-limit";
 import { sseEncode } from "@/lib/ask/sse";
 import { DEFAULT_MODEL_ID, findModel } from "@/lib/ask/types";
@@ -122,7 +123,7 @@ export async function POST(req: Request) {
   // this request); we still await it before returning to make sure Supabase
   // RLS errors don't slip through silently, but it runs alongside the reads.
   const tHist = Date.now();
-  const [historyResult, summaryResult, toc] = await Promise.all([
+  const [historyResult, summaryResult, toc, candidateRefs] = await Promise.all([
     db.from("ask_messages")
       .select("role,content,created_at")
       .eq("conversation_id", conversationId)
@@ -132,10 +133,22 @@ export async function POST(req: Request) {
       .eq("id", conversationId)
       .maybeSingle(),
     buildToc(body.locale),
+    // Pre-retrieval for citation grounding. One round-trip (3 parallel FTS
+    // queries) instead of forcing the model to tool-hop for slugs, and it
+    // provides curated candidates so the model never invents a slug. Safe to
+    // fire concurrently — the body.message is already validated above.
+    buildCandidateRefs(db, body.locale, body.message).catch(() => ({
+      block: "",
+      refs: { topics: [], physicists: [], glossary: [] },
+    })),
   ]);
-  mark(`ctx-loaded (${Date.now() - tHist}ms) hist=${historyResult.data?.length ?? 0} scenes=${toc.scenes.length}`);
+  mark(
+    `ctx-loaded (${Date.now() - tHist}ms) hist=${historyResult.data?.length ?? 0} ` +
+    `scenes=${toc.scenes.length} refs=t${candidateRefs.refs.topics.length}/` +
+    `p${candidateRefs.refs.physicists.length}/g${candidateRefs.refs.glossary.length}`,
+  );
 
-  const { systemTail, kept } = assembleHistory(
+  const assembled = assembleHistory(
     (historyResult.data ?? [])
       .filter((r) => r.role === "user" || r.role === "assistant")
       .map((r) => ({
@@ -144,6 +157,10 @@ export async function POST(req: Request) {
       })),
     summaryResult.data?.summary ?? null,
   );
+  const { kept } = assembled;
+  const systemTail = [assembled.systemTail, candidateRefs.block]
+    .filter(Boolean)
+    .join("\n\n");
 
   if (!dedupedExisting) {
     await db.from("ask_messages").insert({
@@ -213,6 +230,20 @@ export async function POST(req: Request) {
       let flagged = false;
       let finalUsage: { model: string; inputTokens: number; outputTokens: number; cachedTokens: number; costMicros: number } | null = null;
 
+      // Mirror of the client's ProgressTree state. We rebuild it from the same
+      // pipeline events the client receives and stash the finished snapshot in
+      // ask_messages.meta.tools so the saved transcript can re-render the
+      // "chain of thoughts/tools" view after reload. Keys preserve insertion
+      // order (Map semantics) so steps stay in the order they happened.
+      const progressSteps = new Map<string, {
+        id: string; name: string;
+        status: "running" | "ok" | "error";
+        args?: Record<string, unknown>;
+        preview?: string;
+        startedAt: number;
+        endedAt?: number;
+      }>();
+
       try {
         for await (const chunk of runPipeline(
           {
@@ -240,10 +271,24 @@ export async function POST(req: Request) {
               timings.first_tool_use = Date.now() - t0;
               mark(`first-tool (${chunk.name})`);
             }
+            progressSteps.set(chunk.toolCallId, {
+              id: chunk.toolCallId,
+              name: chunk.name,
+              status: "running",
+              startedAt: Date.now(),
+            });
             controller.enqueue(encoder.encode(sseEncode("tool-start", { name: chunk.name, id: chunk.toolCallId })));
           } else if (chunk.type === "tool-call-args") {
+            const step = progressSteps.get(chunk.toolCallId);
+            if (step) step.args = (chunk.args as Record<string, unknown> | undefined) ?? step.args;
             controller.enqueue(encoder.encode(sseEncode("tool-args", { id: chunk.toolCallId, args: chunk.args })));
           } else if (chunk.type === "tool-call-end") {
+            const step = progressSteps.get(chunk.toolCallId);
+            if (step) {
+              step.status = chunk.ok ? "ok" : "error";
+              step.preview = chunk.resultPreview;
+              step.endedAt = Date.now();
+            }
             controller.enqueue(encoder.encode(sseEncode("tool-end", {
               id: chunk.toolCallId,
               ok: chunk.ok,
@@ -272,6 +317,20 @@ export async function POST(req: Request) {
         req.signal.removeEventListener("abort", onClientAbort);
         try {
           if (finalUsage) {
+            const toolsSnapshot = progressSteps.size
+              ? Array.from(progressSteps.values()).map((s) => ({
+                  id: s.id,
+                  name: s.name,
+                  status: s.status,
+                  args: s.args,
+                  preview: s.preview,
+                  startedAt: s.startedAt,
+                  endedAt: s.endedAt,
+                }))
+              : undefined;
+            const meta: Record<string, unknown> = {};
+            if (flagged) meta.flagged = true;
+            if (toolsSnapshot) meta.tools = toolsSnapshot;
             await db.from("ask_messages").insert({
               conversation_id: conversationId,
               role: "assistant",
@@ -281,7 +340,7 @@ export async function POST(req: Request) {
               output_tokens: finalUsage.outputTokens,
               cached_tokens: finalUsage.cachedTokens,
               cost_usd_micros: finalUsage.costMicros,
-              meta: flagged ? { flagged: true } : null,
+              meta: Object.keys(meta).length ? meta : null,
             });
             await db.rpc("ask_increment_usage", {
               p_user_id: user.id,

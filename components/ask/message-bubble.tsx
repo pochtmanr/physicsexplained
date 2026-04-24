@@ -2,7 +2,6 @@
 import katex from "katex";
 import { lazy, Suspense, type JSX } from "react";
 import { parseFences, type FencePart } from "@/lib/ask/render";
-import { Cite } from "./cite";
 import { FurtherReading } from "./further-reading";
 
 // Heavy renderers (jsxgraph, mathjs, full simulation registry) are split out of
@@ -32,18 +31,18 @@ export function MessageBubble({
   if (isUser) {
     return (
       <div className="my-3 ml-auto max-w-xl bg-[var(--color-fg-4)]/35 border-l-2 border-[var(--color-cyan-dim)]/60 px-4 py-3">
-        {parts.map((p, i) => renderPart(p, i, locale))}
+        {parts.map((p, i) => renderPart(p, i))}
       </div>
     );
   }
 
-  const glossarySlugs = Array.from(
-    new Set(
-      parts
-        .filter((p): p is Extract<FencePart, { kind: "cite" }> => p.kind === "cite" && p.targetKind === "glossary")
-        .map((p) => p.slug),
-    ),
+  const cites = parts.filter(
+    (p): p is Extract<FencePart, { kind: "cite" }> => p.kind === "cite",
   );
+  const topicSlugs = dedupe(cites.filter((c) => c.targetKind === "topic").map((c) => c.slug));
+  const physicistSlugs = dedupe(cites.filter((c) => c.targetKind === "physicist").map((c) => c.slug));
+  const glossarySlugs = dedupe(cites.filter((c) => c.targetKind === "glossary").map((c) => c.slug));
+  const hasSources = topicSlugs.length + physicistSlugs.length + glossarySlugs.length > 0;
 
   return (
     <div className="my-4 mr-auto max-w-2xl">
@@ -51,14 +50,25 @@ export function MessageBubble({
         Physics.AI
       </div>
       <div className="text-[var(--color-fg-0)]">
-        {parts.map((p, i) => renderPart(p, i, locale))}
+        {parts.map((p, i) => renderPart(p, i))}
       </div>
-      {glossarySlugs.length > 0 && <FurtherReading slugs={glossarySlugs} locale={locale} />}
+      {hasSources && (
+        <FurtherReading
+          topicSlugs={topicSlugs}
+          physicistSlugs={physicistSlugs}
+          glossarySlugs={glossarySlugs}
+          locale={locale}
+        />
+      )}
     </div>
   );
 }
 
-function renderPart(p: FencePart, key: number, locale: string): JSX.Element {
+function dedupe(items: string[]): string[] {
+  return Array.from(new Set(items));
+}
+
+function renderPart(p: FencePart, key: number): JSX.Element {
   if (p.kind === "text") return <Prose key={key} text={p.text} />;
   if (p.kind === "scene") {
     return (
@@ -75,10 +85,10 @@ function renderPart(p: FencePart, key: number, locale: string): JSX.Element {
     );
   }
   if (p.kind === "cite") {
-    // Glossary citations surface as rich cards in <FurtherReading/> below the
-    // message — skip the inline chip so it doesn't duplicate.
-    if (p.targetKind === "glossary") return <span key={key} />;
-    return <Cite key={key} kind={p.targetKind} slug={p.slug} locale={locale} />;
+    // All cites (topic/physicist/glossary) surface as rich cards in the
+    // Sources footer below. No inline chips — keeps the prose clean and the
+    // footer is the single, comprehensive citation surface.
+    return <span key={key} />;
   }
   return <span key={key} />;
 }

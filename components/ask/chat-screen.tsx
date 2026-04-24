@@ -43,7 +43,12 @@ export function ChatScreen({ conversationId, variant, children }: Props) {
   const onSettled = useCallback(
     (id: string) => {
       if (variant === "landing" && id && id !== conversationId) {
+        // New conversation just materialised server-side. Navigate to its page
+        // AND invalidate server component caches so AskLayout re-fetches the
+        // conversation list and the rail shows the new row without a manual
+        // reload.
         router.push(`/${locale}/ask/${id}`);
+        router.refresh();
       } else {
         setPending(null);
         router.refresh();

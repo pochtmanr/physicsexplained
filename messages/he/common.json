@@ -58,6 +58,12 @@
         "phenomenon": "תופעה",
         "unit": "יחידה"
       },
+      "filterAll": "הכל",
+      "statsFiltered": "{shown} מתוך {total} · עמוד {page}/{pages}",
+      "pagePrevious": "הקודם",
+      "pageNext": "הבא",
+      "pageLabel": "עמוד {page} / {pages}",
+      "emptyCategory": "אין ערכים בקטגוריה זו.",
       "linkLabel": "מילון",
       "sectionDefinition": "הגדרה",
       "sectionHistory": "היסטוריה",

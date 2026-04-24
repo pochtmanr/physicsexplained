@@ -41,7 +41,7 @@ export function renderToc(toc: TocData): string {
     "# Site content (you may cite these)",
     "",
     "The site contains topic articles, physicist pages, a glossary, and a scene catalog.",
-    "Call searchSiteContent or searchGlossary ONLY when the user explicitly asks for a pointer or citation.",
+    "Candidate topic/physicist/glossary references for this question are listed in the Available site references block below — cite from there. Call searchSiteContent ONLY when the user explicitly asks for a pointer (e.g. \"where can I read about X\").",
     "",
     "## Scenes available to showScene (id — label — description)",
   ];

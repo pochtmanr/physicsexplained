@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { parse as parseMath } from "mathjs";
+import { parse as parseMath, compile as compileMath } from "mathjs";
 import { getSceneEntry } from "./scene-catalog";
 
 export interface ToolsetDeps {
@@ -24,6 +24,41 @@ function safeMathExpr(expr: string): { ok: true } | { ok: false; reason: string 
     return { ok: true };
   } catch (e) {
     return { ok: false, reason: `Parse error: ${(e as Error).message}` };
+  }
+}
+
+// Evaluate the expression with a representative scope (domain midpoint +
+// provided params). This catches the common failure mode where the model
+// writes `A*exp(-gamma*t)*cos(omega*t)` but omits `params: {A, gamma, omega}`
+// — mathjs throws "Undefined symbol X" which we surface back so the model can
+// retry with concrete numeric values instead of silently producing an empty
+// plot in the browser.
+function evaluationProbe(
+  expr: string,
+  variable: string,
+  domain: [number, number],
+  params: Record<string, number> = {},
+): { ok: true } | { ok: false; reason: string } {
+  try {
+    const midpoint = (domain[0] + domain[1]) / 2;
+    const scope: Record<string, number> = { ...params, [variable]: midpoint };
+    const value = compileMath(expr).evaluate(scope);
+    if (typeof value !== "number" || !Number.isFinite(value)) {
+      // Not necessarily fatal (e.g. tan(pi/2) is Inf at one sample), but at the
+      // midpoint a well-formed physics plot should be finite. Treat as soft
+      // pass — only the strict undefined-symbol path below is retryable.
+    }
+    return { ok: true };
+  } catch (e) {
+    const msg = (e as Error).message ?? "";
+    const m = /Undefined\s+symbol\s+([A-Za-z_][A-Za-z0-9_]*)/i.exec(msg);
+    if (m) {
+      return {
+        ok: false,
+        reason: `Undefined symbol "${m[1]}" in expression "${expr}". Either inline a numeric value (e.g. use 0.1 instead of gamma) or add it to params like params={"${m[1]}":0.1}.`,
+      };
+    }
+    return { ok: false, reason: `Cannot evaluate "${expr}": ${msg}` };
   }
 }
 
@@ -159,9 +194,18 @@ export function makeToolset(deps: ToolsetDeps) {
       });
       const parsed = schema.safeParse(args);
       if (!parsed.success) return { ok: false as const, error: { message: parsed.error.message, retryable: true } };
-      for (const e of [parsed.data.expr, ...(parsed.data.overlays?.map((o) => o.expr) ?? [])]) {
-        const c = safeMathExpr(e);
+      const allExprs = [
+        { expr: parsed.data.expr, params: parsed.data.params ?? {} },
+        ...(parsed.data.overlays ?? []).map((o) => ({
+          expr: o.expr,
+          params: { ...(parsed.data.params ?? {}), ...(o.params ?? {}) },
+        })),
+      ];
+      for (const { expr, params } of allExprs) {
+        const c = safeMathExpr(expr);
         if (!c.ok) return { ok: false as const, error: { message: c.reason, retryable: true } };
+        const probe = evaluationProbe(expr, parsed.data.variable, parsed.data.domain, params);
+        if (!probe.ok) return { ok: false as const, error: { message: probe.reason, retryable: true } };
       }
       const plotId = "p_" + Math.random().toString(36).slice(2, 10);
       const fence = `:::plot${fenceAttrs({ kind: "function", plotId, ...parsed.data })}\n:::`;
@@ -186,6 +230,8 @@ export function makeToolset(deps: ToolsetDeps) {
       for (const e of [parsed.data.x, parsed.data.y]) {
         const c = safeMathExpr(e);
         if (!c.ok) return { ok: false as const, error: { message: c.reason, retryable: true } };
+        const probe = evaluationProbe(e, parsed.data.variable, parsed.data.domain, parsed.data.params ?? {});
+        if (!probe.ok) return { ok: false as const, error: { message: probe.reason, retryable: true } };
       }
       const plotId = "pp_" + Math.random().toString(36).slice(2, 10);
       const fence = `:::plot${fenceAttrs({ kind: "parametric", plotId, ...parsed.data })}\n:::`;

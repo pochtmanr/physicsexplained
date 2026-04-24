@@ -66,7 +66,8 @@ export const TOOL_SCHEMAS: JsonToolDef[] = [
   },
   {
     name: "plotFunction",
-    description: "Plot y = f(variable). Expression uses mathjs syntax. Returns a `fence` string — include it verbatim.",
+    description:
+      "Plot y = f(variable) using mathjs syntax. Every symbol in `expr` that is NOT the `variable` and NOT a builtin (pi, e, sin, cos, tan, exp, log, sqrt, abs, etc.) MUST be supplied in `params` with a concrete numeric value, or you must inline the number directly. Example: for a damped oscillator with amplitude 1, damping 0.2, frequency 2, pass `expr=\"A*exp(-gamma*t)*cos(omega*t)\", variable=\"t\", domain=[0,30], params={\"A\":1,\"gamma\":0.2,\"omega\":2}` — or equivalently `expr=\"1*exp(-0.2*t)*cos(2*t)\"` with no params. Returns a `fence` string — include it verbatim in your final answer.",
     parameters: {
       type: "object",
       properties: {
@@ -83,7 +84,8 @@ export const TOOL_SCHEMAS: JsonToolDef[] = [
   },
   {
     name: "plotParametric",
-    description: "Plot parametric curve (x(t), y(t)). Returns a `fence` string — include it verbatim.",
+    description:
+      "Plot parametric curve (x(t), y(t)). Same rule as plotFunction: every non-builtin symbol in `x` or `y` other than `variable` must be numeric or provided in `params`. Returns a `fence` string — include it verbatim.",
     parameters: {
       type: "object",
       properties: {

@@ -22,24 +22,18 @@ function pickMaxTokens(modelId: string): number {
 }
 
 // Per-label toolsets. Philosophy: the model answers from its own expertise;
-// tools are opt-in decoration (cite lookups, plots) or explicit user asks
-// (pointer questions, web freshness). Keeping the toolset small also shrinks
-// the system prompt — each tool schema is ~200 tokens.
-//
-// conceptual-explain deliberately does NOT include searchSiteContent /
-// getContentEntry / webSearch: those pull heavy JSON blobs or force
-// round-trips that block the first text token on a trivially-answerable
-// physics question. article-pointer is the label that offers full content
-// retrieval when the user explicitly asks "where can I read about X".
+// citation candidates (topics/physicists/glossary) are now pre-retrieved and
+// injected into the system-dynamic prompt via buildCandidateRefs, so no
+// runtime tool call is needed to ground an answer. Runtime tools are reserved
+// for things that truly require them: visualization, pointer lookups, web
+// freshness. Keeping the toolset small also shrinks the system prompt — each
+// tool schema is ~200 tokens.
 const TOOLS_BY_LABEL: Record<Exclude<ClassifierLabel, "off-topic">, readonly string[]> = {
-  "glossary-lookup": ["searchGlossary"],
-  "article-pointer": ["searchSiteContent", "getContentEntry", "searchGlossary"],
-  "conceptual-explain": [
-    "searchGlossary",
-    "searchScenes", "showScene", "plotFunction", "plotParametric",
-  ],
-  "calculation": ["plotFunction", "plotParametric", "searchGlossary"],
-  "viz-request": ["searchScenes", "showScene", "plotFunction", "plotParametric", "searchGlossary"],
+  "glossary-lookup": [],
+  "article-pointer": ["searchSiteContent", "getContentEntry"],
+  "conceptual-explain": ["searchScenes", "showScene", "plotFunction", "plotParametric"],
+  "calculation": ["plotFunction", "plotParametric"],
+  "viz-request": ["searchScenes", "showScene", "plotFunction", "plotParametric"],
 };
 
 // Hard cap on tool_result payload fed back into the model. Prevents a single

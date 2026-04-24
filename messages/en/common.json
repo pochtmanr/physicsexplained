@@ -58,6 +58,12 @@
         "phenomenon": "PHENOMENON",
         "unit": "UNIT"
       },
+      "filterAll": "ALL",
+      "statsFiltered": "{shown} OF {total} · PAGE {page}/{pages}",
+      "pagePrevious": "Previous",
+      "pageNext": "Next",
+      "pageLabel": "PAGE {page} / {pages}",
+      "emptyCategory": "No entries in this category.",
       "linkLabel": "DICTIONARY",
       "sectionDefinition": "Definition",
       "sectionHistory": "History",

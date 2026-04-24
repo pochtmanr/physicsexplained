@@ -1,14 +1,32 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { GlossaryCard } from "@/lib/ask/glossary-card";
+import type {
+  GlossaryCard,
+  PhysicistCard,
+  SourcesPayload,
+  TopicCard,
+} from "@/lib/ask/glossary-card";
 
-export function FurtherReading({ slugs, locale }: { slugs: string[]; locale: string }) {
-  const [cards, setCards] = useState<GlossaryCard[] | null>(null);
+interface SourcesInput {
+  topicSlugs: string[];
+  physicistSlugs: string[];
+  glossarySlugs: string[];
+}
+
+export function FurtherReading({
+  topicSlugs,
+  physicistSlugs,
+  glossarySlugs,
+  locale,
+}: SourcesInput & { locale: string }) {
+  const [sources, setSources] = useState<SourcesPayload | null>(null);
   const [err, setErr] = useState(false);
 
+  const total = topicSlugs.length + physicistSlugs.length + glossarySlugs.length;
+
   useEffect(() => {
-    if (slugs.length === 0) return;
+    if (total === 0) return;
     const ac = new AbortController();
     (async () => {
       try {
@@ -16,31 +34,106 @@ export function FurtherReading({ slugs, locale }: { slugs: string[]; locale: str
           method: "POST",
           signal: ac.signal,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ slugs, locale }),
+          body: JSON.stringify({
+            topics: topicSlugs,
+            physicists: physicistSlugs,
+            glossary: glossarySlugs,
+            locale,
+          }),
         });
         if (!res.ok) throw new Error(`${res.status}`);
-        const body = (await res.json()) as { cards: GlossaryCard[] };
-        setCards(body.cards);
+        const body = (await res.json()) as { sources?: SourcesPayload };
+        if (!body.sources) throw new Error("missing sources");
+        setSources(body.sources);
       } catch (e) {
         if ((e as Error).name !== "AbortError") setErr(true);
       }
     })();
     return () => ac.abort();
-  }, [slugs.join("|"), locale]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [topicSlugs.join("|"), physicistSlugs.join("|"), glossarySlugs.join("|"), locale, total]);
 
-  if (err || !cards || cards.length === 0) return null;
+  if (err || !sources) return null;
+  const rendered =
+    sources.topics.length + sources.physicists.length + sources.glossary.length;
+  if (rendered === 0) return null;
 
   return (
     <section className="mt-6 pt-4 border-t border-[var(--color-fg-4)]/40">
       <h4 className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-3">
-        Further reading
+        Sources
       </h4>
-      <div className="grid gap-2 sm:grid-cols-2">
-        {cards.map((c) => (
-          <GlossaryCardView key={c.slug} card={c} locale={locale} />
-        ))}
-      </div>
+      {sources.topics.length > 0 && (
+        <SourceGroup label="Topics">
+          {sources.topics.map((t) => (
+            <TopicOrPhysicistCardView
+              key={`t-${t.slug}`}
+              card={t}
+              href={`/${locale}/${t.slug}`}
+              kindLabel="topic"
+            />
+          ))}
+        </SourceGroup>
+      )}
+      {sources.physicists.length > 0 && (
+        <SourceGroup label="Physicists">
+          {sources.physicists.map((p) => (
+            <TopicOrPhysicistCardView
+              key={`p-${p.slug}`}
+              card={p}
+              href={`/${locale}/physicists/${p.slug}`}
+              kindLabel="physicist"
+            />
+          ))}
+        </SourceGroup>
+      )}
+      {sources.glossary.length > 0 && (
+        <SourceGroup label="Glossary">
+          {sources.glossary.map((c) => (
+            <GlossaryCardView key={`g-${c.slug}`} card={c} locale={locale} />
+          ))}
+        </SourceGroup>
+      )}
     </section>
+  );
+}
+
+function SourceGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="mb-4 last:mb-0">
+      <div className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-fg-3)] mb-2">
+        {label}
+      </div>
+      <div className="grid gap-2 sm:grid-cols-2">{children}</div>
+    </div>
+  );
+}
+
+function TopicOrPhysicistCardView({
+  card, href, kindLabel,
+}: {
+  card: TopicCard | PhysicistCard;
+  href: string;
+  kindLabel: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group block border border-[var(--color-fg-4)]/40 bg-[var(--color-fg-4)]/5 hover:bg-[var(--color-fg-4)]/15 hover:border-[var(--color-cyan-dim)]/60 transition-colors px-3.5 py-3 no-underline"
+    >
+      <div className="flex items-start justify-between gap-2 mb-1">
+        <div className="font-semibold text-[14px] leading-snug text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)]">
+          {card.title}
+        </div>
+        <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)] pt-1 shrink-0">
+          {kindLabel}
+        </span>
+      </div>
+      {card.subtitle && (
+        <p className="text-[13px] leading-relaxed text-[var(--color-fg-1)] line-clamp-3">
+          {card.subtitle}
+        </p>
+      )}
+    </Link>
   );
 }
 
