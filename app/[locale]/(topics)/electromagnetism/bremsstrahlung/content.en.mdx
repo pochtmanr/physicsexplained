@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CoulombDeflectionScene } from "@/components/physics/coulomb-deflection-scene";
+import { ContinuousXraySpectrumScene } from "@/components/physics/continuous-xray-spectrum-scene";
+import { ThickTargetShapeScene } from "@/components/physics/thick-target-shape-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Larmor", href: "/physicists/joseph-larmor" },
+  { type: "term", label: "Bremsstrahlung", href: "/dictionary/bremsstrahlung" },
+  { type: "term", label: "Duane-Hunt limit", href: "/dictionary/duane-hunt-limit" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.56 · RADIATION"
+  title="BREMSSTRAHLUNG"
+  subtitle="The light that comes out when a charge gets in the way of itself."
+/>
+
+<Section index={1} title="Braking radiation">
+
+The German word is compact and exact: **Bremse** means brake; **Strahlung** means radiation. <Term slug="bremsstrahlung">**Bremsstrahlung**</Term> is "braking radiation," a term coined in the 1920s at the Göttingen X-ray lab and never improved on since. The physics is one sentence: when a charged particle decelerates, it radiates. That is simply <PhysicistLink slug="joseph-larmor">Larmor</PhysicistLink>'s 1897 formula — `P ∝ a²` — applied to the one kind of acceleration we haven't yet looked at. The dipole radiates by oscillating. The synchrotron radiates by bending. Bremsstrahlung radiates by braking.
+
+The canonical setting is an **X-ray tube**. You have seen one in every dental clinic and every airport scanner. An electron gun — a hot tungsten filament — fires a thin stream of electrons across a vacuum gap, accelerated by a potential difference `U` of typically 40 to 150 kilovolts. At the far end of the gap they slam into a heavy-metal anode — tungsten, rhenium, or molybdenum — and decelerate from several tenths of the speed of light to rest over a distance comparable to an atomic radius. The braking is catastrophic. Each electron loses its entire kinetic energy `eU` in the space of about a femtometer, which means its acceleration is peak-ludicrous (of order `10²⁴` m/s²). Larmor's formula says it radiates, and it radiates hard.
+
+What comes out is not a single wavelength. It is a **continuous spectrum** — a smooth broadband of photons from nearly zero frequency all the way up to a sharp upper cutoff. No line structure, just a shape. That continuum is the bremsstrahlung signature; the sharp spikes that sometimes ride on top of it (the `Kα` and `Kβ` lines at 59 and 67 keV for tungsten) are a different mechanism — an inner-shell electron being knocked out and replaced — and are not bremsstrahlung.
+
+</Section>
+
+<Section index={2} title="One event, seen close up">
+
+Zoom in on a single electron hitting a single tungsten nucleus. The electron is traveling fast; the nucleus is heavy, positively charged, and effectively stationary. As the electron passes through the nuclear Coulomb field, it is deflected — a classical <Term slug="rutherford-scattering">Rutherford scattering</Term> hyperbola, the same curve Rutherford fitted to gold-foil alphas in 1911. The deflection is sharpest at the point of closest approach, where the transverse acceleration peaks. At that instant the electron is effectively "braked" perpendicular to its velocity, and Larmor tells us it radiates a photon.
+
+<SceneCard caption="FIG.56a — one electron, one nucleus, one braking event. The impact parameter b sets how hard the brake; a hard brake makes a hard photon." className="w-full">
+  <CoulombDeflectionScene />
+</SceneCard>
+
+The parameter that controls the event is the **impact parameter** `b` — the perpendicular distance between the electron's incoming asymptote and the nucleus. A head-on approach (`b → 0`) means a violent, high-acceleration kink, and the emitted photon can carry away a large fraction of the electron's kinetic energy. A glancing pass (`b` large) means a gentle deflection, a small transverse acceleration, and a soft photon. Integrate over the distribution of impact parameters that a random incoming electron actually sees — most passes are glancing, head-on events are rare — and you get a probability distribution over photon energies that is heavily weighted toward the soft end. That is why the bremsstrahlung spectrum rises sharply at low photon energies.
+
+<Callout variant="math">
+Non-relativistic single-event analysis gives the **energy per unit angular frequency** emitted in one deflection as roughly `dE/dω ∝ ln(b_max / b_min)`, the classic result Bohr derived in 1915. `b_min` is set by quantum effects (the electron's de Broglie wavelength) and `b_max` by screening from the surrounding electron cloud; their ratio is a slowly varying logarithm of about 5 to 10 for typical tube conditions. That logarithm is what makes the shape of the thin-target spectrum gentle rather than explosive.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The Duane-Hunt cutoff">
+
+Draw the spectrum of a 50-kV tube on a horizontal axis of photon energy and you see something remarkable: the continuum climbs, peaks, falls, and then stops — absolutely stops — at exactly 50 keV. No photons above. This is the <Term slug="duane-hunt-limit">**Duane-Hunt limit**</Term>, discovered experimentally by William Duane and Franklin Hunt at Harvard in 1915. The rule is startlingly simple:
+
+<EquationBlock id="EQ.01">
+  $$ E_{\max} \;=\; e\,U $$
+</EquationBlock>
+
+The maximum photon energy a tube can produce equals the kinetic energy one electron was given by the accelerating voltage. A 50-kV tube emits nothing above 50 keV. A 150-kV tube reaches 150 keV and not a single photon more.
+
+Classically this is mysterious. Why should there be any sharp cutoff at all? An electron with kinetic energy `E_k` could, classically, radiate a mix of photons in any proportion, and nothing forbids a photon of energy greater than `E_k` — energy conservation just says the *total* radiated energy cannot exceed `E_k`. The Duane-Hunt cutoff is energy conservation at the level of one photon at a time. One electron cannot emit a photon more energetic than its own kinetic energy, because photons are quantised and a half-photon does not exist. The clean cutoff was a direct, early confirmation of Einstein's 1905 relation `E = h f` — it told you Planck's constant was real at the level of a single emission event.
+
+Equivalently, the cutoff sets a minimum wavelength:
+
+<EquationBlock id="EQ.02">
+  $$ \lambda_{\min} \;=\; \frac{h\,c}{e\,U} $$
+</EquationBlock>
+
+At 50 kV, `λ_min ≈ 24.8` picometers — firmly in the hard-X-ray range, short enough to probe bond lengths in a crystal lattice. Medical diagnostic tubes run at 80 to 150 kV (chest X-rays need to push photons through twenty centimeters of tissue); industrial inspection tubes reach 450 kV; computed-tomography scanners sit near 120 kV. Dental bitewings use smaller 60-to-70 kV tubes — lower energy, but shorter shots at short range.
+
+</Section>
+
+<Section index={4} title="The shape: Kramers 1923">
+
+Between zero and the cutoff, what does the spectrum look like? In 1923 <Term slug="kramers-formula">Hendrik Kramers</Term> (a Dutch theoretician, student of Niels Bohr, later a major figure in early quantum mechanics) worked out the shape for a **thick target** — a target thick enough that each electron slows to rest inside it, radiating many bremsstrahlung photons along the way. Integrate over all the deflection events an electron experiences as it cascades to a stop, and the outgoing photon-number distribution simplifies beautifully:
+
+<EquationBlock id="EQ.03">
+  $$ \frac{dN}{dE} \;\propto\; \frac{E_{\max} - E}{E} \qquad (0 < E \leq E_{\max}) $$
+</EquationBlock>
+
+That is Kramers' formula. It is the shape every X-ray engineer calibrates against. Read it: at `E → 0` the `1/E` factor diverges (soft photons dominate); at `E = E_max` the `(E_max − E)` factor kills the spectrum linearly to zero; in between, a smooth monotonic fall. The soft-photon divergence is real in the emission but not in the usable spectrum — the tube's glass window, the aluminum filter every clinical machine carries, and the target itself all absorb soft X-rays heavily, so the observed spectrum peaks around 30 to 40 percent of `E_max` and the low-E side is chewed back to a rounded edge. The Duane-Hunt edge stays sharp because nothing physical lives above it.
+
+<SceneCard caption="FIG.56b — Kramers spectrum with the Duane-Hunt cutoff. Slide the voltage up and watch the cutoff walk to the right while the whole continuum lifts with it." className="w-full">
+  <ContinuousXraySpectrumScene />
+</SceneCard>
+
+The optional Kα/Kβ overlay shows what a real tungsten-anode medical tube actually emits above 69 kV: the continuous bremsstrahlung backdrop plus two extremely sharp spikes where inner-shell vacancies are being refilled by electrons from higher shells. The spikes are *not* bremsstrahlung — they are characteristic X-ray fluorescence, a line spectrum specific to tungsten. Below the K-shell ionisation threshold (69 keV for tungsten) the spikes vanish and only the smooth continuum remains.
+
+</Section>
+
+<Section index={5} title="Thick target vs thin target">
+
+The Kramers shape is a thick-target answer. A **thin target** — a foil thin enough that the electron crosses it without losing much kinetic energy — gives a different curve. The classical calculation was refined by <Term slug="bethe-heitler-formula">Hans Bethe and Walter Heitler</Term> in 1934 into the first fully quantum-mechanical bremsstrahlung cross-section, and the thin-target spectrum shape comes out as
+
+<EquationBlock id="EQ.04">
+  $$ \frac{dN}{dE} \;\propto\; \ln\!\left(\frac{E_{\max}}{E}\right) \qquad (0 < E < E_{\max}) $$
+</EquationBlock>
+
+also singular at `E → 0`, but only logarithmically — a much gentler shape. The physical difference is clean: in a thick target the electron passes through a range of kinetic energies as it slows down, so every photon energy below `E_max` is sampled; in a thin target every deflection samples the full initial `E_max`, and the logarithm comes from the `ln(b_max/b_min)` impact-parameter integral.
+
+<SceneCard caption="FIG.56c — the two shapes side by side at the same Duane-Hunt cutoff. Thick-target Kramers on the left (what a real tube produces), thin-target Bethe-Heitler on the right (what a scattering experiment sees)." className="w-full">
+  <ThickTargetShapeScene />
+</SceneCard>
+
+Outside medicine, bremsstrahlung shows up in every corner of physics where a fast electron meets a strong field. In particle detectors, the characteristic length over which a fast electron radiates away half its energy is the **radiation length** `X_0` — about 0.56 cm for lead, 47 m for air. An electromagnetic calorimeter is a block of matter thick enough in `X_0` to soak up the bremsstrahlung and the pair-production cascade that follows.
+
+And in the sky: any hot plasma of free electrons and ions radiates **thermal bremsstrahlung**. The intracluster medium of a galaxy cluster sits at 10⁷ to 10⁸ K — fully ionised — and its electrons scatter on the ion-field Coulomb potential exactly the way tube electrons scatter on tungsten nuclei. The emitted spectrum is the Kramers shape with the cutoff replaced by the Maxwell-Boltzmann temperature — `I(E) ∝ e^{-E / k_B T}` above a few keV. Fit that exponential to the X-ray continuum of Perseus or Coma and you read off the gas temperature directly. No absorption line needed.
+
+It is all the same physics as the dental X-ray. A charge gets in the way of itself; light comes out.
+
+</Section>
+
+</TopicPageLayout>
