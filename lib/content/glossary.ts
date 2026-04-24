@@ -2373,6 +2373,125 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "electromagnetism", topicSlug: "waveguides-and-fibers" },
     ],
   },
+  // §10.1 larmor-formula
+  {
+    slug: "larmor-formula",
+    category: "concept",
+    relatedPhysicists: ["joseph-larmor"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "larmor-formula" },
+    ],
+  },
+  {
+    slug: "larmor-power",
+    category: "concept",
+    relatedPhysicists: ["joseph-larmor"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "larmor-formula" },
+    ],
+  },
+  // §10.2 electric-dipole-radiation
+  {
+    slug: "near-field-zone",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-dipole-radiation" },
+    ],
+  },
+  {
+    slug: "far-field-zone",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-dipole-radiation" },
+      { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
+    ],
+  },
+  {
+    slug: "retarded-time",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "electric-dipole-radiation" },
+      { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+    ],
+  },
+  // §10.3 antennas-and-radio
+  {
+    slug: "hertzian-dipole",
+    category: "concept",
+    relatedPhysicists: ["heinrich-hertz"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
+      { branchSlug: "electromagnetism", topicSlug: "electric-dipole-radiation" },
+    ],
+  },
+  {
+    slug: "antenna-gain",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
+    ],
+  },
+  {
+    slug: "radiation-pattern",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
+      { branchSlug: "electromagnetism", topicSlug: "electric-dipole-radiation" },
+    ],
+  },
+  // §10.4 synchrotron-radiation
+  {
+    slug: "synchrotron-radiation",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "synchrotron-radiation" },
+    ],
+  },
+  {
+    slug: "relativistic-beaming",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "synchrotron-radiation" },
+    ],
+  },
+  // §10.5 bremsstrahlung
+  {
+    slug: "bremsstrahlung",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "bremsstrahlung" },
+    ],
+  },
+  {
+    slug: "duane-hunt-limit",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "bremsstrahlung" },
+    ],
+  },
+  // §10.6 radiation-reaction
+  {
+    slug: "abraham-lorentz-equation",
+    category: "concept",
+    relatedPhysicists: ["hendrik-antoon-lorentz"],
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+    ],
+  },
+  {
+    slug: "runaway-solution",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+    ],
+  },
+  {
+    slug: "self-energy-divergence",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

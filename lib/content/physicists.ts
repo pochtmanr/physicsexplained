@@ -829,6 +829,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/hendrik-antoon-lorentz.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
+      { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
     ],
   },
   {
@@ -928,6 +929,8 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "the-four-equations" },
       { branchSlug: "electromagnetism", topicSlug: "gauge-freedom-and-potentials" },
       { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "larmor-formula" },
+      { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
     ],
   },
   {
@@ -993,6 +996,40 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
       { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+    ],
+  },
+  {
+    slug: "joseph-larmor",
+    born: "1857",
+    died: "1942",
+    nationality: "Irish",
+    image: storageUrl("physicists/joseph-larmor.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "larmor-formula" },
+      { branchSlug: "electromagnetism", topicSlug: "electric-dipole-radiation" },
+      { branchSlug: "electromagnetism", topicSlug: "synchrotron-radiation" },
+    ],
+  },
+  {
+    slug: "heinrich-hertz",
+    born: "1857",
+    died: "1894",
+    nationality: "German",
+    image: storageUrl("physicists/heinrich-hertz.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
+      { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
+    ],
+  },
+  {
+    slug: "paul-dirac",
+    born: "1902",
+    died: "1984",
+    nationality: "British",
+    image: storageUrl("physicists/paul-dirac.avif"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
     ],
   },
 ];

@@ -35,3 +35,6 @@ export const SPEED_OF_LIGHT = 2.99792458e8;
 
 /** Bohr magneton, J/T (CODATA 2018) — used by magnetic-dipole topic */
 export const BOHR_MAGNETON = 9.2740100783e-24;
+
+/** Fine-structure constant α = e²/(4πε₀ ℏc) ≈ 1/137 (CODATA 2018, dimensionless) */
+export const ALPHA_FINE = 7.2973525693e-3;
