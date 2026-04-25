@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BoostMixingEBScene } from "@/components/physics/boost-mixing-e-b-scene";
+import { LorentzInvariantsScene } from "@/components/physics/lorentz-invariants-scene";
+import { PureEBecomesEBScene } from "@/components/physics/pure-e-becomes-eb-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hendrik Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Lorentz transformation of fields", href: "/dictionary/lorentz-transformation-of-fields" },
+  { type: "term", label: "Boost mixing of E and B", href: "/dictionary/boost-mixing-e-and-b" },
+  { type: "term", label: "Lorentz invariants of EM field", href: "/dictionary/lorentz-invariants-of-em-field" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.59 · EM AND RELATIVITY"
+  title="E AND B UNDER LORENTZ"
+  subtitle="What looks like a magnet to you looks like an electric field to someone moving past."
+/>
+
+<Section index={1} title="The 1895 transformation">
+
+In 1895, ten years before Einstein gave the geometric meaning, the Dutch physicist <PhysicistLink slug="hendrik-antoon-lorentz">Hendrik Lorentz</PhysicistLink> wrote down how the electric and magnetic fields change when you describe them from a frame moving uniformly past the lab. He had a different motivation — he was trying to save the ether — but the formulas survived the new geometry intact. For a boost along the x-axis at velocity $v = \beta c$, with $\gamma = 1/\sqrt{1-\beta^2}$, the transformation reads
+
+<EquationBlock id="EQ.01">
+$$ E'_x = E_x, \quad E'_y = \gamma(E_y - v B_z), \quad E'_z = \gamma(E_z + v B_y). $$
+</EquationBlock>
+
+<EquationBlock id="EQ.02">
+$$ B'_x = B_x, \quad B'_y = \gamma\!\left(B_y + \tfrac{v}{c^{2}}E_z\right), \quad B'_z = \gamma\!\left(B_z - \tfrac{v}{c^{2}}E_y\right). $$
+</EquationBlock>
+
+The structure is cleaner than the components suggest. Components parallel to the boost direction are unchanged; components perpendicular to it pick up a factor of $\gamma$ and mix linearly with the perpendicular components of the *other* field. In coordinate-free form,
+
+<EquationBlock id="EQ.03">
+$$ \mathbf{E}'_\parallel = \mathbf{E}_\parallel, \qquad \mathbf{B}'_\parallel = \mathbf{B}_\parallel, $$
+</EquationBlock>
+
+<EquationBlock id="EQ.04">
+$$ \mathbf{E}'_\perp = \gamma(\mathbf{E} + \mathbf{v}\times\mathbf{B})_\perp, \qquad \mathbf{B}'_\perp = \gamma\!\left(\mathbf{B} - \tfrac{1}{c^{2}}\mathbf{v}\times\mathbf{E}\right)_{\!\perp}. $$
+</EquationBlock>
+
+Two features to note. First, the cross-product structure is exactly the magnetic part of the <Term slug="lorentz-force">Lorentz force</Term> $q(\mathbf{E} + \mathbf{v}\times\mathbf{B})$ — moving charges feel an effective electric field $\mathbf{v}\times\mathbf{B}$, and the boosted observer sees that as a literal electric field in their own frame. Second, the $\mathbf{v}\times\mathbf{E}/c^{2}$ term is suppressed by $1/c^{2}$ relative to the $\mathbf{v}\times\mathbf{B}$ term, which is why everyday lab life — wires, magnets, batteries — is dominated by the electric mixing and not the magnetic one.
+
+</Section>
+
+<Section index={2} title="Where the formulas come from">
+
+There are two paths to these expressions. The brute-force one applies the boost to the four-potential $A^\mu = (\phi/c, \mathbf{A})$ and recomputes $\mathbf{E} = -\nabla\phi - \partial_t \mathbf{A}$ and $\mathbf{B} = \nabla\times\mathbf{A}$ in the new coordinates. It works, but you spend a page on chain-rule bookkeeping.
+
+The clean path goes through the <Term slug="electromagnetic-field-tensor">electromagnetic field tensor</Term> $F^{\mu\nu}$ — the antisymmetric rank-2 object that packages both fields into one. Under a Lorentz boost $\Lambda^\mu{}_\nu$ along $+x$, the tensor transforms by the rule every rank-2 tensor obeys,
+
+<EquationBlock id="EQ.05">
+$$ F'^{\mu\nu} \;=\; \Lambda^{\mu}{}_{\alpha}\,\Lambda^{\nu}{}_{\beta}\,F^{\alpha\beta}. $$
+</EquationBlock>
+
+The components of $F^{\mu\nu}$ are arranged so that $F^{0i} = E_i/c$ and $F^{ij} = -\varepsilon_{ijk}B_k$. Plug those into the tensor transform, multiply out the matrix products, and the six closed-form expressions of EQ.01 and EQ.02 fall out at once — no chain rule, no integrations by parts. §11.3 builds $F^{\mu\nu}$ from scratch and shows the same calculation done in index notation; this section just notes that the strange "perpendicular components mix" pattern is the geometric fingerprint of a tensor's two indices being boosted independently.
+
+A simple check: take a parallel-plate capacitor, charged so that in the lab frame there is only a uniform $\mathbf{E} = E_y\,\hat{\mathbf{y}}$ between the plates and $\mathbf{B} = 0$. Boost along $+x$. EQ.02 gives $B'_z = -\gamma v E_y / c^{2}$ — non-zero. The boosted observer sees the same plates, the same charges, but a magnetic field they swear is being produced by something. That something is just the moving charge sheet, which now constitutes a surface current.
+
+</Section>
+
+<Section index={3} title="The boost mixes them">
+
+<SceneCard caption="FIG.59a — A pure-B field in the lab frame becomes a mixture of E' and B' in any boosted frame. Slide β from 0 to 0.9; the cyan B' weakens slightly while a magenta E' rises in the perpendicular direction. The closed-form magnitudes update live.">
+  <BoostMixingEBScene />
+</SceneCard>
+
+The lab in this scene contains a uniform magnetic field pointing out of the page, no electric field at all. To you, sitting in the lab, that is the entire story — a magnet, period. To the observer gliding past at $\beta$, the magnetic field is still there (slightly weaker, since the perpendicular component of $\mathbf{B}$ picks up a $\gamma$ but the parallel one does not, and the closed-form rearrangement leaves $B'_z = \gamma B_z$ in this configuration), but they also measure an electric field perpendicular to both the boost and the original magnetic field, with magnitude $E' = \gamma v B$.
+
+That is the practical consequence: it is meaningless to insist either field is "the real one." A wire carrying a steady current produces, in its rest frame, only a magnetic field. Step into the rest frame of the drifting electrons inside that wire and you find a non-zero electric field — the same wire now looks slightly negatively charged because Lorentz contraction has shifted the apparent ion-electron density balance. The classic two-parallel-wires experiment of §11.4 is the place this argument is made airtight; for now, the scene above is enough to fix the picture: turning your boost knob exchanges electric for magnetic, smoothly.
+
+The numerical scaling is worth noting because it is precisely what makes magnetism feel like a small relativistic correction at human velocities and a peer of electricity at relativistic ones. A drift speed of $1\,\text{mm/s}$ in copper gives $\beta \sim 10^{-12}$, and the induced $E'$ from a $1\,\text{T}$ magnetic field is $vB \sim 10^{-3}\,\text{V/m}$ — small but measurable, and the source of every motional EMF. At $\beta = 0.9$ the same $1\,\text{T}$ produces an $E'$ of order $2.7\times10^{8}\,\text{V/m}$, comparable to a strong DC capacitor. Same field, two regimes, one transformation.
+
+</Section>
+
+<Section index={4} title="Two invariants every observer agrees on">
+
+Although $\mathbf{E}$ and $\mathbf{B}$ are observer-dependent, there are exactly two scalars built from them that are not. They are the Lorentz invariants of the EM field:
+
+<EquationBlock id="EQ.06">
+$$ I_1 \;=\; \mathbf{E}\cdot\mathbf{B}, \qquad I_2 \;=\; |\mathbf{E}|^{2} - c^{2}|\mathbf{B}|^{2}. $$
+</EquationBlock>
+
+Every inertial observer measures the same numerical value for $I_1$ and $I_2$. The proof is one line if you know that $I_1 \propto F^{\mu\nu}\,(*F)_{\mu\nu}$ and $I_2 \propto F^{\mu\nu}F_{\mu\nu}$ — both are full contractions of tensors, which by construction are scalars. The <Term slug="lorentz-invariants-of-em-field">Lorentz invariants of the EM field</Term> sort every possible field configuration into three buckets:
+
+- $I_1 \neq 0$: $\mathbf{E}$ and $\mathbf{B}$ are not orthogonal in any frame; no boost will strip one of them away.
+- $I_1 = 0$ and $I_2 > 0$: the field is "electric-like." A frame exists where $\mathbf{B} = 0$ and only $\mathbf{E}$ remains. This is the parallel-plate capacitor.
+- $I_1 = 0$ and $I_2 < 0$: the field is "magnetic-like." A frame exists where $\mathbf{E} = 0$ and only $\mathbf{B}$ remains. This is the bar magnet, or the inside of a solenoid.
+
+There is also a knife-edge case, $I_1 = I_2 = 0$ with neither field zero — that is exactly an electromagnetic plane wave, which has $|\mathbf{E}| = c|\mathbf{B}|$ and $\mathbf{E}\perp\mathbf{B}$, and is "null" in every frame. No boost can make a light wave look like a static field, ever.
+
+<SceneCard caption="FIG.59b — Both invariants stay flat as β sweeps from −0.99 to +0.99 for the input E = (1e3, 1e3, 0), B = (0, 0, 1e−5). Individual |E| and |B| readouts in the HUD swing wildly; the two lilac bars do not move.">
+  <LorentzInvariantsScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The deeper meaning">
+
+The point of this whole machinery is the picture below.
+
+<SceneCard caption="FIG.59c — A charged sphere at rest in the lab radiates only an electric field (magenta, radial). Boost the same sphere to β = 0.7 and you measure both an electric field — slightly distorted by length contraction along the boost axis — and a magnetic field, curling cyan around the direction of motion. Same sphere, same charge, two stories.">
+  <PureEBecomesEBScene />
+</SceneCard>
+
+A static charge in its rest frame produces, by symmetry, a purely radial electric field and zero magnetic field. To any observer in motion relative to that charge, the same object produces both an electric *and* a magnetic field, with the magnetic part curling around the boost axis exactly as you would expect from a moving point charge — because that is precisely what the boosted observer sees. The classification of the previous section makes this rigorous: a static point charge has $I_1 = 0$ and $I_2 = E^{2} > 0$, so it is an electric-like field, and the rest frame is the unique frame in which $\mathbf{B}$ vanishes. Any other observer carries a non-zero $\mathbf{B}$, but every observer in the universe agrees on the same numerical value of $|\mathbf{E}|^{2} - c^{2}|\mathbf{B}|^{2}$.
+
+The <Term slug="boost-mixing-e-and-b">boost mixing of E and B</Term> is the cash value of every other §11 topic. §11.3 packages everything in this section into one antisymmetric tensor $F^{\mu\nu}$ so the bookkeeping above stops being six equations and becomes one. §11.4 turns the same picture into the most surprising result in classical physics: two parallel wires at rest carry no charge, but the moving electrons in one feel a force from the other that the charges in the wire would never produce on their own — the magnetic force on a current is the electric force on a moving charge, viewed through the boost we have just written down. The <Term slug="lorentz-transformation-of-fields">Lorentz transformation of fields</Term> is the door; the rest of §11 is what is on the other side.
+
+The voice payoff sits exactly here: the magnetic and electric fields are not separate things. They are projections of one object — the field tensor $F^{\mu\nu}$ — onto your particular state of motion. Change your motion and the projection rotates. Nothing about the underlying object has changed.
+
+</Section>
+
+</TopicPageLayout>
