@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BoostedChargeCountingScene } from "@/components/physics/boosted-charge-counting-scene";
+import { WeberKohlrauschCScene } from "@/components/physics/weber-kohlrausch-c-scene";
+import { FourCurrentFluxScene } from "@/components/physics/four-current-flux-scene";
+
+<TopicPageLayout aside={[
+  { type: "term", label: "Charge invariance", href: "/dictionary/charge-invariance" },
+  { type: "term", label: "Four-current", href: "/dictionary/four-current" },
+  { type: "term", label: "Four-vector", href: "/dictionary/four-vector" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.58 · RELATIVITY"
+  title="CHARGE INVARIANCE"
+  subtitle="The one quantity every observer must agree on."
+/>
+
+<Section index={1} title="The four-current J^μ">
+
+§11 opens with a question that should already feel uncomfortable. Length contracts. Time dilates. Mass and energy mix. The electric and magnetic fields, as we will see in §11.3, rotate into each other under a boost. Every quantity in this branch can rotate, mix, change sign — except this one. **Charge is a Lorentz scalar.** A box of N coulombs in the lab frame contains N coulombs in any inertial frame.
+
+To see why, we need the right packaging. Charge density ρ (C/m³) and current density **J** (A/m²) look like separate quantities in the three-dimensional vocabulary of §01–§07. Special relativity insists they are not separate; they are the four components of a single object, the <Term slug="four-current">four-current</Term>:
+
+<EquationBlock id="EQ.01">
+$$ J^{\mu} \;=\; (c\rho,\, J_{x},\, J_{y},\, J_{z}). $$
+</EquationBlock>
+
+The factor of c on the time component is a unit-matching convention so that all four entries carry units of A/m². The physics is in how the four components transform. Boost along +x with velocity βc and you find
+
+<EquationBlock id="EQ.02">
+$$ c\rho' \;=\; \gamma\,(c\rho - \beta J_{x}), \qquad J'_{x} \;=\; \gamma\,(J_{x} - \beta c\rho), $$
+</EquationBlock>
+
+— exactly the same Lorentz transform the spacetime pair (ct, x) obeys. So J^μ is a genuine <Term slug="four-vector">four-vector</Term>, not a glued-together pair of three-vectors. Charge density and current density are the time and space parts of one object; observers in different frames see them mix.
+
+</Section>
+
+<Section index={2} title="Why charge is invariant">
+
+Take a closed region V in some frame and integrate ρ over it. The total enclosed charge is
+
+<EquationBlock id="EQ.03">
+$$ Q \;=\; \int_{V} \rho\,d^{3}x \;=\; \frac{1}{c}\int_{V} J^{0}\,d^{3}x. $$
+</EquationBlock>
+
+Boost to a new frame and naively both factors change. The charge density goes up — ρ' = γρ, because the time component picks up a γ from mixing with J_x. The volume goes down — V' = V/γ, because lengths along the boost contract. The two transformations are exactly reciprocal, so the product ρ' V' = ρ V is invariant. The γ that compresses the volume is the same γ that concentrates the charge inside it; nothing has been gained or lost.
+
+A cleaner way to see the same result is geometric. Q is the flux of J^μ through a constant-time hypersurface — a 3-surface of simultaneity in your frame. Different observers pick different 3-surfaces, but the four-current is divergence-free,
+
+<EquationBlock id="EQ.04">
+$$ \partial_{\mu} J^{\mu} \;=\; \frac{\partial \rho}{\partial t} + \nabla\!\cdot\!\mathbf{J} \;=\; 0. $$
+</EquationBlock>
+
+That is local <Term slug="charge-invariance">charge conservation</Term>, the four-dimensional version of the everyday continuity equation. By the four-divergence theorem, the flux of a divergence-free four-current through any two 3-surfaces bounding the same world-tube is the same. Pick any slicing; you get the same Q.
+
+<Callout variant="math">
+The continuity equation $\partial_\mu J^\mu = 0$ is the rigorous statement of "charge can neither appear nor disappear, only flow." Coupled to Maxwell's equations it is automatic — taking the divergence of $\nabla\times\mathbf{B} = \mu_0 \mathbf{J} + \mu_0 \varepsilon_0 \,\partial_t \mathbf{E}$ and using $\nabla\!\cdot\!\mathbf{E} = \rho/\varepsilon_0$ recovers it line-for-line. Conservation is *built into* electromagnetism, not added on top.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Counting charges in two frames">
+
+The cleanest demonstration is to count. Bound charges sit on the plates of a capacitor; counting them is a frame-independent operation, because dots are dots. Slide the boost; the geometry visibly contracts; the dot count holds.
+
+<SceneCard caption="FIG.58a — A parallel-plate capacitor in the lab frame and the same capacitor viewed from a frame boosted along its length. Plate length contracts to L₀/γ. Charge count on each plate is unchanged. Slide β; the plates shrink, the dots hold.">
+  <BoostedChargeCountingScene />
+</SceneCard>
+
+In the lab frame the capacitor plates have length L₀ and carry +Ne and −Ne. In the boosted frame, lengths along the boost contract to L₀/γ, so the *charge density per unit length* on each plate goes up by γ (cramming the same charge into a shorter plate). But the total charge — what the meter on the side of the capacitor reads — is +Ne and −Ne in both frames. The integrated quantity does not change; only its distribution does.
+
+This is what the four-current packaging buys you. The "increase in ρ" you would measure on a charged wire that streams past you is real (it's the famous mechanism behind §11.4's derivation of magnetism from a boost of an electrostatic line), but it is exactly compensated by the contracted volume so the enclosed charge is the same. You can double-book ρ' = γρ as long as you also book V' = V/γ; the two factors are the same γ.
+
+</Section>
+
+<Section index={4} title="Weber-Kohlrausch and the speed of light">
+
+Six years before Maxwell predicted that light is an electromagnetic wave, electricity itself had already produced the speed of light as a number. In 1856 Wilhelm Weber and Rudolf Kohlrausch measured the ratio of the *electrostatic* unit of charge (defined by the force between two static charges via Coulomb's law) to the *electromagnetic* unit of charge (defined by the force between two parallel current-carrying wires via Ampère's law). They found
+
+<EquationBlock id="EQ.05">
+$$ \sqrt{\,1\,/\,(\mu_{0}\,\varepsilon_{0})\,} \;\approx\; 3.1\times 10^{8}\ \text{m/s}. $$
+</EquationBlock>
+
+That is c. The constant of nature governing how light propagates was already lurking in the SI unit system, sitting between two definitions of charge that no nineteenth-century physicist had connected to optics.
+
+<SceneCard caption="FIG.58b — Weber & Kohlrausch's 1856 measurement, schematised. A capacitor's charge measured in electrostatic units; a current loop's force measured in electromagnetic units; the ratio of the two unit definitions sweeps to 2.998 × 10⁸ m/s — the speed of light, six years before Maxwell.">
+  <WeberKohlrauschCScene />
+</SceneCard>
+
+Maxwell saw what Weber and Kohlrausch had not. In his 1862 paper *On Physical Lines of Force* he wrote down the wave equation for the electromagnetic field and noticed that its propagation speed was $1/\sqrt{\mu_0\varepsilon_0}$ — the same number Weber & Kohlrausch had measured. The first quantitative hint that c was lurking in EM constants. Maxwell did not pull c out of nowhere — it was already in the ratio of two charge-unit definitions, decades before anyone could say why.
+
+</Section>
+
+<Section index={5} title="The bigger picture">
+
+Charge invariance is the entry point to the four-vector vocabulary the rest of §11 will speak. Three of the central objects the next four topics cover are all four-vectors of the same kind:
+
+- The four-current J^μ — sources Maxwell's equations, integrates to invariant Q.
+- The four-potential A_μ — we will meet it in §11.5; the time component is the scalar potential ϕ/c, the spatial part is the vector potential **A**.
+- The four-momentum p^μ — energy and momentum, packaged the same way.
+
+Charge is the time component of J^μ that no boost can mix away — because the "spatial mixing partners" of ρ are the J components, and ∇·**J** integrates to zero on any boundary at infinity. The flux of a conserved four-current through a closed 3-surface enclosing the entire universe is identically zero, which is why total charge does not change as you re-slice spacetime.
+
+<SceneCard caption="FIG.58c — The flux integral ∫ J^μ dΣ_μ through three different 3-surfaces in spacetime: lab simultaneity, boosted simultaneity, and an oblique slice. All three thread the same world-tube of charge and return Q = 12 C. Re-slice spacetime however you like; the count survives.">
+  <FourCurrentFluxScene />
+</SceneCard>
+
+The next four topics specialise this picture. §11.2 folds Maxwell's equations into four-vector form. §11.3 builds the field tensor F^{μν} sourced by J^μ and watches E and B mix. §11.4 derives the magnetic force on a moving wire purely from a boost of an electrostatic configuration. §11.5 closes the module with the four-potential A_μ coupled to J^μ in the action.
+
+Hold onto the one fact: of every quantity in electromagnetism, total electric charge is the only Lorentz scalar that appears at the level of a single particle. Charge stands alone. Every observer agrees.
+
+</Section>
+
+</TopicPageLayout>
