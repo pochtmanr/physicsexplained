@@ -172,7 +172,7 @@ export function WireSegmentFieldScene() {
       ctx.fill();
       ctx.shadowBlur = 0;
       // Glyph: dot for "out of page", × for "into page"
-      ctx.fillStyle = "#07090E";
+      ctx.fillStyle = "#1A1D24";
       ctx.font = "bold 10px monospace";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";

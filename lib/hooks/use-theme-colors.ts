@@ -33,8 +33,8 @@ export function useThemeColors(): ThemeColors {
     fg1: "#B6C4D8",
     fg2: "#56687F",
     fg3: "#2A3448",
-    bg0: "#07090E",
-    bg1: "#07090E",
+    bg0: "#1A1D24",
+    bg1: "#1A1D24",
     cyan: "#6FB8C6",
     magenta: "#FF6ADE",
   });

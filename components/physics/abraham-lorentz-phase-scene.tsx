@@ -107,7 +107,7 @@ export function AbrahamLorentzPhaseScene() {
       ctx.clearRect(0, 0, width, height);
 
       // Background
-      ctx.fillStyle = "#07090E";
+      ctx.fillStyle = "#1A1D24";
       ctx.fillRect(0, 0, width, height);
 
       // Plot geometry

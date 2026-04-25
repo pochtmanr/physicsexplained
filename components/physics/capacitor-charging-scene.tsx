@@ -216,7 +216,7 @@ function drawResistor(
   const h = 8;
   const segments = 6;
   const segW = w / segments;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - w / 2 - 2, cy - h - 4, w + 4, h * 2 + 8);
   ctx.strokeStyle = "rgba(182, 196, 216, 0.95)";
   ctx.lineWidth = 1.5;

@@ -228,7 +228,7 @@ function drawPlate(
   const w = xR - xL;
   const n = Math.max(4, Math.floor(w / 30));
   const step = w / (n + 1);
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = "bold 11px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

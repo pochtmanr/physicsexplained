@@ -287,7 +287,7 @@ function drawTube(
   ctx.shadowBlur = 0;
 
   // Pole labels
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = "bold 10px monospace";
   ctx.textAlign = "center";
   ctx.fillText("N", cx, magTop + magHpx / 4 + 4);

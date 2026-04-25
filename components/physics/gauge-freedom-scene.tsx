@@ -174,7 +174,7 @@ export function GaugeFreedomScene() {
       ctx.beginPath();
       ctx.arc(wirePx.x, wirePx.y, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = "#07090E";
+      ctx.strokeStyle = "#1A1D24";
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.arc(wirePx.x, wirePx.y, 2.5, 0, Math.PI * 2);

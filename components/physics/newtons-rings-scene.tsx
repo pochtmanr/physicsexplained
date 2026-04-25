@@ -41,7 +41,7 @@ export function NewtonsRingsScene() {
       cv.height = HEIGHT * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
-    const bg = colors.bg0 || "#07090E";
+    const bg = colors.bg0 || "#1A1D24";
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 

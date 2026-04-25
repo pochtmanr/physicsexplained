@@ -179,7 +179,7 @@ function drawApparatus(
   ctx.strokeStyle = colors.fg3;
   ctx.lineWidth = 1;
   ctx.strokeRect(cx - poleW / 2, cy - R - poleH - 6, poleW, poleH);
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = "bold 11px monospace";
   ctx.textAlign = "center";
   ctx.fillText("N", cx, cy - R - poleH + 8);
@@ -189,7 +189,7 @@ function drawApparatus(
   ctx.fillRect(cx - poleW / 2, cy + R + 6, poleW, poleH);
   ctx.strokeStyle = colors.fg3;
   ctx.strokeRect(cx - poleW / 2, cy + R + 6, poleW, poleH);
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillText("S", cx, cy + R + poleH + 2);
 
   // B-field arrows between the poles (amber-ish; §03 palette has cyan for B,

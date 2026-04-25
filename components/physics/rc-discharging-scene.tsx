@@ -251,7 +251,7 @@ function drawResistor(
   const h = 8;
   const segments = 6;
   const segW = w / segments;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - w / 2 - 2, cy - h - 4, w + 4, h * 2 + 8);
   ctx.strokeStyle = fg;
   ctx.lineWidth = 1.5;
@@ -274,7 +274,7 @@ function drawClosedSwitch(
   ctx: CanvasRenderingContext2D, cx: number, cy: number, fg: string,
 ) {
   const gap = 28;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - gap / 2 - 4, cy - 10, gap + 8, 20);
   // terminals
   ctx.fillStyle = fg;

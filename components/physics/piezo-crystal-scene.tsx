@@ -368,7 +368,7 @@ function drawAtom(
   ctx.arc(x, y, r, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = `bold ${Math.max(10, r)}px monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

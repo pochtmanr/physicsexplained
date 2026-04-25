@@ -246,7 +246,7 @@ function drawBarMagnet(
   ctx.lineWidth = 1;
   ctx.strokeRect(cx - halfW, cy - halfH, w, h);
   // Labels
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = "bold 14px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

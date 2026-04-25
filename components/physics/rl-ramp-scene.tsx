@@ -293,7 +293,7 @@ function drawResistor(
   const h = 8;
   const segments = 6;
   const segW = w / segments;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - w / 2 - 2, cy - h - 4, w + 4, h * 2 + 8);
   ctx.strokeStyle = fg;
   ctx.lineWidth = 1.5;
@@ -317,7 +317,7 @@ function drawInductor(ctx: CanvasRenderingContext2D, cx: number, cy: number) {
   const loops = 4;
   const loopH = totalH / loops;
   const yTop = cy - totalH / 2;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - 14, yTop - 4, 18, totalH + 8);
   ctx.strokeStyle = "rgba(255, 214, 107, 0.95)";
   ctx.lineWidth = 1.8;

@@ -208,7 +208,7 @@ function drawWirePanel(
   ctx.beginPath();
   ctx.arc(cx, cy, 7, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = "#07090E";
+  ctx.strokeStyle = "#1A1D24";
   ctx.lineWidth = 1.2;
   ctx.beginPath();
   ctx.arc(cx, cy, 2.2, 0, Math.PI * 2);
@@ -320,7 +320,7 @@ function drawLineChargePanel(
   ctx.beginPath();
   ctx.arc(cx, cy, 7, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = "bold 11px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

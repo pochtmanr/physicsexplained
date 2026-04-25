@@ -159,7 +159,7 @@ export function VoltageRampScene() {
       ctx.arc(movPx.x, movPx.y, 7, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
-      ctx.strokeStyle = "#07090E";
+      ctx.strokeStyle = "#1A1D24";
       ctx.lineWidth = 1;
       ctx.stroke();
 
@@ -323,7 +323,7 @@ function drawChargeDot(
   ctx.arc(cx, cy, radius, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = `bold ${Math.max(11, radius)}px monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

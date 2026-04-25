@@ -22,10 +22,10 @@
    to the same value. */
 :root,
 [data-theme="dark"] {
-  --color-bg:   #07090E;
-  --color-bg-0: #07090E;
-  --color-bg-1: #07090E;
-  --color-bg-2: #07090E;
+  --color-bg:   #1A1D24;
+  --color-bg-0: #1A1D24;
+  --color-bg-1: #1A1D24;
+  --color-bg-2: #1A1D24;
 
   --color-fg-0: #EEF2F9;
   --color-fg-1: #B6C4D8;

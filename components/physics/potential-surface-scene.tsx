@@ -517,7 +517,7 @@ function drawChargeDot(
   ctx.arc(cx, cy, 8, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.font = "bold 11px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";

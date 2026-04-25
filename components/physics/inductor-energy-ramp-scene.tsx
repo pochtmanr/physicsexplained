@@ -258,7 +258,7 @@ function drawResistor(ctx: CanvasRenderingContext2D, cx: number, cy: number) {
   const h = 7;
   const segments = 6;
   const segW = w / segments;
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - w / 2 - 2, cy - h - 3, w + 4, h * 2 + 6);
   ctx.strokeStyle = "rgba(182, 196, 216, 0.9)";
   ctx.lineWidth = 1.5;
@@ -284,7 +284,7 @@ function drawInductor(
   dIFrac: number,
 ) {
   // Classic coil: three humps on the right wire
-  ctx.fillStyle = "#07090E";
+  ctx.fillStyle = "#1A1D24";
   ctx.fillRect(cx - 18, cy - 30, 36, 60);
   ctx.strokeStyle = "rgba(182, 196, 216, 0.9)";
   ctx.lineWidth = 1.6;

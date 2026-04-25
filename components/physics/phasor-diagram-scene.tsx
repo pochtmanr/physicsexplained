@@ -81,7 +81,7 @@ export function PhasorDiagramScene() {
       ctx.clearRect(0, 0, width, height);
 
       // Dark panel background
-      ctx.fillStyle = "#07090E";
+      ctx.fillStyle = "#1A1D24";
       ctx.fillRect(0, 0, width, height);
 
       // Panels: 44% left (phasors), 56% right (scope)

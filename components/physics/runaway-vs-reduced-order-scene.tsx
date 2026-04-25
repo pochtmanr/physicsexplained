@@ -63,7 +63,7 @@ export function RunawayVsReducedOrderScene() {
       ctx.scale(dpr, dpr);
     }
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#07090E";
+    ctx.fillStyle = "#1A1D24";
     ctx.fillRect(0, 0, width, height);
 
     // ─── Model parameters (dimensionless, scene units) ─────────────
