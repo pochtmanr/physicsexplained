@@ -1,0 +1,128 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DualMaxwellSymmetryScene } from "@/components/physics/dual-maxwell-symmetry-scene";
+import { DualTensorAndMonopoleSourceScene } from "@/components/physics/dual-tensor-and-monopole-source-scene";
+import { DiracQuantizationConditionScene } from "@/components/physics/dirac-quantization-condition-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Paul Dirac", href: "/physicists/paul-dirac" },
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "term", label: "Magnetic monopole", href: "/dictionary/magnetic-monopole" },
+  { type: "term", label: "Dirac quantization condition", href: "/dictionary/dirac-quantization-condition" },
+  { type: "term", label: "Electromagnetic duality", href: "/dictionary/electromagnetic-duality" },
+  { type: "term", label: "Dual field tensor", href: "/dictionary/dual-field-tensor" },
+  { type: "term", label: "Electromagnetic field tensor", href: "/dictionary/electromagnetic-field-tensor" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.65 · FOUNDATIONS"
+  title="MAGNETIC MONOPOLES AND DUALITY"
+  subtitle="The symmetric version of Maxwell, and the particle we haven't found."
+/>
+
+<Section index={1} title="The asymmetry">
+
+The four equations of [the-four-equations](/en/electromagnetism/the-four-equations) are not symmetric. Charge sources the electric field; nothing sources the magnetic field. Currents curl the magnetic field; the time-changing electric field also curls the magnetic field. The time-changing magnetic field curls the electric field — but no analogous "magnetic current" curls anything. Read the four laws as a 2×2 grid with electric sources on one side and magnetic sources on the other, and exactly one of the four cells is empty. The empty cell is $\nabla\cdot\mathbf{B} = 0$: there are no isolated north or south poles, only dipoles and higher multipoles obtained by stitching equal amounts of both.
+
+<SceneCard caption="FIG.65a — Maxwell's four equations as a 2×2 grid of (divergence, curl) × (electric, magnetic). The magnetic-source column is empty; toggle to see the symmetric version that monopoles would force.">
+  <DualMaxwellSymmetryScene />
+</SceneCard>
+
+The asymmetry is not subtle. It is a structural fact about Maxwell's equations as we have them, and it is also an open invitation: what would have to be true for the fourth cell to be filled? The cleanest way to ask that question is to write the equations in tensor form and stare at the tensor whose source is currently zero.
+
+</Section>
+
+<Section index={2} title="The dual tensor">
+
+The electromagnetic field tensor <Term slug="electromagnetic-field-tensor" /> packages $(\mathbf{E}, \mathbf{B})$ into one antisymmetric 4×4 object $F^{\mu\nu}$. Its Hodge dual is the equally antisymmetric tensor
+
+<EquationBlock id="EQ.01">
+$$*F^{\mu\nu} = \tfrac{1}{2}\,\varepsilon^{\mu\nu\rho\sigma} F_{\rho\sigma}.$$
+</EquationBlock>
+
+The totally antisymmetric Levi-Civita symbol $\varepsilon^{\mu\nu\rho\sigma}$ in four dimensions does the rotating: every $E$ entry of $F$ ends up where a $B$ entry of $*F$ lives, and every $B$ entry of $F$ ends up where an $E$ entry of $*F$ lives. Up to signs that depend on signature, the dual tensor is what you get from $F$ by the substitution $\mathbf{E} \to c\mathbf{B}$, $c\mathbf{B} \to -\mathbf{E}$. See <Term slug="dual-field-tensor" /> for the construction in detail.
+
+In tensor form the four scalar Maxwell equations become two:
+
+<EquationBlock id="EQ.02">
+$$\partial_\mu F^{\mu\nu} = \mu_0 J^\nu, \qquad \partial_\mu *\!F^{\mu\nu} = 0.$$
+</EquationBlock>
+
+The first equation has electric current on the right. The second has zero on the right. That zero is the no-monopole law and the source-free Faraday law, packaged together. If magnetic monopoles existed, the zero would not be a zero. It would be a magnetic four-current,
+
+<EquationBlock id="EQ.03">
+$$\partial_\mu *\!F^{\mu\nu} = \mu_0 J_m^\nu,$$
+</EquationBlock>
+
+with $J_m^\nu = (c\rho_m, \mathbf{J}_m)$ playing exactly the role $J^\nu$ plays for the electric tensor. Two equations, structurally identical, related by the Hodge dual. <Term slug="electromagnetic-duality" />
+
+<SceneCard caption="FIG.65b — F^{μν} morphing into *F^{μν} via the E↔cB swap. The right-hand side of the dual equation is zero in standard Maxwell; toggle to fill it with the magnetic four-current J^ν_m that monopoles would source.">
+  <DualTensorAndMonopoleSourceScene />
+</SceneCard>
+
+The duality is not a deep new principle. It is the observation that the field tensor and its dual are mathematically the same kind of object, and that physics has chosen — for reasons we do not yet understand — to source only one of them.
+
+</Section>
+
+<Section index={3} title="Dirac 1931">
+
+In 1931 <PhysicistLink slug="paul-dirac" /> asked a different question. Suppose just one magnetic monopole exists, somewhere in the universe. What does its presence demand of every electric charge?
+
+A monopole's vector potential cannot be globally smooth — any choice of $\mathbf{A}$ that gives $\nabla\cdot\mathbf{B} = g\,\delta^{3}(\mathbf{r})$ has a singularity along some semi-infinite line, the famous "Dirac string." (Wu and Yang in 1975 reformulated the same physics as a U(1) fiber bundle with two coordinate patches glued by a transition function on the equator — no string, same constraint.) For a charged particle's wave function $\psi$ to remain single-valued as it loops around the string, the phase it picks up,
+
+<EquationBlock id="EQ.04">
+$$\Delta\varphi = \frac{q}{\hbar}\oint \mathbf{A}\cdot d\boldsymbol{\ell} = \frac{q g}{\hbar},$$
+</EquationBlock>
+
+must be an integer multiple of $2\pi$. That forces the **Dirac quantization condition**:
+
+<EquationBlock id="EQ.05">
+$$q\,g = 2\pi\,n\,\hbar, \qquad n \in \mathbb{Z}.$$
+</EquationBlock>
+
+The smallest non-trivial monopole charge is $g_D = 2\pi\hbar/e$, numerically $\approx 4.14\times 10^{-15}$ Wb — the magnetic flux quantum $\Phi_0$. <Term slug="dirac-quantization-condition" />
+
+<SceneCard caption="FIG.65c — slider on monopole charge g. The integer-n quantization is satisfied at g = g_D, 2g_D, 3g_D… and fails at intermediate values; the lilac integer marker locks only at the discrete steps.">
+  <DiracQuantizationConditionScene />
+</SceneCard>
+
+The argument is delicate but the consequence is brutal. **If even one monopole exists anywhere, the existence of an electron forces every electric charge in the universe to be an integer multiple of $e$.**
+
+</Section>
+
+<Section index={4} title="What it would mean">
+
+We observe charge to be quantized. Every electron is identical to every other electron to thirteen decimal places; every proton balances every electron's charge to better than $10^{-21}$. Charge quantization is one of the most precisely-confirmed facts in physics, and Dirac's argument is the only known explanation for it that follows from gauge structure rather than from a fitted parameter.
+
+This is suggestive. It is not proof. The Standard Model's $\mathrm{SU}(3)\times\mathrm{SU}(2)\times\mathrm{U}(1)$ structure also forces hypercharge quantization in any consistent embedding into a simple Lie group, and grand unified theories like $\mathrm{SU}(5)$ and $\mathrm{SO}(10)$ explain charge quantization without monopoles being directly observed. But Polyakov and 't Hooft showed in 1974 that those same GUTs *predict* monopoles as topological solitons trapped in the Higgs vacuum at the unification scale. The cosmological "monopole problem" — that GUT phase transitions in the early universe should have produced monopoles at densities far above any observed limit — was one of the original motivations for inflation.
+
+</Section>
+
+<Section index={5} title="The search">
+
+We have looked. The MoEDAL detector at the LHC scans collision debris for slow, highly-ionizing tracks consistent with magnetic charge. The Cabrera 1982 experiment at Stanford recorded a single event in a SQUID loop on Valentine's Day with the exact step expected from one Dirac unit of magnetic flux passing through; nothing like it has ever been seen since, despite many larger detectors operating for many more years. IceCube searches for relativistic monopoles by their Cherenkov-like signatures in Antarctic ice. MACRO underground at Gran Sasso ran for years on the slow-monopole hypothesis. Every experiment has come back with an upper limit and no detection.
+
+The current bounds on cosmic monopole flux are extraordinarily tight — many orders of magnitude below the GUT prediction. Either inflation diluted them away (the orthodox answer), or the unification scale is structured differently than the simplest GUTs assume, or monopoles are heavier than we have looked for. <Term slug="magnetic-monopole" />
+
+<Callout variant="math">
+A monopole is allowed by Maxwell's equations in their dual form, allowed by quantum mechanics under the Dirac condition, and predicted by every grand unified theory we know how to write down. It is a particle theorists already know how to source the field of, weigh, and quantize. It just refuses to show up.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Closer">
+
+The dual tensor $*F^{\mu\nu}$ has been sitting inside Maxwell's equations the whole time, sourceless on the right-hand side, an empty cell on a 2×2 grid that almost — almost — closes. Dirac noticed in 1931 that the empty cell could be filled without breaking anything: a single magnetic charge anywhere in the universe forces every electric charge to come in integer units of $e$, and we observe exactly that. Polyakov and 't Hooft showed in 1974 that the empty cell is not just allowed but predicted, and that any GUT we write down sources the dual tensor at the unification scale.
+
+The monopole-as-soliton picture is a quantum-field-theory story. We will see in QUANTUM that whether monopoles exist is a question about the structure of the vacuum — about whether the Higgs field winds non-trivially around a sphere at infinity, about whether the early-universe phase transitions left topological defects, about what theories survive when we take the high-energy limit seriously. The answer is not in classical electromagnetism. The answer is in the next branch.
+
+We have not found one. We have not ruled them out. Dirac showed they would not break anything.
+
+</Section>
+
+</TopicPageLayout>

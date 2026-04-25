@@ -1016,6 +1016,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   FieldFreeElectronPathsScene: lazyScene(() =>
     import("@/components/physics/field-free-electron-paths-scene").then((m) => ({ default: m.FieldFreeElectronPathsScene })),
   ),
+  // EM §12 — magnetic-monopoles-and-duality
+  DualTensorAndMonopoleSourceScene: lazyScene(() =>
+    import("@/components/physics/dual-tensor-and-monopole-source-scene").then((m) => ({ default: m.DualTensorAndMonopoleSourceScene })),
+  ),
+  DiracQuantizationConditionScene: lazyScene(() =>
+    import("@/components/physics/dirac-quantization-condition-scene").then((m) => ({ default: m.DiracQuantizationConditionScene })),
+  ),
+  DualMaxwellSymmetryScene: lazyScene(() =>
+    import("@/components/physics/dual-maxwell-symmetry-scene").then((m) => ({ default: m.DualMaxwellSymmetryScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
