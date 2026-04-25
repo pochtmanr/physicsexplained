@@ -1,0 +1,119 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CoherentStatePoissonScene } from "@/components/physics/coherent-state-poisson-scene";
+import { PhotonNumberToClassicalFieldScene } from "@/components/physics/photon-number-to-classical-field-scene";
+import { RunningCouplingAndCorrectionsScene } from "@/components/physics/running-coupling-and-corrections-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Richard Feynman", href: "/physicists/richard-feynman" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Paul Dirac", href: "/physicists/paul-dirac" },
+  { type: "term", label: "Coherent state", href: "/dictionary/coherent-state" },
+  { type: "term", label: "Anomalous magnetic moment", href: "/dictionary/anomalous-magnetic-moment" },
+  { type: "term", label: "Running coupling", href: "/dictionary/running-coupling" },
+  { type: "term", label: "Classical limit of QED", href: "/dictionary/classical-limit-of-qed" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.66 · BRANCH CLOSE"
+  title="THE CLASSICAL LIMIT OF QED"
+  subtitle="Maxwell's equations are the high-occupation-number limit of a quantum field."
+/>
+
+<Section index={1} title="The historical inversion">
+
+For most of this branch we have written down classical electromagnetism — Coulomb, Faraday, Maxwell, the field tensor, the Lagrangian — and treated quantum corrections as a footnote arriving one branch later. `<PhysicistLink slug="richard-feynman" />`'s *Lectures on Physics* tells the story the other way around. Volume II derives Maxwell's equations not from Coulomb's torsion balance and Faraday's induction discs, but from the photon. Start with a quantum field whose excitations are massless spin-1 quanta, count occupation numbers in coherent states, take the limit where those numbers are astronomical, and what falls out is the classical theory we have spent eleven modules building.
+
+The pedagogy is honest about which way the arrow of fundamentals points. The classical theory is not the truth that quantum mechanics later corrects. The classical theory is what you get when you take quantum electrodynamics and let the photon number become enormous — and "enormous" is not a metaphor. Every stretch of this branch has been the high-N limit of QED in disguise. This last topic is the place to say so out loud.
+
+</Section>
+
+<Section index={2} title="Coherent states |α⟩">
+
+The bridge between quantum and classical EM is the `<Term slug="coherent-state" />`, introduced by Schrödinger in 1926 and reborn in quantum optics through Glauber in 1963. A coherent state of a single field mode is an eigenstate of the annihilation operator â,
+
+<EquationBlock id="EQ.01">
+$$ \hat{a}\,|\alpha\rangle \;=\; \alpha\,|\alpha\rangle, \qquad \alpha \in \mathbb{C}. $$
+</EquationBlock>
+
+Expanded in the photon-number basis it is a superposition over all N with Poisson-distributed weights:
+
+<EquationBlock id="EQ.02">
+$$ |\alpha\rangle \;=\; e^{-|\alpha|^{2}/2}\sum_{N=0}^{\infty}\frac{\alpha^{N}}{\sqrt{N!}}\,|N\rangle, \qquad P(N) \;=\; e^{-|\alpha|^{2}}\,\frac{|\alpha|^{2N}}{N!}. $$
+</EquationBlock>
+
+Mean photon number ⟨N⟩ = |α|², variance σ² = |α|², so the relative width is σ/⟨N⟩ = 1/|α|. Two regimes. At small |α| the distribution sits near zero; you can count the photons one at a time, single-photon detectors fire at separable instants, and the Poisson tail is what every laboratory student calls "shot noise." At large |α| the distribution sharpens onto a near-delta at ⟨N⟩, the relative width 1/|α| shrinks below any measurement's resolution, and "the field has N = |α|² photons in it" becomes operationally exact.
+
+<SceneCard caption="FIG.66a — P(N) for a coherent state, slider on |α|. Small |α|: a broad quantum distribution centred near zero. Large |α|: a sharp Poisson spike at ⟨N⟩ = |α|² with relative width 1/|α| → 0. The radio you listen to has |α|² of order 10²⁰; you do not see Poisson noise.">
+  <CoherentStatePoissonScene />
+</SceneCard>
+
+The coherent state is the closest a quantum field gets to a classical configuration. It saturates the Heisenberg uncertainty between the two field quadratures, it has the right phase coherence, and — the punchline of §3 — its expectation value of the field operator is precisely a classical sinusoid.
+
+</Section>
+
+<Section index={3} title="The classical limit">
+
+Quantize a single mode of the EM field — say a plane wave of definite k and polarization — and the electric-field operator decomposes as $\hat{E}(x,t) \propto \hat{a}\, e^{i(\mathbf{k}\cdot\mathbf{x} - \omega t)} + \hat{a}^{\dagger}\, e^{-i(\mathbf{k}\cdot\mathbf{x} - \omega t)}$. Take its expectation in a coherent state and the operator pieces collapse onto α and α\* by EQ.01:
+
+<EquationBlock id="EQ.03">
+$$ \langle\alpha|\,\hat{E}(x,t)\,|\alpha\rangle \;=\; E_{0}\,\bigl[\alpha\,e^{i(k\cdot x - \omega t)} + \alpha^{*}\,e^{-i(k\cdot x - \omega t)}\bigr] \;=\; \mathbf{E}_{\text{classical}}(x,t). $$
+</EquationBlock>
+
+That is the classical wave. The amplitude is proportional to |α|, and writing $\alpha = |\alpha|\,e^{i\varphi}$ the phase φ is the classical wave's phase. What the coherent state buys you on top of the classical answer is its noise: the standard deviation of Ê about its expectation value is independent of |α|, set by the vacuum fluctuation E_0. Combine the two: signal grows as |α|, noise stays put, and the relative quantum fluctuation goes as 1/|α| = 1/√⟨N⟩.
+
+<SceneCard caption="FIG.66b — ⟨α|Ê|α⟩ as the underlying classical wave (pale-blue) with a constant-width vacuum-noise envelope (lilac). Slide |α| up and the wave amplitude grows linearly while the envelope stays put — relative fluctuation 1/|α| → 0. At small |α|, individual amber photon ticks scatter on top of the wave; at large |α| they fade into a continuum.">
+  <PhotonNumberToClassicalFieldScene />
+</SceneCard>
+
+For a 100 W radio transmitter at 100 MHz, |α|² is on the order of 10²⁰ photons per mode-volume per second. The relative quantum noise is then 10⁻¹⁰. You do not see Poisson statistics in your car radio — not because the photons are not there, but because they are there in numbers that wash out their own discreteness. The same calculation applied to laser light, microwave links, every working antenna, and (with a thermal-state correction) every black-body radiator says: classical EM is what high-occupation quantum optics looks like at human scales. Plane waves [plane-waves-and-polarization](/en/electromagnetism/plane-waves-and-polarization) are the classical limit of single-mode coherent states.
+
+</Section>
+
+<Section index={4} title="Two corrections classical EM cannot reproduce">
+
+The classical limit is not exact — there are leftover quantum effects that survive the |α|² → ∞ limit because they are not about field amplitude at all. Two stand at the entrance to QED.
+
+First, the **Lamb shift**. In 1947 Willis Lamb and Robert Retherford measured a tiny splitting between the 2S₁/₂ and 2P₁/₂ levels of hydrogen — degenerate in Dirac's relativistic quantum mechanics, observably split by about 1057 MHz. Hans Bethe's first calculation, written on a train back from the Shelter Island conference, attributed the shift to the electron's interaction with vacuum fluctuations of the EM field. Theodore Welton's intuitive picture: the bound electron is jiggled by zero-point fluctuations of the photon vacuum, which smears its position and softens the Coulomb potential it sees. The shift is a quantum-mechanical effect of the field even when no real photons are present. Classical EM has no place to put it.
+
+Second, the **electron's anomalous magnetic moment**. Dirac predicted g = 2 exactly. Schwinger in 1948 calculated the leading correction:
+
+<EquationBlock id="EQ.04">
+$$ a_{e} \;\equiv\; \frac{g - 2}{2} \;=\; \frac{\alpha}{2\pi} + O(\alpha^{2}) \;\approx\; 0.001\,161\,4. $$
+</EquationBlock>
+
+That is `<Term slug="anomalous-magnetic-moment" />`. The series has been pushed to fifth-loop order by Aoyama, Hayakawa, Kinoshita and Nio; the QED prediction for a_e now agrees with measurement to better than 1 part in 10¹². It is the most precisely-tested prediction in the entire history of physics. Classical EM, Larmor's [larmor-formula](/en/electromagnetism/larmor-formula) and all, knows nothing of it — the leading correction is a one-loop Feynman diagram with the electron emitting and reabsorbing a virtual photon, a process that has no classical-field analogue. (Larmor's formula is itself the classical limit of single-photon spontaneous emission averaged over many transitions; the corrections live one rung below, in the diagrams the average smooths over.)
+
+<SceneCard caption="FIG.66c — Left: partial sums of a_e by loop order n, converging onto the experimental value (magenta line). Each new loop adds a factor of α/π ≈ 0.0023. Right: α(E) as 1/α(E) on a log-energy axis from m_e c² to ~50 TeV; climbs from 1/137 at threshold to ~1/128 at the Z-boson scale. Pale-grey wash marks where QED hands off to electroweak.">
+  <RunningCouplingAndCorrectionsScene />
+</SceneCard>
+
+The right panel of the figure is the third corner classical theory cannot see: the `<Term slug="running-coupling" />`. The fine-structure constant α is not a constant. Vacuum polarization — virtual electron-positron pairs screening every test charge — makes the effective coupling depend on the energy at which it is probed. From 1/137.036 at low energy it climbs toward 1/128 at the LEP scale ~91 GeV, an effect measured at electron-positron colliders since the 1990s.
+
+</Section>
+
+<Section index={5} title="Where the quantum theory itself runs out">
+
+Push α(E) to absurd energies and the perturbative series indicates a Landau pole — a singular point where 1/α formally crosses zero. In QED proper that pole sits near 10²⁸⁶ GeV, far above any conceivable experiment, and far above the scale at which QED stops being the right theory anyway. At about 100 GeV the photon sector mixes with the W and Z bosons and the correct framework is electroweak unification (Glashow-Salam-Weinberg, 1967-68). QED is an effective field theory valid below the electroweak scale; its Landau pole is a symptom of the embedding it has been waiting for.
+
+The contrasting case lives one floor up. Quantum chromodynamics has an opposite-sign β-function, asymptotic freedom (Gross, Wilczek, Politzer, 1973): the strong coupling g_s shrinks to zero at high energy and grows at low energy. Where electromagnetism is a weakly-coupled long-range force whose corrections to the classical theory are tiny, QCD is a strongly-coupled short-range force whose classical limit is no limit at all — there is no classical chromodynamics to take. EM is the last fundamental interaction whose classical theory is genuinely useful. Everything past §11.5 [four-potential-and-em-lagrangian](/en/electromagnetism/four-potential-and-em-lagrangian) was an unfolding of one Lagrangian; everything past this point is a genuinely quantum branch.
+
+</Section>
+
+<Section index={6} title="The closing">
+
+Stop. Look back across the eight sessions.
+
+Coulomb in 1785 weighed the force between two pith balls and got an inverse-square law. Faraday in 1831 watched a galvanometer twitch when a magnet moved past a coil. `<PhysicistLink slug="james-clerk-maxwell" />` in 1865 wrote down four equations that fit those experiments and a few dozen others, and noticed in passing that they predicted electromagnetic waves moving at the speed of light. The branch we are closing is the elaboration of those four equations across two centuries.
+
+Maxwell wrote four equations. They survived Lorentz, who showed they were not Galilean. They survived `<PhysicistLink slug="albert-einstein" />`, who rewrote them as one tensor and made simultaneity a frame-dependent statement. They survived `<PhysicistLink slug="paul-dirac" />`, who quantized the field they describe and turned its excitations into countable particles. They survived `<PhysicistLink slug="richard-feynman" />`, who calculated the small corrections they cannot — Lamb shift, anomalous moment, vacuum polarization, the running of α. The classical theory is incomplete — but it is consistent, it is internally tight, and it is the language every successor theory had to learn to speak before it could say anything new. The next branch is QUANTUM. We will see them again.
+
+</Section>
+
+</TopicPageLayout>

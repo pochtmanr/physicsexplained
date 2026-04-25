@@ -1026,6 +1026,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   DualMaxwellSymmetryScene: lazyScene(() =>
     import("@/components/physics/dual-maxwell-symmetry-scene").then((m) => ({ default: m.DualMaxwellSymmetryScene })),
   ),
+  // EM §12 — classical-limit-of-qed
+  CoherentStatePoissonScene: lazyScene(() =>
+    import("@/components/physics/coherent-state-poisson-scene").then((m) => ({ default: m.CoherentStatePoissonScene })),
+  ),
+  PhotonNumberToClassicalFieldScene: lazyScene(() =>
+    import("@/components/physics/photon-number-to-classical-field-scene").then((m) => ({ default: m.PhotonNumberToClassicalFieldScene })),
+  ),
+  RunningCouplingAndCorrectionsScene: lazyScene(() =>
+    import("@/components/physics/running-coupling-and-corrections-scene").then((m) => ({ default: m.RunningCouplingAndCorrectionsScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
