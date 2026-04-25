@@ -1,0 +1,153 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TwoWireLabFrameScene } from "@/components/physics/two-wire-lab-frame-scene";
+import { TwoWireElectronFrameScene } from "@/components/physics/two-wire-electron-frame-scene";
+import { ForceEquivalenceReadoutScene } from "@/components/physics/force-equivalence-readout-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Edward Purcell", href: "/physicists/edward-mills-purcell" },
+  { type: "physicist", label: "Hendrik Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Length contraction of current", href: "/dictionary/length-contraction-of-current" },
+  { type: "term", label: "Boost mixing of E and B", href: "/dictionary/boost-mixing-e-and-b" },
+  { type: "term", label: "Charge invariance", href: "/dictionary/charge-invariance" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.61 · RELATIVITY"
+  title="MAGNETISM AS RELATIVISTIC ELECTROSTATICS"
+  subtitle="Same force, different name."
+/>
+
+<Section index={1} title="The setup the whole branch was built for">
+
+Take two long parallel wires, separation d, both carrying the same current I to the right. Every undergraduate textbook tells you the same thing about this setup, and it tells you the answer twice. First the experiment: the wires attract. Second the formula. Apply <Term slug="amperes-law">Ampère's law</Term> to a circular loop around the first wire, get $\mathbf{B}_{1} = \mu_{0}I/(2\pi d)$ at the location of the second. Apply the <Term slug="the-lorentz-force">Lorentz force</Term> on the second wire's current, get a force per length
+
+<EquationBlock id="EQ.01">
+$$ \frac{F_{\text{mag}}}{L} \;=\; \frac{\mu_{0}\,I^{2}}{2\pi\,d}. $$
+</EquationBlock>
+
+That number is a familiar lab-bench artefact. Pass 10 A through two copper wires 1 cm apart and they pull on each other with about $2\times 10^{-4}$ N for every metre of length — small but easily measurable, and the basis of the original 1948 ampere definition. The textbook flips the page and moves on.
+
+But there is a question the textbook does not ask. The two wires are *electrically neutral* — magenta lattice ions and cyan drift electrons cancel exactly per length, so there is no Coulomb force. The attraction is, by elimination, magnetic. Yet the entire content of the magnetic field, as §11.3 just argued, is "what an electric field looks like to an observer who has been boosted." So if we boost ourselves out of the lab and into the rest frame of the drift electrons, the magnetic story has to dissolve into something else. What replaces it?
+
+Slide β below to fix the lab-frame setup in your head. Magenta + ions sit still, cyan electrons drift right at v = βc, the wires stay neutral, the gap fills with a B-field, the force lands on the right side of EQ.01.
+
+</Section>
+
+<Section index={2} title="The boost — minimal special relativity">
+
+We need exactly two facts from special relativity to do this. Define $\beta = v/c$ and the Lorentz factor
+
+<EquationBlock id="EQ.02">
+$$ \gamma \;=\; \frac{1}{\sqrt{1 - \beta^{2}}}. $$
+</EquationBlock>
+
+Fact one. **Lengths along the boost contract by 1/γ.** A rigid stick with rest length $L_{0}$ measured by an observer who sees it moving at v has length $L_{0}/\gamma$. Lengths perpendicular to the motion are unchanged.
+
+Fact two. **Charge is a Lorentz scalar.** A bag of N coulombs in one frame contains N coulombs in any other inertial frame. (We argued this from the four-current in §11.1.) What changes between frames is not the *amount* of charge but the volume it sits in. Squeeze the volume by 1/γ and the line density goes up by γ.
+
+That is the entire toolkit. Two facts, both straight off Einstein's 1905 paper, and we will be done with the magnetic force forever.
+
+<Callout variant="warning">
+A full treatment of length contraction lives in the future RELATIVITY branch. For this topic we need only that lengths perpendicular to the boost are unchanged, and lengths parallel to the boost shorten by a factor γ.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The lattice contracts">
+
+Climb out of the lab and ride along with the cyan drift electrons of the top wire. In this new frame the cyan electrons sit still. The magenta lattice — at rest in the lab — now drifts left at $-v$. Same physics, new viewpoint.
+
+Now count charges per metre in the new frame. Start with the lattice. In the lab it has line density $n_{0}$ (positive ions per metre, the rest-frame value because the lattice sits still in the lab). In the electron frame it is the lattice that moves, so its measured length contracts and its measured line density rises:
+
+<EquationBlock id="EQ.03">
+$$ \lambda_{\text{lattice}}^{\text{electron frame}} \;=\; +\gamma\,n_{0}\,e. $$
+</EquationBlock>
+
+Now the cyan electrons. In the lab they have line density $n_{0}$ (matching the lattice, the wire is neutral). But the lab is the frame in which they are *moving*, not the frame in which they are at rest, so $n_{0}$ is already a contracted measurement. Their rest-frame line density — the value an observer comoving with them would write down — is $n_{0}/\gamma$. In the electron frame the cyan electrons are at rest and we measure exactly that:
+
+<EquationBlock id="EQ.04">
+$$ \lambda_{\text{electrons}}^{\text{electron frame}} \;=\; -\frac{n_{0}\,e}{\gamma}. $$
+</EquationBlock>
+
+Add the two:
+
+<EquationBlock id="EQ.05">
+$$ \rho_{\text{net}} \;=\; e\,n_{0}\!\left(\gamma - \frac{1}{\gamma}\right). $$
+</EquationBlock>
+
+The wires are no longer neutral. There is a net **positive** line charge density on each. The lattice has been brought closer together by length contraction without bringing more lattice with it; the cyan electrons have *un-contracted* (because they used to be moving and now they are not). The two effects don't cancel; they reinforce.
+
+<SceneCard caption="FIG.61a — In the lab frame: neutral wires, magenta lattice static, cyan electrons drifting right. The B-field in the gap supplies the attraction. Slide β to match the electron-frame panel below.">
+  <TwoWireLabFrameScene />
+</SceneCard>
+
+<SceneCard caption="FIG.61b — Boost into the electron rest frame: cyan electrons at rest, magenta lattice contracting and drifting left. The asymmetry between magenta and cyan dot density IS the new + line charge density.">
+  <TwoWireElectronFrameScene />
+</SceneCard>
+
+The two panels share a β slider. At β = 0 the lattice and cyan dots are equally spaced and the wires look identically neutral in both frames. Past β ≈ 0.3 the contraction becomes visible — the magenta dots crowd, the wires charge up, and the gap fills with the magenta E-field arrows of a Coulomb attraction.
+
+</Section>
+
+<Section index={4} title="The forces match — exactly">
+
+Compute the force per length in the electron frame. A line of charge with density $\rho_{\text{net}}$ produces an electric field $E = \rho_{\text{net}}/(2\pi\varepsilon_{0}d)$ at distance d. The second wire's electrons sit still with line density $n_{0}\,e$ and feel the force per length
+
+<EquationBlock id="EQ.06">
+$$ \frac{F_{\text{elec}}}{L}\bigg|_{\text{electron frame}} \;=\; \frac{(n_{0}\,e)\,\rho_{\text{net}}}{2\pi\varepsilon_{0}\,d} \;=\; \frac{n_{0}^{2}\,e^{2}\,(\gamma - 1/\gamma)}{2\pi\varepsilon_{0}\,d}. $$
+</EquationBlock>
+
+This is the value an observer in the electron rest frame measures. To compare with $F_{\text{mag}}$ from EQ.01 we need to get back to the lab. Transverse forces in special relativity transform as $F_{\text{lab}} = F_{\text{rest}}/\gamma$ — a clean one-line rule that drops out of the four-force / proper-time machinery. Apply it:
+
+<EquationBlock id="EQ.07">
+$$ \frac{F_{\text{elec}}}{L}\bigg|_{\text{lab}} \;=\; \frac{n_{0}^{2}\,e^{2}\,(\gamma - 1/\gamma)}{\gamma\cdot 2\pi\varepsilon_{0}\,d} \;=\; \frac{n_{0}^{2}\,e^{2}\,(1 - 1/\gamma^{2})}{2\pi\varepsilon_{0}\,d} \;=\; \frac{n_{0}^{2}\,e^{2}\,\beta^{2}}{2\pi\varepsilon_{0}\,d}. $$
+</EquationBlock>
+
+The middle step uses $(\gamma - 1/\gamma)/\gamma = 1 - 1/\gamma^{2}$, and the final step uses the identity $1 - 1/\gamma^{2} = \beta^{2}$ — straight out of the definition of γ.
+
+Now go back to EQ.01 and unpack $I = n_{0}\,e\,v_{\text{drift}} = n_{0}\,e\,\beta c$:
+
+<EquationBlock id="EQ.08">
+$$ \frac{F_{\text{mag}}}{L} \;=\; \frac{\mu_{0}\,n_{0}^{2}\,e^{2}\,\beta^{2}\,c^{2}}{2\pi\,d} \;=\; \frac{n_{0}^{2}\,e^{2}\,\beta^{2}}{2\pi\,\varepsilon_{0}\,d}. $$
+</EquationBlock>
+
+The last equality is the textbook identity $\mu_{0}\,c^{2} = 1/\varepsilon_{0}$ — the same equation that produced the speed of light from the wave equation in §08.1. EQ.07 and EQ.08 are *the same number*. Not approximately. Not in the limit. Identically, at every β from copper drift up to ultrarelativistic.
+
+<SceneCard caption="FIG.61c — F_mag (cyan, computed in the lab) and F_elec (magenta, computed in the electron rest frame and transformed back). Two bars, one axis, locked together as you slide β. The ratio reads 1.000000 at every β.">
+  <ForceEquivalenceReadoutScene />
+</SceneCard>
+
+The bars track exactly because they are the same number computed two different ways. Different metaphysics, identical arithmetic.
+
+</Section>
+
+<Section index={5} title="Same force, different name">
+
+Sit with that for a beat. The magnetic force we have been writing equations for since §03 — the force that holds bar magnets together, that bends cyclotron beams, that lights up the synchrotron in §10.4, that powers every motor on the planet — is not a separate phenomenon. It is what we measure when the OTHER frame's electric field reaches us, distorted by length contraction. Same Coulomb attraction we have known since <PhysicistLink slug="charles-augustin-de-coulomb">Coulomb</PhysicistLink>'s 1785 torsion balance; we just couldn't see it as that until we were ready to ride along with the electrons.
+
+The historical compression here is dramatic. Maxwell wrote down the magnetic-force formula in 1865 — EQ.01 was the law of two parallel wires for forty years. Magnetism stayed a separate force, distinct from electric attraction, the entire time. <PhysicistLink slug="hendrik-antoon-lorentz">Hendrik Lorentz</PhysicistLink> wrote his transformations in 1904 to explain why Maxwell's equations took the same form in every inertial frame. <PhysicistLink slug="albert-einstein">Einstein</PhysicistLink> made the transformations physical in 1905 — they were not algebraic tricks but the shape of spacetime itself. And then over the next decade physicists realised, slowly: there is no second force. Magnetism is the part of Coulomb's law that you only see when you change frames.
+
+The cleanest pedagogical packaging took another sixty years. <PhysicistLink slug="edward-mills-purcell">Edward Purcell</PhysicistLink>'s 1965 *Electricity and Magnetism* — Volume II of the Berkeley Physics Course, written for sophomores — laid out the two-wire derivation we just walked through. Purcell taught it in §5.9 of that book, and every modern textbook that bothers to ask "where does magnetism come from" sources its derivation from there. Length contracts. Densities shift. The Coulomb force you couldn't see in the lab frame leaps out at you in the electron frame, transforms back, and lands on the same number.
+
+The moment a century of electromagnetism and a decade of special relativity snapped together.
+
+</Section>
+
+<Section index={6} title="The honest caveat">
+
+This is a story we tell with hindsight. Maxwell wrote his equations in the 1860s; special relativity did not exist for another forty years. The Universe did not care about our pedagogy. Maxwell's equations are correct as stated — covariant under Lorentz transformations, fully relativistic without modification, and they were *right* before anyone could explain *why* they were right. The boost-and-relabel argument we just walked through doesn't *derive* magnetism; it shows that, given electrostatics and special relativity, magnetism is *inevitable*.
+
+Some physicists are uncomfortable with calling this a derivation, because it works only because a great deal of structure has already been smuggled in: charge invariance is a fact, force transformations are a fact, the field equations are linear. Strip those away and the argument falls apart. What the argument *does* prove is that you cannot have an electric force law and a Lorentz-invariant world without something that looks exactly like magnetism — and that the magnitude of the magnetic force is fixed by the magnitude of the electric force, with no free parameters and no second constant of nature.
+
+That last point is what §11.5 (`<Term slug="four-potential" />` and `<Term slug="em-lagrangian-density" />`) makes explicit by writing the entire branch as a single Lagrangian density in $A_{\mu}$. After a hundred topics about charges, fields, currents, induction, waves, dielectrics, and radiation, the punchline of §11 is that all of it falls out of one term, $-\frac{1}{4}F_{\mu\nu}F^{\mu\nu}$, with no other ingredients.
+
+</Section>
+
+</TopicPageLayout>
