@@ -1,0 +1,142 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TwoSlitWithSolenoidScene } from "@/components/physics/two-slit-with-solenoid-scene";
+import { FluxPhaseShiftFringesScene } from "@/components/physics/flux-phase-shift-fringes-scene";
+import { FieldFreeElectronPathsScene } from "@/components/physics/field-free-electron-paths-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Yakir Aharonov", href: "/physicists/yakir-aharonov" },
+  { type: "physicist", label: "David Bohm", href: "/physicists/david-bohm" },
+  { type: "term", label: "Aharonov-Bohm effect", href: "/dictionary/aharonov-bohm-effect" },
+  { type: "term", label: "Aharonov-Bohm phase", href: "/dictionary/aharonov-bohm-phase" },
+  { type: "term", label: "Four-potential", href: "/dictionary/four-potential" },
+  { type: "term", label: "Gauge invariance", href: "/dictionary/gauge-invariance" },
+  { type: "term", label: "Gauge transformation", href: "/dictionary/gauge-transformation" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.64 · FOUNDATIONS"
+  title="THE AHARONOV–BOHM EFFECT"
+  subtitle="When the potential matters even where the field is zero."
+/>
+
+<Section index={1} title="The thought experiment">
+
+Back in [the-vector-potential](/en/electromagnetism/the-vector-potential), §03.4 noted in passing that **A** can be non-zero in regions where **B** vanishes — outside an ideal solenoid, for instance — and dropped a forward-link labelled "Aharonov-Bohm setup." This is the topic that lands that gesture.
+
+`<PhysicistLink slug="yakir-aharonov" />` and `<PhysicistLink slug="david-bohm" />`, working at Brandeis in 1959, asked a simple question. Take the standard double-slit electron interferometer — the one Young built for light in 1801, and which §09.8 walked through for matter waves. Now put a thin shielded solenoid between the two slits. Inside the solenoid, **B** is whatever you want it to be. Outside — in the regions both electron paths actually traverse — **B** = 0 by Ampère's law applied to a tube of contained flux. The electrons never enter the field. Classically nothing happens to them.
+
+Their paper showed something different. Quantum-mechanically, the wave function of each electron picks up a phase along its path proportional to the line integral of **A** taken along that path. The phase difference between the two paths is the line integral of **A** taken once around the loop they enclose, which by Stokes' theorem equals the magnetic flux Φ_B threading the solenoid. The fringe pattern shifts laterally by an amount that depends on Φ_B — and only on Φ_B. The field is zero everywhere the electrons go, and yet the pattern moves.
+
+That is the `<Term slug="aharonov-bohm-effect" />`. It is the most direct experimental statement that, in quantum mechanics, the four-potential is not just a bookkeeping device — it carries observable phase information that the field tensor F^{μν} alone does not.
+
+</Section>
+
+<Section index={2} title="The phase">
+
+Walk through the calculation once. The Schrödinger equation for a charged particle in an electromagnetic field uses the gauge-covariant momentum operator −iℏ∇ − q**A**, and the standard textbook result is that the wave function along a path γ from x_0 to x picks up a phase
+
+<EquationBlock id="EQ.01">
+$$ \psi_{\gamma}(x) \;=\; \psi_0(x)\,\exp\!\left[\,\frac{iq}{\hbar}\!\int_{\gamma}\! \mathbf{A}\cdot d\boldsymbol{\ell}\,\right]. $$
+</EquationBlock>
+
+For the two-slit geometry there are two paths, γ_1 over the top and γ_2 below the solenoid. The phase difference at the screen is
+
+<EquationBlock id="EQ.02">
+$$ \Delta\varphi \;=\; \frac{q}{\hbar}\!\left(\int_{\gamma_1}\! \mathbf{A}\cdot d\boldsymbol{\ell} \;-\; \int_{\gamma_2}\! \mathbf{A}\cdot d\boldsymbol{\ell}\right) \;=\; \frac{q}{\hbar}\!\oint_{\gamma_1 - \gamma_2}\! \mathbf{A}\cdot d\boldsymbol{\ell}. $$
+</EquationBlock>
+
+The closed loop γ_1 − γ_2 encloses the solenoid. Apply Stokes' theorem and use **B** = ∇×**A**:
+
+<EquationBlock id="EQ.03">
+$$ \oint \mathbf{A}\cdot d\boldsymbol{\ell} \;=\; \iint (\nabla\times\mathbf{A})\cdot d\mathbf{S} \;=\; \iint \mathbf{B}\cdot d\mathbf{S} \;=\; \Phi_B. $$
+</EquationBlock>
+
+The phase difference therefore depends only on the flux Φ_B threaded through the loop — not on the local values of **A** along either path. That is the `<Term slug="aharonov-bohm-phase" />`:
+
+<EquationBlock id="EQ.04">
+$$ \Delta\varphi_{AB} \;=\; \frac{q}{\hbar}\,\Phi_B \;=\; 2\pi\,\frac{\Phi_B}{\Phi_0},\qquad \Phi_0 \;\equiv\; \frac{h}{|q|}. $$
+</EquationBlock>
+
+The flux quantum Φ_0 = h/|q| sets the period. Adding one Φ_0 to the enclosed flux shifts every fringe maximum by exactly one fringe spacing — the pattern returns to itself. Adding Φ_0/2 shifts it by half — the central maximum becomes a central minimum. The integer multiples of Φ_0 are invisible. The half-integer multiples are the most visible.
+
+The `<Term slug="four-potential" />` A^μ enters the Schrödinger equation through the gauge-covariant derivative; the phase of equation EQ.01 is the time-integral over the path of the temporal component A^0 plus the spatial line integral of **A**. For a static magnetic configuration only the spatial piece survives, and that is the AB phase above.
+
+</Section>
+
+<Section index={3} title="What this says about gauge invariance">
+
+The first reaction many students have is: this contradicts `<Term slug="gauge-invariance" />`. The vector potential is not unique — any **A**' = **A** + ∇Λ produces the same **B**. So how can the AB phase be physical, when it is built from a non-unique object?
+
+It isn't. The local value of **A** along a single path is gauge-dependent, and that local value is not what the experiment measures. The experiment measures the loop integral. Under a `<Term slug="gauge-transformation" />` **A** → **A** + ∇Λ, the loop integral picks up
+
+<EquationBlock id="EQ.05">
+$$ \oint (\nabla\Lambda)\cdot d\boldsymbol{\ell} \;=\; \Lambda(\text{end}) - \Lambda(\text{start}) \;=\; 0 $$
+</EquationBlock>
+
+for a closed loop, by the fundamental theorem of calculus and the requirement that Λ be single-valued. Pure-gauge contributions vanish around any closed contour. The loop integral of **A** is a gauge-invariant, observable quantity — even though the integrand itself is not.
+
+So the AB effect does not say "the potential A is observable in the same sense the field B is." It says something more subtle. It says that the *loop integral* of A — equivalently, the holonomy of the U(1) connection — is observable, and that this loop integral carries information that no point-by-point measurement of B in the region traversed by the electron could ever recover. The field tensor F^{μν} along the electron's worldline does not determine its quantum phase; the four-potential along its worldline does.
+
+<Callout variant="math">
+The shorthand "the potential is more fundamental than the field" reads grandiose but is precise. F^{μν} = ∂^μA^ν − ∂^νA^μ is a derived quantity. A^μ is what enters the Lagrangian density, the Schrödinger equation, and every gauge theory. The AB effect makes the choice testable: the four-potential carries information the field strength alone does not.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The visualization">
+
+Top-down view. The electron source on the left, two slits, the shielded solenoid centred between them, the screen on the right. Toggle the solenoid on and off; slide the enclosed flux from 0 to 2 Φ_0.
+
+<SceneCard caption="FIG.64a — Two-slit electron interference with a shielded solenoid between the paths. Cyan × marks inside the solenoid: B is non-zero there. Outside: B = 0 — both amber paths traverse field-free regions. The screen on the right plots I(x); when ON, the active pattern (pale-blue) shifts laterally relative to the OFF baseline.">
+  <TwoSlitWithSolenoidScene />
+</SceneCard>
+
+Strip the apparatus away and watch the fringes alone, with the OFF baseline frozen as a yellow-amber ghost so the eye reads the shift directly:
+
+<SceneCard caption="FIG.64b — I(x) as a function of Φ_B/Φ_0. Pale-blue: the active pattern. Yellow-amber dashed: the Φ_B = 0 baseline, fixed. The active curve slides smoothly past the baseline as flux climbs. At Φ_B = Φ_0/2 the central peak coincides with a baseline trough — constructive at x = 0 has flipped to destructive. At Φ_B = Φ_0 the two curves coincide again. Auto-sweep loops the slider 0 → 2 → 0.">
+  <FluxPhaseShiftFringesScene />
+</SceneCard>
+
+And to make the field-free claim concrete, follow one electron path. The trace stays at radius r &gt; r_solenoid throughout — B = 0 everywhere along it. The cyan azimuthal arrows show A_φ = Φ_B/(2πr) outside the coil; A is non-zero, and the line integral ∫A·dℓ accumulates as the electron travels, reaching Φ_B/2 by the end of the half-loop:
+
+<SceneCard caption="FIG.64c — A single electron path threading one side of the solenoid. The amber dashed circle shows the path radius; it is always greater than the solenoid radius. The straight stubs (radial direction) contribute zero to ∫A·dℓ because A is azimuthal. The semicircular arc over the top contributes Φ_B/2 — exactly half the closed-loop value, because path 2 (on the opposite side) contributes the other half with the opposite sign.">
+  <FieldFreeElectronPathsScene />
+</SceneCard>
+
+The "click" moment is in the first scene. Drag the slider to Φ_B = Φ_0/2. The bright stripe at x = 0 turns into a dark stripe. The electron paths have not moved. The geometry has not moved. Nothing in the region the electrons traverse has changed. Only the flux inside the shielded coil has changed — flux that the electrons do not see. And the pattern shifts.
+
+</Section>
+
+<Section index={5} title="The 1986 confirmation">
+
+For 27 years after the Aharonov–Bohm paper, the experimental status of the effect was contested. The trouble was not the theory; it was making sure the field was *really* zero outside the solenoid. Any leakage flux, however small, would let the electrons interact with **B** along their path, contaminating the pure-A signal. Critics — most prominently Bocchieri and Loinger in the 1970s — argued that every claimed observation suffered from such leakage, and that the effect, if it existed, had not yet been cleanly seen.
+
+Akira Tonomura at Hitachi closed the question in 1986. Tonomura's group used electron holography around a *toroidal* magnet — geometry that traps flux entirely within a closed ring rather than a finite-length solenoid (which always leaks at its ends). They wrapped the toroid in a Permalloy magnetic shield, then cooled the assembly into a niobium superconducting state. In a superconductor below T_c, the Meissner effect expels magnetic field; outside the superconducting shell, **B** is rigorously zero, not merely small. Inside the toroid, the superconductor pins the flux in quanta of Φ_0/2 (the Cooper-pair flux quantum, with q = 2e in the denominator).
+
+Tonomura's holographic images showed the predicted phase pattern unambiguously. The electron interference shifted by exactly the AB amount predicted from the trapped flux, and not by any amount that could be attributed to leakage — because there was no leakage. The 1986 paper was the experimental landing of the 1959 prediction. The Aharonov–Bohm effect is real.
+
+The 1959 paper itself, *Significance of Electromagnetic Potentials in the Quantum Theory*, became one of the most-cited papers in twentieth-century physics. The topic does not bear the names of one physicist; it bears the names of two, and the discipline of the field has held to that. Aharonov is still active — Wolf Prize 1998, National Medal of Science 2010. Bohm died in 1992 in London, after a long late-career engagement with the foundations of quantum mechanics that produced (separately) the pilot-wave interpretation and an extended philosophical correspondence with Krishnamurti. The 1959 paper is one of two physics papers that bear his name and changed how the field thinks. The other is the 1952 hidden-variable paper. Different topic.
+
+</Section>
+
+<Section index={6} title="The closer">
+
+Stop and look at what we have just shown.
+
+Maxwell's theory in classical form said: the field tensor F^{μν} contains all the dynamics, and the potential A^μ is convenient bookkeeping that you can change by any gradient ∇Λ without consequence. §07.3 introduced **A** that way. §11.5 gave it covariant form as A^μ. The Lagrangian formulation made A^μ the variable of variation, but even there it was tempting to read F as the "real" object and A as the auxiliary scaffold.
+
+Quantum mechanics will not let you. The Schrödinger equation is built from the gauge-covariant momentum, and the gauge-covariant momentum is built from A^μ. The AB experiment shows that this is not a formal preference but a physical claim with observable consequences: the loop integral of A^μ — the holonomy of the U(1) connection — is gauge-invariant, real, and detectable, while the field strength along the same loop is identically zero.
+
+The potential is not auxiliary; it is the real object — and quantum mechanics is the proof.
+
+The Aharonov–Bohm effect is the cleanest pedagogical entry-point into how gauge theories actually work. The path-integral approach, which we will meet when the QUANTUM branch begins, makes the result natural rather than mysterious: every path through spacetime contributes a phase exp(iS/ℏ) to the amplitude, and S contains ∫A^μ dx_μ, and the loop integral of that quantity is the holonomy that the AB experiment measures. From the path-integral side it is not a paradox; it is a definition. From the side we approached it from in this branch, it is the moment classical electromagnetism quietly hands the keys over to its successor.
+
+</Section>
+
+</TopicPageLayout>

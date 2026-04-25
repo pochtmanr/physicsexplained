@@ -1006,6 +1006,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   NonAbelianGestureScene: lazyScene(() =>
     import("@/components/physics/non-abelian-gesture-scene").then((m) => ({ default: m.NonAbelianGestureScene })),
   ),
+  // EM §12 — aharonov-bohm-effect
+  TwoSlitWithSolenoidScene: lazyScene(() =>
+    import("@/components/physics/two-slit-with-solenoid-scene").then((m) => ({ default: m.TwoSlitWithSolenoidScene })),
+  ),
+  FluxPhaseShiftFringesScene: lazyScene(() =>
+    import("@/components/physics/flux-phase-shift-fringes-scene").then((m) => ({ default: m.FluxPhaseShiftFringesScene })),
+  ),
+  FieldFreeElectronPathsScene: lazyScene(() =>
+    import("@/components/physics/field-free-electron-paths-scene").then((m) => ({ default: m.FieldFreeElectronPathsScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
