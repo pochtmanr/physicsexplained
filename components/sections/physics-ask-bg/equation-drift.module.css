@@ -1,0 +1,44 @@
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.eq {
+  position: absolute;
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  white-space: nowrap;
+  color: var(--color-cyan-dim);
+  opacity: 0;
+  letter-spacing: 0.02em;
+  animation-name: eqDrift;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  will-change: transform, opacity;
+}
+
+@keyframes eqDrift {
+  0% {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  18% {
+    opacity: 0.16;
+  }
+  82% {
+    opacity: 0.16;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(36px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eq {
+    animation: none;
+    opacity: 0.1;
+    transform: none;
+  }
+}

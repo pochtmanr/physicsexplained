@@ -4,6 +4,7 @@
     "titleLead": "If I have seen further, it is by standing on the",
     "titleHighlight": "shoulders of giants.",
     "subtitle": "Physics isn't just formulas. It's the language the universe speaks. We made it visible.",
+    "ctaAsk": "Try Physics.Ask",
     "ctaPrimary": "Start with classical mechanics",
     "ctaSecondary": "Or browse all six branches",
     "fig1Label": "FIG.01 · THE EPICYCLE",
@@ -239,6 +240,38 @@
       "alreadySignedUp": "You're already on the list — we'll email you when this branch goes live.",
       "error": "Something went wrong. Please try again.",
       "success": "Thanks — we'll email you when this branch goes live."
+    }
+  },
+  "physicsAsk": {
+    "tag": "§ PHYSICS.ASK",
+    "title": "Talk to physics.",
+    "subtitle": "An AI tutor grounded in every topic on this site. Ask a question, see the math, watch the simulation.",
+    "ctaOpen": "Open Physics.Ask",
+    "cards": {
+      "ask": {
+        "eyebrow": "01 / ASK",
+        "title": "Any physics question",
+        "body": "From Newton's apple to Schrödinger's cat — in plain language, with citations.",
+        "pill": "AI · CHAT"
+      },
+      "math": {
+        "eyebrow": "02 / MATH",
+        "title": "Live math, not screenshots",
+        "body": "Equations rendered live. Hover any symbol — it tells you what it means.",
+        "pill": "LATEX · INLINE"
+      },
+      "simulate": {
+        "eyebrow": "03 / SIMULATE",
+        "title": "Answers with simulations",
+        "body": "When words aren't enough, Physics.Ask drops a live simulation right into the answer.",
+        "pill": "INTERACTIVE"
+      },
+      "grounded": {
+        "eyebrow": "04 / GROUNDED",
+        "title": "Cited from this site",
+        "body": "Every answer cites the topics on this site — 66 of them, hand-written, peer-checked.",
+        "pill": "66 SOURCES"
+      }
     }
   },
   "physicists": {

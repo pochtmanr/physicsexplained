@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
 import { HeroSection } from "@/components/sections/hero-section";
 import { BranchesSection } from "@/components/sections/branches-section";
+import { PhysicsAskSection } from "@/components/sections/physics-ask-section";
 import { PhysicistsSection } from "@/components/sections/physicists-section";
 import { FeaturedTopicSection } from "@/components/sections/featured-topic-section";
 import { DictionarySection } from "@/components/sections/dictionary-section";
@@ -39,6 +40,7 @@ export default async function HomePage({
     <main className="pb-16 md:pb-32">
       <HeroSection />
       <BranchesSection />
+      <PhysicsAskSection />
       <PhysicistsSection />
       <FeaturedTopicSection />
       <DictionarySection />

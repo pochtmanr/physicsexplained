@@ -1,0 +1,176 @@
+/* Default surface: matches site card system. */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 280px;
+  overflow: hidden;
+  border: 1px solid var(--color-fg-4);
+  background: var(--color-bg-1);
+  padding: 1.5rem;
+  transition: border-color 280ms ease-out, box-shadow 280ms ease-out;
+}
+
+@media (min-width: 768px) {
+  .card {
+    min-height: 340px;
+    padding: 2rem;
+  }
+}
+
+.card:hover {
+  z-index: 10;
+  border-color: var(--color-cyan);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-cyan) 30%, transparent),
+    0 24px 56px -20px color-mix(in srgb, var(--color-cyan) 35%, transparent);
+}
+
+/* Accent variant: subtle cyan-tinted surface. */
+.accent {
+  background: color-mix(in srgb, var(--color-cyan) 8%, var(--color-bg-1));
+  border-color: color-mix(in srgb, var(--color-cyan-dim) 35%, transparent);
+}
+
+/* Inverted variant: flips theme variables in scope.
+   Default (dark) theme → light card. */
+.inverted {
+  background: #FAFBFD;
+  --color-bg-0: #FAFBFD;
+  --color-bg-1: #FAFBFD;
+  --color-fg-0: #0B1220;
+  --color-fg-1: #293244;
+  --color-fg-2: #4A5569;
+  --color-fg-3: #6E7A8F;
+  --color-fg-4: #CAD2DF;
+  --color-cyan: #5A8693;
+  --color-cyan-dim: #5A8693;
+  --color-magenta: #B6219E;
+  --color-amber: #9A6410;
+  border-color: rgba(11, 18, 32, 0.08);
+  color: #0B1220;
+}
+
+/* Light theme on the page → inverted card flips to dark. */
+:global([data-theme="light"]) .inverted {
+  background: #1A1D24;
+  --color-bg-0: #1A1D24;
+  --color-bg-1: #1A1D24;
+  --color-fg-0: #EEF2F9;
+  --color-fg-1: #B6C4D8;
+  --color-fg-2: #7D8DA6;
+  --color-fg-3: #56687F;
+  --color-fg-4: #2A3448;
+  --color-cyan: #6FB8C6;
+  --color-cyan-dim: #6FB8C6;
+  --color-magenta: #FF6ADE;
+  --color-amber: #F5C451;
+  border-color: rgba(238, 242, 249, 0.08);
+  color: #EEF2F9;
+}
+
+.inverted:hover {
+  border-color: var(--color-cyan);
+}
+
+/* Body (above the bg layer). */
+.body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+/* Top row */
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-cyan-dim);
+}
+
+.arrow {
+  display: inline-flex;
+  height: 1.5rem;
+  width: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--color-fg-3);
+  transition: transform 240ms ease-out, color 240ms ease-out;
+}
+
+.card:hover .arrow {
+  color: var(--color-cyan);
+  transform: rotate(-45deg);
+}
+
+:global([dir="rtl"]) .arrow {
+  transform: scaleX(-1);
+}
+
+:global([dir="rtl"]) .card:hover .arrow {
+  transform: scaleX(-1) rotate(-45deg);
+}
+
+/* Title + body text */
+.title {
+  position: relative;
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--color-fg-0);
+  transition: color 240ms ease-out;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+.card:hover .title {
+  color: var(--color-cyan);
+}
+
+.copy {
+  position: relative;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--color-fg-1);
+}
+
+@media (min-width: 768px) {
+  .copy {
+    font-size: 1rem;
+  }
+}
+
+/* Bottom pill */
+.pillRow {
+  position: relative;
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.pill {
+  display: inline-block;
+  border: 1px solid var(--color-cyan-dim);
+  padding: 0.25rem 0.75rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-cyan-dim);
+}

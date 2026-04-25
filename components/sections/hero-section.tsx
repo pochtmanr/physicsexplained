@@ -26,7 +26,19 @@ export async function HeroSection() {
             <p className="mt-6 text-sm md:mt-8 md:text-xl text-[var(--color-fg-1)] max-w-[48ch]">
               {t("subtitle")}
             </p>
-            <div className="mt-8 flex flex-wrap gap-6 items-center md:mt-10">
+            <div className="mt-8 flex flex-wrap gap-4 items-center md:mt-10 md:gap-6">
+              <Link
+                href="/ask"
+                className="nav-link group relative inline-flex items-center gap-2 bg-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:px-6 md:py-3 md:text-sm"
+              >
+                {t("ctaAsk")}
+                <span
+                  aria-hidden="true"
+                  className="inline-block transition-transform duration-[180ms] ease-out group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
+                >
+                  →
+                </span>
+              </Link>
               <Link
                 href="/classical-mechanics"
                 className="inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition md:px-6 md:py-3 md:text-sm"

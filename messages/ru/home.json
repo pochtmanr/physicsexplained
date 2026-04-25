@@ -4,13 +4,46 @@
     "titleLead": "Если я видел дальше других, то лишь потому, что стоял",
     "titleHighlight": "на плечах гигантов.",
     "subtitle": "From pendulums to planets — real physics, real simulations, no videos.",
-    "ctaPrimary": "Start with classical mechanics →",
-    "ctaSecondary": "Or browse all six branches ↓",
+    "ctaAsk": "Попробовать Physics.Ask",
+    "ctaPrimary": "Начать с классической механики",
+    "ctaSecondary": "Или просмотреть все шесть ветвей",
     "fig1Label": "РИС.01 · ЭПИЦИКЛ",
     "fig2Label": "РИС.02 · СИММЕТРИЯ И СОХРАНЕНИЕ"
   },
   "branches": {
     "tag": "§ BRANCHES"
+  },
+  "physicsAsk": {
+    "tag": "§ PHYSICS.ASK",
+    "title": "Поговорите с физикой.",
+    "subtitle": "AI-наставник, опирающийся на каждую тему этого сайта. Задайте вопрос, увидите математику, посмотрите симуляцию.",
+    "ctaOpen": "Открыть Physics.Ask",
+    "cards": {
+      "ask": {
+        "eyebrow": "01 / СПРОСИТЕ",
+        "title": "Любой вопрос по физике",
+        "body": "От яблока Ньютона до кота Шрёдингера — простым языком, со ссылками.",
+        "pill": "AI · ЧАТ"
+      },
+      "math": {
+        "eyebrow": "02 / МАТЕМАТИКА",
+        "title": "Живая математика, а не скриншоты",
+        "body": "Уравнения отрисовываются вживую. Наведите курсор на любой символ — он сам объяснит себя.",
+        "pill": "LATEX · INLINE"
+      },
+      "simulate": {
+        "eyebrow": "03 / СИМУЛЯЦИЯ",
+        "title": "Ответы с симуляциями",
+        "body": "Когда слов мало, Physics.Ask вставляет живую симуляцию прямо в ответ.",
+        "pill": "ИНТЕРАКТИВ"
+      },
+      "grounded": {
+        "eyebrow": "04 / ИСТОЧНИКИ",
+        "title": "Со ссылками на этот сайт",
+        "body": "Каждый ответ ссылается на темы сайта — 66 штук, написаны вручную, проверены.",
+        "pill": "66 ИСТОЧНИКОВ"
+      }
+    }
   },
   "physicists": {
     "tag": "§ PHYSICISTS",
