@@ -1,0 +1,164 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FourPotentialComponentsScene } from "@/components/physics/four-potential-components-scene";
+import { LagrangianActionScene } from "@/components/physics/lagrangian-action-scene";
+import { NoetherChargeConservationScene } from "@/components/physics/noether-charge-conservation-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Joseph-Louis Lagrange", href: "/physicists/joseph-louis-lagrange" },
+  { type: "physicist", label: "Emmy Noether", href: "/physicists/emmy-noether" },
+  { type: "term", label: "Four-potential", href: "/dictionary/four-potential" },
+  { type: "term", label: "EM Lagrangian density", href: "/dictionary/em-lagrangian-density" },
+  { type: "term", label: "Lorenz gauge", href: "/dictionary/lorenz-gauge" },
+  { type: "term", label: "Gauge transformation", href: "/dictionary/gauge-transformation" },
+  { type: "term", label: "Noether's theorem", href: "/dictionary/noethers-theorem" },
+  { type: "term", label: "Principle of least action", href: "/dictionary/principle-of-least-action" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.62 · CLOSING THE BRANCH"
+  title="THE FOUR-POTENTIAL AND THE EM LAGRANGIAN"
+  subtitle="The whole branch is one line of action."
+/>
+
+<Section index={1} title="The four-potential A^μ = (φ/c, A⃗)">
+
+§07.3 introduced the scalar potential φ and the vector potential **A** as two pieces of bookkeeping that made Maxwell's equations easier to integrate. The relation **E** = −∇φ − ∂**A**/∂t and **B** = ∇×**A** packaged the six field components into four potentials, with the price tag of `<Term slug="gauge-transformation" />` — the freedom to add a gradient to **A** (and a matching time-derivative to φ) without changing **E** or **B** at all. The `<Term slug="lorenz-gauge" />` (Ludvig Lorenz, Danish, 1867 — no T) picks one of those infinitely many descriptions and pins the rest down.
+
+§11.2 then took the field tensor F^{μν} and showed that the six components of (**E**, **B**) live as one antisymmetric 4×4 object. The same structural promotion happens to the potentials, and it is even cleaner. Define
+
+<EquationBlock id="EQ.01">
+$$ A^{\mu} \;\equiv\; (\,\phi/c,\;A_x,\;A_y,\;A_z\,). $$
+</EquationBlock>
+
+The `<Term slug="four-potential" />` packs the scalar potential and the vector potential into a single Lorentz-covariant 4-vector. The c-division of φ gives every component the same units (Wb/m), which is what allows the four pieces to mix as one object under boosts. Apply a Lorentz transformation along +x by velocity βc and the components mix exactly the way (ct, x, y, z) mix:
+
+<EquationBlock id="EQ.02">
+$$ A'^{0} = \gamma\,(A^{0} - \beta A^{1}),\quad A'^{1} = \gamma\,(A^{1} - \beta A^{0}),\quad A'^{2} = A^{2},\quad A'^{3} = A^{3}. $$
+</EquationBlock>
+
+The "scalar" and the "vector" potentials are the same object viewed from different frames. A pure scalar potential in the rest frame of a charge — a Coulomb φ alone — turns into a mixture of φ' and **A**' in any boosted frame; that mixture is the physics behind §11.4's "magnetism is relativistic electrostatics."
+
+<SceneCard caption="FIG.62a — A^μ in the lab frame and in a boosted frame. The boost mixes the scalar potential (magenta disk) and the x-component of the vector potential (cyan arrows) exactly as it mixes ct and x.">
+  <FourPotentialComponentsScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="The EM Lagrangian density">
+
+Now the punchline. The entire dynamics of the electromagnetic field, sources included, is encoded in a single Lorentz scalar:
+
+<EquationBlock id="EQ.03">
+$$ \mathcal{L} \;=\; -\frac{1}{4\mu_{0}}\,F_{\mu\nu}\,F^{\mu\nu} \;-\; A_{\mu}\,J^{\mu}. $$
+</EquationBlock>
+
+That is the `<Term slug="em-lagrangian-density" />`. Two terms. Read them carefully.
+
+The first term, F_{μν} F^{μν}, is the "kinetic" piece — the field's analogue of ½mv² in particle mechanics. Working out the contraction in mostly-minus signature gives F_{μν} F^{μν} = 2(|**B**|² − |**E**|²/c²), the same Lorentz invariant we met in §11.3 (the one that distinguishes radiation from a Coulomb field). Multiplied by −1/(4μ₀) it becomes (ε₀/2)|**E**|² − (1/2μ₀)|**B**|², using ε₀ = 1/(μ₀c²). For a free wave with |**E**| = c|**B**| this kinetic part vanishes — the field carries equal electric and magnetic energy density. For a static Coulomb field it reduces to (ε₀/2)|**E**|², the energy density of §01.5.
+
+The second term, A_μ J^μ = (φ/c)(cρ) − **A**·**J** = φρ − **A**·**J**, couples the potential to the source. It looks asymmetric in 3D — a scalar piece and a vector piece — but it is one Lorentz scalar, contracting the four-potential A^μ with the four-current J^μ = (cρ, **J**). The minus sign sets the directions of forces correctly; the −¼ on the kinetic term is convention (Griffiths). Other texts absorb factors of c or 4π differently; the physics is unchanged.
+
+</Section>
+
+<Section index={3} title="Euler-Lagrange recovers Maxwell">
+
+The action is the integral of the Lagrangian density over a four-volume of spacetime,
+
+<EquationBlock id="EQ.04">
+$$ S \;=\; \int \mathcal{L}\,d^{4}x. $$
+</EquationBlock>
+
+The `<Term slug="principle-of-least-action" />` says the physical configuration of A^μ(x) is the one that makes S stationary under small perturbations: δS/δA_ν = 0. Working out the Euler-Lagrange equation,
+
+<EquationBlock id="EQ.05">
+$$ \partial_{\mu}\!\left(\frac{\partial \mathcal{L}}{\partial(\partial_{\mu} A_{\nu})}\right) - \frac{\partial \mathcal{L}}{\partial A_{\nu}} \;=\; 0, $$
+</EquationBlock>
+
+term by term:
+
+The source term gives ∂L/∂A_ν = −J^ν directly. The kinetic term, after using the antisymmetry of F^{μν} and the chain rule on the F·F contraction, gives ∂L/∂(∂_μ A_ν) = −F^{μν}/μ₀. Plug those into Euler-Lagrange and rearrange:
+
+<EquationBlock id="EQ.06">
+$$ \partial_{\mu} F^{\mu\nu} \;=\; \mu_{0}\,J^{\nu}. $$
+</EquationBlock>
+
+That is two of Maxwell's four equations — Gauss for **E** (the ν = 0 component, ∇·**E** = ρ/ε₀) and the Ampère-Maxwell law (the ν = i components, ∇×**B** = μ₀**J** + μ₀ε₀ ∂**E**/∂t). The other two — Faraday and ∇·**B** = 0 — fall out automatically from the antisymmetry of F^{μν} via the Bianchi identity ∂_α F_{βγ} + ∂_β F_{γα} + ∂_γ F_{αβ} = 0. So all four of Maxwell's equations come from one variational principle on one Lagrangian.
+
+<SceneCard caption="FIG.62b — The action S = ∫L d⁴x, parabolic about its minimum. The physical four-potential A^μ_phys sits at the bottom of the well; perturbing it (slider ε) climbs the parabola quadratically. δS/δε = 0 ⇒ Maxwell's equations.">
+  <LagrangianActionScene />
+</SceneCard>
+
+<Callout variant="math">
+The same trick — write the Lagrangian, vary with respect to the field, get the equations of motion — is how the Standard Model is constructed. Gluons, W, Z, the Higgs, gravity itself in the linearised limit: every fundamental interaction in physics is a Lagrangian density, and "the equations of motion" are whatever falls out of δS = 0. Maxwell-Lorentz is the simplest non-trivial example.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Gauge invariance and Noether's theorem">
+
+Now the symmetry side of the story. The four-potential carries one redundancy: A_μ → A_μ + ∂_μΛ for any smooth function Λ(x) leaves the field tensor F^{μν} = ∂^μA^ν − ∂^νA^μ completely unchanged, because the gradient terms cancel by ∂^μ∂^νΛ = ∂^ν∂^μΛ. This is `<Term slug="gauge-invariance" />` — the same redundancy §07.3 met in 3D as φ → φ − ∂Λ/∂t, **A** → **A** + ∇Λ, now lifted to one tidy 4-vector statement.
+
+Does the Lagrangian respect this symmetry? The kinetic term obviously does (F is unchanged). The source term picks up an extra piece: A_μ J^μ → A_μ J^μ + (∂_μΛ) J^μ. Integrating by parts inside the action,
+
+<EquationBlock id="EQ.07">
+$$ \int (\partial_{\mu}\Lambda)\,J^{\mu}\,d^{4}x \;=\; -\!\int \Lambda\,(\partial_{\mu} J^{\mu})\,d^{4}x \;+\; \text{boundary}. $$
+</EquationBlock>
+
+The boundary term vanishes (Λ goes to zero at infinity by assumption). For the action to be invariant under the full gauge group, the bulk piece must vanish too, for arbitrary Λ. The only way that can happen is
+
+<EquationBlock id="EQ.08">
+$$ \partial_{\mu} J^{\mu} \;=\; 0. $$
+</EquationBlock>
+
+That is **charge conservation** — local, exact, in covariant form. Rewritten in 3D it reads ∂ρ/∂t + ∇·**J** = 0, the continuity equation we had to assume separately back in §07.1 to make Ampère's law consistent. Here it is not an assumption: it is forced by gauge invariance of the Lagrangian.
+
+This is `<PhysicistLink slug="emmy-noether" />`'s 1918 theorem applied to the gauge symmetry of electromagnetism. Every continuous symmetry of the action generates a conserved current. Time translation generates energy. Space translation generates momentum. Rotation generates angular momentum. Phase rotation of a complex field generates `<Term slug="noethers-theorem" />` … and gauge symmetry generates charge conservation.
+
+<SceneCard caption="FIG.62c — Gauge symmetry ⟹ charge conservation. Top: A wiggles under A → A + ∂Λ; F (drawn below) stays fixed. Bottom: a closed surface with J flowing in equals J flowing out. Symmetry above forces conservation below.">
+  <NoetherChargeConservationScene />
+</SceneCard>
+
+Forward link: §12.2 will show that even in regions where F^{μν} = 0, the four-potential A^μ still carries observable quantum phase — the Aharonov-Bohm effect. The Lagrangian formulation makes this natural: A^μ is what enters L; F is a derived quantity. (See `<Term slug="aharonov-bohm-effect" />` once §12 lands.)
+
+</Section>
+
+<Section index={5} title="The closing of the branch">
+
+Stop and look at what we have.
+
+Maxwell wrote four equations. We just rewrote them as one line.
+
+<EquationBlock id="EQ.09">
+$$ \mathcal{L} \;=\; -\frac{1}{4\mu_{0}}\,F_{\mu\nu}\,F^{\mu\nu} \;-\; A_{\mu}\,J^{\mu}. $$
+</EquationBlock>
+
+From Coulomb's torsion balance in 1785, through Faraday's induction discs in the 1830s, Maxwell's vortex models in the 1860s, Hertz's first transmitter in 1888, Einstein's 1905 paper redrawing simultaneity, Minkowski's 1908 geometry of spacetime, Larmor's 1897 power formula, the radiation-reaction seam where classical electromagnetism asks its last honest question — and now this. **The entire branch is one Lagrangian.** Apply Euler-Lagrange to A^μ, out come Maxwell's equations. Apply Noether's theorem to the gauge symmetry, out comes charge conservation. Two sentences of mathematics encode every working radio, every screen, every wire, every star, every chemical bond, every atom that was ever held together long enough to read this.
+
+The `<Term slug="principle-of-least-action" />`, born in optics with Fermat in 1657 and refined into mechanics by Maupertuis, Euler, and `<PhysicistLink slug="joseph-louis-lagrange" />` over the next century, was waiting all that time for electromagnetism to catch up. From Fermat's "light takes the path of stationary time" to Maxwell's four equations to this Lagrangian density took a little under 240 years of continuous human effort. The wait was worth it. Every section of this branch — §01 charges, §02 dielectrics, §03 magnetism, §04 materials, §05 induction, §06 circuits, §07 Maxwell's synthesis, §08 waves, §09 optics, §10 radiation, §11 relativity — has been an unfolding of this one expression. They are not separate phenomena. They are one expression, told from different angles.
+
+That is what physics is for.
+
+</Section>
+
+<Section index={6} title="What's next — the seam to §12">
+
+Three threads run forward from this Lagrangian into §12.
+
+The first is gauge theory itself. The U(1) gauge symmetry that made charge conservation fall out of L = −¼F·F − A·J turns out to be the template for the strong and the weak forces. Replace U(1) by SU(2) and you get the Yang-Mills 1954 Lagrangian; gauge it together with U(1) and you get electroweak unification (Glashow-Salam-Weinberg, 1967-68); replace by SU(3) and you get quantum chromodynamics. The non-abelian gauge groups force the field tensor to gain extra self-interaction terms, but the structure — symmetry, potential, kinetic invariant, conserved current — is the same scaffolding lifted from §11.5. Forward to `<Term slug="gauge-theory-origins" />`.
+
+The second is `<Term slug="aharonov-bohm-effect" />` — the moment quantum mechanics insists that A^μ is more fundamental than F^{μν}. A solenoid carrying current confines its magnetic field inside, so F^{μν} = 0 outside; classically nothing happens to a charged particle going around it. Quantum-mechanically the particle's phase picks up ∮A·dℓ, which is non-zero. The potential is real where the field is not. Forward to §12.2.
+
+The third is `<Term slug="magnetic-monopole" />`. The Lagrangian we wrote treats electric source J^μ asymmetrically — there is no magnetic source. F^{μν} could carry one (Dirac 1931 showed it would even quantise electric charge if it did), but nature has not shown us one yet. The duality of §11.3 between E and B becomes a near-symmetry, the kind that physics keeps an eye on. Forward to §12.3.
+
+The branch is closed. The real story starts again.
+
+</Section>
+
+</TopicPageLayout>
