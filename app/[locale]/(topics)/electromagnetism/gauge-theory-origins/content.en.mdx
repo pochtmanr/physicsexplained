@@ -1,0 +1,99 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { U1PhaseRotationScene } from "@/components/physics/u1-phase-rotation-scene";
+import { GaugeSymmetryToConservationScene } from "@/components/physics/gauge-symmetry-to-conservation-scene";
+import { NonAbelianGestureScene } from "@/components/physics/non-abelian-gesture-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hermann Weyl", href: "/physicists/hermann-weyl" },
+  { type: "physicist", label: "Emmy Noether", href: "/physicists/emmy-noether" },
+  { type: "physicist", label: "Chen-Ning Yang", href: "/physicists/chen-ning-yang" },
+  { type: "physicist", label: "Robert Mills", href: "/physicists/robert-mills" },
+  { type: "term", label: "Gauge invariance", href: "/dictionary/gauge-invariance" },
+  { type: "term", label: "Gauge group", href: "/dictionary/gauge-group" },
+  { type: "term", label: "Non-Abelian gauge", href: "/dictionary/non-abelian-gauge" },
+  { type: "term", label: "Yang-Mills equations", href: "/dictionary/yang-mills-equations" },
+  { type: "term", label: "Gauge transformation", href: "/dictionary/gauge-transformation" },
+  { type: "term", label: "Noether's theorem", href: "/dictionary/noethers-theorem" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.63 · FOUNDATIONS"
+  title="GAUGE INVARIANCE AND THE BIRTH OF GAUGE THEORIES"
+  subtitle="The symmetry that became the template for every force."
+/>
+
+<Section index={1} title="The redundancy that has been hiding since 1865">
+
+Maxwell's equations, written in 1865, came with a built-in slack. The four-potential A_μ = (φ/c, **A**) reproduces **E** and **B** through E = −∇φ − ∂**A**/∂t and B = ∇×**A**, but you can shift A_μ → A_μ + ∂_μΛ for any smooth function Λ(x,t) and recover the same fields. §07.3 met this as `<Term slug="gauge-transformation" />` in 3D; §11.5 lifted it into one tidy 4-vector statement. Either way, the move looked like a bookkeeping trick — pick `<Term slug="lorenz-gauge" />`, kill the freedom, get on with integration.
+
+But here is the thing that took sixty years to accept: that "redundancy" is not a flaw of our description. It is a fingerprint of a deeper symmetry. The fact that nature lets us add a gradient to A and get the same physics is telling us that A is not a thing — it is one representative of an equivalence class, and the class itself is what is real. Call this `<Term slug="gauge-invariance" />`. By the time we are done with §12.1, that single observation will have generated charge conservation, the structure of QED, and — once Yang and Mills push the same idea — the strong and weak forces.
+
+</Section>
+
+<Section index={2} title="Weyl 1918, Weyl 1929 — the symmetry finds its name">
+
+The word "gauge" comes from `<PhysicistLink slug="hermann-weyl" />`. In 1918 Weyl tried to unify gravity and electromagnetism by letting the *length* of vectors rescale from point to point — a local change of "gauge", as in the gauge of a railway track. The geometry was beautiful, but Einstein shot it down within months: an atom's spectral lines depend on its history if lengths can rescale, and they observably do not. Length-rescaling does not work.
+
+Weyl came back to it in 1929, with quantum mechanics now in hand. Replace length-rescaling by *phase-rescaling*. The wave function ψ of a charged particle is complex; multiply it by e^{iθ} and you change nothing measurable, since |ψ|² is unchanged. If we promote θ from a constant to a function θ(x) of spacetime — a local phase — and *demand* that the theory still be invariant, the bare derivative ∂_μψ stops being covariant. To restore invariance we must replace ∂_μ by something that absorbs the phase shift. That something is the four-potential A_μ. Weyl found that the same object Maxwell had been carrying since 1865 is exactly the connection a locally phase-rotated wave function needs. The 1918 word survived the 1929 re-attachment, and "gauge" now refers to phase, not length.
+
+<SceneCard caption="FIG.63a — Local U(1) phase rotation. ψ rotates in the complex plane (cyan disk). Toggle GLOBAL (one rotation everywhere) versus LOCAL (a position-dependent θ(x), amber wedges). Without a gauge field A_μ to absorb the local θ-gradient, the kinetic term in the Lagrangian is no longer invariant.">
+  <U1PhaseRotationScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Local symmetry forces a connection">
+
+Make this precise. The free Schrödinger or Dirac Lagrangian contains a term like (∂_μψ)*(∂^μψ). Under a global phase rotation ψ → e^{iqθ}ψ with constant θ, the derivative passes through cleanly and the Lagrangian is invariant — that is just U(1) symmetry. Now demand local invariance: θ = θ(x). The derivative produces an extra piece, ∂_μ(e^{iqθ}ψ) = e^{iqθ}(∂_μ + iq∂_μθ)ψ. The extra iq∂_μθ ruins invariance.
+
+The fix: introduce a four-potential A_μ that transforms as A_μ → A_μ − ∂_μθ/q, and replace ∂_μ everywhere with the **covariant derivative** D_μ:
+
+<EquationBlock id="EQ.01">$$ D_{\mu} \;\equiv\; \partial_{\mu} + i\,q\,A_{\mu}. $$</EquationBlock>
+
+By construction D_μψ transforms exactly like ψ — D_μψ → e^{iqθ}D_μψ — so (D_μψ)*(D^μψ) is locally invariant. The price of demanding local U(1) symmetry is that the gauge field A_μ must exist and must couple to ψ with strength q. This is "minimal coupling", and it is not a derivation of electromagnetism so much as a statement that **electromagnetism is the unique field that local U(1) invariance of charged matter requires**. The transformation law of A is precisely Maxwell's gauge freedom from §07.3, now re-derived from a symmetry principle.
+
+</Section>
+
+<Section index={4} title="Noether: every continuous symmetry has a conserved current">
+
+`<PhysicistLink slug="emmy-noether" />`'s 1918 theorem ties the loop. Every continuous symmetry of an action produces a conserved Noether current. Time translation gives energy; space translation gives momentum; rotation gives angular momentum. Apply it to the global U(1) phase symmetry of charged matter and you get exactly one conserved four-current, J^μ = (cρ, **J**), with ∂_μJ^μ = 0. That is `<Term slug="noethers-theorem" />` cashed in as charge conservation — the same continuity equation §07.1 had to assume separately.
+
+When the symmetry is *gauged* — promoted to a local invariance — the conservation law is no longer optional. It is forced. §11.5 showed this explicitly: gauge invariance of the action ∫(−¼F·F − A·J) d^4x demands ∂_μJ^μ = 0 identically, for arbitrary Λ(x). The gauge field exists *because* of the symmetry; the conserved current exists *because* of the same symmetry. Symmetry, gauge field, conservation law — three faces of one geometric fact.
+
+<SceneCard caption="FIG.63b — Noether's bridge. Left: a U(1) phase circle with a continuous symmetry generator (lilac arrow). Right: the conserved four-current ∂_μJ^μ = 0, drawn as inflow equals outflow on a closed surface. The arrow between them is Noether 1918.">
+  <GaugeSymmetryToConservationScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Yang-Mills 1954 — when the symmetry stops commuting">
+
+In 1954 `<PhysicistLink slug="chen-ning-yang" />` and `<PhysicistLink slug="robert-mills" />` asked the obvious question. U(1) is the simplest continuous group, a circle. What if you replace it by a non-Abelian group like SU(2) or SU(3) — groups whose generators do not commute? Repeat the construction: demand local invariance under ψ → U(x)ψ where U is now an N×N matrix. The covariant derivative becomes D_μ = ∂_μ + igA_μ, but A_μ is now a matrix-valued field, an element of the Lie algebra with components A^a_μ along the generators T^a.
+
+The field strength gains a new term. For U(1), F_{μν} = ∂_μA_ν − ∂_νA_μ and that is the whole story. For SU(N), the non-commutativity of the generators forces an extra piece:
+
+<EquationBlock id="EQ.02">$$ F^{a}_{\mu\nu} \;=\; \partial_{\mu} A^{a}_{\nu} - \partial_{\nu} A^{a}_{\mu} + g\,f^{abc}\,A^{b}_{\mu}\,A^{c}_{\nu}. $$</EquationBlock>
+
+The structure constants f^{abc} encode the commutator [T^a, T^b] = if^{abc}T^c of the Lie algebra. The g·f·A·A term is the algebraic shadow of [A_μ, A_ν] not vanishing. It means the gauge field couples to itself — gluons radiate gluons in a way photons never radiate photons. This single change generates asymptotic freedom, color confinement, and the entire structure of `<Term slug="yang-mills-equations" />` quantum chromodynamics. Forward to `<Term slug="non-abelian-gauge" />` for the full machinery; here we just gesture at the commutator.
+
+<SceneCard caption="FIG.63c — Non-Abelian gesture. Two generators T^a and T^b (drawn as 4×4 matrix tiles) with their commutator [A_μ, A_ν] = A_μA_ν − A_νA_μ. For U(1) the commutator is zero; for SU(N) it is not, and that non-zero piece is what makes gauge bosons self-couple.">
+  <NonAbelianGestureScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="From a symmetry to the Standard Model">
+
+The arc, in one paragraph. Maxwell wrote four equations in 1865 and quietly dropped a redundancy into the potentials nobody asked for. Sixty-three years later Weyl recognised the redundancy as a symmetry — local phase rotation. Demanding that symmetry forces the gauge field, the covariant derivative, and through Noether's 1918 theorem the conservation of charge. In 1954 Yang and Mills replaced U(1) by SU(N) and the same construction generated theories with self-coupled gauge bosons; by 1973 those theories were the strong and weak forces. The electroweak unification of Glashow, Salam and Weinberg gauges SU(2)×U(1); QCD gauges SU(3); the Standard Model is SU(3)×SU(2)×U(1). Every fundamental force we know — except gravity, which gauges the Lorentz group instead — sits inside this scaffolding. When we get to QUANTUM, we will see that gauge theory is not a feature of electromagnetism — it is the structure of every force the universe knows about.
+
+`<Term slug="gauge-theory-origins" />` is therefore not a footnote to electromagnetism. It is the door electromagnetism walked through to become the model of every other interaction. **Gauge theory became the template; the Standard Model is the cathedral built from it.**
+
+</Section>
+
+</TopicPageLayout>

@@ -996,6 +996,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   NoetherChargeConservationScene: lazyScene(() =>
     import("@/components/physics/noether-charge-conservation-scene").then((m) => ({ default: m.NoetherChargeConservationScene })),
   ),
+  // EM §12 — gauge-theory-origins
+  U1PhaseRotationScene: lazyScene(() =>
+    import("@/components/physics/u1-phase-rotation-scene").then((m) => ({ default: m.U1PhaseRotationScene })),
+  ),
+  GaugeSymmetryToConservationScene: lazyScene(() =>
+    import("@/components/physics/gauge-symmetry-to-conservation-scene").then((m) => ({ default: m.GaugeSymmetryToConservationScene })),
+  ),
+  NonAbelianGestureScene: lazyScene(() =>
+    import("@/components/physics/non-abelian-gesture-scene").then((m) => ({ default: m.NonAbelianGestureScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
