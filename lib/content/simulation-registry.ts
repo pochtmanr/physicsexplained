@@ -946,6 +946,56 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   RadiationReactionTimescaleScene: lazyScene(() =>
     import("@/components/physics/radiation-reaction-timescale-scene").then((m) => ({ default: m.RadiationReactionTimescaleScene })),
   ),
+  // EM §11 — charge-invariance
+  BoostedChargeCountingScene: lazyScene(() =>
+    import("@/components/physics/boosted-charge-counting-scene").then((m) => ({ default: m.BoostedChargeCountingScene })),
+  ),
+  WeberKohlrauschCScene: lazyScene(() =>
+    import("@/components/physics/weber-kohlrausch-c-scene").then((m) => ({ default: m.WeberKohlrauschCScene })),
+  ),
+  FourCurrentFluxScene: lazyScene(() =>
+    import("@/components/physics/four-current-flux-scene").then((m) => ({ default: m.FourCurrentFluxScene })),
+  ),
+  // EM §11 — e-and-b-under-lorentz
+  BoostMixingEBScene: lazyScene(() =>
+    import("@/components/physics/boost-mixing-e-b-scene").then((m) => ({ default: m.BoostMixingEBScene })),
+  ),
+  LorentzInvariantsScene: lazyScene(() =>
+    import("@/components/physics/lorentz-invariants-scene").then((m) => ({ default: m.LorentzInvariantsScene })),
+  ),
+  PureEBecomesEBScene: lazyScene(() =>
+    import("@/components/physics/pure-e-becomes-eb-scene").then((m) => ({ default: m.PureEBecomesEBScene })),
+  ),
+  // EM §11 — the-electromagnetic-field-tensor
+  FieldTensorGridScene: lazyScene(() =>
+    import("@/components/physics/field-tensor-grid-scene").then((m) => ({ default: m.FieldTensorGridScene })),
+  ),
+  DualTensorSwapScene: lazyScene(() =>
+    import("@/components/physics/dual-tensor-swap-scene").then((m) => ({ default: m.DualTensorSwapScene })),
+  ),
+  TensorRecoversMaxwellScene: lazyScene(() =>
+    import("@/components/physics/tensor-recovers-maxwell-scene").then((m) => ({ default: m.TensorRecoversMaxwellScene })),
+  ),
+  // EM §11 — magnetism-as-relativistic-electrostatics
+  TwoWireLabFrameScene: lazyScene(() =>
+    import("@/components/physics/two-wire-lab-frame-scene").then((m) => ({ default: m.TwoWireLabFrameScene })),
+  ),
+  TwoWireElectronFrameScene: lazyScene(() =>
+    import("@/components/physics/two-wire-electron-frame-scene").then((m) => ({ default: m.TwoWireElectronFrameScene })),
+  ),
+  ForceEquivalenceReadoutScene: lazyScene(() =>
+    import("@/components/physics/force-equivalence-readout-scene").then((m) => ({ default: m.ForceEquivalenceReadoutScene })),
+  ),
+  // EM §11 — four-potential-and-em-lagrangian
+  FourPotentialComponentsScene: lazyScene(() =>
+    import("@/components/physics/four-potential-components-scene").then((m) => ({ default: m.FourPotentialComponentsScene })),
+  ),
+  LagrangianActionScene: lazyScene(() =>
+    import("@/components/physics/lagrangian-action-scene").then((m) => ({ default: m.LagrangianActionScene })),
+  ),
+  NoetherChargeConservationScene: lazyScene(() =>
+    import("@/components/physics/noether-charge-conservation-scene").then((m) => ({ default: m.NoetherChargeConservationScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

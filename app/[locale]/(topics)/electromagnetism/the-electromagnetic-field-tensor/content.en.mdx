@@ -1,0 +1,156 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FieldTensorGridScene } from "@/components/physics/field-tensor-grid-scene";
+import { DualTensorSwapScene } from "@/components/physics/dual-tensor-swap-scene";
+import { TensorRecoversMaxwellScene } from "@/components/physics/tensor-recovers-maxwell-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Electromagnetic field tensor", href: "/dictionary/electromagnetic-field-tensor" },
+  { type: "term", label: "Dual field tensor", href: "/dictionary/dual-field-tensor" },
+  { type: "term", label: "Four-current", href: "/dictionary/four-current" },
+  { type: "term", label: "Lorentz invariants of EM field", href: "/dictionary/lorentz-invariants-of-em-field" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.60 · EM AND RELATIVITY"
+  title="THE ELECTROMAGNETIC FIELD TENSOR"
+  subtitle="Six numbers, one antisymmetric object, the full relativistic story."
+/>
+
+<Section index={1} title="Six numbers, one object">
+
+§11.2 left us with a strange-looking fact: under a Lorentz boost, the components of $\mathbf{E}$ and $\mathbf{B}$ mix. A pure electric field in one frame becomes a tilted blend of $\mathbf{E}'$ and $\mathbf{B}'$ in another. Three numbers plus three numbers — six in total — shuffle into each other in a linear, frame-dependent way. That is the unmistakable signature of a tensor: a single multilinear object whose components transform smoothly between frames.
+
+The natural Lorentz-covariant container for six numbers is a rank-2 *antisymmetric* 4-tensor. A 4×4 matrix has 16 entries; require $F^{\mu\nu} = -F^{\nu\mu}$ and you forbid the four diagonal entries (since $F^{\mu\mu} = -F^{\mu\mu} \Rightarrow F^{\mu\mu} = 0$) and tie each lower-triangular entry to its upper-triangular partner. What's left is exactly $4 \cdot 3 / 2 = 6$ independent numbers. The arithmetic is too clean to be coincidence — and it isn't.
+
+The man who saw this first was <PhysicistLink slug="hermann-minkowski" />, the German mathematician who had taught a young <PhysicistLink slug="albert-einstein" /> mathematics at ETH Zürich. (Einstein cut his lectures; Minkowski later remembered him as "lazy". The relationship was mutual irritation. Minkowski died at 44 of acute appendicitis in 1909, four years after handing Einstein's 1905 special relativity its mathematical home.) In a 1908 lecture in Cologne he announced what is perhaps the most-quoted sentence in 20th-century physics: "Henceforth space by itself, and time by itself, are doomed to fade away into mere shadows, and only a kind of union of the two will preserve an independent reality." The "union" was the 4-dimensional pseudo-Euclidean geometry now called Minkowski space, and the field tensor is the object that lives inside it.
+
+What §11.3 does, then, is mechanical. We pack the six numbers $(E_x, E_y, E_z, B_x, B_y, B_z)$ into a single 4×4 antisymmetric tensor $F^{\mu\nu}$, write down the rules that say how its components transform under a Lorentz boost (those rules are forced by the fact that $F^{\mu\nu}$ is a tensor — they are not new physics), and then watch the four scalar Maxwell equations of <PhysicistLink slug="james-clerk-maxwell" /> collapse into two compact tensor expressions on either side of the divergence operator $\partial_\mu$. Two sentences for the entire 1865 *Treatise on Electricity and Magnetism*, four years after Maxwell wrote the original twenty.
+
+</Section>
+
+<Section index={2} title="The explicit construction">
+
+We adopt mostly-minus signature $(+,-,-,-)$ following Griffiths. With Greek indices ranging over $(0,1,2,3) = (ct, x, y, z)$, the prescription that *makes the construction work* — meaning, that gives the right transformations under boost and the right Maxwell equations on contraction with $\partial_\mu$ — is
+
+$$ F^{0i} = E_i / c, \qquad F^{ij} = -\varepsilon_{ijk} B_k. $$
+
+Spelled out as a 4×4 matrix:
+
+<EquationBlock id="EQ.01">
+$$ F^{\mu\nu} = \begin{pmatrix} 0 & E_x/c & E_y/c & E_z/c \\ -E_x/c & 0 & -B_z & B_y \\ -E_y/c & B_z & 0 & -B_x \\ -E_z/c & -B_y & B_x & 0 \end{pmatrix}. $$
+</EquationBlock>
+
+Sixteen entries. Four zeros on the diagonal. Six independent numbers above the diagonal (the three $E_i/c$ in the top row and the three $B_i$ in the lower-right $3\times 3$ block); their negatives appear, antisymmetrically, below the diagonal. The factor of $c$ on the $E$ entries is the only piece of bookkeeping that is annoying the first time and obvious the second: SI $\mathbf{E}$ has units V/m, SI $\mathbf{B}$ has units T = V·s/m², and dividing $E$ by $c$ puts both into the same units. Inside $F^{\mu\nu}$, every entry has units of tesla.
+
+There is a deeper origin for this construction. The four-potential $A^\mu = (\varphi/c, \mathbf{A})$ — which §11.5 builds out — gives both fields by differentiation: $\mathbf{E} = -\nabla\varphi - \partial_t \mathbf{A}$ and $\mathbf{B} = \nabla\times\mathbf{A}$. Writing those two definitions in covariant notation collapses them into
+
+$$ F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu, $$
+
+a manifestly antisymmetric object (an exterior derivative). The 4-curl of a 4-vector. Two field-vector definitions, one tensor identity.
+
+</Section>
+
+<Section index={3} title="The grid">
+
+Read the matrix as a grid. The top row + first column carry the electric field; the lower-right $3\times 3$ block carries the magnetic field. Mouse over any cell and its antisymmetric partner across the diagonal lights up.
+
+<SceneCard caption="FIG.60a — F^{μν} as a 4×4 grid; the six independent components are the three E and three B components, antisymmetrically duplicated below the diagonal. Diagonal cells are zero by antisymmetry. Toggle the preset to see what a pure-E, pure-B, or generic field looks like packaged this way.">
+  <FieldTensorGridScene />
+</SceneCard>
+
+The grid does two things at once. First, it makes the six-number count *visible* — there are exactly six magenta-or-cyan cells above the diagonal, and the lower triangle is the same six numbers with flipped signs. Second, it reveals the pattern that gets *broken* if you try to add a magnetic monopole charge: a monopole would source $\nabla\cdot\mathbf{B} \neq 0$, which would mean an extra independent component appears in the structure — i.e. $F^{\mu\nu}$ would no longer fit cleanly into one antisymmetric tensor. (This is the main observation of <Term slug="dual-field-tensor" />.) Without monopoles, six numbers are exactly what we need, and one antisymmetric 4-tensor is exactly what we get. <Term slug="electromagnetic-field-tensor" />
+
+A worked example helps the eye. Switch the preset to "pure E in x". The grid lights up in only two cells — $F^{01} = E_x/c$ and $F^{10} = -E_x/c$ — and everything else is zero. That is the entire content of "a static electric field along the lab x-axis": one number, antisymmetrically duplicated, sitting in two of the sixteen cells. Now switch to "pure B in z". A different pair lights up: $F^{12} = -B_z$ and $F^{21} = +B_z$. Same structural story, different cells. The "general field" preset turns six cells on at once. Six numbers, six cells; the rest is bookkeeping.
+
+</Section>
+
+<Section index={4} title="Recovering Maxwell from one tensor equation">
+
+Here is where the geometry pays off. Maxwell's four scalar equations, written in 19th-century vector calculus, are *two* tensor equations once $F^{\mu\nu}$ is in hand:
+
+<EquationBlock id="EQ.02">
+$$ \partial_\mu F^{\mu\nu} = \mu_0 J^\nu, $$
+</EquationBlock>
+
+with the <Term slug="four-current">four-current</Term> $J^\nu = (c\rho, \mathbf{J})$, and
+
+<EquationBlock id="EQ.03">
+$$ \partial_\mu {}^{*}F^{\mu\nu} = 0. $$
+</EquationBlock>
+
+That's it. Eight scalar equations of vector calculus; two compact tensor identities.
+
+Take the first one and let $\nu = 0$. The contraction is $\partial_0 F^{00} + \partial_1 F^{10} + \partial_2 F^{20} + \partial_3 F^{30}$. The $F^{00}$ piece vanishes (diagonal), and the spatial pieces are $\partial_i F^{i0} = -\partial_i (E_i/c) = -\nabla\cdot\mathbf{E}/c$. The right side is $\mu_0 J^0 = \mu_0 c\rho$. Pulling the minus sign through and using $\mu_0 c^2 = 1/\varepsilon_0$:
+
+$$ \nabla\cdot\mathbf{E} = \rho/\varepsilon_0. $$
+
+Gauss's law. For $\nu = i \in \{1,2,3\}$ the same exercise — now with both temporal and spatial derivatives, and with the $-\varepsilon_{ijk}B_k$ block contributing the curl — recovers $\nabla\times\mathbf{B} - \mu_0\varepsilon_0\,\partial\mathbf{E}/\partial t = \mu_0\mathbf{J}$. That is Ampère-Maxwell.
+
+The dual equation $\partial_\mu {}^{*}F^{\mu\nu} = 0$ does the same job for the source-free pair. $\nu = 0$ gives $\nabla\cdot\mathbf{B} = 0$ (no monopoles); $\nu = i$ gives $\nabla\times\mathbf{E} = -\partial\mathbf{B}/\partial t$ (Faraday). Eight scalar equations, two tensor expressions, identical content.
+
+The compression is not just notational. It says something about *what* the equations are. In vector calculus the four laws read like four unrelated facts about how electric and magnetic fields move charges, get sourced, and feed each other. In tensor form they are two statements about a single object: "the divergence of $F$ is the source four-current" and "the divergence of the dual is zero". Frame-invariance, which had to be checked by hand for each of the four scalar equations under a boost, is now manifest — both sides of each tensor equation transform the same way by construction.
+
+<SceneCard caption="FIG.60b — the rotating spotlight cycles through the eight choices of (tensor, ν), and beside it the resulting scalar Maxwell equation. Two tensor equations, eight scalar equations, identical content.">
+  <TensorRecoversMaxwellScene />
+</SceneCard>
+
+<Callout variant="math">
+The reason Maxwell's equations split into two tensor equations rather than one is not a quirk of notation. It is that $F^{\mu\nu}$ has two independent operations on it under exterior calculus — the divergence $\partial_\mu F^{\mu\nu}$ and the divergence of the dual $\partial_\mu {}^{*}F^{\mu\nu}$ — and Maxwell asserts a constraint on each. The first is sourced by current; the second is zero. The "second is zero" is the observed absence of magnetic monopoles.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The dual tensor and what monopoles would source">
+
+The Hodge dual of $F$ is the antisymmetric tensor
+
+$$ {}^{*}F^{\mu\nu} = \tfrac{1}{2}\,\varepsilon^{\mu\nu\rho\sigma}\,F_{\rho\sigma}, $$
+
+where $\varepsilon^{\mu\nu\rho\sigma}$ is the totally antisymmetric Levi-Civita tensor in 4D. The contraction implements an "exchange" between the top-row + first-column block and the lower-right $3\times 3$ block of $F$. Concretely, ${}^{*}F$ takes the same form as $F$ but with the substitutions $\mathbf{E}/c \rightarrow \mathbf{B}$ and $\mathbf{B} \rightarrow -\mathbf{E}/c$ (signs depend on signature; the structural point is the swap).
+
+<SceneCard caption="FIG.60c — F^{μν} morphing into *F^{μν}. The top row and first column of F (the E components) end up holding the B components in *F, and vice-versa. The morph is a visual proxy for the Hodge-dual contraction.">
+  <DualTensorSwapScene />
+</SceneCard>
+
+If magnetic monopoles existed, the second tensor equation would not be zero on the right-hand side. It would read
+
+$$ \partial_\mu {}^{*}F^{\mu\nu} = \mu_0\,J_m^\nu, $$
+
+with $J_m^\nu = (c\rho_m, \mathbf{J}_m)$ the *magnetic* charge-current four-vector. Symmetric to the electric source equation in every respect. <PhysicistLink slug="paul-dirac">Paul Dirac</PhysicistLink>, in 1931, showed that monopoles are not just consistent with quantum mechanics — they would *force* electric charge to be quantised, with quantisation condition $qg = 2\pi\hbar n$ for integer $n$. We have looked for them, hard, for a century. We have not seen one. So the second tensor equation reads zero on the right, the second pair of Maxwell equations are sourceless, and the asymmetry between $F$ and ${}^{*}F$ becomes the most consequential null result in physics. (Forward-pointer: <Term slug="magnetic-monopole" /> in §12.3, where this question gets its own topic.)
+
+The pedagogical voice for the entire section: Maxwell's four equations are two — and the second pair only looks separate because we don't have monopoles.
+
+</Section>
+
+<Section index={6} title="Lorentz invariants as tensor traces">
+
+Two scalar invariants drop out of $F$ by index contraction. Lower both indices via $F_{\mu\nu} = \eta_{\mu\alpha}\eta_{\nu\beta}F^{\alpha\beta}$ (which flips signs on the temporal-spatial blocks but leaves the spatial-spatial block alone), then contract:
+
+<EquationBlock id="EQ.04">
+$$ \tfrac{1}{2}\,F^{\mu\nu} F_{\mu\nu} = |\mathbf{B}|^2 - |\mathbf{E}|^2 / c^2. $$
+</EquationBlock>
+
+<EquationBlock id="EQ.05">
+$$ \tfrac{1}{4}\,{}^{*}F^{\mu\nu} F_{\mu\nu} = -\,\mathbf{E}\cdot\mathbf{B} / c. $$
+</EquationBlock>
+
+These are the same two invariants that fell out of the §11.2 boost calculation — $|\mathbf{E}|^2 - c^2|\mathbf{B}|^2$ and $\mathbf{E}\cdot\mathbf{B}$ — packaged as tensor traces. Sign and prefactor conventions follow Griffiths/Jackson; they depend on the metric signature and on the Lagrangian normalisation. <Term slug="lorentz-invariants-of-em-field" />
+
+The first invariant has a famous use. The kinetic part of the electromagnetic Lagrangian density is
+
+$$ \mathcal{L}_{\text{EM}} = -\tfrac{1}{4}\,F_{\mu\nu}F^{\mu\nu} = \tfrac{\varepsilon_0}{2}\bigl(|\mathbf{E}|^2 - c^2|\mathbf{B}|^2\bigr), $$
+
+which §11.5 plugs into the Euler-Lagrange equations and recovers Maxwell's equations a second way — this time as the equations of motion for the four-potential $A^\mu$. The factor $-1/4$ is not a coincidence; it is what makes the kinetic term canonical. Six numbers in $F$, one scalar in $F_{\mu\nu}F^{\mu\nu}$, the entire dynamics of the classical electromagnetic field in eight characters of LaTeX. The §11.5 reveal is exactly that compression — and you have already seen the object that does the compressing.
+
+</Section>
+
+</TopicPageLayout>
