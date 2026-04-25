@@ -175,6 +175,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/joseph-louis-lagrange.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "tides-and-three-body" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -330,6 +331,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/emmy-noether.webp"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -360,6 +362,11 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/albert-einstein.webp"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+      { branchSlug: "electromagnetism", topicSlug: "charge-invariance" },
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -635,6 +642,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "American",
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "viscosity-and-reynolds-number" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
     ],
   },
   {
@@ -830,6 +838,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-lorentz-force" },
       { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
     ],
   },
   {
@@ -931,6 +941,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "maxwell-stress-tensor" },
       { branchSlug: "electromagnetism", topicSlug: "larmor-formula" },
       { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -1030,6 +1041,18 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/paul-dirac.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+    ],
+  },
+  {
+    slug: "hermann-minkowski",
+    born: "1864",
+    died: "1909",
+    nationality: "German",
+    image: storageUrl("physicists/hermann-minkowski.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
 ];

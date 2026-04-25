@@ -647,6 +647,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedPhysicists: ["emmy-noether", "david-hilbert", "albert-einstein"],
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -1189,6 +1190,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedPhysicists: ["pierre-louis-maupertuis", "leonhard-euler", "joseph-louis-lagrange", "pierre-de-fermat"],
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-principle-of-least-action" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -1653,6 +1655,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     category: "concept",
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -2026,6 +2029,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     category: "concept",
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "gauge-freedom-and-potentials" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
   {
@@ -2490,6 +2494,90 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     category: "concept",
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+    ],
+  },
+  {
+    slug: "charge-invariance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "charge-invariance" },
+    ],
+  },
+  {
+    slug: "four-current",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "charge-invariance" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+    ],
+  },
+  {
+    slug: "four-vector",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "charge-invariance" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+    ],
+  },
+  {
+    slug: "lorentz-transformation-of-fields",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+    ],
+  },
+  {
+    slug: "boost-mixing-e-and-b",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
+    ],
+  },
+  {
+    slug: "lorentz-invariants-of-em-field",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+    ],
+  },
+  {
+    slug: "electromagnetic-field-tensor",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+    ],
+  },
+  {
+    slug: "dual-field-tensor",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+    ],
+  },
+  {
+    slug: "length-contraction-of-current",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
+    ],
+  },
+  {
+    slug: "four-potential",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+    ],
+  },
+  {
+    slug: "em-lagrangian-density",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
     ],
   },
 ];

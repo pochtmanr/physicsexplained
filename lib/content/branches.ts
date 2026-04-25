@@ -863,6 +863,52 @@ const ELECTROMAGNETISM_TOPICS: readonly Topic[] = [
     status: "live",
     module: "radiation",
   },
+  {
+    slug: "charge-invariance",
+    title: "CHARGE IS INVARIANT",
+    eyebrow: "FIG.58 · EM AND RELATIVITY",
+    subtitle: "The one quantity every observer must agree on.",
+    readingMinutes: 10,
+    status: "live",
+    module: "em-relativity",
+  },
+  {
+    slug: "e-and-b-under-lorentz",
+    title: "E AND B UNDER A LORENTZ BOOST",
+    eyebrow: "FIG.59 · EM AND RELATIVITY",
+    subtitle:
+      "What looks like a magnet to you looks like an electric field to someone moving past.",
+    readingMinutes: 13,
+    status: "live",
+    module: "em-relativity",
+  },
+  {
+    slug: "the-electromagnetic-field-tensor",
+    title: "THE ELECTROMAGNETIC FIELD TENSOR",
+    eyebrow: "FIG.60 · EM AND RELATIVITY",
+    subtitle: "Six numbers, one object, the full relativistic story.",
+    readingMinutes: 13,
+    status: "live",
+    module: "em-relativity",
+  },
+  {
+    slug: "magnetism-as-relativistic-electrostatics",
+    title: "MAGNETISM AS RELATIVISTIC ELECTROSTATICS",
+    eyebrow: "FIG.61 · EM AND RELATIVITY",
+    subtitle: "The reveal: there is no second force.",
+    readingMinutes: 14,
+    status: "live",
+    module: "em-relativity",
+  },
+  {
+    slug: "four-potential-and-em-lagrangian",
+    title: "THE FOUR-POTENTIAL AND EM LAGRANGIAN",
+    eyebrow: "FIG.62 · EM AND RELATIVITY",
+    subtitle: "Electromagnetism rewritten as a principle of least action.",
+    readingMinutes: 13,
+    status: "live",
+    module: "em-relativity",
+  },
 ];
 
 export const BRANCHES: readonly Branch[] = [
