@@ -1,7 +1,7 @@
 # Electromagnetism — Branch Design
 
 **Date:** 2026-04-22
-**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23; §06 + §07 shipped 2026-04-23; §08 + §09 shipped 2026-04-23; §10 shipped 2026-04-24
+**Status:** in progress — §01 shipped 2026-04-22; §02 + §03 shipped 2026-04-22; §04 + §05 shipped 2026-04-23; §06 + §07 shipped 2026-04-23; §08 + §09 shipped 2026-04-23; §10 shipped 2026-04-24; §11 shipped 2026-04-25
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:351-361`.
@@ -321,9 +321,9 @@ Update this table at the end of every session. A topic is "done" when: `content.
 | §08 EM waves in vacuum | 4 | 4 | ☑ complete |
 | §09 Waves in matter & optics | 10 | 10 | ☑ complete |
 | §10 Radiation | 6 | 6 | ☑ complete |
-| §11 EM & relativity | 5 | 0 | ☐ not started |
+| §11 EM & relativity | 5 | 5 | ☑ complete |
 | §12 Foundations | 4 | 0 | ☐ not started |
-| **Total** | **66** | **57** | **86% complete** |
+| **Total** | **66** | **62** | **94% complete** |
 
 ### Per-topic checklist
 
@@ -407,11 +407,11 @@ Check off as each topic ships.
 - [x] 57 `radiation-reaction`
 
 **§11 EM & relativity**
-- [ ] 58 `charge-invariance`
-- [ ] 59 `e-and-b-under-lorentz`
-- [ ] 60 `the-electromagnetic-field-tensor`
-- [ ] 61 `magnetism-as-relativistic-electrostatics`
-- [ ] 62 `four-potential-and-em-lagrangian`
+- [x] 58 `charge-invariance`
+- [x] 59 `e-and-b-under-lorentz`
+- [x] 60 `the-electromagnetic-field-tensor`
+- [x] 61 `magnetism-as-relativistic-electrostatics`
+- [x] 62 `four-potential-and-em-lagrangian`
 
 **§12 Foundations**
 - [ ] 63 `gauge-theory-origins`
