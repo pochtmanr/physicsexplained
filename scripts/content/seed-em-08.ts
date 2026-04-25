@@ -80,7 +80,7 @@ Weyl's broader mathematical legacy is enormous: foundational work on the represe
     name: "Yakir Aharonov",
     shortName: "Aharonov",
     born: "1932",
-    died: "",
+    died: "—",
     nationality: "Israeli",
     oneLiner: "Israeli theoretical physicist who, with David Bohm in 1959, predicted the eponymous quantum effect: charged particles passing through field-free regions still acquire a measurable phase shift from the enclosed magnetic flux. The cleanest experimental demonstration that the electromagnetic potential — not just the field — is the real physical object.",
     bio: `Yakir Aharonov was born in Haifa in 1932, during the British Mandate for Palestine. He studied physics at the Technion in Haifa, took his BSc in 1956, and went to England for graduate work, where he became one of David Bohm's first doctoral students at Bristol. The match was decisive: Bohm had recently arrived in Bristol after his McCarthy-era exile from US academia, and his focus on the foundations of quantum mechanics — the meaning of the wavefunction, the role of the potential versus the field, the structure of measurement — was unusual at the time and matched Aharonov's interests precisely. Aharonov took his PhD under Bohm in 1960 with the thesis that contained the result for which both men are now remembered.
@@ -167,7 +167,7 @@ At Caltech Feynman taught the famous two-year introductory physics course (1961�
     name: "Chen-Ning Yang",
     shortName: "Yang",
     born: "1922",
-    died: "",
+    died: "—",
     nationality: "Chinese-American",
     oneLiner: "Chinese-American theoretical physicist whose 1954 paper with Robert Mills generalised gauge theory from the abelian U(1) of electromagnetism to non-abelian groups SU(N) — the template for the weak and strong nuclear forces and the mathematical backbone of the Standard Model. 1957 Nobel Prize (with T.D. Lee) for parity violation in the weak interaction.",
     bio: `Chen-Ning Yang was born in Hefei, Anhui province, in 1922, the son of a mathematics professor at Southwest Associated University (Xinan Lianda) — the wartime-evacuation merger of Tsinghua, Peking, and Nankai universities that operated in Kunming during the Sino-Japanese War. Yang took his BSc at Lianda in 1942 and his MSc in 1944, then went to the University of Chicago on a Boxer Indemnity Scholarship, taking his PhD in 1948 under Edward Teller with a thesis on angular distributions in nuclear reactions. His Chicago classmate and lifelong collaborator T.D. Lee arrived a year after him, and the two became inseparable scientific partners.

@@ -1073,7 +1073,7 @@ export const PHYSICISTS: readonly Physicist[] = [
   {
     slug: "yakir-aharonov",
     born: "1932",
-    died: "",
+    died: "—",
     nationality: "Israeli",
     image: storageUrl("physicists/yakir-aharonov.webp"),
     relatedTopics: [
@@ -1103,7 +1103,7 @@ export const PHYSICISTS: readonly Physicist[] = [
   {
     slug: "chen-ning-yang",
     born: "1922",
-    died: "",
+    died: "—",
     nationality: "Chinese-American",
     image: storageUrl("physicists/chen-ning-yang.webp"),
     relatedTopics: [
