@@ -909,6 +909,42 @@ const ELECTROMAGNETISM_TOPICS: readonly Topic[] = [
     status: "live",
     module: "em-relativity",
   },
+  {
+    slug: "gauge-theory-origins",
+    title: "GAUGE INVARIANCE AND THE BIRTH OF GAUGE THEORIES",
+    eyebrow: "FIG.63 · FOUNDATIONS",
+    subtitle: "The symmetry that became the template for every force.",
+    readingMinutes: 13,
+    status: "live",
+    module: "foundations",
+  },
+  {
+    slug: "aharonov-bohm-effect",
+    title: "THE AHARONOV–BOHM EFFECT",
+    eyebrow: "FIG.64 · FOUNDATIONS",
+    subtitle: "When the potential matters even where the field is zero.",
+    readingMinutes: 12,
+    status: "live",
+    module: "foundations",
+  },
+  {
+    slug: "magnetic-monopoles-and-duality",
+    title: "MAGNETIC MONOPOLES AND DUALITY",
+    eyebrow: "FIG.65 · FOUNDATIONS",
+    subtitle: "The symmetric version of Maxwell, and the particle we haven't found.",
+    readingMinutes: 11,
+    status: "live",
+    module: "foundations",
+  },
+  {
+    slug: "classical-limit-of-qed",
+    title: "THE CLASSICAL LIMIT OF QED",
+    eyebrow: "FIG.66 · FOUNDATIONS",
+    subtitle: "Where classical electromagnetism ends, and what replaces it.",
+    readingMinutes: 12,
+    status: "live",
+    module: "foundations",
+  },
 ];
 
 export const BRANCHES: readonly Branch[] = [

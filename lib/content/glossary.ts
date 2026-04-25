@@ -648,6 +648,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
     ],
   },
   {
@@ -1656,6 +1657,8 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-vector-potential" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+      { branchSlug: "electromagnetism", topicSlug: "aharonov-bohm-effect" },
     ],
   },
   {
@@ -2509,6 +2512,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "charge-invariance" },
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
     ],
   },
   {
@@ -2549,6 +2553,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
     ],
   },
   {
@@ -2556,6 +2561,7 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     category: "concept",
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
     ],
   },
   {
@@ -2571,6 +2577,8 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+      { branchSlug: "electromagnetism", topicSlug: "aharonov-bohm-effect" },
     ],
   },
   {
@@ -2578,6 +2586,107 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     category: "concept",
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+    ],
+  },
+  // EM §12 — Foundations
+  {
+    slug: "gauge-group",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "non-abelian-gauge",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "yang-mills-equations",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "aharonov-bohm-phase",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "aharonov-bohm-effect" },
+    ],
+  },
+  {
+    slug: "dirac-quantization-condition",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
+    ],
+  },
+  {
+    slug: "electromagnetic-duality",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
+    ],
+  },
+  {
+    slug: "coherent-state",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+    ],
+  },
+  {
+    slug: "running-coupling",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+    ],
+  },
+  {
+    slug: "anomalous-magnetic-moment",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+    ],
+  },
+  {
+    slug: "classical-limit-of-qed",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+    ],
+  },
+  // Backfill (existing in Supabase, missing from glossary.ts):
+  {
+    slug: "gauge-invariance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+      { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+    ],
+  },
+  {
+    slug: "gauge-theory-origins",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "aharonov-bohm-effect",
+    category: "phenomenon",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "aharonov-bohm-effect" },
+    ],
+  },
+  {
+    slug: "magnetic-monopole",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
     ],
   },
 ];

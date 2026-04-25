@@ -332,6 +332,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
     ],
   },
   {
@@ -367,6 +368,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
       { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
     ],
   },
   {
@@ -942,6 +944,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "larmor-formula" },
       { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
     ],
   },
   {
@@ -1041,6 +1044,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/paul-dirac.avif"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
     ],
   },
   {
@@ -1053,6 +1057,67 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-field-tensor" },
       { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
+      { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
+    ],
+  },
+  {
+    slug: "hermann-weyl",
+    born: "1885",
+    died: "1955",
+    nationality: "German",
+    image: storageUrl("physicists/hermann-weyl.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "yakir-aharonov",
+    born: "1932",
+    died: "",
+    nationality: "Israeli",
+    image: storageUrl("physicists/yakir-aharonov.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "aharonov-bohm-effect" },
+    ],
+  },
+  {
+    slug: "david-bohm",
+    born: "1917",
+    died: "1992",
+    nationality: "American-British",
+    image: storageUrl("physicists/david-bohm.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "aharonov-bohm-effect" },
+    ],
+  },
+  {
+    slug: "richard-feynman",
+    born: "1918",
+    died: "1988",
+    nationality: "American",
+    image: storageUrl("physicists/richard-feynman.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+    ],
+  },
+  {
+    slug: "chen-ning-yang",
+    born: "1922",
+    died: "",
+    nationality: "Chinese-American",
+    image: storageUrl("physicists/chen-ning-yang.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "robert-mills",
+    born: "1927",
+    died: "1999",
+    nationality: "American",
+    image: storageUrl("physicists/robert-mills.webp"),
+    relatedTopics: [
+      { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
     ],
   },
 ];

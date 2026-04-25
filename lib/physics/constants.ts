@@ -38,3 +38,12 @@ export const BOHR_MAGNETON = 9.2740100783e-24;
 
 /** Fine-structure constant α = e²/(4πε₀ ℏc) ≈ 1/137 (CODATA 2018, dimensionless) */
 export const ALPHA_FINE = 7.2973525693e-3;
+
+/** Planck constant, J·s (exact, SI 2019 redefinition) */
+export const PLANCK_CONSTANT = 6.62607015e-34;
+
+/** Reduced Planck constant ℏ = h/(2π), J·s */
+export const H_BAR = PLANCK_CONSTANT / (2 * Math.PI);
+
+/** Electron rest mass, kg (CODATA 2018) */
+export const ELECTRON_MASS = 9.1093837015e-31;
