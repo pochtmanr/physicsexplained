@@ -11,28 +11,35 @@ import { UpgradeModal } from "@/components/account/upgrade-modal";
 
 const MODEL_KEY = "ask.modelId";
 
-// Distance from the bottom of the layout viewport (window.innerHeight) to the
-// top of the on-screen keyboard. 0 when no keyboard is open. Used to pin the
-// composer above the iOS / Android virtual keyboard on mobile.
-function useKeyboardInset() {
-  const [inset, setInset] = useState(0);
+// Pin a fixed-position composer above the iOS / Android virtual keyboard.
+// Writes `bottom` straight to the DOM via ref to avoid a React re-render on
+// every visualViewport scroll/resize event (which jitters during the
+// keyboard slide animation).
+function useKeyboardInsetBottom(ref: React.RefObject<HTMLElement | null>) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const vv = window.visualViewport;
     if (!vv) return;
-    const update = () => {
+    let raf = 0;
+    const apply = () => {
+      const el = ref.current;
+      if (!el) return;
       const offset = window.innerHeight - vv.height - vv.offsetTop;
-      setInset(offset > 1 ? offset : 0);
+      el.style.bottom = offset > 1 ? `${offset}px` : "";
     };
-    update();
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
+    const onChange = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(apply);
+    };
+    apply();
+    vv.addEventListener("resize", onChange);
+    vv.addEventListener("scroll", onChange);
     return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
+      cancelAnimationFrame(raf);
+      vv.removeEventListener("resize", onChange);
+      vv.removeEventListener("scroll", onChange);
     };
-  }, []);
-  return inset;
+  }, [ref]);
 }
 
 interface Props {
@@ -97,7 +104,8 @@ export function ChatScreen({ conversationId, variant, userName, children }: Prop
   }, [pending]);
 
   const showEmpty = variant === "landing" && !pending && !children;
-  const keyboardInset = useKeyboardInset();
+  const composerRef = useRef<HTMLDivElement>(null);
+  useKeyboardInsetBottom(composerRef);
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
@@ -137,10 +145,11 @@ export function ChatScreen({ conversationId, variant, userName, children }: Prop
 
       {/* Composer wrapper — fixed to viewport bottom on mobile (so it floats
           above the on-screen keyboard via visualViewport offset), normal flow
-          inline-block on desktop. */}
+          inline-block on desktop. The keyboard offset is written via ref to
+          avoid React renders during keyboard slide. */}
       <div
-        style={{ bottom: `${keyboardInset}px` }}
-        className="md:!bottom-auto fixed inset-x-0 z-30 md:static md:inset-auto shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] pb-[env(safe-area-inset-bottom)] md:pb-0"
+        ref={composerRef}
+        className="fixed inset-x-0 bottom-0 z-30 md:static md:inset-auto md:bottom-auto shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] pb-[env(safe-area-inset-bottom)] md:pb-0"
       >
         <div className="mx-auto w-full max-w-4xl px-4 md:px-6 pb-3 pt-2 md:pb-4">
           <Composer

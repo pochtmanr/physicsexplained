@@ -112,7 +112,7 @@ export function Composer({
           maxLength={4000}
           readOnly={disabled}
           autoFocus
-          className="w-full bg-transparent border-0 px-4 pt-3 pb-12 text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:outline-none resize-y min-h-[88px] max-h-[240px]"
+          className="w-full bg-transparent border-0 px-4 pt-3 pb-12 text-base md:text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:outline-none resize-y min-h-[88px] max-h-[240px]"
         />
         <button
           type="button"
