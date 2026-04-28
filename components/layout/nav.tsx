@@ -53,9 +53,9 @@ export async function Nav() {
           <ThemeToggle />
           <Link
             href="/ask"
-            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-cyan)] bg-[var(--color-cyan)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-bg-0)] transition-colors hover:bg-[var(--color-cyan-dim)] hover:border-[var(--color-cyan-dim)] md:h-8"
+            className="nav-link btn-tracer group relative inline-flex h-6 items-center gap-2 bg-[var(--color-cyan)] px-3 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:h-8"
           >
-            <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} />
+            <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} className="text-white" />
             <span>Ask</span>
           </Link>
         </div>
