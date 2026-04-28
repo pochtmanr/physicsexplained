@@ -23,12 +23,12 @@ export async function Nav() {
           <Link
             href="/"
             aria-label={t("homeAriaLabel")}
-            className="inline-flex items-center gap-2.5 font-display text-base leading-none tracking-tight whitespace-nowrap md:text-lg"
+            className="inline-flex items-center gap-1 font-display text-base leading-none tracking-tight whitespace-nowrap md:text-lg"
           >
-            <Logo className="h-5 w-auto md:h-6" />
+            <Logo className="h-4 w-auto md:h-5" />
             <div>
-              <span className="text-[var(--color-fg-0)] font-semibold">Physics.</span>
-              <span className="text-[var(--color-cyan)] font-semibold">explained</span>
+              <span className="text-[var(--color-fg-0)]">Physics.</span>
+              <span className="text-[var(--color-cyan)]">explained</span>
             </div>
           </Link>
         </div>

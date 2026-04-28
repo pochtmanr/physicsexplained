@@ -35,7 +35,7 @@ export async function FeaturedTopicSection() {
               </div>
               <Link
                 href="/classical-mechanics/pendulum"
-                className="mt-8 inline-flex items-center gap-2 border border-[var(--color-cyan)] px-6 py-3 font-mono text-sm uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition"
+                className="btn-tracer mt-8 inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
               >
                 {t("cta")}
                 <span aria-hidden="true" className="inline-block rtl:-scale-x-100">

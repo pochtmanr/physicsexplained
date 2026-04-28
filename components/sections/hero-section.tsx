@@ -29,7 +29,7 @@ export async function HeroSection() {
             <div className="mt-8 flex flex-wrap gap-4 items-center md:mt-10 md:gap-6">
               <Link
                 href="/ask"
-                className="nav-link group relative inline-flex items-center gap-2 bg-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:px-6 md:py-3 md:text-sm"
+                className="nav-link btn-tracer group relative inline-flex items-center gap-2 bg-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:px-6 md:py-3 md:text-sm"
               >
                 {t("ctaAsk")}
                 <span
@@ -41,7 +41,7 @@ export async function HeroSection() {
               </Link>
               <Link
                 href="/classical-mechanics"
-                className="inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition md:px-6 md:py-3 md:text-sm"
+                className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition md:px-6 md:py-3 md:text-sm"
               >
                 {t("ctaPrimary")}
                 <span aria-hidden="true" className="inline-block rtl:-scale-x-100">

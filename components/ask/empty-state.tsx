@@ -1,4 +1,6 @@
 "use client";
+import { useEffect, useState } from "react";
+
 const PROMPTS = [
   "Explain Noether's theorem like I'm 16",
   "Show me a pendulum losing energy to damping",
@@ -8,23 +10,40 @@ const PROMPTS = [
   "What is isochronism?",
 ];
 
-export function EmptyState({ onPick }: { onPick: (q: string) => void }) {
+function greetingFor(hour: number): string {
+  if (hour < 5) return "Good night";
+  if (hour < 12) return "Good morning";
+  if (hour < 18) return "Good afternoon";
+  return "Good evening";
+}
+
+export function EmptyState({
+  onPick,
+  userName,
+}: {
+  onPick: (q: string) => void;
+  userName: string | null;
+}) {
+  const [greeting, setGreeting] = useState<string>(() => greetingFor(new Date().getHours()));
+  useEffect(() => {
+    setGreeting(greetingFor(new Date().getHours()));
+  }, []);
+
   return (
     <div className="text-center max-w-3xl mx-auto px-4">
-      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
-        Ask Physics
-      </div>
-      <h1 className="mt-4 text-3xl md:text-4xl tracking-tight text-[var(--color-fg-0)]">
-        What do you want to{" "}
-        <span className="font-display italic text-[var(--color-cyan)]">
-          understand
-        </span>
-        ?
+      <h1 className="text-2xl md:text-3xl tracking-tight text-[var(--color-fg-0)]">
+        {greeting}
+        {userName ? (
+          <>
+            {" "}
+            <span className="font-display italic text-[var(--color-cyan)]">
+              {userName}
+            </span>
+          </>
+        ) : null}
+        , what do you want to learn today?
       </h1>
-      <p className="mt-4 text-sm md:text-base text-[var(--color-fg-1)] max-w-[60ch] mx-auto">
-        Grounded in this site's topics, physicists, and glossary.
-      </p>
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-3 text-start">
+      <div className="mt-10 hidden md:grid grid-cols-1 md:grid-cols-2 gap-3 text-start">
         {PROMPTS.map((p, i) => (
           <button
             key={p}

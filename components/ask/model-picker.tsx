@@ -9,7 +9,7 @@ export function ModelPicker({
       value={value ?? DEFAULT_MODEL_ID}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
-      className="border border-[var(--color-cyan-dim)] bg-transparent px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/10 focus:outline-none disabled:opacity-60 transition-colors cursor-pointer"
+      className="w-full max-w-full overflow-hidden text-ellipsis whitespace-nowrap border border-[var(--color-cyan-dim)] bg-transparent px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/10 focus:outline-none disabled:opacity-60 transition-colors cursor-pointer"
       title="Answerer model"
     >
       {AVAILABLE_MODELS.map((m) => (

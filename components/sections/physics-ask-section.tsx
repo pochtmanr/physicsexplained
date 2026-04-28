@@ -12,30 +12,31 @@ export async function PhysicsAskSection() {
 
   return (
     <section id="physics-ask" className={`${WIDE_CONTAINER} mt-32 md:mt-48`}>
-      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
+      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
         {t("tag")}
       </div>
-      <div className="mt-4 flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-12">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl md:text-4xl uppercase tracking-tight text-[var(--color-fg-0)]">
-            {t("title")}
-          </h2>
-          <p className="mt-6 text-sm md:text-xl text-[var(--color-fg-1)] max-w-[48ch]">
-            {t("subtitle")}
-          </p>
-        </div>
+      <h2 className="mt-6 text-3xl md:text-4xl uppercase tracking-tight text-[var(--color-fg-0)]">
+        {t("title")}
+      </h2>
+      <p className="mt-6 text-sm md:mt-8 md:text-xl text-[var(--color-fg-1)] max-w-[48ch]">
+        {t("subtitle")}
+      </p>
+      <div className="mt-8 md:mt-10">
         <Link
           href="/ask"
-          className="inline-flex items-center gap-2 self-start border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:self-auto md:px-6 md:py-3 md:text-sm"
+          className="nav-link btn-tracer group relative inline-flex items-center gap-2 bg-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:px-6 md:py-3 md:text-sm"
         >
           {t("ctaOpen")}
-          <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+          <span
+            aria-hidden="true"
+            className="inline-block transition-transform duration-[180ms] ease-out group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
+          >
             →
           </span>
         </Link>
       </div>
 
-      <div className="mt-12 grid grid-cols-1 gap-0 md:grid-cols-2 [&>*]:-mt-px [&>*]:-ms-px">
+      <div className="mt-12 grid grid-cols-1 gap-0 md:grid-cols-3 [&>*]:-mt-px [&>*]:-ms-px">
         <PhysicsAskCard
           href="/ask"
           variant="inverted"
@@ -44,6 +45,7 @@ export async function PhysicsAskSection() {
           body={t("cards.ask.body")}
           pill={t("cards.ask.pill")}
           background={<DotField />}
+          className="md:col-span-2"
         />
         <PhysicsAskCard
           href="/ask"
@@ -71,6 +73,7 @@ export async function PhysicsAskSection() {
           body={t("cards.grounded.body")}
           pill={t("cards.grounded.pill")}
           background={<NodeGraph />}
+          className="md:col-span-2"
         />
       </div>
     </section>

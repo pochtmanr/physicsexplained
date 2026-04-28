@@ -58,9 +58,9 @@ export async function DictionarySection() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/dictionary"
-            className="inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-6 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+            className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
           >
-            {t("viewAll", { count: entries.length })}{" "}
+            {t("viewAll", { count: entries.length })}
             <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
               →
             </span>

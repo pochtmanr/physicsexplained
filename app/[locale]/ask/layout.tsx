@@ -1,7 +1,10 @@
 import { redirect } from "next/navigation";
 import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
 import { ConversationRail } from "@/components/ask/conversation-rail";
-import { RailShell } from "@/components/ask/rail-shell";
+import {
+  MobileChatRail,
+  MobileChatRailProvider,
+} from "@/components/ask/mobile-chat-rail";
 import { KillSwitchBanner } from "@/components/ask/kill-switch-banner";
 import { AccountDrawerProvider } from "@/components/account/account-drawer-context";
 import { AccountDrawer } from "@/components/account/account-drawer";
@@ -43,13 +46,13 @@ export default async function AskLayout({
   const enabled = process.env.ASK_ENABLED === "true";
   return (
     <AccountDrawerProvider>
-      <OpenDrawerFromQuery />
-      <MobileAccountButton
-        avatarUrl={userPayload.avatarUrl}
-        initial={(userPayload.fullName ?? userPayload.email ?? "?").slice(0, 1).toUpperCase()}
-      />
-      <div className="flex h-[calc(100dvh-3rem)] md:h-[calc(100dvh-3.5rem)] overflow-hidden">
-        <RailShell>
+      <MobileChatRailProvider>
+        <OpenDrawerFromQuery />
+        <MobileAccountButton
+          avatarUrl={userPayload.avatarUrl}
+          initial={(userPayload.fullName ?? userPayload.email ?? "?").slice(0, 1).toUpperCase()}
+        />
+        <div className="flex h-[calc(100dvh-3rem)] md:h-[calc(100dvh-3.5rem)] overflow-hidden">
           <ConversationRail
             locale={locale}
             conversations={convs ?? []}
@@ -57,13 +60,20 @@ export default async function AskLayout({
             planLabel={snapshot?.plan.label ?? "Free"}
             percentUsed={snapshot?.percentUsed ?? 0}
           />
-        </RailShell>
-        <main className="flex-1 flex flex-col w-full min-w-0 min-h-0">
-          {!enabled && <KillSwitchBanner />}
-          {children}
-        </main>
-      </div>
-      <AccountDrawer user={userPayload} snapshot={snapshot} orders={orders ?? []} />
+          <main className="flex-1 flex flex-col w-full min-w-0 min-h-0">
+            {!enabled && <KillSwitchBanner />}
+            {children}
+          </main>
+        </div>
+        <MobileChatRail
+          locale={locale}
+          conversations={convs ?? []}
+          user={{ fullName: userPayload.fullName, email: userPayload.email, avatarUrl: userPayload.avatarUrl }}
+          planLabel={snapshot?.plan.label ?? "Free"}
+          percentUsed={snapshot?.percentUsed ?? 0}
+        />
+        <AccountDrawer user={userPayload} snapshot={snapshot} orders={orders ?? []} />
+      </MobileChatRailProvider>
     </AccountDrawerProvider>
   );
 }

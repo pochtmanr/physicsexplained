@@ -6,17 +6,43 @@ import { Composer } from "./composer";
 import { EmptyState } from "./empty-state";
 import { MessageBubble } from "./message-bubble";
 import { StreamingMessage } from "./streaming-message";
+import { MobileChatRailTrigger } from "./mobile-chat-rail";
 import { UpgradeModal } from "@/components/account/upgrade-modal";
 
 const MODEL_KEY = "ask.modelId";
 
+// Distance from the bottom of the layout viewport (window.innerHeight) to the
+// top of the on-screen keyboard. 0 when no keyboard is open. Used to pin the
+// composer above the iOS / Android virtual keyboard on mobile.
+function useKeyboardInset() {
+  const [inset, setInset] = useState(0);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const update = () => {
+      const offset = window.innerHeight - vv.height - vv.offsetTop;
+      setInset(offset > 1 ? offset : 0);
+    };
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, []);
+  return inset;
+}
+
 interface Props {
   conversationId: string | null;
   variant: "landing" | "conversation";
+  userName?: string | null;
   children?: React.ReactNode; // Transcript for conversation variant
 }
 
-export function ChatScreen({ conversationId, variant, children }: Props) {
+export function ChatScreen({ conversationId, variant, userName, children }: Props) {
   const { locale } = useParams() as { locale: string };
   const router = useRouter();
 
@@ -71,16 +97,25 @@ export function ChatScreen({ conversationId, variant, children }: Props) {
   }, [pending]);
 
   const showEmpty = variant === "landing" && !pending && !children;
+  const keyboardInset = useKeyboardInset();
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
+      {/* Mobile chat header — opens the conversation list drawer */}
+      <div className="md:hidden shrink-0 flex items-center gap-2 border-b border-[var(--color-fg-4)]/40 px-3 py-2">
+        <MobileChatRailTrigger />
+        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
+          Physics.Ask
+        </span>
+      </div>
+
       {showEmpty ? (
-        <div className="flex-1 flex items-center justify-center px-4 py-12 md:py-16">
-          <EmptyState onPick={(p) => submit(p)} />
+        <div className="flex-1 flex items-center justify-center px-4 py-8 md:py-16 pb-[calc(11rem+env(safe-area-inset-bottom))] md:pb-0">
+          <EmptyState onPick={(p) => submit(p)} userName={userName ?? null} />
         </div>
       ) : (
         <div ref={scrollRef} className="flex-1 overflow-y-auto">
-          <div className="mx-auto w-full max-w-4xl px-4 md:px-6 py-6">
+          <div className="mx-auto w-full max-w-4xl px-4 md:px-6 py-6 pb-[calc(10rem+env(safe-area-inset-bottom))] md:pb-6">
             {children}
             {pending && (
               <>
@@ -99,8 +134,15 @@ export function ChatScreen({ conversationId, variant, children }: Props) {
           </div>
         </div>
       )}
-      <div className="shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
-        <div className="mx-auto w-full max-w-4xl px-4 md:px-6 pb-4 pt-2">
+
+      {/* Composer wrapper — fixed to viewport bottom on mobile (so it floats
+          above the on-screen keyboard via visualViewport offset), normal flow
+          inline-block on desktop. */}
+      <div
+        style={{ bottom: `${keyboardInset}px` }}
+        className="md:!bottom-auto fixed inset-x-0 z-30 md:static md:inset-auto shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] pb-[env(safe-area-inset-bottom)] md:pb-0"
+      >
+        <div className="mx-auto w-full max-w-4xl px-4 md:px-6 pb-3 pt-2 md:pb-4">
           <Composer
             value={text}
             onChange={setText}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X, User, BookOpen, Search, Sun, Moon } from "lucide-react";
+import { Menu, X, User, BookOpen, Search, Sun, Moon, Sparkles } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { locales, getDirection } from "@/i18n/config";
@@ -196,6 +196,16 @@ export function MobileNav() {
             EXPLORE
           </div>
           <ul className="grid grid-cols-1 gap-0 [&>li]:-mt-px">
+            <li>
+              <Link
+                href="/ask"
+                onClick={close}
+                className="flex items-center gap-3 border border-[var(--color-cyan)] bg-[var(--color-cyan)] px-4 py-3 font-mono text-xs uppercase tracking-wider !text-white transition-colors hover:bg-[var(--color-cyan-dim)] hover:border-[var(--color-cyan-dim)]"
+              >
+                <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} />
+                Ask
+              </Link>
+            </li>
             <li>
               <Link
                 href="/physicists"

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { BranchCard } from "@/components/layout/branch-card";
 import { BRANCHES } from "@/lib/content/branches";
@@ -5,6 +6,7 @@ import { WIDE_CONTAINER } from "@/lib/layout";
 
 export async function BranchesSection() {
   const t = await getTranslations("home.branches");
+  const tHero = await getTranslations("home.hero");
 
   return (
     <section id="branches" className={`${WIDE_CONTAINER} mt-32 md:mt-48`}>
@@ -21,6 +23,17 @@ export async function BranchesSection() {
         {BRANCHES.map((b) => (
           <BranchCard key={b.slug} branch={b} />
         ))}
+      </div>
+      <div className="mt-10 flex justify-center">
+        <Link
+          href="/classical-mechanics"
+          className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
+        >
+          {tHero("ctaPrimary")}
+          <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+            →
+          </span>
+        </Link>
       </div>
     </section>
   );
