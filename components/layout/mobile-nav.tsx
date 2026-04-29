@@ -121,17 +121,17 @@ export function MobileNav() {
         className="fixed inset-0 z-50 md:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain"
       >
         <div className="sticky top-0 z-10 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
-          <div className={`${WIDE_CONTAINER} flex items-center justify-between gap-4 py-2.5`}>
+          <div className={`${WIDE_CONTAINER} flex h-12 items-center justify-between gap-4`}>
             <Link
               href="/"
               onClick={close}
               aria-label={tNav("homeAriaLabel")}
-              className="inline-flex items-center gap-2.5 font-display text-base leading-none tracking-tight whitespace-nowrap"
+              className="inline-flex items-center gap-1 font-display text-base leading-none tracking-tight whitespace-nowrap"
             >
-              <Logo className="h-5 w-auto" />
+              <Logo className="h-4 w-auto" />
               <div>
-                <span className="text-[var(--color-fg-0)] font-semibold">Physics.</span>
-                <span className="text-[var(--color-cyan)] font-semibold">explained</span>
+                <span className="text-[var(--color-fg-0)]">Physics.</span>
+                <span className="text-[var(--color-cyan)]">explained</span>
               </div>
             </Link>
             <button
