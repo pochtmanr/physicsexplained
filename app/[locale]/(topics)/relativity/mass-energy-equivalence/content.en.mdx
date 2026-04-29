@@ -1,0 +1,123 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Mass-energy equivalence", href: "/dictionary/mass-energy-equivalence" },
+  { type: "term", label: "Rest energy", href: "/dictionary/rest-energy" },
+  { type: "term", label: "Four-momentum", href: "/dictionary/four-momentum" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.17 · SPECIAL RELATIVITY §04"
+  title="MASS-ENERGY EQUIVALENCE"
+  subtitle="The deepest bookkeeping fact in physics: mass is a form of energy."
+/>
+
+<Section index={1} title="The 1905 sequel">
+
+In September 1905, three months after the paper on the two postulates had reached the *Annalen der Physik*, <PhysicistLink slug="albert-einstein" /> submitted a three-page follow-up with a question in its title: *Does the inertia of a body depend on its energy content?* The kinematics paper had reorganised clocks and rulers. This one reorganised the ledger of physics itself.
+
+The answer was yes. By a calculation that fit comfortably onto two manuscript pages — starting from the Lorentz transformation of Maxwell's equations — Einstein arrived at the conclusion that if a body emits radiation with total energy $L$, the body's inertia decreases by $L/c^2$. The implication he stated carefully, almost under his breath: "the mass of a body is a measure of its energy content." That one sentence rerouted nuclear physics, astrophysics, and particle physics before any of those fields had a fully modern form.
+
+The formula itself — $E_0 = mc^2$ in today's notation — does not appear in that 1905 paper in quite those symbols, and its derivation was refined considerably by <PhysicistLink slug="albert-einstein" /> and others over the following decade. But the physical content is unchanged: <Term slug="rest-energy" /> is real, measurable, and encoded in the inertia of every object you have ever touched.
+
+</Section>
+
+<Section index={2} title="What equivalence means">
+
+"Equivalence" is not a metaphor. Mass and energy are the same physical quantity expressed in different units, related by the factor $c^2 \approx 9 \times 10^{16}$ J/kg. The <Term slug="rest-energy" /> formula states this flatly:
+
+<EquationBlock id="EQ.01">
+$$E_0 = mc^2$$
+</EquationBlock>
+
+A body at rest carries an intrinsic energy $E_0$ proportional to its mass. This is *not* kinetic energy — it is the energy locked in the mass itself when the body is not moving at all. The total relativistic energy, once the body is moving, is $E = \gamma mc^2$; the rest energy is the $\gamma = 1$ limit.
+
+The flip side is the one that makes nuclear physics work: **bound systems weigh less than their constituents**. When protons and neutrons bind inside a nucleus, they release energy — as gamma radiation, as kinetic energy of ejected particles — and that released energy literally comes off the mass of the system. The nucleus is lighter than the sum of its parts by exactly $\Delta m = \Delta E / c^2$. This is not an accounting trick. A precision mass spectrometer can measure the deficit directly. The mass came off the balance.
+
+<Callout variant="intuition">
+Think of $c^2$ as a currency exchange rate. You can have a kilogram of mass or $8.99 \times 10^{16}$ joules of energy — they are the same asset in different denominations. Nuclear physics spends mass as energy. Stars do it on an astronomical scale. The sun converts about $4 \times 10^9$ kg of mass to energy every second, a rate at which it can sustain for another five billion years.
+</Callout>
+
+The connection to <Term slug="four-momentum" /> is direct: the <Term slug="four-momentum" /> four-vector $p^\mu = (E/c,\, \vec{p})$ has an invariant norm $p^\mu p_\mu = m^2 c^2$, so rest mass is the Lorentz scalar that survives any boost. The $E = mc^2$ relation is just this norm evaluated in the rest frame, where $\vec{p} = 0$.
+
+</Section>
+
+<Section index={3} title="The cup of coffee">
+
+To make the equivalence concrete before the nuclear scale makes it abstract, consider something mundane. A mug of coffee cooling from 100 °C to 20 °C releases roughly 280 kJ of thermal energy. By $\Delta m = \Delta E / c^2$, the cold mug is lighter than the hot one by:
+
+$$\Delta m = \frac{280\,000\,\text{J}}{(3.0 \times 10^8\,\text{m/s})^2} \approx 3.1 \times 10^{-12}\,\text{kg}$$
+
+That is 3.1 picograms — twenty thousand times lighter than a typical bacterium. Your kitchen scale will not detect it. But it is real. In principle, a sufficiently sensitive balance would confirm that the hot mug is heavier. The mass change is not a fiction; it is encoded in the thermal kinetic energy of the water molecules, which is itself a form of rest energy of the system.
+
+<SceneCard caption="FIG.17b — hot coffee (100 °C) versus cold (20 °C). The hot cup carries 280 kJ of thermal energy as extra mass: Δm ≈ 3.1 × 10⁻¹² kg = 3.1 picograms. The HUD traces the full conversion.">
+  <CoffeeCupScene />
+</SceneCard>
+
+The coffee example matters because it strips away the nuclear mystique. E = mc² is not a statement about bombs or reactors. It is a statement about every energy exchange, at every scale, all the time. The reason we never notice it in everyday life is that $c^2$ is enormous: a kilogram is worth $9 \times 10^{16}$ joules. The mass changes associated with everyday energies are unmeasurably small — but they are there, always, in the bookkeeping.
+
+</Section>
+
+<Section index={4} title="The nuclear balance">
+
+At the nuclear scale, $\Delta m / m$ becomes substantial enough to measure cleanly. Consider the alpha particle — the nucleus of helium-4, made of two protons and two neutrons. Each nucleon has a rest mass of roughly 939 MeV/c² (averaging proton at 938.3 and neutron at 939.6). Four bare nucleons together would have total mass:
+
+$$m_\text{bare} = 4 \times 939\,\text{MeV}/c^2 = 3756\,\text{MeV}/c^2$$
+
+The actual measured mass of the He-4 nucleus is 3727.4 MeV/c². The discrepancy:
+
+$$\Delta m = 3756 - 3727.4 = 28.6\,\text{MeV}/c^2$$
+
+That 28.6 MeV is the binding energy of helium-4. It is not approximate — it is precisely the energy released when two protons and two neutrons fuse into an alpha particle, and precisely the energy required to pull the alpha particle apart into its constituents. The mass deficit *is* the binding energy. They are the same thing.
+
+<SceneCard caption="FIG.17c — nuclear balance. Left pan: 4 bare nucleons at 3756 MeV/c². Right pan: the bound He-4 nucleus at 3727 MeV/c². The left pan sits lower — it is heavier by 28.6 MeV/c², the binding energy that was radiated away when the nucleus formed.">
+  <NuclearBalanceScene />
+</SceneCard>
+
+<Callout variant="math">
+The ratio $\Delta m / m_\text{bare} \approx 28.6 / 3756 \approx 0.76\%$ is the fractional binding for He-4 — already large enough to measure with a mass spectrometer. For iron-56 the fraction peaks at $\approx 0.92\%$. For uranium-238 it falls back to about $0.82\%$. These fractions are the quantitative statement of the binding-energy curve in §5.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The energy budget of the universe">
+
+Every nucleus in the periodic table sits at a specific binding-energy-per-nucleon $B/A$ measured in MeV. Plot $B/A$ on the vertical axis against mass number $A$ on the horizontal axis, and you get one of the most consequential graphs in all of science: the nuclear binding-energy curve.
+
+The curve tells a story in two movements. From hydrogen ($B/A = 0$, a lone proton has no binding) to iron-56 ($B/A \approx 8.79$ MeV), the curve climbs — steeply at first, levelling off through carbon, oxygen, and silicon, reaching its absolute peak at Fe-56. Every nucleus to the left of iron is less tightly bound than iron. If two light nuclei fuse to form a heavier one, the product sits higher on the curve, the mass deficit grows, and energy is released. This is fusion. The sun runs on it. Hydrogen bombs run on it.
+
+From iron to uranium ($B/A$ falls from 8.79 to roughly 7.6 MeV), the curve descends. Every nucleus to the right of iron is less tightly bound than iron. If a heavy nucleus splits into two medium-mass fragments, both fragments sit higher on the curve, the combined mass deficit grows, and energy is released. This is fission. Nuclear reactors run on it. Atomic bombs run on it. The entire energy budget of nuclear technology is the area swept on this diagram.
+
+<SceneCard caption="FIG.17 — THE MONEY SHOT. Binding energy per nucleon B/A (MeV) vs. mass number A for 11 representative isotopes from H-1 to U-238. Iron-56 sits at the global maximum — the universe's energy minimum per nucleon. Stars run on fusion (left of iron); reactors run on fission (right of iron). Data: AME-2020.">
+  <BindingEnergyCurveScene />
+</SceneCard>
+
+Iron-56 is the universe's energy minimum per nucleon. It is the endpoint of stellar nucleosynthesis: fusion chains in stars of all masses converge on iron, because iron is the last nucleus where fusion releases energy. A star that has built up an iron core cannot burn it further — and this thermodynamic dead end is what triggers the gravitational collapse that ends a massive star's life in a core-collapse supernova. The iron in your blood is the ash of dead stars, sitting at the bottom of the nuclear energy well.
+
+The scale of what this curve encodes is worth pausing on. Every joule of energy ever liberated by a nuclear reaction — every flash of a nuclear weapon test, every watt-hour of electricity from every reactor ever built, every photon emitted in the core of every star across the observable universe for the last 13.8 billion years — has been a movement on this curve. A nucleus sliding upward toward iron, releasing the gap in binding energy as radiation. The curve is the universe's energy budget, made visible.
+
+<Callout variant="intuition">
+The reason iron is special is not chemistry — it is the balance between two forces inside the nucleus: the strong nuclear force (which binds nucleons together and favours larger nuclei) and the electromagnetic repulsion between protons (which destabilises large nuclei). Iron sits at the crossover. For lighter nuclei the strong force wins and fusion releases energy; for heavier nuclei the electromagnetic repulsion wins and fission releases energy. Nature's compromise is iron.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Forward — what E = mc² opens">
+
+The rest-energy formula is the entry point to a much larger structure. The next topic in this module, §04.3, watches <Term slug="four-momentum" /> conservation play out explicitly in relativistic collisions: when two particles collide, it is not energy and momentum separately that are conserved, but the four-vector whose time component is $E/c$ and whose space components are $\vec{p}$. The invariant norm of that four-vector is $m^2 c^2$, and tracking it through a collision keeps the bookkeeping honest in every frame simultaneously.
+
+§04.4 extends this to <Term slug="threshold-energy" />: the minimum collision energy required to create new particles. The famous result — that you need at least $E_\text{thr} = (\sum m_f) c^2$ in the centre-of-mass frame — is a direct consequence of $E = mc^2$ applied to the products. §04.5 closes the SR core by cashing <Term slug="mass-energy-equivalence" /> in its most dramatic form: <Term slug="pair-production" />, where a photon's energy converts entirely into the mass of a particle-antiparticle pair. Matter made from energy, from nothing but a photon and a nearby nucleus to absorb the recoil. The equivalence is not just bookkeeping — it is a creative act of the universe.
+
+The full implications extend well beyond special relativity. In §06 (gravitational redshift) we will find that a photon climbing out of a gravitational well loses energy — and that loss is visible as a frequency shift, a direct consequence of the equivalence between energy and mass in a gravitational field. In cosmology (§12), the same equivalence governs the energy density of the early universe, the transition from radiation-dominated to matter-dominated expansion, and the ultimate fate of every bound structure as entropy increases.
+
+Mass becomes energy. Energy bends light. Light bends spacetime. The next module asks what happens when the geometry of §03 meets the gravity of every massive object — and the answer takes us all the way to general relativity.
+
+</Section>
+
+</TopicPageLayout>
