@@ -1,0 +1,119 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PostulateComparisonScene } from "@/components/physics/einsteins-two-postulates/postulate-comparison-scene";
+import { LightClockScene } from "@/components/physics/einsteins-two-postulates/light-clock-scene";
+import { Einstein1905PaperScene } from "@/components/physics/einsteins-two-postulates/einstein-1905-paper-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Henri Poincaré", href: "/physicists/henri-poincare" },
+  { type: "term", label: "Two postulates", href: "/dictionary/two-postulates" },
+  { type: "term", label: "Aether (luminiferous)", href: "/dictionary/aether-luminiferous" },
+  { type: "term", label: "Inertial frame", href: "/dictionary/inertial-frame" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.04 · SR FOUNDATIONS"
+  title="EINSTEIN'S TWO POSTULATES"
+  subtitle="Drop one assumption, take one fact at face value, get a new universe."
+/>
+
+<Section index={1} title="What was on the desk in 1905">
+
+By the spring of 1905 the situation was this. <PhysicistLink slug="james-clerk-maxwell" />'s equations predicted electromagnetic waves moving at $c = 1/\sqrt{\mu_0 \varepsilon_0}$ but said nothing about which frame to measure $c$ in. <PhysicistLink slug="albert-michelson" /> and Edward Morley had spent eighteen years failing to detect the aether wind that classical kinematics demanded. <PhysicistLink slug="hendrik-antoon-lorentz" /> had, by 1904, written down the algebra that explained the null result &mdash; the contraction $L_0 / \gamma$, the local time $t' = \gamma(t - vx/c^2)$, the coordinate transformation that bears his name &mdash; but he believed it was a *physical* contraction of bodies plowing through a real material aether. The algebra was right; the picture behind it was a workshop full of mechanical excuses. <PhysicistLink slug="henri-poincare" /> in Paris was within months of pointing out that the boosts form a group and that the aether might be unobservable in principle. The pieces were all on the table.
+
+A 26-year-old patent clerk in Bern, working in the Swiss Patent Office (Third Class), didn't pick up the pieces and rearrange them. He swept them off the table and replaced everything with two sentences.
+
+<SceneCard caption="FIG.04a — the opening of Annalen der Physik 17 (1905), p. 891, with the two postulates pulled out of the prose. Translation after Stachel, COLLECTED PAPERS vol. 2 (Princeton, 1989).">
+  <Einstein1905PaperScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="The two sentences">
+
+Einstein's paper opens with an irritation. Take a magnet near a wire loop. If the magnet moves, you compute an induced electric field; if the wire loop moves, you compute a magnetic Lorentz force. Different mathematics, identical experimental result. The asymmetry, Einstein wrote, "does not appear to be inherent in the phenomena." The phenomenon is one thing. The split into "electric" and "magnetic" depends on who is moving relative to whom. The aether is the cause of the asymmetry, and the aether is what he is about to remove.
+
+He states the postulates &mdash; numbered, declarative, two sentences &mdash; on the second page.
+
+<EquationBlock id="EQ.01">
+$$ \text{Postulate 1: \quad The laws of physics take the same form in every inertial frame.} $$
+</EquationBlock>
+
+<EquationBlock id="EQ.02">
+$$ \text{Postulate 2: \quad Light propagates in vacuum with speed } c \text{ independent of the motion of source or observer.} $$
+</EquationBlock>
+
+That is the entire foundation. <Term slug="two-postulates" /> Postulate 1 is a generalised <PhysicistLink slug="galileo-galilei" />: not just mechanics, but *all* physical laws &mdash; Maxwell's equations included &mdash; look the same in every <Term slug="inertial-frame" />. Postulate 2 is the empirical fact Michelson and Morley failed to refute, elevated by Einstein from a stubborn experimental result to a *premise* of the theory.
+
+The phrase that decides everything follows a few lines later: "The introduction of a 'luminiferous <Term slug="aether-luminiferous">aether</Term>' will prove to be superfluous." Einstein is not arguing for the aether's non-existence. He is observing that nothing in the rest of the paper requires it. He removes it the way you remove an unused appendix of a book.
+
+</Section>
+
+<Section index={3} title="Why the two postulates do not coexist with Galilean kinematics">
+
+Take a flashlight in the lab. The pulse travels at $c$. By <PhysicistLink slug="galileo-galilei" />'s rule for adding velocities &mdash; the same rule that lets you compute a thrown ball's speed from a moving train &mdash; an observer running alongside the pulse at speed $v$ should measure the pulse's speed as
+
+<EquationBlock id="EQ.03">
+$$ c_{\text{observer}} = c - v. $$
+</EquationBlock>
+
+Postulate 2 says that observer measures $c_{\text{observer}} = c$ regardless of $v$. The two predictions agree only at $v = 0$. Everywhere else they fork.
+
+<SceneCard caption="FIG.04b — observer speed β = v/c on the x-axis; measured speed of light on the y-axis. The dashed amber line is Galileo's prediction (it crashes through zero at β = 1). The solid cyan line is Einstein's postulate, encoded literally as a constant. They meet only at the origin.">
+  <PostulateComparisonScene />
+</SceneCard>
+
+There is no mathematical fudge that reconciles these two graphs. One of them is wrong. Einstein commits, on page two, to the cyan line. He spends the rest of the paper deriving what kinematics has to look like if you take that line at face value.
+
+</Section>
+
+<Section index={4} title="The first thing that breaks: time">
+
+Build a clock from two parallel mirrors a height $L$ apart and a photon bouncing between them. In the clock's rest frame the round trip takes $\tau_0 = 2L/c$. Now look at the same clock as it sails past you with velocity $v$. The photon still goes up to the top mirror and back &mdash; but in your frame it traces a longer diagonal zig-zag, because the clock has moved sideways while the photon was in flight.
+
+<SceneCard caption="FIG.04c — left: the clock at rest. Right: the clock moving at v. Postulate 2 demands the photon moves at c in BOTH panels. The right-hand path is geometrically longer. Either c gives — or time does.">
+  <LightClockScene />
+</SceneCard>
+
+By postulate 2 the photon moves at $c$ in your frame too. A longer path covered at the same speed takes longer:
+
+$$ \Delta t = \frac{2}{c}\sqrt{L^2 + (v\,\Delta t / 2)^2}. $$
+
+Solve for $\Delta t$ and you get $\Delta t = \gamma\, \tau_0$ with $\gamma = 1/\sqrt{1 - v^2/c^2}$. **Time itself dilates.** §02.1 derives this carefully. What matters here is the structure of the move: postulate 2 is not negotiable, the photon's path geometry is not negotiable, so $\tau$ has to give. The Newtonian assumption that time flows uniformly for everyone has just lost its first piece.
+
+<Callout variant="intuition">
+  The postulates do not say that clocks run slow because something *physically* slows them down. There is no aether viscosity, no mechanical drag. The light clock is a stand-in for *any* clock — atomic, biological, gravitational. If you accept postulate 2, every clock in the universe must behave this way. The clock isn't the cause. The clock is the witness.
+</Callout>
+
+</Section>
+
+<Section index={5} title="What else has to give">
+
+Once $\Delta t = \gamma \tau_0$ is on the page, the rest of special relativity unrolls in five paragraphs. **Length** &mdash; if you measure a moving rod by sending light pulses to its endpoints and timing the round trip, time-dilation forces $L = L_0/\gamma$. §02.2 turns the screw. **Simultaneity** &mdash; two events at different spatial locations that strike at the same lab-frame time do *not* strike at the same time in a moving observer's frame. §01.5 uses a train and two lightning bolts to make this gut-felt. **Velocity addition** &mdash; the Galilean rule $u' = u + v$ has to be replaced with $u' = (u + v)/(1 + uv/c^2)$, which keeps light at $c$ in every frame by construction. §02.4 does the algebra. **Frequency** shifts under boost in a way <PhysicistLink slug="christian-doppler" /> in 1842 could not have anticipated, with a $\sqrt{(1+\beta)/(1-\beta)}$ factor that contains both the kinematic Doppler shift and the time-dilation correction. §02.5 closes §02.
+
+The Lorentz transformation &mdash; the algebra Lorentz wrote down in 1904 &mdash; falls out of the postulates in §02.3 as a *theorem*, not a fudge. Same equations, completely different ontology.
+
+</Section>
+
+<Section index={6} title="What dies on this page">
+
+Newtonian time dies in §01.5 when simultaneity goes. The aether dies right here, in §01.4, when the second postulate makes it superfluous. Lorentz's mechanical contraction dies a little more slowly, surviving in textbooks as "Lorentz-FitzGerald contraction" until <PhysicistLink slug="hermann-minkowski" /> in 1908 reframed everything as the geometry of a four-dimensional spacetime &mdash; at which point the contraction stopped being a thing that happens to bodies and started being a fact about how observers slice the same 4D object differently.
+
+What Einstein did in 1905 is not algebraic. The algebra was largely there. What Einstein did was *permit himself* to take the cyan line at face value &mdash; to insist that the constancy of $c$ is the foundation, and that the rest of physics must be rebuilt around it whatever the cost. The cost turned out to be Newtonian absolute time, the universal "now," and the aether. In exchange physics got a four-dimensional geometry, an invariant interval, $E = mc^2$, and a century of confirmations from particle accelerators to GPS satellites.
+
+The next four sections cash this out. §01.5 watches simultaneity disappear. §02.1 derives the dilation factor we just sketched. §02.2 contracts the rod. §02.3 writes the Lorentz transformation as the *consequence* of the two postulates rather than the cause.
+
+<Callout variant="warning">
+  Two sentences on page two of a 1905 paper. Read them once more, slowly. Most of what physics did between 1905 and now is consequence.
+</Callout>
+
+</Section>
+
+</TopicPageLayout>

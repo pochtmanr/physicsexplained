@@ -1066,6 +1066,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   AetherWindAttemptScene: lazyScene(() =>
     import("@/components/physics/michelson-morley/aether-wind-attempt-scene").then((m) => ({ default: m.AetherWindAttemptScene })),
   ),
+  // RT §01 — einsteins-two-postulates
+  PostulateComparisonScene: lazyScene(() =>
+    import("@/components/physics/einsteins-two-postulates/postulate-comparison-scene").then((m) => ({ default: m.PostulateComparisonScene })),
+  ),
+  LightClockScene: lazyScene(() =>
+    import("@/components/physics/einsteins-two-postulates/light-clock-scene").then((m) => ({ default: m.LightClockScene })),
+  ),
+  Einstein1905PaperScene: lazyScene(() =>
+    import("@/components/physics/einsteins-two-postulates/einstein-1905-paper-scene").then((m) => ({ default: m.Einstein1905PaperScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
