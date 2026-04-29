@@ -1,0 +1,128 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { IntervalScene } from "@/components/physics/the-invariant-interval/interval-scene";
+import { ThreeCasesScene } from "@/components/physics/the-invariant-interval/three-cases-scene";
+import { ProperTimeBarScene } from "@/components/physics/the-invariant-interval/proper-time-bar-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "physicist", label: "Henri Poincaré", href: "/physicists/henri-poincare" },
+  { type: "term", label: "Invariant interval", href: "/dictionary/invariant-interval" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+  { type: "term", label: "Spacetime", href: "/dictionary/spacetime" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.12 · SPACETIME GEOMETRY"
+  title="THE INVARIANT INTERVAL"
+  subtitle="The one quantity every observer agrees on."
+/>
+
+<Section index={1} title="The Pythagoras analogy">
+
+Euclid's theorem says that the squared distance between two points in the plane, $d^2 = \Delta x^2 + \Delta y^2$, is invariant under rotations. Rotate your coordinate axes by any angle and $d^2$ does not change. The individual components $\Delta x$ and $\Delta y$ mix together as the axes turn, but their sum of squares is a fixed number — a property of the two points themselves, independent of the coordinate frame you choose to describe them in.
+
+Special relativity pulls off the same trick in four dimensions, but with one crucial sign flip. When you apply a Lorentz boost — the SR analog of a rotation — the time coordinate $\Delta t$ and the spatial coordinate $\Delta x$ mix with each other exactly as $\Delta x$ and $\Delta y$ do under an ordinary rotation. Two observers in relative motion will each measure a different $\Delta t$ and a different $\Delta x$ between the same pair of events. Yet when they compute the combination $c^2 \Delta t^2 - \Delta x^2$, they get the same number. That combination is the <Term slug="invariant-interval" />, and the minus sign is not a typo — it is the geometrical signature of <Term slug="spacetime" />.
+
+<PhysicistLink slug="hermann-minkowski" /> understood this clearly in 1908 when he showed that the <Term slug="lorentz-transformation" /> is a hyperbolic rotation in a 4-dimensional pseudo-Euclidean space. The prefix "pseudo" is the minus sign: the Minkowski metric is $\text{diag}(+1, -1, -1, -1)$ rather than Euclid's $\text{diag}(+1, +1, +1, +1)$. <PhysicistLink slug="henri-poincare" /> had already written the invariant in 1905, calling it the "Lorentz group invariant," but it was Minkowski who gave it geometric status and showed that the algebra of §02 was secretly a geometry.
+
+</Section>
+
+<Section index={2} title="The formula">
+
+For two events with spacetime separations $\Delta t$, $\Delta x$, $\Delta y$, $\Delta z$, the invariant interval squared is:
+
+<EquationBlock id="EQ.01">
+$$s^2 = c^2\Delta t^2 - \Delta x^2 - \Delta y^2 - \Delta z^2$$
+</EquationBlock>
+
+Every inertial observer — no matter how fast they move relative to the events — will compute the same value of $s^2$. It is a Lorentz scalar: a single number that belongs to the pair of events themselves, not to any particular frame. The individual pieces $c^2\Delta t^2$ and $\Delta x^2$ are frame-dependent; their difference is not.
+
+To see this working in real time, drag the $\beta$ slider below. The two events A and B sit at fixed spacetime positions in the lab frame. As you boost the frame, the coordinates $\Delta t$ and $\Delta x$ shift — but the HUD quantity $s^2$ stays frozen. That frozen number is the geometric fact §03.2 is built on. Try all three presets — timelike, null, spacelike — and confirm that the invariance holds regardless of the sign of $s^2$.
+
+<SceneCard caption="FIG.12a — two events A and B in the lab frame (cyan). Drag β to boost; the boosted-frame coordinates (magenta) change, but s² printed in the HUD does not. Select the preset to switch between the three causal quadrants.">
+  <IntervalScene />
+</SceneCard>
+
+The four-dimensional analog of Pythagoras's theorem is complete. Where Euclid's distance squared is a sum, Minkowski's interval squared is a *difference*. One minus sign separates Euclidean geometry from the geometry of the universe we live in.
+
+</Section>
+
+<Section index={3} title="The three quadrants">
+
+The sign of $s^2$ divides all event pairs into three mutually exclusive classes, each with a distinct causal meaning:
+
+<EquationBlock id="EQ.02">
+$$s^2 > 0 \;\Rightarrow\; \text{timelike}\qquad s^2 = 0 \;\Rightarrow\; \text{null}\qquad s^2 < 0 \;\Rightarrow\; \text{spacelike}$$
+</EquationBlock>
+
+A <Term slug="timelike" /> interval means $c^2\Delta t^2 > \Delta x^2$: the time separation dominates. A massive particle can travel from one event to the other at some subluminal speed. Crucially, every observer agrees on *which* event happened first — the time ordering of timelike-separated events is Lorentz-invariant. A cause and its effect are always timelike-separated.
+
+A <Term slug="null-interval" /> means $s^2 = 0$: the spatial and temporal separations are exactly balanced as $\Delta x = c\Delta t$. Only a photon connects them. The <Term slug="light-cone" /> is precisely the surface $s^2 = 0$ in 4D spacetime.
+
+A <Term slug="spacelike" /> interval means $\Delta x^2 > c^2\Delta t^2$: space dominates. No massive particle and no signal traveling at or below $c$ can connect the two events. Different observers can disagree on which event came first — the time ordering of spacelike-separated events is frame-dependent. This is why spacelike separation is the mathematical definition of "causally disconnected."
+
+<SceneCard caption="FIG.12b — three event pairs, one per causal quadrant. The hatched region marks where the event pair falls relative to the light cone. Timelike pairs sit inside the cone (cyan hatch); spacelike pairs sit outside (magenta hatch); null pairs are exactly on the cone.">
+  <ThreeCasesScene />
+</SceneCard>
+
+<Callout variant="warning">
+Do not confuse the invariance of $s^2$ with the invariance of its sign. The sign is invariant too — a timelike interval is timelike in every frame — but $s^2$ itself, the specific numerical value, is what is fixed. Two observers will compute the exact same number, not merely the same category.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Proper time as the invariant heartbeat">
+
+For a timelike interval the invariant interval has a direct physical meaning. There exists a frame — the rest frame of a clock that travels along the straight worldline between the two events — in which $\Delta x = 0$. In that frame $s^2 = c^2\Delta\tau^2$, where $\Delta\tau$ is the time elapsed on the clock. Solving:
+
+<EquationBlock id="EQ.03">
+$$\Delta\tau = \frac{\sqrt{s^2}}{c}$$
+</EquationBlock>
+
+This is the <Term slug="proper-time" />: the time recorded by a clock that rides along the worldline. Because $s^2$ is Lorentz-invariant, $\Delta\tau$ is Lorentz-invariant. Every observer, regardless of their velocity, agrees on how much the traveling clock ticked between the two events. They disagree on $\Delta t$ — the coordinate time in their own frame — but that disagreement is exactly absorbed by the <Term slug="time-dilation" /> factor $\gamma$: $\Delta t = \gamma\,\Delta\tau$.
+
+The bar chart below makes the bookkeeping visual. A clock rides between two fixed events at velocity $\beta c$ relative to the lab. As you slide $\beta$ upward:
+
+- The lab time $\Delta t = \gamma\,\Delta\tau_0$ stretches — the cyan bar grows.
+- The Lorentz factor $\gamma$ grows in lockstep — the amber bar grows.
+- The proper time $\Delta\tau = \Delta\tau_0$ sits unchanged — the violet bar is frozen.
+
+<SceneCard caption="FIG.12c — bar chart: lab time Δt (cyan), Lorentz factor γ (amber), proper time Δτ (violet). Slide β from 0 → 0.95. Lab time stretches by γ; proper time stays at its invariant value, frozen at the Lorentz scalar √(s²)/c.">
+  <ProperTimeBarScene />
+</SceneCard>
+
+<Callout variant="intuition">
+The proper time is the clock's biography — how much it actually aged between two meetings with the world. Every other observer can compute a different coordinate time for those same two events, but they all agree on the biography. That is what "invariant" means, cashed out as a physical measurement.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The geometric punchline — boosts as hyperbolic rotations">
+
+The ordinary rotation $x' = x\cos\theta + y\sin\theta$, $y' = -x\sin\theta + y\cos\theta$ preserves $x^2 + y^2$ because $\cos^2\theta + \sin^2\theta = 1$. A Lorentz boost is structurally identical but uses hyperbolic functions. Define the rapidity $\phi$ by $\tanh\phi = \beta$; then the boost becomes:
+
+<EquationBlock id="EQ.04">
+$$ct' = ct\cosh\phi - x\sinh\phi, \qquad x' = -ct\sinh\phi + x\cosh\phi$$
+</EquationBlock>
+
+The invariance of $s^2$ follows immediately: $\cosh^2\phi - \sinh^2\phi = 1$ — the hyperbolic identity replaces the Pythagorean identity, and the minus sign in $s^2$ is exactly what makes the identity fire. A Lorentz boost is a rotation by imaginary angle $i\phi$ in the $(ct, x)$ plane; the geometry is hyperbolic, not circular.
+
+This is the reason the algebra of §02 is secretly a geometry. The <Term slug="lorentz-transformation" /> is not an ad hoc patch to electromagnetism — it is the statement that spacetime has a definite metric structure, and inertial observers are related by the symmetry group of that metric. The group is $\text{SO}(1,3)$, the "1" in the signature coming from the single timelike direction and the "3" from the three spacelike ones. Every Lorentz boost, every spatial rotation, every combination of both, preserves $s^2$ for every pair of events.
+
+The consequences cascade. §03.3 shows that the <Term slug="light-cone" /> is the surface $s^2 = 0$, and that causal structure is therefore a geometric property of spacetime itself — not a dynamical law imposed from outside. §03.4 shows that the four-velocity, four-momentum, and [the EM application of the same four-vector machinery](/electromagnetism/four-potential-and-em-lagrangian) all emerge naturally from differentiating along a proper-time parameter — the very $\Delta\tau$ we found above. §03.5 shows that the twin paradox is not a paradox at all: it is the statement that a kinked worldline has shorter proper length in Minkowski metric than the straight worldline between the same endpoints, exactly as a bent path in Euclidean space has greater length than the straight one.
+
+<Callout variant="math">
+$s^2$ is not the only invariant, but it is the most fundamental. All Lorentz scalars — rest mass $m$, proper time $\tau$, the four-vector dot product $p^\mu p_\mu = m^2c^2$ of §03.4 — are ultimately functions of $s^2$ applied to different four-vectors. The invariant interval is the single geometric fact from which the dynamics of §04 unfold.
+</Callout>
+
+The Cologne lecture of 1908 is where <PhysicistLink slug="hermann-minkowski" /> announced this to the world. The §03 module is the geometry he described. The §02 algebra was the geometry all along.
+
+</Section>
+
+</TopicPageLayout>
