@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TimeDilationLightClockScene } from "@/components/physics/time-dilation/light-clock-scene";
+import { MuonShowerScene } from "@/components/physics/time-dilation/muon-shower-scene";
+import { SpacetimeClockScene } from "@/components/physics/time-dilation/spacetime-clock-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "term", label: "Time dilation", href: "/dictionary/time-dilation" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+  { type: "term", label: "Two postulates", href: "/dictionary/two-postulates" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.06 · SR KINEMATICS"
+  title="TIME DILATION"
+  subtitle="Why a moving clock ticks slower — and why this is not an illusion."
+/>
+
+<Section index={1} title="The light clock — derivation in three lines">
+
+The §01 demolition is over. Newtonian time has been buried under the gravel of <PhysicistLink slug="albert-einstein" />'s 1905 postulates. §02 begins the rebuild — and the rebuild starts with the cleanest derivation of the cleanest fact: a clock that moves through your laboratory, no matter how that clock is built, runs slow by exactly the factor
+
+$$ \gamma(\beta) = \frac{1}{\sqrt{1 - \beta^2}}. $$
+
+The derivation needs only one device. Take two parallel mirrors, separated by a height $h$, and let a single photon bounce vertically between them. In the clock's own rest frame, the photon's round-trip path length is $2h$, so the period of one tick is
+
+<EquationBlock id="EQ.01">
+$$ T_0 = \frac{2h}{c}. $$
+</EquationBlock>
+
+Now boost the entire apparatus along the horizontal axis at velocity $v = \beta c$, and ask the question Einstein insisted you must ask: *what does this same photon do as seen from the lab?* In the lab the mirrors are translating sideways. The photon, having to keep up with them while still hitting the upper mirror and returning to the lower one, traces a sideways zig-zag. The lab-frame round-trip path is a hypotenuse-on-each-leg construction with horizontal displacement $\beta c T$ — so
+
+$$ \text{(lab path)} = 2\sqrt{h^2 + \left(\frac{\beta c T}{2}\right)^2}. $$
+
+The second of Einstein's postulates is the lever. The photon travels at the same speed $c$ in the lab as in the rest frame — that is the postulate, and it is non-negotiable. So the lab path equals $cT$:
+
+$$ cT = 2\sqrt{h^2 + (\beta c T / 2)^2}. $$
+
+Square both sides, isolate $T$, and the algebra collapses to one line:
+
+<EquationBlock id="EQ.02">
+$$ T = \frac{T_0}{\sqrt{1 - \beta^2}} = \gamma\,T_0. $$
+</EquationBlock>
+
+The lab observer sees the moving clock tick slowly by a factor of $\gamma$. Three lines. No vector calculus. No coordinates. Two mirrors, one postulate, one factor that runs the rest of special relativity.
+
+<SceneCard caption="FIG.06a — two light clocks side by side. Cyan: the clock at rest, photon bouncing straight up and straight down, period T₀. Magenta: the same clock boosted at βc, photon zig-zagging in the lab to keep up with the translating mirrors. Same photon, same c, longer path, longer period. The slider sweeps β; γ is shown live.">
+  <TimeDilationLightClockScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="What the formula does and doesn't say">
+
+A reader meeting <Term slug="time-dilation" /> for the first time has every right to ask, "isn't this an optical illusion? Surely the clock ticks at its real rate, and we just see it slow because of light-travel time?" The answer is sharper than the question deserves: it is not an optical illusion. The formula $T = \gamma T_0$ is a *coordinate-time* relation in the lab frame, with signal-propagation delay already corrected — what remains is real.
+
+A second instinct: "in the moving clock's own frame, *its* clock ticks at $T_0$ — so which clock is really slow?" Both, and neither. <Term slug="time-dilation" /> is *symmetric*: each frame sees the other's clocks run slow by the same factor. There is no privileged answer because there is no privileged frame. The §03.5 twin-paradox resolves the seeming contradiction by tracking which observer remains *inertial* — the asymmetry is acceleration, not motion.
+
+A third instinct: "the muon can't *know* I am watching it." Correct. It doesn't need to. The lab measures the muon's tick rate using *its own* synchronised clocks at the muon's two endpoints — and those synchronised clocks disagree about what counts as simultaneous (§01.5). That disagreement, plugged into the proper-time arithmetic, *is* the dilation.
+
+<Callout variant="intuition">
+A clock measures the proper time along its own worldline. Two clocks that follow different worldlines through spacetime accumulate different amounts of proper time between two given events. <Term slug="time-dilation" /> is the geometric fact that the straight worldline is the longest one — the more you bend, the less proper time you accumulate. That is the entire content of the formula.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The money shot — atmospheric muons">
+
+A derivation is a derivation. It might still be wrong about the world. The experimental fact that turns the light-clock argument into accepted physics is the cosmic-ray muon shower.
+
+Cosmic rays — mostly high-energy protons from the galaxy — strike the upper atmosphere at altitudes around 10 km and produce showers of secondary particles. Among the most copious are muons, the heavier cousins of the electron. A muon at rest decays via the weak interaction with a half-life of 2.2 microseconds. The half-life is robustly measured in laboratory storage rings; it is the muon's fundamental ticking clock.
+
+Now the question. A muon produced 10 km up at $v = 0.995\,c$ ought, classically, to travel only about 660 metres before half of the population decays — that is one half-life multiplied by the speed. After 10 km, the surviving fraction would be approximately $2^{-15} \approx 3 \times 10^{-5}$. Sea-level detectors should see almost nothing.
+
+They see plenty. Detectors at sea level register a sustained muon flux that is roughly $10^4$ times larger than the no-dilation prediction, and consistent with $\gamma \approx 10$ (which is what $\beta = 0.995$ gives). In the lab, the muon's internal clock is dilated. Its half-life, *as measured in the lab*, is $\gamma \cdot 2.2 = 22$ μs — long enough that 10 km of atmospheric travel uses up only a few proper-time half-lives, and a substantial fraction of the population reaches the ground. The famous Frisch-Smith experiment of 1963 measured the surviving fraction directly between the top of Mt Washington and Cambridge, Massachusetts, and the result agreed with the relativistic prediction to within experimental error.
+
+<SceneCard caption="FIG.06b — 300 muons drop from 10 km at β = 0.995. The HUD ticks the lab clock and the proper-time clock side by side; γ ≈ 10. The cyan count is the surviving population; the orange count is the no-dilation classical prediction. The disagreement is the experimental fact; the agreement of cyan with experiment is the relativistic explanation.">
+  <MuonShowerScene />
+</SceneCard>
+
+The two observers — the lab, and a hypothetical observer riding the muon — agree on the ground truth: the same number of muons reach sea level. They disagree only on the bookkeeping. The lab attributes survival to a *dilated half-life* — the muon's clock running slow. The muon attributes survival to a *contracted atmosphere* — the 10-km column compressed to about 1 km in its own rest frame, a journey it can complete in about 1.5 of its own half-lives. Both stories are correct. Both give the same surviving count. The §02.2 [length-contraction](/relativity/length-contraction) topic tells the muon-frame version in detail.
+
+</Section>
+
+<Section index={4} title="The geometry — clocks as worldlines">
+
+The same content, in the language <PhysicistLink slug="hermann-minkowski" /> built in 1908. Plot lab time vertically and lab position horizontally. A clock at rest at the origin traces a *vertical* worldline; a clock moving at $\beta c$ traces a *tilted* worldline of slope $1/\beta$. Each clock ticks at intervals of its own proper time, $T_0$. On the rest worldline, those intervals are intervals of lab time too — one tick per unit of $ct$. On the tilted worldline, one proper-time tick spans $\gamma$ units of lab time, so per unit of lab height there are visibly fewer tick marks.
+
+<SceneCard caption="FIG.06c — two worldlines in the lab's (x, ct) Minkowski diagram. The cyan vertical line is a stationary clock; the magenta tilted line is a clock moving at βc. Drag the slider to change β. The 45° dashed lines are the light cone from the origin — they bound the causal future. The tick counts in the legend below show the moving clock accumulating fewer ticks per unit of lab time by exactly γ.">
+  <SpacetimeClockScene />
+</SceneCard>
+
+In this picture <Term slug="time-dilation" /> is not an effect that needs an explanation; it is what proper-time accounting *looks like* in 4D geometry. The tilted worldline has a smaller Minkowski-interval element per unit lab time than the vertical one — the metric is $(c\,d\tau)^2 = (c\,dt)^2 - dx^2$, and the tilted line has a non-zero $dx$, which subtracts. Two worldlines, two proper-time accumulations, one consistent geometry. §02.3 the-lorentz-transformation shows how the same geometry produces length contraction; §02.4 velocity-addition shows how it produces the relativistic composition rule. All three are kinematic consequences of the same metric, expressed three different ways.
+
+</Section>
+
+<Section index={5} title="Why this section is the heart of every later trick">
+
+The kinematic fact that "moving clocks run slow" also powers the §11 [magnetism-as-relativistic-electrostatics](/electromagnetism/magnetism-as-relativistic-electrostatics) argument — the kinematic consequence at the heart of the EM-relativity reveal. A current-carrying wire is neutral in the lab. Boost into the electrons' rest frame, and the length-contraction of the static lattice produces a net charge density that the moving observer reads as an electric field — and the lab observer reads, by definition, as a magnetic force. The two readings differ by $\gamma$ factors that come from the same time-dilation/length-contraction pair we have written here. Magnetism is what relativistic kinematics looks like when you forgot to boost into the right frame.
+
+The four §02 facts — time dilation, length contraction, velocity addition, relativistic Doppler — are four shadows of the same 4D rotation projected onto four different measurements. §02.3 builds the boost matrix; §02.4 derives velocity addition; §02.5 derives the Doppler shifts and closes §02.
+
+For now: a moving clock ticks slow by exactly $\gamma$. Two mirrors, one photon, one postulate — and a sea-level detector counting muons that, by every classical reckoning, should not exist.
+
+</Section>
+
+</TopicPageLayout>

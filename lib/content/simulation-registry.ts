@@ -1086,6 +1086,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SimultaneitySliderScene: lazyScene(() =>
     import("@/components/physics/relative-simultaneity/simultaneity-slider-scene").then((m) => ({ default: m.SimultaneitySliderScene })),
   ),
+  // RT §02 — time-dilation
+  TimeDilationLightClockScene: lazyScene(() =>
+    import("@/components/physics/time-dilation/light-clock-scene").then((m) => ({ default: m.TimeDilationLightClockScene })),
+  ),
+  MuonShowerScene: lazyScene(() =>
+    import("@/components/physics/time-dilation/muon-shower-scene").then((m) => ({ default: m.MuonShowerScene })),
+  ),
+  SpacetimeClockScene: lazyScene(() =>
+    import("@/components/physics/time-dilation/spacetime-clock-scene").then((m) => ({ default: m.SpacetimeClockScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
