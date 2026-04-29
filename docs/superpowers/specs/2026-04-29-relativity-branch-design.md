@@ -1,7 +1,7 @@
 # Relativity — Branch Design
 
 **Date:** 2026-04-29
-**Status:** in progress — 10/61 topics shipped (16%); §01 + §02 shipped 2026-04-29
+**Status:** in progress — 20/61 topics shipped (33%); §01+§02+§03+§04 shipped 2026-04-29
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:987-998`.
@@ -322,8 +322,8 @@ Update this table at the end of every session.
 |--------|-------|------|--------|
 | §01 SR foundations | 5 | 5 | ☑ complete |
 | §02 SR kinematics | 5 | 5 | ☑ complete |
-| §03 Spacetime geometry | 5 | 0 | not started |
-| §04 Relativistic dynamics | 5 | 0 | not started |
+| §03 Spacetime geometry | 5 | 5 | ☑ complete |
+| §04 Relativistic dynamics | 5 | 5 | ☑ complete |
 | §05 SR applications | 4 | 0 | not started |
 | §06 Equivalence principle | 4 | 0 | not started |
 | §07 Tensor calculus | 5 | 0 | not started |
@@ -333,7 +333,7 @@ Update this table at the end of every session.
 | §11 Gravitational waves | 4 | 0 | not started |
 | §12 Cosmology | 5 | 0 | not started |
 | §13 Frontiers | 3 | 0 | not started |
-| **Total** | **61** | **10** | **16% complete** |
+| **Total** | **61** | **20** | **33% complete** |
 
 ### Per-topic checklist
 
@@ -348,16 +348,16 @@ Check off as each topic ships.
 - [x] 08 `the-lorentz-transformation`
 - [x] 09 `velocity-addition`
 - [x] 10 `relativistic-doppler`
-- [ ] 11 `spacetime-diagrams`
-- [ ] 12 `the-invariant-interval`
-- [ ] 13 `light-cones-and-causality`
-- [ ] 14 `four-vectors-and-proper-time`
-- [ ] 15 `the-twin-paradox`
-- [ ] 16 `four-momentum`
-- [ ] 17 `mass-energy-equivalence`
-- [ ] 18 `relativistic-collisions`
-- [ ] 19 `compton-scattering`
-- [ ] 20 `threshold-energy-and-pair-production`
+- [x] 11 `spacetime-diagrams`
+- [x] 12 `the-invariant-interval`
+- [x] 13 `light-cones-and-causality`
+- [x] 14 `four-vectors-and-proper-time`
+- [x] 15 `the-twin-paradox`
+- [x] 16 `four-momentum`
+- [x] 17 `mass-energy-equivalence`
+- [x] 18 `relativistic-collisions`
+- [x] 19 `compton-scattering`
+- [x] 20 `threshold-energy-and-pair-production`
 - [ ] 21 `the-barn-pole-paradox`
 - [ ] 22 `bells-spaceship-paradox`
 - [ ] 23 `gps-as-relativity`
