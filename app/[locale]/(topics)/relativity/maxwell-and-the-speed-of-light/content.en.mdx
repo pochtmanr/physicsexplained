@@ -1,0 +1,111 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CFromMuEpsilonScene } from "@/components/physics/maxwell-and-the-speed-of-light/c-from-mu-epsilon-scene";
+import { FoucaultRotatingMirrorScene } from "@/components/physics/maxwell-and-the-speed-of-light/foucault-rotating-mirror-scene";
+import { HertzSparkGapScene } from "@/components/physics/maxwell-and-the-speed-of-light/hertz-spark-gap-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Léon Foucault", href: "/physicists/leon-foucault" },
+  { type: "physicist", label: "Heinrich Hertz", href: "/physicists/heinrich-hertz" },
+  { type: "term", label: "Aether (luminiferous)", href: "/dictionary/aether-luminiferous" },
+  { type: "term", label: "Two postulates", href: "/dictionary/two-postulates" },
+  { type: "term", label: "Speed of light", href: "/dictionary/speed-of-light" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.02 · SR FOUNDATIONS"
+  title="MAXWELL AND THE SPEED OF LIGHT"
+  subtitle="The constant hiding in two SI numbers, and what it didn't depend on."
+/>
+
+<Section index={1} title="The constant lurking in two SI numbers">
+
+In 1856, six years before Maxwell wrote down his unification of electricity and magnetism, two German physicists named Wilhelm Weber and Rudolf Kohlrausch performed a careful capacitor-discharge experiment in Göttingen. They were measuring the ratio between the electrostatic and electromagnetic units of charge — a number with no obvious connection to optics. The ratio they reported was approximately $3.107 \times 10^{8}$ metres per second. Weber, working in the deep tradition of action-at-a-distance Continental physics, did not know what to make of it. The number meant nothing to him. It would mean everything to <PhysicistLink slug="james-clerk-maxwell">James Clerk Maxwell</PhysicistLink>.
+
+By 1862 Maxwell had completed the equations that bear his name, and from them the wave equation for the electric field falls out in three lines:
+
+<EquationBlock id="EQ.01">
+$$ \frac{\partial^{2}\mathbf{E}}{\partial t^{2}} \;=\; \frac{1}{\mu_{0}\varepsilon_{0}}\,\nabla^{2}\mathbf{E}. $$
+</EquationBlock>
+
+The propagation speed of the wave is whatever sits in the coefficient of the Laplacian, square-rooted:
+
+<EquationBlock id="EQ.02">
+$$ c \;=\; \frac{1}{\sqrt{\mu_{0}\,\varepsilon_{0}}}. $$
+</EquationBlock>
+
+Plug in the modern SI values $\mu_{0} = 1.25663706212 \times 10^{-6}$ N/A² and $\varepsilon_{0} = 8.8541878128 \times 10^{-12}$ F/m and you get exactly the Weber-Kohlrausch ratio: $c = 299{,}792{,}458$ m/s. Maxwell's reaction in *On Physical Lines of Force* is now famous: "We can scarcely avoid the inference that light consists in the transverse undulations of the same medium which is the cause of electric and magnetic phenomena." Light, electricity, and magnetism: one phenomenon.
+
+<SceneCard caption="FIG.02a — Sliders for μ₀ and ε₀. At unit multipliers the readout locks to c = 299,792,458 m/s. Scale either constant and the predicted speed shifts as 1/√(μ₀ε₀).">
+  <CFromMuEpsilonScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Foucault nails it on the bench">
+
+Maxwell's number was a derivation, not yet a measurement. The independent experimental anchor came that same year from <PhysicistLink slug="leon-foucault">Léon Foucault</PhysicistLink>, working in a laboratory in Paris with an apparatus that fit on two long tables. A pulse of light leaves a fast-rotating mirror $R$, travels a known distance $L$ to a fixed mirror $M$, and returns. By the time it gets back, $R$ has turned through a small angle $\Delta\theta$, and the returning beam is deflected. The geometry gives
+
+<EquationBlock id="EQ.03">
+$$ \Delta\theta \;=\; \omega\,\frac{2L}{c}, $$
+</EquationBlock>
+
+so a measurement of $\Delta\theta$ at known $\omega$ and $L$ determines $c$ directly. Foucault's 1862 figure — using $L \approx 20$ m and a mirror spinning at about 800 rev/s — was $c = 2.98 \times 10^{8}$ m/s, accurate to better than one percent. The same number Maxwell had pulled out of two electrostatic constants. Two completely different lines of evidence, the same answer.
+
+<SceneCard caption="FIG.02b — Foucault's rotating-mirror geometry. A pulse leaves S, reflects off the spinning mirror R toward the fixed mirror M, and returns. R has turned during the round-trip; the deflection angle gives c.">
+  <FoucaultRotatingMirrorScene />
+</SceneCard>
+
+The deflection at Foucault's screen was less than a millimetre, which is why the experiment had to wait for Foucault: he was the same man who had built ultra-stable rotating mirrors for his earlier Earth-rotation pendulum. The measurement was small but unambiguous. By 1862 the speed of light was known to a percent, and that number agreed with what Maxwell's equations said it had to be.
+
+</Section>
+
+<Section index={3} title="Hertz produces and detects the wave">
+
+Maxwell died in 1879, sixteen years before the experiment that would have closed his loop. The man who closed it was <PhysicistLink slug="heinrich-hertz">Heinrich Hertz</PhysicistLink>, working in Karlsruhe in 1887–1888 with apparatus that any modern radio amateur would recognise. A Ruhmkorff induction coil drove an oscillating current across the gap of a dipole transmitter; a few metres away, a small loop of wire with its own micro-gap acted as receiver. When the transmitter sparked, a sympathetic spark fired across the receiver gap. The wave was real, and it travelled at the same speed Maxwell predicted.
+
+<SceneCard caption="FIG.02c — Hertz's 1887 apparatus. A dipole transmitter (TX) launches an electromagnetic wave; the loop receiver (RX) fires a sympathetic spark when the wave arrives. λ = c / f; sliding the frequency stretches and compresses the wavelength while c stays fixed.">
+  <HertzSparkGapScene />
+</SceneCard>
+
+Hertz worked at frequencies near 50 MHz (wavelength about 6 m), well below visible light but obeying the same equation. He confirmed reflection, refraction, interference, and polarisation — every property optics had catalogued for two centuries. The phenomenon Maxwell had derived from $\mu_{0}$ and $\varepsilon_{0}$ now had bench experiments at radio wavelengths, optical bench experiments at visible wavelengths, and a single equation tying them together.
+
+</Section>
+
+<Section index={4} title="The question Maxwell never asked">
+
+Here is the unsettling part, and the reason this topic belongs to the special-relativity branch and not just the electromagnetism one. The wave equation EQ.01 has a propagation speed $c$ baked into it. But a propagation speed is always measured *with respect to some frame*. <Term slug="galilean-invariance">Galilean invariance</Term> would say that if light travels at $c$ in one inertial frame, it travels at $c - v$ in a frame moving with velocity $v$ in the same direction — exactly the way water waves on a pond appear slower if you walk after them. So which frame is Maxwell's $c$?
+
+<Callout variant="warning">
+For two centuries the Newtonian answer was: the frame at rest with respect to the medium. Sound waves travel at a fixed speed relative to the air; water waves travel at a fixed speed relative to the water. By the same logic, light should travel at $c$ relative to whatever medium fills empty space — the <Term slug="aether-luminiferous">luminiferous aether</Term>. Maxwell, writing in 1865, shared this intuition. Lorentz, FitzGerald, Larmor, and most of the late-nineteenth-century physics establishment did too.
+</Callout>
+
+The aether hypothesis was natural, but it had a testable consequence: the Earth orbits the Sun at about $30$ km/s, so a year-long experiment should detect Earth's motion through this stationary medium as a directional dependence in the measured speed of light. The arms of an interferometer pointing along Earth's velocity should give a different round-trip time than arms pointing perpendicular to it. The fringe-shift prediction was
+
+<EquationBlock id="EQ.04">
+$$ \Delta n \;\approx\; \frac{2L}{\lambda}\,\frac{v^{2}}{c^{2}}, $$
+</EquationBlock>
+
+with $L$ the arm length, $\lambda$ the wavelength of the source, and $v$ Earth's orbital speed. For a $11$-m arm at $\lambda = 590$ nm, the predicted shift is about $0.4$ fringes — entirely measurable.
+
+That is the experiment Albert Michelson and Edward Morley designed and ran in 1887. The next topic is what they found.
+
+</Section>
+
+<Section index={5} title="What §01 does next">
+
+Three threads are now in tension. First: $c$ is a real, measured number that falls out of two electromagnetic constants having nothing to do with optics. Second: Maxwell's equations are not Galilean-invariant — they pick out a special frame, the way the wave equation for sound picks out the rest frame of the air. Third: nobody, including Maxwell himself, asked which frame they were referring to. The aether hypothesis answered that question by fiat, and it predicted a consequence: the Earth's motion through the aether should be detectable.
+
+The next four sections of §01 follow the wreckage. §01.3 watches Michelson and Morley get a null result they cannot explain. §01.4 watches Einstein, in 1905, take the null result as a *postulate* — light has the same speed in every inertial frame, regardless of source or observer — and let everything else fall out from there. §01.5 watches Newtonian time die on the page when two postulates collide.
+
+For now, hold the picture clean: $c = 1/\sqrt{\mu_{0}\varepsilon_{0}}$ is a fact about vacuum electromagnetism. The frame in which it is true is the question that breaks classical physics open.
+
+</Section>
+
+</TopicPageLayout>

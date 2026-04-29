@@ -1046,6 +1046,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   InertialFramesScene: lazyScene(() =>
     import("@/components/physics/galilean-relativity/inertial-frames-scene").then((m) => ({ default: m.InertialFramesScene })),
   ),
+  // RT §01 — maxwell-and-the-speed-of-light
+  CFromMuEpsilonScene: lazyScene(() =>
+    import("@/components/physics/maxwell-and-the-speed-of-light/c-from-mu-epsilon-scene").then((m) => ({ default: m.CFromMuEpsilonScene })),
+  ),
+  FoucaultRotatingMirrorScene: lazyScene(() =>
+    import("@/components/physics/maxwell-and-the-speed-of-light/foucault-rotating-mirror-scene").then((m) => ({ default: m.FoucaultRotatingMirrorScene })),
+  ),
+  HertzSparkGapScene: lazyScene(() =>
+    import("@/components/physics/maxwell-and-the-speed-of-light/hertz-spark-gap-scene").then((m) => ({ default: m.HertzSparkGapScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
