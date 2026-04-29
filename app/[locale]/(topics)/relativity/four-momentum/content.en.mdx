@@ -1,0 +1,175 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { EnergyMomentumTriangleScene } from "@/components/physics/four-momentum/energy-momentum-triangle-scene";
+import { FourMomentumBoostScene } from "@/components/physics/four-momentum/four-momentum-boost-scene";
+import { PhotonIsNullScene } from "@/components/physics/four-momentum/photon-is-null-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "term", label: "Four-vector", href: "/dictionary/four-vector" },
+  { type: "term", label: "Four-momentum", href: "/dictionary/four-momentum" },
+  { type: "term", label: "Rest energy", href: "/dictionary/rest-energy" },
+  { type: "term", label: "Mass–energy equivalence", href: "/dictionary/mass-energy-equivalence" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.16 · SPACETIME DYNAMICS"
+  title="FOUR-MOMENTUM"
+  subtitle="Energy and momentum, packaged into one four-vector — with a Lorentz invariant that is rest mass."
+/>
+
+<Section index={1} title="What's natural to package together?">
+
+In Newtonian mechanics, energy and momentum are conserved in isolation. They are separate bookkeeping entries — momentum $\vec p = m\vec v$ and kinetic energy $K = \tfrac{1}{2}mv^2$ are both preserved in a collision, but they don't speak to each other. Under a Galilean boost — changing frames by adding a constant velocity $V$ to every observer — the momentum picks up $m V$ per particle, but the kinetic energy picks up $m V \cdot v + \tfrac{1}{2}m V^2$. They transform differently. They are genuinely independent objects.
+
+Under a Lorentz boost the story is different. Three months after writing the kinematics paper, <PhysicistLink slug="albert-einstein" /> asked a pointed follow-up question in a three-page note: *Does the inertia of a body depend on its energy content?* The answer turned out to be yes — and the proof runs exactly through the mixing of energy and momentum under boosts. When you change frames in special relativity, energy and the three components of momentum rotate into one another, just as $ct$ and $x$ do. They don't transform separately. They belong to the same geometric object.
+
+That object is the <Term slug="four-momentum" />, and it is the natural sequel to the four-position $(ct, x, y, z)$. Where the §03 module extracted a geometric language for *where and when* — <PhysicistLink slug="hermann-minkowski" />'s spacetime — the §04 module extracts the natural dynamics from the same geometry. <Term slug="rest-energy" /> is the Minkowski norm of the four-momentum. Mass–energy equivalence is the statement that this norm is Lorentz invariant.
+
+</Section>
+
+<Section index={2} title="The definition">
+
+The <Term slug="four-momentum" /> of a massive particle of rest mass $m$ moving with four-velocity $u^\mu = \gamma(c, v_x, v_y, v_z)$ is:
+
+<EquationBlock id="EQ.01">
+$$p^\mu = m\,u^\mu = \Bigl(\frac{E}{c},\; p_x,\; p_y,\; p_z\Bigr) = \bigl(\gamma m c,\; \gamma m v_x,\; \gamma m v_y,\; \gamma m v_z\bigr)$$
+</EquationBlock>
+
+The zeroth component is $p^0 = E/c$, the total relativistic energy divided by $c$. The spatial components $(p^1, p^2, p^3)$ are the relativistic three-momentum $\vec p = \gamma m \vec v$. At low speeds $\gamma \approx 1$ and $p^i \approx m v^i$ — classical momentum. The relativistic correction is $\gamma$, which grows without bound as $v \to c$.
+
+The total energy $E = \gamma m c^2$ expands at low speed as:
+
+<EquationBlock id="EQ.01b">
+$$E = \gamma m c^2 = \frac{mc^2}{\sqrt{1-\beta^2}} \approx mc^2 + \tfrac{1}{2}mv^2 + \cdots$$
+</EquationBlock>
+
+The leading term $mc^2$ is the <Term slug="rest-energy" /> — the energy present even when the particle sits still. The next term is the Newtonian kinetic energy. <Term slug="mass-energy-equivalence" /> is already visible: rest mass and energy are the same thing denominated in different units, linked by $c^2$.
+
+<SceneCard caption="FIG.16a — Energy-momentum triangle. Vertical leg = mc² (rest energy, cyan); horizontal leg = pc (magenta); hypotenuse = E (amber). The β slider drives the construction. At β = 0 the horizontal leg vanishes: E = mc². At β → 1 the horizontal leg dominates and E → pc.">
+  <EnergyMomentumTriangleScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="The invariant — the energy-momentum-mass triangle">
+
+The Minkowski norm-squared of the <Term slug="four-momentum" /> uses the mostly-minus metric $g_{\mu\nu} = \mathrm{diag}(+1,-1,-1,-1)$:
+
+<EquationBlock id="EQ.02">
+$$p^\mu p_\mu = g_{\mu\nu}\,p^\mu p^\nu = \Bigl(\frac{E}{c}\Bigr)^{\!2} - |\vec{p}|^2 = m^2 c^2$$
+</EquationBlock>
+
+This is a Lorentz invariant — every inertial observer computes the same value $m^2 c^2$ from their local measurements of the particle's energy and momentum. The right-hand side is fixed by the particle's rest mass; it does not depend on the frame.
+
+Multiplying through by $c^2$ gives the energy-momentum-mass relation:
+
+<EquationBlock id="EQ.02b">
+$$E^2 = (pc)^2 + (mc^2)^2$$
+</EquationBlock>
+
+This is the full triangle. Draw it as a right triangle: the hypotenuse is $E$, the horizontal leg is $pc$, and the vertical leg is $mc^2$. Pythagoras holds — but with relativistic inputs. At rest $p = 0$ and the hypotenuse collapses to the vertical leg: $E = mc^2$. At ultra-relativistic speeds $pc \gg mc^2$ and the vertical leg is negligible: $E \approx pc$.
+
+<Callout variant="math">
+The geometric statement is identical to the Minkowski interval: $s^2 = (ct)^2 - x^2$ is invariant under boosts; $p^\mu p_\mu = (E/c)^2 - |\vec p|^2$ is invariant under boosts. Energy-momentum is to dynamics what position-time is to kinematics — they are both four-vectors in the same Minkowski geometry, and both carry a Lorentz scalar in their norm.
+</Callout>
+
+The contraction written in full index form:
+
+<EquationBlock id="EQ.02c">
+$$p^\mu p_\mu = g_{\mu\nu}\,p^\mu p^\nu = p^0 p^0 - p^1 p^1 - p^2 p^2 - p^3 p^3$$
+</EquationBlock>
+
+is the definition. The same contraction on a four-position $(ct, x, y, z)$ gives the <Term slug="invariant-interval" />. On the <Term slug="four-momentum" /> it gives $m^2 c^2$. The algebra is identical — the geometry is the same geometry.
+
+</Section>
+
+<Section index={4} title="Boosts mix the components — the Lorentz transformation on four-momentum">
+
+Because $p^\mu = m u^\mu$ and $u^\mu$ is a <Term slug="four-vector" />, the four-momentum transforms under a Lorentz boost along $+x$ by the same matrix $\Lambda^\mu{}_\nu$ that transforms position:
+
+<EquationBlock id="EQ.03">
+$$p^{\prime\mu} = \Lambda^\mu{}_\nu\,p^\nu$$
+</EquationBlock>
+
+with the boost matrix:
+
+<EquationBlock id="EQ.03b">
+$$\Lambda^\mu{}_\nu = \begin{pmatrix}\gamma & -\gamma\beta & 0 & 0 \\ -\gamma\beta & \gamma & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1\end{pmatrix}$$
+</EquationBlock>
+
+Written out component by component for a particle with lab-frame four-momentum $(E/c, p_x, p_y, p_z)$, boosting to a frame moving at $\beta c$ along $+x$:
+
+<EquationBlock id="EQ.03c">
+$$\frac{E'}{c} = \gamma\frac{E}{c} - \gamma\beta\,p_x$$
+</EquationBlock>
+
+<EquationBlock id="EQ.03d">
+$$p'_x = -\gamma\beta\frac{E}{c} + \gamma\,p_x$$
+</EquationBlock>
+
+The transverse components $p_y$ and $p_z$ are untouched. The boost mixes energy and $x$-momentum exactly the way it mixes $ct$ and $x$ coordinates: they are related by a hyperbolic rotation in the $(E/c, p_x)$ plane. Yet the Minkowski norm $p^\mu p_\mu = m^2 c^2$ is unchanged — the invariant sits at the same value in every frame.
+
+<SceneCard caption="FIG.16b — Four-momentum components before and after a Lorentz boost. Lab frame (cyan) shows p^μ for a particle moving at 0.4c. The β slider boosts to a new frame (magenta). Watch E/c and p_x swap values while the invariant m²c² in the amber box stays constant.">
+  <FourMomentumBoostScene />
+</SceneCard>
+
+<Callout variant="intuition">
+This is why energy and momentum must be packaged together. If you only boosted the three-momentum $\vec p$ — ignoring $E/c$ — you would break the Lorentz covariance of the theory. Conservation of energy and conservation of momentum are not two separate laws in special relativity; they are two components of one four-vector equation $p^\mu_{\text{before}} = p^\mu_{\text{after}}$, valid in every frame simultaneously.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The photon — null four-momentum">
+
+The energy-momentum-mass triangle degenerates for a particle with $m = 0$. From EQ.02b with $m = 0$:
+
+<EquationBlock id="EQ.04">
+$$E^2 = (pc)^2 \quad \Longrightarrow \quad E = pc$$
+</EquationBlock>
+
+The vertical leg of the triangle — $mc^2$ — vanishes. Hypotenuse and horizontal leg become the same line. The triangle has no interior: it collapses to a segment.
+
+In terms of the <Term slug="four-momentum" /> itself, this is the null condition:
+
+<EquationBlock id="EQ.04b">
+$$p^\mu p_\mu = \Bigl(\frac{E}{c}\Bigr)^{\!2} - |\vec{p}|^2 = 0$$
+</EquationBlock>
+
+A four-vector with zero Minkowski norm is called a <Term slug="null-interval" /> four-vector, or *light-like*. The photon's four-momentum points along the light cone — it lives on the boundary between <Term slug="timelike" /> and <Term slug="spacelike" /> directions. No Lorentz boost can change the sign of $p^\mu p_\mu$: a null four-momentum stays null in every frame (the null condition is Lorentz invariant).
+
+The photon four-momentum for a photon of energy $E$ propagating in direction $\hat n$ is:
+
+<EquationBlock id="EQ.04c">
+$$p^\mu_\gamma = \frac{E}{c}\bigl(1,\; n_x,\; n_y,\; n_z\bigr)$$
+</EquationBlock>
+
+Note $|n_x^2 + n_y^2 + n_z^2| = 1$, so $|\vec p| = E/c$ and the null condition holds exactly. Boosting $p^\mu_\gamma$ by $\Lambda$ changes $E$ — that's the relativistic Doppler shift — but preserves $p^\mu p_\mu = 0$. The photon stays massless in every frame.
+
+<SceneCard caption="FIG.16c — Comparison: left panel shows a massive particle (m ≠ 0) at β = 0.60 — a proper right triangle with all three sides nonzero. Right panel shows a photon (m = 0): the vertical leg (mc²) vanishes and hypotenuse collapses onto the horizontal leg. The null label p^μ p_μ = 0 and E = pc hold everywhere.">
+  <PhotonIsNullScene />
+</SceneCard>
+
+The photon's null four-momentum is the sharp edge that forced quantum mechanics to assign it a momentum despite having no rest mass — $p = E/c = hf/c = h/\lambda$. The <Term slug="compton-shift" /> (§04.4) is a direct consequence: treating the photon as carrying a definite four-momentum that four-momentum-conserves with an electron in a collision predicts a wavelength shift that matches experiment to parts-per-million.
+
+</Section>
+
+<Section index={6} title="Cross-links — where this algebra appears next">
+
+The same index gymnastics used here — raised and lowered Greek indices, $g_{\mu\nu}$ contractions, Lorentz-matrix multiplication — appear in electromagnetism applied to the field-strength tensor. See the EM topic [the electromagnetic field tensor](/electromagnetism/the-electromagnetic-field-tensor) (EM §11.3): the field tensor $F^{\mu\nu}$ transforms as a rank-2 tensor under the same $\Lambda$, and its two independent Lorentz scalars are built from exactly the same contraction machinery. The field-tensor topic is the canonical follow-on if you want to see how Maxwell's equations look when written in four-vector language.
+
+Within the §04 dynamics module, the four-momentum's primary role is as the conserved object. §04.3 works through relativistic collisions: four-momentum conservation $\sum p^\mu_{\text{in}} = \sum p^\mu_{\text{out}}$ is one four-vector equation giving four scalar equations simultaneously, which is what lets you solve for unknown final-state energies and angles. §04.4 applies this to Compton scattering: the photon four-momentum $p^\mu_\gamma$ and the electron four-momentum $p^\mu_e$ combine before and after collision, and the mismatch in photon energy is the Compton wavelength shift. §04.5 runs the same conservation law in reverse — given enough center-of-mass energy ($\sqrt{s} \geq 2mc^2$, where $s = (p_1 + p_2)^\mu (p_1 + p_2)_\mu$), a collision can nucleate a particle-antiparticle pair from pure kinetic energy.
+
+<Callout variant="intuition">
+Energy and momentum were always one object — relativity just reveals the seam. The Galilean boost hid it by mixing energy and momentum differently; the Lorentz boost exposes it by mixing them the same way it mixes $ct$ and $x$. Once you see that, the rest of §04 is just working out the consequences: what is conserved, how to compute thresholds, and what happens when enough energy concentrates in one place to create matter from nothing.
+</Callout>
+
+</Section>
+
+</TopicPageLayout>
