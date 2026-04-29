@@ -1126,6 +1126,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   FizeauWaterTubeScene: lazyScene(() =>
     import("@/components/physics/velocity-addition/fizeau-water-tube-scene").then((m) => ({ default: m.FizeauWaterTubeScene })),
   ),
+  // RT §02 — relativistic-doppler
+  RedshiftBlueshiftScene: lazyScene(() =>
+    import("@/components/physics/relativistic-doppler/redshift-blueshift-scene").then((m) => ({ default: m.RedshiftBlueshiftScene })),
+  ),
+  TransverseDopplerScene: lazyScene(() =>
+    import("@/components/physics/relativistic-doppler/transverse-doppler-scene").then((m) => ({ default: m.TransverseDopplerScene })),
+  ),
+  CosmologicalPreviewScene: lazyScene(() =>
+    import("@/components/physics/relativistic-doppler/cosmological-preview-scene").then((m) => ({ default: m.CosmologicalPreviewScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -1,0 +1,143 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RedshiftBlueshiftScene } from "@/components/physics/relativistic-doppler/redshift-blueshift-scene";
+import { TransverseDopplerScene } from "@/components/physics/relativistic-doppler/transverse-doppler-scene";
+import { CosmologicalPreviewScene } from "@/components/physics/relativistic-doppler/cosmological-preview-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Christian Doppler", href: "/physicists/christian-doppler" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Relativistic Doppler", href: "/dictionary/relativistic-doppler" },
+  { type: "term", label: "Transverse Doppler", href: "/dictionary/transverse-doppler" },
+  { type: "term", label: "Time dilation", href: "/dictionary/time-dilation" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.10 · SR KINEMATICS"
+  title="THE RELATIVISTIC DOPPLER EFFECT"
+  subtitle="What the source's color tells you about its motion through spacetime."
+/>
+
+<Section index={1} title="Doppler 1842 — and what he could not have seen">
+
+In 1842 <PhysicistLink slug="christian-doppler" /> stood in a Prague lecture hall and read out a short paper called *Über das farbige Licht der Doppelsterne* — "On the coloured light of double stars". The argument fits on a postcard. A wave source emits at frequency $f_0$. If it moves toward you at speed $v$, each successive wavefront is launched a little closer than the last, so the wavelengths bunch up and you measure a higher frequency. If it moves away, the wavefronts spread, and you measure a lower frequency. Sound waves obey it, water waves obey it, and — Doppler argued — light waves should too: stars moving toward Earth ought to look slightly bluer, stars moving away slightly redder.
+
+The classical formula Doppler wrote, for a source moving directly toward or away from the observer through a stationary medium, is
+
+<EquationBlock id="EQ.01">
+$$ f_{\text{obs}} = f_{\text{emit}} \cdot (1 - \beta), \qquad \beta = v/c. $$
+</EquationBlock>
+
+This is fine for sound. For light it is wrong in two ways the 19th century could not catch — wrong because it secretly assumes a medium (the aether), and wrong because it ignores that *the source's clock runs slow* in the observer's frame. Buys-Ballot tested EQ.01 with a brass band on a moving train in 1845 and got the sound case dead right, which seemed to settle the matter. It didn't. The sound case was the easy half.
+
+When Einstein 1905 swept the aether out and replaced it with two postulates, the Doppler formula had to be rewritten from scratch. The factor that drops out is denser, more symmetric, and contains an effect with no classical analogue at all.
+
+</Section>
+
+<Section index={2} title="The relativistic longitudinal formula">
+
+Two observers, one source, motion along the line connecting them. Pick the rest frame of the source and call its emission period $T_{\text{emit}} = 1/f_{\text{emit}}$. In the observer's frame, the source's clock runs slow by a factor $\gamma$, so the emission interval *as measured by the observer* is
+
+<EquationBlock id="EQ.02">
+$$ T' = \gamma\, T_{\text{emit}}. $$
+</EquationBlock>
+
+That is <Term slug="time-dilation" /> doing its job — the kinematic effect of §02.1 showing up directly in the frequency budget. Now during that interval the source moves a distance $v T'$ further from the observer (taking $\beta &gt; 0$ to mean recession). The next wavefront has farther to travel, by exactly that much divided by $c$. So the period the observer actually receives between successive crests is
+
+<EquationBlock id="EQ.03">
+$$ T_{\text{obs}} = T' + \frac{v T'}{c} = \gamma\, T_{\text{emit}} \,(1 + \beta). $$
+</EquationBlock>
+
+Take the reciprocal to get the observed frequency, and substitute $\gamma = 1/\sqrt{1-\beta^2} = 1/\sqrt{(1-\beta)(1+\beta)}$:
+
+<EquationBlock id="EQ.04">
+$$ f_{\text{obs}} = f_{\text{emit}} \cdot \sqrt{\frac{1-\beta}{1+\beta}}. $$
+</EquationBlock>
+
+That is the **longitudinal relativistic Doppler factor**. It is the headline equation of §02.5. Two pieces are stitched into one square root: the classical $(1-\beta)$ wavefront-spacing piece, and the $1/\gamma$ time-dilation piece. Below the radical the two pieces multiply to give $1 - \beta^2$ — exactly the combination that makes $\gamma$ appear, and exactly the combination that the classical formula was missing.
+
+<SceneCard caption="FIG.10a — A source moving along the line of sight; β slider runs −0.95 to +0.95. The visible-spectrum bar at the bottom slides red as the source recedes, blue as it approaches. The numerical readout is f_obs / f_emit by EQ.04.">
+  <RedshiftBlueshiftScene />
+</SceneCard>
+
+<Callout variant="math">
+At $\beta \ll 1$ the radical reduces to $1 - \beta + O(\beta^2)$ and EQ.04 collapses back to Doppler's classical EQ.01. So at low speeds the relativistic formula has the right limit — Doppler 1842 was right where the universe was slow enough, which is everywhere on Earth. The stretch factor $\gamma$ deviates from 1 only at $\beta \gtrsim 0.1$; below that, classical and relativistic predictions agree to better than 1%.
+</Callout>
+
+There is one immediate sanity check worth pausing on. Set $\beta = 0$: EQ.04 gives $f_{\text{obs}} = f_{\text{emit}}$. Source at rest, no shift. Set $\beta = -1$ (source approaching at the speed of light): the radical blows up, frequency tends to infinity — the conceptual limit, never reached, where an incoming photon would be blue-shifted into infinite energy. Set $\beta = +1$ (recession at $c$): the radical goes to zero. The photon is fully redshifted out of existence. The formula encodes both endpoints honestly.
+
+</Section>
+
+<Section index={3} title="Transverse Doppler — the effect with no classical analogue">
+
+Now move the source perpendicular to the line of sight. In Doppler's classical picture, the line-of-sight component of velocity is zero, so $\beta_{\parallel} = 0$, and the classical formula EQ.01 predicts no shift at all. Sound from a car driving past you, at the instant it is dead abeam, should arrive at exactly its rest frequency by EQ.01. For air, as a first approximation, that is true.
+
+For light it is **not**. The reason is that the source's clock is running slow regardless of which direction the source happens to be moving — time dilation depends only on speed, not on the angle. So even when no wavefront-spacing effect is in play, the observer still measures fewer crests per second than the source emits, by exactly the time-dilation factor. The result is the **transverse Doppler shift**:
+
+<EquationBlock id="EQ.05">
+$$ f_{\text{obs}}^{\perp} = \frac{f_{\text{emit}}}{\gamma(\beta)}. $$
+</EquationBlock>
+
+Always a redshift, regardless of the sign of $\beta$. Even though the source is neither receding nor approaching at the perpendicular instant, its photons arrive at lower frequency. <Term slug="transverse-doppler" /> is the gift the relativistic formula has and the classical formula does not.
+
+<SceneCard caption="FIG.10b — A source orbits an observer at radius R, β = 0.5 (slider exposes 0.05 → 0.95). The yellow tangent arrow is the source's instantaneous velocity. At the perpendicular instant — when v is purely tangential to the line of sight — the longitudinal Doppler factor lands on 1 (classical = no shift), but the transverse factor stays pinned at 1/γ ≈ 0.866 forever.">
+  <TransverseDopplerScene />
+</SceneCard>
+
+The transverse effect is not a curiosity. Ives and Stilwell measured it in 1938 with a beam of fast canal-ray hydrogen ions — the Doppler shifts of the same emission line, viewed forward and backward along the beam, did not average to the rest wavelength as the classical formula predicted; they averaged to the rest wavelength *divided by* $\gamma$, exactly as EQ.05 demands. Moessbauer-rotor experiments in the early 1960s confirmed the same factor to a few parts in $10^4$ using gamma rays from $^{57}$Fe sources spinning on a centrifuge. The transverse Doppler shift is a routine measurement now. It was never measurable in Doppler's framework because it does not exist there.
+
+</Section>
+
+<Section index={4} title="Aberration as a consistency check">
+
+Whenever the relativistic formula does something the classical one cannot, there is a parallel statement about how angles transform between frames — *relativistic aberration*. A photon emitted at angle $\theta_{\text{emit}}$ in the source frame is observed at a different angle $\theta_{\text{obs}}$ in the observer frame. The general angle-dependent Doppler factor is
+
+<EquationBlock id="EQ.06">
+$$ f_{\text{obs}} = \frac{f_{\text{emit}}}{\gamma\,(1 - \beta\cos\theta_{\text{obs}})}. $$
+</EquationBlock>
+
+Set $\theta_{\text{obs}} = 0$ (source directly receding from observer, head-on photon arriving) and EQ.06 reduces to EQ.04. Set $\theta_{\text{obs}} = \pi/2$ (photon arriving from a source dead abeam in the observer frame) and EQ.06 reduces to EQ.05. The two equations of §02.5 are not separate physics — they are the parallel and perpendicular limits of one relativistic angle-dependent factor.
+
+The angle that *matters* is $\theta_{\text{obs}}$, the angle at which the photon arrives in the observer's frame. Aberration shifts incoming light forward — a star perpendicular to the source's motion in the source frame will appear pushed *toward* the direction of motion in the observer frame. Stellar aberration was first measured by Bradley in 1728 and explained Newtonianly; the relativistic version of the same calculation falls out of EQ.06 with $\beta = v_{\text{Earth}}/c$.
+
+</Section>
+
+<Section index={5} title="What this is — and what it is not">
+
+The relativistic Doppler factor of EQ.04 is what you use when the source and observer are inertial, in flat spacetime, in relative motion. It is the right tool for radar guns, GPS-satellite frequency budgets, particle-beam diagnostics, and the redshifts of stars within the local group of galaxies — anywhere the relative velocity is a kinematic quantity in a single inertial frame.
+
+It is **not** the right tool for cosmological redshifts beyond, roughly, $z \approx 0.1$. The redshift of a $z = 1$ galaxy is not telling you that the galaxy is "moving" at some velocity $v$ that you can plug into EQ.04. There is no inertial frame containing both us and a $z = 1$ galaxy. What is happening is that the spatial metric of the universe — the *thing distances are measured against* — has been stretching while the photon was in flight, and the photon's wavelength stretches along with it. The observed redshift relates to the cosmic scale factor $a(t)$:
+
+<EquationBlock id="EQ.07">
+$$ 1 + z \;=\; \frac{a_{\text{now}}}{a_{\text{then}}}. $$
+</EquationBlock>
+
+That is metric expansion, not relativistic Doppler. The same number can come out — a galaxy at $z = 1$ shifts spectra by a factor of 2 either way the bookkeeping is done — but the *cause* is not relative motion through space. It is the stretching of space itself.
+
+<SceneCard caption="FIG.10c — Forward-link to §12.3 hubble-and-cosmological-redshift. A galaxy at z = 1; its photons arrive at twice the wavelength they were emitted with, but this is space stretching, not the Doppler factor of EQ.04. At z ≳ 1 the naive 'recession velocity' implied by Doppler exceeds c without paradox: nothing is moving through space at superluminal speeds, space itself is doing the moving.">
+  <CosmologicalPreviewScene />
+</SceneCard>
+
+<Callout variant="warning">
+"Cosmological redshift" and "relativistic Doppler" are not synonyms. They produce identical outputs (a wavelength stretch) but from incompatible inputs (relative inertial velocity vs. metric expansion of the FLRW spatial geometry). §02.5 owns the first; §12.3 will own the second. Confusing them produces the perennially-bad popular-science line "galaxies are moving away from us at the speed of light", which is meaningless inside both frameworks.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Closing — the four shadows">
+
+Doppler in 1842 wrote a beautifully clean classical paper about a beautifully clean classical effect, and put a one-line theoretical foundation under what astronomers had been suspecting for two decades — that the colours of stars carry information about their motion. He could not have known that, more than a century later, the formula he wrote would be revealed as the leading-order term of a deeper expression. The relativistic version blew the classical one up by adding the time-dilation factor $\gamma$, and in doing so uncovered the *transverse* effect that the classical formula could not even pose, let alone predict.
+
+That ends §02. Five topics in: time stretches (§02.1), length contracts (§02.2), the boost matrix that does both is the <Term slug="lorentz-transformation" /> (§02.3), velocities add by a non-Galilean rule (§02.4), and frequencies shift by the radical of EQ.04 with a transverse term that only relativity has the language for (§02.5). Each of these effects came out of <Term slug="two-postulates" /> and <Term slug="simultaneity-relative" />: photons travel at $c$ in every inertial frame, and the price for that postulate is that nothing else — clock rates, ruler lengths, velocity addition, frequency budgets — survives unchanged across boosts.
+
+But the five effects of §02 are not five independent things. Time, length, velocity, frequency — they don't transform separately. They're four shadows of one 4D rotation. The next module shows you the geometry.
+
+</Section>
+
+</TopicPageLayout>
