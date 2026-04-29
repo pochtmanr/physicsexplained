@@ -1,0 +1,125 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { WhySinglePhotonIsForbiddenScene } from "@/components/physics/threshold-energy-and-pair-production/why-single-photon-is-forbidden-scene";
+import { WithNucleusScene } from "@/components/physics/threshold-energy-and-pair-production/with-nucleus-scene";
+import { Anderson1932Scene } from "@/components/physics/threshold-energy-and-pair-production/anderson-1932-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Paul Dirac", href: "/physicists/paul-dirac" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Threshold energy", href: "/dictionary/threshold-energy" },
+  { type: "term", label: "Pair production", href: "/dictionary/pair-production" },
+  { type: "term", label: "Mass-energy equivalence", href: "/dictionary/mass-energy-equivalence" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.20 · RELATIVISTIC DYNAMICS"
+  title="THRESHOLD ENERGY AND PAIR PRODUCTION"
+  subtitle="How much energy does it take to make matter from nothing? Exactly enough."
+/>
+
+<Section index={1} title="The question — can a photon become an electron?">
+
+A 511 keV gamma ray carries energy exactly equal to the rest energy of one electron. Does that mean it can turn into one? And if you double the energy to 1.022 MeV — equal to the combined rest energy of an electron and a positron — can a photon spontaneously become a pair?
+
+The question is not naive. <PhysicistLink slug="albert-einstein" />'s 1905 mass-energy relationship, expressed cleanly through the <Term slug="four-momentum" /> framework of §04.1, promises that mass and energy are the same currency, denominated in units of $c^2$. If you have enough energy and the bookkeeping of momentum is satisfied, new particles must be creatable. The whole field of particle physics runs on exactly this promise: collide two protons hard enough and a Higgs boson emerges from the debris.
+
+But the bookkeeping has teeth. <Term slug="mass-energy-equivalence" /> tells you that energy is necessary; four-momentum conservation tells you whether it is sufficient. And for a single photon in empty space, the answer is a hard no — regardless of energy. The reason has nothing to do with magnitude. It is a constraint of geometry.
+
+This topic asks: what exactly is forbidden, what is permitted, and what is the minimum energy threshold when a third body is present to absorb the excess momentum? The answer is one of the cleanest results in all of relativistic kinematics, and it led to the experimental discovery of antimatter.
+
+</Section>
+
+<Section index={2} title="Why a single photon cannot make a pair">
+
+The <Term slug="four-momentum" /> of a photon has a Minkowski norm of zero. In any inertial frame its four-momentum is $p^\mu = (E/c,\, \vec{p})$ with $|\vec{p}| = E/c$, so the invariant is
+
+<EquationBlock id="EQ.01">
+$$p^\mu p_\mu = \frac{E^2}{c^2} - |\vec{p}|^2 c^2 = 0.$$
+</EquationBlock>
+
+The photon's <Term slug="four-vector" /> is null. A null vector has zero Minkowski length in every inertial frame — that is the content of Lorentz invariance. You cannot boost to a frame where it becomes timelike, because Lorentz boosts preserve the sign of $p^\mu p_\mu$.
+
+Now suppose the photon converts to an electron-positron pair at rest in some frame. The pair's combined four-momentum has $p^\mu p_\mu = (2 m_e c)^2 > 0$ — it is timelike. Four-momentum conservation demands the initial and final four-momenta be identical. But you cannot equate a null four-vector to a timelike one in any Lorentz frame.
+
+<SceneCard caption="FIG.20a — a photon (amber) approaches and attempts γ → e⁺ + e⁻ in vacuum. The animation ends in a red-X: the Minkowski norm of the photon (zero) cannot equal the norm of the pair (positive). The prohibition is geometric, not energetic.">
+  <WhySinglePhotonIsForbiddenScene />
+</SceneCard>
+
+This is a statement about geometry, not arithmetic. You might try running to a frame where the pair's momentum is large and its rest-energy contribution shrinks — but you can never reach zero, because $m_e > 0$. And the photon side stays exactly zero under any boost, because null is invariant. The process $\gamma \to e^+ + e^-$ in vacuum is forbidden at every photon energy, for all time.
+
+<Callout variant="math">
+The same argument forbids a massive particle from splitting into two massless particles in vacuum. The invariant norm of the initial state is $m^2 c^2 > 0$; the final state of two photons has norm $p^\mu_{\gamma_1} p_{\mu,\gamma_1} + 2 p^\mu_{\gamma_1} p_{\mu,\gamma_2} + p^\mu_{\gamma_2} p_{\mu,\gamma_2} = 0 + 2 p^\mu_{\gamma_1} p_{\mu,\gamma_2} + 0$. The cross-term is positive for non-collinear photons but this still cannot equal $m^2 c^2 > 0$ when both final photons are massless and the particle decays at rest. The only exception is when the particle is itself massless — the photon splitting $\gamma \to \gamma + \gamma$ is separately forbidden by charge-conjugation symmetry, but the kinematics would also need both products collinear, leaving zero relative momentum.
+</Callout>
+
+The fix is to add a third body. A nucleus, a second photon, a nearby electron — any massive participant can absorb excess momentum at a cost in energy that the kinematics can afford. The question becomes: how much photon energy is required?
+
+</Section>
+
+<Section index={3} title="With a nucleus: threshold 1.022 MeV">
+
+Add a nucleus of rest mass $M_N \gg m_e$ to the initial state. The process is now $\gamma + \text{nucleus} \to e^+ + e^- + \text{nucleus}$. The nucleus can recoil and absorb momentum; its large mass means it absorbs momentum at negligible energy cost.
+
+The threshold condition follows from the Mandelstam invariant $s = (p_\gamma + p_N)^2 c^2$. At threshold the final-state particles are all produced at rest in the center-of-momentum frame, so
+
+<EquationBlock id="EQ.02">
+$$s_\text{threshold} = (M_N + 2m_e)^2 c^4.$$
+</EquationBlock>
+
+Evaluating $s$ in the lab frame — where the nucleus is at rest and the photon has energy $E_\gamma$ — and equating to the threshold value gives
+
+<EquationBlock id="EQ.03">
+$$E_\gamma^\text{th} = \frac{(M_N + 2m_e)^2 - M_N^2}{2 M_N} c^2 = 2m_e c^2 \left(1 + \frac{m_e}{M_N}\right).$$
+</EquationBlock>
+
+To leading order in $m_e / M_N$ — which is of order $10^{-4}$ for hydrogen and much smaller for heavier nuclei — the <Term slug="threshold-energy" /> is simply
+
+<EquationBlock id="EQ.04">
+$$E_\gamma \geq 2 m_e c^2 = 1.022\,\text{MeV}.$$
+</EquationBlock>
+
+This is the famous pair-production threshold. It is exactly twice the electron rest energy: the minimum energy needed to put two particles of mass $m_e$ on-shell simultaneously. The <Term slug="rest-energy" /> of the pair is the entire cost; the nucleus carries the momentum debt for free.
+
+<SceneCard caption="FIG.20b — photon (amber) strikes a nucleus (blue). Drag the slider: below 1.022 MeV the nucleus recoils but no pair emerges. Above threshold, an e⁺ (magenta) and e⁻ (cyan) track emerge at slightly asymmetric angles because the nucleus absorbs some recoil momentum.">
+  <WithNucleusScene />
+</SceneCard>
+
+The same formula applies to any threshold process. A proton beam hitting a proton target to produce a proton-antiproton pair ($p + p \to p + p + p + \bar{p}$, so $M = 4m_p$, $m_1 = m_2 = m_p$) has threshold kinetic energy $E_k^\text{th} = 6 m_p c^2 \approx 5.6$ GeV — the landmark number the Bevatron was designed to reach in 1954. The calculation is identical to EQ.03 with $M = 4m_p$ and $m_2 = m_p$, giving $E_\text{th} = 7 m_p c^2$ and therefore $T_\text{th} = E_\text{th} - m_p c^2 = 6 m_p c^2$.
+
+<Callout variant="intuition">
+The threshold formula is a one-line consequence of two facts: (1) the Mandelstam invariant $s$ is Lorentz-invariant, so it can be evaluated in any frame; (2) at threshold, the final state sits at rest in the COM frame, so $s$ equals the square of the total final-state rest mass. Everything else is algebra. The same trick applies to every production threshold in particle physics.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Dirac 1928 and Anderson 1932">
+
+In 1928, four years before pair production was observed, <PhysicistLink slug="paul-dirac" /> wrote down a relativistic wave equation for the electron. The Schrödinger equation had two solutions for each momentum: positive and negative energy. Dirac's equation had four: two spin states for positive-energy electrons, and two spin states for something with negative energy. Dirac initially tried to dismiss these as unphysical, then proposed they corresponded to protons. By 1931 he accepted the inevitable: the equation predicted a particle with the same mass as the electron but opposite charge — the positron.
+
+Carl Anderson was not looking for positrons. He was studying cosmic rays in a cloud chamber at Caltech in 1932, exposing his apparatus to high-altitude radiation passing through a 6 mm lead plate. On the famous August photograph, a track curves through the magnetic field in the way that only a positive charge could — too light to be a proton, wrong curvature for an electron. The radius of curvature above the lead plate is smaller than below, confirming the particle had lost energy passing through the plate and was therefore moving upward, not downward. Anderson called it the positron.
+
+<SceneCard caption="FIG.20c — facsimile of Anderson's cloud-chamber geometry. The magenta track curves with the wrong sign for an electron under B. The lead plate (white bar) slows the particle: tighter radius above means the particle entered from below, losing energy as it passed through. Dirac (1928) and Anderson (1932) are credited. Anderson won the Nobel Prize in Physics in 1936.">
+  <Anderson1932Scene />
+</SceneCard>
+
+The pair-production cross-section grows rapidly above the 1.022 MeV threshold and dominates photon energy loss in matter at energies above a few MeV — this is why the lead plate in Anderson's chamber was absorbing so much energy from the cosmic-ray shower. <Term slug="pair-production" /> is today a routine tool in positron emission tomography (PET scans), high-energy gamma-ray astronomy, and every collider that produces photons above threshold. The process Dirac predicted and Anderson observed is now one of the most quantitatively precise results in quantum electrodynamics.
+
+</Section>
+
+<Section index={5} title="The closing argument — mass is frozen energy">
+
+Pair production is the clearest demonstration that mass and energy are the same thing. The photon carries no rest mass — it is pure energy in motion. The pair it produces carries rest mass — frozen energy, crystallized out of the field. The transaction is exact: $E = 2 m_e c^2$ in, two particles of mass $m_e$ each out, momentum balanced by the nuclear recoil. Nothing is destroyed; the energy changes form from kinetic to inertial.
+
+This is what <Term slug="mass-energy-equivalence" /> means in its most concrete incarnation. Not the famous mushroom cloud — that is mass converted to kinetic energy of fragments. This is the reverse: photon energy condensing into particles with rest mass, governed at every step by the <Term slug="four-momentum" /> bookkeeping that §04 has been building since the energy-momentum triangle.
+
+The §04 module is now complete. From the Lorentz transformation of §02, to the spacetime geometry of §03, to the four-momentum dynamics of §04 — the algebraic spine of special relativity is in place. And yet something is missing: all of §03 and §04 assumed flat spacetime. The Minkowski metric was constant. The geometry did not respond to the matter inside it.
+
+Mass becomes energy. Energy bends light. Light bends spacetime. The next module asks what happens when the geometry of §03 meets the gravity of every massive object — and the answer takes us all the way to general relativity.
+
+</Section>
+
+</TopicPageLayout>
