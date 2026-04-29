@@ -1,0 +1,109 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { WavelengthShiftScene } from "@/components/physics/compton-scattering/wavelength-shift-scene";
+import { Compton1923DataScene } from "@/components/physics/compton-scattering/compton-1923-data-scene";
+import { FourMomentumBalanceScene } from "@/components/physics/compton-scattering/four-momentum-balance-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Arthur Compton", href: "/physicists/arthur-compton" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Compton shift", href: "/dictionary/compton-shift" },
+  { type: "term", label: "Four-momentum", href: "/dictionary/four-momentum" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.19 · SPACETIME DYNAMICS"
+  title="COMPTON SCATTERING"
+  subtitle="The experiment that gave photons mechanical legitimacy — momentum, scattering, and conservation laws."
+/>
+
+<Section index={1} title="The 1922 puzzle — a wavelength that should not shift">
+
+By 1920, physicists had two contradictory pictures of light and no clean test to separate them. Einstein's 1905 photoelectric paper insisted that light comes in discrete quanta — photons — each carrying energy $E = hf$. But the photoelectric effect alone could be explained by a semi-classical model in which only the metal's absorption is quantised; light itself might still be a continuous wave. The community was divided, and the Nobel Prize committee was stalling.
+
+X-rays offered a sharper probe. When a high-energy X-ray beam strikes a material like graphite, it scatters in all directions. The question is: what wavelength comes out?
+
+Classical wave theory gives an unambiguous answer. An incoming electromagnetic wave sets electrons into forced oscillation at the wave's own frequency $f_0$. Oscillating charges reradiate at that same frequency. Therefore the scattered wave must have the same wavelength as the incoming wave, regardless of angle. The prediction is $\lambda' = \lambda_0$, full stop.
+
+In 1922, <PhysicistLink slug="arthur-compton" /> at Washington University in St. Louis measured the scattered X-rays with a Bragg spectrometer — a precision crystal spectrometer that reads wavelength from diffraction angle — and found something the wave picture flatly forbids: the scattered X-ray had a *longer* wavelength than the incoming one. The shift depended on the scattering angle $\theta$. At $\theta = 0$ the wavelength was unchanged. At $\theta = 90°$ it was shifted by about 2.4 pm. At $\theta = 135°$ the shift was larger still.
+
+Wave theory said: no shift, ever. The data said: shifted, angle-dependent, reproducible. Something in the classical picture was catastrophically wrong.
+
+</Section>
+
+<Section index={2} title="Treat the photon as a particle — billiard-ball kinematics">
+
+The resolution came when Compton did something bold: he treated the photon as a mechanical particle obeying special relativity. A photon carries energy $E_\gamma = hf = hc/\lambda$. Einstein had proposed in 1905 that a photon also carries momentum — a proposal the photoelectric data supported but did not force. For a massless particle on the null cone, the relativistic energy-momentum relation $E^2 = (pc)^2 + (m_e c^2)^2$ collapses to $E = pc$, so the photon's momentum is:
+
+<EquationBlock id="EQ.01">
+$$p_\gamma = \frac{h}{\lambda}$$
+</EquationBlock>
+
+Now treat the scattering as a two-body elastic collision in special relativity. An incoming photon (energy $E_\gamma = hc/\lambda_0$, momentum $p_\gamma = h/\lambda_0$ directed along the x-axis) strikes an electron at rest (energy $m_e c^2$, momentum zero). After the collision, the photon exits at angle $\theta$ with wavelength $\lambda'$, and the electron recoils at some angle $\phi$ with relativistic kinetic energy it did not have before.
+
+Conservation laws supply three equations — energy, $x$-momentum, $y$-momentum — and the electron's mass-shell condition $E_e^2 - (p_e c)^2 = (m_e c^2)^2$ supplies the fourth constraint needed to close the system. Working through the algebra (eliminate the electron's recoil angle and momentum, square to use the mass-shell condition) yields a single clean formula for the wavelength shift. The full derivation is a standard SR exercise; the four-momentum approach in §04.1 packages it most elegantly — the <Term slug="four-momentum" /> conservation condition $p_\gamma^\mu + p_e^\mu = p_{\gamma'}^\mu + p_{e'}^\mu$ is four equations in one.
+
+</Section>
+
+<Section index={3} title="The shift formula — angle-dependent, wavelength-independent">
+
+<EquationBlock id="EQ.02">
+$$\Delta\lambda = \frac{h}{m_e c}\,(1 - \cos\theta)$$
+</EquationBlock>
+
+The prefactor $h / m_e c$ is the <Term slug="compton-shift" /> — the electron Compton wavelength $\lambda_C \approx 2.426\,\text{pm}$. It is the natural length scale of the scattering: at $\theta = 90°$ the shift is exactly $\lambda_C$; at $\theta = 180°$ (back-scatter) it is $2\lambda_C$.
+
+Three things about this formula are remarkable. First, $\Delta\lambda$ is independent of the incoming wavelength $\lambda_0$. Whether you use soft X-rays at 100 pm or hard X-rays at 10 pm, the shift at any given angle is always the same $\lambda_C(1 - \cos\theta)$. This wavelength-independence is the formula's clearest signature — it is structurally impossible in the wave picture, which would have to make $\Delta\lambda$ scale with $\lambda_0$ for any resonance-based mechanism. Second, $\Delta\lambda \geq 0$ always: the scattered photon never comes out bluer than it went in, because the electron recoil absorbs a positive amount of kinetic energy. Third, the formula contains $h$ and $m_e$ — quantum and mechanical constants together — in a ratio that is a pure length. The Compton wavelength is where quantum mechanics and special relativity first meet in a single number.
+
+<SceneCard caption="FIG.19a — drag the slider to change scattering angle θ. The incoming Mo Kα photon (amber, λ = 71 pm) strikes the stationary electron; the outgoing photon exits at angle θ with wavelength λ' = λ₀ + λ_C(1 − cos θ). At θ = 90°, Δλ = λ_C exactly. At θ = 0° there is no shift; at θ = 180° the shift is 2λ_C.">
+  <WavelengthShiftScene />
+</SceneCard>
+
+<Callout variant="math">
+The derivation is a five-line SR calculation once you use four-momentum. Write $p_\gamma^\mu = (h/\lambda)(1, 1, 0, 0)$ for the incoming photon (natural units $c=1$ for brevity) and $p_e^\mu = (m_e, 0, 0, 0)$ for the electron at rest. After scattering: $p_{\gamma'}^\mu = (h/\lambda')(1, \cos\theta, \sin\theta, 0)$. Conservation gives $p_{e'}^\mu = p_\gamma^\mu + p_e^\mu - p_{\gamma'}^\mu$. Square both sides using $p_{e'}^2 = m_e^2$ (mass-shell) and the photon null condition $p_\gamma^2 = 0$; the cross-terms produce $(1/\lambda - 1/\lambda') = (1/m_e c)(1 - \cos\theta)/\lambda\lambda'$, which rearranges immediately to $\Delta\lambda = \lambda_C(1-\cos\theta)$.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The 1923 data — Nobel-shaped results">
+
+Compton published his measurements in Physical Review in May 1923. Using molybdenum K-alpha X-rays ($\lambda_0 = 0.071\,\text{nm} = 71\,\text{pm}$, produced by bombarding a molybdenum target and selecting the K-alpha line with a crystal monochromator) scattered off graphite, he measured the outgoing wavelength at six angles spanning 0° to 135°. At each angle the spectrometer resolved two peaks: one at $\lambda_0$ (classical component — photons scattering off tightly bound inner electrons that do not recoil) and one at $\lambda' > \lambda_0$ (the shifted Compton component — photons scattering off nearly-free outer electrons). The shifted peak tracked Compton's formula precisely.
+
+<SceneCard caption="FIG.19b — facsimile-style chart of Compton's 1923 Mo Kα data. White circles are measured scattered wavelengths at 6 angles; amber curve is the Compton prediction; cyan dashed line is the classical wave-theory prediction (no shift). At every angle the data matches the Compton curve, not the classical one.">
+  <Compton1923DataScene />
+</SceneCard>
+
+The gap between the two curves — the cyan classical line sitting at $\lambda' = 71\,\text{pm}$ and the amber Compton curve climbing to $\sim 75\,\text{pm}$ at $\theta = 135°$ — is not a subtle systematic. At 90° the discrepancy is 2.4 pm; Compton's spectrometer resolution was better than 0.5 pm. The data was unambiguous.
+
+Simultaneously and independently, Peter Debye derived the same formula from momentum-kinematics arguments. Compton did not know about Debye's derivation when he submitted; both papers appeared in 1923. The effect carries Compton's name because his data accompanied the formula. The Nobel committee awarded Compton the 1927 prize in Physics specifically for this discovery.
+
+<Callout variant="intuition">
+The key number is the ratio $\lambda_C / \lambda_0$. For Mo K-alpha, $\lambda_C / \lambda_0 = 2.43\,\text{pm} / 71\,\text{pm} \approx 3.4\%$. That is detectable at the few-pm resolution of Bragg spectrometry. For visible light, $\lambda_0 \approx 500\,\text{nm}$ and $\lambda_C / \lambda_0 \sim 5 \times 10^{-6}$ — the shift is there, but completely unresolvable. Compton scattering reveals itself only in the X-ray and gamma-ray regime, which is why it was not seen until X-ray spectroscopy reached the required precision.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Why it mattered — the photon becomes mechanical">
+
+Before 1923, Einstein's photon was a theoretical proposal supported by one experiment (the photoelectric effect) in one regime (UV/visible light on metals). Critics could argue that the photoelectric effect merely required quantised energy absorption in the metal, not a discretised photon. The photon did not have to carry momentum; it did not have to scatter; it did not have to obey Newton's billiard-ball kinematics in a relativistic wrapper.
+
+After Compton 1923, none of that was tenable. The Compton shift formula requires that the photon carry a definite momentum $p = h/\lambda$, that this momentum is conserved in a two-body collision with an electron, and that the collision is governed by special-relativistic four-momentum conservation. A photon that merely delivers quantised energy in bulk cannot produce an angle-dependent wavelength shift that is exactly $\lambda_C(1 - \cos\theta)$. The formula's very structure — the factor $(1 - \cos\theta)$ — is the kinematic signature of a two-body elastic collision. It does not arise from any wave-scattering model.
+
+<SceneCard caption="FIG.19c — four-momentum vectors before and after scattering, drawn on an (E/c, p_x) plane. Before: amber arrow for the photon (p_γ, E_γ/c), magenta arrow for the electron at rest (0, m_e c). After: amber arrow for the scattered photon, magenta arrow for the recoiling electron. The cyan dashed resultant is the same in both panels — four-momentum conserved. Drag θ to watch the photon arrow rotate and the electron recoil vector compensate.">
+  <FourMomentumBalanceScene />
+</SceneCard>
+
+The four-momentum picture is the cleanest formulation. As developed in [§04.1](/relativity/four-momentum), the <Term slug="four-momentum" /> $p^\mu = (E/c, \vec{p})$ packages energy and momentum into one four-vector that transforms as a Lorentz four-vector under boosts. The mass-shell condition $p_\mu p^\mu = m^2 c^2$ is a Lorentz scalar — invariant in every frame. For a photon, $p_\mu p^\mu = 0$: the photon lives on the null cone of the Minkowski metric. Four-momentum conservation $p_\gamma^\mu + p_e^\mu = p_{\gamma'}^\mu + p_{e'}^\mu$ is four equations, all Lorentz-covariant, that encode both energy and momentum conservation automatically. The Compton shift formula is what you get when you apply this machinery to a massless-particle–massive-particle collision and then ask what the scattered photon's wavelength must be.
+
+<PhysicistLink slug="albert-einstein" /> had proposed the momentum $p = h/\lambda$ in 1909 and 1917, but the proposal lacked a direct mechanical test. Compton provided it. The photon was now a particle in the full sense: it carries energy, carries momentum, scatters off other particles at angles governed by four-momentum conservation, and obeys a mass-shell condition that makes it a null vector in Minkowski spacetime. The 1923 data was the mechanical birth certificate of the photon.
+
+From here, the relativistic dynamics of §04 are complete for point particles and photons. The next module, §05, pushes into applied SR: GPS as relativity, the Sagnac effect, relativistic jets, and the barn-pole paradox. Beyond §05, §06 takes the geometry of §03 and asks what happens when spacetime itself is curved by every massive object in it — and that question leads all the way to general relativity.
+
+</Section>
+
+</TopicPageLayout>
