@@ -97,3 +97,91 @@ describe("pointToVec4 / vec4ToPoint round trip", () => {
     expect(back.z).toBeCloseTo(p.z, 12);
   });
 });
+
+import { intervalSquared, classifyInterval, restMass, minkowskiNormSquared } from "@/lib/physics/relativity/types";
+import type { FourMomentum } from "@/lib/physics/relativity/types";
+
+describe("minkowskiNormSquared", () => {
+  it("is positive for a timelike Vec4", () => {
+    // (ct, x, y, z) = (3, 1, 1, 1): 9 − 1 − 1 − 1 = 6
+    const v: Vec4 = [3, 1, 1, 1];
+    expect(minkowskiNormSquared(v)).toBeCloseTo(6, 12);
+  });
+
+  it("is negative for a spacelike Vec4", () => {
+    // (1, 2, 0, 0): 1 − 4 = −3
+    const v: Vec4 = [1, 2, 0, 0];
+    expect(minkowskiNormSquared(v)).toBeCloseTo(-3, 12);
+  });
+
+  it("vanishes for a null Vec4", () => {
+    // (5, 3, 4, 0): 25 − 9 − 16 = 0
+    const v: Vec4 = [5, 3, 4, 0];
+    expect(minkowskiNormSquared(v)).toBeCloseTo(0, 12);
+  });
+});
+
+describe("intervalSquared", () => {
+  const c = 1; // natural units for the algebra checks
+  it("vanishes for two coincident events", () => {
+    const p = { t: 0.5, x: 0.2, y: -0.3, z: 1.7 };
+    expect(intervalSquared(p, p, c)).toBeCloseTo(0, 12);
+  });
+
+  it("is positive for timelike separation", () => {
+    const p1 = { t: 0, x: 0, y: 0, z: 0 };
+    const p2 = { t: 2, x: 1, y: 0, z: 0 };
+    expect(intervalSquared(p1, p2, c)).toBeCloseTo(3, 8); // 4 − 1 = 3
+  });
+
+  it("is negative for spacelike separation", () => {
+    const p1 = { t: 0, x: 0, y: 0, z: 0 };
+    const p2 = { t: 1, x: 2, y: 0, z: 0 };
+    expect(intervalSquared(p1, p2, c)).toBeCloseTo(-3, 8); // 1 − 4 = −3
+  });
+
+  it("vanishes on the light cone", () => {
+    const p1 = { t: 0, x: 0, y: 0, z: 0 };
+    const p2 = { t: 5, x: 5, y: 0, z: 0 };
+    expect(intervalSquared(p1, p2, c)).toBeCloseTo(0, 8);
+  });
+});
+
+describe("classifyInterval", () => {
+  const c = 1;
+  it("classifies timelike-future", () => {
+    expect(classifyInterval({ t: 0, x: 0, y: 0, z: 0 }, { t: 2, x: 1, y: 0, z: 0 }, c)).toBe("timelike-future");
+  });
+  it("classifies timelike-past", () => {
+    expect(classifyInterval({ t: 2, x: 1, y: 0, z: 0 }, { t: 0, x: 0, y: 0, z: 0 }, c)).toBe("timelike-past");
+  });
+  it("classifies spacelike", () => {
+    expect(classifyInterval({ t: 0, x: 0, y: 0, z: 0 }, { t: 1, x: 2, y: 0, z: 0 }, c)).toBe("spacelike");
+  });
+  it("classifies null-future on the light cone", () => {
+    expect(classifyInterval({ t: 0, x: 0, y: 0, z: 0 }, { t: 5, x: 5, y: 0, z: 0 }, c)).toBe("null-future");
+  });
+});
+
+describe("restMass", () => {
+  it("recovers electron rest mass from its four-momentum at rest (E = mc², p = 0)", () => {
+    const c = 2.99792458e8;
+    const m = 9.1093837015e-31; // electron mass kg
+    const E = m * c * c;
+    const p: FourMomentum = [E / c, 0, 0, 0];
+    // m is ~9e-31 kg; relative tolerance < 1e-12 of that is comfortably within double precision.
+    expect(restMass(p, c) / m).toBeCloseTo(1, 12);
+  });
+
+  it("vanishes for a photon (null four-momentum)", () => {
+    const c = 1;
+    const p: FourMomentum = [1, 1, 0, 0]; // E/c = px = 1
+    expect(restMass(p, c)).toBeCloseTo(0, 12);
+  });
+
+  it("throws on a spacelike four-momentum", () => {
+    const c = 1;
+    const p: FourMomentum = [1, 2, 0, 0]; // E²/c² − p² = 1 − 4 = −3 < 0
+    expect(() => restMass(p, c)).toThrow(RangeError);
+  });
+});

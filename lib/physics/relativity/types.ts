@@ -119,3 +119,54 @@ export function pointToVec4(p: MinkowskiPoint, c: number): Vec4 {
 export function vec4ToPoint(v: Vec4, c: number): MinkowskiPoint {
   return { t: v[0] / c, x: v[1], y: v[2], z: v[3] };
 }
+
+/** Quadrant classification of a Minkowski-interval relationship. */
+export type LightConeQuadrant =
+  | "timelike-future"
+  | "timelike-past"
+  | "spacelike"
+  | "null-future"
+  | "null-past"
+  | "origin";
+
+/** Minkowski norm-squared (mostly-minus signature) of a Vec4 (ct, x, y, z) or
+ *  a four-momentum (E/c, p_x, p_y, p_z). Single source of truth — both
+ *  four-vectors.ts and four-momentum.ts import from here, no duplicates. */
+export function minkowskiNormSquared(v: Vec4): number {
+  return v[0] * v[0] - v[1] * v[1] - v[2] * v[2] - v[3] * v[3];
+}
+
+/** Squared invariant interval s² = c²Δt² − Δx² − Δy² − Δz² between two events.
+ *  Sign convention: timelike s² > 0, spacelike s² < 0, null s² = 0 (mostly-plus on the time component). */
+export function intervalSquared(p1: MinkowskiPoint, p2: MinkowskiPoint, c: number): number {
+  const dt = p1.t - p2.t;
+  const dx = p1.x - p2.x;
+  const dy = p1.y - p2.y;
+  const dz = p1.z - p2.z;
+  return c * c * dt * dt - dx * dx - dy * dy - dz * dz;
+}
+
+/** Classify the relationship between two events. `eps` is the absolute tolerance for null. */
+export function classifyInterval(p1: MinkowskiPoint, p2: MinkowskiPoint, c: number, eps = 1e-12): LightConeQuadrant {
+  const s2 = intervalSquared(p1, p2, c);
+  const dt = p2.t - p1.t;
+  if (Math.abs(s2) < eps && Math.abs(dt) < eps) return "origin";
+  if (Math.abs(s2) < eps) return dt > 0 ? "null-future" : "null-past";
+  if (s2 > 0) return dt > 0 ? "timelike-future" : "timelike-past";
+  return "spacelike";
+}
+
+/** Semantic alias: a four-momentum is just a Vec4 with components (E/c, px, py, pz). */
+export type FourMomentum = Vec4;
+
+/** Rest mass m₀ recovered from a FourMomentum p^μ via the invariant
+ *  m²c² = (E/c)² − |p|² (Griffiths convention). Returns m in kg if p is in SI units. */
+export function restMass(p: FourMomentum, c: number): number {
+  const E_over_c = p[0];
+  const pSq = p[1] * p[1] + p[2] * p[2] + p[3] * p[3];
+  const m2c2 = E_over_c * E_over_c - pSq;
+  if (m2c2 < 0) {
+    throw new RangeError(`restMass: spacelike four-momentum (m²c² = ${m2c2} < 0)`);
+  }
+  return Math.sqrt(m2c2) / c;
+}
