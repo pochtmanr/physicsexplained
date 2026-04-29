@@ -1096,6 +1096,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SpacetimeClockScene: lazyScene(() =>
     import("@/components/physics/time-dilation/spacetime-clock-scene").then((m) => ({ default: m.SpacetimeClockScene })),
   ),
+  // RT §02 — length-contraction
+  RodContractionScene: lazyScene(() =>
+    import("@/components/physics/length-contraction/rod-contraction-scene").then((m) => ({ default: m.RodContractionScene })),
+  ),
+  MuonFromItsFrameScene: lazyScene(() =>
+    import("@/components/physics/length-contraction/muon-from-its-frame-scene").then((m) => ({ default: m.MuonFromItsFrameScene })),
+  ),
+  GarageParadoxPreviewScene: lazyScene(() =>
+    import("@/components/physics/length-contraction/garage-paradox-preview-scene").then((m) => ({ default: m.GarageParadoxPreviewScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RodContractionScene } from "@/components/physics/length-contraction/rod-contraction-scene";
+import { MuonFromItsFrameScene } from "@/components/physics/length-contraction/muon-from-its-frame-scene";
+import { GarageParadoxPreviewScene } from "@/components/physics/length-contraction/garage-paradox-preview-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Length contraction", href: "/dictionary/length-contraction" },
+  { type: "term", label: "Time dilation", href: "/dictionary/time-dilation" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.07 · SR KINEMATICS"
+  title="LENGTH CONTRACTION"
+  subtitle="Why a moving rod is shorter — and why no one moving with it can tell."
+/>
+
+<Section index={1} title="The complement of dilation">
+
+§02.1 took apart Newtonian time: a clock moving past you ticks slowly because its worldline is angled in spacetime, and the lab-frame projection of its tick interval is longer than the proper interval along it. Length contraction is the spatial half of the same statement. Take a rod at rest in some frame and call its length there $L_0$ — the **proper length**, measured by an observer who moves with the rod. Now have someone in a different frame, moving longitudinally at speed $\beta c$, mark the position of the rod's left end and of its right end *at the same lab-frame instant*. The spatial separation of those marks is
+
+<EquationBlock id="EQ.01">
+$$ L = \frac{L_0}{\gamma(\beta)}, \qquad \gamma(\beta) = \frac{1}{\sqrt{1 - \beta^2}}. $$
+</EquationBlock>
+
+Strictly less than $L_0$ for any $\beta \neq 0$, and shorter by the same factor by which moving clocks slow. Both effects come out of the Lorentz transformation in §02.3 — two angles of one geometric object — but the kinematic statement is sharp on its own.
+
+Three things <Term slug="length-contraction" /> is *not*. Not a stress: nothing is squeezing the rod's atoms. Not optical: this is not what you would *photograph* (light-travel-time effects, the Penrose-Terrell rotation, are a separate story). Not a property of the rod: in its own rest frame, $L_0$ is the only number that exists. Contraction is a statement about *measurement* — about what happens when you require two simultaneous-in-the-lab-frame events to fix "where the left end is" and "where the right end is".
+
+</Section>
+
+<Section index={2} title="A rod, two frames, one β slider">
+
+The visualisation makes the asymmetry concrete. The cyan rod on top sits at rest in its own frame; its proper length $L_0$ is the full extent shown. The magenta rod below is the same rod as the lab observer measures it: shorter by exactly $1/\gamma$, drifting rightward at $\beta c$.
+
+<SceneCard caption="FIG.07a — A rod with proper length L₀ in its own rest frame (cyan, top track) and as the lab observer measures it (magenta, bottom track). The β slider rules both. The right inset sketches the two endpoint worldlines: vertical in the rest frame, tilted in the lab; the dashed segment is the rod sampled at one lab time — the length the lab observer writes down.">
+  <RodContractionScene />
+</SceneCard>
+
+The right-hand inset is the geometric heart of it. The two endpoint worldlines are parallel lines in spacetime — vertical in the rod's rest frame (endpoints don't move), tilted at slope $1/\beta$ in the lab frame (endpoints drift). The rod's *length* in any frame is the spatial separation of these worldlines along that frame's "now" slice. In the rod's frame the worldlines are spaced by $L_0$; in the lab frame the same two tilted worldlines slice at $L_0/\gamma$. Two rulers, one pair of worldlines, two numbers.
+
+<Callout variant="intuition">
+The rod is not getting shorter. The lab observer is sampling its two endpoints at the same lab-frame time — and from the rod's perspective, those two samplings happened at *different* times.
+</Callout>
+
+Perpendicular dimensions pass through the boost untouched. A spinning disk moving longitudinally gets shorter along the direction of motion and stays the same height: the Lorentz boost only mixes time and the boost-direction coordinate, with $y' = y$, $z' = z$.
+
+</Section>
+
+<Section index={3} title="The muon, from its own seat">
+
+§02.1 told the muon-shower story in Earth's frame: cosmic-ray muons produced at $\sim 10$ km altitude, moving at $\beta \approx 0.995$, with proper-frame half-life $\tau \approx 2.2$ μs. The classical no-dilation answer says they should be vanishingly rare at sea level. The relativistic answer — the muon's proper time during the descent is $t_\text{lab}/\gamma$ — gives a survival fraction $\sim 0.35$, which is what detectors see.
+
+That works, but it asks the muon to carry a clock that ticks slowly. In the muon's own rest frame, its clock ticks at the ordinary rate. So how does the muon explain its own survival? It cannot use time dilation — there is none in its frame.
+
+<SceneCard caption="FIG.07b — The muon shower in the muon's own rest frame. The muon (cyan) sits still; the atmosphere (magenta) — a 10 km column in Earth's frame — is contracted to L₀/γ ≈ 1 km and rushes downward past it at βc. The traversal takes ≈ 3.35 μs of muon proper time (≈ 1.5 half-lives), and the survival fraction comes out to the same ≈ 0.35 the lab-frame calculation gives.">
+  <MuonFromItsFrameScene />
+</SceneCard>
+
+The muon's explanation is length contraction. In its rest frame, the atmosphere is a $10$ km column moving longitudinally at $\beta c$, contracted to $L_0/\gamma \approx 1$ km. The muon waits, ticking its ordinary clock, while $1$ km of atmosphere whooshes past at nearly $c$. The traversal takes
+
+<EquationBlock id="EQ.02">
+$$ t_\mu = \frac{L_0/\gamma}{\beta c} \approx 3.35\ \mu\text{s}, $$
+</EquationBlock>
+
+about $1.5$ rest-frame half-lives. Survival is $2^{-1.5} \approx 0.35$ — exactly the number the Earth observer wrote down.
+
+These are not "two ways of looking at the problem". They are the same physical content in two languages. Lab frame: clock runs slow, distance is what it is. Muon frame: clock runs at its proper rate, distance is contracted. Both arrive at the same count of muons at sea level — the only number nature commits to.
+
+This is <PhysicistLink slug="albert-einstein" />'s 1905 conceptual move. The same algebra <PhysicistLink slug="hendrik-antoon-lorentz" /> wrote in 1904 to rescue the aether becomes a statement that *no frame is privileged*. Both observers see the *other* frame's clock dilated and ruler shortened, and the laws of physics are identical in both.
+
+</Section>
+
+<Section index={4} title="The pole-and-the-garage, planted">
+
+The price for this democracy of frames is a thicket of paradoxes that look, at first glance, like contradictions. The cleanest is the pole-and-garage. Take a $5$ m pole and a $4$ m garage, arrange a relative velocity that gives $\gamma = 5/4 = 1.25$, i.e. $\beta = 0.6$. Run the pole through the garage at that speed. Two questions, two frames:
+
+<SceneCard caption="FIG.07c — A 5 m pole (proper length) and a 4 m garage (proper length), at β = 0.6 → γ = 1.25. Top: the garage frame. The pole is contracted to 4 m and fits inside. Bottom: the pole frame. The garage is contracted to 3.2 m — too short for the pole. Both descriptions follow strictly from L = L₀/γ. Neither is mistaken. The resolution is not on this page.">
+  <GarageParadoxPreviewScene />
+</SceneCard>
+
+In the garage's frame, the pole rushes through at $\beta = 0.6$, contracted to $L_0/\gamma = 4$ m, and at one instant the entire pole is inside. The owner could, in principle, slam both doors shut at that instant. The pole fits.
+
+In the pole's frame, the *garage* is the moving object — contracted to $4/\gamma = 3.2$ m. A $5$ m pole does not fit inside a $3.2$ m garage. The pole pokes out at both ends, and the doors can never be simultaneously shut around it.
+
+Both observers apply $L = L_0/\gamma$ correctly. Both predict an unambiguous physical outcome. The predictions disagree.
+
+The trick — and we are not pulling it here, that is [§05.1 the-barn-pole-paradox](/relativity/the-barn-pole-paradox)'s job — is the relativity of simultaneity. "Both doors close at the same time" is a frame-dependent statement. In the garage's frame, both doors close together. In the pole's frame, the front door closes *first*, the rear door closes *later*, and in between the pole is sliding through. There is no single event "the pole is enclosed"; there is a pair of events whose time-ordering depends on the observer.
+
+For now, just feel the disturbance. Length contraction by itself is consistent. Length contraction *plus* a pair of operationally meaningful simultaneous events is where the paradoxes live — and §01.5 already took absolute simultaneity off the table.
+
+</Section>
+
+<Section index={5} title="Where the algebra came from">
+
+Worth a paragraph: <PhysicistLink slug="hendrik-antoon-lorentz" /> wrote down the contraction formula in 1892, thirteen years before Einstein. He believed it was *physical*: moving objects push through the aether, and their internal electromagnetic interactions deform them along the direction of motion. The contraction was supposed to be a real material compression that exactly cancelled the fringe shift Michelson and Morley should have seen. (George FitzGerald had proposed the same fix in 1889 — hence the FitzGerald-Lorentz contraction.) An aether-saving move.
+
+Einstein's 1905 paper did not write down a new formula. The formula was already there. He reinterpreted it. The contraction is not a stress in the rod's bonds or a deformation by the aether: it is a kinematic statement about what happens when two frames trade rulers. There is no material answer to "is the contraction real?" — it is real in the sense that the Pythagorean theorem is real. It is geometry, made concrete.
+
+By the time §02.3 packages the four lines of the Lorentz transformation, $L = L_0/\gamma$ and $\Delta t = \gamma \Delta \tau$ fall out of the same matrix on the same page. Time dilation, length contraction — not two laws. Two views of one rotation in 4D pseudo-Euclidean spacetime. The next topic shows you the rotation.
+
+</Section>
+
+</TopicPageLayout>
