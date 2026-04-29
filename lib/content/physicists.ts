@@ -188,6 +188,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "tides-and-three-body" },
       { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
     ],
   },
   {
@@ -376,6 +377,8 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "relativity", topicSlug: "time-dilation" },
       { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
       { branchSlug: "relativity", topicSlug: "relativistic-doppler" },
+      { branchSlug: "relativity", topicSlug: "mass-energy-equivalence" },
+      { branchSlug: "relativity", topicSlug: "relativistic-collisions" },
     ],
   },
   {
@@ -1056,6 +1059,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
       { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
+      { branchSlug: "relativity", topicSlug: "threshold-energy-and-pair-production" },
     ],
   },
   {
@@ -1070,6 +1074,10 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
       { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
       { branchSlug: "relativity", topicSlug: "relative-simultaneity" },
+      { branchSlug: "relativity", topicSlug: "spacetime-diagrams" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
     ],
   },
   {
@@ -1110,6 +1118,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/richard-feynman.webp"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
     ],
   },
   {
@@ -1140,6 +1149,17 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "relativity", topicSlug: "michelson-morley" },
       { branchSlug: "relativity", topicSlug: "einsteins-two-postulates" },
+    ],
+  },
+  {
+    slug: "arthur-compton",
+    born: "1892",
+    died: "1962",
+    nationality: "American",
+    image: storageUrl("physicists/arthur-compton.avif"),
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "compton-scattering" },
+      { branchSlug: "relativity", topicSlug: "four-momentum" },
     ],
   },
 ];

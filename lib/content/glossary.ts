@@ -2782,6 +2782,171 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "relativity", topicSlug: "time-dilation" },
     ],
   },
+  // RT §03 — Spacetime Geometry
+  {
+    slug: "spacetime",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "spacetime-diagrams" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+    ],
+  },
+  {
+    slug: "world-line",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "spacetime-diagrams" },
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+      { branchSlug: "relativity", topicSlug: "the-twin-paradox" },
+    ],
+  },
+  {
+    slug: "proper-time",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+      { branchSlug: "relativity", topicSlug: "the-twin-paradox" },
+      { branchSlug: "relativity", topicSlug: "time-dilation" },
+    ],
+  },
+  {
+    slug: "invariant-interval",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski", "henri-poincare"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+      { branchSlug: "relativity", topicSlug: "spacetime-diagrams" },
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+    ],
+  },
+  {
+    slug: "light-cone",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+    ],
+  },
+  {
+    slug: "spacelike",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+      { branchSlug: "relativity", topicSlug: "relative-simultaneity" },
+    ],
+  },
+  {
+    slug: "timelike",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+    ],
+  },
+  {
+    slug: "null-interval",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "light-cones-and-causality" },
+      { branchSlug: "relativity", topicSlug: "the-invariant-interval" },
+    ],
+  },
+  // RT §04 — Relativistic Dynamics
+  {
+    slug: "four-momentum",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "four-momentum" },
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+      { branchSlug: "relativity", topicSlug: "relativistic-collisions" },
+      { branchSlug: "relativity", topicSlug: "compton-scattering" },
+    ],
+  },
+  {
+    slug: "four-velocity",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+      { branchSlug: "relativity", topicSlug: "four-momentum" },
+    ],
+  },
+  {
+    slug: "four-acceleration",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+      { branchSlug: "relativity", topicSlug: "the-twin-paradox" },
+    ],
+  },
+  {
+    slug: "four-force",
+    category: "concept",
+    relatedPhysicists: ["hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "four-vectors-and-proper-time" },
+      { branchSlug: "relativity", topicSlug: "four-momentum" },
+    ],
+  },
+  {
+    slug: "rest-energy",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "mass-energy-equivalence" },
+      { branchSlug: "relativity", topicSlug: "four-momentum" },
+    ],
+  },
+  {
+    slug: "mass-energy-equivalence",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "mass-energy-equivalence" },
+      { branchSlug: "relativity", topicSlug: "relativistic-collisions" },
+      { branchSlug: "relativity", topicSlug: "threshold-energy-and-pair-production" },
+    ],
+  },
+  {
+    slug: "threshold-energy",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "paul-dirac"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "threshold-energy-and-pair-production" },
+      { branchSlug: "relativity", topicSlug: "relativistic-collisions" },
+    ],
+  },
+  {
+    slug: "pair-production",
+    category: "phenomenon",
+    relatedPhysicists: ["paul-dirac", "arthur-compton"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "threshold-energy-and-pair-production" },
+      { branchSlug: "relativity", topicSlug: "mass-energy-equivalence" },
+    ],
+  },
+  {
+    slug: "compton-shift",
+    category: "phenomenon",
+    relatedPhysicists: ["arthur-compton"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "compton-scattering" },
+      { branchSlug: "relativity", topicSlug: "four-momentum" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
