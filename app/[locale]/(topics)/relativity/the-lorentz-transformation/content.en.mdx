@@ -1,0 +1,137 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GalileanVsLorentzScene } from "@/components/physics/the-lorentz-transformation/galilean-vs-lorentz-scene";
+import { InvariantIntervalScene } from "@/components/physics/the-lorentz-transformation/invariant-interval-scene";
+import { LorentzMatrixScene } from "@/components/physics/the-lorentz-transformation/4x4-matrix-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Henri Poincaré", href: "/physicists/henri-poincare" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.08 · SR KINEMATICS"
+  title="THE LORENTZ TRANSFORMATION"
+  subtitle="Four lines of algebra replace Galileo."
+/>
+
+<Section index={1} title="Four lines of algebra">
+
+By 1904 the bookkeeping had been written down. <PhysicistLink slug="hendrik-antoon-lorentz" />, working in Leiden, had assembled the coordinate transformation that left Maxwell's equations form-invariant under a boost — the algebra that the Michelson-Morley null result and FitzGerald's contraction hypothesis seemed to require. Lorentz wrote it as a real, material contraction in the aether. Bodies moving through the aether physically shrink along their direction of motion; clocks moving through the aether physically run slow. The algebra was the visible shadow of an invisible mechanical effect on matter and on light.
+
+A year later <PhysicistLink slug="albert-einstein" /> took the same four lines and reinterpreted them as geometry. There is no aether. There is no preferred frame. There is no "real" length and "real" time that get distorted in moving bodies. There are coordinates, and those coordinates transform between observers — and the transformation that does so is the one Lorentz had already written. Einstein's contribution was not the algebra. Lorentz had it. Larmor had a version of it in 1900, FitzGerald had the contraction in 1889, Voigt had a related transform in 1887. Einstein's contribution was to throw away every mechanical hypothesis sitting under the algebra and to declare it a statement about *how observers compare coordinates*, not about how matter behaves in a substrate. The algebra was unchanged. The world it described was unrecognisable.
+
+A few months after Einstein's June 1905 paper, <PhysicistLink slug="henri-poincare" /> in Paris completed the picture from the third side. The boosts together with spatial rotations form a *group* — closed under composition, with inverses, with an identity. A boost by $\beta_1$ followed by a boost by $\beta_2$ along the same axis is again a single boost — just not at $\beta_1 + \beta_2$. (That is §02.4.) The geometry is the geometry of the group. Lorentz, Einstein, Poincaré: three formulations of the same four lines, three readings of why they are correct.
+
+Here are the lines themselves, for a frame moving at velocity $v = \beta c$ along the lab's $+x$ axis:
+
+<EquationBlock id="EQ.01">
+$$ t' = \gamma\left(t - \frac{v\,x}{c^2}\right), \quad x' = \gamma(x - v\,t), \quad y' = y, \quad z' = z, $$
+</EquationBlock>
+
+with the **Lorentz factor**
+
+<EquationBlock id="EQ.02">
+$$ \gamma = \frac{1}{\sqrt{1 - \beta^2}}, \qquad \beta = \frac{v}{c}. $$
+</EquationBlock>
+
+Four equations. The first two are the working part — time and the boost-direction coordinate mix into each other. The third and fourth say that perpendicular spatial coordinates are unchanged. The factor $\gamma$ enforces the speed-of-light constancy postulate (§01.4): solve for the worldline of a light pulse $x = c\,t$ and you get $x' = c\,t'$ in the boosted frame. The cross-term $v\,x/c^2$ in the first equation is the time-mixing piece — it is what makes simultaneity observer-dependent (§01.5), and it is what was *missing* from the Galilean transformation. <Term slug="lorentz-transformation" />
+
+</Section>
+
+<Section index={2} title="Side-by-side with Galileo">
+
+What makes these four lines a replacement and not an extension is the cross-term and the $\gamma$ factor. Strip them away — set $\gamma = 1$ and drop $v\,x/c^2$ — and the Lorentz transformation collapses back to Galileo's $t' = t,\ x' = x - v\,t$, the kinematic frame Newton inherited and built two centuries of mechanics on top of. The reduction is not approximate; it is exact in the limit $\beta \to 0$, and at order $\beta^2$ the corrections to Galilean kinematics are $\gamma - 1 \approx \tfrac{1}{2}\beta^2$. At a car's 30 m/s that correction is $5 \times 10^{-15}$, far below any direct measurement, which is why Galileo was right wherever anyone could measure for two hundred years.
+
+<SceneCard caption="FIG.08a — A rectangle of lab events transformed under Galilean (left, amber) and Lorentz (right, magenta) boosts. Galileo shears the rectangle horizontally; Lorentz also stretches it and tilts it in time. Slide β to 0.95 and the two pictures stop looking like the same physics.">
+  <GalileanVsLorentzScene />
+</SceneCard>
+
+The visualisation makes one thing concrete: the Galilean rectangle stays a rectangle. Time slices remain horizontal — every lab observer agrees on what "now" is, and the cost of changing frames is just a horizontal slide. The Lorentz rectangle does not stay a rectangle. Lines of constant $t'$ are no longer horizontal in the lab's $(t, x)$ chart; they tilt. Two events at the same lab time but different lab positions sit at different boosted times. Newtonian simultaneity — already buried in §01.5 — is re-buried here in algebra.
+
+A second piece of structure is worth naming. The inverse of a Lorentz boost by $\beta$ is a Lorentz boost by $-\beta$. Algebraically:
+
+<EquationBlock id="EQ.03">
+$$ t = \gamma(t' + v\,x'/c^2), \qquad x = \gamma(x' + v\,t'). $$
+</EquationBlock>
+
+The signs flipped, the $\gamma$ stayed. Composing the boost and its inverse gives the identity — $\Lambda(\beta)\,\Lambda(-\beta) = I$. The transformation is symmetric: from the moving frame, the *lab* is moving at $-v$, and the same algebra applies. This is the relativity-of-frames part of Einstein's first postulate, encoded directly into the inverse formula.
+
+</Section>
+
+<Section index={3} title="The boost matrix">
+
+The four equations are linear in $(t, x, y, z)$, so they package as a $4 \times 4$ matrix acting on the 4-vector of coordinates. With Greek indices over $(0, 1, 2, 3) = (c\,t, x, y, z)$ — note we put $c\,t$ in the time slot so all four entries share length units — the boost reads $X'^{\mu} = \Lambda^{\mu}{}_{\nu}\,X^{\nu}$ with
+
+<EquationBlock id="EQ.04">
+$$ \Lambda^{\mu}{}_{\nu} = \begin{pmatrix} \gamma & -\gamma\beta & 0 & 0 \\ -\gamma\beta & \gamma & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix}. $$
+</EquationBlock>
+
+The upper-left $2 \times 2$ block carries the entire content of the relativistic mixing. The lower-right $2 \times 2$ block is the identity — perpendicular directions are inert. Write out the matrix-vector product on the first row and you recover $c\,t' = \gamma(c\,t) + (-\gamma\beta)\,x = \gamma(c\,t - \beta\,x) = \gamma\,c\,(t - v\,x/c^2)$, which is line 1 of EQ.01 multiplied by $c$. The matrix is just the four lines, packed.
+
+<SceneCard caption="FIG.08c — Λ as a 4×4 grid. Slide β to drive γ; the four γ-bearing cells in the upper-left block brighten as β grows. Click any row to read off the transform of one primed coordinate. The y and z rows are inert because the boost is along x.">
+  <LorentzMatrixScene />
+</SceneCard>
+
+Why bother with the matrix? Three reasons. First, composition: applying boost $\Lambda(\beta_1)$ and then $\Lambda(\beta_2)$ along the same axis is just multiplying matrices, and matrix multiplication is associative — the *group* structure that <PhysicistLink slug="henri-poincare" /> made explicit in his October 1905 *Sur la dynamique de l'électron*. Second, generalisation: a general Lorentz transformation is a product of a boost in some direction and a spatial rotation. Both are $4 \times 4$ matrices preserving the metric $\eta = \mathrm{diag}(+, -, -, -)$. The condition $\Lambda^{T}\,\eta\,\Lambda = \eta$ defines the **Lorentz group** $O(1,3)$. Six free parameters: three for boost direction-and-magnitude, three for rotation. The matrix above is one representative. Third, action on tensors: anything that transforms as a 4-vector or as a higher-rank tensor under Lorentz boosts gets that transformation by a contraction of one $\Lambda$ per index. The four-velocity, the four-momentum, the electromagnetic field tensor — all use the same $\Lambda$, repeated. The matrix is reusable in a way the four scalar lines are not.
+
+<Callout variant="math">
+The same matrix appears in the EM module under a different cover. Under a Lorentz boost the components of $\mathbf{E}$ and $\mathbf{B}$ mix into one another — and the rule that mixes them is exactly $\Lambda^{\mu}{}_{\alpha}\,\Lambda^{\nu}{}_{\beta}\,F^{\alpha\beta}$ acting on the antisymmetric field tensor $F^{\mu\nu}$. See [the EM application](/electromagnetism/e-and-b-under-lorentz) for the field-tensor companion treatment — six numbers transformed by the same boost.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The invariant interval">
+
+The Lorentz transformation has a single geometric job. It preserves the **invariant interval**
+
+<EquationBlock id="EQ.05">
+$$ s^2 = c^2\,\Delta t^2 - \Delta x^2 - \Delta y^2 - \Delta z^2, $$
+</EquationBlock>
+
+where $\Delta t$, $\Delta x$, etc. are differences of coordinates between two events. This is the relativistic generalisation of "distance" — except the metric is $(+, -, -, -)$, with one timelike sign and three spacelike, so the "distance" between two events can be positive (timelike), negative (spacelike), or zero (null, on the light cone). $s^2$ is what every Lorentz observer agrees on — a 4-D pseudo-Euclidean rotation invariant.
+
+<SceneCard caption="FIG.08b — Three event-pair presets: timelike (s² > 0), null (s² = 0, on the light cone), spacelike (s² < 0). Slide β from 0 to 0.9 and the two events' lab and primed coordinates change continuously, but s² does not. The number is fixed; the labels change.">
+  <InvariantIntervalScene />
+</SceneCard>
+
+The proof is direct. Compute $c^2 \Delta t'^2 - \Delta x'^2$ using the Lorentz formulas (suppress y, z which don't move):
+
+$$ c^2\Delta t'^2 - \Delta x'^2 = \gamma^2\bigl(c\,\Delta t - \beta\,\Delta x\bigr)^2 - \gamma^2\bigl(\Delta x - \beta\,c\,\Delta t\bigr)^2. $$
+
+Expand both squares, collect terms in $c^2\Delta t^2$, $\Delta x^2$, and the cross-term $c\,\Delta t\,\Delta x$:
+
+$$ = \gamma^2\bigl(c^2\Delta t^2 - 2\beta\,c\,\Delta t\,\Delta x + \beta^2\Delta x^2\bigr) - \gamma^2\bigl(\Delta x^2 - 2\beta\,c\,\Delta t\,\Delta x + \beta^2 c^2\Delta t^2\bigr). $$
+
+The cross-terms cancel. The remaining squared pieces collect to $\gamma^2(1 - \beta^2)(c^2\Delta t^2 - \Delta x^2)$. And $\gamma^2(1 - \beta^2) = 1$ by the definition of $\gamma$. So $s'^2 = s^2$. Three lines of arithmetic; one geometric statement that is the entire content of special relativity. <Term slug="lorentz-transformation" />
+
+The sign of $s^2$ classifies the causal relationship between two events. **Timelike** ($s^2 > 0$) means one event lies in the other's light cone: a signal slower than $c$ can connect them, and every Lorentz observer agrees on which came first. **Spacelike** ($s^2 < 0$) means no signal can connect them: the order is observer-dependent, and one frame can disagree with another about which event came first. **Null** ($s^2 = 0$) means a light ray connects them — the boundary between the other two cases, and the only one accessible to electromagnetic radiation. The light cone is the locus of null separation from any chosen event.
+
+</Section>
+
+<Section index={5} title="Three readings, one transformation">
+
+The same four lines admit three formulations, and which one you reach for depends on the question.
+
+The **algebraic** reading is Lorentz's. Start from Maxwell's equations; demand that they have the same form in two frames; derive the transformation that does it. This is mechanical and historically primary. It produces the algebra without a clear physical interpretation — Lorentz himself believed the contraction was a real effect of the aether on the molecular structure of moving bodies, an explanation that the Michelson-Morley null result *required*. Lorentz did not believe his own algebra was kinematic. He believed it was material.
+
+The **geometric** reading is Einstein's. Drop the aether. Take the two postulates seriously: (1) all inertial frames are equivalent; (2) the speed of light is the same in all of them. Derive the transformation that respects both. The same four lines emerge — but now they are statements about coordinates, not about matter. Time itself is what gets transformed. There is no "real" time hiding behind the algebra; there is just $t'$ and $t$, and they differ because the observers do.
+
+The **group-theoretic** reading is Poincaré's. The boosts are a Lie group — closed under composition, with smooth inverses, with a six-parameter family of rotations and boosts together making the full Lorentz group $O(1,3)$, and adjoining the four spacetime translations producing the **Poincaré group**. The boost composition law is *not* additive in $\beta$ — that is the §02.4 velocity-addition formula. It *is* additive in **rapidity** $\varphi = \mathrm{arctanh}(\beta)$, which is the natural angle parameter for a hyperbolic rotation in the $(c\,t, x)$ plane. The boost is a *hyperbolic rotation*, and rapidity is its angle.
+
+<Callout variant="intuition">
+Spatial rotations: $\theta_1 + \theta_2$ adds. Boosts in the same direction: $\varphi_1 + \varphi_2$ adds (where $\varphi = \mathrm{arctanh}\,\beta$). The $\beta$-parameter is the hyperbolic-tangent of the rapidity, not the rapidity itself. That is why $0.6\,c$ followed by $0.6\,c$ does not produce $1.2\,c$ — but $\mathrm{arctanh}(0.6) + \mathrm{arctanh}(0.6) \approx 1.388$ rapidity, and $\tanh(1.388) \approx 0.882$, the answer §02.4 will compute the long way.
+</Callout>
+
+What §02 does for the rest of the module is mechanical. Apply EQ.01 to a clock at rest in the moving frame: time dilates (§02.1). Apply it to a rod at rest in the moving frame: length contracts (§02.2). Apply it to a velocity in the moving frame: the addition rule emerges (§02.4). Apply it to the frequency of a light wave: relativistic Doppler (§02.5). Four lines of algebra, four kinematic consequences, one geometry. <PhysicistLink slug="hendrik-antoon-lorentz" /> wrote the algebra; Einstein read it as geometry; <PhysicistLink slug="henri-poincare" /> read it as a group. We will use all three readings, depending on which is shorter.
+
+</Section>
+
+</TopicPageLayout>

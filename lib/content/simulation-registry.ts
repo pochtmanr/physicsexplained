@@ -1106,6 +1106,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   GarageParadoxPreviewScene: lazyScene(() =>
     import("@/components/physics/length-contraction/garage-paradox-preview-scene").then((m) => ({ default: m.GarageParadoxPreviewScene })),
   ),
+  // RT §02 — the-lorentz-transformation
+  GalileanVsLorentzScene: lazyScene(() =>
+    import("@/components/physics/the-lorentz-transformation/galilean-vs-lorentz-scene").then((m) => ({ default: m.GalileanVsLorentzScene })),
+  ),
+  InvariantIntervalScene: lazyScene(() =>
+    import("@/components/physics/the-lorentz-transformation/invariant-interval-scene").then((m) => ({ default: m.InvariantIntervalScene })),
+  ),
+  LorentzMatrixScene: lazyScene(() =>
+    import("@/components/physics/the-lorentz-transformation/4x4-matrix-scene").then((m) => ({ default: m.LorentzMatrixScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
