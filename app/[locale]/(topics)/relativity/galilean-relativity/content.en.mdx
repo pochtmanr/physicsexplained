@@ -1,0 +1,115 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GalileanBoatScene } from "@/components/physics/galilean-relativity/galilean-boat-scene";
+import { MaxwellNotGalileanScene } from "@/components/physics/galilean-relativity/maxwell-not-galilean-scene";
+import { InertialFramesScene } from "@/components/physics/galilean-relativity/inertial-frames-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Galilean invariance", href: "/dictionary/galilean-invariance" },
+  { type: "term", label: "Inertial frame", href: "/dictionary/inertial-frame" },
+  { type: "term", label: "Luminiferous aether", href: "/dictionary/aether-luminiferous" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.01 · SR FOUNDATIONS"
+  title="GALILEAN RELATIVITY AND THE FRAME PROBLEM"
+  subtitle="Why Newton's universe needed an observer who never moved."
+/>
+
+<Section index={1} title="The principle that worked for two centuries">
+
+In 1632 <PhysicistLink slug="galileo-galilei" /> wrote a thought experiment that is still the cleanest statement of relative motion ever published. Take a man, lock him in a windowless cabin below the deck of a ship, give him butterflies, a goldfish, a basin of water that he can let drip into a second basin, and a few balls he can throw to a friend. Sail the ship at any constant speed across a glassy harbour. The butterflies fly, the fish swim, the water drips, the balls follow the parabolas they always do, and — this is the punchline — none of these experiments tell the man whether the ship is moving or anchored. The friend who throws the ball harder forward than backward when the ship is moving, never has to. The water that "should" pile up at the back of its basin, never does.
+
+Galileo's claim, transposed into modern language, is the principle of <Term slug="galilean-invariance" />: the laws of mechanics take the same form in every <Term slug="inertial-frame" />, and an inertial frame is any frame that moves at constant velocity relative to another. There is no preferred state of rest hiding inside Newton's laws. The man in the cabin can confirm his velocity is *zero* relative to the ship, but never zero relative to the universe — because there is no universe-rest-frame to be at rest with respect to.
+
+For two centuries this was the architecture of physics. <PhysicistLink slug="isaac-newton" /> wrote his three laws in this language and they obey it exactly. Throw a stone, fire a cannon, swing a pendulum — the equations of motion are identical in every uniformly moving lab.
+
+<SceneCard caption="FIG.01a — three identical pendulums in three frames moving at different constant velocities. The swings line up phase-for-phase. An observer locked inside any one car cannot tell which one she is in.">
+  <InertialFramesScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="The boat on a river">
+
+The simplest way to feel Galilean kinematics is to count up velocities. A boat moves at $u'$ relative to the water it floats in. The water flows at $v$ relative to the shore. The shore observer measures the boat moving at
+
+<EquationBlock id="EQ.01">
+$$ u = u' + v. $$
+</EquationBlock>
+
+Numbers add. A boat doing 5 m/s downstream in a 3 m/s current passes the riverbank at 8 m/s; the same boat heading upstream at 5 m/s in the same current crawls past the bank at 2 m/s. This is true to the precision of every ship-and-river measurement ever made — and to far better than that for cars, planes, baseballs, and projectiles.
+
+<SceneCard caption="FIG.01b — boat in the water frame (cyan, drifting at u′) and the same boat seen from the shore frame (magenta, drifting at u = u′ + v). Slide the engine speed and the current; the bottom HUD reads u out live.">
+  <GalileanBoatScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="The math is a coordinate transform">
+
+What Galileo was doing, written in coordinates, is a passive transformation between two frames in uniform relative motion. If the primed frame moves at $+v$ along $x$ relative to the lab,
+
+<EquationBlock id="EQ.02">
+$$ t' = t, \quad x' = x - v\,t, \quad y' = y, \quad z' = z. $$
+</EquationBlock>
+
+Time is universal — every observer reads the same clock face at the same instant. Position drifts: a body at rest in the primed frame ($x' = 0$) is at $x = v\,t$ in the lab frame, exactly as expected. Differentiating once gives the velocity-addition rule of EQ.01; differentiating twice gives $a' = a$, so accelerations are invariant; multiplying by mass gives $F' = F$, so forces are invariant; and the form of $F = m\,a$ comes out the same in every inertial frame. **Newtonian mechanics is Galilean-invariant by construction.**
+
+<Callout variant="intuition">
+The two-centuries-of-success story is not a coincidence. The objects Newton's laws were written about — projectiles, planets, pendulums — are matter, and matter at the speeds Newton could probe is firmly in the domain where Galilean transforms are correct to many decimal places. The trouble starts when you try to apply this same algebra to something that is not made of matter.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The cliff: Maxwell's equations">
+
+Then 1865 happens. <PhysicistLink slug="james-clerk-maxwell" /> writes down four equations that bind electricity, magnetism, charge, and current into a single field theory. From those equations falls a wave equation whose solutions travel at a single, hard-coded speed:
+
+<EquationBlock id="EQ.03">
+$$ c = \frac{1}{\sqrt{\mu_0\,\varepsilon_0}}. $$
+</EquationBlock>
+
+That number is determined by two laboratory constants — the permeability of free space $\mu_0$ and the permittivity of free space $\varepsilon_0$ — neither of which has anything to do with optics. Plug them in and out drops 299,792,458 m/s. Maxwell saw the number, compared it to the contemporary measurements of the speed of light, and wrote that the agreement was "scarcely possible to avoid the inference that *light is an electromagnetic disturbance*". He was right. The wave equation he had built was the equation for light.
+
+But now apply the Galilean transform of EQ.02 to that same wave equation. The chain rule grinds through, and the wave speed in the boosted frame comes out as $c - v$. A frame moving at $+v$ alongside a light pulse should see the pulse receding at less than $c$. A frame moving at $v = c$ should see the pulse standing still — a frozen sinusoidal field, a static-electromagnetic-wave object that Maxwell's equations themselves do not admit as a solution.
+
+<SceneCard caption="FIG.01c — top row: lab-frame light wave at speed c. Middle row: what the Galilean transform predicts in a boosted frame, c − v. Bottom row: what Maxwell's equations and every measurement actually give, c. The middle row is the prediction the next four sections demolish.">
+  <MaxwellNotGalileanScene />
+</SceneCard>
+
+The contradiction admits exactly three resolutions:
+
+(a) **Galileo is right and Maxwell is wrong.** Maxwell's equations would need a $v$-dependent correction in any moving frame. No experiment ever found one.
+
+(b) **Maxwell is right but only in one privileged frame** — the rest frame of a luminiferous medium called the <Term slug="aether-luminiferous" /> that fills all of space. In any other frame, an "aether wind" should be detectable.
+
+(c) **Maxwell is right in every inertial frame, and the Galilean transform itself is wrong** for the speeds where this matters. Time and space coordinates must mix under boosts in a way Galileo's algebra forbids.
+
+Three options. <PhysicistLink slug="albert-einstein" />, in 1905, chose the third — not because (b) had been ruled out (the Michelson-Morley result was suggestive, not yet decisive), but because he found (b) philosophically intolerable. The next four topics walk through the rupture.
+
+</Section>
+
+<Section index={5} title="What §01 does next">
+
+§01.2 takes c apart in two SI numbers and traces the historical chain — Weber-Kohlrausch 1856, Maxwell 1862, <PhysicistLink slug="leon-foucault" /> 1862, Hertz 1888 — that nailed down c without ever asking which frame to measure it in. §01.3 watches Michelson and Morley point an interferometer at the hypothesised aether wind and find nothing, in 1887 and again, more precisely, every decade since. §01.4 follows Einstein as he drops option (b) and elevates the constancy of c to a postulate. §01.5 — the apex of this module — shows that once you take that postulate seriously, two observers cannot agree on whether two events happened at the same time. Newtonian time dies on the page.
+
+</Section>
+
+<Section index={6} title="Why Galileo wasn't wrong, just incomplete">
+
+It is worth noting before §01.2 that Galilean relativity is not "obsolete". It is the $v \ll c$ limit of the Lorentz transformation we will derive in §02.3. A car on a highway moves at roughly $v / c \approx 3 \times 10^{-8}$; the deviation between the Galilean prediction and the relativistic answer is of order $(v/c)^2 \approx 10^{-15}$. No automotive engineer has ever needed to correct for it. A passenger jet is at $v / c \approx 8 \times 10^{-7}$, deviation $\sim 10^{-13}$. Galileo's algebra is right almost everywhere, and the cabin-on-a-ship thought experiment is still — for matter, at human speeds — exactly the right picture.
+
+What changes is light. The wave equation Maxwell wrote down has $c$ baked into it as a structural constant, not as a property of any particular source or any particular frame. That is the cliff. The next four topics tumble down it.
+
+</Section>
+
+</TopicPageLayout>

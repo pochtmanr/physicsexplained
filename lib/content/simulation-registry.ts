@@ -1036,6 +1036,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   RunningCouplingAndCorrectionsScene: lazyScene(() =>
     import("@/components/physics/running-coupling-and-corrections-scene").then((m) => ({ default: m.RunningCouplingAndCorrectionsScene })),
   ),
+  // RT §01 — galilean-relativity
+  GalileanBoatScene: lazyScene(() =>
+    import("@/components/physics/galilean-relativity/galilean-boat-scene").then((m) => ({ default: m.GalileanBoatScene })),
+  ),
+  MaxwellNotGalileanScene: lazyScene(() =>
+    import("@/components/physics/galilean-relativity/maxwell-not-galilean-scene").then((m) => ({ default: m.MaxwellNotGalileanScene })),
+  ),
+  InertialFramesScene: lazyScene(() =>
+    import("@/components/physics/galilean-relativity/inertial-frames-scene").then((m) => ({ default: m.InertialFramesScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
