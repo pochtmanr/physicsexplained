@@ -1,0 +1,121 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ElasticCollisionScene } from "@/components/physics/relativistic-collisions/elastic-collision-scene";
+import { InelasticMergerScene } from "@/components/physics/relativistic-collisions/inelastic-merger-scene";
+import { TwoDScatteringScene } from "@/components/physics/relativistic-collisions/2d-scattering-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Four-momentum", href: "/dictionary/four-momentum" },
+  { type: "term", label: "Mass-energy equivalence", href: "/dictionary/mass-energy-equivalence" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.18 · RELATIVISTIC DYNAMICS"
+  title="RELATIVISTIC COLLISIONS"
+  subtitle="Four-momentum conservation is the single law that runs every particle interaction in the universe."
+/>
+
+<Section index={1} title="What conservation means at a relativistic vertex">
+
+Newton gave us two separate conservation laws for collisions: momentum is conserved, and kinetic energy is conserved (in elastic collisions). They feel like independent facts because in Newtonian mechanics momentum $\mathbf{p} = m\mathbf{v}$ and kinetic energy $K = \frac{1}{2}mv^2$ are completely different objects — one is a vector, one is a scalar, and the second only holds in elastic collisions.
+
+Relativity unifies them. The correct object is the <Term slug="four-momentum" /> $p^\mu = (E/c,\, p_x,\, p_y,\, p_z)$, the four-vector whose time component is total energy divided by $c$ and whose spatial components are the relativistic 3-momentum $\mathbf{p} = \gamma m \mathbf{v}$. At every interaction vertex — elastic, inelastic, decay, creation — the single law is:
+
+<EquationBlock id="EQ.01">
+$$\sum_{\text{in}} p^\mu = \sum_{\text{out}} p^\mu$$
+</EquationBlock>
+
+All four components simultaneously. That one equation carries both Newtonian momentum conservation (spatial components) and energy conservation (time component) as a single geometric statement. It holds because the laws of physics are translation-invariant in spacetime — Noether's theorem applied to a four-dimensional symmetry.
+
+What changes between elastic and inelastic collisions is not whether four-momentum is conserved — it always is — but whether the individual rest masses $m_i$ are preserved. In an elastic collision each particle's Lorentz-invariant norm $p^\mu p_\mu = m_i^2 c^2$ is unchanged: the particle emerges with the same rest mass it entered with, so kinetic energy is also conserved. In an inelastic collision the total <Term slug="four-momentum" /> is still exactly conserved, but the individual particles can recombine into particles with different rest masses: kinetic energy converts to rest mass or vice versa. The law does not care. Only $\Sigma p^\mu$ is sacred.
+
+<PhysicistLink slug="albert-einstein" /> saw this coming in 1905. The equation $E = \gamma mc^2$ already encoded the fact that energy and mass are the same currency. A system of particles has a total four-momentum, and the invariant mass of that total — its Minkowski norm — is the "mass" of the whole system regardless of how the internal particles are arranged. When particles collide and rearrange themselves, that total norm is preserved even while individual rest masses are not. This is the §04 module's central lesson, and it runs from the simplest 1D elastic scattering all the way to Compton scattering, pair production, and the Large Hadron Collider.
+
+</Section>
+
+<Section index={2} title="Elastic 1D: the relativistic billiard">
+
+The simplest test: two equal-mass particles approaching head-on along the $x$-axis at velocities $\pm\beta c$. In the Newtonian limit the outcome of an elastic 1D collision between equal masses is a velocity swap — the particles pass through each other's momenta. Remarkably, the relativistic equal-mass elastic 1D collision has exactly the same outcome: the particles exchange velocities. The incoming four-momenta are:
+
+<EquationBlock id="EQ.02">
+$$p_1^\mu = (\gamma m c,\; +\gamma m \beta c,\; 0,\; 0), \qquad p_2^\mu = (\gamma m c,\; -\gamma m \beta c,\; 0,\; 0)$$
+</EquationBlock>
+
+Their sum has zero spatial momentum — by symmetry, the CoM frame is the collision frame itself. After the velocity swap, $p_1^\mu \leftrightarrow p_2^\mu$, and the total is unchanged. This is a special property of equal-mass elastic 1D scattering; for unequal masses or off-axis angles, the relativistic corrections begin at order $\beta^2$ and grow rapidly.
+
+<SceneCard caption="FIG.18a — Two equal-mass particles collide head-on at ±β. Cyan = particle 1 (incoming left); magenta = particle 2 (incoming right); green = both outgoing after velocity swap. HUD shows all four-momentum components to six decimal places; conservation Σp^μ_in = Σp^μ_out holds to numerical precision. Adjust β and mass to explore.">
+  <ElasticCollisionScene />
+</SceneCard>
+
+The key observation in the HUD: the time component $\Sigma p^0 = 2\gamma mc$ is strictly greater than the Newtonian sum $2mc$ whenever $\beta > 0$. That surplus energy is the kinetic energy, now written into the same component as rest energy. Energy conservation is not a separate law — it falls out automatically from the time component of four-momentum conservation.
+
+For unequal masses or masses with different velocities, the elastic outcome is no longer a simple swap. But the constraint $\Sigma p^\mu_\text{in} = \Sigma p^\mu_\text{out}$ with both rest masses fixed still uniquely determines the outcome given the CoM scatter angle. The relativistic corrections to the deflection angles become visible as soon as $\beta \gtrsim 0.3$.
+
+</Section>
+
+<Section index={3} title="Inelastic merger: kinetic energy becomes rest mass">
+
+Now turn the collision completely inelastic: the two particles of mass $m$ collide head-on at $\pm\beta c$ and *merge* into a single particle at rest in the CoM frame. Four-momentum conservation fixes the final state:
+
+<EquationBlock id="EQ.03">
+$$p_\text{final}^\mu = p_1^\mu + p_2^\mu = (2\gamma m c,\; 0,\; 0,\; 0)$$
+</EquationBlock>
+
+The spatial components cancel by symmetry. The time component is $2\gamma mc$. The rest mass of the merged particle follows from the Minkowski norm:
+
+<EquationBlock id="EQ.04">
+$$M_\text{final}^2 c^2 = (p_\text{final}^\mu)(p_{\text{final},\mu}) = (2\gamma mc)^2 \implies M_\text{final} = 2\gamma m$$
+</EquationBlock>
+
+At $\beta = 0.5$, $\gamma = 1/\sqrt{1-0.25} \approx 1.1547$, so $M_\text{final} \approx 2.309\,m$. The merged particle weighs 15.5% more than the two incoming particles combined. That 15.5% surplus came from the kinetic energy of the two incoming particles — it has been converted, irreversibly, into rest mass.
+
+<SceneCard caption="FIG.18b — Two particles merge head-on at ±β. Cyan and magenta are incoming; amber is the merged particle (at rest in CoM). HUD shows Newtonian prediction M = 2m vs. relativistic M = 2γm, and the mass excess as a percentage. At β → 0.95 the merged particle is nearly twice as heavy as Newtonian predicts.">
+  <InelasticMergerScene />
+</SceneCard>
+
+<Callout variant="intuition">
+Rest mass is not conserved in relativistic collisions. This is not an exception or a correction — it is the correct statement of what mass is. The Lorentz-invariant norm $m^2c^2 = p^\mu p_\mu$ is a property of an individual particle's four-momentum, not a globally conserved quantity. The globally conserved quantity is the *total* four-momentum $\Sigma p^\mu$. In an inelastic collision the total norm changes because the particles recombine into something with a different invariant mass. The kinetic energy that was stored in the time component of the incoming four-momenta has been written into the rest mass of the final particle. This is exactly what <Term slug="mass-energy-equivalence" /> means at the level of individual interactions.
+</Callout>
+
+At $\beta \ll 1$, the mass excess is $(M_\text{final} - 2m) \approx \beta^2 m$ — the leading-order kinetic energy per particle, exactly as Newtonian mechanics would predict if you knew that kinetic energy has inertia. The relativistic formula is the exact version of that intuition, valid all the way to $\beta \to 1$.
+
+</Section>
+
+<Section index={4} title="2D scattering: angles obey four-momentum geometry">
+
+In two dimensions the constraint $\Sigma p^\mu_\text{in} = \Sigma p^\mu_\text{out}$ fixes a *relationship* between the outgoing angles; it does not fix them uniquely (the CoM scatter angle is a free parameter set by the interaction dynamics). But it imposes a rigid relativistic correction that diverges from the Newtonian billiard prediction.
+
+In the Newtonian equal-mass elastic 2D case the outgoing particles always scatter at a 90° total angle: $\theta_1 + \theta_2 = 90°$. This is the famous billiard-ball right angle — you can verify it at any pool table. Relativistically, the sum $\theta_1 + \theta_2 < 90°$ for any $\beta > 0$, with the deficit growing monotonically with $\beta$.
+
+<SceneCard caption="FIG.18c — Stationary target (amber) struck by incoming projectile (cyan) at β. Solid green and magenta arrows are the relativistic outgoing angles; dashed arrows are the Newtonian predictions. HUD shows θ₁, θ₂, and their sum for both cases. As β increases, the relativistic sum falls progressively below 90°.">
+  <TwoDScatteringScene />
+</SceneCard>
+
+The mechanism is straightforward. In the CoM frame the scatter is always symmetric: particle 1 scatters at angle $\phi$ above the beam axis, particle 2 at angle $\phi$ below. Boosting back to the lab frame, the angle $\theta_1$ that particle 1 makes in the lab is compressed forward because the boost pushes both particles in the +x direction. At low $\beta$ this compression is negligible and the angles sum to 90°; at high $\beta$ the forward-focusing is severe and both angles are pushed toward the beam axis, reducing their sum well below 90°.
+
+This is directly observable in particle accelerators. At the Large Hadron Collider, $\beta \approx 1 - 10^{-8}$, and the Newtonian 90° rule is wrong by nearly 90°: most outgoing particles from high-energy collisions are focused tightly forward along the beam pipe. The detectors (ATLAS, CMS) are specifically engineered to catch the rare wide-angle scatter events; the forward calorimeters handle the beam-focused majority.
+
+</Section>
+
+<Section index={5} title="Forward: four-momentum conservation runs everything">
+
+The three scenes in this topic — elastic swap, inelastic merger, 2D scattering — are the same law applied three times. $\Sigma p^\mu_\text{in} = \Sigma p^\mu_\text{out}$. Every particle interaction in nature is a vertex where this equation holds, supplemented by whatever other conservation laws (charge, lepton number, baryon number) the specific interaction respects.
+
+The next two topics in §04 are both applications of the same principle to more exotic kinematic regimes. §04.4 watches Compton scattering enforce four-momentum balance on a photon-electron collision: the photon has a <Term slug="four-momentum" /> too — null, with $p^\mu p_\mu = 0$ — and the shift in its wavelength after scattering from an electron follows uniquely from $\Sigma p^\mu$ conservation and the electron's rest mass. The <Term slug="compton-shift" /> formula is not a separate postulate; it falls directly out of four-momentum algebra, as <PhysicistLink slug="arthur-compton" /> computed in 1923.
+
+§04.5 watches the same equation *forbid* pair production from a single photon in vacuum: if you try to write $\gamma \to e^+ + e^-$ with the photon alone as the initial state, four-momentum conservation cannot be satisfied because the photon's null norm cannot equal the timelike norm of the massive pair. You need a second photon or a nucleus to supply the missing four-momentum — the conservation law itself tells you the interaction is kinematically forbidden without a recoil partner. The forbidden vertex is as physically powerful as the allowed one.
+
+<Callout variant="math">
+The language of §04 is the same language that runs the Standard Model. Every Feynman diagram is a bookkeeping system for four-momentum conservation at vertices, with Lorentz invariants — rest masses, <Term slug="threshold-energy" /> thresholds, invariant mass of multi-particle systems — as the observables. When experimentalists at particle colliders report the "invariant mass" of a pair of photons or a pair of muons, they are computing $\sqrt{(p_1 + p_2)^\mu (p_1 + p_2)_\mu}$ and comparing it to the known rest mass of the Higgs boson or the $Z$ boson. The Higgs discovery in 2012 was, at its core, a four-momentum conservation check.
+</Callout>
+
+<Term slug="mass-energy-equivalence" /> is not merely a formula on a blackboard. It is the exchange rate between the kinetic energy of incoming particles and the rest mass of whatever they create. Every particle collider in the world is, at bottom, a machine for converting kinetic energy into rest mass via $\Sigma p^\mu$ conservation. The heavier the particle you want to create, the higher the invariant mass of the initial state you need to provide — which is why the LHC runs at 14 TeV. The kinematics of §04.3 tell you exactly what collision energy a machine needs; the rest is engineering.
+
+</Section>
+
+</TopicPageLayout>
