@@ -1116,6 +1116,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   LorentzMatrixScene: lazyScene(() =>
     import("@/components/physics/the-lorentz-transformation/4x4-matrix-scene").then((m) => ({ default: m.LorentzMatrixScene })),
   ),
+  // RT §02 — velocity-addition
+  TwoRocketsScene: lazyScene(() =>
+    import("@/components/physics/velocity-addition/two-rockets-scene").then((m) => ({ default: m.TwoRocketsScene })),
+  ),
+  LightFromMovingSourceScene: lazyScene(() =>
+    import("@/components/physics/velocity-addition/light-from-moving-source-scene").then((m) => ({ default: m.LightFromMovingSourceScene })),
+  ),
+  FizeauWaterTubeScene: lazyScene(() =>
+    import("@/components/physics/velocity-addition/fizeau-water-tube-scene").then((m) => ({ default: m.FizeauWaterTubeScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TwoRocketsScene } from "@/components/physics/velocity-addition/two-rockets-scene";
+import { LightFromMovingSourceScene } from "@/components/physics/velocity-addition/light-from-moving-source-scene";
+import { FizeauWaterTubeScene } from "@/components/physics/velocity-addition/fizeau-water-tube-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hippolyte Fizeau", href: "/physicists/hippolyte-fizeau" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Relativistic velocity addition", href: "/dictionary/velocity-addition-relativistic" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+  { type: "term", label: "Galilean invariance", href: "/dictionary/galilean-invariance" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.09 · SR KINEMATICS"
+  title="RELATIVISTIC VELOCITY ADDITION"
+  subtitle="Why nothing made of matter ever crosses 299,792,458 m/s."
+/>
+
+<Section index={1} title="The wall the formula draws">
+
+In Galilean kinematics, velocities add. Stand on a flatbed truck moving at 30 m/s and roll a ball forward at 5 m/s. The road observer sees 35 m/s. Two centuries of mechanics rest on this arithmetic fact, encoded in the <Term slug="galilean-invariance">Galilean invariance</Term> of Newton's laws.
+
+§02.4 is where that arithmetic breaks. The replacement, due to <PhysicistLink slug="albert-einstein" /> in 1905 and equivalently to <PhysicistLink slug="hendrik-antoon-lorentz" /> in the 1904 algebra Einstein had read, is
+
+<EquationBlock id="EQ.01">
+$$ u = \frac{u' + v}{1 + u' v / c^2}. $$
+</EquationBlock>
+
+Two velocities combine through this rational function rather than through addition. The denominator is the entire story. At everyday speeds, $u' v / c^2$ is negligible — for two cars at 30 m/s the correction is one part in $10^{16}$ — and the formula collapses back to $u = u' + v$. At cosmic speeds it does the work all of §02 has been pointing toward: it caps the universe.
+
+Three facts come welded together. First, the formula reduces to Galileo at low speed — special relativity does not contradict ordinary kinematics, it contains it. Second, two sub-luminal velocities never compose to a super-luminal one. Third — and this is the postulate, encoded as algebra — $c + v = c$ for every $v$. Light, uniquely, refuses to add.
+
+</Section>
+
+<Section index={2} title="Two rockets that should hit 1.2c, and don't">
+
+The canonical demonstration is two rockets. Earth watches Rocket A pull away at 0.6 c. Rocket A then fires Rocket B forward at 0.6 c **in its own frame**. Galilean kinematics demands Earth see Rocket B at 1.2 c. Einstein's formula gives $(0.6 + 0.6) / (1 + 0.36) = 1.2 / 1.36 \approx 0.882$. Earth sees Rocket B at 0.882 c. Half a c of arithmetic difference, and only one answer is what nature delivers.
+
+<SceneCard caption="FIG.09a — Earth&apos;s frame, Rocket A at β_A · c, Rocket B fired forward at β_B · c in A&apos;s frame. Cyan ghost is Galileo&apos;s prediction (sails past the c wall). Magenta is Einstein&apos;s answer (asymptotes to c, never crosses).">
+  <TwoRocketsScene />
+</SceneCard>
+
+Push the slider with both β's toward 0.99: Galileo's ghost runs off the canvas, Einstein's answer creeps closer to the c-wall but never reaches it. That asymptotic approach is the kinematic content of "no matter how hard you push, you cannot make a massive object cross c". The function $(u' + v) / (1 + u' v / c^2)$ maps the open box $(-c, c)^2$ smoothly onto $(-c, c)$. The boundary is approached, never crossed.
+
+What if one of the inputs *is* $c$? Plug $u' = c$. The numerator is $c + v$. The denominator is $1 + v/c = (c + v)/c$. The ratio is exactly $c$. The formula has just enforced Einstein's second postulate. Light moves at $c$ in every inertial frame — and the postulate falls out of the algebra once the formula is in hand. Not an extra constraint: a corollary.
+
+</Section>
+
+<Section index={3} title="The flashlight on the spaceship">
+
+A sharper way to feel that. Put a flashlight on a spaceship. The ship flies past Earth at velocity $v$ rightward, the flashlight points forward, at $t = 0$ the captain switches it on. Galilean kinematics demands that the photons — which left the bulb at $c$ in the ship's frame — are seen on Earth at $c + v$. For a ship at 0.6 c that would be 1.6 c. Galilean velocity addition, applied to light, would give faster-than-light photons emitted by every moving lamp. The Michelson-Morley null already said, in 1887, that this is not what happens.
+
+<SceneCard caption="FIG.09b — Spaceship at slider velocity β · c, switching on a forward-pointing flashlight at t = 0. Cyan tick is the actual photon front (always at c in the lab frame). Amber dashed tick is Galileo&apos;s ghost — c + v — running ahead.">
+  <LightFromMovingSourceScene />
+</SceneCard>
+
+The cyan photon front always reaches the right-edge mark at the same lab-time $L/c$, regardless of how fast the ship is moving. The amber Galilean ghost reaches it at $L/(c+v)$, sooner — at high $v$ the ghost is already off the canvas while the actual photon is still mid-flight. The c-wall is not a property of light, it is a property of the spacetime. Einstein elevated that fact in 1905 from "what Michelson and Morley measured" to a postulate of nature: the laws of physics, including the value of $c$, are the same in every inertial frame.
+
+</Section>
+
+<Section index={4} title="Fizeau, water, and the coefficient that should not have been there">
+
+The historical hint that classical addition was wrong sat on a lab bench fifty-four years before special relativity. <PhysicistLink slug="hippolyte-fizeau" /> in 1851 measured the speed of light in moving water. The setup was an interferometer with two arms; one passed light *along* a flowing water column, the other *against*. Recombining the beams produced fringes; by rotating which arm went with the flow, Fizeau shifted the fringes and extracted, from the shift, the velocity at which light propagated through the moving water.
+
+The question was whether the water "drags" the light. Three answers were on the table. (i) Full drag — the water carries its luminiferous medium with it, $u = c/n + v_{\text{water}}$ (Stokes). (ii) No drag — the aether is fixed, $u = c/n$ regardless. (iii) Partial drag — Fresnel's 1818 ad-hoc proposal that light picks up a fraction $1 - 1/n^2$ of the medium's velocity, on the grounds that the aether was "partially blocked" by optical density.
+
+Fizeau measured option (iii). The drag coefficient came out to $1 - 1/n^2$ within 1%. For water ($n = 1.33$) the coefficient is $\approx 0.43$. Fresnel's ad-hoc factor was vindicated empirically. Nineteenth-century optics treated this as a fine-tuned property of the aether.
+
+<SceneCard caption="FIG.09c — Light through a water tube flowing at slider speed v_water. Cyan dot is the c/n baseline. Amber is the refuted full-drag hypothesis c/n + v_water. Magenta is what Fizeau measured: c/n + v_water · (1 − 1/n²). The same number falls out of relativistic velocity addition at order v/c.">
+  <FizeauWaterTubeScene />
+</SceneCard>
+
+The relativistic interpretation is structural. Feed the velocity-addition formula $u' = c/n$ (light in the water's rest frame) and $v = v_{\text{water}}$, and expand to first order:
+
+<EquationBlock id="EQ.02">
+$$ u \approx \frac{c}{n} + v_{\text{water}}\left(1 - \frac{1}{n^2}\right) + \mathcal{O}(v_{\text{water}}^2 / c). $$
+</EquationBlock>
+
+The Fresnel coefficient falls straight out. It was never a quirk of how the aether interacted with optical media — it was the v/c-order term of relativistic kinematics. Fresnel guessed it from the wrong physics. Fizeau measured it from a moving water tube. Einstein derived it, fifty-four years later, as a corollary of the postulate that there is no aether at all.
+
+<Callout variant="intuition">
+Fizeau 1851 is the cleanest single-line piece of pre-Einstein experimental evidence for special relativity that nineteenth-century physics produced. The coefficient was already in the data. It just needed someone willing to delete the aether to read it.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Why the formula has to be a rational function">
+
+There is a structural argument for why velocity addition cannot be addition. Suppose two boosts compose by some function $f(u', v)$ mapping $(-c, c)^2 \to (-c, c)$. Three constraints fix its shape: (i) Galilean limit, $f(u', v) \approx u' + v$ for $|u'|, |v| \ll c$; (ii) light is invariant, $f(c, v) = c$ for every sub-luminal $v$; (iii) boosts form a group, $f(f(u', v), w) = f(u', f(v, w))$ — composition is associative.
+
+Up to overall scale, the unique smooth function satisfying all three is $f(u', v) = (u' + v)/(1 + u' v / c^2)$. The constraints over-determine it. The Galilean limit fixes linear-in-v behaviour; c-invariance fixes the denominator's pole; the group law fixes the denominator to be exactly $1 + u' v / c^2$. The formula is forced — and it is forced *by the postulates*, not by empirical fit.
+
+This is the same argument-from-symmetry that produces the <Term slug="lorentz-transformation">Lorentz transformation</Term>. Velocity addition is what that transformation says about how velocities, rather than coordinates, transform — the same group law in different costumes. (For the mathematician: the formula is the rapidity-additive structure of the boost subgroup, transported back to velocity coordinates via $u = c \tanh \phi$. The bounded range of $\tanh$ is geometrically why velocities live in the open ball $|u| < c$.)
+
+</Section>
+
+<Section index={6} title="The c-wall is hard, and what comes next">
+
+$c + c = c$ is the universe's hard ceiling. It is hard because it is a property of the metric, not of any apparatus. Build a faster engine, push a faster particle, fire a brighter laser — the formula refuses to return a number bigger than $c$. The 0.882 c answer in the two-rocket scene is not a friction loss or fuel limit. It is the kinematic content of being alive in 4-dimensional Minkowski space.
+
+§02.5 observes how the same algebra reshapes frequencies. A source moving toward you at 0.5 c does not Doppler-shift by the classical $(1 + \beta)$ — it shifts by $\sqrt{(1+\beta)/(1-\beta)}$, and the difference is exactly the relativistic time-dilation factor that has been propagating through every section since §02.1. By the close of §02 we will have seen four shadows of the same 4D rotation: time, length, velocity, frequency.
+
+</Section>
+
+</TopicPageLayout>
