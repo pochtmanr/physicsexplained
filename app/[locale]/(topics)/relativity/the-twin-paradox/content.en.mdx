@@ -1,0 +1,111 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { KinkedWorldlineScene } from "@/components/physics/the-twin-paradox/kinked-worldline-scene";
+import { WhoAgedLessScene } from "@/components/physics/the-twin-paradox/who-aged-less-scene";
+import { TheBendIsTheAccelerationScene } from "@/components/physics/the-twin-paradox/the-bend-is-the-acceleration-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+  { type: "term", label: "World line", href: "/dictionary/world-line" },
+  { type: "term", label: "Time dilation", href: "/dictionary/time-dilation" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.15 · SPACETIME GEOMETRY"
+  title="THE TWIN PARADOX"
+  subtitle="A kinked worldline is shorter in proper time. That is the whole story."
+/>
+
+<Section index={1} title="The puzzle — a symmetric theory with an asymmetric outcome">
+
+Twin A stays home. Twin B climbs into a rocket, burns toward a star 4 light-years away at $\beta = 0.8$, reaches it in 5 years of A's time, then turns around and comes back at the same speed — another 5 years of A's time. A waits 10 years. B returns.
+
+Who is older?
+
+Special relativity insists that every inertial frame is equivalent. You could, someone objects, describe the whole trip from B's perspective: A is the one who "moved away and came back." If the physics is truly symmetric, shouldn't both twins agree they are the same age? They cannot both be right if one aged more than the other — and yet they land in the same place and compare notes. One must be older. The reunion is an unambiguous physical fact, not a matter of perspective.
+
+This apparent contradiction is why the twin scenario acquired the word *paradox* and why it has been rehashed in lecture halls since <PhysicistLink slug="albert-einstein" /> himself addressed versions of it in the 1910s. The resolution is not subtle. It is geometric. And once you see the geometry, the "paradox" evaporates completely.
+
+</Section>
+
+<Section index={2} title="The geometric answer — two worldlines, one shorter">
+
+Draw both twins in a Minkowski diagram. A's <Term slug="world-line" /> is a vertical straight line — A sits at $x = 0$ and moves only through time. B's worldline leaves the origin diagonally (slope $\beta = 0.8$ toward the star), reaches the turnaround event, then returns diagonally back to the origin. Two timelike lines, same start, same end. One straight, one kinked.
+
+<SceneCard caption="FIG.15a — the home twin's worldline (cyan vertical) and the traveler's worldline (two orange segments meeting at the turnaround). The proper-time tally on each twin's clock is shown as a HUD overlay. Play the animation to watch the clocks advance at different rates.">
+  <KinkedWorldlineScene />
+</SceneCard>
+
+<Term slug="proper-time" /> is the spacetime arc-length along a worldline, measured by the traveler's own clock. The Minkowski metric gives it as
+
+<EquationBlock id="EQ.01">
+$$\tau = \int \sqrt{1 - \beta^2}\, dt = \frac{T_{\text{home}}}{\gamma}$$
+</EquationBlock>
+
+for a constant-speed leg of lab-frame duration $T_{\text{home}}$. <PhysicistLink slug="hermann-minkowski" /> named the spacetime interval in 1908; proper time is just what that interval measures along a timelike worldline.
+
+The straight worldline from departure to reunion maximizes proper time — this is the geometric analogue of the Euclidean fact that a straight line is the *longest* timelike curve between two events (Minkowski geometry flips the triangle inequality; a detour through a kink is *shorter*, not longer, in proper time). A's worldline is straight. B's worldline is kinked. Therefore $\tau_B < \tau_A$.
+
+<Callout variant="intuition">
+The paradox dissolves the moment you draw the diagram. The situation is not symmetric: A's worldline is a straight line; B's worldline has a kink. The Minkowski metric measures less proper time along the kinked path, for the same geometric reason that a path with a detour is longer in Euclidean space — only here "longer" means more spatial distance, and Minkowski flips the sign so the kinked path is *shorter* in proper time. No forces, no preferred frames, no contradiction. Just geometry.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Who aged less — the numbers">
+
+At $\beta = 0.8$ the Lorentz factor is $\gamma = 1/\sqrt{1-0.64} = 1/\sqrt{0.36} = 1/0.6 = 5/3 \approx 1.667$. A waits $T_{\text{home}} = 10$ years. B's clock accumulates
+
+<EquationBlock id="EQ.02">
+$$\tau_B = \frac{T_{\text{home}}}{\gamma} = \frac{10}{5/3} = 6 \text{ yr.}$$
+</EquationBlock>
+
+B returns 4 years younger than A. Not "subjectively" younger in some frame-dependent sense — physically, biologically, atomically younger. B's hair is shorter, B's cells have divided fewer times, B's radioactive samples have decayed less. The age gap is as real as the reunion handshake.
+
+<SceneCard caption="FIG.15b — drag the β slider to change the travel speed. The bar chart shows home-twin clock (cyan) and traveler's clock (amber) at reunion. γ readout updates live. At β = 0 both bars are equal; as β → 1 the traveler's bar collapses toward zero.">
+  <WhoAgedLessScene />
+</SceneCard>
+
+The muon shower is the simplest version of this story. Cosmic-ray muons are created 15 km up and reach sea level before decaying — their half-life of 2.2 μs would otherwise allow them to travel only ~660 m in the lab frame. The muon is Twin B. The Earth's surface is Twin A. The muon's <Term slug="time-dilation" /> is measured directly in every cosmic-ray detector on the planet. The twin paradox is not a thought experiment; it is a daily occurrence in the upper atmosphere. See [time-dilation](/relativity/time-dilation) for the muon calculation in full.
+
+</Section>
+
+<Section index={4} title="Acceleration is the bend — not a force">
+
+Someone always asks: "But B accelerates at the turnaround. Doesn't that break the symmetry in favor of A? Isn't it the *acceleration* that does the aging?"
+
+Partly. But the framing misleads. The turnaround acceleration is what *creates* the kink in B's worldline — it is what bends the path. But it is not an aging force acting on B. It is geometry acting on the metric integral. B's proper time is less because B's *path* through spacetime is shorter in the Minkowski sense, and the path is shorter because it is kinked. The acceleration is just the physical process that introduces the kink.
+
+<SceneCard caption="FIG.15c — annotated zoom on the turnaround event. The kink in the traveler's worldline is labeled. The caption at the bottom of the canvas reads: this is the only place in the trip where the twins' frames differ in any meaningful way; the asymmetry is the geometry of the kink.">
+  <TheBendIsTheAccelerationScene />
+</SceneCard>
+
+To see this, notice that the size of the age gap scales with $\gamma$ — which depends on $\beta$, not on the magnitude of the acceleration. You could make the turnaround arbitrarily gentle (low acceleration over a long arc) and the age gap stays the same, determined purely by the speed reached. Conversely, a sharp instantaneous reversal and a leisurely deceleration over months produce identical gaps if the terminal speed is the same. The acceleration duration is irrelevant; what matters is the shape of the worldline.
+
+A's worldline is a *geodesic* in Minkowski spacetime: a straight timelike path that connects departure and reunion without any kink. Geodesics in special relativity are the curves that *maximize* proper time between two events (in the mostly-plus sign convention used here, following Hartle). B's worldline is two geodesic segments joined at a non-geodesic point — the kink. The proper-time maximum is broken by the kink. A ages more because A's path is the geodesic. That is the whole story.
+
+<Callout variant="math">
+The Minkowski triangle inequality says: for any three events $P$, $Q$, $R$ lying on a timelike plane, the straight-path proper time $\tau(P \to R)$ satisfies $\tau(P \to R) \geq \tau(P \to Q) + \tau(Q \to R)$. Equality holds only if $Q$ lies on the straight segment $PR$ — i.e., no kink. The twin scenario is precisely the case where $Q$ is the turnaround event, and the inequality becomes strict: the kinked path is shorter.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Forward — the paradox family">
+
+The twin paradox is one member of a family of geometric puzzles that dissolve the moment you draw the spacetime diagram. Two others appear in §05.
+
+[Bell's spaceship paradox](/relativity/bells-spaceship-paradox) asks what happens when two identical rockets accelerate in tandem while connected by a string. The string breaks — not because of any force from outside, but because simultaneity in the accelerating frame slices spacetime differently at the two ends of the string. Draw the worldlines and the answer is immediate.
+
+[The barn-pole paradox](/relativity/barn-pole-paradox) asks whether a pole that is longer than a barn in its rest frame can fit inside the barn due to length contraction. It can — for a moment — in the barn frame, because "fits simultaneously" is a simultaneity-relative statement, and simultaneity is frame-dependent. Draw the worldlines of the pole's two ends and the barn's two doors and the diagram makes it obvious.
+
+Both paradoxes survive as long as you cling to a single frame and try to transfer intuitions across. The geometry resolves both. The §03 module — spacetime diagrams, the invariant interval, light cones, four-vectors, the twin paradox — is the toolkit for reading that geometry directly. Once you can draw it, you can see through any paradox in special relativity.
+
+</Section>
+
+</TopicPageLayout>
