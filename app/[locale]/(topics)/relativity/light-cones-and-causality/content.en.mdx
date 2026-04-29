@@ -1,0 +1,110 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "term", label: "Light cone", href: "/dictionary/light-cone" },
+  { type: "term", label: "Spacelike", href: "/dictionary/spacelike" },
+  { type: "term", label: "Timelike", href: "/dictionary/timelike" },
+  { type: "term", label: "Null interval", href: "/dictionary/null-interval" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.13 · SPACETIME GEOMETRY"
+  title="LIGHT CONES AND CAUSALITY"
+  subtitle="Before, after, and elsewhere — three regions that partition every spacetime."
+/>
+
+<Section index={1} title="The cone shape">
+
+Set off a flash of light from a single event — any event, anywhere in spacetime. At the precise moment of the flash, light begins spreading outward in every direction at speed $c$. One second later the expanding shell of light is a sphere of radius $c \times 1\,\text{s}$. Two seconds later the sphere has radius $c \times 2\,\text{s}$. Plot this in a spacetime diagram with one spatial axis $x$ and vertical axis $ct$: the expanding sphere traces out the surface of a cone. The 2D slice you can draw on paper gives two 45° rays, one going right ($x = ct$) and one going left ($x = -ct$). In full 3+1-dimensional spacetime those two rays are the cross-section of an actual cone opening upward — the future <Term slug="light-cone" />.
+
+By time-reversal symmetry there is a second cone opening downward: the past light cone. It is the locus of all events that could have sent a signal arriving at the apex exactly at $t = 0$. Together the two cones divide all of spacetime into three regions: the interior of the future cone, the interior of the past cone, and everything else. That third region has a name borrowed from the interval algebra of §03.2: the elsewhere. The boundary between "reachable" and "unreachable," between "could have caused" and "could not have caused," is drawn at 45° in every Minkowski diagram. It is not a convention. It is the <Term slug="invariant-interval" />'s geometric face.
+
+<PhysicistLink slug="hermann-minkowski" /> introduced the language of light cones in his 1908 Cologne lecture as part of the same argument that called space and time "mere shadows." The language has not changed since. "Causal future," "causal past," "elsewhere" — three words that say in English what the sign of $s^2$ says in algebra.
+
+</Section>
+
+<Section index={2} title="Future, past, elsewhere">
+
+Pick any event $P$. Every other event $Q$ in spacetime falls into exactly one of three categories, determined by the invariant interval $s^2 = c^2 (t_Q - t_P)^2 - |\vec{x}_Q - \vec{x}_P|^2$:
+
+<EquationBlock id="EQ.13.01">
+$$s^2 > 0 \implies \text{timelike: } Q \text{ is inside a light cone of } P$$
+</EquationBlock>
+
+<EquationBlock id="EQ.13.02">
+$$s^2 = 0 \implies \text{null: } Q \text{ is on the cone itself}$$
+</EquationBlock>
+
+<EquationBlock id="EQ.13.03">
+$$s^2 < 0 \implies \text{spacelike: } Q \text{ is in the elsewhere of } P$$
+</EquationBlock>
+
+When $s^2 > 0$ and $t_Q > t_P$, event $Q$ is in $P$'s absolute future. A physical signal — a photon, a particle, a gravitational wave — can travel from $P$ to $Q$ because $Q$ lies inside $P$'s future <Term slug="light-cone" />. When $s^2 > 0$ and $t_Q < t_P$, the event is in $P$'s absolute past. The word "absolute" is deliberate: no Lorentz boost can flip the temporal ordering of two events with $s^2 > 0$. The future stays the future in every inertial frame. The past stays the past.
+
+<SceneCard caption="FIG.13a — Click anywhere in the diagram to place an event. The scene classifies it automatically: cyan for timelike-future, magenta for timelike-past, amber for null (on the cone), white for spacelike (elsewhere). The amber shading marks the interior of the future and past cones.">
+  <LightConeScene />
+</SceneCard>
+
+The null surface itself — the cone boundary — is the worldline of light. Every photon travels exactly on the cone. The <Term slug="null-interval" /> $s^2 = 0$ is the invariant associated with massless particles. It is what keeps the speed of light the same in every inertial frame.
+
+<Callout variant="intuition">
+The cone is not a boundary you cross by going fast enough. It is a partition written into the metric. Two events with $s^2 > 0$ have a frame-independent temporal order. Two events with $s^2 < 0$ have no frame-independent temporal order at all. The algebra of §03.2 is now geometry: the sign of $s^2$ sorts every pair of events into one of two ontologically distinct classes.
+</Callout>
+
+</Section>
+
+<Section index={3} title="What spacelike means">
+
+Spacelike-separated events — those with $s^2 < 0$ — live in the elsewhere. They are not in your future, not in your past, and not connected to you by any physical signal. Crucially, their temporal ordering is relative: there exists a Lorentz boost that makes them simultaneous, another boost that makes $Q$ precede $P$, and another that reverses the order again. No one ordering is privileged because no physical signal can run between the events to establish one.
+
+This is the <Term slug="simultaneity-relative" /> of §02 given its invariant home. Two events that are simultaneous in the lab frame are spacelike-separated (the lab's $t = \text{const}$ slice is a flat hyperplane cutting through the elsewhere). Boost to a frame moving in the $+x$ direction and the same pair of events acquires a temporal gap. Boost harder and the gap grows the other way. None of these descriptions is more real than any other, because no physical process connects the two events.
+
+<SceneCard caption="FIG.13b — The cyan pair (T1, T2) is timelike; drag β to any value and Δt' stays positive — T2 is always in T1's future. The amber pair (S1, S2) is spacelike; at β ≈ 0.067 they become simultaneous, and beyond that their order flips. The elsewhere has no frame-independent clock.">
+  <CausalityTiltScene />
+</SceneCard>
+
+The <Term slug="spacelike" /> and <Term slug="timelike" /> labels are Lorentz invariants. Once classified, the classification does not change under any physical boost. This is why physicists speak of the "causal structure" of spacetime rather than "the order of events." The causal structure — which events can influence which — is the part of the geometry that is the same for every inertial observer.
+
+</Section>
+
+<Section index={4} title="No superluminal signal">
+
+Suppose you could send a signal faster than light — say, at $v = 2c$. In the lab frame it would travel from event $A$ to event $B$ in half the time light would. The interval would be $s^2 = c^2 \Delta t^2 - \Delta x^2 = c^2 \Delta t^2 - (2c \,\Delta t)^2 = -3c^2 \Delta t^2 < 0$. The signal would be spacelike.
+
+But spacelike intervals have no frame-independent temporal order. In the lab frame $B$ happens after $A$ — the signal goes forward in time. Boost to a frame moving at speed $\beta c$ in the $+x$ direction:
+
+<EquationBlock id="EQ.13.04">
+$$\Delta t' = \gamma (\Delta t - \beta\,\Delta x / c)$$
+</EquationBlock>
+
+For the $2c$ signal, $\Delta x = 2c \,\Delta t$, so $\Delta t' = \gamma \Delta t (1 - 2\beta)$. When $\beta > 0.5$ this changes sign — $B$ precedes $A$. The "message" arrives before it is sent. An observer in this frame could use the signal to send a reply back to $A$'s past — preventing the original transmission. Causality — the requirement that causes precede effects in every inertial frame — is violated.
+
+<SceneCard caption="FIG.13c — In the lab frame a signal travels from A to B at v = 2c. Toggle to the boosted frame: at β > 0.5 the event B precedes A and the causal order inverts. The red shading marks the interval over which effect precedes cause. No boost that the physical scenario requires stays below this threshold.">
+  <NoSuperluminalSignalScene />
+</SceneCard>
+
+The causal prohibition is clean: a signal between spacelike-separated events can always be made to run backward in time by choosing the appropriate boost. Causality — which is Lorentz-invariant — forbids such signals entirely. The light cone is not just the boundary of the "fast" region. It is the boundary of the *causal* region. Anything outside it is not merely unreachable at the moment — it is unreachable in principle, in every frame, for all time.
+
+<Callout variant="warning">
+Quantum mechanics has correlations between spacelike-separated events — entanglement. Those correlations cannot be used to send information at superluminal speeds. The measurement outcomes are random on each side; only when the two random results are *compared* (over a subluminal classical channel) does the correlation appear. No information, no causality violation. Bell's theorem restricts the correlations but cannot transmit a message faster than $c$.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The structure of now">
+
+There is no universal "now." Every inertial observer carries her own simultaneity hyperplane — a flat slice through spacetime at $t' = \text{const}$ — and two observers moving relative to each other define different slices. The slices disagree on which events are "happening at the same time." This is not a measurement error or a signalling delay; it is the geometry.
+
+What IS universal is the light cone itself. Your future light cone — the set of all events your future self can ever influence — is the same in every inertial frame. Your past light cone — the set of all events that could have influenced your present — is equally invariant. The cone is a Lorentz-invariant structure stamped on every event in spacetime.
+
+The three-fold partition — future, past, elsewhere — is the true causal grammar of the universe. "Now" is an artifact of low velocity, where the light cone is so nearly vertical that the elsewhere is invisibly thin in everyday experience. Measure precisely enough and the slicing becomes visible: GPS satellites must correct for simultaneity differences of tens of nanoseconds between their orbital frame and the ground. The light cone is always there. It is the geometry of cause and effect, drawn at 45°.
+
+</Section>
+
+</TopicPageLayout>
