@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FourVelocityScene } from "@/components/physics/four-vectors-and-proper-time/four-velocity-scene";
+import { ProperTimeIntegralScene } from "@/components/physics/four-vectors-and-proper-time/proper-time-integral-scene";
+import { AlgebraBecomesGeometryScene } from "@/components/physics/four-vectors-and-proper-time/algebra-becomes-geometry-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Richard Feynman", href: "/physicists/richard-feynman" },
+  { type: "term", label: "Four-vector", href: "/dictionary/four-vector" },
+  { type: "term", label: "Four-velocity", href: "/dictionary/four-velocity" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.14 · §03 HONEST-MOMENT APEX"
+  title="FOUR-VECTORS AND PROPER TIME"
+  subtitle="The algebra of §02 was geometry all along."
+/>
+
+<Section index={1} title="The lift — why does γ show up everywhere?">
+
+Section §02 left a nagging question. Time dilation: $\Delta t' = \gamma \Delta t$. Length contraction: $L' = L/\gamma$. Relativistic velocity-addition: a fraction with $\gamma$ hiding inside the denominator. Doppler shift: $\sqrt{(1+\beta)/(1-\beta)}$, which is $e^\eta$ in rapidity notation where $\eta = \mathrm{atanh}(\beta)$. Energy: $E = \gamma mc^2$. Momentum: $p = \gamma mv$. The same factor $\gamma$ haunts every formula. Why?
+
+The answer is not a coincidence. It is a theorem about geometry. <PhysicistLink slug="hermann-minkowski" />'s Cologne lecture of 1908 — three years after <PhysicistLink slug="albert-einstein" />'s two postulates — stated the conclusion flat: space and time are not separately conserved quantities. They are coordinates in a 4-dimensional pseudo-Euclidean manifold, and $\gamma$ is not a kinematic correction factor. It is the cosine of a hyperbolic rotation angle in that manifold. Every §02 formula is a different projection of the same rotation onto a different axis.
+
+§03.4 makes that precise. By the end of this topic you will have a single geometric object — the <Term slug="four-vector" /> — that carries all six §02 formulas as its components or contractions. The §02 algebra was the §03 geometry written out slowly, piece by piece, in coordinates.
+
+</Section>
+
+<Section index={2} title="The four-velocity — the natural relativistic tangent vector">
+
+In Newtonian mechanics the velocity of a particle is $\mathbf{v} = d\mathbf{r}/dt$: the rate of change of position with respect to lab time. This fails relativistically because $t$ is frame-dependent — different observers disagree on how much lab time has elapsed. The fix is to differentiate with respect to something every observer agrees on: <Term slug="proper-time" /> $\tau$, the time elapsed on a clock carried by the particle itself.
+
+The result is the <Term slug="four-velocity" />:
+
+<EquationBlock id="EQ.01">
+$$u^\mu = \frac{dx^\mu}{d\tau} = \gamma(c,\, v_x,\, v_y,\, v_z)$$
+</EquationBlock>
+
+where $dx^\mu = (c\,dt, dx, dy, dz)$ is an infinitesimal displacement in spacetime and $d\tau = dt/\gamma$ converts from lab time to proper time. The four components are: a time-like piece $u^0 = \gamma c$ and three spatial pieces $u^i = \gamma v_i$. At rest ($\beta = 0$, $\gamma = 1$) this reduces to $u^\mu = (c, 0, 0, 0)$: a particle at rest is still "moving through time" at speed $c$. <PhysicistLink slug="richard-feynman" /> liked to put it bluntly: everything moves through spacetime at $c$; what changes between observers is only the split between the time direction and the space directions.
+
+<SceneCard caption="FIG.14a — left: the 3-velocity vector v in the (v_x, v_y) plane, clamped inside the |v| = c disc (dashed amber). Right: the four-velocity components u^μ as a bar chart in units of c. The HUD displays u^μ u_μ / c² — pinned at exactly 1 for every β. Drag β to see γ, and the spatial bars grow while the invariant never moves.">
+  <FourVelocityScene />
+</SceneCard>
+
+The four-velocity is a Lorentz covariant object: every component transforms under a Lorentz boost by the same rule as $(ct, x, y, z)$. That covariance is why $\gamma$ appears in every relativistic formula — any quantity built from four-vectors inherits the same transformation law, and $\gamma$ is the boost's natural parameter.
+
+</Section>
+
+<Section index={3} title="Proper time as the geometric arc length">
+
+The time coordinate $t$ in the lab is observer-dependent. The <Term slug="proper-time" /> $\tau$ is not. It is the arc length along a <Term slug="world-line" /> in the Minkowski metric, and every observer computes the same number when they integrate it along the same worldline.
+
+The relation is:
+
+<EquationBlock id="EQ.02">
+$$d\tau = \frac{dt}{\gamma} = dt\,\sqrt{1 - \beta^2}$$
+</EquationBlock>
+
+For a particle moving at constant $\beta$, integrating over a lab time interval $\Delta t$ gives $\Delta\tau = \Delta t / \gamma$ — exactly the §02.1 time-dilation formula, re-derived as a geometric statement: the clock carried by the particle measures a shorter arc length along its kinked worldline than the straight coordinate time axis measures. There is no mechanism or force making the moving clock tick slow. The Minkowski metric simply assigns less arc length to that path. The §02 "moving clocks run slow" is the same sentence as "a straight line is the longest geodesic between two events in Minkowski spacetime."
+
+<SceneCard caption="FIG.14b — two worldlines in the (x, ct) diagram: a stationary clock (cyan) and a uniformly-moving clock at β (magenta). The running proper-time accumulators τ_home and τ_mover update as you scrub the progress slider. The mover's τ falls behind by exactly the factor 1/γ. Drag β to change the velocity and watch γ shift; drag progress to run the clocks forward.">
+  <ProperTimeIntegralScene />
+</SceneCard>
+
+This is the §03 reformulation of §02.1: not "moving clocks run slow because of something physics does to them" but "the Minkowski metric assigns less proper time to a non-geodesic path." The same integral, taken over an arbitrarily curved worldline, gives the §03.5 twin paradox result without any additional assumptions.
+
+</Section>
+
+<Section index={4} title="The norm of u^μ — everyone moves at c through spacetime">
+
+The Minkowski norm-squared of the four-velocity is:
+
+<EquationBlock id="EQ.03">
+$$u^\mu u_\mu = (u^0)^2 - (u^1)^2 - (u^2)^2 - (u^3)^2 = \gamma^2 c^2 - \gamma^2 v^2 = \gamma^2 c^2(1 - \beta^2) = c^2$$
+</EquationBlock>
+
+The Minkowski norm of the four-velocity is $c^2$, identically, for every particle in every inertial frame at every velocity. It is a Lorentz <Term slug="invariant-interval" />: a scalar that every observer in every frame computes to be the same value. The four-velocity vector is not an ordinary 3D arrow that gets length-contracted or rotated; it lives on the upper sheet of the hyperboloid $u^\mu u_\mu = c^2$ in four-dimensional velocity space, and a Lorentz boost slides the vector along that hyperboloid without changing its Minkowski length.
+
+This is the geometric statement of "everyone moves through spacetime at $c$." A particle at rest has all of its $c$-worth of spacetime velocity directed along the time axis: $u^\mu = (c, 0, 0, 0)$. A particle moving at $\beta c$ redirects some of that velocity into the spatial direction: $u^\mu = (\gamma c, \gamma \beta c, 0, 0)$. The total Minkowski speed stays $c$. The §02 $\gamma$ factor is the geometry of that redistribution.
+
+</Section>
+
+<Section index={5} title="The honest moment — the §02 algebra was geometry">
+
+<SceneCard caption="FIG.14c — left: the six §02 formulas (β, γ, time-dilation, length-contraction, velocity-addition, Doppler). Right: the hyperboloid u^μ u_μ = c² in the (u⁰/c, u¹/c) = (γ, γβ) plane, with the four-velocity vector sweeping it as β grows. As you drag β, each §02 formula lights up in sequence — one formula per rapidity band. The right-hand vector sweeps the same hyperbola for all of them. One object. One rotation.">
+  <AlgebraBecomesGeometryScene />
+</SceneCard>
+
+<Callout variant="intuition">
+Time, length, velocity, frequency, energy, momentum — they don't transform separately. They're shadows of one rotation in 4D pseudo-Euclidean spacetime. The Minkowski geometry IS the relativity. The algebra of §02 was the geometry all along.
+
+The six §02 formulas are six projections of one four-vector onto six different combinations of axes. $\gamma$ is the hyperbolic cosine of the rapidity angle $\eta = \mathrm{atanh}(\beta)$. $\gamma\beta$ is the hyperbolic sine. Time-dilation is the time projection. Length-contraction is the inverse spatial projection. Velocity-addition is the composition of two rapidity rotations. Doppler is the ratio of the time components in two frames. None of these are independent facts about the universe. They are all one fact: Lorentz boosts are hyperbolic rotations, and the Minkowski metric is what they preserve.
+
+<PhysicistLink slug="hermann-minkowski" /> saw this in 1908. <PhysicistLink slug="albert-einstein" /> initially dismissed it as "superfluous erudition." He later called it indispensable. Every relativistic theory since — electrodynamics, quantum field theory, general relativity — is built on the four-vector as its most basic covariant object.
+</Callout>
+
+The scene above makes this literal. The rapidity $\eta = \mathrm{atanh}(\beta)$ is the single parameter that controls the hyperbolic rotation. As $\eta$ increases from $0$ to $\infty$, the four-velocity vector sweeps the hyperboloid $u^\mu u_\mu = c^2$. Each §02 formula is a monotone function of the same $\eta$. There is one rotation. There are six projections. The §02 chapter was a guided tour of six windows onto the same geometric room.
+
+The electromagnetic analogue lives in §11.5 of the electromagnetism module. The <Term slug="four-potential" /> $A^\mu = (\phi/c, \mathbf{A})$ is exactly the same construction applied to the EM field: a four-component object that transforms under Lorentz boosts by the same rule as $(ct, x, y, z)$, with a Lorentz-invariant norm related to the gauge freedom. See [the EM application](/electromagnetism/four-potential-and-em-lagrangian) for the canonical analogue of the four-velocity machinery built here.
+
+</Section>
+
+<Section index={6} title="Forward — geometry cashes as physics">
+
+Two consequences follow immediately from what §03.4 established.
+
+The first is the twin paradox. If proper time is the Minkowski arc length along a worldline, then two worldlines connecting the same pair of events accumulate, in general, different amounts of proper time. The straight worldline (the stay-at-home twin) is the longest geodesic; the kinked worldline (the traveling twin) is shorter. §03.5 works this out explicitly: the kinked worldline has less proper time not because of any force or physiological effect on the traveler, but because the Minkowski metric measures less arc length along the broken path.
+
+The second is the four-momentum. If <Term slug="four-velocity" /> $u^\mu = \gamma(c, \mathbf{v})$ is the geometric generalization of 3-velocity, then the obvious relativistic generalization of momentum is $p^\mu = m u^\mu = \gamma m(c, \mathbf{v})$. The time component is $p^0 = \gamma mc$ — and $p^0 c = \gamma mc^2$ is the total energy, which in the rest frame reduces to $E_0 = mc^2$. The mass-energy equivalence of §04.2 is the $\mu = 0$ component of the four-momentum norm. §04.1 builds this in full. The same four-vector machinery that gave us proper time gives us $E = mc^2$ as a component identity, not a separate postulate.
+
+</Section>
+
+</TopicPageLayout>
