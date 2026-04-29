@@ -947,6 +947,99 @@ const ELECTROMAGNETISM_TOPICS: readonly Topic[] = [
   },
 ];
 
+const RELATIVITY_MODULES: readonly Module[] = [
+  { slug: "sr-foundations", title: "SR Foundations", index: 1 },
+  { slug: "sr-kinematics", title: "SR Kinematics", index: 2 },
+  { slug: "spacetime-geometry", title: "Spacetime Geometry", index: 3 },
+  { slug: "relativistic-dynamics", title: "Relativistic Dynamics", index: 4 },
+  { slug: "sr-applications", title: "SR Applications and Paradoxes", index: 5 },
+  { slug: "equivalence-principle", title: "The Equivalence Principle", index: 6 },
+  { slug: "tensor-calculus", title: "Curved Spacetime and Tensor Calculus", index: 7 },
+  { slug: "curvature-and-efe", title: "Riemann Curvature and Einstein's Equations", index: 8 },
+  { slug: "schwarzschild-and-tests", title: "Schwarzschild and the Classical Tests", index: 9 },
+  { slug: "black-holes", title: "Black Holes", index: 10 },
+  { slug: "gravitational-waves", title: "Gravitational Waves", index: 11 },
+  { slug: "cosmology", title: "Cosmology", index: 12 },
+  { slug: "frontiers", title: "Frontiers", index: 13 },
+];
+
+const RELATIVITY_TOPICS: readonly Topic[] = [
+  // §01 SR Foundations — FIG.01–05 (live)
+  { slug: "galilean-relativity", title: "GALILEAN RELATIVITY AND THE FRAME PROBLEM", eyebrow: "FIG.01 · SR FOUNDATIONS", subtitle: "Why Newton's universe needed an observer who never moved.", readingMinutes: 9, status: "live", module: "sr-foundations" },
+  { slug: "maxwell-and-the-speed-of-light", title: "MAXWELL AND THE SPEED OF LIGHT", eyebrow: "FIG.02 · SR FOUNDATIONS", subtitle: "The constant hiding in two SI numbers, and what it didn't depend on.", readingMinutes: 10, status: "live", module: "sr-foundations" },
+  { slug: "michelson-morley", title: "THE MICHELSON-MORLEY EXPERIMENT", eyebrow: "FIG.03 · SR FOUNDATIONS", subtitle: "An interferometer asks the wind which way it blows, and gets no answer.", readingMinutes: 11, status: "live", module: "sr-foundations" },
+  { slug: "einsteins-two-postulates", title: "EINSTEIN'S TWO POSTULATES", eyebrow: "FIG.04 · SR FOUNDATIONS", subtitle: "Drop one assumption, take one fact at face value, get a new universe.", readingMinutes: 10, status: "live", module: "sr-foundations" },
+  { slug: "relative-simultaneity", title: "THE RELATIVITY OF SIMULTANEITY", eyebrow: "FIG.05 · SR FOUNDATIONS", subtitle: "Two lightning bolts strike — and the train passenger disagrees with you about which came first.", readingMinutes: 11, status: "live", module: "sr-foundations" },
+  // §02 SR Kinematics — FIG.06–10 (live)
+  { slug: "time-dilation", title: "TIME DILATION", eyebrow: "FIG.06 · SR KINEMATICS", subtitle: "Why a moving clock ticks slower — and why this is not an illusion.", readingMinutes: 12, status: "live", module: "sr-kinematics" },
+  { slug: "length-contraction", title: "LENGTH CONTRACTION", eyebrow: "FIG.07 · SR KINEMATICS", subtitle: "Why a moving rod is shorter — and why no one moving with it can tell.", readingMinutes: 11, status: "live", module: "sr-kinematics" },
+  { slug: "the-lorentz-transformation", title: "THE LORENTZ TRANSFORMATION", eyebrow: "FIG.08 · SR KINEMATICS", subtitle: "The four lines of algebra that replaced Galileo.", readingMinutes: 13, status: "live", module: "sr-kinematics" },
+  { slug: "velocity-addition", title: "RELATIVISTIC VELOCITY ADDITION", eyebrow: "FIG.09 · SR KINEMATICS", subtitle: "Why nothing made of matter ever crosses 299,792,458 m/s.", readingMinutes: 11, status: "live", module: "sr-kinematics" },
+  { slug: "relativistic-doppler", title: "THE RELATIVISTIC DOPPLER EFFECT", eyebrow: "FIG.10 · SR KINEMATICS", subtitle: "What the source's color tells you about its motion through spacetime.", readingMinutes: 11, status: "live", module: "sr-kinematics" },
+  // §03 Spacetime geometry — FIG.11–15 (coming-soon)
+  { slug: "spacetime-diagrams", title: "SPACETIME DIAGRAMS AND WORLDLINES", eyebrow: "FIG.11 · SPACETIME GEOMETRY", subtitle: "Draw a clock's life as a single line on a piece of paper.", readingMinutes: 11, status: "coming-soon", module: "spacetime-geometry" },
+  { slug: "the-invariant-interval", title: "THE INVARIANT INTERVAL", eyebrow: "FIG.12 · SPACETIME GEOMETRY", subtitle: "The one quantity every observer must agree on.", readingMinutes: 12, status: "coming-soon", module: "spacetime-geometry" },
+  { slug: "light-cones-and-causality", title: "LIGHT CONES AND CAUSALITY", eyebrow: "FIG.13 · SPACETIME GEOMETRY", subtitle: "The shape spacetime gives \"before\" and \"after\" — and \"neither.\"", readingMinutes: 11, status: "coming-soon", module: "spacetime-geometry" },
+  { slug: "four-vectors-and-proper-time", title: "FOUR-VECTORS AND PROPER TIME", eyebrow: "FIG.14 · SPACETIME GEOMETRY", subtitle: "The invariant heartbeat of every traveler in spacetime.", readingMinutes: 12, status: "coming-soon", module: "spacetime-geometry" },
+  { slug: "the-twin-paradox", title: "THE TWIN PARADOX", eyebrow: "FIG.15 · SPACETIME GEOMETRY", subtitle: "The longest worldline in spacetime is also the shortest in proper time.", readingMinutes: 13, status: "coming-soon", module: "spacetime-geometry" },
+  // §04 Relativistic dynamics — FIG.16–20 (coming-soon)
+  { slug: "four-momentum", title: "FOUR-MOMENTUM", eyebrow: "FIG.16 · RELATIVISTIC DYNAMICS", subtitle: "Energy and momentum, packaged into one object that transforms as a vector.", readingMinutes: 12, status: "coming-soon", module: "relativistic-dynamics" },
+  { slug: "mass-energy-equivalence", title: "MASS-ENERGY EQUIVALENCE", eyebrow: "FIG.17 · RELATIVISTIC DYNAMICS", subtitle: "Why a hot cup of coffee weighs more than a cold one.", readingMinutes: 13, status: "coming-soon", module: "relativistic-dynamics" },
+  { slug: "relativistic-collisions", title: "RELATIVISTIC COLLISIONS", eyebrow: "FIG.18 · RELATIVISTIC DYNAMICS", subtitle: "Conservation of four-momentum, and what changes when speeds get high.", readingMinutes: 12, status: "coming-soon", module: "relativistic-dynamics" },
+  { slug: "compton-scattering", title: "COMPTON SCATTERING", eyebrow: "FIG.19 · RELATIVISTIC DYNAMICS", subtitle: "The 1923 experiment that finally made photons mechanical.", readingMinutes: 11, status: "coming-soon", module: "relativistic-dynamics" },
+  { slug: "threshold-energy-and-pair-production", title: "THRESHOLD ENERGY AND PAIR PRODUCTION", eyebrow: "FIG.20 · RELATIVISTIC DYNAMICS", subtitle: "Why a 1.022 MeV gamma ray can become two electrons but a 511 keV one cannot.", readingMinutes: 12, status: "coming-soon", module: "relativistic-dynamics" },
+  // §05 SR applications — FIG.21–24 (coming-soon)
+  { slug: "the-barn-pole-paradox", title: "THE BARN-POLE PARADOX", eyebrow: "FIG.21 · SR APPLICATIONS", subtitle: "Two observers, two answers, no contradiction.", readingMinutes: 11, status: "coming-soon", module: "sr-applications" },
+  { slug: "bells-spaceship-paradox", title: "BELL'S SPACESHIP PARADOX", eyebrow: "FIG.22 · SR APPLICATIONS", subtitle: "A string between two synchronized rockets, and the geometry that snaps it.", readingMinutes: 11, status: "coming-soon", module: "sr-applications" },
+  { slug: "gps-as-relativity", title: "GPS AS A WORKING RELATIVITY EXPERIMENT", eyebrow: "FIG.23 · SR APPLICATIONS", subtitle: "Without two corrections, your position drifts ten kilometers a day.", readingMinutes: 12, status: "coming-soon", module: "sr-applications" },
+  { slug: "precision-tests-of-sr", title: "PRECISION TESTS OF LORENTZ INVARIANCE", eyebrow: "FIG.24 · SR APPLICATIONS", subtitle: "What happens when a theory survives a hundred years of being checked.", readingMinutes: 11, status: "coming-soon", module: "sr-applications" },
+  // §06 Equivalence principle — FIG.25–28 (coming-soon)
+  { slug: "inertial-vs-gravitational-mass", title: "INERTIAL VS GRAVITATIONAL MASS", eyebrow: "FIG.25 · EQUIVALENCE PRINCIPLE", subtitle: "Why two completely different definitions give the same number to thirteen decimal places.", readingMinutes: 12, status: "coming-soon", module: "equivalence-principle" },
+  { slug: "einsteins-elevator", title: "EINSTEIN'S ELEVATOR", eyebrow: "FIG.26 · EQUIVALENCE PRINCIPLE", subtitle: "A free-falling lab is a frame where gravity has been canceled.", readingMinutes: 11, status: "coming-soon", module: "equivalence-principle" },
+  { slug: "gravitational-redshift", title: "GRAVITATIONAL REDSHIFT", eyebrow: "FIG.27 · EQUIVALENCE PRINCIPLE", subtitle: "Climb out of a gravity well and your photons get tired.", readingMinutes: 12, status: "coming-soon", module: "equivalence-principle" },
+  { slug: "gravity-as-geometry", title: "GRAVITY AS GEOMETRY", eyebrow: "FIG.28 · EQUIVALENCE PRINCIPLE", subtitle: "The equivalence principle's geometric implication: there is no force, only curvature.", readingMinutes: 12, status: "coming-soon", module: "equivalence-principle" },
+  // §07 Tensor calculus — FIG.29–33 (coming-soon)
+  { slug: "manifolds-and-tangent-spaces", title: "MANIFOLDS AND TANGENT SPACES", eyebrow: "FIG.29 · TENSOR CALCULUS", subtitle: "Curved spaces and the flat ones that approximate them point by point.", readingMinutes: 13, status: "coming-soon", module: "tensor-calculus" },
+  { slug: "tensors-on-curved-space", title: "TENSORS ON CURVED SPACE", eyebrow: "FIG.30 · TENSOR CALCULUS", subtitle: "Indexed objects that don't lie about which way they point.", readingMinutes: 13, status: "coming-soon", module: "tensor-calculus" },
+  { slug: "the-metric-tensor", title: "THE METRIC TENSOR", eyebrow: "FIG.31 · TENSOR CALCULUS", subtitle: "The object that turns coordinate differences into actual distances.", readingMinutes: 13, status: "coming-soon", module: "tensor-calculus" },
+  { slug: "christoffels-and-parallel-transport", title: "CHRISTOFFELS AND PARALLEL TRANSPORT", eyebrow: "FIG.32 · TENSOR CALCULUS", subtitle: "The connection that says what \"stays parallel\" means on a curved surface.", readingMinutes: 13, status: "coming-soon", module: "tensor-calculus" },
+  { slug: "geodesics", title: "GEODESICS", eyebrow: "FIG.33 · TENSOR CALCULUS", subtitle: "The straightest possible lines, and why falling apples follow them.", readingMinutes: 13, status: "coming-soon", module: "tensor-calculus" },
+  // §08 Curvature & EFE — FIG.34–38 (coming-soon)
+  { slug: "the-riemann-tensor", title: "THE RIEMANN CURVATURE TENSOR", eyebrow: "FIG.34 · CURVATURE & EFE", subtitle: "Twenty independent numbers per point that say exactly how a space is bent.", readingMinutes: 13, status: "coming-soon", module: "curvature-and-efe" },
+  { slug: "ricci-and-the-einstein-tensor", title: "RICCI, SCALAR CURVATURE, AND THE EINSTEIN TENSOR", eyebrow: "FIG.35 · CURVATURE & EFE", subtitle: "The contractions that make a divergence-free curvature object.", readingMinutes: 12, status: "coming-soon", module: "curvature-and-efe" },
+  { slug: "the-stress-energy-tensor", title: "THE STRESS-ENERGY TENSOR", eyebrow: "FIG.36 · CURVATURE & EFE", subtitle: "Energy, momentum, pressure, and stress, all in one object.", readingMinutes: 12, status: "coming-soon", module: "curvature-and-efe" },
+  { slug: "einsteins-field-equations", title: "EINSTEIN'S FIELD EQUATIONS", eyebrow: "FIG.37 · CURVATURE & EFE", subtitle: "Spacetime tells matter how to move; matter tells spacetime how to curve.", readingMinutes: 14, status: "coming-soon", module: "curvature-and-efe" },
+  { slug: "the-newtonian-limit", title: "THE NEWTONIAN LIMIT", eyebrow: "FIG.38 · CURVATURE & EFE", subtitle: "Where GR gives back Newton, and where it refuses.", readingMinutes: 11, status: "coming-soon", module: "curvature-and-efe" },
+  // §09 Schwarzschild + tests — FIG.39–43 (coming-soon)
+  { slug: "the-schwarzschild-metric", title: "THE SCHWARZSCHILD METRIC", eyebrow: "FIG.39 · SCHWARZSCHILD + TESTS", subtitle: "The first exact solution to Einstein's equations, solved in a trench in 1915.", readingMinutes: 13, status: "coming-soon", module: "schwarzschild-and-tests" },
+  { slug: "mercurys-perihelion", title: "MERCURY'S PERIHELION", eyebrow: "FIG.40 · SCHWARZSCHILD + TESTS", subtitle: "A 43-arcsecond-per-century mismatch that closed seventy years of guesswork.", readingMinutes: 12, status: "coming-soon", module: "schwarzschild-and-tests" },
+  { slug: "light-deflection-and-lensing", title: "LIGHT DEFLECTION AND GRAVITATIONAL LENSING", eyebrow: "FIG.41 · SCHWARZSCHILD + TESTS", subtitle: "A May 1919 eclipse photograph, Einstein on the front page of every newspaper.", readingMinutes: 12, status: "coming-soon", module: "schwarzschild-and-tests" },
+  { slug: "shapiro-delay", title: "THE SHAPIRO TIME DELAY", eyebrow: "FIG.42 · SCHWARZSCHILD + TESTS", subtitle: "Light slowed not by mass but by the geometry the mass produces.", readingMinutes: 11, status: "coming-soon", module: "schwarzschild-and-tests" },
+  { slug: "the-classical-tests-summary", title: "THE CLASSICAL TESTS — A WHOLE THEORY ON TRIAL", eyebrow: "FIG.43 · SCHWARZSCHILD + TESTS", subtitle: "Four independent predictions, four confirmed observations, one theory standing.", readingMinutes: 10, status: "coming-soon", module: "schwarzschild-and-tests" },
+  // §10 Black holes — FIG.44–49 (coming-soon)
+  { slug: "the-event-horizon", title: "THE EVENT HORIZON", eyebrow: "FIG.44 · BLACK HOLES", subtitle: "The one-way membrane, what it looks like to the infaller, and what it doesn't.", readingMinutes: 13, status: "coming-soon", module: "black-holes" },
+  { slug: "kerr-and-the-ergosphere", title: "KERR BLACK HOLES AND THE ERGOSPHERE", eyebrow: "FIG.45 · BLACK HOLES", subtitle: "Spinning spacetime drags everything inside it along for the ride.", readingMinutes: 12, status: "coming-soon", module: "black-holes" },
+  { slug: "penrose-diagrams", title: "PENROSE DIAGRAMS AND CAUSAL STRUCTURE", eyebrow: "FIG.46 · BLACK HOLES", subtitle: "Compactify infinity; learn what a black hole's interior actually looks like.", readingMinutes: 13, status: "coming-soon", module: "black-holes" },
+  { slug: "no-hair-theorem", title: "THE NO-HAIR THEOREM", eyebrow: "FIG.47 · BLACK HOLES", subtitle: "Three numbers describe every black hole: mass, charge, spin.", readingMinutes: 11, status: "coming-soon", module: "black-holes" },
+  { slug: "black-hole-thermodynamics", title: "BLACK-HOLE THERMODYNAMICS", eyebrow: "FIG.48 · BLACK HOLES", subtitle: "The area theorem, Bekenstein entropy, and why a black hole is a thermal object.", readingMinutes: 12, status: "coming-soon", module: "black-holes" },
+  { slug: "hawking-radiation", title: "HAWKING RADIATION", eyebrow: "FIG.49 · BLACK HOLES", subtitle: "A semiclassical preview: even the blackest hole evaporates.", readingMinutes: 12, status: "coming-soon", module: "black-holes" },
+  // §11 Gravitational waves — FIG.50–53 (coming-soon)
+  { slug: "linearized-gravity", title: "LINEARIZED GRAVITY", eyebrow: "FIG.50 · GRAVITATIONAL WAVES", subtitle: "Small ripples in a flat background, governed by a wave equation.", readingMinutes: 12, status: "coming-soon", module: "gravitational-waves" },
+  { slug: "polarization-modes", title: "THE TWO POLARIZATIONS — PLUS AND CROSS", eyebrow: "FIG.51 · GRAVITATIONAL WAVES", subtitle: "What a gravitational wave does to a ring of free-floating test masses.", readingMinutes: 11, status: "coming-soon", module: "gravitational-waves" },
+  { slug: "binary-inspiral-and-the-chirp", title: "BINARY INSPIRAL AND THE CHIRP", eyebrow: "FIG.52 · GRAVITATIONAL WAVES", subtitle: "Two black holes spiraling in; the waveform's frequency rises like a chirp.", readingMinutes: 12, status: "coming-soon", module: "gravitational-waves" },
+  { slug: "ligo-and-multi-messenger", title: "LIGO AND MULTI-MESSENGER ASTRONOMY", eyebrow: "FIG.53 · GRAVITATIONAL WAVES", subtitle: "GW150914, GW170817, and what it means to hear the universe instead of seeing it.", readingMinutes: 12, status: "coming-soon", module: "gravitational-waves" },
+  // §12 Cosmology — FIG.54–58 (coming-soon)
+  { slug: "the-flrw-metric", title: "THE FLRW METRIC", eyebrow: "FIG.54 · COSMOLOGY", subtitle: "The geometry the universe picked out for itself.", readingMinutes: 12, status: "coming-soon", module: "cosmology" },
+  { slug: "friedmann-equations", title: "FRIEDMANN'S EQUATIONS", eyebrow: "FIG.55 · COSMOLOGY", subtitle: "Two ODEs that govern the expansion of everything.", readingMinutes: 13, status: "coming-soon", module: "cosmology" },
+  { slug: "hubble-and-cosmological-redshift", title: "HUBBLE AND COSMOLOGICAL REDSHIFT", eyebrow: "FIG.56 · COSMOLOGY", subtitle: "Why distant galaxies' light is stretched, and what is doing the stretching.", readingMinutes: 12, status: "coming-soon", module: "cosmology" },
+  { slug: "the-cmb-and-nucleosynthesis", title: "THE CMB AND BIG BANG NUCLEOSYNTHESIS", eyebrow: "FIG.57 · COSMOLOGY", subtitle: "The leftover heat and the first three minutes' worth of helium.", readingMinutes: 13, status: "coming-soon", module: "cosmology" },
+  { slug: "dark-matter-and-dark-energy", title: "DARK MATTER AND DARK ENERGY", eyebrow: "FIG.58 · COSMOLOGY", subtitle: "What 95% of the universe's mass-energy budget is — and what we still don't know about it.", readingMinutes: 13, status: "coming-soon", module: "cosmology" },
+  // §13 Frontiers — FIG.59–61 (coming-soon)
+  { slug: "singularity-theorems", title: "THE PENROSE-HAWKING SINGULARITY THEOREMS", eyebrow: "FIG.59 · FRONTIERS", subtitle: "When does GR predict its own breakdown?", readingMinutes: 12, status: "coming-soon", module: "frontiers" },
+  { slug: "the-information-paradox", title: "THE INFORMATION PARADOX", eyebrow: "FIG.60 · FRONTIERS", subtitle: "Hawking radiation says yes, unitarity says no, and the answer is still being argued.", readingMinutes: 13, status: "coming-soon", module: "frontiers" },
+  { slug: "what-relativity-doesnt-say", title: "WHAT RELATIVITY DOESN'T SAY", eyebrow: "FIG.61 · FRONTIERS", subtitle: "A century of winning streak, and the wall it has not yet broken through.", readingMinutes: 11, status: "coming-soon", module: "frontiers" },
+];
+
 export const BRANCHES: readonly Branch[] = [
   {
     slug: "classical-mechanics",
@@ -973,25 +1066,25 @@ export const BRANCHES: readonly Branch[] = [
     status: "live",
   },
   {
-    slug: "thermodynamics",
+    slug: "relativity",
     index: 3,
-    title: "THERMODYNAMICS",
+    title: "RELATIVITY",
     eyebrow: "§ 03",
+    subtitle: "The geometry of moving and falling.",
+    description:
+      "Special relativity erased the line between space and time and made E=mc² a fact about geometry. General relativity erased the line between gravity and curvature and made the universe expand. Together they give the rules light obeys, the rules clocks obey, and the rules black holes do not let escape — the longest-running winning streak in 20th-century physics.",
+    modules: RELATIVITY_MODULES,
+    topics: RELATIVITY_TOPICS,
+    status: "live",
+  },
+  {
+    slug: "thermodynamics",
+    index: 4,
+    title: "THERMODYNAMICS",
+    eyebrow: "§ 04",
     subtitle: "Heat, entropy, and why time moves forward.",
     description:
       "Energy flows one way. Entropy only grows. Out of these two facts come steam engines, refrigerators, the arrow of time, and the heat death of the universe. Thermodynamics is the part of physics that feels most like philosophy.",
-    modules: [],
-    topics: [],
-    status: "coming-soon",
-  },
-  {
-    slug: "relativity",
-    index: 4,
-    title: "RELATIVITY",
-    eyebrow: "§ 04",
-    subtitle: "The weirdness that hides at the edges of speed.",
-    description:
-      "Space bends. Time stretches. Mass and energy are the same thing. Einstein's special and general relativity rewrote geometry itself — and predicted everything from GPS corrections to black holes.",
     modules: [],
     topics: [],
     status: "coming-soon",
