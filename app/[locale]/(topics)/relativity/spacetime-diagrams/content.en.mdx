@@ -1,0 +1,100 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MinkowskiAxesScene } from "@/components/physics/spacetime-diagrams/minkowski-axes-scene";
+import { WorldlineConstructionScene } from "@/components/physics/spacetime-diagrams/worldline-construction-scene";
+import { BoostedFrameScene } from "@/components/physics/spacetime-diagrams/boosted-frame-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Spacetime", href: "/dictionary/spacetime" },
+  { type: "term", label: "World line", href: "/dictionary/world-line" },
+  { type: "term", label: "Light cone", href: "/dictionary/light-cone" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.11 · SPACETIME GEOMETRY"
+  title="SPACETIME DIAGRAMS AND WORLDLINES"
+  subtitle="Draw a clock's life as a single line on a piece of paper."
+/>
+
+<Section index={1} title="The reframing — Cologne, September 1908">
+
+Three years after <PhysicistLink slug="albert-einstein" /> published the two postulates that demolished Newtonian space and time, his old Zürich Polytechnic mathematics professor stood up at the 80th Assembly of German Natural Scientists and Physicians in Cologne and read out a lecture that began as casually as a weather report and ended with the most quoted sentence in the literature of relativity. <PhysicistLink slug="hermann-minkowski" />, the lecturer, was about to do something neither Einstein nor <PhysicistLink slug="henri-poincare" /> had quite committed to: he was going to claim that the §02 algebra was secretly *geometry* — that the Lorentz transformation is a rotation in a 4-dimensional pseudo-Euclidean space whose coordinates fuse time and the three spatial axes into one indivisible object.
+
+The hook line — every relativity textbook quotes it because nothing else from 1908 stuck quite as hard — was Minkowski's opening blow at the metaphysical assumption Newton had spent two centuries getting away with: "Henceforth space by itself, and time by itself, are doomed to fade away into mere shadows, and only a kind of union of the two will preserve an independent reality." The "union" he meant has a name now — <Term slug="spacetime" /> — and the §03 module is the geometry of that union. §03.1 is the diagrammatic vocabulary every later topic uses.
+
+</Section>
+
+<Section index={2} title="The diagram">
+
+Pick a single spatial axis $x$ and the time coordinate $t$. Multiply $t$ by $c$ so the vertical and horizontal axes carry the same units of length. Plot the vertical axis upward and the horizontal axis rightward. That is a Minkowski diagram, also called a spacetime diagram — a 2-dimensional slice of the 4-dimensional spacetime in which all of physics actually happens.
+
+In this diagram every *event* — every (when, where) pair, like "the photon hit the mirror at $t = 1.7$ ns, $x = 0.5$ m" — is a single point. Every *particle* is a sequence of events strung together as the particle persists through time, drawn as a continuous curve through the diagram. That curve is the particle's <Term slug="world-line" /> — Minkowski's word, used unchanged for 117 years now. A clock at rest at the origin has a world line that is a vertical straight line up the $ct$-axis; a clock moving at constant velocity has a tilted straight line; an accelerating particle has a curved world line.
+
+<SceneCard caption="FIG.11a — three world lines in the lab's (x, ct) diagram. Two cyan vertical lines are stationary observers at x = ±1; the magenta tilted line is a particle moving uniformly at β = 0.6, launched from the origin. The amber 45° dashed lines are the light cone — no physical world line tilts past them.">
+  <MinkowskiAxesScene />
+</SceneCard>
+
+The whole §03 module lives on this picture. Time dilation, length contraction, simultaneity, the twin paradox, the invariant interval — they will all be statements about how *world lines* relate to one another, drawn on diagrams exactly like this one.
+
+</Section>
+
+<Section index={3} title="What slope tells you">
+
+A straight world line has a single number associated with it: its slope $dx/d(ct)$ in the diagram. That number has a name we already know. If a particle moves with velocity $v = \beta c$ along $x$, then in time $dt$ its position changes by $dx = v\,dt = \beta c\,dt$, so
+
+<EquationBlock id="EQ.01">
+$$ \text{slope} = \frac{dx}{c\,dt} = \beta. $$
+</EquationBlock>
+
+The slope of a world line in a Minkowski diagram *is* the particle's velocity, expressed as a fraction of $c$. A vertical world line has slope $0$ and represents a stationary particle. A world line at slope $\beta = 0.5$ represents a particle moving at half the speed of light. A world line at $45°$ — slope $1$ — represents a photon. Slope $-1$ is a leftward photon.
+
+<SceneCard caption="FIG.11b — interactive: click anywhere inside the diagram to drop an event; consecutive events are joined by a straight world-line segment. The HUD reads off the slope β = dx/d(ct) of each segment. Subluminal segments stay between the 45° light lines and render cyan; if you place two events that would require a superluminal jump (slope > 1), that segment turns red as the violation flag.">
+  <WorldlineConstructionScene />
+</SceneCard>
+
+The usefulness of this picture is immediate: motion stops being a verb and becomes a static piece of geometry. The whole biography of a particle is one line on one diagram, and you read its velocity at every instant by looking at the local slope.
+
+</Section>
+
+<Section index={4} title="Light cones — the universal speed limit, drawn">
+
+The amber dashed lines crossing every diagram in this topic are the *light cone* from the origin. They are the world lines of the two photons emitted from $x = 0$ at $t = 0$ — one going right, one going left. By definition each travels at $c$, so each has slope $\pm 1$:
+
+<EquationBlock id="EQ.02">
+$$ ct = \pm x. $$
+</EquationBlock>
+
+In a 2D diagram these are two crossing 45° rays; in the full 3+1-dimensional spacetime they are the surface of an actual cone in 3D space at each value of $t$, expanding outward at speed $c$. Hence the name. The forward light cone is the future light cone — the locus of all spacetime points a photon emitted from the origin can ever reach. The backward cone is the past light cone — the locus of all events that could have sent a signal to the origin.
+
+The light cone is the §02 punchline, drawn. <Term slug="two-postulates" /> said: the speed of light is the same in every inertial frame. That postulate has a geometric face. *No physical world line can ever tilt past* $45°$. A subluminal particle has slope $|\beta| < 1$; a photon has slope exactly $\pm 1$; a particle with slope $>1$ would be moving faster than light and is forbidden. The light cone is the universal speed limit drawn on the diagram — a cone that every causal trajectory must stay inside. §03.3 cashes this out as a full theory of causality.
+
+</Section>
+
+<Section index={5} title="The reveal that's coming — boosted axes and the scissor">
+
+The Lorentz boost of §02.3 had a matrix. That matrix has a geometric face too. When you change to a frame moving at $\beta c$ relative to the lab, the boosted observer's $ct'$-axis tilts toward the light cone — its world line is *literally* the trajectory of an observer moving at $\beta c$ through the lab, drawn on the lab's diagram. Symmetrically, the boosted $x'$-axis tilts away from the lab's $x$-axis by the same angle on the other side of the $45°$ line. Lab axes are perpendicular; boosted axes are not. They are a *scissor* opening at angle $2\arctan\beta$ — and as $\beta \to 1$ the two boosted axes squeeze together onto the light line.
+
+<SceneCard caption="FIG.11c — drag β to overlay a boosted frame on the lab diagram. Cyan lab axes are vertical and horizontal; magenta boosted axes (ct' and x') tilt symmetrically about the 45° light line. As β → 1 the two boosted axes close on the light cone — the coordinate scissor closes on the universal limit.">
+  <BoostedFrameScene />
+</SceneCard>
+
+The next four §03 topics each take this same picture and extract one piece of physics from it: §03.2 the invariant interval (what stays the same when you boost), §03.3 the light cone as a causal structure, §03.4 four-vectors and proper time, §03.5 the twin paradox.
+
+</Section>
+
+<Section index={6} title="Closing — geometry first, algebra second">
+
+For the last 117 years every special-relativity argument has been told twice — once algebraically, in the language of $\gamma$ and the boost matrix, and once geometrically, in the language of world lines and light cones in a Minkowski diagram. The two versions are the same physics. §02 told the algebraic story. §03 tells the geometric one. §03.2 makes the invariant interval algebraic again — the Lorentz scalar $s^2 = c^2\Delta t^2 - \Delta x^2$ is what every observer agrees on across the scissor. §03.5 cashes the geometry as the twin paradox: a kinked world line accumulates less proper time than the straight one between the same two endpoints, because *that is what the Minkowski metric measures along it*.
+
+The diagram is not a teaching aid. It is the actual structure of the theory, drawn.
+
+</Section>
+
+</TopicPageLayout>

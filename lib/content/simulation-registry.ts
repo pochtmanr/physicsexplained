@@ -1136,6 +1136,106 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CosmologicalPreviewScene: lazyScene(() =>
     import("@/components/physics/relativistic-doppler/cosmological-preview-scene").then((m) => ({ default: m.CosmologicalPreviewScene })),
   ),
+  // RT §03 — spacetime-diagrams
+  MinkowskiAxesScene: lazyScene(() =>
+    import("@/components/physics/spacetime-diagrams/minkowski-axes-scene").then((m) => ({ default: m.MinkowskiAxesScene })),
+  ),
+  WorldlineConstructionScene: lazyScene(() =>
+    import("@/components/physics/spacetime-diagrams/worldline-construction-scene").then((m) => ({ default: m.WorldlineConstructionScene })),
+  ),
+  BoostedFrameScene: lazyScene(() =>
+    import("@/components/physics/spacetime-diagrams/boosted-frame-scene").then((m) => ({ default: m.BoostedFrameScene })),
+  ),
+  // RT §03 — the-invariant-interval
+  IntervalScene: lazyScene(() =>
+    import("@/components/physics/the-invariant-interval/interval-scene").then((m) => ({ default: m.IntervalScene })),
+  ),
+  ThreeCasesScene: lazyScene(() =>
+    import("@/components/physics/the-invariant-interval/three-cases-scene").then((m) => ({ default: m.ThreeCasesScene })),
+  ),
+  ProperTimeBarScene: lazyScene(() =>
+    import("@/components/physics/the-invariant-interval/proper-time-bar-scene").then((m) => ({ default: m.ProperTimeBarScene })),
+  ),
+  // RT §03 — light-cones-and-causality
+  LightConeScene: lazyScene(() =>
+    import("@/components/physics/light-cones-and-causality/light-cone-scene").then((m) => ({ default: m.LightConeScene })),
+  ),
+  CausalityTiltScene: lazyScene(() =>
+    import("@/components/physics/light-cones-and-causality/causality-tilt-scene").then((m) => ({ default: m.CausalityTiltScene })),
+  ),
+  NoSuperluminalSignalScene: lazyScene(() =>
+    import("@/components/physics/light-cones-and-causality/no-superluminal-signal-scene").then((m) => ({ default: m.NoSuperluminalSignalScene })),
+  ),
+  // RT §03 — four-vectors-and-proper-time
+  FourVelocityScene: lazyScene(() =>
+    import("@/components/physics/four-vectors-and-proper-time/four-velocity-scene").then((m) => ({ default: m.FourVelocityScene })),
+  ),
+  ProperTimeIntegralScene: lazyScene(() =>
+    import("@/components/physics/four-vectors-and-proper-time/proper-time-integral-scene").then((m) => ({ default: m.ProperTimeIntegralScene })),
+  ),
+  AlgebraBecomesGeometryScene: lazyScene(() =>
+    import("@/components/physics/four-vectors-and-proper-time/algebra-becomes-geometry-scene").then((m) => ({ default: m.AlgebraBecomesGeometryScene })),
+  ),
+  // RT §03 — the-twin-paradox
+  KinkedWorldlineScene: lazyScene(() =>
+    import("@/components/physics/the-twin-paradox/kinked-worldline-scene").then((m) => ({ default: m.KinkedWorldlineScene })),
+  ),
+  WhoAgedLessScene: lazyScene(() =>
+    import("@/components/physics/the-twin-paradox/who-aged-less-scene").then((m) => ({ default: m.WhoAgedLessScene })),
+  ),
+  TheBendIsTheAccelerationScene: lazyScene(() =>
+    import("@/components/physics/the-twin-paradox/the-bend-is-the-acceleration-scene").then((m) => ({ default: m.TheBendIsTheAccelerationScene })),
+  ),
+  // RT §04 — four-momentum
+  EnergyMomentumTriangleScene: lazyScene(() =>
+    import("@/components/physics/four-momentum/energy-momentum-triangle-scene").then((m) => ({ default: m.EnergyMomentumTriangleScene })),
+  ),
+  FourMomentumBoostScene: lazyScene(() =>
+    import("@/components/physics/four-momentum/four-momentum-boost-scene").then((m) => ({ default: m.FourMomentumBoostScene })),
+  ),
+  PhotonIsNullScene: lazyScene(() =>
+    import("@/components/physics/four-momentum/photon-is-null-scene").then((m) => ({ default: m.PhotonIsNullScene })),
+  ),
+  // RT §04 — mass-energy-equivalence
+  BindingEnergyCurveScene: lazyScene(() =>
+    import("@/components/physics/mass-energy-equivalence/binding-energy-curve-scene").then((m) => ({ default: m.BindingEnergyCurveScene })),
+  ),
+  CoffeeCupScene: lazyScene(() =>
+    import("@/components/physics/mass-energy-equivalence/coffee-cup-scene").then((m) => ({ default: m.CoffeeCupScene })),
+  ),
+  NuclearBalanceScene: lazyScene(() =>
+    import("@/components/physics/mass-energy-equivalence/nuclear-balance-scene").then((m) => ({ default: m.NuclearBalanceScene })),
+  ),
+  // RT §04 — relativistic-collisions
+  ElasticCollisionScene: lazyScene(() =>
+    import("@/components/physics/relativistic-collisions/elastic-collision-scene").then((m) => ({ default: m.ElasticCollisionScene })),
+  ),
+  InelasticMergerScene: lazyScene(() =>
+    import("@/components/physics/relativistic-collisions/inelastic-merger-scene").then((m) => ({ default: m.InelasticMergerScene })),
+  ),
+  TwoDScatteringScene: lazyScene(() =>
+    import("@/components/physics/relativistic-collisions/2d-scattering-scene").then((m) => ({ default: m.TwoDScatteringScene })),
+  ),
+  // RT §04 — compton-scattering
+  WavelengthShiftScene: lazyScene(() =>
+    import("@/components/physics/compton-scattering/wavelength-shift-scene").then((m) => ({ default: m.WavelengthShiftScene })),
+  ),
+  FourMomentumBalanceScene: lazyScene(() =>
+    import("@/components/physics/compton-scattering/four-momentum-balance-scene").then((m) => ({ default: m.FourMomentumBalanceScene })),
+  ),
+  Compton1923DataScene: lazyScene(() =>
+    import("@/components/physics/compton-scattering/compton-1923-data-scene").then((m) => ({ default: m.Compton1923DataScene })),
+  ),
+  // RT §04 — threshold-energy-and-pair-production
+  WhySinglePhotonIsForbiddenScene: lazyScene(() =>
+    import("@/components/physics/threshold-energy-and-pair-production/why-single-photon-is-forbidden-scene").then((m) => ({ default: m.WhySinglePhotonIsForbiddenScene })),
+  ),
+  WithNucleusScene: lazyScene(() =>
+    import("@/components/physics/threshold-energy-and-pair-production/with-nucleus-scene").then((m) => ({ default: m.WithNucleusScene })),
+  ),
+  Anderson1932Scene: lazyScene(() =>
+    import("@/components/physics/threshold-energy-and-pair-production/anderson-1932-scene").then((m) => ({ default: m.Anderson1932Scene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
