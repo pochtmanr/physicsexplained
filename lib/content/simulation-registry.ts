@@ -1056,6 +1056,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   HertzSparkGapScene: lazyScene(() =>
     import("@/components/physics/maxwell-and-the-speed-of-light/hertz-spark-gap-scene").then((m) => ({ default: m.HertzSparkGapScene })),
   ),
+  // RT §01 — michelson-morley
+  InterferometerApparatusScene: lazyScene(() =>
+    import("@/components/physics/michelson-morley/interferometer-apparatus-scene").then((m) => ({ default: m.InterferometerApparatusScene })),
+  ),
+  FringePredictionVsDataScene: lazyScene(() =>
+    import("@/components/physics/michelson-morley/fringe-prediction-vs-data-scene").then((m) => ({ default: m.FringePredictionVsDataScene })),
+  ),
+  AetherWindAttemptScene: lazyScene(() =>
+    import("@/components/physics/michelson-morley/aether-wind-attempt-scene").then((m) => ({ default: m.AetherWindAttemptScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -1,0 +1,108 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { InterferometerApparatusScene } from "@/components/physics/michelson-morley/interferometer-apparatus-scene";
+import { FringePredictionVsDataScene } from "@/components/physics/michelson-morley/fringe-prediction-vs-data-scene";
+import { AetherWindAttemptScene } from "@/components/physics/michelson-morley/aether-wind-attempt-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Michelson", href: "/physicists/albert-michelson" },
+  { type: "physicist", label: "Hendrik Antoon Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Luminiferous aether", href: "/dictionary/aether-luminiferous" },
+  { type: "term", label: "Galilean invariance", href: "/dictionary/galilean-invariance" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+  { type: "term", label: "Length contraction", href: "/dictionary/length-contraction" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.03 · SR FOUNDATIONS"
+  title="THE MICHELSON-MORLEY EXPERIMENT"
+  subtitle="An interferometer asks the wind which way it blows, and gets no answer."
+/>
+
+<Section index={1} title="The wind that ought to be there">
+
+By the late 1880s the question was no longer whether light was a wave — Maxwell's equations had decided that — but what it was a wave *in*. Sound waves are oscillations of air. Water waves are oscillations of water. Light waves were assumed to be oscillations of the <Term slug="aether-luminiferous">luminiferous aether</Term>, a medium so subtle it pervaded all space and yet so rigid that transverse oscillations could rip through it at three hundred million metres a second. Maxwell's 1865 wave equation contains a constant $c = 1/\sqrt{\mu_0 \varepsilon_0}$ but says nothing about which frame to measure that $c$ in. The natural answer, compatible with Galilean intuition, was a privileged frame — the rest-frame of the aether — in which Maxwell's equations held cleanly. In every other frame, Galilean velocity addition should kick in and a moving observer should see light at $c \pm v$ depending on direction.
+
+If that picture is right, the Earth — orbiting the Sun at about thirty kilometres per second — must be sailing through an aether wind. A laboratory bolted to the spinning rock should feel that wind the way a cyclist feels still air on a fast road. The wind is real, the prediction goes, so the wind is measurable. The instrument that measures it is the interferometer, and the man who built the most sensitive one of his century was <PhysicistLink slug="albert-michelson" />.
+
+</Section>
+
+<Section index={2} title="The instrument">
+
+The trick, in one sentence: split a beam of monochromatic light into two perpendicular paths of equal length, bounce each half off an end-mirror, recombine them, and look at the interference fringes. If both paths take the same time, the fringes sit still; if one path takes longer than the other by even a small fraction of a wavelength, the fringes shift by a corresponding fraction of a fringe-width.
+
+<SceneCard caption="FIG.03a — the Michelson interferometer schematic. Sodium-D-line source feeds a 45° beam splitter; two perpendicular arms fold the light to end mirrors and back; recombined output forms the fringe pattern on the right. The whole optical bench rotates on a mercury-floated granite slab — slow in the original 1887 protocol (one full turn in roughly six minutes), sped up here for visibility.">
+  <InterferometerApparatusScene />
+</SceneCard>
+
+The aether-wind prediction is straightforward. Let arm length be $L$, source wavelength be $\lambda$, apparatus speed through the aether be $v$. The arm pointing along the wind sees light fight upstream then sail downstream; the arm perpendicular to the wind sees light traverse a slight diagonal in both directions. Working out the round-trip times to first order in $\beta = v/c$ and converting the time difference into a fringe count gives
+
+<EquationBlock id="EQ.01">
+$$ \Delta n = \frac{2L}{\lambda}\,\frac{v^2}{c^2}. $$
+</EquationBlock>
+
+That is the *peak* shift, achieved when the apparatus is aligned with the wind. As the bench rotates by an angle $\theta$, the two arms exchange roles, and the shift relative to the $\theta = 0$ orientation traces a $\cos 2\theta$ — a $\pi$-periodic curve, two full peaks per rotation:
+
+<EquationBlock id="EQ.02">
+$$ \Delta n(\theta) = \frac{2L}{\lambda}\,\frac{v^2}{c^2}\,\cos 2\theta. $$
+</EquationBlock>
+
+For the apparatus Michelson and Edward Morley assembled in the basement of Adelbert Hall at Case Western Reserve University in 1887 — a granite slab floating on a one-and-a-half-tonne pool of mercury, with mirrors folding the round-trip optical path eight times to give an effective $L \approx 11~\text{m}$, illuminated by a sodium D-line lamp at $\lambda = 589~\text{nm}$, riding the Earth's $v \approx 30~\text{km/s}$ orbital motion — the formula returns
+
+$$ \Delta n \approx 0.37 \text{ fringes}. $$
+
+A third of a fringe-width. The eye can resolve a hundredth of a fringe-width on the same plate. The signal sits more than thirty times above the noise. If the aether is there, this experiment cannot miss.
+
+</Section>
+
+<Section index={3} title="The graph">
+
+What follows is the most famous null result in physics — and the cleanest way to see it is to plot prediction and observation on the same axes.
+
+<SceneCard caption="FIG.03b — prediction vs observation, the 1887 result. Dashed amber: the classical-aether formula (2L/λ)(v²/c²)·cos 2θ for the as-built apparatus. Solid cyan: the fringe shift Michelson and Morley actually measured, with the experimental noise floor at ±0.01 fringes shaded in grey. The curves never meet. The aether is gone.">
+  <FringePredictionVsDataScene />
+</SceneCard>
+
+Read that figure carefully, because every word in §01.4 follows from it. The dashed curve is what nineteenth-century physics expected. It is not subtle. It oscillates between $+0.37$ and $-0.37$ fringes as the apparatus rotates, and at every angle except the four nodes its absolute value is more than ten times the noise floor. The solid curve is what the apparatus actually delivered. It hugs zero. It dips into the grey strip occasionally, the way any real instrument's output does, but it never climbs out of it. The two curves are not within the noise of each other. They are different by an order of magnitude.
+
+Michelson and Morley repeated the experiment at midnight and noon, in spring and in autumn — different orientations of Earth's velocity vector — and got the same null. They published in the *American Journal of Science*, **34**, 333 (1887), as "On the Relative Motion of the Earth and the Luminiferous Aether," and concluded that "the relative velocity of the Earth and the aether is probably less than one sixth" of the orbital speed. Subsequent repeats — Morley and Miller 1904, Joos 1930, modern laser-stabilised cavity tests — pushed the upper bound on the wind speed below $10^{-17}$. The wind is not slow. It is not there.
+
+</Section>
+
+<Section index={4} title="The wind that is not there">
+
+The cleanest way to internalise the result is to picture the apparatus moving through the wind it is supposed to be measuring.
+
+<SceneCard caption="FIG.03c — Earth orbiting the Sun at 30 km/s. If the aether sits still in the Sun's frame, the lab on Earth should ride a 30 km/s aether wind anti-parallel to its instantaneous velocity. The HUD shows the predicted fringe shift (≈ 0.37) versus the observed shift (≈ 0). The wind that should be there, isn't.">
+  <AetherWindAttemptScene />
+</SceneCard>
+
+Two escape routes from the null were tried. The first was an aether dragged along by the Earth, leaving the lab momentarily at rest in it; this was killed by Joos's 1929 repeat at different orbital phases and by Fizeau's 1851 experiment on light through moving water, which had already shown the aether is *not* substantially dragged by matter. The second — and the one that took root for nearly two decades — was material contraction.
+
+In 1889 George FitzGerald proposed, and in 1892 <PhysicistLink slug="hendrik-antoon-lorentz" /> independently and more rigorously argued, that an arm of the interferometer aligned with the aether wind *physically shrinks* by a factor of $\sqrt{1 - v^2/c^2}$ — a real material shortening, caused by molecular forces being electromagnetic in origin and therefore subject to the wind. A shrinkage of exactly that magnitude cancels the longer round-trip time and produces zero fringe shift. Lorentz developed the algebra into what we now call the <Term slug="lorentz-transformation">Lorentz transformation</Term>, complete with a "local time" that ran differently in the moving frame. He believed the contraction was real. He believed the local time was a calculational fiction. He kept the aether.
+
+The contraction hypothesis was not crazy. It saved the aether, predicted the null result, and matched every electromagnetic measurement of the 1890s. Lorentz's 1904 paper — eighteen years after Cleveland, one year before Einstein — contained the full Lorentz transformation, derived from the assumption of real material contraction in a real aether. The algebra was complete. What was missing was the geometry.
+
+<Callout variant="warning">
+The negative result Michelson and Morley could not explain becomes, in §01.4, Einstein's positive postulate. Lorentz had the equations. Einstein gave them a different reason for being true.
+</Callout>
+
+</Section>
+
+<Section index={5} title="What dies, and what survives">
+
+By the close of 1887 the experiment had killed three things and surfaced one. Killed: the dragged aether, the wind detectable to first order in $v/c$, and the privileged frame in which Maxwell's equations were supposed to hold. Surfaced: a mismatch between Maxwell's electromagnetism, which is not <Term slug="galilean-invariance">Galilean invariant</Term>, and the Galilean kinematics every nineteenth-century laboratory assumed. If light has a single speed and Galileo's transformation says it can't, one of the two is wrong.
+
+The reader who has come this far through §01.1–§01.3 already has the assembly. Galileo gave us inertial frames and a velocity-addition rule. Maxwell gave us a wave equation with a fixed $c$. Michelson and Morley showed that no inertial frame moves with respect to the aether the way the Galilean rule says it must. Three propositions; at most two can be true. The next two topics — §01.4 *einsteins-two-postulates* and §01.5 *relative-simultaneity* — are about which two Einstein kept and what he was forced to give up. The price was Newtonian time.
+
+Lorentz spent fifteen years saving the aether by adding contractions to it. Einstein, in 1905, looked at the same equations and asked a different question: what if there is no aether, and the contraction is not a property of matter but of how lengths transform between frames in spacetime? The algebra is identical. The physics is not. For this topic the clean takeaway is the figure above. Dashed amber, solid cyan, never meeting. An interferometer asked the wind which way it was blowing, and the answer came back: there is no wind.
+
+</Section>
+
+</TopicPageLayout>
