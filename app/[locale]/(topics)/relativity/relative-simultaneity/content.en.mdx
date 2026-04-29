@@ -1,0 +1,100 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TrainAndPlatformScene } from "@/components/physics/relative-simultaneity/train-and-platform-scene";
+import { SpacetimeDiagramScene } from "@/components/physics/relative-simultaneity/spacetime-diagram-scene";
+import { SimultaneitySliderScene } from "@/components/physics/relative-simultaneity/simultaneity-slider-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Hermann Minkowski", href: "/physicists/hermann-minkowski" },
+  { type: "term", label: "Relativity of simultaneity", href: "/dictionary/simultaneity-relative" },
+]}>
+
+
+<TopicHeader
+  eyebrow="FIG.05 · SR FOUNDATIONS"
+  title="THE RELATIVITY OF SIMULTANEITY"
+  subtitle="Two lightning bolts strike — and the train passenger disagrees with you about which came first."
+/>
+
+<Section index={1} title="The setup">
+
+A train moves to the right past a platform at constant velocity $v$. Stand on the platform; call yourself observer P. At the exact moment the center of the train passes you, two lightning bolts strike — one at the front of the train, one at the rear. Both leave scorch marks. Both leave a flash. The marks are physical: anyone, in any frame, can later walk along the train and confirm that yes, the front of the carriage and the rear of the carriage were each struck once.
+
+Inside the train, sitting in the middle car, is observer T. She watches the same two bolts — the same two physical strikes — through her window. The question is sharp and small: did the bolts strike at the same time?
+
+P will say *yes*. T will say *no*. Neither is mistaken. Neither is using the wrong instrument. Both are reading off light pulses that move at $c$ in their own frame, and both are answering the same question. The disagreement is not measurement error. It is geometry. Before this page is over, the universal "now" that has structured every physical statement you have ever heard — the assumption that two events spatially separated can sensibly be called simultaneous — will be gone.
+
+</Section>
+
+<Section index={2} title="The platform observer's view">
+
+P stands at the midpoint of the platform. The bolts strike both ends of the train at the moment the train's center passes her. Light from each strike then propagates at $c$ outward in both directions. The front-bolt's light moves backward toward her at speed $c$; the rear-bolt's light moves forward toward her at $c$. The two pulses started at equal distances from P (the train half-length $L/2$, in the platform frame) and travel at the same speed. They arrive at P at the same instant.
+
+<SceneCard caption="FIG.05a — Train and platform. Two bolts strike at t = 0; amber pulses propagate at c in both directions. Platform observer P (cyan) receives both pulses simultaneously. Passenger T (magenta) is moving toward the front-bolt's pulse and meets it first.">
+  <TrainAndPlatformScene />
+</SceneCard>
+
+P's argument is airtight given Galileo and given Newton: equal distances, equal speeds, equal travel times — therefore equal departure times. The bolts struck simultaneously. She writes it in her notebook and signs it. The two events are *simultaneous in the platform frame*. <PhysicistLink slug="albert-einstein" /> built the 1905 paper around exactly this style of operational reasoning: a "simultaneous" judgment is a judgment about the *arrival* of light signals at a midpoint, not about some abstract Newtonian time-coordinate. P has done it correctly.
+
+</Section>
+
+<Section index={3} title="The passenger's view">
+
+Now ride along with T inside the train. In her frame, she is at rest at the center of her carriage, and the bolts struck both ends of *her* car. Light from each bolt propagates outward at $c$ — postulate two, the speed of light is the same in all inertial frames, applies inside the train as much as outside it.
+
+But T is not standing equidistant from where the pulses *will* be when they meet her. While the front-bolt's flash propagates rearward at $c$ inside the train, T is moving forward; the front-bolt pulse and T are converging. While the rear-bolt's flash propagates forward at $c$ inside the train, T is moving away from it; the rear-bolt pulse and T are receding. The two pulses move at the same speed inside her frame, but the geometry of approach is asymmetric for as long as the train is moving relative to whatever launched the pulses — and since the strikes are events fixed in spacetime, that motion is not removable by changing reference frame.
+
+T meets the front-bolt's pulse first. Some moments later, she meets the rear-bolt's pulse. Two pulses, same speed, two different arrival times — the only possible explanation, *given postulate two*, is that the front bolt struck before the rear bolt. T writes it in her notebook and signs it: the front-bolt struck first.
+
+</Section>
+
+<Section index={4} title="Both are right">
+
+P says simultaneous. T says front first. Newton would have called one of them mistaken; relativity calls them *both correct in their own frame*. The Lorentz transformation of the time coordinate makes this precise: for two events $E_1 = (t_1, x_1)$ and $E_2 = (t_2, x_2)$ in the platform frame, the time interval the train passenger measures is
+
+<EquationBlock id="EQ.01">
+$$ t_1' - t_2' = \gamma\!\left[\,(t_1 - t_2) - \frac{\beta}{c}\,(x_1 - x_2)\right]. $$
+</EquationBlock>
+
+Read the second term. When the events are simultaneous in the platform frame, $t_1 - t_2 = 0$ — but if they are spatially separated along the boost direction, $x_1 - x_2 \neq 0$, and the cross-term $\gamma \beta (x_1 - x_2)/c$ is *not* zero. The train passenger sees a non-zero $\Delta t'$. The sign of that interval depends on the sign of $\beta$: an observer moving in $+x$ assigns a later $t'$ to the event with smaller $x$, an observer moving in $-x$ assigns a later $t'$ to the event with larger $x$, and the stationary observer sees both events at the same $t'$. Galilean relativity, with its rule $t' = t$, has no such cross-term and no such disagreement. The new term is the entire content of "Newtonian time was an approximation."
+
+</Section>
+
+<Section index={5} title="The geometry">
+
+Plot the events on a spacetime diagram. Lab-frame axes: $ct$ vertical, $x$ horizontal. Two events at the same $ct$ coordinate but different $x$ — they sit on the same horizontal line, the lab observer's "now". A boosted frame's "now", however, is *not* horizontal: it is tilted by $\beta$. The line of constant $t'$ is the slope-$\beta$ line through any event in the boosted frame. As $|\beta|$ increases, the boosted-frame's simultaneity slice tilts more and more. Two events that were horizontally aligned in the lab are no longer aligned on any boosted-frame slice — except $\beta = 0$.
+
+<SceneCard caption="FIG.05b — Spacetime diagram. Two events at (x = ±1, ct = 2). Drag β to tilt the boosted frame's axes. The magenta dashed line is the boosted observer's 'now' through event A; event B falls off it as soon as β ≠ 0.">
+  <SpacetimeDiagramScene />
+</SceneCard>
+
+The geometry was given its definitive form by <PhysicistLink slug="hermann-minkowski" /> in his 1908 Cologne lecture, where he announced "henceforth space by itself, and time by itself, are doomed to fade away" — meaning, exactly, that the slicing of spacetime into "this instant of space" depends on the slicer's worldline. There is no slice the universe prefers. The full geometric apparatus — light cones, four-vectors, the invariant interval — gets its own treatment in §03.
+
+<SceneCard caption="FIG.05c — Three observers, one slider. Stationary observer (cyan): A and B simultaneous. Toward-A observer (magenta): A first. Toward-B observer (amber): B first. The 'now' line tilts with each observer's β.">
+  <SimultaneitySliderScene />
+</SceneCard>
+
+The phenomenon has a name: the <Term slug="simultaneity-relative" />.
+
+</Section>
+
+<Section index={6} title="What dies on this page">
+
+Stop. Look at what just happened. Two events. Two competent observers. Both reading off the same physical light signals. Neither is wrong. The "fact" of which event came first has *evaporated* — not because we don't know the answer, but because there is no observer-independent answer. The question "which event came first" is, for spacelike-separated events, a question whose answer depends on the observer's velocity.
+
+This is not a measurement subtlety. It is not a quirk of high-precision instruments. It applies to lightning bolts, to dinner reservations, to the heartbeats of two people in different cities, to every pair of events anywhere in the universe whose separation is spacelike. The Newtonian assumption that there is a single unfolding "present" sweeping forward through time, the same for all observers — that assumption was always smuggling in an unstated premise. Galileo and Newton built classical mechanics on the unspoken contract that the observer was at rest with respect to whatever they were measuring. As long as you stay slow, the contract is invisible. As soon as you move at any appreciable fraction of $c$, the contract collapses, and you discover that "the same time" was always frame-relative.
+
+<Callout variant="warning">
+Every assumption you have ever made about &quot;two things happening at the same time&quot; was actually an assumption that you are not moving relative to those things. Drop that assumption — and you have to drop simultaneity itself.
+</Callout>
+
+What replaces the universal "now"? Each observer carries their own foliation of spacetime — their own family of constant-$t'$ slices, their own ordering of spacelike-separated events. Physics survives. Causality survives, because the only events whose ordering matters causally are timelike or lightlike-separated, and *those* orderings are Lorentz-invariant. But the universal Newtonian "present" — the river of time the same for everyone — is gone for good. Time dilation in §02.1 and length contraction in §02.2 are downstream of this. They are the same cross-term, viewed from different angles.
+
+</Section>
+
+</TopicPageLayout>

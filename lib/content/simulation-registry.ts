@@ -1076,6 +1076,16 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   Einstein1905PaperScene: lazyScene(() =>
     import("@/components/physics/einsteins-two-postulates/einstein-1905-paper-scene").then((m) => ({ default: m.Einstein1905PaperScene })),
   ),
+  // RT §01 — relative-simultaneity
+  TrainAndPlatformScene: lazyScene(() =>
+    import("@/components/physics/relative-simultaneity/train-and-platform-scene").then((m) => ({ default: m.TrainAndPlatformScene })),
+  ),
+  SpacetimeDiagramScene: lazyScene(() =>
+    import("@/components/physics/relative-simultaneity/spacetime-diagram-scene").then((m) => ({ default: m.SpacetimeDiagramScene })),
+  ),
+  SimultaneitySliderScene: lazyScene(() =>
+    import("@/components/physics/relative-simultaneity/simultaneity-slider-scene").then((m) => ({ default: m.SimultaneitySliderScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
