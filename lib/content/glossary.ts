@@ -2689,6 +2689,99 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
     ],
   },
+  // RT §01 — SR Foundations
+  {
+    slug: "galilean-invariance",
+    category: "concept",
+    relatedPhysicists: ["galileo-galilei", "isaac-newton"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "galilean-relativity" },
+      { branchSlug: "relativity", topicSlug: "einsteins-two-postulates" },
+    ],
+  },
+  {
+    slug: "aether-luminiferous",
+    category: "concept",
+    relatedPhysicists: ["albert-michelson", "james-clerk-maxwell", "hendrik-antoon-lorentz"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "michelson-morley" },
+      { branchSlug: "relativity", topicSlug: "maxwell-and-the-speed-of-light" },
+      { branchSlug: "relativity", topicSlug: "einsteins-two-postulates" },
+    ],
+  },
+  {
+    slug: "two-postulates",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "einsteins-two-postulates" },
+    ],
+  },
+  {
+    slug: "simultaneity-relative",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "hermann-minkowski"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "relative-simultaneity" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+    ],
+  },
+  // RT §02 — SR Kinematics
+  {
+    slug: "time-dilation",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "time-dilation" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+    ],
+  },
+  {
+    slug: "length-contraction",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "hendrik-antoon-lorentz"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "length-contraction" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+    ],
+  },
+  {
+    slug: "lorentz-transformation",
+    category: "concept",
+    relatedPhysicists: ["hendrik-antoon-lorentz", "henri-poincare", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+      { branchSlug: "relativity", topicSlug: "time-dilation" },
+      { branchSlug: "relativity", topicSlug: "length-contraction" },
+      { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
+    ],
+  },
+  {
+    slug: "velocity-addition-relativistic",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "hippolyte-fizeau"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "velocity-addition" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+    ],
+  },
+  {
+    slug: "relativistic-doppler",
+    category: "phenomenon",
+    relatedPhysicists: ["christian-doppler", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "relativistic-doppler" },
+    ],
+  },
+  {
+    slug: "transverse-doppler",
+    category: "phenomenon",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "relativistic-doppler" },
+      { branchSlug: "relativity", topicSlug: "time-dilation" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

@@ -53,6 +53,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
       { branchSlug: "electromagnetism", topicSlug: "eddy-currents" },
+      { branchSlug: "relativity", topicSlug: "maxwell-and-the-speed-of-light" },
     ],
   },
   {
@@ -186,6 +187,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/henri-poincare.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "tides-and-three-body" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
     ],
   },
   {
@@ -369,6 +371,11 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
       { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+      { branchSlug: "relativity", topicSlug: "einsteins-two-postulates" },
+      { branchSlug: "relativity", topicSlug: "relative-simultaneity" },
+      { branchSlug: "relativity", topicSlug: "time-dilation" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
+      { branchSlug: "relativity", topicSlug: "relativistic-doppler" },
     ],
   },
   {
@@ -514,6 +521,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "Austrian",
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "doppler-and-shock-waves" },
+      { branchSlug: "relativity", topicSlug: "relativistic-doppler" },
     ],
   },
   {
@@ -842,6 +850,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "radiation-reaction" },
       { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
       { branchSlug: "electromagnetism", topicSlug: "magnetism-as-relativistic-electrostatics" },
+      { branchSlug: "relativity", topicSlug: "the-lorentz-transformation" },
     ],
   },
   {
@@ -945,6 +954,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "antennas-and-radio" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
       { branchSlug: "electromagnetism", topicSlug: "classical-limit-of-qed" },
+      { branchSlug: "relativity", topicSlug: "maxwell-and-the-speed-of-light" },
     ],
   },
   {
@@ -1010,6 +1020,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "deriving-the-em-wave-equation" },
       { branchSlug: "electromagnetism", topicSlug: "the-electromagnetic-spectrum" },
       { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+      { branchSlug: "relativity", topicSlug: "velocity-addition" },
     ],
   },
   {
@@ -1058,6 +1069,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "electromagnetism", topicSlug: "e-and-b-under-lorentz" },
       { branchSlug: "electromagnetism", topicSlug: "four-potential-and-em-lagrangian" },
       { branchSlug: "electromagnetism", topicSlug: "magnetic-monopoles-and-duality" },
+      { branchSlug: "relativity", topicSlug: "relative-simultaneity" },
     ],
   },
   {
@@ -1118,6 +1130,16 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/robert-mills.webp"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+    ],
+  },
+  {
+    slug: "albert-michelson",
+    born: "1852",
+    died: "1931",
+    nationality: "American (German-born)",
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "michelson-morley" },
+      { branchSlug: "relativity", topicSlug: "einsteins-two-postulates" },
     ],
   },
 ];
