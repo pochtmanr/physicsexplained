@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "content:publish": "tsx --conditions=react-server scripts/content/publish.ts",
+    "content:publish-problems": "tsx --conditions=react-server scripts/content/publish-problems.ts",
     "content:translate": "tsx --conditions=react-server scripts/content/translate.ts",
     "ask:sync-scenes": "tsx --conditions=react-server scripts/ask/sync-scene-catalog.ts",
     "seo:codemod": "tsx scripts/seo/apply-codemod.ts",
