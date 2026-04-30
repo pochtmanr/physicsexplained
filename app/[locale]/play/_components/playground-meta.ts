@@ -26,7 +26,6 @@ export const PLAYGROUNDS: Record<string, PlaygroundMeta> = {
     schema: orbitalSchema,
     urlMode: "blob",
     loader: () =>
-      // @ts-expect-error pending Task 13
       import("@/components/playgrounds/orbital-mechanics").then((m) => ({
         default: (m as { OrbitalMechanicsPlayground: ComponentType }).OrbitalMechanicsPlayground,
       })),
