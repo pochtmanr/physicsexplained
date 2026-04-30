@@ -1,0 +1,40 @@
+{
+  "statement": "A driver is travelling at 30 m/s when they spot a hazard. Their reaction time is 0.8 s, after which the brakes apply a constant deceleration of 6 m/s². Find the total stopping distance from the moment the hazard is seen.",
+  "steps": {
+    "d_react": {
+      "prompt": "During the reaction time t_r, the car moves at constant velocity v₀. Find the reaction distance d_react.",
+      "hint": "No braking happens during reaction time — the car is still travelling at full speed.",
+      "commonMistakes": [
+        "Applying the braking deceleration during the reaction phase",
+        "Using t_r = 0.8² instead of 0.8 in the calculation"
+      ]
+    },
+    "t_brake": {
+      "prompt": "Find the time t_brake it takes for the car to decelerate from v₀ to rest under constant deceleration a_brake.",
+      "hint": "Set v = 0 in the velocity equation v = v₀ − a_brake · t and solve for t.",
+      "commonMistakes": [
+        "Multiplying v₀ by a_brake instead of dividing",
+        "Forgetting that the car decelerates from v₀, not from zero"
+      ]
+    },
+    "d_brake": {
+      "prompt": "Find the braking distance d_brake — the distance covered from the moment brakes are applied until the car stops.",
+      "hint": "Use d = v₀²/(2·a_brake), or equivalently d = v₀·t_brake − ½·a_brake·t_brake².",
+      "commonMistakes": [
+        "Using d = v₀·t_brake without subtracting the deceleration term",
+        "Forgetting to square v₀ in the v²/(2a) formula",
+        "Dividing by a_brake instead of 2·a_brake"
+      ]
+    },
+    "d_total": {
+      "prompt": "Sum the reaction distance and the braking distance to get the total stopping distance d_total.",
+      "hint": "The two phases happen sequentially, so the distances simply add.",
+      "commonMistakes": [
+        "Reporting only the braking distance, omitting the reaction phase",
+        "Averaging the two distances instead of summing them"
+      ]
+    }
+  },
+  "finalAnswerProse": "The total stopping distance from the moment the hazard is seen is 99 m.",
+  "walkthrough": "Stopping a car in a real emergency involves two distinct phases that must be handled separately. During the reaction time (0.8 s), the driver has not yet acted — the car travels at full speed. Reaction distance: d_react = 30 × 0.8 = 24 m. Once the brakes engage, the car decelerates at 6 m/s². The braking time is found by asking when velocity reaches zero: 0 = 30 − 6·t, so t_brake = 5 s. The braking distance is d_brake = v₀²/(2·a) = 900/12 = 75 m. (This formula comes from v_f² = v₀² + 2·a·d; setting v_f = 0 and solving for d.) Total stopping distance: 24 + 75 = 99 m. The important insight is that reaction time is not trivial — at 30 m/s, the driver travels 24 m before the brakes even begin. That is nearly a quarter of the total stopping distance, and it scales linearly with speed, while braking distance scales with v²."
+}

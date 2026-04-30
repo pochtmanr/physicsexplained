@@ -1,0 +1,25 @@
+{
+  "statement": "A train leaves a station at 5 m/s and accelerates uniformly at 2 m/s² for 12 seconds. Find the train's final velocity and the total distance it covers during this interval.",
+  "steps": {
+    "v_f": {
+      "prompt": "Use the velocity-time relation to find the final velocity v_f after time t.",
+      "hint": "Velocity changes at the constant rate a each second: add a·t to the initial velocity.",
+      "commonMistakes": [
+        "Using v_f = v₀ · a · t (multiplication instead of addition)",
+        "Forgetting to include the initial velocity v₀ in the sum",
+        "Squaring the time instead of keeping it linear"
+      ]
+    },
+    "d": {
+      "prompt": "Use the position-time relation to find the displacement d during the 12-second interval.",
+      "hint": "The displacement has two parts: the distance from the initial velocity (v₀ · t) plus the extra distance gained through acceleration (½ · a · t²).",
+      "commonMistakes": [
+        "Omitting the ½ factor in the acceleration term",
+        "Using v_f instead of v₀ in the first term",
+        "Computing 0.5 · a · t rather than 0.5 · a · t² (forgetting to square t)"
+      ]
+    }
+  },
+  "finalAnswerProse": "The train reaches a final velocity of 29 m/s and covers 204 m.",
+  "walkthrough": "Constant acceleration means velocity increases at a steady rate every second. Starting at v₀ = 5 m/s with a = 2 m/s², each second adds 2 m/s to the speed. After 12 seconds, the total gain is 2 × 12 = 24 m/s, so v_f = 5 + 24 = 29 m/s. That is the first kinematic equation: v_f = v₀ + a·t. For the distance, we need the second equation: d = v₀·t + ½·a·t². The first term, v₀·t = 5 × 12 = 60 m, is the distance the train would have covered if it had stayed at its initial speed. The second term, ½ × 2 × 144 = 144 m, is the extra distance contributed by the acceleration. Together: d = 60 + 144 = 204 m. A common error is forgetting the ½ factor — which comes from integrating a constant acceleration — and writing a·t² = 288 m instead. The factor of ½ is not optional; it is the direct result of the area under a triangular velocity-time graph."
+}

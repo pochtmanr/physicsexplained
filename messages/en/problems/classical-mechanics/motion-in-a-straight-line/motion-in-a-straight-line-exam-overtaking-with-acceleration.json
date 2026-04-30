@@ -1,0 +1,41 @@
+{
+  "statement": "Car B has a 50 m head start and moves at a constant 15 m/s. Car A starts from rest at the same moment and accelerates at 3 m/s². At what time does Car A catch Car B, and how fast is Car A moving at that instant?",
+  "steps": {
+    "discriminant": {
+      "prompt": "Setting x_A = x_B gives a quadratic in t. Compute the discriminant Δ = v_B² + 2·a_A·d_0.",
+      "hint": "The quadratic ½·a_A·t² − v_B·t − d_0 = 0 has discriminant b² − 4ac; identify a = ½·a_A, b = −v_B, c = −d_0.",
+      "commonMistakes": [
+        "Using Δ = v_B² − 2·a_A·d_0 (wrong sign for the d_0 term)",
+        "Squaring a_A instead of v_B",
+        "Setting x_A = x_B as 0.5·a_A·t² = v_B·t and forgetting the head start d_0"
+      ]
+    },
+    "t_equal": {
+      "prompt": "Solve for the positive root: t_equal = (v_B + √Δ) / a_A.",
+      "hint": "The quadratic has two roots; only the positive root has physical meaning — the negative root corresponds to a time before the motion began.",
+      "commonMistakes": [
+        "Taking the negative root t = (v_B − √Δ)/a_A and reporting a smaller or negative time",
+        "Forgetting to divide the full numerator by a_A (applying it only to the square root term)",
+        "Not recognising that two solutions exist and picking the wrong one"
+      ]
+    },
+    "x_overtake": {
+      "prompt": "Substitute t_equal into x_A = ½·a_A·t² to find the position of the overtake.",
+      "hint": "Car A starts from rest, so its position is entirely determined by the acceleration term.",
+      "commonMistakes": [
+        "Substituting into x_B = d_0 + v_B·t and reporting that as Car A's position (they are equal, but the step asks for the calculation via A's equation)",
+        "Using t_equal² correctly but forgetting the ½ factor"
+      ]
+    },
+    "v_A_at_overtake": {
+      "prompt": "Find Car A's speed at the moment of overtaking: v_A = a_A · t_equal.",
+      "hint": "Car A started from rest, so its speed is simply acceleration times elapsed time.",
+      "commonMistakes": [
+        "Reporting v_B = 15 m/s instead of computing Car A's speed at that instant",
+        "Using v_A² = 2·a_A·x and computing from x_overtake (valid but watch for rounding errors)"
+      ]
+    }
+  },
+  "finalAnswerProse": "Car A overtakes Car B after approximately 12.64 seconds, at which point Car A is moving at approximately 37.91 m/s.",
+  "walkthrough": "This problem requires setting two position functions equal and solving the resulting quadratic. Car A starts from rest: x_A = ½·a_A·t² = 1.5t². Car B has a head start: x_B = d_0 + v_B·t = 50 + 15t. Setting x_A = x_B: 1.5t² = 50 + 15t, rearranged to 1.5t² − 15t − 50 = 0. Apply the quadratic formula with a = 1.5, b = −15, c = −50: discriminant = b² − 4ac = 225 + 300 = 525. The positive root is t = (15 + √525) / 3 ≈ 12.64 s. At that time, x_overtake = 1.5 × (12.64)² ≈ 239.6 m, and Car A's speed is a_A × t_equal = 3 × 12.64 ≈ 37.91 m/s. Notice that Car A is travelling more than twice as fast as Car B at the moment of overtaking — it needed that speed advantage to overcome the 50 m deficit. The cross-check x_B = 50 + 15 × 12.64 ≈ 239.6 m confirms both trains are at the same position, as required."
+}

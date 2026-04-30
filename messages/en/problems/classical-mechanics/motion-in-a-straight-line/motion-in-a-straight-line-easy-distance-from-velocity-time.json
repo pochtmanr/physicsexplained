@@ -1,0 +1,16 @@
+{
+  "statement": "A car moves along a straight highway at a constant velocity of 25 m/s. How far does it travel in 8 seconds? Assume no acceleration throughout the journey.",
+  "steps": {
+    "d": {
+      "prompt": "Write an expression for the distance d covered at constant velocity v over time t.",
+      "hint": "When velocity is constant, distance is simply the product of speed and time.",
+      "commonMistakes": [
+        "Dividing velocity by time instead of multiplying",
+        "Forgetting that the formula only applies when acceleration is zero",
+        "Confusing displacement with distance when direction matters"
+      ]
+    }
+  },
+  "finalAnswerProse": "The car travels 200 m in 8 seconds.",
+  "walkthrough": "When an object moves at constant velocity — meaning no speeding up, no slowing down — the three kinematic quantities (position, velocity, acceleration) simplify dramatically. Acceleration is zero, and velocity is the fixed rate at which position changes with time. That gives us the simplest possible relationship: d = v · t. Here, v = 25 m/s and t = 8 s. Multiplying gives d = 25 × 8 = 200 m. There is no need for any other equation; the whole problem collapses to a single multiplication. The trap students fall into is reaching for a more complicated formula — adding a ½at² term, for example — when there is no acceleration to account for. Galileo's odd-number rule and all of the kinematic equations reduce to this single line the moment a = 0. The answer, 200 m, is exact given the inputs."
+}

@@ -1,0 +1,32 @@
+{
+  "statement": "Train A starts at position x = 0 and travels in the +x direction at 20 m/s. At the same moment, Train B starts at x = 1200 m and travels in the −x direction at 10 m/s. Both travel at constant speed. Where and when do they meet?",
+  "steps": {
+    "closing_speed": {
+      "prompt": "The two trains are moving toward each other. What is their combined closing speed — the rate at which the gap between them shrinks?",
+      "hint": "When two objects move directly toward each other, their closing speed is the sum of their individual speeds.",
+      "commonMistakes": [
+        "Using the difference of speeds (20 − 10 = 10) instead of the sum",
+        "Treating one train's speed as negative and getting 20 − (−10) = 30 correctly by accident, without understanding why",
+        "Forgetting that both speeds contribute to gap closure"
+      ]
+    },
+    "t_meet": {
+      "prompt": "Divide the initial separation L by the closing speed to find the time t_meet when the trains are at the same position.",
+      "hint": "Think of the gap as a distance that shrinks at the closing speed. Time = distance / speed.",
+      "commonMistakes": [
+        "Dividing by only one train's speed instead of the closing speed",
+        "Using L = 1200 m in one equation but a different value elsewhere"
+      ]
+    },
+    "x_meet": {
+      "prompt": "Find the position x_meet where the trains meet, measured from Train A's starting point.",
+      "hint": "Substitute t_meet into Train A's position equation: x_A = v_A · t.",
+      "commonMistakes": [
+        "Substituting into Train B's equation and forgetting to subtract from L",
+        "Reporting t_meet as the position instead of the time"
+      ]
+    }
+  },
+  "finalAnswerProse": "The trains meet at position x = 800 m after 40 seconds.",
+  "walkthrough": "The key insight here is to work in a frame where the gap is the only moving quantity. The gap starts at 1200 m. Train A eats into it at 20 m/s from one end; Train B eats into it at 10 m/s from the other. Together they close the gap at 20 + 10 = 30 m/s. Time to close: 1200 / 30 = 40 s. Now we know when they meet. To find where, substitute into either train's position equation. Train A: x = 20 × 40 = 800 m. Cross-check with Train B: x = 1200 − 10 × 40 = 800 m. Both agree, confirming the answer. The most common error is using the difference of speeds (10 m/s) instead of the sum. That mistake comes from thinking of one train as stationary — which only works in the reference frame of that train, not in the ground frame where both are moving. Setting the two position equations equal and solving the resulting linear equation is the systematic approach that avoids all sign errors."
+}
