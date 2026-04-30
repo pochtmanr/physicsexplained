@@ -1,0 +1,36 @@
+{
+  "statement": "A pendulum of length L = 1.5 m is released from θ₀ = 0.8 rad (≈ 45.8°). The period can be expanded as T = T₀(1 + θ₀²/16 + 11θ₀⁴/3072 + …). (a) Find T₀, the small-angle period. (b) Compute the first-order correction Δ T = T₀ · θ₀²/16. (c) Find the first-order corrected period T_corr = T₀ + ΔT. (d) Include the second correction term to get T_series = T₀(1 + θ₀²/16 + 11θ₀⁴/3072).",
+  "steps": {
+    "T_small": {
+      "prompt": "Compute T₀ = 2π√(L/g) for L = 1.5 m, g = 9.80665 m/s².",
+      "hint": "√(1.5/9.80665) ≈ 0.3909 s, so T₀ ≈ 2.457 s.",
+      "commonMistakes": [
+        "Using L = 1.5 m but forgetting to take the square root of L/g before multiplying by 2π."
+      ]
+    },
+    "delta_T": {
+      "prompt": "Compute the first-order correction ΔT = T₀ · θ₀²/16.",
+      "hint": "θ₀² = 0.64, so θ₀²/16 = 0.04. ΔT ≈ 0.04 × 2.457 ≈ 0.0983 s.",
+      "commonMistakes": [
+        "Using θ₀ in degrees instead of radians in the series formula.",
+        "Writing the correction as T₀ · θ₀/16 (missing the square)."
+      ]
+    },
+    "T_corr": {
+      "prompt": "Add the correction: T_corr = T₀ + ΔT.",
+      "hint": "T_corr ≈ 2.457 + 0.098 ≈ 2.556 s.",
+      "commonMistakes": [
+        "Multiplying instead of adding: T₀ · (1 + θ₀²/16) is the same as T₀ + T₀·θ₀²/16, not T₀ · θ₀²/16 alone."
+      ]
+    },
+    "T_series": {
+      "prompt": "Include the second correction: T_series = T₀(1 + θ₀²/16 + 11θ₀⁴/3072).",
+      "hint": "11θ₀⁴/3072 = 11 × 0.4096/3072 ≈ 0.001467. T_series ≈ 2.457 × 1.04147 ≈ 2.559 s.",
+      "commonMistakes": [
+        "Forgetting the factor of 11 in the coefficient 11/3072.",
+        "Kept only the first correction term when the problem asks for two — at θ₀ = 0.8 rad the second term adds about 36 ms, which matters."
+      ]
+    }
+  },
+  "walkthrough": "The Taylor expansion of T in powers of θ₀ comes from expanding the elliptic integral K(sin(θ₀/2)). The leading correction is θ₀²/16, which at 0.8 rad gives a 4% increase over T₀. Adding the next term (11θ₀⁴/3072 ≈ 0.15%) gives T_series ≈ 2.559 s, which matches the exact elliptic-integral value to within 0.006% — well inside experimental precision. Each successive term in the series extends the accuracy to higher amplitudes."
+}

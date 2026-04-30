@@ -1,0 +1,30 @@
+{
+  "statement": "A simple pendulum of length L = 1.0 m is pulled to θ₀ = 30° (π/6 rad) and released from rest. The small-angle approximation gives T₀ = 2π√(L/g). The true period is larger. By what percentage does the small-angle formula underestimate the true period?",
+  "steps": {
+    "T_small": {
+      "prompt": "Compute the small-angle period T₀ = 2π√(L/g) for L = 1.0 m.",
+      "hint": "Use g = 9.80665 m/s². The result is the familiar isochronous period — independent of amplitude.",
+      "commonMistakes": [
+        "Forgetting the factor of 2π and writing T₀ = √(L/g) instead.",
+        "Using g = 10 m/s² instead of 9.80665 m/s²."
+      ]
+    },
+    "T_exact": {
+      "prompt": "Compute the exact period T = 4√(L/g) · K(sin(θ₀/2)), where K is the complete elliptic integral of the first kind.",
+      "hint": "K(k) → π/2 as k → 0, which recovers T₀. At 30°, sin(15°) ≈ 0.2588, so K is slightly above π/2.",
+      "commonMistakes": [
+        "Using K(θ₀/2) instead of K(sin(θ₀/2)) — the argument of K is the modulus k = sin(θ₀/2), not the angle itself.",
+        "Confusing K(k) with K(k²); the AGM formula uses modulus k, not parameter m = k²."
+      ]
+    },
+    "pct_err": {
+      "prompt": "Find the percentage by which T₀ underestimates T_exact: pct_err = (T_exact − T₀) / T_exact × 100.",
+      "hint": "At 30° the series gives pct_err ≈ θ₀²/16 × 100 ≈ 1.71 %. The exact value is the same to three significant figures.",
+      "commonMistakes": [
+        "Dividing by T₀ instead of T_exact in the denominator — both give ≈ 1.71 % at this angle but the convention matters.",
+        "Reporting a negative percent error: since T_exact > T₀, the sign is positive."
+      ]
+    }
+  },
+  "walkthrough": "At small angles sin θ ≈ θ, turning a nonlinear equation into a simple harmonic oscillator with period T₀ = 2π√(L/g). At 30° the neglected cubic term θ³/6 contributes about 4.5% of the linear term. The exact period, obtained via the complete elliptic integral K, is T ≈ 2.041 s versus T₀ ≈ 2.006 s — a 1.71% underestimate. This matches the leading-order series correction θ₀²/16 × 100 ≈ 1.71%, confirming the series is accurate at moderate angles."
+}

@@ -1,0 +1,36 @@
+{
+  "statement": "A pendulum is released from rest at θ₀ = 1.0 rad (≈ 57.3°) and its period is measured to be T = 3.0 s. Using the exact formula T = 4√(L/g) · K(sin(θ₀/2)), find the pendulum length L. Show why the small-angle inversion L = g(T/2π)² gives a significantly wrong answer.",
+  "steps": {
+    "k": {
+      "prompt": "Compute the elliptic modulus k = sin(θ₀/2) for θ₀ = 1.0 rad.",
+      "hint": "θ₀/2 = 0.5 rad. sin(0.5) ≈ 0.4794.",
+      "commonMistakes": [
+        "Using k = θ₀/2 = 0.5 directly (confusing the modulus with the half-angle in radians)."
+      ]
+    },
+    "K_val": {
+      "prompt": "Evaluate K(k) for k = sin(0.5) ≈ 0.4794 using the arithmetic-geometric mean or table.",
+      "hint": "K(0.4794) ≈ 1.6750. Note K(0) = π/2 ≈ 1.5708; the value has grown by about 6.6%.",
+      "commonMistakes": [
+        "Using K(k) = π/2 (small-angle value) — this leads to the same wrong answer as the small-angle inversion.",
+        "Mistaking K(k²) for K(k): some references use the parameter m = k², so always check the convention."
+      ]
+    },
+    "L": {
+      "prompt": "Invert the exact formula to find L = g · (T / (4 · K))².",
+      "hint": "L = 9.80665 × (3.0 / (4 × 1.6750))² ≈ 9.80665 × (0.4478)² ≈ 1.966 m.",
+      "commonMistakes": [
+        "Used the small-angle inversion L = g(T/2π)² ≈ 2.237 m — this is 13.8% too large because it ignores that K > π/2 at this amplitude.",
+        "Forgot to square the bracket, writing L = g × T/(4K) instead of L = g × (T/(4K))²."
+      ]
+    },
+    "T_verify": {
+      "prompt": "Verify by computing T_check = 4√(L/g) · K back from your answer. It should equal 3.0 s.",
+      "hint": "This is a self-consistency check. If T_check ≠ 3.0 s, trace back through the algebra.",
+      "commonMistakes": [
+        "Skipping the verification step; a sign error or squared-vs-not-squared mistake becomes obvious here."
+      ]
+    }
+  },
+  "walkthrough": "Starting from T = 4√(L/g)·K(k), square both sides and isolate L: L = g(T/4K)². At θ₀ = 1.0 rad the modulus is k = sin(0.5) ≈ 0.4794 and K ≈ 1.675. The exact length is L ≈ 1.966 m. The naive small-angle inversion uses K = π/2 ≈ 1.571, giving L_naive ≈ 2.237 m — an overestimate of 13.8%. The verification step 4√(1.966/9.80665)×1.675 = 3.000 s confirms the answer. This problem illustrates how critically the amplitude dependence of K affects precision measurements of g from pendulum timing."
+}

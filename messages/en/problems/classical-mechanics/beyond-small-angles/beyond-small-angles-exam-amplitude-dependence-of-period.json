@@ -1,0 +1,37 @@
+{
+  "statement": "A clock pendulum of length L = 1.0 m is pulled to θ₀ = 1.4 rad (≈ 80.2°) and released. (a) Compute the small-angle period T₀. (b) Compute the exact period T_exact using the elliptic integral formula. (c) By what percentage does the true period exceed T₀? (d) After how many complete swings does the large-angle pendulum lag behind an identical small-angle pendulum by exactly one full period T₀?",
+  "steps": {
+    "T_small": {
+      "prompt": "Compute T₀ = 2π√(L/g) for L = 1.0 m.",
+      "hint": "T₀ ≈ 2.006 s.",
+      "commonMistakes": [
+        "Using g = 9.8 instead of 9.80665 — acceptable for estimation but introduces a 0.007% error."
+      ]
+    },
+    "T_exact": {
+      "prompt": "Compute T_exact = 4√(L/g) · K(sin(θ₀/2)) for θ₀ = 1.4 rad.",
+      "hint": "k = sin(0.7) ≈ 0.6442. K(0.6442) ≈ 1.7917. T_exact ≈ 4 × 0.3193 × 1.7917 ≈ 2.284 s.",
+      "commonMistakes": [
+        "Applied the small-angle formula at 80° — the error is already 13.8%, invalidating any precision calculation.",
+        "Used a two-term series; at 1.4 rad the series error is already 0.18%, which matters for this problem."
+      ]
+    },
+    "pct_stretch": {
+      "prompt": "Compute pct_stretch = (T_exact − T₀) / T₀ × 100.",
+      "hint": "(2.284 − 2.006) / 2.006 × 100 ≈ 13.8 %.",
+      "commonMistakes": [
+        "Divided by T_exact instead of T₀ in the denominator — gives ≈ 12.1 %, a different quantity.",
+        "Reported the ratio T_exact/T₀ ≈ 1.138 without converting to a percentage."
+      ]
+    },
+    "n_cycles": {
+      "prompt": "After how many swings does the true pendulum lag the small-angle pendulum by exactly one period T₀? Use n = T₀ / (T_exact − T₀).",
+      "hint": "T_exact − T₀ ≈ 0.278 s. n ≈ 2.006/0.278 ≈ 7.2 cycles.",
+      "commonMistakes": [
+        "Used n = T_exact / (T_exact − T₀) — this counts from T_exact, not T₀, as the reference.",
+        "Reported n in seconds rather than in cycles (dimensionless swing count)."
+      ]
+    }
+  },
+  "walkthrough": "At 80.2° the modulus k = sin(40.1°) ≈ 0.644. The elliptic integral K(0.644) ≈ 1.792, well above K(0) = π/2. The exact period is 4√(1/g)·K ≈ 2.284 s, stretching T₀ ≈ 2.006 s by 13.8%. The isochronism Galileo observed at small angles has completely broken down. Every cycle the large-angle pendulum lags the small-angle one by ΔT = 0.278 s. After n ≈ 7.2 swings the accumulated lag equals one full T₀, so the two pendulums are exactly one cycle out of phase — the large-angle one completes only 6.2 swings while the small-angle one does 7.2. This is the physical cost of ignoring sin θ ≈ θ at large amplitudes."
+}
