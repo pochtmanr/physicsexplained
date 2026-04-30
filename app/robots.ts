@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/seo/config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,8 +7,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: ["/api/", "/auth/", "/sign-in", "/account", "/sandbox", "/billing"],
       },
     ],
-    sitemap: "https://physics.it.com/sitemap.xml",
+    sitemap: `${SITE.baseUrl}/sitemap.xml`,
+    host: SITE.baseUrl,
   };
 }
