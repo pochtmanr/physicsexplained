@@ -1,0 +1,89 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Hendrik Lorentz", href: "/physicists/hendrik-antoon-lorentz" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Precision Lorentz tests", href: "/dictionary/precision-lorentz-tests" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.24 · SPECIAL RELATIVITY §05"
+  title="PRECISION TESTS OF LORENTZ INVARIANCE"
+  subtitle="What happens when a theory survives a hundred years of being checked."
+/>
+
+<Section index={1} title="The longest winning streak">
+
+In the summer of 1887, in the basement of the Case School of Applied Science in Cleveland, an interferometer the size of a dinner table sat on a sandstone slab floating in a pool of mercury. Albert Michelson and Edward Morley spent six days rotating it slowly, looking for a fringe shift that would reveal Earth's motion through the luminiferous ether. They found nothing — to one part in 10⁹ in the speed of light. That null result is the historical predecessor of every test in this topic; if you want the experiment in detail, read [Michelson-Morley](/relativity/michelson-morley) first.
+
+What followed in the 138 years since is the most relentless interrogation any theory in physics has ever undergone. <PhysicistLink slug="hendrik-antoon-lorentz" /> built the kinematic scaffolding before the mechanism was clear; <PhysicistLink slug="albert-einstein" /> turned that scaffolding into a postulate in 1905. Since then, every experiment that could in principle reveal a preferred frame, an anisotropy of the speed of light, or a frame-dependent atomic transition has been performed. Every one has reported a null result. The bound on Lorentz violation has tightened by nine orders of magnitude. Special relativity has not been merely confirmed — it has been *over*-confirmed, to a degree that is itself a physics puzzle.
+
+This topic is the survey: four eras of precision, one phenomenology framework, and one outstanding question.
+
+</Section>
+
+<Section index={2} title="The four eras of precision">
+
+The timeline of canonical precision tests has four distinct phases, separated by qualitative leaps in technique.
+
+<SceneCard caption="FIG.24a — the canonical timeline of precision Lorentz-invariance tests. Y-axis: log-scale fractional bound on the relevant Lorentz-violating coefficient. The bound has tightened by nine orders of magnitude in 138 years.">
+  <TimelineScene />
+</SceneCard>
+
+The **first era** is the interferometer era — Michelson-Morley 1887, then Kennedy-Thorndike in 1932. Kennedy and Thorndike replaced Michelson's symmetric arms with a deliberately asymmetric configuration, sensitive to a different observable: a *boost-direction-dependent* variation in the speed of light that the symmetric Michelson-Morley setup could miss. Both experiments returned null at the 10⁻⁹ level. Forty-five years of refining glass, mirrors, and thermal isolation bought no improvement in precision — the technique had hit its ceiling.
+
+The **second era** opened in 1959–1960, when Vernon Hughes at Yale and (independently) Ronald Drever at Glasgow looked at the same physics from an entirely different angle. Instead of bouncing light, they watched the magnetic-resonance frequency of a Li-7 nucleus as Earth rotated. If space had a preferred direction, the resonance would drift over a sidereal day. It did not — to one part in 10²², the most precise null result in the history of experimental physics at that time. Translated into a bound on Lorentz-violating coefficients in the electron sector, that pinned things down at parts in 10⁻¹⁵. Six orders of magnitude, gained by changing the observable.
+
+The **third era** is theoretical: in the 1990s, Alan Kostelecký and collaborators developed the Standard-Model Extension — a systematic phenomenological framework that parametrizes every possible Lorentz-violating term consistent with observer covariance. The SME doesn't predict violations; it parameterises them, so that experiments and theory can talk in the same language. The tightening continues, but now we know exactly which coefficients each experiment constrains.
+
+The **fourth era** is now: optical lattice clocks comparing Sr and Yb transitions, antiproton cyclotron measurements at CERN, and He-3/Xe co-magnetometers reporting bounds at parts in 10⁻¹⁸ on photon-sector coefficients and parts in 10⁻³¹ on neutron-sector coefficients. Every test still agrees with the prediction of <PhysicistLink slug="albert-einstein" />'s 1905 postulates.
+
+</Section>
+
+<Section index={3} title="The phenomenology — what each experiment actually bounds">
+
+A Lorentz-violating theory has many possible coefficients: a speed of light that depends on direction, a coefficient that depends on boost, a CPT-odd term that distinguishes matter from antimatter. The SME enumerates them all. A precision test bounds a specific subset.
+
+<SceneCard caption="FIG.24b — representative present-day SME coefficient bounds across the photon, electron, proton, and neutron sectors. Every entry is an upper limit; smaller is tighter. The bounds span 17 orders of magnitude. Source: Kostelecký + Russell, Data Tables for Lorentz and CPT Violation.">
+  <SmeBoundsScene />
+</SceneCard>
+
+The strongest photon-sector bound, on the parity-even coefficient $\tilde{\kappa}_e$, sits at $10^{-18}$ — set by clock comparisons between strontium and ytterbium optical lattices. The strongest electron-sector bound on the time-time coefficient $c_{TT}$ is at $10^{-15}$, the modern descendent of Hughes-Drever. Penning-trap measurements of the electron $g\!-\!2$ constrain CPT-odd coefficients; antimatter cyclotron-frequency comparisons at CERN's BASE collaboration bound the proton sector at $10^{-23}$.
+
+The neutron-sector frontier is the most extreme: He-3/Xe co-magnetometers, comparing the precession frequencies of two nuclear spins in the same magnetic field, bound the neutron $b_T$ coefficient at $10^{-31}$. That is the single tightest dimensionless bound anywhere in physics. To find a smaller dimensionless number that has been measured rather than calculated, you have to go to the cosmological constant.
+
+The bounds are diverse because each coefficient couples differently to the technique. Optical clocks see photon-sector violations directly; spin-precession experiments see matter-sector violations. The full <Term slug="precision-lorentz-tests" /> programme is the union of all of them, and the answer in every sector is the same: nothing has been seen.
+
+</Section>
+
+<Section index={4} title="Why not broken? The naturalness gap">
+
+Quantum gravity is supposed to break Lorentz invariance.
+
+The argument is straightforward. In any quantum theory of gravity — string-theoretic vacua, loop-quantum-gravity models, certain emergent-spacetime cosmologies — the Planck scale introduces a fundamental length, and a fundamental length picks out a frame. Naïvely, this should appear at low energies as a Lorentz-violating coefficient of order $v_\oplus / c \approx 10^{-4}$, where $v_\oplus$ is Earth's orbital speed. Some scenarios soften this; none predict it should be zero.
+
+<SceneCard caption="FIG.24c — the naturalness puzzle. Naïve quantum-gravity expectation sits at 10⁻⁴; modern photon-sector bounds sit at 10⁻¹⁸; matter-sector bounds reach 10⁻³¹. The shaded band between expectation and data is the unexplained 14+ orders of magnitude.">
+  <WhyNotBrokenScene />
+</SceneCard>
+
+<EquationBlock id="EQ.01">
+$$\text{naïve QG estimate} \;\sim\; \frac{v_\oplus}{c} \;\approx\; 10^{-4}$$
+</EquationBlock>
+
+The data say the actual coefficient — if non-zero at all — is smaller than $10^{-18}$ in the photon sector and $10^{-31}$ in the neutron sector. That is a gap of 14 orders of magnitude in the photon sector and 27 in the neutron sector between what quantum gravity "should" produce and what experiments allow. Either some symmetry is enforcing exact Lorentz invariance to remarkable precision, or quantum gravity does not couple to laboratory physics in the way the naïve estimate assumes.
+
+<Callout variant="intuition">
+There are two ways to read this gap. The conservative reading: Lorentz invariance is exact, full stop, and the tests are simply confirming a true fact about nature. The radical reading: there is a hidden symmetry — perhaps emergent, perhaps tied to the structure of spacetime itself — that suppresses Planck-scale Lorentz violation by 14+ orders of magnitude. Both readings are still on the table. Both are unsettling. The bounds will keep tightening; the gap will keep growing; eventually the field will have to commit to one answer.
+</Callout>
+
+The Lorentz transformation, derived in §03 and tested here, has been the best-confirmed prediction of any physical theory for over a century. Every check has agreed. The longest winning streak in physics shows no sign of ending — and that, more than any specific experiment, is the take-home of this topic.
+
+</Section>
+
+</TopicPageLayout>
