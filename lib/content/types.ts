@@ -76,3 +76,41 @@ export interface GlossaryTerm {
   relatedPhysicists?: readonly string[];
   relatedTopics?: readonly TopicRef[];
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// Problems + Equations (Priority 2)
+// ────────────────────────────────────────────────────────────────────────────
+
+export type ProblemDifficulty =
+  | "easy"
+  | "medium"
+  | "hard"
+  | "challenge"
+  | "exam";
+
+export interface ProblemStep {
+  id: string;
+  varName: string;
+  canonicalExpr: string;
+  units: string;
+  inputDomain: Readonly<Record<string, readonly [number, number]>>;
+  toleranceRel: number;
+}
+
+export interface Problem {
+  id: string;
+  primaryTopicSlug: string;
+  relatedTopicSlugs: readonly string[];
+  difficulty: ProblemDifficulty;
+  equationSlugs: readonly string[];
+  inputs: Readonly<Record<string, { value: number; units: string }>>;
+  steps: readonly ProblemStep[];
+  finalAnswerStepId: string;
+  solverPath: string;
+}
+
+export interface Equation {
+  slug: string;
+  latex: string;
+  relatedTopicSlugs: readonly string[];
+}
