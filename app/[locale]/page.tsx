@@ -7,6 +7,8 @@ import { PhysicistsSection } from "@/components/sections/physicists-section";
 import { FeaturedTopicSection } from "@/components/sections/featured-topic-section";
 import { DictionarySection } from "@/components/sections/dictionary-section";
 import { PhilosophySection } from "@/components/sections/philosophy-section";
+import { JsonLd } from "@/components/seo/jsonld";
+import { buildWebSiteJsonLd } from "@/lib/seo/jsonld";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -38,6 +40,7 @@ export default async function HomePage({
 
   return (
     <main className="pb-16 md:pb-32">
+      <JsonLd data={buildWebSiteJsonLd()} />
       <HeroSection />
       <BranchesSection />
       <PhysicsAskSection />
