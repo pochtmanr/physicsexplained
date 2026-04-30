@@ -1,0 +1,32 @@
+{
+  "indexTitle": "מגרשי משחקים",
+  "indexSubtitle": "גרור, שחרר, שתף. פיזיקה שנכנסת לציוץ.",
+  "back": "חזרה",
+  "share": {
+    "copyLink": "העתק קישור",
+    "copied": "הקישור הועתק",
+    "tweet": "שתף ב-X",
+    "explain": "הסבר עם בינה מלאכותית"
+  },
+  "controls": {
+    "play": "הפעל",
+    "pause": "השהה",
+    "reset": "אפס",
+    "speed": "מהירות",
+    "trails": "שובלים",
+    "preset": "תרחיש",
+    "bodies": "גופים"
+  },
+  "orbital-mechanics": {
+    "title": "מכניקה אורביטלית",
+    "subtitle": "כאוס גרביטציוני של N-גופים",
+    "indexCardDescription": "הפלט גופים, גרור לקביעת מהירות, צפה בכאוס.",
+    "aiPrompt": "הסבר מה קורה במערכת הגרביטציונית הזו.",
+    "presets": {
+      "figure-8": "ספרה 8",
+      "solar-mini": "מערכת שמש קטנה",
+      "pythagorean": "פיתגוראי (כאוס)",
+      "random-cluster": "אשכול אקראי"
+    }
+  }
+}

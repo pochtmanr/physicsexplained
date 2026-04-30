@@ -11,9 +11,10 @@ export default getRequestConfig(async ({ requestLocale }) => {
   const home = (await import(`../messages/${locale}/home.json`)).default;
   const about = (await import(`../messages/${locale}/about.json`)).default;
   const legal = (await import(`../messages/${locale}/legal.json`)).default;
+  const play = (await import(`../messages/${locale}/play.json`)).default;
 
   return {
     locale,
-    messages: { common, home, about, legal },
+    messages: { common, home, about, legal, play },
   };
 });
