@@ -50,7 +50,6 @@ export default async function PlaygroundPage({
       shareTitle={title}
       sceneId={meta.sceneId}
       aiPromptKey={meta.aiPromptKey}
-      encodedParams={new URLSearchParams()}
       backHref={`/${locale}/play`}
     >
       <PlaygroundLoader slug={slug} />

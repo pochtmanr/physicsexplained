@@ -4,27 +4,25 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link2, X as XIcon, Sparkles, Check } from "lucide-react";
 
 interface Props {
-  /** Display title used in the tweet text */
   shareTitle: string;
-  /** Scene id used by the AI deeplink */
   sceneId: string;
-  /** Translation key for the AI starter prompt (resolved here so we get the localized string) */
   aiPromptKey: string;
-  /**
-   * Encoded URL params for the current state. We pass them in pre-encoded so the
-   * playground (which already builds them via usePlaygroundState) is the source of truth.
-   */
-  encodedParams: URLSearchParams;
 }
 
-export function ShareButtons({ shareTitle, sceneId, aiPromptKey, encodedParams }: Props) {
+export function ShareButtons({ shareTitle, sceneId, aiPromptKey }: Props) {
   const t = useTranslations("play.share");
   const tRoot = useTranslations();
   const locale = useLocale();
   const [copied, setCopied] = useState(false);
 
+  // Read live URL state every render. The playground writes ?s=... via
+  // usePlaygroundState, so window.location is the single source of truth.
   const currentUrl =
     typeof window === "undefined" ? "" : window.location.href;
+  const currentSearch =
+    typeof window === "undefined"
+      ? new URLSearchParams()
+      : new URLSearchParams(window.location.search);
 
   const tweetUrl = (() => {
     const text = encodeURIComponent(`${shareTitle} · Physics`);
@@ -36,7 +34,7 @@ export function ShareButtons({ shareTitle, sceneId, aiPromptKey, encodedParams }
     const aiPrompt = tRoot(aiPromptKey);
     const params = new URLSearchParams();
     params.set("scene", sceneId);
-    params.set("params", encodedParams.get("s") ?? encodedParams.toString());
+    params.set("params", currentSearch.get("s") ?? currentSearch.toString());
     params.set("prompt", aiPrompt);
     return `/${locale}/ask?${params.toString()}`;
   })();

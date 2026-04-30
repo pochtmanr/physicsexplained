@@ -11,8 +11,6 @@ interface Props {
   shareTitle: string;
   sceneId: string;
   aiPromptKey: string;
-  /** Pre-encoded URL params for the current state; the playground passes them in */
-  encodedParams: URLSearchParams;
   /** The playground component itself */
   children: React.ReactNode;
   backHref: string;
@@ -23,7 +21,6 @@ export function PlaygroundShell({
   shareTitle,
   sceneId,
   aiPromptKey,
-  encodedParams,
   children,
   backHref,
 }: Props) {
@@ -48,7 +45,6 @@ export function PlaygroundShell({
           shareTitle={shareTitle}
           sceneId={sceneId}
           aiPromptKey={aiPromptKey}
-          encodedParams={encodedParams}
         />
       </header>
       <main className="absolute inset-inline-0 inset-block-start-12 inset-block-end-0 overflow-hidden">
