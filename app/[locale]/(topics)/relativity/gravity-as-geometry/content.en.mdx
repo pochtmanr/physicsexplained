@@ -1,0 +1,97 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CurvedTrajectoryScene } from "@/components/physics/gravity-as-geometry/curved-trajectory-scene";
+import { EmbeddedCurvatureScene } from "@/components/physics/gravity-as-geometry/embedded-curvature-scene";
+import { HonestMomentScene } from "@/components/physics/gravity-as-geometry/honest-moment-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Equivalence principle", href: "/dictionary/equivalence-principle" },
+  { type: "term", label: "Einstein equivalence principle", href: "/dictionary/einstein-equivalence-principle" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.28 · §06 HONEST MOMENT + GR BRIDGE"
+  title="GRAVITY AS GEOMETRY"
+  subtitle="There is no force called gravity. There is curvature."
+/>
+
+<Section index={1} title="The reframe — local flatness, global curvature">
+
+The <Term slug="equivalence-principle" /> said something very specific: in a small enough region of spacetime, no experiment can tell free-fall from absence-of-gravity. <PhysicistLink slug="albert-einstein" /> took that locally true statement and asked the unnerving global question. If every freely-falling lab is locally indistinguishable from an inertial frame in deep space, then locally spacetime looks like Minkowski. But real gravity is not uniform — the field on a mountaintop and the field at the bottom of a mineshaft are not the same vector. The patches of locally-flat spacetime cannot be glued together into one big flat region. Their seams are curvature.
+
+This is the geometric content of the equivalence principle. SR built itself on the Minkowski metric — a flat 4D pseudo-Euclidean geometry where straight worldlines are inertial. GR keeps the local Minkowski structure unchanged, then asks what happens when you try to extend it across a region where gravity varies. The answer is that the metric is no longer constant; it varies from point to point, and the variation has a name. The 4D geometry is curved, and gravity is the name we used to give to the way matter follows curves in it.
+
+In coordinates around any single point you can choose so the metric reads $g_{\mu\nu}(p) = \mathrm{diag}(-1, 1, 1, 1)$ — locally flat, locally Minkowski, locally <Term slug="invariant-interval" />. This is the <Term slug="einstein-equivalence-principle" /> in metric language. But the first derivatives $\partial_\rho g_{\mu\nu}$ at $p$ encode the gravitational field — what a Newtonian would call the local $g$. And the second derivatives encode curvature. Curvature cannot be transformed away by any choice of coordinates. It is a coordinate-independent fact about the geometry. A uniform gravitational field can be transformed away by going into free-fall; real gravity, with its tidal variation, cannot.
+
+</Section>
+
+<Section index={2} title="Free-fall is the natural state — geodesics, not forces">
+
+<SceneCard caption="FIG.28a — left: the Newtonian apple, pulled by a downward force vector. Right: the same trajectory, reframed as a geodesic in curved spacetime. No force; the geometry is bent and the apple takes the straightest available path through it. Drag the progress slider; both panels show the identical (x, y) curve. The observed motion is the same. The explanation is what changes.">
+  <CurvedTrajectoryScene />
+</SceneCard>
+
+The Newtonian sentence "the apple falls because the Earth pulls it" is doing a specific job: it explains why the apple's worldline is curved. In Newtonian mechanics worldlines are presumed straight in the absence of force, and any deviation from straightness is force. The apple's worldline curves toward the Earth, so something must be pulling.
+
+GR keeps the first half of that sentence and removes the second. Worldlines in the absence of force ARE straight — but "straight" now means a *geodesic* in the local geometry, which is the relativistic generalization of a straight line on a curved surface. On a flat sheet a geodesic is a literal straight line. On the surface of a sphere a geodesic is a great circle. In curved spacetime around the Earth, a geodesic from a launched apple's release point to its landing point is exactly the parabolic worldline we observe. There is no force pulling the apple. The geometry has been bent by the Earth's mass, and the apple's free-fall worldline — its inertial path through the local geometry — is what we see as a parabola.
+
+This is the content of "free-fall is the natural state." A particle in free-fall is not accelerating in any geometric sense. It is following the straightest available path through the local spacetime. The accelerometer of a free-falling particle reads zero. The accelerometer of the floor of an elevator at rest on the Earth's surface reads $9.81\,\text{m/s}^2$ — because the floor is being held off its natural geodesic by the contact force from the ground. In GR, the floor is the thing that's accelerating. The free-faller is at rest in the only sense that matters geometrically.
+
+</Section>
+
+<Section index={3} title="The geometry made visible — and the honest caveat">
+
+<SceneCard caption="FIG.28b — a 2D sheet with a depression caused by a central mass; geodesics on the sheet bend toward the well. Drag M to deepen the well. The HUD reports the corresponding Schwarzschild radius for orientation. The honest caveat is in red at the bottom: this picture is pedagogical, not literal — real spacetime curvature is intrinsic, not an embedding into a higher-dimensional space.">
+  <EmbeddedCurvatureScene />
+</SceneCard>
+
+The rubber-sheet picture is the canonical introduction to GR for a reason: it makes "curvature causes orbits" visually obvious. A heavy mass deforms a sheet; a marble rolled past it spirals inward; a marble going fast enough flies past on a deflected hyperbola; a marble going just right orbits. The picture is a real intuition pump. But it cheats in a specific way that is worth saying out loud.
+
+The cheat is that the sheet sits inside a higher-dimensional space — there is a "down" direction the rubber droops into. Real spacetime curvature is not like that. It is *intrinsic*: it is a property of the metric on the manifold itself, definable entirely by measurements made within spacetime, with no external embedding space. An ant living on the surface of a sphere can measure the sphere's curvature without ever leaving the surface — by walking around triangles and noticing the angles sum to more than $180°$, or by noticing parallel lines converge. That is the kind of curvature spacetime has. The "down" direction in the embedding diagram is a visual prop. It is not part of the physics.
+
+A small piece of intrinsic curvature is captured by the leading correction to the time-time metric component near a static mass. To first order in $GM/(rc^2)$,
+
+<EquationBlock id="EQ.01">
+$$g_{tt}(r) \approx -\left(1 + \frac{2\Phi(r)}{c^2}\right) \quad \text{with} \quad \Phi(r) = -\frac{GM}{r}.$$
+</EquationBlock>
+
+The Newtonian potential $\Phi$ that you computed in classical mechanics shows up here as the leading deviation of the metric from its flat $-1$ value. This is why GR reduces to Newton in the weak-field limit: the temporal component of the metric encodes the gravitational potential. The same analysis gives the Schwarzschild radius $r_s = 2GM/c^2$ as the surface where $g_{tt}$ would diverge — for one solar mass, $r_s \approx 2953\,\text{m}$. That length scale is the bridge to §09's black-hole geometry. For now it is just a number that says how curved spacetime gets near a given mass.
+
+</Section>
+
+<Section index={4} title="The honest moment">
+
+<SceneCard caption="FIG.28c — the §06 closer. There is no force called gravity. There is curvature, and free-falling along curvature looks like falling. Below: a teaser-equation, the Einstein field equations, with the gloss 'left side = how spacetime curves; right side = where the matter and energy are.' Session 4 derives this; for now, look at it.">
+  <HonestMomentScene />
+</SceneCard>
+
+<Callout variant="intuition">
+There is no force called gravity. There is curvature, and free-falling along curvature looks like falling.
+
+The next module formalizes that geometry — manifolds, tangent spaces, metrics, Christoffel symbols, geodesics. The plumbing of GR. Once those tools are in place, the Einstein field equations show how matter and energy on the right-hand side determine the curvature on the left-hand side, and the whole edifice — orbits, lensing, redshift, black holes, gravitational waves, cosmology — falls out as consequences of one geometric principle: *matter tells spacetime how to curve; spacetime tells matter how to move*.
+
+The chapter you just finished was the SR victory lap and the GR on-ramp. The chapter after this builds the road.
+</Callout>
+
+The geometry IS the gravity. There is no separate gravitational force operating on top of the geometry — the geometry, varying from place to place because matter is somewhere and not somewhere else, IS what we used to call the force. That is the trade. SR put time and space on equal footing as coordinates of one 4D <Term slug="spacetime" />. GR puts gravity and geometry on equal footing as the same object viewed two ways. The §06.3 redshift you measured at Pound-Rebka is one component of the metric. The $+45\,\mu\text{s}/\text{day}$ correction in §05.3 GPS is the same component integrated along an orbit. The equivalence principle of §06.1–§06.3 is the local statement of "spacetime is locally Minkowski." All of it lives inside the geometry.
+
+</Section>
+
+<Section index={5} title="Forward — what Session 4 builds">
+
+This is the end of Session 3 and the bridge into Session 4. The geometric reframe is honest but informal — we have said "manifold," "metric," "geodesic," "curvature" without defining any of them. Session 4 supplies the definitions and the calculus.
+
+[The next module formalizes the geometry](/relativity/manifolds-and-tangent-spaces). From there we build, in order, the manifold itself (a space that locally looks like $\mathbb{R}^4$), tangent spaces (where four-vectors live, one at each point of spacetime), the metric tensor (the rule that assigns squared-lengths to tangent vectors), Christoffel symbols (the connection that tells parallel transport how to act on tangent vectors as you move from point to point), the geodesic equation (the relativistic generalization of Newton's first law), and the Riemann curvature tensor (the coordinate-independent measure of how much spacetime is curved).
+
+The Einstein field equations follow in §08; the Schwarzschild metric and the static black-hole geometry in §09; rotating black holes and Penrose processes in §10; gravitational waves and the LIGO detection in §11; cosmology and the FRW metric in §12; and the open questions — quantum gravity, dark energy, singularities — in §13. The longest-running winning streak in 20th-century physics: every single experimental test of GR since 1915, from Eddington's 1919 eclipse expedition through the Pound-Rebka tower in 1960, the Hulse-Taylor binary pulsar in 1974, the LIGO direct detection of gravitational waves in 2015, and the Event Horizon Telescope's image of M87* in 2019, has agreed with the theory to the precision of the measurement.
+
+The §06 honest moment is the door. Session 4 walks through it.
+
+</Section>
+
+</TopicPageLayout>
