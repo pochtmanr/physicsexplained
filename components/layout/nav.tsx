@@ -48,6 +48,12 @@ export async function Nav() {
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("dictionary")}</span>
           </Link>
+          <Link
+            href="/play"
+            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
+          >
+            <span>{t("play")}</span>
+          </Link>
           <SearchTrigger />
           <LocaleSwitcher />
           <ThemeToggle />

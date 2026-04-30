@@ -1,0 +1,33 @@
+{
+  "indexTitle": "Playgrounds",
+  "indexSubtitle": "Drag, drop, share. Physics that fits in a tweet.",
+  "back": "Back",
+  "share": {
+    "copyLink": "Copy link",
+    "copied": "Link copied",
+    "tweet": "Share on X",
+    "explain": "Explain with AI"
+  },
+  "controls": {
+    "play": "Play",
+    "pause": "Pause",
+    "reset": "Reset",
+    "addBody": "Add body",
+    "speed": "Speed",
+    "trails": "Trails",
+    "preset": "Preset",
+    "bodies": "Bodies"
+  },
+  "orbital-mechanics": {
+    "title": "Orbital Mechanics",
+    "subtitle": "N-body gravitational chaos",
+    "indexCardDescription": "Drop bodies, drag to set velocity, watch the chaos unfold.",
+    "aiPrompt": "Explain what's happening in this gravitational system.",
+    "presets": {
+      "figure-8": "Figure-8",
+      "solar-mini": "Mini solar system",
+      "pythagorean": "Pythagorean (chaos)",
+      "random-cluster": "Random cluster"
+    }
+  }
+}
