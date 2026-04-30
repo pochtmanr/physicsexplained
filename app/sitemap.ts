@@ -2,102 +2,99 @@ import type { MetadataRoute } from "next";
 import { BRANCHES } from "@/lib/content/branches";
 import { supabase } from "@/lib/supabase";
 import { locales, defaultLocale } from "@/i18n/config";
-
-const BASE = "https://physics.it.com";
+import { SITE } from "@/lib/seo/config";
 
 type ChangeFreq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
 
-/**
- * Build a URL for a given locale. Default locale has no prefix
- * (next-intl routing uses `localePrefix: "as-needed"`).
- */
-function localized(path: string, locale: string): string {
-  const clean = path === "/" ? "" : path;
-  return locale === defaultLocale
-    ? `${BASE}${clean || "/"}`
-    : `${BASE}/${locale}${clean}`;
+interface RealEntry {
+  kind: "topic" | "glossary" | "physicist";
+  slug: string;
+  locale: string;
+  updated_at: string | null;
 }
 
-/**
- * Emit a sitemap entry with hreflang alternates for every supported locale.
- * The canonical URL is the default-locale variant; alternates expose the rest
- * to Google via the xhtml:link language hint.
- */
+function pathFor(kind: RealEntry["kind"], slug: string): string {
+  if (kind === "topic") return `/${slug}`;
+  if (kind === "glossary") return `/dictionary/${slug}`;
+  return `/physicists/${slug}`;
+}
+
 function entry(
   path: string,
+  locale: string,
+  realLocaleSet: Set<string>,
   lastModified: string,
   changeFrequency: ChangeFreq,
   priority: number,
 ): MetadataRoute.Sitemap[number] {
-  const languages = Object.fromEntries(
-    locales.map((l) => [l, localized(path, l)]),
-  );
+  const languages: Record<string, string> = {};
+  for (const l of locales) {
+    if (l === locale) continue;
+    if (realLocaleSet.has(l)) {
+      languages[l] = SITE.localizedUrl(path, l);
+    }
+  }
   return {
-    url: localized(path, defaultLocale),
+    url: SITE.localizedUrl(path, locale),
     lastModified,
     changeFrequency,
     priority,
-    alternates: { languages },
+    ...(Object.keys(languages).length > 0 ? { alternates: { languages } } : {}),
   };
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
-  const staticPages: MetadataRoute.Sitemap = [
-    entry("/", now, "weekly", 1.0),
-    entry("/about", now, "monthly", 0.6),
-    entry("/physicists", now, "monthly", 0.7),
-    entry("/dictionary", now, "monthly", 0.7),
-    entry("/privacy", now, "yearly", 0.3),
-    entry("/terms", now, "yearly", 0.3),
-    entry("/cookies", now, "yearly", 0.3),
+  // Static pages — only emit default locale URLs for now.
+  const staticPaths: Array<[string, ChangeFreq, number]> = [
+    ["/", "weekly", 1.0],
+    ["/about", "monthly", 0.6],
+    ["/physicists", "monthly", 0.7],
+    ["/dictionary", "monthly", 0.7],
+    ["/privacy", "yearly", 0.3],
+    ["/terms", "yearly", 0.3],
+    ["/cookies", "yearly", 0.3],
   ];
+  const staticPages: MetadataRoute.Sitemap = staticPaths.map(([p, freq, prio]) => ({
+    url: SITE.localizedUrl(p, defaultLocale),
+    lastModified: now,
+    changeFrequency: freq,
+    priority: prio,
+  }));
 
-  const branchPages: MetadataRoute.Sitemap = BRANCHES.map((b) =>
-    entry(`/${b.slug}`, now, "monthly", 0.8),
-  );
+  const branchPages: MetadataRoute.Sitemap = BRANCHES.filter(
+    (b) => b.status === "live",
+  ).map((b) => ({
+    url: SITE.localizedUrl(`/${b.slug}`, defaultLocale),
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
 
-  // Pull live content slugs directly from Supabase so the sitemap never drifts
-  // from the database that actually renders the pages.
-  const [topicRes, physicistRes, glossaryRes] = await Promise.all([
-    supabase
-      .from("content_entries")
-      .select("slug, updated_at")
-      .eq("kind", "topic")
-      .eq("locale", defaultLocale)
-      .order("slug"),
-    supabase
-      .from("content_entries")
-      .select("slug, updated_at")
-      .eq("kind", "physicist")
-      .eq("locale", defaultLocale)
-      .order("slug"),
-    supabase
-      .from("content_entries")
-      .select("slug, updated_at")
-      .eq("kind", "glossary")
-      .eq("locale", defaultLocale)
-      .order("slug"),
-  ]);
+  // Pull all real rows for all locales.
+  const { data, error } = await supabase
+    .from("content_entries")
+    .select("kind, slug, locale, updated_at")
+    .in("kind", ["topic", "glossary", "physicist"]);
+  if (error) throw error;
 
-  const topicPages: MetadataRoute.Sitemap = (topicRes.data ?? []).map((t) =>
-    entry(`/${t.slug}`, t.updated_at ?? now, "monthly", 0.9),
-  );
+  // Group locales per (kind, slug) so we can emit hreflang alternates correctly.
+  const realLocalesBySlug = new Map<string, Set<string>>();
+  const rows: RealEntry[] = (data ?? []) as RealEntry[];
+  for (const r of rows) {
+    const key = `${r.kind}::${r.slug}`;
+    if (!realLocalesBySlug.has(key)) realLocalesBySlug.set(key, new Set());
+    realLocalesBySlug.get(key)!.add(r.locale);
+  }
 
-  const physicistPages: MetadataRoute.Sitemap = (physicistRes.data ?? []).map((p) =>
-    entry(`/physicists/${p.slug}`, p.updated_at ?? now, "monthly", 0.6),
-  );
+  const dynamicPages: MetadataRoute.Sitemap = rows.map((r) => {
+    const key = `${r.kind}::${r.slug}`;
+    const realSet = realLocalesBySlug.get(key) ?? new Set([r.locale]);
+    const path = pathFor(r.kind, r.slug);
+    const priority = r.kind === "topic" ? 0.9 : r.kind === "physicist" ? 0.6 : 0.5;
+    return entry(path, r.locale, realSet, r.updated_at ?? now, "monthly", priority);
+  });
 
-  const dictionaryPages: MetadataRoute.Sitemap = (glossaryRes.data ?? []).map((g) =>
-    entry(`/dictionary/${g.slug}`, g.updated_at ?? now, "monthly", 0.5),
-  );
-
-  return [
-    ...staticPages,
-    ...branchPages,
-    ...topicPages,
-    ...physicistPages,
-    ...dictionaryPages,
-  ];
+  return [...staticPages, ...branchPages, ...dynamicPages];
 }
