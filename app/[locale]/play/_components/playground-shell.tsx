@@ -29,7 +29,7 @@ export function PlaygroundShell({
   return (
     <>
       <header
-        className="absolute inset-inline-0 inset-block-start-0 z-50 flex h-12 items-center justify-between gap-2 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]/80 px-3 backdrop-blur-md"
+        className="absolute top-0 left-0 right-0 z-50 flex h-12 items-center justify-between gap-2 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]/80 px-3 backdrop-blur-md"
       >
         <Link
           href={backHref}
@@ -47,7 +47,7 @@ export function PlaygroundShell({
           aiPromptKey={aiPromptKey}
         />
       </header>
-      <main className="absolute inset-inline-0 inset-block-start-12 inset-block-end-0 overflow-hidden">
+      <main className="absolute top-12 bottom-0 left-0 right-0 overflow-hidden">
         {children}
       </main>
     </>

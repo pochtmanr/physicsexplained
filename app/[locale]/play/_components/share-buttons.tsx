@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { Link2, X as XIcon, Sparkles, Check } from "lucide-react";
 
@@ -13,20 +14,27 @@ export function ShareButtons({ shareTitle, sceneId, aiPromptKey }: Props) {
   const t = useTranslations("play.share");
   const tRoot = useTranslations();
   const locale = useLocale();
+  const pathname = usePathname() ?? "";
+  const searchParams = useSearchParams();
+  const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  // Read live URL state every render. The playground writes ?s=... via
-  // usePlaygroundState, so window.location is the single source of truth.
-  const currentUrl =
-    typeof window === "undefined" ? "" : window.location.href;
-  const currentSearch =
-    typeof window === "undefined"
-      ? new URLSearchParams()
-      : new URLSearchParams(window.location.search);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Build URLs from the router-tracked pathname + search params. These match
+  // on server and client (next/navigation gives the same values), so no
+  // hydration mismatch. We still gate origin-dependent strings on `mounted`.
+  const qs = searchParams?.toString() ?? "";
+  const sParam = searchParams?.get("s") ?? "";
+
+  const fullPath = qs ? `${pathname}?${qs}` : pathname;
+  const absoluteUrl = mounted ? `${window.location.origin}${fullPath}` : fullPath;
 
   const tweetUrl = (() => {
     const text = encodeURIComponent(`${shareTitle} · Physics`);
-    const url = encodeURIComponent(currentUrl);
+    const url = encodeURIComponent(absoluteUrl);
     return `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
   })();
 
@@ -34,14 +42,15 @@ export function ShareButtons({ shareTitle, sceneId, aiPromptKey }: Props) {
     const aiPrompt = tRoot(aiPromptKey);
     const params = new URLSearchParams();
     params.set("scene", sceneId);
-    params.set("params", currentSearch.get("s") ?? currentSearch.toString());
+    params.set("params", sParam || qs);
     params.set("prompt", aiPrompt);
     return `/${locale}/ask?${params.toString()}`;
   })();
 
   async function copyLink() {
+    if (!mounted) return;
     try {
-      await navigator.clipboard.writeText(currentUrl);
+      await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
