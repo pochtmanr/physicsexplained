@@ -31,6 +31,28 @@ export function OrbitalMechanicsPlayground() {
     }
   }
 
+  function addBody() {
+    // Place near origin with a small jitter so successive adds don't stack
+    // exactly on top of each other (Plummer softening would still handle it,
+    // but visual separation is friendlier).
+    const i = bodies.length;
+    const jitter = 0.4 * (i + 1);
+    const angle = (i * 137.5 * Math.PI) / 180; // golden-angle spread
+    const next: Body[] = [
+      ...bodies,
+      {
+        id: `u${Date.now().toString(36)}${i}`,
+        mass: 1,
+        x: Math.cos(angle) * jitter,
+        y: Math.sin(angle) * jitter,
+        vx: 0,
+        vy: 0,
+      },
+    ];
+    const trimmed = next.length > 8 ? next.slice(next.length - 8) : next;
+    setBodies(trimmed);
+  }
+
   return (
     <div className="absolute inset-0">
       <NBodyCanvas
@@ -53,6 +75,7 @@ export function OrbitalMechanicsPlayground() {
           setIsPlaying(true);
           reset();
         }}
+        onAddBody={addBody}
       />
     </div>
   );

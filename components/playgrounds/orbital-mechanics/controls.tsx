@@ -1,5 +1,5 @@
 "use client";
-import { Play, Pause, RotateCcw } from "lucide-react";
+import { Play, Pause, RotateCcw, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { OrbitalState } from "./schema";
 import { PRESET_IDS, type PresetId } from "./presets";
@@ -13,6 +13,7 @@ interface Props {
   onChangeTrails: (b: boolean) => void;
   onChangePreset: (p: PresetId) => void;
   onReset: () => void;
+  onAddBody: () => void;
 }
 
 export function Controls({
@@ -24,19 +25,18 @@ export function Controls({
   onChangeTrails,
   onChangePreset,
   onReset,
+  onAddBody,
 }: Props) {
   const t = useTranslations("play.controls");
   const tPresets = useTranslations("play.orbital-mechanics.presets");
 
   return (
-    <div
-      className="absolute bottom-4 left-1/2 z-40 flex max-w-[92vw] -translate-x-1/2 items-center gap-3 rounded-full border border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]/80 px-3 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] backdrop-blur-md"
-    >
+    <div className="absolute bottom-4 left-1/2 z-40 flex max-w-[92vw] -translate-x-1/2 items-center gap-3 border border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]/80 px-3 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] backdrop-blur-md">
       <button
         type="button"
         onClick={onTogglePlay}
         aria-label={isPlaying ? t("pause") : t("play")}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-[var(--color-fg-4)]/30"
+        className="inline-flex h-8 w-8 items-center justify-center hover:bg-[var(--color-fg-4)]/30"
       >
         {isPlaying ? <Pause size={14} /> : <Play size={14} />}
       </button>
@@ -44,9 +44,18 @@ export function Controls({
         type="button"
         onClick={onReset}
         aria-label={t("reset")}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full hover:bg-[var(--color-fg-4)]/30"
+        className="inline-flex h-8 w-8 items-center justify-center hover:bg-[var(--color-fg-4)]/30"
       >
         <RotateCcw size={14} />
+      </button>
+      <button
+        type="button"
+        onClick={onAddBody}
+        aria-label={t("addBody")}
+        className="inline-flex h-8 items-center gap-1 border border-[var(--color-fg-4)] px-2 hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+      >
+        <Plus size={14} />
+        <span>{t("addBody")}</span>
       </button>
       <div className="flex items-center gap-1">
         <span className="opacity-60">{t("speed")}</span>
@@ -55,7 +64,7 @@ export function Controls({
             key={s}
             type="button"
             onClick={() => onChangeSpeed(s)}
-            className={`rounded px-1.5 py-0.5 ${state.speed === s ? "bg-[var(--color-cyan)]/30 text-[var(--color-fg-0)]" : "hover:bg-[var(--color-fg-4)]/30"}`}
+            className={`px-1.5 py-0.5 ${state.speed === s ? "bg-[var(--color-cyan)]/30 text-[var(--color-fg-0)]" : "hover:bg-[var(--color-fg-4)]/30"}`}
           >
             {s}×
           </button>
@@ -73,7 +82,7 @@ export function Controls({
       <select
         value={state.preset}
         onChange={(e) => onChangePreset(e.target.value as PresetId)}
-        className="rounded bg-transparent px-1 text-[var(--color-fg-0)] outline-none"
+        className="bg-transparent px-1 text-[var(--color-fg-0)] outline-none"
         aria-label={t("preset")}
       >
         {PRESET_IDS.map((p: PresetId) => (
