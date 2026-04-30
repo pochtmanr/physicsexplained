@@ -8,6 +8,7 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import type { AsideLink } from "@/components/layout/aside-links";
 import { makeTopicMetadata } from "@/lib/seo/topic-metadata";
 import { TopicPageSeo } from "@/components/seo/topic-page-seo";
+import { ProblemsSection } from "@/components/problems/problems-section";
 
 const SLUG = "classical-mechanics/friction-and-drag";
 
@@ -48,6 +49,7 @@ export default async function Page({
         </p>
       ) : null}
       <ContentBlocks blocks={entry.blocks} />
+      <ProblemsSection topicSlug="friction-and-drag" branchSlug="classical-mechanics" locale={locale} />
     </TopicPageLayout>
   );
 }

@@ -1,0 +1,34 @@
+{
+  "statement": "A hockey puck is given an initial speed of v₀ = 20 m/s across ice. The kinetic friction coefficient between puck and ice is μk = 0.5. Treating g = 9.807 m/s², find: the frictional deceleration, the time for the puck to stop, and the total distance it slides before coming to rest.",
+  "steps": {
+    "a_decel": {
+      "prompt": "What is the magnitude of the frictional deceleration acting on the puck?",
+      "hint": "On a flat surface, the friction force is μk·m·g. By Newton's second law, a = F/m = μk·g. The mass cancels entirely.",
+      "commonMistakes": [
+        "Including mass in the deceleration: a = μk·m·g is the force, not the acceleration; divide by m to get a = μk·g.",
+        "Forgetting to multiply by g — μk alone has no units of acceleration.",
+        "Using μs (static) instead of μk — the puck is already sliding."
+      ]
+    },
+    "t_stop": {
+      "prompt": "How long does it take for the puck to slide to a stop?",
+      "hint": "The puck decelerates uniformly from v₀ to 0: v₀ = a_decel · t_stop, so t_stop = v₀ / a_decel.",
+      "commonMistakes": [
+        "Using t_stop = v₀ / g instead of v₀ / a_decel — g alone is free fall; kinetic friction gives a_decel = μk·g.",
+        "Using the quadratic kinematic formula d = v₀t − ½at² to find time — solve for t_stop algebraically first, then use it for distance.",
+        "Forgetting that deceleration is constant throughout — it does not change with speed in the simple Amontons model."
+      ]
+    },
+    "d_stop": {
+      "prompt": "What is the total distance the puck slides before stopping?",
+      "hint": "Use energy or kinematics: d = v₀² / (2·a_decel). Alternatively, d = v₀·t_stop − ½·a_decel·t_stop².",
+      "commonMistakes": [
+        "Using d = v₀·t_stop (constant-velocity formula) — the puck is decelerating, not at constant speed.",
+        "Forgetting the ½ in the kinematic formula — d = v₀t − ½at², not v₀t − at².",
+        "Squaring t_stop instead of v₀ in the energy formula — d = v₀²/(2a), not t_stop²."
+      ]
+    }
+  },
+  "finalAnswerProse": "The friction decelerates the puck at 4.90 m/s². It takes approximately 4.08 seconds to stop, sliding a total distance of 40.79 m — about 40 % of a hockey rink's length.",
+  "walkthrough": "The puck on ice feels only one horizontal force: kinetic friction backward. On a flat surface, the normal force equals the weight m·g, so the friction force is μk·m·g. Applying Newton's second law, the deceleration is a = μk·g = 0.5 × 9.807 = 4.90 m/s². Mass cancels — a heavier puck decelerates at the same rate as a lighter one (a fact traceable directly to Amontons, and equivalent to Galileo's inclined-plane result).\n\nWith uniform deceleration, the puck goes from v₀ = 20 m/s to rest in t_stop = v₀/a = 20/4.90 = 4.08 s. The stopping distance follows from the constant-acceleration kinematic formula: d = v₀t − ½at² evaluated at t = t_stop, or more neatly from energy: ½mv₀² = μk·mg·d → d = v₀²/(2μk·g) = 400/(2 × 4.90) = 40.79 m.\n\nThe energy route is illuminating: all the kinetic energy goes into frictional heat. μk = 0.5 means the friction force is half the weight — quite high for ice, which normally has μk ≈ 0.01–0.03. Real ice is slippery precisely because the low μk makes the stopping distance enormous. At μk = 0.02 the same puck would travel over a kilometre before stopping, which is why hockey rinks need boards."
+}

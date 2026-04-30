@@ -1,0 +1,25 @@
+{
+  "statement": "A wooden crate of mass 8 kg is dragged at constant velocity across a horizontal floor. The coefficient of kinetic friction between crate and floor is μk = 0.4. Find the normal force the floor exerts on the crate, then calculate the kinetic friction force opposing its motion.",
+  "steps": {
+    "F_N": {
+      "prompt": "What is the normal force the floor exerts on the crate?",
+      "hint": "On a flat horizontal surface, the normal force exactly balances gravity. There is no vertical acceleration, so F_N = m · g.",
+      "commonMistakes": [
+        "Multiplying mass by μk instead of g — the coefficient only scales friction, not the normal force.",
+        "Forgetting that normal force is perpendicular to the surface, not equal to the applied horizontal push.",
+        "Using μs (static coefficient) rather than μk; the crate is already moving, so kinetic friction applies."
+      ]
+    },
+    "F_friction": {
+      "prompt": "Given the normal force, what is the kinetic friction force?",
+      "hint": "Amontons' second law: F_k = μk · F_N. Multiply the kinetic coefficient by the normal force you just found.",
+      "commonMistakes": [
+        "Multiplying μk by m · g separately and then again by something else — one multiplication is enough.",
+        "Confusing the result with the applied force; friction exactly equals applied force only because velocity is constant.",
+        "Reporting the answer as negative — kinetic friction magnitude is always positive; direction is stated in prose."
+      ]
+    }
+  },
+  "finalAnswerProse": "The floor pushes up on the crate with a normal force of 78.45 N. Kinetic friction therefore pulls back on the crate with a force of 31.38 N — roughly a third of the crate's weight, because the floor is moderately rough.",
+  "walkthrough": "Start by drawing a free-body diagram of the crate. Three forces act on it: gravity m·g downward, the normal force F_N upward, and the applied push forward together with kinetic friction backward. Because the crate moves at constant velocity, the vertical forces must cancel — so F_N = m·g = 8 × 9.807 = 78.45 N. This is Amontons' first insight: on a flat surface the normal force is simply the weight.\n\nOnce you have F_N, the kinetic friction law — due to Guillaume Amontons, 1699 — gives F_k = μk · F_N directly. With μk = 0.4 this is 0.4 × 78.45 = 31.38 N. Notice that contact area never entered the calculation. Whether the crate sits on its wide face or its narrow face, the friction force is the same — one of the most counterintuitive facts in elementary mechanics, and the result Amontons spent years verifying across every material combination he could test.\n\nThe 31.38 N figure also tells you exactly how hard the person pushing must push to keep the crate moving at steady speed: the net horizontal force must be zero, so the applied force must match friction. Any more and the crate accelerates; any less and it slows down."
+}

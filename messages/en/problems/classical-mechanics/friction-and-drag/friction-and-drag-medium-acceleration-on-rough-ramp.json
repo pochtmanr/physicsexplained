@@ -1,0 +1,43 @@
+{
+  "statement": "A 5 kg block is released from rest on a ramp inclined at 30° (π/6 rad). The kinetic coefficient of friction between block and ramp surface is μk = 0.25. Find the normal force perpendicular to the slope, the kinetic friction force, the net force down the slope, and the resulting acceleration.",
+  "steps": {
+    "F_N": {
+      "prompt": "What is the normal force the ramp exerts perpendicular to its surface?",
+      "hint": "Weight m·g acts vertically. Only its component perpendicular to the slope contributes to the normal force: F_N = m · g · cos θ.",
+      "commonMistakes": [
+        "Using F_N = m·g (the flat-surface formula) — on a ramp the weight is tilted, so only the cosine component presses into the surface.",
+        "Using sin θ instead of cos θ — sin θ gives the component along the slope, not perpendicular to it.",
+        "Plugging in θ in degrees instead of radians — always convert or be consistent with your calculator mode."
+      ]
+    },
+    "F_friction": {
+      "prompt": "What is the magnitude of the kinetic friction force acting up the slope?",
+      "hint": "Kinetic friction equals μk times the normal force: F_friction = μk · F_N. It acts up the slope, opposing the downward slide.",
+      "commonMistakes": [
+        "Using μs (static coefficient) instead of μk — the block is already sliding, so kinetic friction applies.",
+        "Forgetting that friction opposes motion — it acts up the slope when the block slides down.",
+        "Multiplying μk by the full weight m·g rather than by the normal force F_N."
+      ]
+    },
+    "F_net": {
+      "prompt": "What is the net force along the slope (taking down the slope as positive)?",
+      "hint": "The gravitational component along the slope is m·g·sin θ (downward). Kinetic friction resists this. F_net = m·g·sin θ − F_friction.",
+      "commonMistakes": [
+        "Adding friction instead of subtracting — friction opposes motion, so it reduces the net downslope force.",
+        "Using cos θ for the along-slope gravity component — that is the perpendicular component; sin θ is the along-slope one.",
+        "Using the full weight m·g for the along-slope pull without decomposing by sin θ."
+      ]
+    },
+    "a": {
+      "prompt": "What is the acceleration of the block down the ramp?",
+      "hint": "Apply Newton's second law along the slope: a = F_net / m. This should equal g·(sin θ − μk·cos θ).",
+      "commonMistakes": [
+        "Dividing by g instead of m when applying Newton's second law.",
+        "Forgetting that the mass cancels — the formula g·(sin θ − μk·cos θ) is independent of mass.",
+        "Reporting a negative value without justification — the positive direction was defined as down the slope, so a > 0 means accelerating downhill."
+      ]
+    }
+  },
+  "finalAnswerProse": "The ramp pushes perpendicular to its surface with 42.46 N. Kinetic friction resists the slide with 10.62 N up the slope. The net downslope force is 13.90 N, giving an acceleration of 2.78 m/s² — noticeably less than the frictionless value of g·sin 30° ≈ 4.90 m/s².",
+  "walkthrough": "Decompose the weight into two components: m·g·cos θ perpendicular to the slope (this becomes the normal force) and m·g·sin θ along the slope (this drives the block downhill). With m = 5 kg and θ = 30°, F_N = 5 × 9.807 × cos 30° = 42.46 N.\n\nKinetic friction opposes motion, acting up the slope: F_friction = μk × F_N = 0.25 × 42.46 = 10.62 N. The net force driving the block downhill is the difference between the gravitational component and friction: F_net = m·g·sin 30° − 10.62 = 24.52 − 10.62 = 13.90 N.\n\nApplying Newton's second law, a = F_net / m = 13.90 / 5 = 2.78 m/s². Notice that mass cancels in the final formula: a = g·(sin θ − μk·cos θ). This means two blocks of different masses released simultaneously on the same ramp accelerate identically — Galileo's result survives even with friction, as long as μk does not depend on mass (Amontons' first law).\n\nThe frictionless case gives g·sin 30° ≈ 4.90 m/s²; friction cuts the acceleration nearly in half here. A larger μk would reduce it further; at μk = tan 30° ≈ 0.577 the block would stop accelerating entirely — the critical angle where kinetic friction exactly balances gravity."
+}

@@ -1,0 +1,34 @@
+{
+  "statement": "A skydiver of mass m = 75 kg falls belly-down through air (density ρ = 1.225 kg/m³) with cross-sectional area A = 0.7 m² and drag coefficient C_d = 1.0. Using the Newtonian quadratic drag law F_drag = ½ρC_dAv², find the quadratic drag constant k, the gravitational force, and the terminal velocity the skydiver approaches.",
+  "steps": {
+    "k": {
+      "prompt": "What is the quadratic drag constant k = ½ρC_dA for this skydiver?",
+      "hint": "k combines all the non-velocity factors in the quadratic drag law: k = ½ · ρ · C_d · A. The drag force is then F = k · v².",
+      "commonMistakes": [
+        "Forgetting the factor of ½ — the quadratic law is F = ½ρC_dAv², not ρC_dAv².",
+        "Including v² in k — k is the coefficient in front of v², so it contains only ρ, C_d, and A.",
+        "Confusing C_d (dimensionless drag coefficient) with b (linear drag coefficient, units kg/s)."
+      ]
+    },
+    "F_grav": {
+      "prompt": "What is the gravitational force on the skydiver?",
+      "hint": "F_grav = m · g. This is the force that drives the fall and is balanced by drag at terminal velocity.",
+      "commonMistakes": [
+        "Using just m instead of m·g — force requires multiplying mass by gravitational acceleration.",
+        "Using g = 10 m/s² rather than the standard 9.807 m/s² — small difference but matters at 4-decimal precision.",
+        "Confusing weight (in N) with mass (in kg)."
+      ]
+    },
+    "v_t": {
+      "prompt": "At terminal velocity, drag equals gravity. Solve for v_t.",
+      "hint": "Set k·v_t² = m·g and solve: v_t = √(m·g / k) = √(F_grav / k). Don't forget the square root.",
+      "commonMistakes": [
+        "Forgetting the square root — the quadratic drag equation gives v_t² = mg/k, so you must take the square root for v_t.",
+        "Using the Stokes (linear) formula v_t = mg/b — that applies only to slow, viscous flow. At skydiving speeds, drag is quadratic.",
+        "Inverting the fraction: v_t = √(k / mg) gives the wrong units and a much smaller answer."
+      ]
+    }
+  },
+  "finalAnswerProse": "The quadratic drag constant is k ≈ 0.429 kg/m. The skydiver's weight is about 735.5 N. Terminal velocity is approximately 41.4 m/s (≈ 149 km/h) — consistent with observed belly-down free-fall speeds of 53–60 m/s when a more precise C_d ≈ 0.8–1.0 and area are used.",
+  "walkthrough": "Newtonian drag is the dominant regime whenever a body moves fast through a fluid. The drag force F = ½ρC_dAv² depends on the square of speed — doubling speed quadruples drag. Collecting the constant factors: k = ½ × 1.225 × 1.0 × 0.7 = 0.4288 kg/m. This k is the 'drag coefficient per unit speed squared'.\n\nGravity pulls the skydiver down with F_grav = 75 × 9.807 = 735.5 N. As the skydiver accelerates, drag increases as v². Terminal velocity is where the two forces balance: k·v_t² = F_grav, so v_t = √(F_grav/k) = √(735.5/0.4288) ≈ 41.4 m/s.\n\nThe square-root dependence is important: doubling mass increases v_t by only √2 ≈ 1.41. Doubling drag area A halves v_t² and reduces v_t by √2 ≈ 0.71. This is why a skydiver in a head-down dive (smaller A, lower C_d) can reach 90 m/s or more, while a fully spread parachute with enormous A and C_d ≈ 1.5 cuts v_t to around 5 m/s — a safe landing speed.\n\nThe approach to v_t under quadratic drag is not a simple exponential (that was the linear-drag case). It follows a hyperbolic tangent: v(t) = v_t · tanh(t / τ_q) where τ_q = m/(k·v_t). The shape is qualitatively similar — rapid rise then flattening — but the math is richer."
+}
