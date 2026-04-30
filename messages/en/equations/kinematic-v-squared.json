@@ -1,0 +1,7 @@
+{
+  "name": "Kinematic v² Relation",
+  "whatItSolves": "Links initial velocity, final velocity, and displacement without requiring time. The equation is the right choice whenever time is unknown and you are asked for a velocity or a distance.",
+  "whenToUse": "Constant-acceleration straight-line motion where time is either unknown or irrelevant. Classic applications: stopping distance, launch speed from fall height.",
+  "whenNotTo": "Requires constant acceleration; invalid for drag-dominated problems where a changes with speed. Also fails in 2D unless applied component-by-component.",
+  "commonMistakes": "Mixing up v and v_0 — the convention is v_0 initial, v final. Forgetting to take the square root when solving for v. Using total displacement d when the object reverses direction mid-path."
+}

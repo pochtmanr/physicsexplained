@@ -1,0 +1,7 @@
+{
+  "name": "Driven Oscillator Steady-State Amplitude",
+  "whatItSolves": "Gives the amplitude of the steady-state response when a force F₀·cos(ω_d·t) drives a damped oscillator: A = (F₀/m)/√((ω₀² − ω_d²)² + (γω_d)²). Amplitude peaks near ω_d ≈ ω₀ (resonance).",
+  "whenToUse": "Forced vibration problems: shaking a mass–spring, driving an RLC circuit, modeling a building in an earthquake. The formula gives the long-time (transient-free) amplitude.",
+  "whenNotTo": "This is the particular (steady-state) solution only; the general solution also includes the homogeneous (transient) part, which decays as e^(−γt/2). For very lightly damped systems near resonance, the transient can dominate initially.",
+  "commonMistakes": "Forgetting to divide F₀ by mass m — the formula uses force per unit mass. Using ω₀ instead of ω_d in the damping term (γω_d in the denominator, not γω₀). Confusing the resonance frequency with ω₀ — the amplitude peak occurs at ω_res = √(ω₀² − γ²/2), slightly below ω₀."
+}

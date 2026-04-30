@@ -1,0 +1,7 @@
+{
+  "name": "Spring Angular Frequency",
+  "whatItSolves": "Gives the natural angular frequency of a mass–spring system: ω = √(k/m). From ω you get period T = 2π/ω and frequency f = ω/(2π).",
+  "whenToUse": "Any ideal (Hookean) spring–mass system oscillating without damping. Also the starting point for driven and damped spring problems where ω₀ = √(k/m) is the natural frequency.",
+  "whenNotTo": "Not valid for non-Hookean springs where F ≠ −kx, or for springs with non-negligible mass (use the correction m_eff = m + m_spring/3). A vertical spring has the same ω as horizontal — gravity shifts the equilibrium but not the frequency.",
+  "commonMistakes": "Inverting the fraction to ω = √(m/k) — stiffer springs (larger k) oscillate faster, not slower. Confusing spring constant k (N/m) with wave number k (rad/m). Forgetting to convert to period when the question asks for T, not ω."
+}

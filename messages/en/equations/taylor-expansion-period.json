@@ -1,0 +1,7 @@
+{
+  "name": "Taylor Series for Pendulum Period",
+  "whatItSolves": "Expresses the exact elliptic-integral period as a power series in θ₀: T = T₀·Σ [(2n)!/(2²ⁿ(n!)²)]²·θ₀²ⁿ. The first two non-trivial coefficients give the familiar 1 + θ₀²/16 + 11θ₀⁴/3072 approximation.",
+  "whenToUse": "When you need explicit correction coefficients to quantify how much amplitude increases the period. Useful for error analysis: at what amplitude does the small-angle formula err by more than X%?",
+  "whenNotTo": "High-order truncations converge slowly for θ₀ > π/2. For amplitudes above 60°, the full elliptic integral or numerical integration is more practical.",
+  "commonMistakes": "Treating the series as exact at finite order — every truncated series has a remainder. Forgetting to use radians for θ₀ when computing the coefficients. Misidentifying the n = 0 term (it equals 1, contributing T₀) as the only term needed for small angles."
+}

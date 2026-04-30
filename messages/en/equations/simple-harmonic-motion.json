@@ -1,0 +1,7 @@
+{
+  "name": "Simple Harmonic Oscillator Equation",
+  "whatItSolves": "The universal differential equation x″ + ω²x = 0 describes any system with a linear restoring force. Its general solution is x(t) = A·cos(ωt + φ), with amplitude A and phase φ set by initial conditions.",
+  "whenToUse": "Springs, small-angle pendulums, LC circuits, small-amplitude vibrations of any stable equilibrium. Whenever the restoring force is proportional to displacement, this equation governs the motion.",
+  "whenNotTo": "Breaks down when the restoring force is nonlinear — large-angle pendulums and non-Hookean springs are not true SHM. Adding damping changes the equation to x″ + γx′ + ω₀²x = 0.",
+  "commonMistakes": "Writing ω² = m/k instead of k/m. Forgetting that ω in the solution must match the ω in the differential equation. Assuming A and φ are always 1 and 0 — they depend on initial position and velocity."
+}

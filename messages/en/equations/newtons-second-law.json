@@ -1,0 +1,7 @@
+{
+  "name": "Newton's Second Law",
+  "whatItSolves": "Relates net force, mass, and acceleration. Given any two of the three quantities, the equation yields the third. It is the foundation of classical mechanics force analysis.",
+  "whenToUse": "Any low-speed (non-relativistic) problem where you draw a free-body diagram and sum all forces on a single object. Applies to both translational and (in adapted form) rotational dynamics.",
+  "whenNotTo": "Does not apply at speeds approaching c — use relativistic mechanics. Also breaks down for objects of variable mass (rocket equation requires the full momentum form dp/dt = F). Does not directly account for internal stresses; use it only on the system boundary.",
+  "commonMistakes": "Using weight (mg) where mass (m) is required, or vice versa. Applying F = ma to the whole system instead of isolating a single object. Forgetting that F is the net force — omitting friction, tension, or normal force components."
+}

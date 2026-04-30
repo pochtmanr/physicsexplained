@@ -1,0 +1,7 @@
+{
+  "name": "Quadratic Formula",
+  "whatItSolves": "Solves any equation of the form ax² + bx + c = 0 for x. In kinematics it appears whenever you set two position expressions equal and time is the unknown.",
+  "whenToUse": "Whenever a kinematic equation produces a quadratic in t (or any other unknown). Both roots are algebraically valid; physics context usually selects the positive, future root.",
+  "whenNotTo": "Not needed if the equation factors cleanly or if one root is obviously unphysical (negative time). For near-zero discriminants, check whether the quadratic reduces to a repeated root representing a special physical case.",
+  "commonMistakes": "Sign errors: b² − 4ac must use the coefficient b, not the whole term bx. Forgetting the ± and discarding the second root before checking its physical meaning. Dividing only the numerator or only the square-root term by 2a instead of the whole expression."
+}

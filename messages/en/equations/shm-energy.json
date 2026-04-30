@@ -1,0 +1,7 @@
+{
+  "name": "SHM Total Energy",
+  "whatItSolves": "Gives the constant total mechanical energy of an undamped oscillator: E = ½kA². Energy oscillates between purely kinetic (at equilibrium) and purely potential (at amplitude), but the total stays fixed.",
+  "whenToUse": "Finding maximum speed (v_max = A·ω = A√(k/m)), finding amplitude from total energy, or computing the speed at an arbitrary position via KE = E − ½kx².",
+  "whenNotTo": "E = ½kA² applies only to undamped oscillators. In a damped system, energy decreases exponentially; in a driven system, the source continually replenishes energy.",
+  "commonMistakes": "Using ½mv² for total energy without including the potential energy ½kx² — the sum E is constant only when both are included. Confusing A (amplitude) with x (instantaneous displacement). Forgetting to square the amplitude: E scales as A², not A."
+}

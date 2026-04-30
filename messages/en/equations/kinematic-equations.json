@@ -1,0 +1,7 @@
+{
+  "name": "1D Kinematic Equations (Constant Acceleration)",
+  "whatItSolves": "Three interrelated equations — v = v_0 + at, d = v_0·t + ½at², v² = v_0² + 2ad — collectively cover every constant-acceleration problem. Each equation omits one of the five quantities {v_0, v, a, t, d}, so you pick whichever one does not contain the unknown you are not given.",
+  "whenToUse": "Any straight-line motion with constant acceleration: free fall, braking, conveyor problems, incline problems (before accounting for variable friction).",
+  "whenNotTo": "Do not apply when acceleration changes with velocity or time — e.g., drag-dominated motion or rocket burn with varying thrust. For 2D motion, apply each equation independently per component.",
+  "commonMistakes": "Trying to use all three equations when one suffices. Forgetting that d is net displacement, not total distance, if the object reverses. Choosing the wrong equation and then solving for an unused variable."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Projectile Range",
+  "whatItSolves": "Gives the horizontal distance a projectile travels before returning to its launch height. Optimal range occurs at θ = 45°; complementary angles (e.g., 30° and 60°) give equal ranges.",
+  "whenToUse": "Level-ground projectile problems with no air resistance and constant g. The sin(2θ) form is compact but requires the angle to be measured from horizontal.",
+  "whenNotTo": "Invalid for uneven terrain (launch ≠ land height). Breaks down with air drag — real maximum-range angles are less than 45°. Do not use on inclined planes without re-deriving the formula.",
+  "commonMistakes": "Using sin θ instead of sin 2θ — a very common algebra slip. Not recognizing that sin 2θ = sin(180° − 2θ), which means two angles give the same range. Plugging in g = 10 when the problem specifies 9.8 m/s² or 9.81 m/s²."
+}

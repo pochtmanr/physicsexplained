@@ -1,0 +1,7 @@
+{
+  "name": "Coupled Pendulum Normal Modes",
+  "whatItSolves": "Gives the two normal-mode frequencies of two identical pendulums coupled by a weak spring: ω₁ = ω₀ (in-phase, spring unstretched) and ω₂ = √(ω₀² + ω_C²) (anti-phase, spring stretched). Beats arise at frequency (ω₂ − ω₁)/2.",
+  "whenToUse": "Two identical pendulums (or oscillators) linked by a coupling spring or shared element. The general motion is a superposition of the two normal modes with amplitudes set by initial conditions.",
+  "whenNotTo": "The simple two-mode formula applies only when both oscillators are identical. Non-identical oscillators have normal mode frequencies that depend on both natural frequencies and the coupling; the full eigenvalue problem must be solved.",
+  "commonMistakes": "Forgetting that normal modes are collective motions, not individual oscillator motions. Computing ω_C from the coupling spring stiffness k_C incorrectly — for pendulums, ω_C² = 2k_C/m. Describing beats as a third mode rather than as interference between the two normal modes."
+}

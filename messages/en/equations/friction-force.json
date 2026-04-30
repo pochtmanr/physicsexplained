@@ -1,0 +1,7 @@
+{
+  "name": "Friction Force",
+  "whatItSolves": "Gives the maximum static friction or the kinetic friction force on an object in contact with a surface. F_f = μN, where N is the normal force and μ is the relevant friction coefficient.",
+  "whenToUse": "Any problem involving surfaces in contact: blocks on floors or ramps, braking vehicles, objects being pushed or pulled. Use μ_s for the threshold of motion and μ_k once sliding begins.",
+  "whenNotTo": "The Coulomb friction model is an approximation. It fails for very high normal forces (cold welding), for lubricated or rolling contacts, and for very soft materials. It also does not apply to fluid drag.",
+  "commonMistakes": "Using μ_s (static) instead of μ_k (kinetic) after motion has started, or vice versa. Computing N as simply mg when the surface is inclined — on an incline N = mg·cos θ. Treating friction as always opposing motion when the object is stationary: static friction opposes the tendency, not necessarily actual motion."
+}

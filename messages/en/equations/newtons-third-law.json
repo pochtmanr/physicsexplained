@@ -1,0 +1,7 @@
+{
+  "name": "Newton's Third Law",
+  "whatItSolves": "States that every force has an equal and opposite reaction force on a different object. It is the reason rockets accelerate: thrust on the rocket equals the backward force on the exhaust gas.",
+  "whenToUse": "Whenever you need to identify reaction forces in a system: tension in a rope between two blocks, normal forces between contact surfaces, magnetic forces between two current-carrying wires.",
+  "whenNotTo": "Action-reaction pairs act on different objects — never use them to cancel forces on the same object. The law applies to contact forces and field forces in Newtonian mechanics; at the quantum level it re-emerges via momentum conservation.",
+  "commonMistakes": "Canceling action-reaction pairs within a single object's free-body diagram — they act on different objects and cannot cancel each other. Confusing Newton's third law with equilibrium (ΣF = 0): a book resting on a table is in equilibrium because the table's normal force and gravity are equal, not because they are a Newton's third law pair."
+}

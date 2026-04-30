@@ -1,0 +1,7 @@
+{
+  "name": "Quality Factor (Q)",
+  "whatItSolves": "Q = ω₀/γ characterizes how sharply an oscillator resonates. A high Q means narrow bandwidth, slow energy decay, and many cycles before the amplitude halves. A guitar string has Q ~ 1000; a car shock absorber has Q ~ 0.5.",
+  "whenToUse": "Comparing damping across oscillators, calculating bandwidth Δω = γ = ω₀/Q, or estimating how many oscillations occur before significant decay. Q also appears in the resonance amplitude formula: A_res = (F₀/m)/(γω₀).",
+  "whenNotTo": "Q is defined for underdamped oscillators. Critically and overdamped systems (Q < ½) do not resonate in the usual sense. The Q defined here (mechanical Q) differs from the electrical Q in circuits by a sign convention in some textbooks — verify the definition being used.",
+  "commonMistakes": "Inverting the formula to Q = γ/ω₀. Confusing bandwidth Δω = γ with half-bandwidth = γ/2. Using Q without checking whether the oscillator is actually underdamped — Q > ½ is required for oscillatory behavior."
+}

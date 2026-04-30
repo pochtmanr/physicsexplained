@@ -1,0 +1,7 @@
+{
+  "name": "Large-Angle Pendulum Period (Exact)",
+  "whatItSolves": "Gives the exact period of a simple pendulum at any amplitude via the complete elliptic integral of the first kind: T = 4·√(L/g)·K(sin(θ₀/2)). This reduces to the small-angle formula when θ₀ → 0.",
+  "whenToUse": "When amplitude is large (typically > 30°–40°) and precision matters. The elliptic integral is easily evaluated numerically using the AGM algorithm or its series expansion.",
+  "whenNotTo": "Overkill for small angles (θ₀ < 15°) where T = 2π√(L/g) is already accurate to 0.5%. Also assumes a simple (point-mass) pendulum; physical pendulums need the moment-of-inertia form.",
+  "commonMistakes": "Confusing the modulus k = sin(θ₀/2) with the amplitude θ₀ itself. Using K(θ₀/2) instead of K(sin(θ₀/2)). Forgetting the prefactor 4√(L/g) and writing 2π√(L/g)·K(k) instead."
+}

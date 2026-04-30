@@ -1,0 +1,7 @@
+{
+  "name": "Pendulum Angular Frequency",
+  "whatItSolves": "Gives the angular frequency ω = √(g/L) of a small-angle pendulum. Knowing ω, you can write x(t) = A·cos(ωt + φ) for the angle as a function of time.",
+  "whenToUse": "Whenever the problem asks for frequency or angular frequency rather than period. Directly sets the oscillation rate for a coupled-pendulum analysis.",
+  "whenNotTo": "Same restrictions as the small-angle period: amplitudes must be small (θ₀ ≲ 15°). Does not account for air resistance or pivot friction.",
+  "commonMistakes": "Swapping the formula to ω = √(L/g) — it is g over L, not L over g. Confusing ω (rad/s) with f (Hz); they are related by ω = 2πf. Using the bob mass in the formula — ω is independent of mass."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Complete Elliptic Integral of the First Kind",
+  "whatItSolves": "Defines K(k) = ∫₀^{π/2} dφ / √(1 − k²sin²φ), a definite integral that appears in the exact large-angle pendulum period and many other physics problems. Numerically, K(0) = π/2 and K grows as k → 1.",
+  "whenToUse": "Evaluating the exact pendulum period for large angles. K(k) is available in most scientific libraries (Python: scipy.special.ellipk; Mathematica: EllipticK). The AGM algorithm converges in ~10 iterations.",
+  "whenNotTo": "K diverges logarithmically as k → 1 (pendulum amplitude → 180°) — the pendulum takes infinite time to reach the inverted position. For small k, the series K(k) ≈ π/2·(1 + k²/4 + 9k⁴/64 + …) is simpler.",
+  "commonMistakes": "Passing k² to functions that expect k (or vice versa) — check each library's convention. Confusing K(k) (first kind) with E(k) (second kind). Evaluating the integral in degrees instead of the proper half-period 0 to π/2 in radians."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Projectile Time of Flight",
+  "whatItSolves": "Gives the total airborne time for a projectile launched from and landing on the same horizontal level. Knowing T unlocks the horizontal range and the timing of any in-flight event.",
+  "whenToUse": "Symmetric projectile trajectories — same launch and landing height, constant g, negligible air resistance.",
+  "whenNotTo": "Invalid when launch and landing heights differ; use the full position-time relation with y = 0 instead. Fails when air resistance is significant or when g varies (very high altitude).",
+  "commonMistakes": "Forgetting the factor of 2 — T = 2·v_0·sin θ / g, not v_0·sin θ / g (which is only the time to peak). Using g = 9.8 m/s² when the problem specifies a different value. Confusing θ with the complementary angle."
+}

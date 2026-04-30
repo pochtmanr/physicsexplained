@@ -1,0 +1,7 @@
+{
+  "name": "Pendulum Energy Conservation",
+  "whatItSolves": "Converts the potential energy at the top of the swing (mgh) into kinetic energy at the bottom (½mv²). Gives the maximum speed from the swing height, or vice versa, without needing to know the angle explicitly.",
+  "whenToUse": "Finding the speed at the bottom of a pendulum swing, or the height reached given a launch speed. Works for any conservative swing, not just small angles.",
+  "whenNotTo": "Assumes no energy losses — invalid if the problem mentions friction at the pivot or air resistance. Also does not give the instantaneous speed at intermediate points without knowing the height at that point.",
+  "commonMistakes": "Forgetting to compute h correctly: for a pendulum of length L at angle θ₀, h = L(1 − cos θ₀), not L·sin θ₀ or L·θ₀. Canceling the mass m and then not recognizing that the result is independent of mass. Using the full string length L instead of the height h."
+}

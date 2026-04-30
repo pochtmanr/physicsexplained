@@ -1,0 +1,7 @@
+{
+  "name": "Linear Drag Force (Stokes)",
+  "whatItSolves": "Gives the viscous drag force on a slowly moving sphere in a fluid (Stokes drag): F = bv, where b = 6πηr for a sphere. It applies in the low-Reynolds-number (creeping flow) regime.",
+  "whenToUse": "Small, slow objects in viscous fluids: pollen settling in water, microspheres in lab experiments, rain drops in air when very small. The drag coefficient b can be measured or derived from Stokes' formula.",
+  "whenNotTo": "Does not apply at high speeds or for large objects — use the quadratic drag law (F = ½ρC_d Av²) when Reynolds number Re ≫ 1. Also invalid for non-spherical geometries without a corrected drag coefficient.",
+  "commonMistakes": "Using the linear drag formula for fast-moving macroscopic objects (cars, skydivers) where drag is actually quadratic. Forgetting that b has units of kg/s, not the dimensionless coefficients used in the quadratic law. Omitting buoyancy when the fluid density is non-negligible compared to the object density."
+}

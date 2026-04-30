@@ -1,0 +1,7 @@
+{
+  "name": "Quadratic Drag Force (Newtonian)",
+  "whatItSolves": "Gives the aerodynamic drag on a body moving at moderate to high speeds: F = ½ρC_d Av². The drag grows with the square of speed, which is why doubling your speed requires four times the force to maintain constant velocity.",
+  "whenToUse": "High-Reynolds-number flows: cars, cyclists, skydivers, balls in air. C_d (drag coefficient) and A (cross-sectional area) are looked up or given; ρ is the fluid density.",
+  "whenNotTo": "Overestimates drag at very low speeds (Stokes regime, Re ≪ 1). C_d changes with angle of attack and Reynolds number, so the formula is not exact for objects with complex shapes. Compressible flow (near or above Mach 1) requires separate treatment.",
+  "commonMistakes": "Forgetting the ½ factor. Using the wrong area A — it is the frontal (cross-sectional) area, not the surface area. Mixing up C_d (dimensionless drag coefficient) with b (dimensional Stokes drag coefficient)."
+}

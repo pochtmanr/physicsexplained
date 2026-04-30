@@ -1,0 +1,7 @@
+{
+  "name": "Velocity–Time Relation",
+  "whatItSolves": "Gives the velocity of an object after it has been accelerating at a constant rate for a time t. Use it whenever you know initial velocity, constant acceleration, and elapsed time and need the final velocity.",
+  "whenToUse": "Applies to any object moving with constant (uniform) acceleration in a straight line. Works for deceleration too — just treat a as negative.",
+  "whenNotTo": "Invalid when acceleration varies with time or position. Does not apply to rotational motion without adapting to angular quantities.",
+  "commonMistakes": "Forgetting that v_0 is the velocity at the start of the interval, not necessarily zero. Using the wrong sign for a — deceleration must be entered as negative if v_0 is positive. Confusing elapsed time t with a clock reading when the motion started at some t > 0."
+}

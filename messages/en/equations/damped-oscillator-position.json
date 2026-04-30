@@ -1,0 +1,7 @@
+{
+  "name": "Damped Oscillator Position",
+  "whatItSolves": "Gives the position of an underdamped oscillator: x(t) = A₀·e^(−γt/2)·cos(ω_d·t + φ). The exponential envelope e^(−γt/2) causes amplitude to decay, while the cosine describes the oscillations at the damped frequency ω_d.",
+  "whenToUse": "Underdamped oscillators (γ < 2ω₀) — the system oscillates while losing energy. Examples: lightly damped pendulums, RLC circuits with low resistance, car suspensions.",
+  "whenNotTo": "Different forms apply to critically damped (γ = 2ω₀) and overdamped (γ > 2ω₀) cases, which do not oscillate. For forced oscillations, the steady-state solution has a different form driven by the forcing frequency.",
+  "commonMistakes": "Using ω₀ instead of ω_d in the cosine argument — damping lowers the oscillation frequency. Confusing γ (damping rate, s⁻¹) with b (damping coefficient, N·s/m); they are related by γ = b/m. Writing e^(−γt) instead of e^(−γt/2) for the amplitude decay."
+}

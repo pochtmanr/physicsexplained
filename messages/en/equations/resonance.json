@@ -1,0 +1,7 @@
+{
+  "name": "Resonance Condition",
+  "whatItSolves": "States that maximum steady-state amplitude occurs when the driving frequency ω_d is close to the natural frequency ω₀. At resonance the denominator of the amplitude formula is minimized and limited only by damping (γ).",
+  "whenToUse": "Identifying the driving frequency that produces maximum response in any linear oscillator. The exact resonance peak for amplitude is at ω_d = √(ω₀² − γ²/2), which approaches ω₀ for high-Q systems.",
+  "whenNotTo": "The simple ω_d = ω₀ rule is exact for velocity amplitude but only approximate for displacement amplitude. In highly damped systems (Q < ½), there is no resonance peak — the system is overdamped.",
+  "commonMistakes": "Assuming amplitude goes to infinity at resonance — damping always limits the peak: A_res = F₀/(mγω₀). Confusing resonance frequency (amplitude peak) with natural frequency ω₀ — they differ by a damping correction. Applying the resonance condition to the transient response rather than the steady state."
+}

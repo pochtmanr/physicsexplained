@@ -1,0 +1,7 @@
+{
+  "name": "Position–Time Relation",
+  "whatItSolves": "Gives the displacement of an object under constant acceleration after a time t. Use it when you need distance traveled and do not know — or want to avoid finding — the final velocity.",
+  "whenToUse": "Constant-acceleration rectilinear motion. Applies equally to vertical free-fall (a = g downward) and horizontal braking problems.",
+  "whenNotTo": "Breaks down when acceleration changes with time. Gives displacement, not total path length, so it can mislead if the object reverses direction.",
+  "commonMistakes": "Using total time T instead of the sub-interval time t. Forgetting the ½ factor, which doubles the answer. Substituting distance for displacement — if the object turns around, the equation still gives the net displacement, not the odometer reading."
+}

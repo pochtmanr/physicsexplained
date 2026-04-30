@@ -1,0 +1,7 @@
+{
+  "name": "Complementary Angles (Equal Range)",
+  "whatItSolves": "Shows that two launch angles that sum to 90° — for example 30° and 60° — produce identical horizontal range. The identity sin(2θ) = sin(π − 2θ) is the algebraic reason.",
+  "whenToUse": "Projectile range problems where the question asks for a second angle that achieves the same range, or to check that two given angles are range-equivalent.",
+  "whenNotTo": "Only valid for level ground (same launch and landing height) with no air resistance. With drag, the symmetry breaks and the two angles no longer give equal ranges.",
+  "commonMistakes": "Confusing complementary (sum = 90°) with supplementary (sum = 180°). Applying the identity to peak height — complementary angles do not give equal peak heights. Forgetting that the 45° angle is its own complement and gives maximum range."
+}

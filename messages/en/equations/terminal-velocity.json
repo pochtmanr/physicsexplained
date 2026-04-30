@@ -1,0 +1,7 @@
+{
+  "name": "Terminal Velocity",
+  "whatItSolves": "Gives the constant (maximum) falling speed reached when drag exactly balances gravity. For linear drag: v_t = mg/b; for quadratic drag: v_t = √(2mg/(ρC_d A)).",
+  "whenToUse": "Falling-object problems where you need the asymptotic speed or want to verify whether a given speed is close to terminal. Also sets the velocity scale for the transient decay toward terminal speed.",
+  "whenNotTo": "Terminal velocity is the long-time limit; do not use it for the instantaneous speed just after release. The formulas assume constant g and fluid density — invalid for very high altitudes or non-vertical falls where the drag direction changes.",
+  "commonMistakes": "Using the linear formula for macroscopic objects (skydivers) instead of the quadratic formula. Solving mg = bv² (linear b times v²) — units must be checked carefully. Forgetting that terminal velocity depends on mass, so two objects of different mass and the same size reach different terminal speeds."
+}

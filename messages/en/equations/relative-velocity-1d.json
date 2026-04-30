@@ -1,0 +1,7 @@
+{
+  "name": "Relative Velocity (1D, Head-On)",
+  "whatItSolves": "Gives the closing speed of two objects moving directly toward each other. The time to collision is then the initial gap divided by this combined speed.",
+  "whenToUse": "One-dimensional collisions or meetings where both objects approach each other. Also applies (with subtraction) when one object overtakes another moving in the same direction.",
+  "whenNotTo": "Does not apply to 2D encounters — use vector subtraction there. Fails at relativistic speeds, where velocities add by the Lorentz formula, not simple arithmetic.",
+  "commonMistakes": "Adding velocities for same-direction motion instead of subtracting. Forgetting to define a consistent positive direction before writing signs. Using ground-frame speeds when the problem asks for the speed of A relative to B's reference frame."
+}

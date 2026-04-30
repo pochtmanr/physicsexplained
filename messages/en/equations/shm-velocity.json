@@ -1,0 +1,7 @@
+{
+  "name": "SHM Velocity",
+  "whatItSolves": "Gives the velocity of a simple harmonic oscillator at any time t: v(t) = −Aω·sin(ωt + φ). It is the time derivative of x(t). Maximum speed Aω occurs at the equilibrium position.",
+  "whenToUse": "When you need instantaneous velocity at a given time, or the maximum speed (Aω) of the oscillation. Together with x(t), it fully describes the oscillator state.",
+  "whenNotTo": "Does not apply to damped or driven oscillators without modification. The sign convention (cosine for position, negative sine for velocity) is tied to the phase convention; verify consistency with your x(t) definition.",
+  "commonMistakes": "Forgetting the negative sign — the velocity leads position by 90° but with a negative coefficient. Dropping the ω factor, which is the conversion between displacement amplitude A and velocity amplitude Aω. Confusing the speed |v| = Aω at equilibrium with the velocity v, which can be negative."
+}

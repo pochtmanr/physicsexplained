@@ -1,0 +1,7 @@
+{
+  "name": "Velocity Decomposition",
+  "whatItSolves": "Splits a launch velocity into independent horizontal and vertical components. Once decomposed, horizontal and vertical motions can be analyzed separately using the 1D kinematic equations.",
+  "whenToUse": "Any projectile problem where the launch angle is given. Also applies to any 2D motion problem where a vector must be resolved into Cartesian components.",
+  "whenNotTo": "Not needed for purely horizontal or vertical launches (angle is 0° or 90°). In 3D problems you need a third component; in curved-surface problems, align axes with the surface normal, not horizontal/vertical.",
+  "commonMistakes": "Swapping sin and cos — v_x uses cos θ (adjacent/hypotenuse) and v_y uses sin θ (opposite/hypotenuse). Using degrees in the trig functions without converting to radians when required. Applying the same θ to both components without verifying the angle is measured from the horizontal."
+}

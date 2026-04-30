@@ -1,0 +1,7 @@
+{
+  "name": "Kinetic Friction",
+  "whatItSolves": "Gives the friction force on an already-sliding object. Once an object is in motion, kinetic friction F_k = μ_k·N is constant regardless of speed (within the Coulomb model).",
+  "whenToUse": "After an object has started sliding: braking vehicles, blocks pushed across floors, objects sliding down ramps. The kinetic coefficient μ_k is always less than or equal to the static coefficient μ_s.",
+  "whenNotTo": "Do not use μ_k if the object has not yet started moving — use static friction to check whether the applied force exceeds μ_s·N first. The model breaks down for rubberized surfaces, viscous contacts, and high-speed scenarios where frictional heating changes surface properties.",
+  "commonMistakes": "Forgetting that F_k is always directed opposite to the velocity vector, not opposite to the net applied force. Applying the flat-surface formula N = mg on an incline instead of N = mg·cos θ. Confusing μ_k with μ_s — using the static value after sliding has begun overestimates the friction."
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Damped Natural Frequency",
+  "whatItSolves": "Gives the actual oscillation frequency of an underdamped system: ω_d = √(ω₀² − γ²/4). Damping always lowers the oscillation frequency below the natural frequency ω₀.",
+  "whenToUse": "Writing x(t) for a damped oscillator, computing the period of damped oscillations, or determining whether a system is underdamped (γ² < 4ω₀²) or not.",
+  "whenNotTo": "If γ² ≥ 4ω₀², ω_d is imaginary — the system is critically or overdamped and does not oscillate. Do not use ω_d in the driven-oscillator formula where the driving frequency ω_d (same letter, different meaning) appears — notation varies by textbook.",
+  "commonMistakes": "Writing γ²/2 or γ² instead of γ²/4 under the square root. Confusing the damping parameter γ (in x″ + γx′ + ω₀²x = 0) with b/m — they may differ by a factor of 2 depending on the textbook's convention. Not checking whether ω_d is real before using it."
+}

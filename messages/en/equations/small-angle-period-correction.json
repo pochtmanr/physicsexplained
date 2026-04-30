@@ -1,0 +1,7 @@
+{
+  "name": "Small-Angle Period Correction Series",
+  "whatItSolves": "Extends the small-angle pendulum period to larger amplitudes by adding successive correction terms: T ≈ T₀·(1 + θ₀²/16 + 11θ₀⁴/3072 + …). Each term is positive, so the true period is always longer than the small-angle approximation.",
+  "whenToUse": "When the amplitude is moderate (15°–60°) and you need more accuracy than the simple formula but do not want to evaluate the full elliptic integral. Two terms give < 0.1% error for θ₀ < 60°.",
+  "whenNotTo": "The series diverges (actually converges slowly) for angles approaching 180°. For θ₀ > 70°, use the complete elliptic integral expression for better accuracy.",
+  "commonMistakes": "Using θ₀ in degrees instead of radians in the correction formula. Stopping at the first correction term and ignoring the second when the angle is above 30°. Applying the correction multiplicatively as a separate factor rather than multiplying the entire small-angle period by (1 + …)."
+}

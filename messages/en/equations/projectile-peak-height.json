@@ -1,0 +1,7 @@
+{
+  "name": "Projectile Peak Height",
+  "whatItSolves": "Gives the maximum height reached by a projectile above its launch point. At the peak, the vertical velocity component is zero; only v_x remains.",
+  "whenToUse": "Level-ground projectile launch with constant g and no drag. Also valid for off-level launches if H is measured from the launch height, not the ground.",
+  "whenNotTo": "Does not apply when the object is launched from an elevated platform and lands below — the geometric peak may still be the same, but measuring from a reference other than launch height requires care. Drag lowers the peak.",
+  "commonMistakes": "Using v_0 (total speed) instead of v_0·sin θ (vertical component). Forgetting to square the entire vertical component before dividing by 2g. Mixing up H (height above launch) with the height above ground when the launch is elevated."
+}

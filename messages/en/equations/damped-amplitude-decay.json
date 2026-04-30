@@ -1,0 +1,7 @@
+{
+  "name": "Damped Amplitude Decay",
+  "whatItSolves": "Gives the amplitude envelope of a damped oscillator as a function of time: A(t) = A₀·e^(−γt/2). The amplitude halves every t_{1/2} = 2·ln 2 / γ.",
+  "whenToUse": "Whenever you need the peak amplitude at a specific time, or the time at which the amplitude falls to a given fraction. Also used to find the energy decay E(t) = E₀·e^(−γt).",
+  "whenNotTo": "This is the underdamped envelope only. In the critically damped or overdamped regime, amplitude does not oscillate and the concept of a sinusoidal envelope does not apply.",
+  "commonMistakes": "Writing e^(−γt) for the amplitude instead of e^(−γt/2) — energy decays as e^(−γt) but amplitude decays more slowly as e^(−γt/2). Confusing the decay time constant τ = 2/γ (amplitude) with 1/γ (energy). Using the full damping constant b instead of γ = b/m."
+}

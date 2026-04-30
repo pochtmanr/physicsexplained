@@ -1,0 +1,7 @@
+{
+  "name": "Small-Angle Pendulum Period",
+  "whatItSolves": "Gives the oscillation period of a simple pendulum when the swing amplitude is small (θ₀ ≲ 15°). The remarkable result is that T depends only on length and g, not on mass or amplitude.",
+  "whenToUse": "Laboratory pendulums, grandfather clocks, small-angle limit problems. Accurate to within 0.5% for amplitudes below about 15°.",
+  "whenNotTo": "Breaks down for large amplitudes — at θ₀ = 30° the error is about 1.7%; at 90° it exceeds 18%. The formula also assumes a massless, inextensible string and a point mass; physical pendulums require the moment of inertia.",
+  "commonMistakes": "Confusing period T with frequency f or angular frequency ω. Taking L as the string length without adding the radius of the bob. Forgetting the square root — writing T = 2π·L/g instead of T = 2π·√(L/g)."
+}

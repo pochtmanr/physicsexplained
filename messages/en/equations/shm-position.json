@@ -1,0 +1,7 @@
+{
+  "name": "SHM Position",
+  "whatItSolves": "Gives the displacement of a simple harmonic oscillator at any time t: x(t) = A·cos(ωt + φ). The amplitude A and phase φ are determined from initial conditions x(0) and v(0).",
+  "whenToUse": "Any undamped oscillator once ω, A, and φ are known. Use x(0) = A·cos φ and v(0) = −Aω·sin φ to extract A and φ from given initial values.",
+  "whenNotTo": "Does not apply to damped oscillators — replace with x(t) = A·e^(−γt/2)·cos(ω_d·t + φ). Also invalid outside the linear (small-amplitude) regime.",
+  "commonMistakes": "Assuming φ = 0 when the oscillator starts at maximum displacement but with a non-zero velocity. Mixing radians and degrees in ωt + φ. Using f (Hz) instead of ω = 2πf in the argument of cosine."
+}

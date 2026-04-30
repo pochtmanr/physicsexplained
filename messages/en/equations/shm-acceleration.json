@@ -1,0 +1,7 @@
+{
+  "name": "SHM Acceleration",
+  "whatItSolves": "Gives the acceleration of a simple harmonic oscillator: a(t) = −Aω²·cos(ωt + φ) = −ω²·x(t). Acceleration is always directed toward equilibrium (opposite to displacement) and is proportional to the displacement.",
+  "whenToUse": "When the problem asks for instantaneous acceleration or the maximum acceleration Aω² at the turning points. The relation a = −ω²x is useful for identifying SHM in any physical system: if acceleration is proportional to displacement, it is SHM.",
+  "whenNotTo": "This form assumes undamped SHM. In a damped oscillator, the acceleration has an additional term proportional to velocity. Do not confuse this sinusoidal time-domain expression with the amplitude envelope.",
+  "commonMistakes": "Forgetting the ω² factor and writing a = −A·cos(…) instead of a = −Aω²·cos(…). Confusing maximum acceleration (at amplitude, x = A) with maximum velocity (at equilibrium, x = 0). Using ω instead of ω² when computing the maximum acceleration."
+}

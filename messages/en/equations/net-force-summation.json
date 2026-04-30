@@ -1,0 +1,7 @@
+{
+  "name": "Net Force Summation",
+  "whatItSolves": "States that the net force on an object equals the vector sum of all individual forces acting on it. This net force then determines the acceleration via Newton's second law.",
+  "whenToUse": "Every classical mechanics problem that involves more than one force. Begin by drawing a free-body diagram, then resolve all forces into components and sum each component axis separately.",
+  "whenNotTo": "The principle itself is always valid in an inertial frame. In non-inertial frames (accelerating elevators, rotating reference frames) you must add pseudo-forces. For systems of particles, apply it separately to each body.",
+  "commonMistakes": "Including internal forces between parts of the same object — only external forces appear in ΣF. Forgetting to decompose angled forces into components before summing. Treating friction or normal force as automatically equal to weight without checking the actual geometry."
+}

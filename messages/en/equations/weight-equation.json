@@ -1,0 +1,7 @@
+{
+  "name": "Weight Equation",
+  "whatItSolves": "Gives the gravitational force on a mass near Earth's surface. Weight is what a scale reads when the object is in free space (no acceleration); it equals mg where g ≈ 9.8 m/s².",
+  "whenToUse": "Any problem that requires the gravitational force on an object near a planet's surface. Weight appears as a force component in free-body diagrams for inclines, Atwood machines, elevators, and fluid problems.",
+  "whenNotTo": "g varies with altitude and planet; use the universal gravitation formula (F = GMm/r²) when height is not negligible compared to Earth's radius. Weight is not the same as apparent weight — in an accelerating frame, the normal force differs from mg.",
+  "commonMistakes": "Confusing mass (kg) with weight (N) — they are related but different quantities. Using g = 10 m/s² when the problem specifies 9.8 or 9.81. Forgetting that weight acts downward; sign errors on incline problems arise from not projecting mg along the correct axis."
+}
