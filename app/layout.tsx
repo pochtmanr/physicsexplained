@@ -5,6 +5,7 @@ import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { getLocale } from "next-intl/server";
 import { getDirection } from "@/i18n/config";
+import { SITE } from "@/lib/seo/config";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,8 +26,13 @@ const archiveGrotesk = localFont({
 });
 
 export const metadata = {
-  title: "physics",
-  description: "Visual-first physics explainers.",
+  metadataBase: new URL(SITE.baseUrl),
+  title: {
+    default: `${SITE.name} — visual physics explainers`,
+    template: `%s — ${SITE.name}`,
+  },
+  applicationName: SITE.name,
+  description: SITE.tagline,
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -34,6 +40,19 @@ export const metadata = {
       { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: "/apple-icon.png",
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE.name,
+    title: `${SITE.name} — visual physics explainers`,
+    description: SITE.tagline,
+    images: [{ url: SITE.defaultOgImage, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE.name,
+    description: SITE.tagline,
+    images: [SITE.defaultOgImage],
   },
 };
 
