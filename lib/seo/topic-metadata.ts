@@ -65,12 +65,15 @@ export function makeTopicMetadata(kind: ContentKind, slug: string) {
       }
     }
 
-    const ogImageUrl = `${localeUrl}/opengraph-image`;
+    // Next.js auto-discovers og:image from the colocated `opengraph-image.tsx`
+    // file in each segment and emits the (hash-suffixed) URL itself. Setting
+    // `openGraph.images` / `twitter.images` here would override that with an
+    // unhashed URL that 404s for static topic routes.
     const isProfile = kind === "physicist";
 
     const meta: Metadata = {
       metadataBase: new URL(SITE.baseUrl),
-      title,
+      title: { absolute: title },
       description,
       alternates: {
         canonical: canonicalUrl,
@@ -83,13 +86,11 @@ export function makeTopicMetadata(kind: ContentKind, slug: string) {
         locale: ogLocale(locale),
         title,
         description,
-        images: [{ url: ogImageUrl, width: 1200, height: 630 }],
       },
       twitter: {
         card: "summary_large_image",
         title,
         description,
-        images: [ogImageUrl],
       },
     };
 
@@ -117,11 +118,14 @@ export function makeBranchMetadata(branchSlug: string) {
     const enUrl = SITE.localizedUrl(path, defaultLocale);
     const title = buildTitle({ title: branch.title, meta: {} }, null);
     const description = branch.subtitle;
-    const ogImageUrl = `${localeUrl}/opengraph-image`;
 
+    // Branch index pages don't have a colocated opengraph-image.tsx — fall
+    // back to the site's default OG image (root layout's openGraph would
+    // otherwise be replaced wholesale by Next's metadata override semantics).
+    const fallbackImage = { url: SITE.defaultOgImage, width: 1200, height: 630 };
     return {
       metadataBase: new URL(SITE.baseUrl),
-      title,
+      title: { absolute: title },
       description,
       alternates: { canonical: locale === defaultLocale ? localeUrl : enUrl },
       openGraph: {
@@ -131,9 +135,9 @@ export function makeBranchMetadata(branchSlug: string) {
         locale: ogLocale(locale),
         title,
         description,
-        images: [{ url: ogImageUrl, width: 1200, height: 630 }],
+        images: [fallbackImage],
       },
-      twitter: { card: "summary_large_image", title, description, images: [ogImageUrl] },
+      twitter: { card: "summary_large_image", title, description, images: [SITE.defaultOgImage] },
     };
   };
 }

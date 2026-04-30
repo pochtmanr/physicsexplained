@@ -17,7 +17,7 @@ export interface ArticleParams {
   datePublished?: string;
   dateModified?: string;
   locale: string;
-  image: string;
+  image?: string;
   about?: string[];
 }
 

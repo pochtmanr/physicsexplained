@@ -26,7 +26,7 @@ describe("makeTopicMetadata", () => {
     const fn = makeTopicMetadata("topic", "classical-mechanics/the-simple-pendulum");
     const meta = await fn({ params: Promise.resolve({ locale: "en" }) });
 
-    expect(meta.title).toContain("The Simple Pendulum");
+    expect((meta.title as { absolute: string }).absolute).toContain("The Simple Pendulum");
     expect(meta.description).toBe("Why every clock ticked.");
     expect(meta.alternates?.canonical).toBe(
       "https://physics.it.com/classical-mechanics/the-simple-pendulum",

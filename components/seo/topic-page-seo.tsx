@@ -30,7 +30,11 @@ export async function TopicPageSeo({ kind, slug }: Props) {
   if (entry.localeFallback) return null; // do not emit JSON-LD for noindex pages
 
   const url = SITE.localizedUrl(pathFor(kind, slug), locale);
-  const ogImage = `${url}/opengraph-image`;
+  // Dynamic [slug] OG routes (glossary, physicist) serve at the unhashed path.
+  // Static topic routes get a Next-injected hash suffix we can't predict here,
+  // so we omit JSON-LD image for topics and rely on og:image (which Next
+  // auto-emits with the correct hash) for the social preview.
+  const ogImage = kind === "topic" ? undefined : `${url}/opengraph-image`;
   const description = extractDescription({
     subtitle: entry.subtitle,
     blocks: entry.blocks as never,
