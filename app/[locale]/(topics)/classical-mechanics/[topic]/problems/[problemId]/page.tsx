@@ -3,6 +3,10 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProblem, PROBLEMS } from "@/lib/content/problems";
 import { getProblemStringsForLocale } from "@/lib/problems/strings";
+import {
+  deriveProblemTitle,
+  deriveTopicTitle,
+} from "@/lib/content/problem-title";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
@@ -13,42 +17,14 @@ export const dynamic = "force-static";
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  return PROBLEMS
-    .filter((p) => p.primaryTopicSlug && p.solverPath.includes("/classical-mechanics/"))
-    .map((p) => ({ topic: p.primaryTopicSlug, problemId: p.id }));
+  return PROBLEMS.filter(
+    (p) =>
+      p.primaryTopicSlug && p.solverPath.includes("/classical-mechanics/"),
+  ).map((p) => ({ topic: p.primaryTopicSlug, problemId: p.id }));
 }
 
 interface PageProps {
   params: Promise<{ locale: string; topic: string; problemId: string }>;
-}
-
-const SMALL_WORDS = new Set(["a", "an", "and", "as", "at", "but", "by", "for", "from", "in", "of", "on", "or", "the", "to", "vs", "with"]);
-
-/**
- * Convert the unique tail of a problem id into a human-readable title.
- * `motion-in-a-straight-line-easy-distance-from-velocity-time`
- *   → topic = "motion-in-a-straight-line", difficulty = "easy"
- *   → tail  = "distance-from-velocity-time"
- *   → title = "Distance from Velocity-Time"
- */
-function deriveProblemTitle(problemId: string, topicSlug: string, difficulty: string): string {
-  const prefix = `${topicSlug}-${difficulty}-`;
-  const tail = problemId.startsWith(prefix) ? problemId.slice(prefix.length) : problemId;
-  return tail
-    .split("-")
-    .map((word, i) => {
-      if (i > 0 && SMALL_WORDS.has(word)) return word;
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ")
-    .replace(/\bVs\b/g, "vs");
-}
-
-function deriveTopicTitle(topicSlug: string): string {
-  return topicSlug
-    .split("-")
-    .map((w, i) => (i > 0 && SMALL_WORDS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
-    .join(" ");
 }
 
 export async function generateMetadata({ params }: PageProps) {
@@ -82,37 +58,46 @@ export default async function ProblemPage({ params }: PageProps) {
 
       {/* Problem statement renders as the page lead, not as a numbered section,
           so we don't duplicate the title content under a "The problem" header. */}
-      <p className="mt-6 mb-2 text-base leading-relaxed text-neutral-100 whitespace-pre-line">
+      <p className="mt-6 mb-8 text-base leading-relaxed text-[var(--color-fg-0)] whitespace-pre-line md:text-lg">
         {strings.statement}
       </p>
 
       <EquationRail locale={locale} equationSlugs={problem.equationSlugs} />
 
       <Section index={1} title="Step-by-step solution">
-        <p className="text-sm text-neutral-400 mb-4">
-          Work through one named subgoal at a time. Each step is checked deterministically against the canonical solver — no AI required to verify correctness. Get an AI explanation when you&apos;re stuck.
+        <p className="mb-6 text-sm text-[var(--color-fg-1)]">
+          Work through one named subgoal at a time. Each step is checked
+          deterministically against the canonical solver — no AI required to
+          verify correctness. Get an AI explanation when you&apos;re stuck.
         </p>
         <StepPad problem={problem} strings={strings} />
       </Section>
 
       <Section index={2} title="Try it with AI">
-        <p className="text-sm text-neutral-400 mb-3">
-          Continue the conversation with the Physics tutor — the problem context is pre-loaded.
+        <p className="mb-4 text-sm text-[var(--color-fg-1)]">
+          Continue the conversation with the Physics tutor — the problem
+          context is pre-loaded.
         </p>
         <Link
           href={`/${locale}/ask?seed=${encodeURIComponent(strings.statement)}&topic=${problem.primaryTopicSlug}`}
-          className="inline-block px-4 py-2 bg-cyan-600 hover:bg-cyan-500 rounded text-sm font-mono uppercase tracking-wider text-neutral-50"
+          className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
         >
           Open in Physics.Ask
+          <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+            →
+          </span>
         </Link>
       </Section>
 
-      <div className="mt-12 text-sm text-neutral-500">
+      <div className="mt-12 border-t border-[var(--color-fg-4)] pt-6 font-mono text-xs uppercase tracking-wider">
         <Link
           href={`/${locale}/classical-mechanics/${topic}`}
-          className="hover:text-cyan-400 underline-offset-2 hover:underline"
+          className="inline-flex items-center gap-2 text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
         >
-          ← Back to {topicTitle}
+          <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
+            ←
+          </span>
+          Back to {topicTitle}
         </Link>
       </div>
     </TopicPageLayout>

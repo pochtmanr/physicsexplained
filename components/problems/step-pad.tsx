@@ -135,12 +135,12 @@ export function StepPad({ problem, strings }: Props) {
         <details
           open={walkthroughOpen}
           onToggle={(e) => setWalkthroughOpen((e.target as HTMLDetailsElement).open)}
-          className="mt-6 border border-neutral-800 rounded-lg p-4 bg-neutral-950"
+          className="mt-6 border border-[var(--color-fg-4)] p-4"
         >
-          <summary className="cursor-pointer text-sm text-cyan-400 hover:text-cyan-300 select-none font-mono uppercase tracking-wider">
+          <summary className="cursor-pointer select-none font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] hover:text-[var(--color-cyan)]">
             Solution walkthrough
           </summary>
-          <div className="mt-3 text-sm text-neutral-200 leading-relaxed whitespace-pre-line">
+          <div className="mt-3 whitespace-pre-line text-sm leading-relaxed text-[var(--color-fg-1)]">
             {strings.walkthrough}
           </div>
         </details>

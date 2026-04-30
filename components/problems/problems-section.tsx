@@ -1,11 +1,21 @@
 import Link from "next/link";
 import { getProblemsForTopic } from "@/lib/content/problems";
-import { getProblemStringsForLocale } from "@/lib/problems/strings";
+import { deriveProblemTitle } from "@/lib/content/problem-title";
 
 const DIFFICULTY_LABEL: Record<string, string> = {
-  easy: "Easy", medium: "Medium", hard: "Hard", challenge: "Challenge", exam: "Exam-style",
+  easy: "Easy",
+  medium: "Medium",
+  hard: "Hard",
+  challenge: "Challenge",
+  exam: "Exam",
 };
-const DIFFICULTY_ORDER = ["easy", "medium", "hard", "challenge", "exam"] as const;
+const DIFFICULTY_ORDER = [
+  "easy",
+  "medium",
+  "hard",
+  "challenge",
+  "exam",
+] as const;
 
 interface Props {
   topicSlug: string;
@@ -13,36 +23,62 @@ interface Props {
   locale: string;
 }
 
-export async function ProblemsSection({ topicSlug, branchSlug, locale }: Props) {
+export async function ProblemsSection({
+  topicSlug,
+  branchSlug,
+  locale,
+}: Props) {
   const problems = [...getProblemsForTopic(topicSlug)].sort(
-    (a, b) => DIFFICULTY_ORDER.indexOf(a.difficulty) - DIFFICULTY_ORDER.indexOf(b.difficulty),
+    (a, b) =>
+      DIFFICULTY_ORDER.indexOf(a.difficulty) -
+      DIFFICULTY_ORDER.indexOf(b.difficulty),
   );
   if (problems.length === 0) return null;
 
-  const teasers = await Promise.all(problems.map(async (p) => {
-    const s = await getProblemStringsForLocale(p.id, locale);
-    return { problem: p, statement: s?.statement ?? p.id };
-  }));
-
   return (
     <section className="my-12">
-      <h2 className="text-xl uppercase tracking-wider text-neutral-400 mb-4">Problems</h2>
-      <div className="grid gap-3">
-        {teasers.map(({ problem, statement }) => (
-          <Link
-            key={problem.id}
-            href={`/${locale}/${branchSlug}/${problem.primaryTopicSlug}/problems/${problem.id}`}
-            className="block border border-neutral-800 hover:border-cyan-700 rounded-lg p-4 transition"
-          >
-            <div className="flex items-baseline gap-3 mb-1">
-              <span className="text-xs uppercase text-cyan-500">{DIFFICULTY_LABEL[problem.difficulty]}</span>
-              {problem.primaryTopicSlug !== topicSlug && (
-                <span className="text-xs text-neutral-500">cross-topic</span>
+      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
+        Problems
+      </div>
+      <h2 className="mt-2 mb-6 text-xl uppercase tracking-tight text-[var(--color-fg-0)] md:text-2xl">
+        Practice on this topic
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 [&>*]:-mt-px [&>*]:-ms-px">
+        {problems.map((problem) => {
+          const isCrossTopic = problem.primaryTopicSlug !== topicSlug;
+          const name = deriveProblemTitle(
+            problem.id,
+            problem.primaryTopicSlug,
+            problem.difficulty,
+          );
+          return (
+            <Link
+              key={problem.id}
+              href={`/${locale}/${branchSlug}/${problem.primaryTopicSlug}/problems/${problem.id}`}
+              className="group relative flex h-full flex-col gap-2 border border-[var(--color-fg-4)] p-3 transition-[border-color,box-shadow] duration-[240ms] ease-out hover:z-10 hover:border-[var(--color-cyan)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan)_28%,transparent)]"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="inline-block border border-[var(--color-cyan-dim)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-[var(--color-cyan-dim)]">
+                  {DIFFICULTY_LABEL[problem.difficulty]}
+                </span>
+                <span
+                  aria-hidden="true"
+                  className="text-base leading-none text-[var(--color-fg-3)] transition-all duration-[240ms] ease-out group-hover:-rotate-45 group-hover:text-[var(--color-cyan)] rtl:-scale-x-100 rtl:group-hover:rotate-45"
+                >
+                  →
+                </span>
+              </div>
+              <div className="text-sm leading-snug text-[var(--color-fg-0)] transition-colors group-hover:text-[var(--color-cyan)]">
+                {name}
+              </div>
+              {isCrossTopic && (
+                <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
+                  Cross-topic
+                </div>
               )}
-            </div>
-            <p className="text-sm text-neutral-200 line-clamp-2">{statement}</p>
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

@@ -37,26 +37,26 @@ export function StepRow({
   return (
     <div
       className={clsx(
-        "border rounded-lg p-4 mb-3 transition-colors",
-        status === "locked"   && "opacity-50 bg-neutral-950 border-neutral-900",
+        "border p-4 mb-3 transition-colors",
+        status === "locked"   && "opacity-50 border-[var(--color-fg-4)]",
         status === "correct"  && "border-emerald-700/60 bg-emerald-950/15",
         status === "wrong"    && "border-rose-700/60 bg-rose-950/10",
-        status === "active"   && "border-cyan-700/60",
-        status === "checking" && "border-cyan-700/60",
+        status === "active"   && "border-[var(--color-cyan)]",
+        status === "checking" && "border-[var(--color-cyan)]",
         status === "skipped"  && "border-amber-700/50 bg-amber-950/10",
       )}
     >
       <div className="flex items-baseline justify-between gap-3 mb-2">
         <div className="flex items-baseline gap-3">
-          <span className="text-xs uppercase tracking-wider text-neutral-500 font-mono">
+          <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
             Step {index + 1}
           </span>
-          <h3 className="text-sm text-neutral-100">{prompt}</h3>
+          <h3 className="text-sm text-[var(--color-fg-0)]">{prompt}</h3>
         </div>
         {isResolved && (
           <button
             onClick={onEdit}
-            className="text-xs text-cyan-500 hover:text-cyan-300 underline-offset-2 hover:underline"
+            className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] underline-offset-2 hover:text-[var(--color-cyan)] hover:underline"
           >
             Edit
           </button>
@@ -65,8 +65,8 @@ export function StepRow({
 
       {status === "correct" && (
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-emerald-400 text-sm">✓</span>
-          <code className="text-sm text-neutral-300 font-mono">
+          <span className="text-sm text-emerald-400">✓</span>
+          <code className="font-mono text-sm text-[var(--color-fg-1)]">
             {step.varName} = {studentExpr}
           </code>
         </div>
@@ -74,8 +74,10 @@ export function StepRow({
 
       {status === "skipped" && (
         <div className="flex items-center gap-2 mt-1">
-          <span className="text-amber-400 text-xs uppercase">revealed</span>
-          <code className="text-sm text-neutral-300 font-mono">
+          <span className="font-mono text-xs uppercase tracking-wider text-amber-400">
+            revealed
+          </span>
+          <code className="font-mono text-sm text-[var(--color-fg-1)]">
             {step.varName} = {step.canonicalExpr}
           </code>
         </div>
@@ -91,32 +93,34 @@ export function StepRow({
               onKeyDown={(e) => { if (e.key === "Enter") onSubmit(studentExpr); }}
               disabled={status === "checking"}
               placeholder={`Enter ${step.varName} ...`}
-              className="flex-1 min-w-[12rem] bg-neutral-950 border border-neutral-800 focus:border-cyan-700 outline-none rounded px-3 py-2 font-mono text-sm text-neutral-100 placeholder:text-neutral-600"
+              className="flex-1 min-w-[12rem] border border-[var(--color-fg-4)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-fg-0)] outline-none placeholder:text-[var(--color-fg-3)] focus:border-[var(--color-cyan)]"
             />
             <button
               onClick={() => onSubmit(studentExpr)}
               disabled={status === "checking" || !studentExpr.trim()}
-              className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed rounded text-sm text-neutral-50 font-mono uppercase tracking-wider"
+              className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {status === "checking" ? "Checking…" : "Check"}
             </button>
             <button
               onClick={onShowMe}
-              className="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 rounded text-sm text-neutral-300 font-mono uppercase tracking-wider"
+              className="inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan)]"
             >
               Show me
             </button>
           </div>
 
           {hint && (
-            <details className="mt-3 text-sm text-neutral-400">
-              <summary className="cursor-pointer hover:text-neutral-200 select-none">Hint</summary>
-              <p className="mt-1 pl-3 border-l border-neutral-800">{hint}</p>
+            <details className="mt-3 text-sm text-[var(--color-fg-1)]">
+              <summary className="cursor-pointer select-none hover:text-[var(--color-fg-0)]">
+                Hint
+              </summary>
+              <p className="mt-1 border-l border-[var(--color-fg-4)] pl-3">{hint}</p>
             </details>
           )}
 
           {status === "wrong" && diagnosis && !requiresAuthForDiagnosis && !quotaExhausted && (
-            <p className="mt-3 text-sm text-rose-300 leading-relaxed">{diagnosis}</p>
+            <p className="mt-3 text-sm leading-relaxed text-rose-300">{diagnosis}</p>
           )}
 
           {status === "wrong" && !diagnosis && !requiresAuthForDiagnosis && !quotaExhausted && (
@@ -126,11 +130,11 @@ export function StepRow({
           )}
 
           {requiresAuthForDiagnosis && (
-            <div className="mt-3 p-3 rounded border border-cyan-800/40 bg-cyan-950/15 text-sm text-neutral-200">
+            <div className="mt-3 border border-cyan-800/40 bg-cyan-950/15 p-3 text-sm text-[var(--color-fg-0)]">
               That answer didn&apos;t match.{" "}
               <Link
                 href={`/${locale}/sign-in?next=${encodeURIComponent(typeof window !== "undefined" ? window.location.pathname : "")}`}
-                className="text-cyan-400 hover:text-cyan-300 underline-offset-2 hover:underline"
+                className="text-[var(--color-cyan)] underline-offset-2 hover:underline"
               >
                 Sign in
               </Link>{" "}
@@ -139,11 +143,11 @@ export function StepRow({
           )}
 
           {quotaExhausted && (
-            <div className="mt-3 p-3 rounded border border-amber-800/40 bg-amber-950/15 text-sm text-neutral-200">
+            <div className="mt-3 border border-amber-800/40 bg-amber-950/15 p-3 text-sm text-[var(--color-fg-0)]">
               You&apos;ve used today&apos;s free AI feedback (5/day).{" "}
               <Link
                 href={`/${locale}/billing`}
-                className="text-cyan-400 hover:text-cyan-300 underline-offset-2 hover:underline"
+                className="text-[var(--color-cyan)] underline-offset-2 hover:underline"
               >
                 Upgrade
               </Link>{" "}

@@ -48,8 +48,8 @@ export default async function Page({
           Translation pending. Showing English.
         </p>
       ) : null}
-      <ContentBlocks blocks={entry.blocks} />
       <ProblemsSection topicSlug="motion-in-a-straight-line" branchSlug="classical-mechanics" locale={locale} />
+      <ContentBlocks blocks={entry.blocks} />
     </TopicPageLayout>
   );
 }
