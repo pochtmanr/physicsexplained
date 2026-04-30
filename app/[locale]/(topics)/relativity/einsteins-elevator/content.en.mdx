@@ -1,0 +1,98 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Roland Eötvös", href: "/physicists/roland-eotvos" },
+  { type: "term", label: "Equivalence principle", href: "/dictionary/equivalence-principle" },
+  { type: "term", label: "Weak equivalence principle", href: "/dictionary/weak-equivalence-principle" },
+  { type: "term", label: "Einstein equivalence principle", href: "/dictionary/einstein-equivalence-principle" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.26 · GENERAL RELATIVITY ON-RAMP §06"
+  title="EINSTEIN'S ELEVATOR"
+  subtitle="A free-falling lab is a frame where gravity has been canceled."
+/>
+
+<Section index={1} title="The happiest thought">
+
+In 1907, two years after the kinematics paper, <PhysicistLink slug="albert-einstein" /> sat at his desk in the Bern patent office turning a question over in his head: how should gravity be incorporated into the new relativity? The answer arrived as something closer to a daydream than a derivation. He later called it "the happiest thought of my life." A man falling freely from a roof, Einstein realised, would not feel his own weight. While he is falling — at least until he hits the ground — there is no gravitational field for him.
+
+That sentence was the seed of general relativity. The man on the roof has the same accelerometer reading as an astronaut drifting in deep space: zero. From inside a sealed cabin, he cannot tell the two situations apart. Gravity, the universal force everyone could feel, had a frame in which it simply vanished.
+
+The thought experiment generalises both ways. A freely-falling lab is locally indistinguishable from an inertial lab in deep space. And — by symmetry — a lab uniformly accelerating in deep space is locally indistinguishable from a stationary lab in a gravitational field. Together, these two statements are the <Term slug="equivalence-principle" />, and they are the foundation on which every prediction of general relativity will eventually rest.
+
+The equivalence principle does not need field equations. Gravitational redshift (§06.3), the bending of light, the GR clock-correction in §05.3 GPS — all of them are derivable, to leading order, from this one observation. <PhysicistLink slug="albert-einstein" /> spent the next eight years figuring out the geometry that makes it precise. We will follow him.
+
+</Section>
+
+<Section index={2} title="The free-fall equivalence">
+
+Imagine an elevator car with the cable cut. Inside, an apple, a ball, and a beaker of water all float — not because they are weightless in any absolute sense, but because the cab and everything in it accelerate downward at the same g. The cab's frame is, momentarily, an inertial frame. Newton's first law holds inside it. Drop a pencil and it stays put.
+
+<SceneCard caption="FIG.26a — left: an elevator cab in free fall under Earth's gravity. The cab and the three test objects inside all accelerate downward at g, so in the cab's frame everything floats. Right: a stationary cab in deep space (g = 0). Same scene from inside. From inside the cab, the two views are indistinguishable.">
+  <FreeFallingElevatorScene />
+</SceneCard>
+
+The bookkeeping is one line. If the lab is accelerating at $a_\text{lab}$ in the direction of the gravitational field $g_\text{field}$, the apparent gravity inside is
+
+<EquationBlock id="EQ.01">
+$$g_\text{apparent} = g_\text{field} - a_\text{lab}.$$
+</EquationBlock>
+
+For a freely falling cab, $a_\text{lab} = g_\text{field}$ exactly, so $g_\text{apparent} = 0$. The cancellation is *exact* because the gravitational and inertial masses are the same number — the experimental fact that <PhysicistLink slug="roland-eotvos" /> spent thirty years pinning down to one part in a billion (RT §06.1). Without that equality the cancellation would be approximate, and the elevator equivalence would dissolve. Because $m_g = m_i$, every body inside the cab — apple, beaker, the elevator itself, an atomic clock, an electron beam, a beam of light — accelerates with the same g, and the lab is a clean inertial frame.
+
+The strongest version of this statement is the <Term slug="einstein-equivalence-principle" />: not just mechanical experiments but *every* experiment, including those involving electromagnetism and the internal structure of atoms, gives the same result in a freely falling lab as in an inertial frame. Drop a hydrogen atom in the cab and its 21-cm line ticks at exactly the same frequency as it would in the inertial frame. The free-fall frame is fully inertial, not just kinematically inertial. That elevation from "objects fall the same" (the <Term slug="weak-equivalence-principle" />) to "all of physics is the same" is what lets the EP carry the full content of GR.
+
+</Section>
+
+<Section index={3} title="The reverse equivalence">
+
+Now run the argument backwards. Take a rocket in interstellar space, far from any gravitational field, and fire its engine to maintain a steady proper acceleration of g. Inside the cabin, the floor pushes against the astronauts' feet at exactly the rate Earth's surface pushes against ours. Drop an apple and it falls toward the floor at g. Stand on a bathroom scale and it reads your weight.
+
+<SceneCard caption="FIG.26b — left: a rocket in deep space firing its engine to accelerate at g. Inside, three test objects sit on the cabin floor, pressed there by the rocket's continuous acceleration. Right: a stationary lab on Earth's surface with the same three objects on the floor. From inside, the two situations are indistinguishable.">
+  <AcceleratingRocketScene />
+</SceneCard>
+
+This is the reverse half of the equivalence: an accelerating frame in flat spacetime *is* a gravitational field, locally. From inside, no experiment using mechanics, no experiment using optics, no experiment using anything else, can tell whether the floor is being pushed up by a rocket engine or held up by the rigidity of Earth's crust. The two situations are not "approximately similar" — they are the same physics.
+
+This statement deserves to be paused on. It says that what we have always called gravity is not a separate force at all, but a feature of the lab's acceleration relative to free-fall. Inertia and gravity are not two phenomena; they are the same phenomenon viewed from two frames. The next module formalises that geometry.
+
+</Section>
+
+<Section index={4} title="Tidal limits — the EP is local">
+
+The equivalence principle is exact only locally. Real gravity around a real planet is not a uniform field — it points toward the planet's centre, and its magnitude falls off with distance. Two test masses far apart in a real gravitational field experience slightly different g, and that difference is the *tide*. The elevator cancellation works inside a small cab; over an Earth-sized region, it visibly fails.
+
+<SceneCard caption="FIG.26c — two test masses A and B fall freely toward Earth's centre, separated by a variable distance Δr (slider control). The tidal acceleration |Δa| = 2 g Δr / R is shown in the HUD. At Δr = 1 m the tide is ≈ 3 μm/s² — the EP is excellent. At Δr = 1000 km, the tide is ≈ 3 m/s² — the EP has visibly broken down. The HUD verdict tracks the magnitude live.">
+  <TidalLimitScene />
+</SceneCard>
+
+For two masses separated by $\Delta r$ along the radial direction in a gravitational field $g(r)$, the leading-order relative acceleration is the gradient of g:
+
+<EquationBlock id="EQ.02">
+$$\frac{\Delta a}{\Delta r} = -\frac{2 G M}{r^3} = -\frac{2 g}{R}.$$
+</EquationBlock>
+
+For two test masses one metre apart at Earth's surface ($R = 6371$ km, $g = 9.81$ m/s²), the residual tide is about $3 \times 10^{-6}$ m/s² — utterly negligible for any everyday experiment. For two masses 1000 km apart, the tide is several m/s² — visible to the naked eye. The "elevator" of the equivalence principle is a small one. It must be small enough that the field looks uniform across it.
+
+This is why general relativity is local in a precise mathematical sense. The equivalence principle says spacetime is flat *in any small neighbourhood*; the tides say it cannot be flat globally. Reconciling those two facts is what curvature is.
+
+</Section>
+
+<Section index={5} title="What follows">
+
+Two consequences follow from the equivalence principle alone, without any new field equations. The first is gravitational redshift (§06.3): a photon climbing out of a gravity well loses energy, because the receiver's free-falling frame is the one in which energy is conserved. <PhysicistLink slug="albert-einstein" /> derived $\Delta\nu/\nu = gh/c^2$ in 1907 from this picture; <PhysicistLink slug="pound-rebka" /> measured it in a 22.5-metre tower at Harvard in 1960. The second is the bending of light: a photon crossing an accelerating cabin appears to curve, so by equivalence a photon crossing a gravitational field must curve too. Eddington's 1919 eclipse expedition confirmed it.
+
+A third consequence is more subtle and is the seed of the geometric reformulation: clocks at different heights in a gravitational field tick at different rates. From the elevator perspective, an observer at the cabin floor and an observer at the cabin ceiling are at different points along the same accelerating worldline, and those worldlines accumulate proper time at different rates — directly from RT §02.1 <Term slug="time-dilation" />. Equivalence then says the same effect must appear in a stationary lab in a real gravitational field. The atomic clock on your wrist runs at a different rate than one in orbit, and the difference is set entirely by the gravitational potential difference between them. That is the GR clock-correction that lets GPS work.
+
+The next topic cashes the first of those. The one after writes down the geometry that makes all three inevitable: gravity, it turns out, is not a force at all.
+
+</Section>
+
+</TopicPageLayout>
