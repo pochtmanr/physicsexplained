@@ -1,0 +1,43 @@
+{
+  "statement": "Two masses are connected by a light inextensible string over a massless, frictionless pulley (an Atwood machine). Mass m₁ = 4 kg hangs on the left and mass m₂ = 6 kg hangs on the right. Find the acceleration of the system and the tension in the string.",
+  "steps": {
+    "F_net_system": {
+      "prompt": "Find the net force driving the system into motion.",
+      "hint": "The heavier mass pulls down harder than the lighter one. The net driving force is the difference in their weights: (m₂ − m₁)g.",
+      "commonMistakes": [
+        "used the total weight (m₁ + m₂)g as the net force instead of the weight difference",
+        "forgot to multiply by g and used (m₂ − m₁) alone in newtons",
+        "subtracted in the wrong order and got a negative net force"
+      ]
+    },
+    "m_total": {
+      "prompt": "Find the total inertial mass the net force must accelerate.",
+      "hint": "Both masses are connected and accelerate together. The total inertia resisting acceleration is m₁ + m₂.",
+      "commonMistakes": [
+        "used only the heavier mass (m₂) as the total inertia",
+        "used the mass difference (m₂ − m₁) instead of the sum",
+        "forgot that both masses contribute inertia, even the one moving upward"
+      ]
+    },
+    "a": {
+      "prompt": "Find the acceleration of the system using Newton's second law.",
+      "hint": "Divide the net driving force by the total inertial mass.",
+      "commonMistakes": [
+        "used only m₂ in the denominator, giving a too-large acceleration",
+        "forgot to divide by total mass and reported F_net_system as the acceleration",
+        "used g alone as the acceleration, ignoring the constraint from the lighter mass"
+      ]
+    },
+    "T": {
+      "prompt": "Find the tension in the string by applying Newton's second law to m₁ alone.",
+      "hint": "For m₁ (lighter mass, accelerating upward): T − m₁g = m₁a, so T = m₁(g + a).",
+      "commonMistakes": [
+        "used T = m₁g (static case) and ignored the acceleration",
+        "subtracted the acceleration term instead of adding it: T = m₁(g − a)",
+        "used the total weight (m₁ + m₂)g as the tension"
+      ]
+    }
+  },
+  "finalAnswerProse": "The system accelerates at approximately 1.96 m/s² (m₂ downward, m₁ upward), and the string tension is approximately 47.1 N.",
+  "walkthrough": "An Atwood machine requires treating the two masses as a single system connected by a string. The string is inextensible, so both masses have the same magnitude of acceleration a — one moves up while the other moves down.\n\nThe net force driving the system comes from gravity acting on both masses, but acting in opposite directions because the string reverses the direction for one of them. The heavier side wins: F_net = (m₂ − m₁)g = (6 − 4) × 9.807 ≈ 19.61 N.\n\nBoth masses resist the acceleration, so the total inertia is m_total = m₁ + m₂ = 10 kg. Newton's second law for the system gives a = F_net / m_total = 19.61 / 10 ≈ 1.96 m/s².\n\nTo find the string tension, isolate m₁ (the rising mass). Two forces act on it: gravity m₁g downward, and tension T upward. Net force is upward at m₁a: T − m₁g = m₁a, so T = m₁(g + a) = 4 × (9.807 + 1.961) ≈ 47.1 N. Notice the tension is greater than m₁g (which would be 39.2 N) because it must accelerate the mass upward on top of supporting it against gravity. You can verify using m₂: m₂g − T = m₂a gives T = m₂(g − a) = 6 × (9.807 − 1.961) ≈ 47.1 N — identical, confirming the solution."
+}

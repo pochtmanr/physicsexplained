@@ -1,0 +1,34 @@
+{
+  "statement": "A 70 kg person stands on a bathroom scale inside an elevator. The elevator accelerates upward at 2.5 m/s². What does the scale read? (Find the person's true weight, the net force required for the acceleration, and the scale reading.)",
+  "steps": {
+    "W": {
+      "prompt": "Find the person's true gravitational weight.",
+      "hint": "Weight is the gravitational force on the person: W = mg.",
+      "commonMistakes": [
+        "confused weight with mass and reported 70 kg as the weight in newtons",
+        "used g = 10 m/s² instead of 9.807 m/s², giving W = 700 N",
+        "used the elevator acceleration instead of g when computing weight"
+      ]
+    },
+    "F_net": {
+      "prompt": "Find the net upward force needed to accelerate the person at 2.5 m/s².",
+      "hint": "Newton's second law: F_net = ma. Use the elevator's acceleration, not g.",
+      "commonMistakes": [
+        "used g instead of a_elevator when computing the net force",
+        "divided rather than multiplied mass by acceleration",
+        "confused net force with the total force and skipped adding weight in the next step"
+      ]
+    },
+    "N": {
+      "prompt": "Find the normal force the scale exerts on the person (the apparent weight).",
+      "hint": "The scale must support the person's weight and also provide the extra upward net force. N = W + F_net.",
+      "commonMistakes": [
+        "subtracted F_net from W instead of adding, giving a lower apparent weight",
+        "reported W alone as the scale reading, forgetting the additional net force",
+        "used the formula N = m(g − a) instead of N = m(g + a) for upward acceleration"
+      ]
+    }
+  },
+  "finalAnswerProse": "The scale reads approximately 861.5 N — about 12.4% more than the person's true weight of 686.5 N.",
+  "walkthrough": "The key insight is that the scale does not directly measure weight — it measures the normal force it must exert to keep the person in contact with its surface. When the elevator accelerates upward, the scale has to do two jobs at once: support the person against gravity, and provide the extra push upward to accelerate them.\n\nStep 1: The person's true weight is W = mg = 70 × 9.807 ≈ 686.5 N. This is the downward gravitational pull that never changes regardless of what the elevator does.\n\nStep 2: For the person to accelerate upward at 2.5 m/s², Newton's second law requires a net upward force of F_net = ma = 70 × 2.5 = 175 N.\n\nStep 3: Drawing a free-body diagram for the person, two forces act: gravity W downward, and normal force N upward. The net force is N − W = F_net (upward positive). Solving: N = W + F_net = 686.5 + 175 = 861.5 N.\n\nThe result makes intuitive sense: you feel heavier in a rising elevator, and you feel lighter when it brakes. If the elevator were in free fall (a = −g downward), the normal force would be zero and you would be weightless. The apparent weight is N = m(g + a), where a is positive upward."
+}

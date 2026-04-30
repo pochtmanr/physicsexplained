@@ -1,0 +1,61 @@
+{
+  "statement": "A 15 kg block is released from rest on a ramp inclined at 35° to the horizontal. The coefficient of kinetic friction between the block and the ramp is 0.20. Find the component of gravity along the incline, the normal force, the kinetic friction force, the net force, and the acceleration of the block down the ramp.",
+  "steps": {
+    "theta_rad": {
+      "prompt": "Convert the incline angle from degrees to radians.",
+      "hint": "Multiply the angle in degrees by π/180.",
+      "commonMistakes": [
+        "used the degree value directly in sin/cos without converting, causing wildly wrong trig values",
+        "multiplied by 180/π instead of π/180",
+        "forgot this step entirely and used 35 as a radian angle"
+      ]
+    },
+    "F_gravity_parallel": {
+      "prompt": "Find the component of gravity acting along (parallel to) the incline.",
+      "hint": "Gravity pulls straight down with magnitude mg. The component along the slope is mg sinθ.",
+      "commonMistakes": [
+        "used mg cosθ instead of mg sinθ for the along-slope component",
+        "used the full weight mg as the along-slope force without resolving it",
+        "forgot to multiply by m and used g sinθ alone in newtons"
+      ]
+    },
+    "F_normal": {
+      "prompt": "Find the normal force the ramp exerts on the block.",
+      "hint": "The normal force balances the component of gravity perpendicular to the ramp: N = mg cosθ.",
+      "commonMistakes": [
+        "used mg sinθ instead of mg cosθ for the normal force",
+        "used the full weight mg as the normal force, ignoring the angle",
+        "added the normal force and the along-slope component instead of recognising they are orthogonal"
+      ]
+    },
+    "F_friction": {
+      "prompt": "Find the kinetic friction force acting on the sliding block.",
+      "hint": "Kinetic friction = μk × N. It acts up the slope, opposing the downhill motion.",
+      "commonMistakes": [
+        "multiplied μk by mg instead of by the normal force N = mg cosθ",
+        "forgot that friction acts up the slope and added it to the driving force",
+        "used the static coefficient instead of the kinetic coefficient"
+      ]
+    },
+    "F_net": {
+      "prompt": "Find the net force along the incline.",
+      "hint": "Net force = driving force down the slope minus friction force up the slope.",
+      "commonMistakes": [
+        "added friction to the gravity component instead of subtracting it",
+        "used the full weight rather than the along-slope component as the driving force",
+        "subtracted F_gravity_parallel from F_friction, reversing the sign"
+      ]
+    },
+    "a": {
+      "prompt": "Find the acceleration of the block down the ramp.",
+      "hint": "Apply Newton's second law: a = F_net / m. Alternatively, a = g(sinθ − μk cosθ).",
+      "commonMistakes": [
+        "used a = g sinθ alone, forgetting to subtract the friction deceleration μk g cosθ",
+        "divided net force by g rather than by m",
+        "included the normal force in the net force calculation when computing a"
+      ]
+    }
+  },
+  "finalAnswerProse": "The block accelerates down the ramp at approximately 4.02 m/s².",
+  "walkthrough": "On an inclined surface, gravity must be resolved into two perpendicular components: one along the slope (the driving force) and one perpendicular to it (balanced by the normal force).\n\nConverting the angle: θ = 35° × (π/180) ≈ 0.6109 rad. The along-slope gravity component is F‖ = mg sinθ = 15 × 9.807 × sin(35°) ≈ 84.4 N. This is the force trying to slide the block downhill.\n\nThe perpendicular component determines the normal force: N = mg cosθ = 15 × 9.807 × cos(35°) ≈ 120.5 N. The ramp pushes back with exactly this magnitude — no perpendicular acceleration occurs.\n\nKinetic friction resists the sliding: F_f = μk × N = 0.20 × 120.5 ≈ 24.1 N, directed up the slope.\n\nNet force along the slope: F_net = 84.4 − 24.1 ≈ 60.3 N downhill. Newton's second law gives a = F_net / m = 60.3 / 15 ≈ 4.02 m/s². Equivalently: a = g(sinθ − μk cosθ) = 9.807(0.574 − 0.20 × 0.819) ≈ 4.02 m/s².\n\nNote that mass cancels in the final formula — two blocks of different mass but the same shape and μk would accelerate identically down this slope. The most common exam error is using mg (full weight) instead of mg cosθ as the normal force, which overstates friction and understates the acceleration."
+}

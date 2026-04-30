@@ -1,0 +1,43 @@
+{
+  "statement": "A 12 kg crate is pushed along a horizontal floor with a constant horizontal force of 80 N. The coefficient of kinetic friction between the crate and the floor is 0.35. Find the kinetic friction force, the net force, and the resulting acceleration.",
+  "steps": {
+    "F_normal": {
+      "prompt": "Find the normal force the floor exerts on the crate.",
+      "hint": "On a flat surface the normal force balances the crate's weight. Weight is mass times gravitational acceleration.",
+      "commonMistakes": [
+        "forgot to compute the normal force and used mass alone instead of mg",
+        "used the applied force (80 N) as the normal force",
+        "confused normal force with net force"
+      ]
+    },
+    "F_friction": {
+      "prompt": "Calculate the kinetic friction force opposing the crate's motion.",
+      "hint": "Kinetic friction equals the coefficient of kinetic friction multiplied by the normal force.",
+      "commonMistakes": [
+        "multiplied μk by the applied force rather than by the normal force",
+        "used the static friction coefficient instead of the kinetic one",
+        "forgot to multiply by the normal force and used μk alone as the friction force"
+      ]
+    },
+    "F_net": {
+      "prompt": "Find the net horizontal force on the crate.",
+      "hint": "The friction force opposes the applied force. Subtract friction from the applied force to get the net force.",
+      "commonMistakes": [
+        "added friction to the applied force instead of subtracting it",
+        "treated the applied force alone as the net force, ignoring friction",
+        "subtracted in the wrong direction and got a negative net force"
+      ]
+    },
+    "a": {
+      "prompt": "Apply Newton's second law to find the acceleration.",
+      "hint": "Divide the net force by the mass of the crate.",
+      "commonMistakes": [
+        "divided by the applied force (80 N) instead of the net force",
+        "divided mass by net force instead of net force by mass",
+        "forgot friction and used a = 80/12 ≈ 6.67 m/s²"
+      ]
+    }
+  },
+  "finalAnswerProse": "The crate accelerates at approximately 3.23 m/s² in the direction of the applied force.",
+  "walkthrough": "On a flat horizontal surface, the floor pushes up on the crate with a normal force equal in magnitude to the crate's weight. Weight = mg = 12 × 9.807 ≈ 117.68 N, so the normal force is also 117.68 N. This is a direct consequence of Newton's first law applied vertically: there is no vertical acceleration, so the vertical forces must balance.\n\nKinetic friction acts horizontally, opposing the direction of motion. Its magnitude is F_friction = μk × N = 0.35 × 117.68 ≈ 41.19 N. This force acts backward on the crate while the applied force acts forward.\n\nThe net horizontal force is the vector sum: F_net = 80 − 41.19 ≈ 38.81 N in the forward direction. Newton's second law then gives the acceleration: a = F_net / m = 38.81 / 12 ≈ 3.23 m/s².\n\nThe most common mistake is treating the applied force directly as the net force, which would give a = 80/12 ≈ 6.67 m/s² — nearly double the correct answer. Friction is real and takes nearly half the applied force away from accelerating the crate. Another error is using the applied force (80 N) as the normal force when computing friction, which would be wrong on a horizontal surface where the normal force comes from the weight."
+}

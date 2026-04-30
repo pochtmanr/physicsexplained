@@ -1,0 +1,16 @@
+{
+  "statement": "A 5 kg box sits on a frictionless surface. A single horizontal force of 30 N is applied to it. What is the acceleration of the box?",
+  "steps": {
+    "a": {
+      "prompt": "Apply Newton's second law to find the acceleration.",
+      "hint": "The net force equals the applied force because there is no friction. Divide net force by mass.",
+      "commonMistakes": [
+        "divided mass by force instead of force by mass",
+        "forgot to check whether friction was present before treating the applied force as the net force",
+        "confused weight (mg) with net force and used 49 N instead of 30 N"
+      ]
+    }
+  },
+  "finalAnswerProse": "The box accelerates at 6.00 m/s² in the direction of the applied force.",
+  "walkthrough": "Newton's second law states that the net force acting on an object equals its mass multiplied by its acceleration: F = ma. Here the surface is frictionless, so the only horizontal force is the applied 30 N push. There is no opposing friction to subtract. The net force is therefore exactly 30 N.\n\nRearranging the second law gives a = F/m. Substituting the known values: a = 30 N ÷ 5 kg = 6 m/s². The direction of the acceleration matches the direction of the force — the box speeds up in the direction it was pushed.\n\nThis is the purest expression of the second law: one force, one mass, one acceleration. The number 6 m/s² means that every second the box is gaining 6 metres per second of speed. In two seconds it would be moving at 12 m/s; in three seconds, 18 m/s — and so on, for as long as the force is applied.\n\nA common error is to confuse the box's weight (mg = 5 × 9.8 ≈ 49 N) with the applied force. Weight acts downward and is balanced by the normal force from the surface; it plays no role in the horizontal acceleration. Another trap is inverting the fraction and computing m/F = 5/30 ≈ 0.17, which gives units of kg/N — not m/s²."
+}
