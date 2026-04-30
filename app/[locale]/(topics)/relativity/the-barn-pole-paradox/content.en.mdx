@@ -1,0 +1,111 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BarnFrameScene } from "@/components/physics/the-barn-pole-paradox/barn-frame-scene";
+import { PoleFrameScene } from "@/components/physics/the-barn-pole-paradox/pole-frame-scene";
+import { NoParadoxScene } from "@/components/physics/the-barn-pole-paradox/no-paradox-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Length contraction", href: "/dictionary/length-contraction" },
+  { type: "term", label: "Relativity of simultaneity", href: "/dictionary/simultaneity-relative" },
+  { type: "term", label: "Barn-pole paradox", href: "/dictionary/barn-pole-paradox" },
+  { type: "term", label: "Lorentz transformation", href: "/dictionary/lorentz-transformation" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.21 · SR APPLICATIONS"
+  title="THE BARN-POLE PARADOX"
+  subtitle="Two observers, two answers, no contradiction."
+/>
+
+<Section index={1} title="The setup — a pole, a barn, and an athlete in a hurry">
+
+A pole-vaulter carries a pole 10 meters long. They sprint toward a barn 5 meters deep — open at both ends, with doors that can slam shut on cue — at $\beta = \sqrt{3}/2 \approx 0.866$, fast enough that the Lorentz factor is exactly $\gamma = 2$. The plan: while the pole is inside the barn, slam both doors at the same instant. Has the pole — twice as long as the barn at rest — somehow been trapped inside it?
+
+The barn's owner says yes. <Term slug="length-contraction" /> shrinks the moving pole by a factor of $\gamma$, so in the barn frame the pole is only 5 meters long. It fits exactly. Slam both doors at $t = 0$ and the pole is briefly fully enclosed.
+
+The athlete says no. From the pole's rest frame, it's the *barn* that's moving, and the barn that contracts — to 2.5 meters. A 10-meter pole cannot possibly fit inside a 2.5-meter barn. There is no instant at which the pole is enclosed.
+
+Both observers are competent. Both apply length contraction correctly. They reach incompatible conclusions about a yes-or-no question. This is the apparent contradiction that gave the scenario its name. <PhysicistLink slug="albert-einstein" />'s relativity is supposed to be self-consistent. So which observer is right?
+
+Both. The trick is that "fits inside the barn" is not the frame-independent statement it appears to be. It tacitly demands that the front of the pole be inside the front door *at the same instant* the rear of the pole is inside the rear door — and "at the same instant" is the operation that does not survive the boost. Once you draw the diagram, the contradiction evaporates.
+
+</Section>
+
+<Section index={2} title="The barn-frame story — both doors, one moment">
+
+In the barn rest frame, the pole's two ends are moving worldlines tilted at slope $1/\beta$ in a $(x, ct)$ diagram, separated horizontally by the contracted length
+
+<EquationBlock id="EQ.01">
+$$L_{\text{pole, barn frame}} = \frac{L_{\text{pole, rest}}}{\gamma}.$$
+</EquationBlock>
+
+At $\beta = \sqrt{3}/2$ this gives $L_{\text{pole, barn frame}} = 10/2 = 5$ meters — exactly the barn's length. The two doors are stationary worldlines at $x = 0$ (rear) and $x = L_{\text{barn}} = 5$ (front). Both close at $t = 0$.
+
+<SceneCard caption="FIG.21a — the barn-frame Minkowski diagram. Cyan vertical lines: the two barn doors at rest. Magenta tilted lines: the front and rear of the moving pole. Amber dots: the two door-closing events, both at t = 0 (same horizontal slice → simultaneous). Drag the β slider to vary the contraction; at β = √3/2 the contracted pole length matches the barn length exactly.">
+  <BarnFrameScene />
+</SceneCard>
+
+The two door-closing events are simultaneous in this frame — they share the same value of $t$. Between them, the pole's two ends sit at $x = 0$ and $x = 5$, perfectly bracketed by the doors. A 5-meter contracted pole inside a 5-meter barn, both doors shut, photographic evidence available on request.
+
+The barn observer's account is internally consistent and uses no controversial physics — just length contraction, applied to the moving object. The pole *did* fit. Briefly. With both doors closed at the same moment.
+
+If you stop here you have only half the story. The other observer is also using nothing more than length contraction, and they are about to disagree.
+
+</Section>
+
+<Section index={3} title="The pole-frame story — the doors close at different times">
+
+Boost the diagram into the pole's rest frame. The pole's worldlines straighten to vertical (the pole is at rest now); the barn's worldlines tilt (the barn moves at $-\beta$ in this frame). The pole's proper length is the full 10 meters; the barn, now the moving object, contracts to $L_{\text{barn}}/\gamma = 5/2 = 2.5$ meters.
+
+A 10-meter pole cannot fit inside a 2.5-meter barn. The pole observer sees this immediately. So what happens to the doors?
+
+The two door-closing events are still events — they happened, regardless of which frame you describe them from. But the Lorentz boost mixes time and space. Two events at the same $t$ but different $x$ in the barn frame are NOT at the same $t'$ in the pole frame. Apply the Lorentz transformation:
+
+<EquationBlock id="EQ.02">
+$$\Delta t' = \gamma\!\left(\Delta t - \frac{\beta\, \Delta x}{c}\right) = -\frac{\gamma \beta L_{\text{barn}}}{c}.$$
+</EquationBlock>
+
+With $\Delta t = 0$ and $\Delta x = L_{\text{barn}}$, the front-door event happens *before* the rear-door event in the pole frame, by $|\Delta t'| = \gamma \beta L_{\text{barn}}/c \approx 2.89 \times 10^{-8}$ seconds for a 5-meter barn at $\gamma = 2$.
+
+<SceneCard caption="FIG.21b — the same physics in the pole's rest frame. Magenta vertical lines: the pole at rest, all 10 meters of it. Cyan tilted lines: the moving barn, contracted to 2.5 m. Amber dots: the two door events — now at different t' values. The front door closes (and reopens) before the rear door closes; the pole is never fully enclosed at any single instant.">
+  <PoleFrameScene />
+</SceneCard>
+
+In the pole frame the sequence is: the front door slams shut while most of the pole is still outside the barn → the front door bounces back open just in time to let the pole's tip pass through → much later, after the pole's rear has crossed in, the rear door slams shut. At no single value of $t'$ are both doors closed with the pole inside. The pole is never trapped.
+
+</Section>
+
+<Section index={4} title="The resolution — simultaneity is the whole story">
+
+Both stories are correct. The events are the same events; the geometry is the same geometry; the disagreement is purely about which events count as "simultaneous." The barn observer's "the doors closed simultaneously" and the pole observer's "the front door closed before the rear door" are statements about different slicings of the same Minkowski spacetime.
+
+<SceneCard caption="FIG.21c — the side-by-side resolution. Left: barn-frame scrub through ct shows the pole sliding through, both doors slamming shut at ct = 0. Right: same physical events in the pole frame — the barn slides past, with the front-door event happening at t' < 0 and the rear-door event at t' = 0. Same physics, two simultaneity slices.">
+  <NoParadoxScene />
+</SceneCard>
+
+The <Term slug="simultaneity-relative" /> dissolves the apparent contradiction. The statement "the pole is fully inside the barn at this moment" requires picking a moment — a value of $t$ in some frame. Different frames slice spacetime differently. In the barn-frame slicing, there is a $t = 0$ slice on which both doors are closed and the pole is inside. In the pole-frame slicing, no single $t' = $ const slice contains both door-closings. The pole is enclosed in one slicing and never enclosed in the other; both slicings are valid; neither has priority.
+
+<Callout variant="intuition">
+The "paradox" was an assumption smuggled in for free: that "the doors are closed at the same time" is a frame-independent fact. It isn't. Once you accept that simultaneity is a slice — and that different observers slice differently — the two stories are not contradictory but complementary. Two observers, two simultaneity surfaces, two consistent accounts of identical events.
+</Callout>
+
+This is the same physics as RT §02.2 [length contraction](/relativity/length-contraction) and RT §01.5 [relative simultaneity](/relativity/relative-simultaneity) playing together. The contraction is real (each frame measures it directly); the simultaneity is real (each frame slices accordingly); the apparent paradox is the price of demanding both at once with a frame-independent "now."
+
+</Section>
+
+<Section index={5} title="A pattern — most SR paradoxes are this paradox">
+
+Special relativity's "paradoxes" almost all share this structure: an assumption of universal simultaneity gets quietly imported, and the resulting conclusion looks contradictory. Strip the assumption and the contradiction vanishes. The <Term slug="lorentz-transformation" /> mixing time and space is doing all the work.
+
+[Bell's spaceship paradox](/relativity/bells-spaceship-paradox), the next topic in §05, is the same trick in a different costume. Two rockets accelerating identically in the launch frame — does the string between them stretch? Two observers, two stories, one resolution. The pattern repeats: where the prose says "at the same time" without specifying *whose* time, a paradox is waiting.
+
+The barn-pole paradox is not a flaw in special relativity. It's a feature — a check on the reader. Once you internalize that simultaneity is a slice and not a fact, the SR landscape stops generating paradoxes and starts generating predictions. Every "paradox" in the SR canon dissolves the same way: identify the smuggled assumption of universal simultaneity, draw the spacetime diagram, watch the apparent contradiction become a perfectly consistent disagreement between two well-posed observers.
+
+</Section>
+
+</TopicPageLayout>

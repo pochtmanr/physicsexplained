@@ -1236,6 +1236,86 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   Anderson1932Scene: lazyScene(() =>
     import("@/components/physics/threshold-energy-and-pair-production/anderson-1932-scene").then((m) => ({ default: m.Anderson1932Scene })),
   ),
+  // RT §05 — the-barn-pole-paradox
+  BarnFrameScene: lazyScene(() =>
+    import("@/components/physics/the-barn-pole-paradox/barn-frame-scene").then((m) => ({ default: m.BarnFrameScene })),
+  ),
+  PoleFrameScene: lazyScene(() =>
+    import("@/components/physics/the-barn-pole-paradox/pole-frame-scene").then((m) => ({ default: m.PoleFrameScene })),
+  ),
+  NoParadoxScene: lazyScene(() =>
+    import("@/components/physics/the-barn-pole-paradox/no-paradox-scene").then((m) => ({ default: m.NoParadoxScene })),
+  ),
+  // RT §05 — bells-spaceship-paradox
+  BellTwoRocketsScene: lazyScene(() =>
+    import("@/components/physics/bells-spaceship-paradox/two-rockets-scene").then((m) => ({ default: m.BellTwoRocketsScene })),
+  ),
+  StringStretchesScene: lazyScene(() =>
+    import("@/components/physics/bells-spaceship-paradox/string-stretches-scene").then((m) => ({ default: m.StringStretchesScene })),
+  ),
+  BornRigidComparisonScene: lazyScene(() =>
+    import("@/components/physics/bells-spaceship-paradox/born-rigid-comparison-scene").then((m) => ({ default: m.BornRigidComparisonScene })),
+  ),
+  // RT §05 — gps-as-relativity
+  GpsOrbitScene: lazyScene(() =>
+    import("@/components/physics/gps-as-relativity/gps-orbit-scene").then((m) => ({ default: m.GpsOrbitScene })),
+  ),
+  TwoClocksComparisonScene: lazyScene(() =>
+    import("@/components/physics/gps-as-relativity/two-clocks-comparison-scene").then((m) => ({ default: m.TwoClocksComparisonScene })),
+  ),
+  UncorrectedDriftScene: lazyScene(() =>
+    import("@/components/physics/gps-as-relativity/uncorrected-drift-scene").then((m) => ({ default: m.UncorrectedDriftScene })),
+  ),
+  // RT §05 — precision-tests-of-sr
+  TimelineScene: lazyScene(() =>
+    import("@/components/physics/precision-tests-of-sr/timeline-scene").then((m) => ({ default: m.TimelineScene })),
+  ),
+  SmeBoundsScene: lazyScene(() =>
+    import("@/components/physics/precision-tests-of-sr/sme-bounds-scene").then((m) => ({ default: m.SmeBoundsScene })),
+  ),
+  WhyNotBrokenScene: lazyScene(() =>
+    import("@/components/physics/precision-tests-of-sr/why-not-broken-scene").then((m) => ({ default: m.WhyNotBrokenScene })),
+  ),
+  // RT §06 — inertial-vs-gravitational-mass
+  PisaTowerScene: lazyScene(() =>
+    import("@/components/physics/inertial-vs-gravitational-mass/pisa-tower-scene").then((m) => ({ default: m.PisaTowerScene })),
+  ),
+  EotvosBalanceScene: lazyScene(() =>
+    import("@/components/physics/inertial-vs-gravitational-mass/eotvos-balance-scene").then((m) => ({ default: m.EotvosBalanceScene })),
+  ),
+  PrecisionProgressionScene: lazyScene(() =>
+    import("@/components/physics/inertial-vs-gravitational-mass/precision-progression-scene").then((m) => ({ default: m.PrecisionProgressionScene })),
+  ),
+  // RT §06 — einsteins-elevator
+  FreeFallingElevatorScene: lazyScene(() =>
+    import("@/components/physics/einsteins-elevator/free-falling-elevator-scene").then((m) => ({ default: m.FreeFallingElevatorScene })),
+  ),
+  AcceleratingRocketScene: lazyScene(() =>
+    import("@/components/physics/einsteins-elevator/accelerating-rocket-scene").then((m) => ({ default: m.AcceleratingRocketScene })),
+  ),
+  TidalLimitScene: lazyScene(() =>
+    import("@/components/physics/einsteins-elevator/tidal-limit-scene").then((m) => ({ default: m.TidalLimitScene })),
+  ),
+  // RT §06 — gravitational-redshift
+  PoundRebkaTowerScene: lazyScene(() =>
+    import("@/components/physics/gravitational-redshift/pound-rebka-tower-scene").then((m) => ({ default: m.PoundRebkaTowerScene })),
+  ),
+  MossbauerResonanceScene: lazyScene(() =>
+    import("@/components/physics/gravitational-redshift/mossbauer-resonance-scene").then((m) => ({ default: m.MossbauerResonanceScene })),
+  ),
+  PredictedVsObservedScene: lazyScene(() =>
+    import("@/components/physics/gravitational-redshift/predicted-vs-observed-scene").then((m) => ({ default: m.PredictedVsObservedScene })),
+  ),
+  // RT §06 — gravity-as-geometry
+  CurvedTrajectoryScene: lazyScene(() =>
+    import("@/components/physics/gravity-as-geometry/curved-trajectory-scene").then((m) => ({ default: m.CurvedTrajectoryScene })),
+  ),
+  EmbeddedCurvatureScene: lazyScene(() =>
+    import("@/components/physics/gravity-as-geometry/embedded-curvature-scene").then((m) => ({ default: m.EmbeddedCurvatureScene })),
+  ),
+  HonestMomentScene: lazyScene(() =>
+    import("@/components/physics/gravity-as-geometry/honest-moment-scene").then((m) => ({ default: m.HonestMomentScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
