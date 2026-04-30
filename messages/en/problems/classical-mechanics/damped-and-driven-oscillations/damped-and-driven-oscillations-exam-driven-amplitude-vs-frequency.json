@@ -1,0 +1,80 @@
+{
+  "statement": "A mechanical oscillator has mass m = 2 kg, natural frequency ω₀ = 8 rad/s, and damping coefficient γ = 2 rad/s. It is driven by F(t) = 20 cos(ωd t) N. (a) Find Q and classify the damping regime. (b) Compute the steady-state amplitude at ωd = 2 rad/s, ωd = ω₀ (resonance), and ωd = 14 rad/s. (c) Compute the phase lag φ at each of the three driving frequencies. (d) Find the static amplitude A_static (ωd → 0 limit) and confirm that A_res / A_static ≈ Q.",
+  "steps": {
+    "Q": {
+      "prompt": "Compute the quality factor Q and state the damping regime.",
+      "hint": "Q = ω₀/γ. The regime is determined by comparing γ to 2ω₀: underdamped if γ < 2ω₀, critically damped if γ = 2ω₀, overdamped if γ > 2ω₀.",
+      "commonMistakes": [
+        "Misidentifying the regime by comparing Q to 1 instead of comparing γ to 2ω₀",
+        "Confusing underdamped (Q > 0.5) with high-Q — even Q = 1 is still underdamped"
+      ]
+    },
+    "F_per_m": {
+      "prompt": "Compute the specific driving force F₀/m.",
+      "hint": "The driven-amplitude formula has F₀/m in the numerator. Always divide by mass before substituting.",
+      "commonMistakes": [
+        "Using F₀ = 20 N directly — the result would be in N·s²/m rather than metres"
+      ]
+    },
+    "A_low": {
+      "prompt": "Evaluate the steady-state amplitude at ωd = 2 rad/s.",
+      "hint": "Use A(ωd) = (F₀/m) / √((ω₀² − ωd²)² + (γ ωd)²) with ωd = 2.",
+      "commonMistakes": [
+        "Writing the denominator term as (ω₀ − ωd)² instead of (ω₀² − ωd²)²"
+      ]
+    },
+    "A_res": {
+      "prompt": "Evaluate the steady-state amplitude at resonance ωd = ω₀.",
+      "hint": "At resonance the first term in the denominator vanishes: (ω₀² − ω₀²)² = 0. The amplitude becomes (F₀/m)/(γ ω₀).",
+      "commonMistakes": [
+        "Not simplifying at resonance and getting √(0 + (γ ω₀)²) = γ ω₀ — algebraically correct but students sometimes carry zero incorrectly"
+      ]
+    },
+    "A_high": {
+      "prompt": "Evaluate the steady-state amplitude at ωd = 14 rad/s.",
+      "hint": "At high driving frequencies ωd ≫ ω₀, the (ω₀² − ωd²)² term dominates and the amplitude falls off as 1/ωd².",
+      "commonMistakes": [
+        "Expecting the amplitude to be higher above resonance than below — it is lower for ωd > ω_res"
+      ]
+    },
+    "phi_low": {
+      "prompt": "Find the phase lag φ at ωd = 2 rad/s using φ = atan2(γ ωd, ω₀² − ωd²).",
+      "hint": "Below resonance (ωd < ω₀), the denominator ω₀² − ωd² is positive, so φ is in the first quadrant (0 to π/2). The displacement nearly keeps up with the force.",
+      "commonMistakes": [
+        "Using atan(γ ωd / (ω₀² − ωd²)) without checking the quadrant — atan can return the wrong sign above resonance",
+        "Confusing the phase of the displacement with the phase of the velocity"
+      ]
+    },
+    "phi_res": {
+      "prompt": "State the phase lag at exact resonance ωd = ω₀.",
+      "hint": "At resonance the denominator term ω₀² − ωd² = 0, so the phase is atan2(positive, 0) = π/2. The displacement lags the force by exactly 90°.",
+      "commonMistakes": [
+        "Reporting φ = 0 at resonance — that is true for the force relative to velocity, not relative to displacement"
+      ]
+    },
+    "phi_high": {
+      "prompt": "Compute the phase lag at ωd = 14 rad/s.",
+      "hint": "Above resonance ω₀² − ωd² < 0, placing the phase in the second quadrant (π/2 to π). At very high frequencies φ → π, meaning the displacement is nearly opposite to the driving force.",
+      "commonMistakes": [
+        "Using simple atan and getting a negative angle instead of the correct obtuse angle"
+      ]
+    },
+    "A_static": {
+      "prompt": "Find the static amplitude A_static, i.e. the response in the limit ωd → 0.",
+      "hint": "As ωd → 0, both terms in the denominator vanish except ω₀⁴, so A_static = (F₀/m)/ω₀². This is the static deflection under a constant force F₀.",
+      "commonMistakes": [
+        "Evaluating the formula numerically at ωd = 0 without simplifying — both denominator terms go to zero and may cause confusion"
+      ]
+    },
+    "Q_factor_ratio": {
+      "prompt": "Compute A_res / A_static and compare it to Q.",
+      "hint": "A_res / A_static = [(F₀/m)/(γ ω₀)] / [(F₀/m)/ω₀²] = ω₀/γ = Q. The resonant amplitude is exactly Q times the static amplitude.",
+      "commonMistakes": [
+        "Inverting the ratio and computing A_static / A_res",
+        "Expecting the ratio to equal Q only approximately — for this system (Q = ω₀/γ convention) it is exact"
+      ]
+    }
+  },
+  "finalAnswerProse": "With Q = ω₀/γ = 4, this is an underdamped oscillator. The resonant amplitude is exactly Q = 4 times the static amplitude, confirming the fundamental relationship between Q and resonance gain. The phase sweeps from near 0 at low frequencies through π/2 at resonance to near π at high frequencies.",
+  "walkthrough": "Q = 8/2 = 4, so the system is underdamped (γ = 2 < 2ω₀ = 16). The specific force is F₀/m = 20/2 = 10 m/s². At ωd = 2 rad/s: denominator = √((64−4)²+(2×2)²) = √(3600+16) = √3616 ≈ 60.13, so A_low ≈ 10/60.13 ≈ 0.166 m. At resonance: denominator = γ ω₀ = 2×8 = 16, so A_res = 10/16 = 0.625 m. At ωd = 14 rad/s: ω₀²−ωd² = 64−196 = −132, denominator = √(132²+(2×14)²) = √(17424+784) = √18208 ≈ 134.9, so A_high ≈ 10/134.9 ≈ 0.074 m. Phases: φ_low = atan2(2×2, 64−4) = atan2(4,60) ≈ 0.067 rad (≈ 3.8°); φ_res = π/2 (exactly); φ_high = atan2(2×14, 64−196) = atan2(28, −132) ≈ π − atan(28/132) ≈ π − 0.210 ≈ 2.93 rad (≈ 168°). Static amplitude: A_static = 10/64 ≈ 0.156 m. Ratio: 0.625/0.156 = 4.00 = Q exactly. This elegant result — that the resonance gain equals Q — is one of the most important facts in oscillator physics."
+}

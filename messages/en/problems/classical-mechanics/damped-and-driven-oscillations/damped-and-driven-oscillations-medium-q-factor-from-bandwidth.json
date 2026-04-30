@@ -1,0 +1,46 @@
+{
+  "statement": "A tuning fork vibrates at the musical note A₄ (440 Hz), modelled as an underdamped oscillator with natural angular frequency ω₀ = 2π × 440 rad/s and damping coefficient γ = 8.796 rad/s. (a) Compute the quality factor Q. (b) Find how many full oscillation cycles pass before the amplitude falls to 1/e of its initial value. (c) State the half-power bandwidth Δω of this resonator.",
+  "steps": {
+    "Q": {
+      "prompt": "Calculate the quality factor Q = ω₀ / γ.",
+      "hint": "Q is a dimensionless ratio comparing the oscillation frequency to the damping rate. A higher Q means the oscillator rings for longer.",
+      "commonMistakes": [
+        "Using Q = ω₀ / (2γ) — the factor of 2 appears in some textbook conventions but not in this one",
+        "Inverting the ratio and computing Q = γ / ω₀",
+        "Using the frequency in Hz (440) instead of the angular frequency in rad/s"
+      ]
+    },
+    "omega_d": {
+      "prompt": "Find the damped angular frequency ωd.",
+      "hint": "ωd = √(ω₀² − γ²/4). For high-Q oscillators ωd ≈ ω₀.",
+      "commonMistakes": [
+        "Omitting the ÷4 factor: using ω₀² − γ² instead of ω₀² − γ²/4"
+      ]
+    },
+    "t_e": {
+      "prompt": "Find the time t_e at which the amplitude first drops to A₀/e.",
+      "hint": "The amplitude envelope is A₀ e^(−γt/2). Set this equal to A₀/e and solve for t.",
+      "commonMistakes": [
+        "Solving e^(−γt) = 1/e instead of e^(−γt/2) = 1/e, giving t_e = 1/γ rather than 2/γ"
+      ]
+    },
+    "n_e": {
+      "prompt": "How many complete oscillation cycles occur in time t_e?",
+      "hint": "Divide t_e by the damped period T_d = 2π/ωd.",
+      "commonMistakes": [
+        "Dividing by the undamped period 2π/ω₀ instead of the damped period 2π/ωd",
+        "Forgetting to convert angular frequency to cycles (missing the 2π)"
+      ]
+    },
+    "delta_omega": {
+      "prompt": "State the half-power bandwidth Δω of this resonance peak.",
+      "hint": "For a driven damped oscillator the full-width at half-maximum (FWHM) of the power resonance curve equals γ. Equivalently, Δω = ω₀/Q.",
+      "commonMistakes": [
+        "Using Δω = 2γ — double-counting because some derivations define the half-width as γ/2",
+        "Confusing bandwidth in Hz (Δf = γ/2π) with bandwidth in rad/s (Δω = γ)"
+      ]
+    }
+  },
+  "finalAnswerProse": "The half-power bandwidth of the resonance is Δω = γ = 8.796 rad/s (≈ 1.4 Hz). The quality factor Q ≈ 314, and the amplitude falls to 1/e after approximately Q/π ≈ 100 cycles.",
+  "walkthrough": "The quality factor Q = ω₀/γ = 2π × 440 / 8.796 ≈ 314. This matches a good tuning fork — it rings for roughly a few seconds at 440 Hz. The amplitude envelope is A₀ e^(−γt/2). Setting e^(−γt_e/2) = e^(−1) gives t_e = 2/γ ≈ 0.227 s. In that time the fork completes n_e = t_e × f_d ≈ 0.227 × 440 ≈ 99.9 ≈ 100 cycles, in agreement with the rule of thumb Q/π. The half-power bandwidth of the resonance is Δω = γ = 8.796 rad/s; the resonance peak sits at ω₀ and falls to half its peak power at ω₀ ± γ/2. The two most common errors in Q calculations are using the wrong factor of 2 (writing Q = ω₀/(2γ)) and computing bandwidth in Hz without converting from rad/s. Remember: Δω in rad/s equals γ; the corresponding bandwidth in Hz is Δf = γ/(2π)."
+}

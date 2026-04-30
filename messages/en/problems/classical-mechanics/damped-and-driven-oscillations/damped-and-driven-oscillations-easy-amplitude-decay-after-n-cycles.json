@@ -1,0 +1,40 @@
+{
+  "statement": "An underdamped spring–mass system starts from rest at displacement A₀ = 0.20 m. The natural angular frequency is ω₀ = 5 rad/s and the damping coefficient is γ = 0.4 rad/s. What is the amplitude of oscillation after exactly 8 complete damped cycles?",
+  "steps": {
+    "omega_d": {
+      "prompt": "Find the damped angular frequency ωd of this system.",
+      "hint": "The damped frequency is lower than ω₀ because damping slows the oscillation. The discriminant is ω₀² − γ²/4.",
+      "commonMistakes": [
+        "Using ω₀² − γ² instead of ω₀² − γ²/4 for the discriminant",
+        "Forgetting to take the square root — leaving the discriminant as the frequency",
+        "Confusing the damping coefficient γ with the half-width γ/2"
+      ]
+    },
+    "T_d": {
+      "prompt": "Calculate the period T_d of one complete damped oscillation.",
+      "hint": "Period and angular frequency are related by T = 2π/ω.",
+      "commonMistakes": [
+        "Using T = 1/ω instead of T = 2π/ω",
+        "Using the undamped frequency ω₀ for the period instead of ωd"
+      ]
+    },
+    "t_n": {
+      "prompt": "How much total time elapses after n = 8 complete cycles?",
+      "hint": "Multiply the number of cycles by the period of one cycle.",
+      "commonMistakes": [
+        "Dividing n by T_d instead of multiplying"
+      ]
+    },
+    "A": {
+      "prompt": "Write an expression for the oscillation amplitude at time t_n using the exponential envelope.",
+      "hint": "The amplitude envelope of a damped oscillator decays as A₀ e^(−γt/2). The factor of 2 in the exponent is because the equation of motion uses γ as the full damping coefficient, not the half-coefficient.",
+      "commonMistakes": [
+        "Using exp(−γt) without the factor of ½ — overestimates the decay",
+        "Using the undamped period T = 2π/ω₀ for t_n instead of the damped period",
+        "Confusing A₀ (initial displacement) with x₀ (a general initial condition)"
+      ]
+    }
+  },
+  "finalAnswerProse": "After 8 complete damped cycles the amplitude of the oscillation is A₀ exp(−γ t_n / 2), evaluated at the total elapsed time t_n = 8 × T_d.",
+  "walkthrough": "When a spring is released from displacement A₀ = 0.20 m in a damped system, it does not oscillate at ω₀ — it oscillates at the slightly lower damped frequency ωd = √(ω₀² − γ²/4). Here, with ω₀ = 5 rad/s and γ = 0.4 rad/s, the discriminant is 25 − 0.04 = 24.96, so ωd ≈ 4.996 rad/s — barely changed from ω₀ because γ is small. The period T_d = 2π/ωd ≈ 1.257 s. After 8 full cycles, t = 8 T_d ≈ 10.056 s. The amplitude envelope at that time is A₀ e^(−γt/2) = 0.20 × e^(−0.4 × 10.056 / 2) ≈ 0.20 × e^(−2.011) ≈ 0.20 × 0.134 ≈ 0.027 m. The most common error is writing e^(−γt) without the ½: that would halve the exponent's time constant and make the decay appear four times faster. The ½ arises because the equation of motion is x″ + γx′ + ω₀²x = 0 — the velocity-proportional damping term carries γ, not 2γ, so the amplitude decays at rate γ/2."
+}

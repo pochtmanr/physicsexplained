@@ -1,0 +1,46 @@
+{
+  "statement": "A driven oscillator has mass m = 0.5 kg, natural frequency ω₀ = 10 rad/s, and quality factor Q = 8. It is driven by an external force F(t) = F₀ cos(ωd t) with amplitude F₀ = 4 N. (a) Find the steady-state amplitude at resonance (ωd = ω₀). (b) Find the steady-state amplitude when driven off-resonance at ωd = 6 rad/s. (c) Compute the ratio of the two amplitudes.",
+  "steps": {
+    "gamma": {
+      "prompt": "Recover the damping coefficient γ from Q and ω₀.",
+      "hint": "Q = ω₀/γ, so γ = ω₀/Q.",
+      "commonMistakes": [
+        "Inverting: using γ = Q/ω₀",
+        "Using Q = ω₀/(2γ) and getting γ = ω₀/(2Q)"
+      ]
+    },
+    "F_per_m": {
+      "prompt": "Compute the specific force F₀/m (force per unit mass).",
+      "hint": "The driven-amplitude formula has F₀/m in the numerator, not the bare force F₀. Divide by m first.",
+      "commonMistakes": [
+        "Using F₀ directly in the amplitude formula without dividing by m — produces a result with wrong units (N instead of m)",
+        "Forgetting that the denominator already accounts for mass through ω₀²"
+      ]
+    },
+    "A_res": {
+      "prompt": "Evaluate the steady-state amplitude at exact resonance ωd = ω₀.",
+      "hint": "At resonance ω₀² − ωd² = 0, so the denominator of the amplitude formula collapses to γ ωd = γ ω₀.",
+      "commonMistakes": [
+        "Leaving in the (ω₀² − ωd²)² term even at resonance — this is zero at ωd = ω₀ and should cancel",
+        "Forgetting the m in the numerator, inflating the amplitude by a factor of m"
+      ]
+    },
+    "A_off": {
+      "prompt": "Compute the steady-state amplitude at ωd = 6 rad/s using the full driven-amplitude formula.",
+      "hint": "Use A(ωd) = (F₀/m) / √((ω₀² − ωd²)² + (γ ωd)²) with all values substituted.",
+      "commonMistakes": [
+        "Writing the denominator as (ω₀ − ωd)² instead of (ω₀² − ωd²)²",
+        "Using 2γ instead of γ in the damping term — depends on the equation-of-motion convention used"
+      ]
+    },
+    "ratio": {
+      "prompt": "Divide the resonant amplitude by the off-resonance amplitude.",
+      "hint": "This ratio tells you how much stronger the response is at resonance compared to ωd = 6 rad/s.",
+      "commonMistakes": [
+        "Inverting the ratio (computing A_off / A_res) and reporting a number less than 1"
+      ]
+    }
+  },
+  "finalAnswerProse": "The resonant amplitude is A_res = (F₀/m)/(γ ω₀) = Q F₀/(m ω₀²). The amplitude at ωd = 6 rad/s is substantially smaller, and their ratio shows how sharply the resonance peak concentrates the response.",
+  "walkthrough": "Starting from Q = 8 and ω₀ = 10 rad/s, we recover γ = ω₀/Q = 10/8 = 1.25 rad/s. The specific force is F₀/m = 4/0.5 = 8 m/s². At resonance the denominator of the amplitude formula is √((0)² + (γ ω₀)²) = γ ω₀ = 1.25 × 10 = 12.5 (rad/s)², giving A_res = 8/12.5 = 0.64 m. At ωd = 6 rad/s, ω₀² − ωd² = 100 − 36 = 64 (rad/s)², and γ ωd = 1.25 × 6 = 7.5 (rad/s)². The denominator is √(64² + 7.5²) = √(4096 + 56.25) = √4152.25 ≈ 64.44 (rad/s)², giving A_off = 8/64.44 ≈ 0.124 m. The ratio A_res/A_off ≈ 5.15 — the oscillator responds five times more strongly at resonance. Note that for very low damping the resonant amplitude approaches Q × F₀/(m ω₀²), and indeed 8 × 8 / (0.5 × 100) = 1.28 m is approximately Q times the static displacement F₀/(k) = F₀/(m ω₀²) = 8/100 = 0.08 m, so the ratio is close to Q = 8 for very off-resonance comparisons."
+}

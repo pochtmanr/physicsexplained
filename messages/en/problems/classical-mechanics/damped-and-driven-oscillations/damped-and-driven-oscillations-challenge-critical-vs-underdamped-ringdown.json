@@ -1,0 +1,55 @@
+{
+  "statement": "A spring–mass system has spring constant k = 16 N/m and mass m = 1 kg, so ω₀ = 4 rad/s. It is released from x₀ = 0.25 m at rest. (a) For an underdamped system with γ = 1 rad/s, find the displacement at t = 2 s and estimate the fraction of initial energy remaining. (b) Identify the critical damping coefficient γ_crit. (c) For the critically-damped system, find the displacement at t = 2 s and the time t* at which the displacement first falls to 1% of x₀.",
+  "steps": {
+    "omega_0": {
+      "prompt": "Compute the natural angular frequency ω₀ from k and m.",
+      "hint": "ω₀ = √(k/m) for a spring–mass system.",
+      "commonMistakes": [
+        "Using ω₀ = k/m without the square root",
+        "Confusing spring constant k (N/m) with stiffness per unit mass k/m = ω₀²"
+      ]
+    },
+    "gamma_crit": {
+      "prompt": "Find the critical damping coefficient γ_crit.",
+      "hint": "Critical damping is the boundary between oscillatory and non-oscillatory return to equilibrium. It occurs when the discriminant ω₀² − γ²/4 = 0, i.e. γ = 2ω₀.",
+      "commonMistakes": [
+        "Writing γ_crit = ω₀ instead of 2ω₀ — missing the factor of 2",
+        "Confusing γ (damping in the equation of motion x″ + γx′ + ω₀²x = 0) with b in the force law F = −bv, where b = mγ"
+      ]
+    },
+    "x_under_2": {
+      "prompt": "For the underdamped system (γ = 1 rad/s), evaluate x(t = 2 s) using the full damped-free solution.",
+      "hint": "The solution is x(t) = x₀ e^(−γt/2) [cos(ωd t) + (γ/2ωd) sin(ωd t)] where ωd = √(ω₀² − γ²/4).",
+      "commonMistakes": [
+        "Using ω₀ in the cosine argument instead of the damped frequency ωd",
+        "Dropping the sin term — it is needed because the initial velocity is zero, not x₀"
+      ]
+    },
+    "energy_frac": {
+      "prompt": "Estimate the fraction of initial mechanical energy remaining at t = 2 s for the underdamped system.",
+      "hint": "Mechanical energy is proportional to amplitude². Use the exponential envelope A(t) = x₀ e^(−γt/2) to estimate the amplitude at t = 2 s, then energy fraction ≈ (A(t)/x₀)².",
+      "commonMistakes": [
+        "Squaring x(t) (instantaneous displacement) rather than the amplitude envelope — gives oscillating energy that dips to zero",
+        "Using the decay rate γ instead of γ/2 in the amplitude envelope"
+      ]
+    },
+    "x_crit_2": {
+      "prompt": "For the critically-damped system (γ = 8 rad/s), evaluate x(t = 2 s).",
+      "hint": "The critically-damped solution starting from x₀ with zero velocity is x(t) = x₀ e^(−γt/2)(1 + γt/2).",
+      "commonMistakes": [
+        "Using the underdamped formula for a critically-damped system — ωd = 0 and the cosine/sine approach breaks down",
+        "Forgetting the (1 + γt/2) polynomial factor, which prevents the solution from overshooting"
+      ]
+    },
+    "t_star": {
+      "prompt": "Find the time t* at which the critically-damped position first drops to 1% of x₀.",
+      "hint": "Solve e^(−γt/2)(1 + γt/2) = 0.01 numerically. The equation has no closed-form solution in elementary functions — bisection or Newton's method work well.",
+      "commonMistakes": [
+        "Ignoring the (1 + γt/2) factor and solving only e^(−γt/2) = 0.01 — significantly underestimates t*",
+        "Attempting to invert Lambert-W mentally and making arithmetic errors"
+      ]
+    }
+  },
+  "finalAnswerProse": "The critically-damped system returns to 1% of x₀ at time t* found by bisection on the full critically-damped solution. This time is finite and significantly shorter than the time the underdamped system spends ringing at comparable amplitude.",
+  "walkthrough": "With k = 16 N/m and m = 1 kg, ω₀ = 4 rad/s. Critical damping requires γ = 2ω₀ = 8 rad/s. For the underdamped system (γ = 1 rad/s), ωd = √(16 − 0.25) = √15.75 ≈ 3.969 rad/s. At t = 2 s: x ≈ 0.25 e^(−1) [cos(3.969 × 2) + (1/(2 × 3.969)) sin(3.969 × 2)] ≈ 0.25 × 0.368 × (cos 7.938 + 0.126 sin 7.938). The energy fraction is approximately (e^(−γt/2))² = e^(−γt) = e^(−2) ≈ 0.135, so about 13.5% of the initial energy remains. For the critically-damped system, x(2) = 0.25 × e^(−8) × (1 + 8) = 0.25 × 9 × e^(−8) ≈ 0.25 × 9 × 3.35 × 10^(−4) ≈ 7.5 × 10^(−4) m — already extremely close to zero. The bisection for t* where x = 0.01 × 0.25 = 0.0025 m converges to a time well under 1 s, confirming that critical damping achieves the fastest possible return without overshoot."
+}
