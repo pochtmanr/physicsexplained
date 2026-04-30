@@ -1,0 +1,41 @@
+{
+  "statement": "A projectile is launched from the origin at 40 m/s and 60° above horizontal. At t = 2 s after launch, find the horizontal velocity component, the vertical velocity component, the overall speed, and the angle the velocity vector makes with the horizontal.",
+  "steps": {
+    "vx": {
+      "prompt": "Find the horizontal component of velocity at t = 2 s.",
+      "hint": "There is no horizontal force, so the horizontal velocity never changes. It equals v₀·cos(θ) from launch to landing.",
+      "commonMistakes": [
+        "Thinking horizontal velocity decreases with time the way vertical velocity does",
+        "Including a g·t term in the horizontal equation"
+      ]
+    },
+    "vy_t": {
+      "prompt": "Find the vertical component of velocity at t = 2 s.",
+      "hint": "The vertical velocity starts at v₀·sin(θ) and decreases by g each second: vy(t) = v₀·sin(θ) - g·t.",
+      "commonMistakes": [
+        "Forgetting the minus sign — gravity subtracts from the vertical velocity",
+        "Using t_peak or the time of flight instead of the given t = 2 s",
+        "Writing vy = g·t instead of vy = v₀·sin(θ) - g·t (omitting the initial vertical velocity)"
+      ]
+    },
+    "speed_t": {
+      "prompt": "What is the overall speed of the projectile at t = 2 s?",
+      "hint": "Speed is the magnitude of the velocity vector: sqrt(vx² + vy_t²).",
+      "commonMistakes": [
+        "Adding vx and vy_t directly instead of using Pythagoras",
+        "Taking the square root before squaring each component"
+      ]
+    },
+    "angle_t": {
+      "prompt": "What angle does the velocity vector make with the horizontal at t = 2 s? (Give a signed angle in radians, positive above horizontal.)",
+      "hint": "Use atan2(vy_t, vx). Since the ball is still rising at t = 2 s (peak is at about 3.5 s), the angle is positive.",
+      "commonMistakes": [
+        "Using atan(vx / vy_t) — swapping the arguments gives the complement of the correct angle",
+        "Reporting the launch angle θ instead of evaluating atan at the current velocity components",
+        "Getting a negative angle and concluding the ball has already passed its peak when it has not"
+      ]
+    }
+  },
+  "finalAnswerProse": "At t = 2 s the projectile is moving at approximately 36.1 m/s, still angled 33.7° above horizontal.",
+  "walkthrough": "A 60° launch at 40 m/s breaks into vₓ = 40·cos(60°) = 20 m/s horizontally and vy₀ = 40·sin(60°) ≈ 34.64 m/s vertically.\n\nThe horizontal component is locked at 20 m/s — no force acts sideways. The vertical component loses g ≈ 9.807 m/s per second: at t = 2 s, vy = 34.64 - 9.807·2 ≈ 15.03 m/s. It is still positive, meaning the ball is still climbing. (The peak, where vy = 0, arrives at t_peak = 34.64/9.807 ≈ 3.53 s.)\n\nSpeed = sqrt(20² + 15.03²) = sqrt(400 + 225.9) ≈ 25.01... wait — let us recalculate cleanly. 20² = 400, 15.03² ≈ 225.9, sum ≈ 625.9, sqrt ≈ 25.02 m/s... Actually for v₀=40, cos60°=0.5, sin60°≈0.8660: vₓ=20, vy₀≈34.64, vy(2)=34.64-19.61≈15.03, speed=sqrt(400+225.9)≈25.01 m/s. The angle is atan(15.03/20) ≈ 0.645 rad ≈ 36.9°.\n\nKey insight: speed at any moment is less than the launch speed only because vy has decreased, not because energy has been lost to air (air is off). At the peak, the speed drops to its minimum — exactly vₓ = 20 m/s — and then rises again as the ball picks up downward velocity during the descent."
+}

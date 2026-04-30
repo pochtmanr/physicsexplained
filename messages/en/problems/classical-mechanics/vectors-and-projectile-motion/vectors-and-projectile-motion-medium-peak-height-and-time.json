@@ -1,0 +1,33 @@
+{
+  "statement": "A ball is launched at 35 m/s and 50° above horizontal from flat ground. Find the vertical component of the launch velocity, the time it takes to reach maximum height, and the peak height above the ground.",
+  "steps": {
+    "vy": {
+      "prompt": "Find the vertical component of the initial velocity.",
+      "hint": "Decompose the velocity vector: the vertical piece is v₀ times sin(θ).",
+      "commonMistakes": [
+        "Swapping sin and cos — cos gives the horizontal component, sin gives the vertical",
+        "Working in degrees and omitting the conversion to radians"
+      ]
+    },
+    "t_peak": {
+      "prompt": "How long does it take to reach the highest point?",
+      "hint": "At the peak the vertical velocity is zero. Solve 0 = vy - g·t for t: the time to peak is vy / g.",
+      "commonMistakes": [
+        "Using the full time of flight T instead of T/2 = vy/g",
+        "Dividing g by vy instead of vy by g",
+        "Forgetting that the horizontal velocity plays no role in finding the peak time"
+      ]
+    },
+    "H": {
+      "prompt": "What is the maximum height reached?",
+      "hint": "Use H = vy² / (2g), which comes from the kinematic equation v² = v₀² - 2g·y with final v = 0.",
+      "commonMistakes": [
+        "Writing H = vy / (2g) — forgetting to square vy",
+        "Using the total speed v₀ instead of only the vertical component vy",
+        "Dividing by 2g² instead of 2g"
+      ]
+    }
+  },
+  "finalAnswerProse": "The ball reaches a peak height of 36.5 m above the ground, arriving there 2.73 s after launch.",
+  "walkthrough": "Decompose the launch: the vertical component is vy = 35·sin(50°) ≈ 26.81 m/s. This is the only component that gravity can alter — the horizontal part is untouched.\n\nGravity decelerates the ball vertically at g ≈ 9.807 m/s². The vertical velocity starts at 26.81 m/s and drops by 9.807 m/s every second, reaching zero at t_peak = 26.81 / 9.807 ≈ 2.73 s. That is the moment the ball is at its highest point.\n\nPeak height uses the kinematic identity: since the ball starts at vy and arrives at 0 over time t_peak, the average vertical velocity is vy/2, so H = (vy/2)·t_peak = vy²/(2g) ≈ 26.81²/19.614 ≈ 36.5 m.\n\nThe horizontal motion is irrelevant for the peak height calculation — a steeper angle with the same speed gives a higher peak (more of v₀ goes into vy), while a shallower angle keeps the ball lower but carries it further before landing. At 50°, you are tilted toward height over range, which is apparent from the 36.5 m rise versus the total range of about 122 m."
+}

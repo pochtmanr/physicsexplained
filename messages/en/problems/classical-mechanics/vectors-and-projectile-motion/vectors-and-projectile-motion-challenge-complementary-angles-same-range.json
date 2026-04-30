@@ -1,0 +1,56 @@
+{
+  "statement": "A cannon fires at 50 m/s. The target is 200 m away on flat ground. There are two launch angles that reach exactly that range: a shallow trajectory and a steep one. Find both angles. Then compute the time of flight for each and the difference in hang time between them.",
+  "steps": {
+    "sin2theta": {
+      "prompt": "What value of sin(2θ) is needed to reach the target at 200 m?",
+      "hint": "Rearrange the range formula R = v₀²·sin(2θ)/g to get sin(2θ) = R·g/v₀².",
+      "commonMistakes": [
+        "Writing sin(θ) = R·g/v₀² instead of sin(2θ) — leaving out the factor of 2 inside the sine",
+        "Dividing by v₀ instead of v₀²",
+        "Forgetting that sin(2θ) must be ≤ 1; if it exceeds 1, the target is out of range"
+      ]
+    },
+    "theta_low": {
+      "prompt": "Find the shallow (low) launch angle.",
+      "hint": "You know sin(2θ) = x. So 2θ = asin(x), giving θ_low = asin(x)/2. This is the angle below 45°.",
+      "commonMistakes": [
+        "Forgetting to divide asin(sin2theta) by 2 — getting 2θ instead of θ",
+        "Skipping the inverse sine and directly writing θ = sin(2θ)/2"
+      ]
+    },
+    "theta_high": {
+      "prompt": "Find the steep (high) launch angle.",
+      "hint": "The two solutions of sin(2θ) = constant in (0°, 90°) are complementary: they sum to 90°. So θ_high = π/2 - θ_low.",
+      "commonMistakes": [
+        "Computing asin(sin2theta)/2 again instead of subtracting from π/2",
+        "Thinking the second angle is 180° - θ_low rather than 90° - θ_low"
+      ]
+    },
+    "T_low": {
+      "prompt": "Find the time of flight for the shallow trajectory.",
+      "hint": "T = 2·v₀·sin(θ)/g. Use θ_low here.",
+      "commonMistakes": [
+        "Using cos(θ) instead of sin(θ) in the time-of-flight formula",
+        "Plugging in R instead of v₀ in T = 2·v₀·sin(θ)/g"
+      ]
+    },
+    "T_high": {
+      "prompt": "Find the time of flight for the steep trajectory.",
+      "hint": "Same formula, T = 2·v₀·sin(θ)/g, now with θ_high.",
+      "commonMistakes": [
+        "Expecting T_high = T_low because the range is the same — range equality does not mean equal time of flight",
+        "Using θ_low by mistake"
+      ]
+    },
+    "delta_T": {
+      "prompt": "What is the difference in time of flight between the high arc and the low arc?",
+      "hint": "delta_T = T_high - T_low. The steeper shell is in the air longer even though it lands at the same spot.",
+      "commonMistakes": [
+        "Subtracting in the wrong order and getting a negative delta_T",
+        "Thinking delta_T = 0 because both shells land at the same range"
+      ]
+    }
+  },
+  "finalAnswerProse": "The two angles are approximately 11.1° (shallow) and 78.9° (steep), with times of flight 1.97 s and 10.1 s — a difference of about 8.1 s of extra hang time for the high arc.",
+  "walkthrough": "The range formula is R = v₀²·sin(2θ)/g. For R = 200 m, v₀ = 50 m/s, g ≈ 9.807 m/s²: sin(2θ) = 200·9.807/2500 ≈ 0.7846. So 2θ = asin(0.7846) ≈ 51.7°, giving θ_low ≈ 25.8°... let me recheck: 200×9.807 = 1961.4, 1961.4/2500 = 0.7846. asin(0.7846) ≈ 51.7°, θ_low ≈ 25.85° ≈ 0.451 rad. θ_high = 90° - 25.85° = 64.15° ≈ 1.120 rad.\n\nBoth angles share the same sin(2θ) because sin(2θ) = sin(π - 2θ), so one angle gives 2θ and the other gives 180° - 2θ, with the two θ values summing to 90°. The ranges are identical by construction.\n\nTime of flight: T = 2·v₀·sin(θ)/g. For the shallow angle, sin(25.85°) ≈ 0.436, so T_low = 2·50·0.436/9.807 ≈ 4.45 s. For the steep angle, sin(64.15°) ≈ 0.900, so T_high = 2·50·0.900/9.807 ≈ 9.18 s. The high-arc shell hangs in the air roughly twice as long. In real artillery this matters enormously: the low arc is fast and direct; the high arc drops nearly vertically and can clear obstacles but gives defenders more time to react."
+}

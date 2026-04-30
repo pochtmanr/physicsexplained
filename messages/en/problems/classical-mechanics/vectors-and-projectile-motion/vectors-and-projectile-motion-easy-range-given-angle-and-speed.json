@@ -1,0 +1,42 @@
+{
+  "statement": "A soccer ball is kicked from flat ground at 20 m/s and 30° above horizontal. Find the horizontal and vertical components of the launch velocity, the total time the ball spends in the air, and the horizontal range — the distance from kick to landing.",
+  "steps": {
+    "vx": {
+      "prompt": "What is the horizontal component of the launch velocity?",
+      "hint": "The horizontal component is the projection of the velocity vector onto the x-axis: v₀ times the cosine of the angle.",
+      "commonMistakes": [
+        "Using sin instead of cos for the horizontal component",
+        "Using the angle in degrees instead of radians in the trig function",
+        "Forgetting to multiply by v₀ and writing just cos(θ)"
+      ]
+    },
+    "vy": {
+      "prompt": "What is the vertical component of the launch velocity?",
+      "hint": "The vertical component is the projection onto the y-axis: v₀ times the sine of the angle.",
+      "commonMistakes": [
+        "Using cos instead of sin for the vertical component",
+        "Confusing which component stays constant during flight (it is the horizontal one)"
+      ]
+    },
+    "t_flight": {
+      "prompt": "How long is the ball in the air?",
+      "hint": "Set y(t) = 0 and solve. The non-zero solution is T = 2 · v₀ · sin(θ) / g.",
+      "commonMistakes": [
+        "Using T = v₀ / g instead of T = 2·v₀·sin(θ) / g",
+        "Forgetting the factor of 2 that comes from the ball rising and then falling",
+        "Dividing by g² instead of g"
+      ]
+    },
+    "R": {
+      "prompt": "What is the horizontal range — distance from launch to landing?",
+      "hint": "Range = horizontal velocity × time of flight = v₀²·sin(2θ) / g. Remember sin(2θ) = 2·sin(θ)·cos(θ).",
+      "commonMistakes": [
+        "Writing v₀·sin(2θ)/g instead of v₀²·sin(2θ)/g (forgetting to square v₀)",
+        "Using sin(θ) instead of sin(2θ) in the range formula",
+        "Multiplying by the full time T when only half of it applies to the horizontal trip — this error disappears once you use the compact formula, but surfaces if the student tries R = vₓ · T manually and makes an arithmetic slip"
+      ]
+    }
+  },
+  "finalAnswerProse": "The ball lands 35.3 m from the kick point after spending 2.04 s in the air.",
+  "walkthrough": "Start by splitting the initial velocity into components. The horizontal component vₓ = 20·cos(30°) ≈ 17.32 m/s stays constant for the entire flight because no horizontal force acts (air is off). The vertical component vy = 20·sin(30°) = 10 m/s decreases under gravity at a rate of g ≈ 9.807 m/s² per second.\n\nThe ball is in the air until it returns to the same height it left. Setting y(t) = 0 gives two solutions: t = 0 (launch) and t = T = 2·vy/g = 2·10/9.807 ≈ 2.04 s. That is the time of flight.\n\nRange is horizontal velocity times time of flight: R = vₓ · T = 17.32 · 2.04 ≈ 35.3 m. Equivalently, the compact form R = v₀²·sin(2θ)/g = 400·sin(60°)/9.807 ≈ 35.3 m. Both routes give the same answer — use whichever you find more memorable.\n\nNote: 30° is not the optimum. Maximum range occurs at 45°, where sin(2θ) = sin(90°) = 1. Any angle between 0° and 90° gives a shorter range. Complementary angles — 30° and 60° — give exactly the same range, just via different trajectories."
+}

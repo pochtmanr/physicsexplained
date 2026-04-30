@@ -1,0 +1,62 @@
+{
+  "statement": "A projectile is launched from the origin at 45 m/s and 37° above horizontal. Find the total time of flight, the position (x, y) of the projectile at exactly half the flight time, the vertical velocity at that moment, and the speed at that moment. Explain what is physically special about the mid-flight instant.",
+  "steps": {
+    "vx": {
+      "prompt": "Find the horizontal component of the initial velocity.",
+      "hint": "vₓ = v₀·cos(θ). It stays constant for the whole flight.",
+      "commonMistakes": [
+        "Using sin instead of cos for the horizontal component",
+        "Recalculating vₓ at t_mid instead of recognising it is constant"
+      ]
+    },
+    "vy0": {
+      "prompt": "Find the vertical component of the initial velocity.",
+      "hint": "vy₀ = v₀·sin(θ).",
+      "commonMistakes": [
+        "Using cos instead of sin"
+      ]
+    },
+    "T": {
+      "prompt": "Find the total time of flight.",
+      "hint": "T = 2·v₀·sin(θ)/g — the time for the projectile to rise and return to launch height.",
+      "commonMistakes": [
+        "Writing T = v₀/g instead of T = 2·v₀·sin(θ)/g",
+        "Using the full speed v₀ without the sin(θ) factor"
+      ]
+    },
+    "x_mid": {
+      "prompt": "Find the x-coordinate of the projectile at t = T/2.",
+      "hint": "x = vₓ · t. At t = T/2 this is x_mid = vₓ · T/2.",
+      "commonMistakes": [
+        "Substituting T instead of T/2",
+        "Adding a ½g·t² term to the horizontal equation (gravity has no horizontal component)"
+      ]
+    },
+    "y_mid": {
+      "prompt": "Find the y-coordinate of the projectile at t = T/2.",
+      "hint": "y(t) = vy₀·t - ½·g·t². Substitute t = T/2. You will find this equals the peak height H.",
+      "commonMistakes": [
+        "Omitting the ½·g·t² term and getting y = vy₀·(T/2) instead of the correct parabolic value",
+        "Using T instead of T/2 for t (the ball is back at y=0 at t=T, not at its peak)"
+      ]
+    },
+    "vy_mid": {
+      "prompt": "What is the vertical velocity at t = T/2?",
+      "hint": "vy(t) = vy₀ - g·t. At t = T/2 = vy₀/g, you get vy(T/2) = vy₀ - g·(vy₀/g) = 0.",
+      "commonMistakes": [
+        "Expecting a non-zero vertical velocity at mid-flight without realising mid-flight IS the peak",
+        "Confusing mid-range (the horizontal midpoint) with mid-flight (the temporal midpoint, which is the peak)"
+      ]
+    },
+    "speed_mid": {
+      "prompt": "What is the speed of the projectile at t = T/2?",
+      "hint": "speed = sqrt(vₓ² + vy_mid²). Since vy_mid = 0 at the peak, speed_mid = vₓ.",
+      "commonMistakes": [
+        "Including vy_mid in the calculation even after finding it equals zero",
+        "Reporting the launch speed v₀ instead of the mid-flight speed vₓ"
+      ]
+    }
+  },
+  "finalAnswerProse": "At mid-flight (t ≈ 2.79 s), the projectile is at x ≈ 100.5 m, y ≈ 37.6 m above the ground, moving purely horizontally at 35.9 m/s — the peak of its arc.",
+  "walkthrough": "Decompose the launch: vₓ = 45·cos(37°) ≈ 35.93 m/s, vy₀ = 45·sin(37°) ≈ 27.08 m/s. The total time of flight is T = 2·vy₀/g = 2·27.08/9.807 ≈ 5.52 s.\n\nAt t_mid = T/2 ≈ 2.76 s the horizontal position is x_mid = vₓ·t_mid ≈ 35.93·2.76 ≈ 99.2 m. The vertical position is y_mid = vy₀·t_mid - ½·g·t_mid² ≈ 27.08·2.76 - ½·9.807·2.76² ≈ 74.74 - 37.36 ≈ 37.4 m.\n\nThe vertical velocity at this moment is vy(t_mid) = vy₀ - g·t_mid = 27.08 - 9.807·2.76 ≈ 0. It is exactly zero — the ball has reached its peak. This is not a coincidence: the ball rises for exactly half the flight time and falls for the other half, by the symmetry of the parabola.\n\nAt the peak the velocity is entirely horizontal: speed_mid = vₓ ≈ 35.93 m/s. This is also the minimum speed during the flight — the ball is moving slowest at the top. After the peak, vy rebuilds in the downward direction, so the speed increases again until landing.\n\nThe y-coordinate at mid-flight equals the peak height: H = vy₀²/(2g) ≈ 27.08²/19.614 ≈ 37.4 m, confirming that mid-flight in time and maximum height are the same event."
+}
