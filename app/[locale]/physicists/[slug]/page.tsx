@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
@@ -11,6 +10,8 @@ import { ArticleLayout } from "@/components/layout/article-layout";
 import { AsideLinks } from "@/components/layout/aside-links";
 import type { AsideLink } from "@/components/layout/aside-links";
 import type { MajorWork, TopicRef } from "@/lib/content/types";
+import { makeTopicMetadata } from "@/lib/seo/topic-metadata";
+import { TopicPageSeo } from "@/components/seo/topic-page-seo";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -22,14 +23,9 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
-}): Promise<Metadata> {
-  const { locale, slug } = await params;
-  const entry = await getContentEntry("physicist", slug, locale);
-  if (!entry) return {};
-  return {
-    title: `${entry.title} — physics`,
-    description: entry.subtitle ?? undefined,
-  };
+}) {
+  const { slug } = await params;
+  return makeTopicMetadata("physicist", slug)({ params });
 }
 
 export default async function PhysicistPage({
@@ -95,6 +91,7 @@ export default async function PhysicistPage({
 
   return (
     <ArticleLayout aside={asideLinks.length > 0 ? <AsideLinks links={asideLinks} /> : undefined}>
+      <TopicPageSeo kind="physicist" slug={slug} />
       <TopicHeader
         eyebrow={`§ ${t("eyebrowSingular")} · ${born}–${died} · ${localizedNationality.toUpperCase()}`}
         title={entry.title}
