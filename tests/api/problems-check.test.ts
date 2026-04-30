@@ -74,10 +74,28 @@ describe("POST /api/problems/[id]/check", () => {
     });
   });
 
-  it("rejects unauthenticated requests", async () => {
+  it("anonymous correct: returns verify.ok=true, no attempt logged", async () => {
     mockGetUser.mockResolvedValue(null);
     const res = await POST(makeReq({ stepId: "vx", studentExpr: "v_0 * cos(theta)", locale: "en" }), { params: Promise.resolve({ id: "p1" }) });
-    expect(res.status).toBe(401);
+    const body = await res.json();
+    expect(res.status).toBe(200);
+    expect(body.verify.ok).toBe(true);
+    expect(body.diagnosis).toBeUndefined();
+    expect(body.requiresAuthForDiagnosis).toBeUndefined();
+    expect(mockInsertAttempt).not.toHaveBeenCalled();
+    expect(mockDiagnose).not.toHaveBeenCalled();
+  });
+
+  it("anonymous wrong: returns verify.ok=false + requiresAuthForDiagnosis flag, no diagnosis, no attempt", async () => {
+    mockGetUser.mockResolvedValue(null);
+    const res = await POST(makeReq({ stepId: "vx", studentExpr: "v_0 * sin(theta)", locale: "en" }), { params: Promise.resolve({ id: "p1" }) });
+    const body = await res.json();
+    expect(res.status).toBe(200);
+    expect(body.verify.ok).toBe(false);
+    expect(body.requiresAuthForDiagnosis).toBe(true);
+    expect(body.diagnosis).toBeUndefined();
+    expect(mockInsertAttempt).not.toHaveBeenCalled();
+    expect(mockDiagnose).not.toHaveBeenCalled();
   });
 
   it("rejects unknown problem id", async () => {

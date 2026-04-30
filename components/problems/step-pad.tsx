@@ -18,21 +18,55 @@ interface StepState {
   status: StepStatus;
   studentExpr: string;
   diagnosis?: string;
+  requiresAuthForDiagnosis?: boolean;
+  quotaExhausted?: boolean;
 }
 
 export function StepPad({ problem, strings }: Props) {
   const locale = useLocale();
   const [walkthroughOpen, setWalkthroughOpen] = useState(false);
   const [states, setStates] = useState<StepState[]>(() =>
-    problem.steps.map((_, i) => ({ status: i === 0 ? "active" : "locked", studentExpr: "" })),
+    problem.steps.map((_, i) => ({
+      status: i === 0 ? "active" : "locked",
+      studentExpr: "",
+    })),
   );
 
   function setAt(i: number, patch: Partial<StepState>) {
     setStates((prev) => prev.map((s, idx) => (idx === i ? { ...s, ...patch } : s)));
   }
 
+  /**
+   * Re-open a CORRECT or SKIPPED step for editing. Lock all later steps so
+   * the student doesn't end up with stale "next" steps revealed when they
+   * change a prerequisite.
+   */
+  function editStep(i: number) {
+    setStates((prev) =>
+      prev.map((s, idx) => {
+        if (idx < i) return s;
+        if (idx === i) {
+          return {
+            ...s,
+            status: "active",
+            diagnosis: undefined,
+            requiresAuthForDiagnosis: undefined,
+            quotaExhausted: undefined,
+          };
+        }
+        return { status: "locked", studentExpr: "" };
+      }),
+    );
+  }
+
   async function submit(i: number, expr: string) {
-    setAt(i, { status: "checking", studentExpr: expr });
+    setAt(i, {
+      status: "checking",
+      studentExpr: expr,
+      diagnosis: undefined,
+      requiresAuthForDiagnosis: undefined,
+      quotaExhausted: undefined,
+    });
     try {
       const res = await fetch(`/api/problems/${problem.id}/check`, {
         method: "POST",
@@ -40,22 +74,29 @@ export function StepPad({ problem, strings }: Props) {
         body: JSON.stringify({ stepId: problem.steps[i].id, studentExpr: expr, locale }),
       });
       const body = await res.json();
-      if (res.status === 401) {
-        window.location.href = `/${locale}/sign-in?next=${encodeURIComponent(window.location.pathname)}`;
-        return;
-      }
+
       if (body.verify?.ok) {
-        setAt(i, { status: "correct", diagnosis: undefined });
+        setAt(i, { status: "correct" });
         if (i + 1 < problem.steps.length) {
           setAt(i + 1, { status: "active" });
         } else {
           setWalkthroughOpen(true);
         }
-      } else {
-        setAt(i, { status: "wrong", diagnosis: body.diagnosis ?? (body.quotaExhausted ? "Daily diagnosis quota reached. Upgrade for unlimited feedback." : "Not quite.") });
+        return;
       }
+
+      // Wrong (or non-2xx). Stay on the step; surface whatever the route told us.
+      setAt(i, {
+        status: "wrong",
+        diagnosis: body.diagnosis,
+        requiresAuthForDiagnosis: !!body.requiresAuthForDiagnosis,
+        quotaExhausted: !!body.quotaExhausted,
+      });
     } catch (e) {
-      setAt(i, { status: "wrong", diagnosis: `Network error: ${(e as Error).message}` });
+      setAt(i, {
+        status: "wrong",
+        diagnosis: `Network error: ${(e as Error).message}`,
+      });
     }
   }
 
@@ -80,17 +121,28 @@ export function StepPad({ problem, strings }: Props) {
             status={s.status}
             studentExpr={s.studentExpr}
             diagnosis={s.diagnosis}
+            requiresAuthForDiagnosis={s.requiresAuthForDiagnosis}
+            quotaExhausted={s.quotaExhausted}
             onChange={(expr) => setAt(i, { studentExpr: expr })}
             onSubmit={(expr) => submit(i, expr)}
             onShowMe={() => showMe(i)}
+            onEdit={() => editStep(i)}
           />
         );
       })}
 
       {strings.walkthrough && (
-        <details open={walkthroughOpen} className="mt-6 border border-neutral-700 rounded-lg p-4 bg-neutral-950">
-          <summary className="cursor-pointer text-sm text-cyan-400">Solution walkthrough</summary>
-          <div className="mt-3 text-sm text-neutral-200 whitespace-pre-line">{strings.walkthrough}</div>
+        <details
+          open={walkthroughOpen}
+          onToggle={(e) => setWalkthroughOpen((e.target as HTMLDetailsElement).open)}
+          className="mt-6 border border-neutral-800 rounded-lg p-4 bg-neutral-950"
+        >
+          <summary className="cursor-pointer text-sm text-cyan-400 hover:text-cyan-300 select-none font-mono uppercase tracking-wider">
+            Solution walkthrough
+          </summary>
+          <div className="mt-3 text-sm text-neutral-200 leading-relaxed whitespace-pre-line">
+            {strings.walkthrough}
+          </div>
         </details>
       )}
     </div>

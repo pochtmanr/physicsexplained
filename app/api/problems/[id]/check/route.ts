@@ -1,4 +1,11 @@
 // app/api/problems/[id]/check/route.ts
+//
+// Two-tier UX:
+//   anonymous:  deterministic verify only — gets {ok, canonicalValue, studentValue}
+//               + a `requiresAuthForDiagnosis: true` flag if wrong, so the client
+//               can prompt sign-in. No attempt is logged.
+//   signed-in:  verify + LLM diagnosis (within free 5/day quota or unlimited paid).
+//               Attempt logged for analytics.
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { verifyStep } from "@/lib/problems/verify";
@@ -90,16 +97,25 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
   try { body = BodySchema.parse(await req.json()); }
   catch (e) { return NextResponse.json({ error: "BAD_REQUEST", message: (e as Error).message }, { status: 400 }); }
 
-  const user = await deps.getUser();
-  if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
-
   const problem = deps.getProblem(problemId);
   if (!problem) return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
 
   const step = problem.steps.find((s) => s.id === body.stepId);
   if (!step) return NextResponse.json({ error: "BAD_STEP_ID" }, { status: 400 });
 
+  // Verify ALWAYS runs — it's free, deterministic, and what we want every
+  // visitor to feel: instant correctness feedback without any sign-in wall.
   const verify = verifyStep({ step, studentExpr: body.studentExpr });
+
+  const user = await deps.getUser();
+
+  // Anonymous: return verify result + auth CTA flag if wrong. No attempt logged.
+  if (!user) {
+    if (verify.ok) return NextResponse.json({ verify });
+    return NextResponse.json({ verify, requiresAuthForDiagnosis: true });
+  }
+
+  // Signed-in: log the attempt for analytics + maybe-diagnose if wrong.
   const attempt = await deps.insertAttempt({
     userId: user.id, problemId, stepId: body.stepId,
     studentExpr: body.studentExpr, correct: verify.ok,
