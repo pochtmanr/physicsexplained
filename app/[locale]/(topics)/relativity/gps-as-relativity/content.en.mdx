@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Time dilation", href: "/dictionary/time-dilation" },
+  { type: "term", label: "GPS correction", href: "/dictionary/gps-correction" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.23 · SR APPLICATIONS §05"
+  title="GPS AS A WORKING RELATIVITY EXPERIMENT"
+  subtitle="Without two corrections, your position drifts ten kilometres a day."
+/>
+
+<Section index={1} title="The phone in your pocket">
+
+There is a billion-dollar relativity experiment running every second of every day, in low-Earth orbit, transmitting to the receiver in your pocket. It is called GPS, and it works because <PhysicistLink slug="albert-einstein" /> was right — twice. Once in 1905, when special relativity predicted that a moving clock runs slow. And again in 1915, when general relativity predicted that a clock at higher gravitational potential runs fast. If either prediction were wrong by even a microsecond per day, your phone's idea of where you are would walk away from you at roughly the speed of a fast jogger.
+
+Each GPS satellite carries an atomic clock and broadcasts a continuous time signal. The receiver computes its position by timing how long the signal took to arrive from four or more satellites and triangulating from the speed-of-light delays. The whole architecture rests on one assumption: the satellite clocks and the ground clocks tick at the same rate.
+
+They don't. Two effects break that assumption — and both are pure relativity. The satellite clock runs slow by ~7 microseconds per day because the satellite is moving (special relativity). It runs fast by ~46 microseconds per day because it sits at a higher gravitational potential than the ground (general relativity). The signs oppose; the magnitudes don't cancel. Net: the satellite clock gains ~38 microseconds per day relative to the ground. This number is hardcoded into the satellite firmware before launch, broadcast on every signal, and applied silently by every receiver. Without it, the position fix you trust would be wrong by 11 kilometres per day, and growing.
+
+</Section>
+
+<Section index={2} title="The orbit">
+
+GPS satellites fly in roughly circular orbits at an altitude of about 20,200 km — close to half-geostationary, with an orbital period of roughly 11 hours 58 minutes (half a sidereal day, so each satellite passes over the same point on Earth twice per day). The orbital radius from Earth's centre is about 26,571 km, or 4.17 Earth radii. From Kepler's third law:
+
+<EquationBlock id="EQ.01">
+$$v = \sqrt{GM_\oplus / r} \approx 3874\,\text{m/s}$$
+</EquationBlock>
+
+That is roughly 3.87 km/s, or β = v/c ≈ 1.29 × 10⁻⁵. Tiny by the standards of relativistic physics, but not zero — and at the precision level of an atomic clock, every part-per-billion matters.
+
+<SceneCard caption="FIG.23 — THE MONEY SHOT. A GPS satellite (amber) orbiting Earth at 20,200 km altitude. Below the orbit, the daily clock corrections: SR slows the satellite clock by 7.2 μs/day (red), GR speeds it up by 45.7 μs/day (green), and the net (+38.5 μs/day, amber) is what every GPS receiver applies. The orbit slider is cosmetic — for a circular orbit the corrections are constant.">
+  <GpsOrbitScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="SR slows the clock">
+
+The kinematic correction is the cleanest part of the story. A clock moving at speed v in any inertial frame ticks at rate $\sqrt{1 - \beta^2}$ relative to a clock at rest in that frame. This is the same <Term slug="time-dilation" /> already encountered in RT §02.1, applied in a new context. To leading order in β:
+
+<EquationBlock id="EQ.02">
+$$\frac{\Delta\tau_{\text{SR}}}{\Delta t} = \sqrt{1 - \beta^2} - 1 \approx -\frac{\beta^2}{2}$$
+</EquationBlock>
+
+Plug in β ≈ 1.29 × 10⁻⁵ and integrate over one day (86,400 seconds):
+
+<EquationBlock id="EQ.03">
+$$\Delta\tau_{\text{SR}} \approx -\frac{\beta^2}{2} \cdot 86\,400\,\text{s} \approx -7.2\,\mu\text{s/day}$$
+</EquationBlock>
+
+The minus sign is the entire content. The orbiting clock loses 7.2 microseconds per day relative to a clock at rest in Earth's reference frame. This is the same correction that would apply to a precise clock on the International Space Station, on a fast aircraft, or on any moving body — scaled by its β². For airliners (β ≈ 10⁻⁶) the effect is hundreds of nanoseconds per day; for a high-speed train it is single-digit nanoseconds. For GPS, it is comfortably above the precision threshold of the atomic clocks aboard.
+
+If only this correction existed, the satellite clock would run slow, and an uncorrected fix would walk in one direction. But there is a second, larger correction with the opposite sign.
+
+</Section>
+
+<Section index={4} title="GR speeds it up">
+
+A clock at lower gravitational potential ticks slower than a clock at higher potential. This is gravitational [time dilation](/relativity/time-dilation), the GR companion to SR's kinematic dilation, and the topic of the upcoming §06 module on the equivalence principle. It is derivable from the equivalence principle alone — without solving Einstein's field equations — and the full geometric reading appears in [gravitational redshift](/relativity/gravitational-redshift) (§06.3). What matters here is the leading weak-field formula:
+
+<EquationBlock id="EQ.04">
+$$\frac{\Delta\tau_{\text{GR}}}{\Delta t} \approx \frac{\Phi_{\text{orbit}} - \Phi_{\text{surface}}}{c^2} = \frac{GM_\oplus}{c^2}\left(\frac{1}{R_\oplus} - \frac{1}{r}\right)$$
+</EquationBlock>
+
+Here Φ = −GM/r is the Newtonian gravitational potential, and the quantity in parentheses is positive because the surface radius R_⊕ is smaller than the orbital radius r. The orbiting clock sits in a less-deep gravitational well; it ticks faster. Plug in numbers — GM_⊕/c² ≈ 4.43 × 10⁻³ m, and (1/R_⊕ − 1/r) ≈ 1.19 × 10⁻⁷ m⁻¹ — and the daily offset is:
+
+<EquationBlock id="EQ.05">
+$$\Delta\tau_{\text{GR}} \approx +45.7\,\mu\text{s/day}$$
+</EquationBlock>
+
+Positive, and roughly six times larger in magnitude than the SR contribution.
+
+<SceneCard caption="FIG.23b — the GPS receiver's daily ledger. Three columns: SR (kinematic, red, slows by 7.2 μs/day); GR (gravitational, green, speeds by 45.7 μs/day); NET (amber, +38.5 μs/day). Each column shows the formula, the substitution, and the result. GR dominates by ~6×.">
+  <TwoClocksComparisonScene />
+</SceneCard>
+
+The two effects are not just opposite-signed — they are physically distinct. The SR correction depends only on the satellite's speed; it would apply just as well to a satellite drifting in deep space at 3.87 km/s. The GR correction depends only on the satellite's altitude; it would apply just as well to a stationary tower at 20,200 km. A complete relativistic accounting needs both, and GPS is the most prominent system in everyday life that requires both.
+
+</Section>
+
+<Section index={5} title="The net, and the drift">
+
+Add them. SR gives −7.2 μs/day; GR gives +45.7 μs/day; the net is +38.5 microseconds per day. The satellite clock gains thirty-eight microseconds on the ground clock every twenty-four hours, day after day, year after year, for the operational lifetime of the satellite.
+
+This number is built into the satellite. Before launch, the onboard atomic clock is detuned by exactly the right fraction — its nominal frequency offset ≈ −4.46 parts in 10¹⁰ — so that, once in orbit, the relativistic effects compensate the detuning and the satellite-clock rate matches the ground-clock rate as seen by a receiver. The receiver firmware also applies a small additional correction for orbital eccentricity (the corrections are exactly constant only for a perfectly circular orbit). The result is that the navigation signal a phone uses already has relativity baked in, twice over.
+
+What if it didn't? A timing error of Δt produces a pseudorange error of c · Δt. Net 38.5 microseconds per day is c × 38.5 μs ≈ 11.5 km per day. After one hour: about 480 metres. After one day: 11.5 km. After one week: about 80 km. After a month: more than 350 km. Useless for navigation.
+
+<SceneCard caption="FIG.23c — without the +38 μs/day correction, the GPS position fix walks outward at c × Δt ≈ 11.5 km per day. The amber circle shows the radius of position uncertainty as the elapsed time slider advances; rim labels mark 1 hour (~480 m), 1 day (~11.5 km), and 1 week (~80 km).">
+  <UncorrectedDriftScene />
+</SceneCard>
+
+The drift compounds linearly because the rate is constant; on a flat plot of error vs time, it is a straight line through the origin with a slope set entirely by the magnitude of the relativistic correction. There is no way to suppress it with better hardware or smarter algorithms — it is intrinsic to the geometry of spacetime around a rotating, gravitating Earth.
+
+</Section>
+
+<Section index={6} title="Relativity in your pocket">
+
+Every billion-dollar navigation system on Earth — GPS, Galileo, GLONASS, BeiDou, regional augmentation networks — applies the same two corrections, with the same signs, the same magnitudes (within a percent or two depending on orbit altitude), and the same physical justification. None of them work without relativity. The technology rests on an experimental fact about spacetime that was first measured at part-per-million precision in the 1970s and is now confirmed at part-per-trillion in the maintenance telemetry of every GPS satellite, every day.
+
+<Callout variant="intuition">
+The deepest demonstration that relativity is not abstract is the most ordinary one: it is the calibration in your pocket. A 1905 paper on moving clocks and a 1915 paper on the geometry of gravity — together — are the reason a phone can find a coffee shop. If either were wrong, GPS would walk off the map within hours.
+</Callout>
+
+This is the §05 take-home. The "applications of special relativity" in this module — the apparent paradoxes that resolve cleanly, the precision tests that Lorentz invariance keeps passing — all live in laboratories. GPS lives in everyone's pocket. Special relativity slows the satellite clock; general relativity speeds it up; the receiver applies the difference; the position is correct.
+
+The next topic in this module, §05.4 [precision tests of special relativity](/relativity/precision-tests-of-sr), tracks how SR has held up under direct experimental scrutiny from Michelson-Morley (1887) to optical-lattice clocks (2015+). The §06 module then opens the equivalence principle — the deepest question in classical physics — and the geometric framework that makes the gravitational-redshift formula above more than a leading-order approximation.
+
+</Section>
+
+</TopicPageLayout>
