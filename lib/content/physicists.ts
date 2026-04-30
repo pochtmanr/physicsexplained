@@ -18,6 +18,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/galileo-galilei.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
     ],
   },
   {
@@ -30,6 +31,7 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "classical-mechanics", topicSlug: "the-simple-pendulum" },
       { branchSlug: "classical-mechanics", topicSlug: "kepler" },
       { branchSlug: "electromagnetism", topicSlug: "optical-dispersion" },
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
     ],
   },
   {
@@ -379,6 +381,11 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "relativity", topicSlug: "relativistic-doppler" },
       { branchSlug: "relativity", topicSlug: "mass-energy-equivalence" },
       { branchSlug: "relativity", topicSlug: "relativistic-collisions" },
+      { branchSlug: "relativity", topicSlug: "the-barn-pole-paradox" },
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+      { branchSlug: "relativity", topicSlug: "gravity-as-geometry" },
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
     ],
   },
   {
@@ -1160,6 +1167,28 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "relativity", topicSlug: "compton-scattering" },
       { branchSlug: "relativity", topicSlug: "four-momentum" },
+    ],
+  },
+  {
+    slug: "roland-eotvos",
+    born: "1848",
+    died: "1919",
+    nationality: "Hungarian",
+    image: storageUrl("physicists/roland-eotvos.avif"),
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+    ],
+  },
+  {
+    slug: "pound-rebka",
+    born: "—",
+    died: "—",
+    nationality: "American",
+    image: storageUrl("physicists/pound-rebka.avif"),
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
     ],
   },
 ];

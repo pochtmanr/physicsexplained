@@ -2947,6 +2947,102 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "relativity", topicSlug: "four-momentum" },
     ],
   },
+  // RT §05 — SR Applications
+  {
+    slug: "barn-pole-paradox",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-barn-pole-paradox" },
+      { branchSlug: "relativity", topicSlug: "relative-simultaneity" },
+      { branchSlug: "relativity", topicSlug: "length-contraction" },
+    ],
+  },
+  {
+    slug: "bell-spaceship-paradox",
+    category: "concept",
+    relatedPhysicists: [],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "bells-spaceship-paradox" },
+      { branchSlug: "relativity", topicSlug: "length-contraction" },
+    ],
+  },
+  {
+    slug: "born-rigidity",
+    category: "concept",
+    relatedPhysicists: [],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "bells-spaceship-paradox" },
+      { branchSlug: "relativity", topicSlug: "length-contraction" },
+    ],
+  },
+  {
+    slug: "gps-correction",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "gps-as-relativity" },
+      { branchSlug: "relativity", topicSlug: "time-dilation" },
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+    ],
+  },
+  {
+    slug: "precision-lorentz-tests",
+    category: "concept",
+    relatedPhysicists: ["hendrik-antoon-lorentz", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "precision-tests-of-sr" },
+      { branchSlug: "relativity", topicSlug: "michelson-morley" },
+    ],
+  },
+  // RT §06 — Equivalence Principle
+  {
+    slug: "equivalence-principle",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "roland-eotvos"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+      { branchSlug: "relativity", topicSlug: "gravity-as-geometry" },
+    ],
+  },
+  {
+    slug: "weak-equivalence-principle",
+    category: "concept",
+    relatedPhysicists: ["roland-eotvos", "galileo-galilei"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+    ],
+  },
+  {
+    slug: "einstein-equivalence-principle",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+      { branchSlug: "relativity", topicSlug: "gravity-as-geometry" },
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+    ],
+  },
+  {
+    slug: "eotvos-parameter",
+    category: "concept",
+    relatedPhysicists: ["roland-eotvos"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
+      { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+    ],
+  },
+  {
+    slug: "mossbauer-effect",
+    category: "phenomenon",
+    relatedPhysicists: ["pound-rebka"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
