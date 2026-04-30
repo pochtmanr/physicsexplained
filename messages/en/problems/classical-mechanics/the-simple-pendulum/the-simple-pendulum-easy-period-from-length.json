@@ -1,0 +1,25 @@
+{
+  "statement": "A simple pendulum hangs from a fixed pivot. The string has length L = 1.2 m and the bob swings through small angles on Earth, where g = 9.80665 m/s². Assuming the small-angle approximation holds, find the angular frequency ω and the period T of the pendulum.",
+  "steps": {
+    "omega": {
+      "prompt": "Find the angular frequency ω = √(g / L). What is ω in rad/s?",
+      "hint": "The restoring force is F = −(mg/L)x for small angles, which gives ω² = g/L. Take the positive square root.",
+      "commonMistakes": [
+        "Inverting the fraction: using sqrt(L/g) instead of sqrt(g/L)",
+        "Confusing ω (angular frequency) with f (frequency in Hz)",
+        "Using g = 10 m/s² instead of 9.80665 m/s²"
+      ]
+    },
+    "T": {
+      "prompt": "Use T = 2π / ω (or equivalently 2π√(L/g)) to find the period in seconds.",
+      "hint": "One full oscillation covers 2π radians of phase. Divide 2π by ω, or substitute directly into T = 2π√(L/g).",
+      "commonMistakes": [
+        "Forgetting the factor of 2π",
+        "Computing T = 1/ω instead of T = 2π/ω",
+        "Squaring the answer because the formula contains a square root"
+      ]
+    }
+  },
+  "finalAnswerProse": "The pendulum has angular frequency ω ≈ 2.859 rad/s and period T ≈ 2.198 s. A 1.2 m pendulum therefore completes one full swing in just under 2.2 seconds.",
+  "walkthrough": "The simple pendulum is the prototype oscillator. When the bob is displaced by a small angle θ, gravity exerts a restoring force component F = −mg sin θ along the arc. For small angles, sin θ ≈ θ, so F ≈ −(mg/L) × arc-length. This is Hooke's law in disguise, with effective spring constant k = mg/L and mass m, giving ω² = k/m = g/L.\n\nStep 1: ω = √(g/L) = √(9.80665/1.2) = √8.1722 ≈ 2.859 rad/s.\n\nStep 2: the period is the time to complete 2π radians of oscillation, so T = 2π/ω = 2π√(L/g) = 2π × √(1.2/9.80665) = 2π × 0.34986 ≈ 2.198 s.\n\nTwo features are worth memorising. First, mass does not appear: a heavier bob on the same string has the same period. This is isochronism — Galileo observed it with a swinging chandelier in 1583. Second, the period scales as √L: doubling the length multiplies T by √2 ≈ 1.41, not by 2. To double the period you must quadruple the length. That square-root relationship is the architectural reason grandfather clocks are tall."
+}

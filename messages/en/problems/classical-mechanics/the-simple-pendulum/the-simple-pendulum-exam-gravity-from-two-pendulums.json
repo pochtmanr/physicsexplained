@@ -1,0 +1,72 @@
+{
+  "statement": "A physicist measures two pendulums at the same location. Pendulum 1 has length L₁ = 0.50 m and measured period T₁ = 1.4187 s. Pendulum 2 has length L₂ = 2.00 m and measured period T₂ = 2.8375 s. From each measurement determine g independently, then average the two estimates and compute the fractional discrepancy between them.",
+  "steps": {
+    "omega_1": {
+      "prompt": "Compute the angular frequency ω₁ = 2π / T₁ for pendulum 1. What is ω₁ in rad/s?",
+      "hint": "ω is related to period by T = 2π/ω, so ω = 2π/T.",
+      "commonMistakes": [
+        "Computing ω = T/(2π) — this is the reciprocal",
+        "Using T in the denominator without 2π: ω = 1/T (that is frequency f, not angular frequency)"
+      ]
+    },
+    "g_1": {
+      "prompt": "Use ω₁² = g / L₁ to find g₁ = L₁ × ω₁². What is g₁ in m/s²?",
+      "hint": "The small-angle pendulum gives ω² = g/L, so g = L × ω².",
+      "commonMistakes": [
+        "Dividing L by ω² instead of multiplying: g = L/ω²",
+        "Using L₂ with ω₁ by accident",
+        "Forgetting to square ω: g = L × ω instead of L × ω²"
+      ]
+    },
+    "omega_2": {
+      "prompt": "Compute ω₂ = 2π / T₂ for pendulum 2. What is ω₂ in rad/s?",
+      "hint": "Same procedure as step 1, using T₂ = 2.8375 s.",
+      "commonMistakes": [
+        "Reusing ω₁ for this step",
+        "Using T₁ by mistake"
+      ]
+    },
+    "g_2": {
+      "prompt": "Find g₂ = L₂ × ω₂². What is g₂ in m/s²?",
+      "hint": "Use L₂ = 2.0 m this time.",
+      "commonMistakes": [
+        "Using L₁ with ω₂",
+        "Forgetting to square ω₂"
+      ]
+    },
+    "g_avg": {
+      "prompt": "Average the two estimates: g_avg = (g₁ + g₂) / 2. What is g_avg in m/s²?",
+      "hint": "A simple arithmetic mean is appropriate when both measurements are assumed equally reliable.",
+      "commonMistakes": [
+        "Multiplying instead of adding before dividing: (g₁ × g₂)/2",
+        "Forgetting to divide by 2"
+      ]
+    },
+    "discrepancy": {
+      "prompt": "Compute the fractional discrepancy δ = |g₁ − g₂| / g_avg. Express as a dimensionless ratio.",
+      "hint": "This measures how internally consistent the two measurements are. A small δ confirms both pendulums agree.",
+      "commonMistakes": [
+        "Dividing by (g₁ + g₂) instead of g_avg",
+        "Forgetting the absolute value and getting a negative number",
+        "Reporting the percentage (e.g. 0.007%) without converting to decimal (0.00007)"
+      ]
+    },
+    "T_1_pred": {
+      "prompt": "Forward-check: compute T₁_pred = 2π√(L₁/g_avg). Does it match the measured T₁?",
+      "hint": "Using the averaged g to predict the period closes the loop. A good match confirms internal consistency.",
+      "commonMistakes": [
+        "Using L₂ for the prediction of T₁",
+        "Using g₁ or g₂ instead of g_avg"
+      ]
+    },
+    "T_2_pred": {
+      "prompt": "Similarly compute T₂_pred = 2π√(L₂/g_avg). Does it match T₂?",
+      "hint": "Both forward predictions should be very close to the measured values.",
+      "commonMistakes": [
+        "Using L₁ for the prediction of T₂"
+      ]
+    }
+  },
+  "finalAnswerProse": "Pendulum 1 gives g₁ ≈ 9.8073 m/s² and pendulum 2 gives g₂ ≈ 9.8066 m/s². The average is g_avg ≈ 9.8069 m/s² with a fractional discrepancy of only ≈0.007% between the two estimates — excellent agreement confirming both measurements are consistent.",
+  "walkthrough": "This problem mirrors a real laboratory technique for measuring local gravitational acceleration. Two independent pendulum experiments reduce random error and reveal whether systematic effects are present.\n\nStep 1 — ω₁: ω₁ = 2π/T₁ = 2π/1.4187 ≈ 4.4288 rad/s.\nStep 2 — g₁: g₁ = L₁ × ω₁² = 0.5 × (4.4288)² = 0.5 × 19.6145 ≈ 9.8073 m/s².\nStep 3 — ω₂: ω₂ = 2π/T₂ = 2π/2.8375 ≈ 2.2143 rad/s.\nStep 4 — g₂: g₂ = L₂ × ω₂² = 2.0 × (2.2143)² = 2.0 × 4.9033 ≈ 9.8066 m/s².\nStep 5 — g_avg: g_avg = (9.8073 + 9.8066)/2 ≈ 9.8069 m/s².\nStep 6 — discrepancy: |9.8073 − 9.8066|/9.8069 ≈ 0.0000705 ≈ 0.007%. The two estimates agree to better than one part in ten thousand.\n\nForward check: T₁_pred = 2π√(0.5/9.8069) ≈ 1.4187 s and T₂_pred = 2π√(2.0/9.8069) ≈ 2.8375 s — recovering the measured values to four decimal places.\n\nThis level of consistency would indicate an extremely well-controlled experiment. In practice, air resistance, string elasticity, and finite bob size introduce systematic shifts that would spread g₁ and g₂ further apart. The technique is still used in modern geodesy to map local g variations across Earth's surface."
+}

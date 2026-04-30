@@ -1,0 +1,50 @@
+{
+  "statement": "A pendulum bob of mass m = 0.5 kg hangs from a string of length L = 0.8 m. It is pulled aside to θ₀ = 0.15 rad and released from rest. Find the maximum height h the bob rises above the lowest point, the maximum potential energy PE_max, and the maximum speed v_max the bob reaches at the bottom of the swing.",
+  "steps": {
+    "h": {
+      "prompt": "Express the height h in terms of L and θ₀ using the geometry of a circular arc. What is h in metres?",
+      "hint": "The bob swings through an arc of a circle of radius L. At angle θ₀ from vertical, the bob's height above the bottom is h = L(1 − cos θ₀).",
+      "commonMistakes": [
+        "Using h = L × θ₀ (arc length) instead of h = L(1 − cos θ₀) (vertical rise)",
+        "Using h = L × sin θ₀ — that is the horizontal displacement, not the vertical rise",
+        "Forgetting the parentheses: writing h = L − cos θ₀ × L is correct, but some students drop the L factor on cos θ₀"
+      ]
+    },
+    "PE_max": {
+      "prompt": "Compute the maximum gravitational potential energy PE_max = mgh, taking the bottom of the swing as the zero reference. What is PE_max in joules?",
+      "hint": "At the amplitude, all energy is potential. The bob is momentarily at rest, so KE = 0 and PE = mgh.",
+      "commonMistakes": [
+        "Using g = 10 m/s² instead of 9.80665 m/s²",
+        "Using h = Lθ₀ (the arc-length approximation) instead of the exact h",
+        "Omitting mass from the formula: PE = gh instead of mgh"
+      ]
+    },
+    "KE_max": {
+      "prompt": "By energy conservation, what is the maximum kinetic energy KE_max at the bottom of the swing?",
+      "hint": "At the bottom, the bob is at its reference height (h = 0), so all energy is kinetic. Since the total mechanical energy is conserved, KE_max = PE_max.",
+      "commonMistakes": [
+        "Adding PE_max and KE_max rather than equating them (the total is conserved, not doubled)",
+        "Thinking KE_max = (1/2) × PE_max — there is no extra factor of 1/2 here"
+      ]
+    },
+    "v_max": {
+      "prompt": "Use KE_max = (1/2)mv_max² to find v_max in m/s.",
+      "hint": "Rearrange to v_max = √(2 × KE_max / m). Equivalently, v_max = √(2gL(1 − cos θ₀)).",
+      "commonMistakes": [
+        "Forgetting the factor of 2: writing v_max = √(KE_max / m)",
+        "Forgetting to take the square root at the end",
+        "Dividing by m² instead of m inside the square root"
+      ]
+    },
+    "T": {
+      "prompt": "As a bonus, compute the small-angle period T = 2π√(L/g). Confirm it is independent of m and θ₀.",
+      "hint": "Isochronism: the period depends only on L and g, not on mass or starting angle (within the small-angle approximation).",
+      "commonMistakes": [
+        "Including m in the period formula",
+        "Including θ₀ in the period formula"
+      ]
+    }
+  },
+  "finalAnswerProse": "The bob rises h ≈ 8.98 mm, storing PE_max ≈ 44.0 mJ of potential energy. At the bottom it converts all of that to kinetic energy, reaching v_max ≈ 0.420 m/s. The period of the oscillation is T ≈ 1.795 s, independent of mass and amplitude.",
+  "walkthrough": "Energy methods are often cleaner than force methods for finding speeds at specific points.\n\nStep 1 — height at amplitude: the bob sweeps along a circular arc of radius L. When the string makes angle θ₀ with the vertical, the bob sits at a height h = L − L cos θ₀ = L(1 − cos θ₀) above the lowest point. For θ₀ = 0.15 rad: h = 0.8 × (1 − cos 0.15) = 0.8 × (1 − 0.98877) = 0.8 × 0.01123 ≈ 0.008983 m ≈ 8.98 mm. Note the small-angle approximation would give h ≈ L θ₀²/2 = 0.8 × 0.01125 ≈ 9.00 mm — nearly identical at this amplitude, confirming the regime.\n\nStep 2 — PE_max: at the amplitude, the bob is momentarily at rest, so all mechanical energy is potential. PE_max = mgh = 0.5 × 9.80665 × 0.008983 ≈ 0.04405 J.\n\nStep 3 — KE_max: by conservation of energy (frictionless pivot, massless string), the total mechanical energy E = PE + KE is constant. At the bottom, h = 0 so PE = 0 and KE = KE_max = E = PE_max ≈ 0.04405 J.\n\nStep 4 — v_max: from KE_max = (1/2)mv_max², we get v_max = √(2 KE_max/m) = √(2 × 0.04405/0.5) = √0.17620 ≈ 0.420 m/s.\n\nStep 5 — period: T = 2π√(0.8/9.80665) ≈ 1.795 s. Mass and amplitude do not appear — Galileo's isochronism in action."
+}

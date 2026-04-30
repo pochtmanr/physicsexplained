@@ -1,0 +1,33 @@
+{
+  "statement": "A clockmaker needs a pendulum that completes exactly one full oscillation every 3.0 seconds (T = 3.0 s). Using g = 9.80665 m/s² and the small-angle formula, calculate the required pendulum length L. Express your answer in metres.",
+  "steps": {
+    "tau": {
+      "prompt": "Rearrange T = 2π√(L/g). Isolate √(L/g) first by dividing both sides by 2π. What is τ = T/(2π)?",
+      "hint": "This normalised value τ equals √(L/g). You will square it in the next step to find L/g.",
+      "commonMistakes": [
+        "Dividing by π instead of 2π",
+        "Multiplying by 2π instead of dividing",
+        "Skipping this intermediate and trying to manipulate the whole formula at once, leading to sign or exponent errors"
+      ]
+    },
+    "L": {
+      "prompt": "Square τ and multiply by g to find L = g × τ². What is L in metres?",
+      "hint": "Since τ = √(L/g), we have τ² = L/g, so L = g × τ².",
+      "commonMistakes": [
+        "Forgetting to square τ — writing L = g × τ instead of L = g × τ²",
+        "Using g = 9.8 instead of 9.80665, giving a slightly different answer",
+        "Dividing by g instead of multiplying: L = τ²/g"
+      ]
+    },
+    "T_check": {
+      "prompt": "Verify by substituting L back into T = 2π√(L/g). Does it return 3.0 s?",
+      "hint": "This is a self-consistency check. If your algebra was correct, the forward formula applied to your derived L must reproduce the original T.",
+      "commonMistakes": [
+        "Rounding L prematurely before substituting back, which introduces a check error",
+        "Checking T = 2π√(g/L) (the reciprocal under the radical) — that gives frequency, not period"
+      ]
+    }
+  },
+  "finalAnswerProse": "A pendulum with period T = 3.0 s requires a length of approximately L ≈ 2.236 m. This confirms why public clocks with slow, stately ticks need very long pendulums — and why a standard 'seconds pendulum' (T = 2 s) is about 0.994 m, close to one metre.",
+  "walkthrough": "Starting from the period formula T = 2π√(L/g), we solve for L algebraically before plugging in numbers.\n\nStep 1: divide both sides by 2π to isolate the radical: τ = T/(2π) = 3.0/(2π) ≈ 0.4775 s. This quantity τ equals √(L/g).\n\nStep 2: square both sides to get τ² = L/g, then multiply by g: L = g × τ² = 9.80665 × (0.4775)² = 9.80665 × 0.22801 ≈ 2.2356 m.\n\nStep 3: verify by substituting back: T = 2π√(2.2356/9.80665) = 2π × 0.4775 = 3.0000 s. The round-trip confirms the algebra.\n\nThis inverse problem — given a desired period, find the length — is what clockmakers actually solve. Every grandfather clock is built around this calculation. Note how sensitive L is to precision in g: local gravity variations across Earth (about ±0.5%) would require recalibrating the pendulum length by a similar fraction to keep perfect time."
+}

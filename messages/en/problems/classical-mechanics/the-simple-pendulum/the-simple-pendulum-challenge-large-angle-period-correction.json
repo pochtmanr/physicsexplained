@@ -1,0 +1,51 @@
+{
+  "statement": "A pendulum of length L = 1.0 m is released from rest at θ₀ = 0.6 rad (~34°). This amplitude lies outside the comfortable small-angle zone. Compute both the small-angle approximation period T_small and the exact period T_exact (using the elliptic integral formula T = 4√(L/g) K(sin(θ₀/2))). Then find the fractional error δ introduced by the approximation.",
+  "steps": {
+    "T_small": {
+      "prompt": "Compute T_small = 2π√(L/g). This is what the small-angle approximation predicts. What is T_small in seconds?",
+      "hint": "This is the standard formula. The result does not depend on θ₀ — that is the approximation's key assumption.",
+      "commonMistakes": [
+        "Including θ₀ in the small-angle formula — it should not appear",
+        "Using π instead of 2π",
+        "Using g = 10 m/s²"
+      ]
+    },
+    "k": {
+      "prompt": "Compute the elliptic modulus k = sin(θ₀ / 2). What is k?",
+      "hint": "The exact period formula requires k = sin(θ₀/2), not sin(θ₀). Halving the angle first is essential.",
+      "commonMistakes": [
+        "Using k = sin(θ₀) instead of k = sin(θ₀/2)",
+        "Using k = θ₀/2 (the small-angle approximation for sin — avoid here since we are going beyond it)",
+        "Using k = cos(θ₀/2)"
+      ]
+    },
+    "K": {
+      "prompt": "Evaluate the complete elliptic integral of the first kind K(k). What is K?",
+      "hint": "K(k) can be computed via the arithmetic-geometric mean (AGM): start with a₀ = 1, b₀ = √(1−k²) and iterate aₙ₊₁ = (aₙ+bₙ)/2, bₙ₊₁ = √(aₙbₙ). Then K = π/(2a∞). For k ≈ 0.296, K ≈ 1.607.",
+      "commonMistakes": [
+        "Confusing K(k) with K(k²): the modulus convention matters — here k is the modulus, not the parameter m = k²",
+        "Using the approximation K ≈ π/2 (valid only when k ≈ 0)"
+      ]
+    },
+    "T_exact": {
+      "prompt": "Compute T_exact = 4√(L/g) × K. What is the exact period in seconds?",
+      "hint": "The factor 4 (not 2π) comes from integrating the pendulum equation over a quarter-period from θ₀ to 0.",
+      "commonMistakes": [
+        "Using 2π instead of 4 as the prefactor",
+        "Using √(g/L) instead of √(L/g)",
+        "Forgetting to multiply by K"
+      ]
+    },
+    "delta": {
+      "prompt": "Compute the fractional error δ = (T_exact − T_small) / T_small. Express as a decimal (not percentage).",
+      "hint": "A positive δ means the true period is longer than the small-angle prediction. For θ₀ = 0.6 rad, expect δ of a few percent.",
+      "commonMistakes": [
+        "Dividing by T_exact instead of T_small in the denominator",
+        "Forgetting to divide: just computing T_exact − T_small (which has units of seconds, not a pure ratio)",
+        "Reporting percentage directly without stating so (e.g. writing 2.3 when you mean 0.023)"
+      ]
+    }
+  },
+  "finalAnswerProse": "The small-angle formula gives T_small ≈ 2.006 s. The exact elliptic-integral result gives T_exact ≈ 2.053 s. The fractional error is δ ≈ 2.30% — at 34°, the approximation is still manageable for many applications but would ruin a precision clock.",
+  "walkthrough": "The simple pendulum's exact equation of motion is θ'' = −(g/L) sin θ. It has no closed-form solution in terms of elementary functions. The small-angle trick replaces sin θ ≈ θ, turning it into a harmonic oscillator and giving T = 2π√(L/g) — but this introduces error that grows with amplitude.\n\nStep 1 — T_small: apply the standard formula. T_small = 2π√(1.0/9.80665) ≈ 2.006 s.\n\nStep 2 — elliptic modulus: the exact period follows from separating variables in the energy equation. After integration, the quarter-period is (1/√(g/L)) × K(sin(θ₀/2)). So k = sin(θ₀/2) = sin(0.3) ≈ 0.2955.\n\nStep 3 — K(k): use the AGM. Starting with a = 1, b = √(1−0.2955²) = 0.9553. Iterate: a₁ = 0.9776, b₁ = √(0.9553) = 0.9774; convergence is rapid. The limiting value gives K ≈ 1.6069.\n\nStep 4 — T_exact: T_exact = 4√(L/g) × K = 4 × √(1/9.80665) × 1.6069 = 4 × 0.31934 × 1.6069 ≈ 2.053 s.\n\nStep 5 — fractional error: δ = (2.053 − 2.006)/2.006 ≈ 0.0230, i.e. about 2.3%. The approximation overestimates the frequency (gives a period that is too short) because it underestimates the restoring force at large angles (sin θ < θ for θ > 0). For scientific clocks, even 0.1% matters — which is why Huygens added cycloidal cheeks."
+}
