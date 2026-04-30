@@ -1,0 +1,104 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Roland Eötvös", href: "/physicists/roland-eotvos" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "term", label: "Eötvös parameter", href: "/dictionary/eotvos-parameter" },
+  { type: "term", label: "Weak equivalence principle", href: "/dictionary/weak-equivalence-principle" },
+  { type: "term", label: "Equivalence principle", href: "/dictionary/equivalence-principle" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.25 · EQUIVALENCE PRINCIPLE §06"
+  title="INERTIAL VS GRAVITATIONAL MASS"
+  subtitle="Two definitions, one number — to thirteen decimal places, and counting."
+/>
+
+<Section index={1} title="Two definitions, one number">
+
+There are two places mass enters Newtonian mechanics, and there is no obvious reason they should refer to the same quantity. The first is in the second law: a force $F$ applied to a body produces an acceleration $a$ in proportion to its *inertial* mass — its resistance to being pushed around.
+
+<EquationBlock id="EQ.01">
+$$F = m_i\, a$$
+</EquationBlock>
+
+The second is in the law of universal gravitation: a body sitting in a gravitational field of strength $g$ experiences a force in proportion to its *gravitational* mass — its coupling to gravity, the gravitational analogue of electric charge.
+
+<EquationBlock id="EQ.02">
+$$F = m_g\, g$$
+</EquationBlock>
+
+Combine them and the test particle's acceleration in a gravitational field is $a = (m_g/m_i)\, g$. If the ratio $m_g/m_i$ depended on what the particle was made of — iron, ice, neutrinos, antiprotons — different objects would fall at different rates, and Aristotle's intuition that heavy things fall faster than light ones would be at least directionally correct.
+
+The whole edifice of <PhysicistLink slug="isaac-newton" />'s gravity, and every consequence that follows from it (Kepler's laws, planetary motion, the tides), works only because the ratio is exactly the same for every form of matter. <PhysicistLink slug="isaac-newton" /> noticed the equality. He could not explain it — in the *Principia* he simply records, almost as an aside, that he has tested the proportionality with pendulums of gold, silver, lead, glass, sand, salt, wood, water, and wheat, and finds it to hold for every material to better than one part in a thousand. <PhysicistLink slug="albert-einstein" /> took the equality as a clue that gravity is not a force at all but the geometry of spacetime itself — the foundation of general relativity.
+
+The distinction matters because in every other context, "mass" splits into the two roles cleanly. Electric charge couples to electric fields the way $m_g$ couples to gravity; charge is conserved, additive, and can be positive or negative, but charge-to-inertial-mass ratio $q/m_i$ varies wildly across particles — $1.76 \times 10^{11}$ C/kg for an electron, $9.58 \times 10^{7}$ C/kg for a proton, zero for a neutron. Different materials in an electric field accelerate at wildly different rates, exactly as you would expect for an analogue of gravity that does *not* satisfy a universality principle. Gravity is the strange one.
+
+</Section>
+
+<Section index={2} title="Galileo at Pisa">
+
+According to a story his student Vincenzo Viviani told a half-century after the fact, <PhysicistLink slug="galileo-galilei" /> climbed the Leaning Tower of Pisa in 1589 and dropped two cannonballs of different mass from the top. They struck the ground at the same moment. Whether or not the demonstration actually happened in that form is debated; what is not debated is that around 1604 Galileo had worked out — by rolling balls down inclined planes and timing them with a water clock — that all bodies fall at the same rate in vacuum, regardless of mass or composition.
+
+That conclusion already implies $m_g/m_i$ is universal, although Galileo had no language for the distinction. In the framework of the previous section, his result is simply that the ratio is the same for every material, so the dependence on $m_g/m_i$ in the acceleration cancels and every body satisfies $a = g$ exactly.
+
+<SceneCard caption="FIG.25a — Galileo's Pisa setup. Two balls of different material dropped from the same height fall together when η = (m_g/m_i) − 1 vanishes. Drag the slider to the counterfactual world where η ≠ 0 and the heavier ball pulls ahead — the universe Aristotle imagined and Galileo refuted.">
+  <PisaTowerScene />
+</SceneCard>
+
+The Pisa observation is the empirical seed of the equivalence principle. Every modern test of the principle is, structurally, a sharper version of the same drop.
+
+</Section>
+
+<Section index={3} title="Eötvös's torsion balance">
+
+Three centuries after Galileo, the Hungarian physicist <PhysicistLink slug="roland-eotvos" /> turned the qualitative observation into a precision measurement. His instrument was a torsion balance: two test masses of different composition (platinum and copper, in the canonical run) at the ends of a horizontal beam, suspended at the centre by a quartz fibre.
+
+In the rotating frame of the Earth, each mass feels two competing pseudo-forces. Gravity pulls down on $m_g$. The centrifugal effect of Earth's rotation acts horizontally on $m_i$. If $m_g/m_i$ is the same for both materials, the net horizontal force is the same and the beam stays in place. If the ratio differs by an amount $\eta$ — the dimensionless <Term slug="eotvos-parameter" /> — the two masses pull on the fibre with slightly different horizontal forces and the beam twists. The observable is a torsion angle:
+
+<EquationBlock id="EQ.03">
+$$\eta = \frac{m_g - m_i}{m_i}$$
+</EquationBlock>
+
+Eötvös's first results in 1889 set $|\eta| \lesssim 10^{-8}$. By 1922, working with Pekár and Fekete, the bound had improved to $|\eta| \lesssim 3 \times 10^{-9}$ — a precision that stood as the world's best for forty years. The technique was clean enough that the 1922 data were re-analysed by Fischbach and collaborators in 1986 looking for hints of a "fifth force" coupling differentially to baryon number; nothing was found, and the result has held up.
+
+<SceneCard caption="FIG.25b — top-down view of the torsion balance. Drag the slider to give platinum a non-zero η. The beam rotates by an angle proportional to η · sin(latitude). At η = 0 the beam is motionless — the experimental verdict ever since 1889.">
+  <EotvosBalanceScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="The four-hundred-year ladder">
+
+Every generation of experimentalists has extended the bound. Bessel pendulums in 1832 reached $|\eta| \lesssim 2 \times 10^{-5}$. The Eötvös balance pushed to $10^{-9}$. Roll, Krotkov, and Dicke at Princeton in 1964 used the Sun as the source mass and a torsion fibre with a 24-hour signature, reaching $10^{-11}$. Adelberger's group at Washington (the "Eöt-Wash" collaboration) refined the technique through the 1990s to $10^{-13}$. In 2017 the French CNES satellite MICROSCOPE put two coaxial cylinders — one platinum, one titanium — into low Earth orbit and tracked their relative drift over two years of free-fall. The final 2022 result: $|\eta| < 1.4 \times 10^{-15}$.
+
+<SceneCard caption="FIG.25c — log-scale chart of the upper bound on |η| from Galileo's inferred 10⁻³ at Pisa to MICROSCOPE's 1.4 × 10⁻¹⁵ in low Earth orbit. Fourteen orders of magnitude in 400 years; every generation tightens the bound; every result is consistent with η = 0.">
+  <PrecisionProgressionScene />
+</SceneCard>
+
+That is fourteen orders of magnitude of improvement, sustained across four centuries, with not a single nonzero detection. The <Term slug="weak-equivalence-principle" /> is among the most precisely tested propositions in physics — comparable in stature to the constancy of $c$ that we charted in [the Michelson-Morley result](/relativity/michelson-morley) and the precision Lorentz tests of §05.4.
+
+<Callout variant="math">
+The MICROSCOPE bound $|\eta| < 1.4 \times 10^{-15}$ means that platinum and titanium fall toward Earth with accelerations equal to better than one part in $10^{15}$. The next-generation proposed STEP and Galileo Galilei satellite missions aim for $10^{-17}$ to $10^{-18}$. There is no theoretical signal in any well-tested model — but every order of magnitude is a new chance for nature to surprise.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Newton's coincidence, Einstein's reframe">
+
+The puzzle that drove <PhysicistLink slug="albert-einstein" /> to general relativity was not whether $m_g$ equals $m_i$ — by 1907 he was already convinced experimentally that they do, to whatever precision one could achieve. The puzzle was *why*. <PhysicistLink slug="isaac-newton" />'s framework treats inertial and gravitational mass as logically distinct properties of matter that happen to share a numerical value. To Newton this looked suspicious. To Einstein it looked like the universe was telling him something.
+
+His answer, which he later called "the happiest thought of my life," was that the equality is not a coincidence to be explained but a clue that gravity is not a force at all. In a freely falling laboratory — an elevator with the cable cut — every material falls together, so inside the elevator all gravitational effects vanish identically. From inside, the elevator is indistinguishable from a stationary lab in deep space. The geometry of free-fall trajectories is the geometry of inertial motion in disguise; gravity is what spacetime curvature looks like when you insist on describing it from a frame that resists the curvature.
+
+That reframe is the <Term slug="equivalence-principle" />, and the next two topics make it concrete: §06.2 walks through Einstein's elevator thought experiment in detail, deriving the gravitational time dilation that you've already met implicitly in [the GPS correction](/relativity/gps-as-relativity); §06.3 cashes the principle for the first laboratory test of GR (Pound-Rebka, 1960); and §06.4 closes the module by recasting gravity, all the way down, as the geometry of curved spacetime. The four-hundred-year ladder of $\eta$ measurements is what made all of that possible. Two definitions, one number — to thirteen decimal places, and the universe is still saying the same thing it told Galileo at Pisa.
+
+</Section>
+
+</TopicPageLayout>
