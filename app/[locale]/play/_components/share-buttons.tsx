@@ -64,7 +64,7 @@ export function ShareButtons({ shareTitle, sceneId, aiPromptKey }: Props) {
         type="button"
         onClick={copyLink}
         aria-label={t("copyLink")}
-        className="inline-flex h-8 w-8 items-center justify-center rounded text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
+        className="inline-flex h-8 w-8 items-center justify-center text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
       >
         {copied ? <Check size={14} /> : <Link2 size={14} />}
       </button>
@@ -73,16 +73,16 @@ export function ShareButtons({ shareTitle, sceneId, aiPromptKey }: Props) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label={t("tweet")}
-        className="inline-flex h-8 w-8 items-center justify-center rounded text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
+        className="inline-flex h-8 w-8 items-center justify-center text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
       >
         <XIcon size={14} />
       </a>
       <a
         href={askUrl}
         aria-label={t("explain")}
-        className="inline-flex h-8 items-center gap-1 rounded bg-[var(--color-cyan)] px-2 text-xs font-mono uppercase tracking-wider text-white hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)]"
+        className="inline-flex h-8 items-center gap-2 bg-[var(--color-cyan)] px-3 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)]"
       >
-        <Sparkles size={14} />
+        <Sparkles size={14} className="text-white" />
         <span>{t("explain")}</span>
       </a>
     </div>

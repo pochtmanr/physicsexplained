@@ -1,7 +1,7 @@
 "use client";
 import { usePathname } from "next/navigation";
 
-const HIDDEN_SEGMENTS = ["play"];
+const HIDDEN_SEGMENTS: string[] = [];
 
 export function NavGate({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? "";

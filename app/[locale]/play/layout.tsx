@@ -15,10 +15,13 @@ export default async function PlayLayout({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  // The shell (top bar + interactivity) is mounted per-page by playground-shell.tsx.
-  // Layout owns the absolute fullscreen frame so each page gets a clean 100dvh slot.
+  // Sits below the sticky site nav (h-12 mobile / md:h-14). Each playground
+  // page is a relative container the canvas can fill via absolute inset-0.
   return (
-    <div className="fixed inset-0 flex flex-col bg-[var(--color-bg-0)]">
+    <div
+      className="relative w-full bg-[var(--color-bg-0)]"
+      style={{ height: "calc(100dvh - 3rem)" }}
+    >
       {children}
     </div>
   );

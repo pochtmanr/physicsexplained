@@ -188,17 +188,21 @@ export function NBodyCanvas({
       const cx = w / 2;
       const cy = h / 2;
 
+      const cyan = colors.cyan || "#6FB8C6";
+
       // Draw trails
       if (trails) {
         for (const buf of trailsRef.current.values()) {
           for (const p of buf) {
             const alpha = Math.max(0, 1 - p.age / TRAIL_MAX_AGE_S) * 0.5;
-            ctx.fillStyle = `rgba(111, 184, 198, ${alpha})`;
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = cyan;
             const px = cx + (p.x - cam.panX) * cam.scale;
             const py = cy + (p.y - cam.panY) * cam.scale;
             ctx.fillRect(px - 1, py - 1, 2, 2);
           }
         }
+        ctx.globalAlpha = 1;
       }
 
       // Draw bodies
@@ -206,9 +210,9 @@ export function NBodyCanvas({
         const px = cx + (b.x - cam.panX) * cam.scale;
         const py = cy + (b.y - cam.panY) * cam.scale;
         const r = Math.max(3, Math.min(20, 4 + Math.sqrt(b.mass) * 3));
-        ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
+        ctx.shadowColor = cyan;
         ctx.shadowBlur = 12;
-        ctx.fillStyle = "#6FB8C6";
+        ctx.fillStyle = cyan;
         ctx.beginPath();
         ctx.arc(px, py, r, 0, Math.PI * 2);
         ctx.fill();
@@ -222,12 +226,14 @@ export function NBodyCanvas({
         if (b) {
           const px = cx + (b.x - cam.panX) * cam.scale;
           const py = cy + (b.y - cam.panY) * cam.scale;
-          ctx.strokeStyle = "rgba(111, 184, 198, 0.9)";
+          ctx.strokeStyle = cyan;
+          ctx.globalAlpha = 0.9;
           ctx.lineWidth = 2;
           ctx.beginPath();
           ctx.moveTo(px, py);
           ctx.lineTo(toX, toY);
           ctx.stroke();
+          ctx.globalAlpha = 1;
         }
       }
     },
