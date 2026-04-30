@@ -8,6 +8,7 @@ import { MessageBubble } from "./message-bubble";
 import { StreamingMessage } from "./streaming-message";
 import { MobileChatRailTrigger } from "./mobile-chat-rail";
 import { UpgradeModal } from "@/components/account/upgrade-modal";
+import { PhotoUpload } from "@/components/problems/photo-upload";
 
 const MODEL_KEY = "ask.modelId";
 
@@ -152,6 +153,9 @@ export function ChatScreen({ conversationId, variant, userName, children }: Prop
         className="fixed inset-x-0 bottom-0 z-30 md:static md:inset-auto md:bottom-auto shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] pb-[env(safe-area-inset-bottom)] md:pb-0"
       >
         <div className="mx-auto w-full max-w-4xl px-4 md:px-6 pb-3 pt-2 md:pb-4">
+          <div className="mb-2">
+            <PhotoUpload />
+          </div>
           <Composer
             value={text}
             onChange={setText}
