@@ -1,5 +1,4 @@
 import Link from "next/link";
-import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
@@ -15,6 +14,8 @@ import type { AsideLink } from "@/components/layout/aside-links";
 import { SceneCard } from "@/components/layout/scene-card";
 import { Visualization } from "@/components/physics/visualization-registry";
 import { RichText } from "@/components/content/rich-text";
+import { makeTopicMetadata } from "@/lib/seo/topic-metadata";
+import { TopicPageSeo } from "@/components/seo/topic-page-seo";
 
 const IMAGE_MARKER_RE = /^\[\[image:(\d+)\]\]$/;
 
@@ -157,14 +158,9 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
-}): Promise<Metadata> {
-  const { locale, slug } = await params;
-  const entry = await getContentEntry("glossary", slug, locale);
-  if (!entry) return {};
-  return {
-    title: `${entry.title} — physics`,
-    description: entry.subtitle ?? undefined,
-  };
+}) {
+  const { slug } = await params;
+  return makeTopicMetadata("glossary", slug)({ params });
 }
 
 export default async function DictionaryTermPage({
@@ -261,6 +257,7 @@ export default async function DictionaryTermPage({
 
   return (
     <ArticleLayout aside={asideLinks.length > 0 ? <AsideLinks links={asideLinks} /> : undefined}>
+      <TopicPageSeo kind="glossary" slug={slug} />
       <TopicHeader
         eyebrow={
           <>
