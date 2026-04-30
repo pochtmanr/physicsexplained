@@ -5,28 +5,9 @@ import { BranchHero } from "@/components/layout/branch-hero";
 import { ModuleChips } from "@/components/layout/module-chips";
 import { TopicCard } from "@/components/layout/topic-card";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { makeBranchMetadata } from "@/lib/seo/topic-metadata";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  const branch = getBranch("classical-mechanics");
-  if (!branch) return {};
-  const t = await getTranslations({ locale, namespace: "home.branches" });
-  const items = t.raw("items") as Record<
-    string,
-    { title?: string; subtitle?: string } | undefined
-  >;
-  const item = items["classical-mechanics"];
-  const title = item?.title ?? branch.title;
-  const description = item?.subtitle ?? branch.subtitle;
-  return {
-    title: `${title} — physics`,
-    description,
-  };
-}
+export const generateMetadata = makeBranchMetadata("classical-mechanics");
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
