@@ -1,0 +1,96 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Pound & Rebka", href: "/physicists/pound-rebka" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Mössbauer effect", href: "/dictionary/mossbauer-effect" },
+  { type: "term", label: "Equivalence principle", href: "/dictionary/equivalence-principle" },
+  { type: "term", label: "Einstein equivalence principle", href: "/dictionary/einstein-equivalence-principle" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.27 · EQUIVALENCE PRINCIPLE §06"
+  title="GRAVITATIONAL REDSHIFT"
+  subtitle="Climb out of a gravity well and your photons get tired."
+/>
+
+<Section index={1} title="The prediction from the equivalence principle alone">
+
+A photon emitted at the top of a tower and detected at the bottom must arrive bluer than it left. A photon emitted at the bottom and detected at the top must arrive redder. This is gravitational redshift, and it follows from the <Term slug="equivalence-principle" /> alone — without any field equations, without curvature, without anything that requires the apparatus of general relativity beyond what <PhysicistLink slug="albert-einstein" /> understood by 1907.
+
+The argument is short enough to fit in a paragraph. Imagine the tower replaced by a rocket of the same height accelerating uniformly at $g$ in deep space. By the equivalence principle, the experiments inside are indistinguishable from experiments in a stationary tower on Earth. In the rocket frame, a photon emitted at the top takes time $h/c$ to reach the bottom, during which the bottom of the rocket has accelerated to a small downward velocity $v = g h / c$ relative to the emission event. The detector at the bottom is moving toward the photon's source at this $v$, so it sees a Doppler blueshift of $\Delta\nu/\nu \approx v/c = g h / c^2$. Translate back to the tower on Earth via the equivalence principle, and the same shift must occur — in the same direction, with the same magnitude.
+
+<EquationBlock id="EQ.01">
+$$\frac{\Delta\nu}{\nu} = \frac{g h}{c^2}$$
+</EquationBlock>
+
+That is the entire prediction. It is exact to first order in $g h / c^2$ and requires no input beyond the <Term slug="einstein-equivalence-principle" />. The deeper geometric meaning — that this redshift IS the local content of spacetime curvature — is the subject of the next topic. For now, take it as a kinematic forecast: a 22.5-meter tower on Earth's surface should redshift a photon by
+
+$$\frac{\Delta\nu}{\nu} = \frac{(9.81\,\text{m/s}^2)(22.5\,\text{m})}{(3 \times 10^8\,\text{m/s})^2} \approx 2.46 \times 10^{-15}.$$
+
+Two and a half parts per quadrillion. To measure that, you need a frequency standard sharper than anything that existed before 1958.
+
+</Section>
+
+<Section index={2} title="The 22.5-meter tower at Harvard">
+
+The Jefferson Physical Laboratory at Harvard had a stairwell shaft running 22.5 meters from the basement to the top floor. In 1959, Robert Pound and his graduate student Glen Rebka strung a coaxial pipe down that shaft. At the top: a Co-57 source, decaying by electron capture into an excited state of Fe-57 that immediately emits a 14.4 keV gamma ray. At the bottom, twenty-two and a half meters lower in Earth's gravitational well: an Fe-57 absorber that resonantly absorbs the same 14.4 keV transition.
+
+<SceneCard caption="FIG.27a — THE MONEY SHOT. The Pound-Rebka tower at Harvard. A 14.4 keV gamma photon emitted by Co-57 at the top descends 22.5 meters to an Fe-57 absorber at the bottom, blueshifting by Δν/ν = gh/c² ≈ 2.46 × 10⁻¹⁵. The right panel shows the predicted shift, the measured (2.57 ± 0.26) × 10⁻¹⁵ from 1960, and the compensating Doppler velocity v = gh/c ≈ 0.74 μm/s — the speed at which the absorber must be driven to recover resonance.">
+  <PoundRebkaTowerScene />
+</SceneCard>
+
+The setup is so geometrically clean that it looks deceptively simple in a textbook. In 1959 it was a feat of precision experimental craft. The gamma source had to be cooled, vibration-isolated, and electrically driven on a piezoelectric stack at sub-micron-per-second velocities. The shaft was filled with helium to suppress refractive-index gradients. The absorber sat on a second piezoelectric driver. The signal — the gravitational shift — was four orders of magnitude smaller than the source-recoil shift it had to be measured against, and twelve orders of magnitude smaller than typical thermal Doppler broadening of any room-temperature gamma line.
+
+The reason any of this was possible at all is one specific discovery, made one year earlier, by a German graduate student named Rudolf Mössbauer.
+
+</Section>
+
+<Section index={3} title="The Mössbauer trick">
+
+When a free nucleus emits a gamma ray, conservation of momentum requires the nucleus to recoil. The recoil energy comes off the photon — and for a 14.4 keV line emitted by a single Fe-57 nucleus, the recoil shift is roughly $2 \times 10^{-3}$ eV, or $\Delta\nu/\nu \approx 10^{-7}$. That is a hundred million times the gravitational shift Pound and Rebka were trying to measure. With recoil included, the source line is so far from the absorber line that no resonance occurs at all.
+
+In 1958 Mössbauer showed that for nuclei embedded in a solid crystal lattice, a substantial fraction of gamma emissions occur with **no recoil at all** — the entire crystal absorbs the recoil momentum, and because the crystal is enormous compared to a single nucleus, the corresponding energy shift is unmeasurably small. The remaining linewidth is the natural linewidth of the excited state, which for Fe-57 is about $4.7 \times 10^{-9}$ eV, or $\Delta\nu/\nu \approx 3 \times 10^{-13}$. That's still 100 times wider than the gravitational shift, but the line shape is symmetric and stable, and a frequency offset of $10^{-15}$ relative to a $10^{-13}$-wide line can be pulled out by lock-in detection.
+
+<SceneCard caption="FIG.27b — Mössbauer absorption spectrum. The natural Fe-57 resonance (red) peaks when source and absorber are at rest relative to each other. The gravitationally shifted resonance (blue) peaks when the absorber is moved toward the source at v ≈ gh/c ≈ 0.74 μm/s — the compensating Doppler velocity that exactly cancels the gravitational shift. Drag the slider to find resonance manually.">
+  <MossbauerResonanceScene />
+</SceneCard>
+
+The technique is to drive the absorber slowly back and forth on its piezoelectric stack, sweeping the absorber-frame frequency through resonance, and measure the transmission as a function of the drive velocity. The shift in the resonance peak, divided by $c$, is the redshift. For a 22.5-meter Earth tower, that peak should sit at $v = g h / c \approx 0.74\,\mu$m/s. Less than a micrometer per second. About the speed at which a slow-growing fingernail extends.
+
+</Section>
+
+<Section index={4} title="The result">
+
+Pound and Rebka published their result in *Physical Review Letters* in April 1960, under the title *Apparent Weight of Photons*. The measured fractional shift was $(2.57 \pm 0.26) \times 10^{-15}$ — agreement with the predicted $2.46 \times 10^{-15}$ at better than 10%, well within the one-sigma error bar.
+
+<SceneCard caption="FIG.27c — Predicted vs measured for the 22.5 m tower, plus a half-century timeline of confirmations. Pound-Rebka 1960 (10%) → Pound-Snider 1965 (1%) → Vessot GP-A 1976, hydrogen maser on a sub-orbital rocket (10⁻⁴) → optical-clock altitude comparisons in the 2010s (10⁻⁵). Every test is consistent with the equivalence principle prediction.">
+  <PredictedVsObservedScene />
+</SceneCard>
+
+In 1965 Pound and his new graduate student Joseph Snider repeated the measurement with refined apparatus and pushed the agreement to 1% — the ratio of measured to predicted came out as $0.9990 \pm 0.0076$. Two decimals of agreement between a 22.5-meter undergraduate-physics-shaft experiment and a thought experiment Einstein had written down on the back of an envelope in the Bern patent office in 1907.
+
+<Callout variant="math">
+The compensating velocity $v = gh/c$ is small but not arbitrarily small. For the GP-A 1976 experiment a hydrogen maser was sent up on a Scout rocket to 10,000 km altitude; the gravitational frequency shift was $\Delta\nu/\nu \approx 4.5 \times 10^{-10}$, and the corresponding compensating velocity was about 13 cm/s — easy to track with Doppler-tracking radar. The subsequent agreement with the equivalence principle prediction was 70 parts per million.
+</Callout>
+
+In the sixty-five years since Pound-Rebka, every refinement of the measurement has agreed with the prediction. Atomic-clock altitude comparisons in optical lattices have confirmed the redshift on tabletops at the $10^{-5}$ fractional level. The redshift is also the only reason GPS works: integrate $g h / c^2$ over a satellite's orbit at 20,200 km altitude and you get +45 microseconds per day — the [GR clock correction](/relativity/gps-as-relativity) baked into every receiver firmware.
+
+</Section>
+
+<Section index={5} title="Why this experiment matters more than the number">
+
+Pound-Rebka was the first laboratory test of general relativity. Mercury's perihelion precession (1859 anomaly, 1916 explanation) and the 1919 Eddington eclipse measurement of light-bending were both astronomical — they involved the full curvature of spacetime around the Sun, and required field-equation solutions to extract a prediction. Pound-Rebka required nothing of the sort. The entire prediction $\Delta\nu/\nu = gh/c^2$ comes out of the <Term slug="equivalence-principle" /> on its own, with only the rocket thought experiment as derivation.
+
+That is the reason the result has the weight it does. It says: the equivalence principle is not just a slogan or a thought-experiment heuristic. It is a quantitative physical statement, and the universe respects it to better than 1% on a 22.5-meter tower in Cambridge, Massachusetts. Whatever else general relativity has to say, it has to begin with this.
+
+The next topic ([gravity as geometry](/relativity/gravity-as-geometry)) cashes in the geometric meaning. The redshift you just measured is not a coincidence of clocks — it is the direct, local consequence of the fact that spacetime is curved by mass. A clock at the top of the tower and a clock at the bottom are not measuring the same thing, because they are not following the same proper time along their worldlines. The "gravitational redshift" is what you call the mismatch when you compare the two as though they were a single frequency standard. They are not. Geometry forbids it. Pound and Rebka measured the geometry of spacetime in a stairwell.
+
+</Section>
+
+</TopicPageLayout>
