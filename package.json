@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "content:publish": "tsx --conditions=react-server scripts/content/publish.ts",
     "content:translate": "tsx --conditions=react-server scripts/content/translate.ts",
-    "ask:sync-scenes": "tsx --conditions=react-server scripts/ask/sync-scene-catalog.ts"
+    "ask:sync-scenes": "tsx --conditions=react-server scripts/ask/sync-scene-catalog.ts",
+    "seo:codemod": "tsx scripts/seo/apply-codemod.ts"
   },
   "dependencies": {
     "@chenglou/pretext": "0.0.5",

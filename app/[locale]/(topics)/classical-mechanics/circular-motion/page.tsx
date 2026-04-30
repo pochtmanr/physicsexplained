@@ -6,8 +6,12 @@ import { ContentBlocks } from "@/components/content/content-blocks";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import type { AsideLink } from "@/components/layout/aside-links";
+import { makeTopicMetadata } from "@/lib/seo/topic-metadata";
+import { TopicPageSeo } from "@/components/seo/topic-page-seo";
 
 const SLUG = "classical-mechanics/circular-motion";
+
+export const generateMetadata = makeTopicMetadata("topic", SLUG);
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -32,6 +36,7 @@ export default async function Page({
 
   return (
     <TopicPageLayout aside={aside}>
+      <TopicPageSeo kind="topic" slug={SLUG} />
       <TopicHeader
         eyebrow={eyebrow}
         title={entry.title}
