@@ -9,8 +9,25 @@ import { StreamingMessage } from "./streaming-message";
 import { MobileChatRailTrigger } from "./mobile-chat-rail";
 import { UpgradeModal } from "@/components/account/upgrade-modal";
 import { PhotoUpload } from "@/components/problems/photo-upload";
+import { InlineScene } from "./inline-scene";
 
 const MODEL_KEY = "ask.modelId";
+
+function parseDeeplinkParams(raw: string): Record<string, unknown> {
+  if (!raw) return {};
+  try {
+    const padded = raw.replace(/-/g, "+").replace(/_/g, "/");
+    const pad = padded.length % 4;
+    const full = pad ? padded + "=".repeat(4 - pad) : padded;
+    return JSON.parse(
+      typeof window === "undefined"
+        ? Buffer.from(full, "base64").toString("utf-8")
+        : decodeURIComponent(escape(window.atob(full))),
+    ) as Record<string, unknown>;
+  } catch {
+    return {};
+  }
+}
 
 // Pin a fixed-position composer above the iOS / Android virtual keyboard.
 // Writes `bottom` straight to the DOM via ref to avoid a React re-render on
@@ -48,9 +65,10 @@ interface Props {
   variant: "landing" | "conversation";
   userName?: string | null;
   children?: React.ReactNode; // Transcript for conversation variant
+  deeplink?: { sceneId: string; params: string; prompt: string } | null;
 }
 
-export function ChatScreen({ conversationId, variant, userName, children }: Props) {
+export function ChatScreen({ conversationId, variant, userName, children, deeplink }: Props) {
   const { locale } = useParams() as { locale: string };
   const router = useRouter();
 
@@ -61,6 +79,19 @@ export function ChatScreen({ conversationId, variant, userName, children }: Prop
     if (typeof window === "undefined") return DEFAULT_MODEL_ID;
     return window.localStorage.getItem(MODEL_KEY) ?? DEFAULT_MODEL_ID;
   });
+
+  useEffect(() => {
+    if (!deeplink) return;
+    setText(deeplink.prompt);
+    if (typeof window !== "undefined" && window.location.search) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("scene");
+      url.searchParams.delete("params");
+      url.searchParams.delete("prompt");
+      window.history.replaceState({}, "", url.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deeplink?.sceneId]);
 
   const onModelChange = (id: string) => {
     setModelId(id);
@@ -120,11 +151,21 @@ export function ChatScreen({ conversationId, variant, userName, children }: Prop
 
       {showEmpty ? (
         <div className="flex-1 flex items-center justify-center px-4 py-8 md:py-16 pb-[calc(11rem+env(safe-area-inset-bottom))] md:pb-0">
+          {deeplink ? (
+            <div className="px-4 pt-2">
+              <InlineScene id={deeplink.sceneId} params={parseDeeplinkParams(deeplink.params)} />
+            </div>
+          ) : null}
           <EmptyState onPick={(p) => submit(p)} userName={userName ?? null} />
         </div>
       ) : (
         <div ref={scrollRef} className="flex-1 overflow-y-auto">
           <div className="mx-auto w-full max-w-4xl px-4 md:px-6 py-6 pb-[calc(10rem+env(safe-area-inset-bottom))] md:pb-6">
+            {deeplink ? (
+              <div className="px-4 pt-2">
+                <InlineScene id={deeplink.sceneId} params={parseDeeplinkParams(deeplink.params)} />
+              </div>
+            ) : null}
             {children}
             {pending && (
               <>

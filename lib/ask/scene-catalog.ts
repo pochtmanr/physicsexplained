@@ -4,6 +4,7 @@
 // validated by tests/ask/scene-catalog-contract.test.ts (not here, to keep
 // this file safe to import from CLI scripts without pulling React/Next).
 import { z } from "zod";
+import { orbitalSchema } from "@/components/playgrounds/orbital-mechanics/schema";
 
 export interface SceneCatalogEntry {
   id: string;
@@ -36,7 +37,7 @@ export const SCENE_CATALOG: SceneCatalogEntry[] = [
     paramsSchema: z.object({}).partial(),
   },
   {
-    id: "PhaseSpaceScene",
+    id: "PhasePortrait",
     label: "Phase-space portrait",
     description: "Trajectories in (theta, theta-dot) phase space for a pendulum.",
     tags: ["oscillation", "phase-space", "mechanics"],
@@ -130,6 +131,14 @@ export const SCENE_CATALOG: SceneCatalogEntry[] = [
     tags: ["newton", "forces", "mechanics"],
     topicSlugs: ["classical-mechanics/newtons-three-laws"],
     paramsSchema: z.object({}).partial(),
+  },
+  {
+    id: "OrbitalMechanicsPlayground",
+    label: "Orbital mechanics playground",
+    description: "Interactive N-body gravitational system. Drop bodies, drag to set velocity, watch chaos.",
+    tags: ["orbit", "n-body", "chaos", "gravity", "playground"],
+    topicSlugs: ["classical-mechanics/kepler", "classical-mechanics/universal-gravitation"],
+    paramsSchema: orbitalSchema,
   },
 ];
 

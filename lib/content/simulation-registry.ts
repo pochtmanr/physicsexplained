@@ -142,6 +142,9 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   OrbitScene: lazyScene(() =>
     import("@/components/physics/orbit-scene").then((m) => ({ default: m.OrbitScene })),
   ),
+  OrbitalMechanicsPlayground: lazyScene(() =>
+    import("@/components/playgrounds/orbital-mechanics").then((m) => ({ default: m.OrbitalMechanicsPlayground })),
+  ),
   ParallelAxisTheoremScene: lazyScene(() =>
     import("@/components/physics/parallel-axis-theorem-scene").then((m) => ({ default: m.ParallelAxisTheoremScene })),
   ),

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { locales } from "@/i18n/config";
 import { Nav } from "@/components/layout/nav";
+import { NavGate } from "@/components/layout/nav-gate";
 import { Footer } from "@/components/layout/footer";
 import { FooterGate } from "@/components/layout/footer-gate";
 import { HtmlDirSync } from "@/components/layout/html-dir-sync";
@@ -31,7 +32,9 @@ export default async function LocaleLayout({
       <HtmlDirSync />
       <RouteScrollManager />
       <RouteProgress />
-      <Nav />
+      <NavGate>
+        <Nav />
+      </NavGate>
       <div className="flex-1">{children}</div>
       <FooterGate>
         <Footer />
