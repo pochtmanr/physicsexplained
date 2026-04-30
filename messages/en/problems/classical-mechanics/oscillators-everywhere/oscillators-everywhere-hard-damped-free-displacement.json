@@ -1,0 +1,48 @@
+{
+  "statement": "A 1 kg mass on a spring (k = 25 N/m) is released from rest at x₀ = 0.30 m. The damping force is F_d = −bẋ with b = 2 N·s/m. Determine: (a) the natural angular frequency ω₀, (b) the damping coefficient γ = b/m, (c) whether the system is underdamped, and (d) the damped angular frequency ω_D. Then find the displacement x at t = 1.5 s, and the amplitude decay time constant τ.",
+  "steps": {
+    "omega0": {
+      "prompt": "Find the natural angular frequency ω₀ as if there were no damping (b = 0).",
+      "hint": "ω₀ = √(k/m). This is the frequency the oscillator would have without any friction.",
+      "commonMistakes": [
+        "Including b in the formula — ω₀ is the undamped natural frequency",
+        "Writing ω₀ = √(k/m) but then using it where ω_D is needed"
+      ]
+    },
+    "gamma": {
+      "prompt": "The equation of motion for damped SHM is x″ + γx′ + ω₀²x = 0, where γ = b/m. Calculate γ.",
+      "hint": "Divide the damping constant b by the mass m.",
+      "commonMistakes": [
+        "Using γ = b instead of b/m — forgetting to divide by mass",
+        "Confusing γ (damping coefficient, s⁻¹) with b (damping constant, N·s/m)"
+      ]
+    },
+    "omegaD": {
+      "prompt": "Confirm underdamping (ω₀² > γ²/4) and find the damped angular frequency ω_D = √(ω₀² − γ²/4).",
+      "hint": "Underdamped means the system oscillates with a shrinking amplitude. The oscillation frequency shifts from ω₀ down to ω_D.",
+      "commonMistakes": [
+        "Writing ω_D = √(ω₀² − γ²) — the damping term is γ²/4, not γ²",
+        "Checking ω₀ > γ instead of ω₀² > γ²/4 for the underdamping condition"
+      ]
+    },
+    "x_at_t": {
+      "prompt": "For an underdamped oscillator starting from x₀ with zero velocity, the displacement is x(t) = x₀ e^(−γt/2)[cos(ω_D t) + (γ/2ω_D) sin(ω_D t)]. Evaluate this at t = 1.5 s.",
+      "hint": "The exponential factor e^(−γt/2) multiplies a sinusoidal envelope. The extra sin term corrects for the zero-velocity initial condition.",
+      "commonMistakes": [
+        "Using e^(−γt) instead of e^(−γt/2) — the decay constant in the exponent is γ/2, not γ",
+        "Dropping the sin correction term — that term is essential when initial velocity is zero",
+        "Using ω₀ instead of ω_D inside the trigonometric functions"
+      ]
+    },
+    "tau": {
+      "prompt": "The amplitude decays as e^(−t/τ) where τ is the time constant. Express τ in terms of γ.",
+      "hint": "Comparing e^(−γt/2) with e^(−t/τ) gives τ = 2/γ.",
+      "commonMistakes": [
+        "Writing τ = 1/γ — off by a factor of 2 because the exponent is −γt/2",
+        "Confusing τ (amplitude decay) with T_D (damped period) — they are different quantities"
+      ]
+    }
+  },
+  "finalAnswerProse": "ω₀ = 5 rad/s, γ = 2 s⁻¹, ω_D = √24 ≈ 4.899 rad/s (underdamped). At t = 1.5 s the displacement is approximately 0.0136 m. The amplitude decay time constant is τ = 1 s.",
+  "walkthrough": "Damping modifies simple harmonic motion by adding a velocity-proportional drag force F_d = −bẋ. The equation x″ + γx′ + ω₀²x = 0 (with γ = b/m = 2 s⁻¹, ω₀ = 5 rad/s) has three possible regimes. Checking ω₀² = 25 against γ²/4 = 1 confirms underdamping: the system oscillates. The damped frequency is ω_D = √(25 − 1) = √24 ≈ 4.90 rad/s — slightly slower than ω₀ because damping robs the oscillator of some effective stiffness. The solution for zero initial velocity is x(t) = x₀ e^(−γt/2)[cos(ω_D t) + (γ/2ω_D) sin(ω_D t)]. At t = 1.5 s, the exponential factor is e^(−1.5) ≈ 0.223, and the trigonometric part evaluates to give x ≈ 0.0136 m — the oscillator has lost most of its initial amplitude in just over one decay time. The time constant τ = 2/γ = 1 s sets the scale for that decay. This same underdamped profile governs a swinging door closer, a car shock absorber, and a plucked guitar string."
+}

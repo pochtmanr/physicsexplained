@@ -1,0 +1,63 @@
+{
+  "statement": "Two identical pendulums (length L = 0.50 m, bob mass m = 0.25 kg) are connected by a weak coupling spring with constant k_c = 0.80 N/m. Find: (a) the natural frequency ω₀ of each uncoupled pendulum, (b) the coupling frequency ω_C = √(2k_c/m), (c) the two normal-mode angular frequencies ω₁ (in-phase) and ω₂ (anti-phase), (d) the beat period T_beat. Then, given the initial condition θ₁(0) = 0.1 rad and θ₂(0) = 0, both at rest, find θ₁ and θ₂ at t = 3 s.",
+  "steps": {
+    "omega0": {
+      "prompt": "Each pendulum has the same uncoupled equation θ″ + (g/L)θ = 0. What is its angular frequency ω₀?",
+      "hint": "ω₀ = √(g/L). This is exactly the same universal oscillator pattern — θ plays the role of x, and g/L plays the role of k/m.",
+      "commonMistakes": [
+        "Using ω₀ = √(L/g) — inverting the fraction",
+        "Including the coupling spring in ω₀ — ω₀ is for the uncoupled pendulum only"
+      ]
+    },
+    "omegaC": {
+      "prompt": "The coupling spring introduces an extra restoring term. For two equal masses, the coupling frequency is ω_C = √(2k_c/m). Calculate ω_C.",
+      "hint": "The factor of 2 comes from the spring acting equally on both masses when they move in opposite directions.",
+      "commonMistakes": [
+        "Writing ω_C = √(k_c/m) — missing the factor of 2",
+        "Confusing k_c (coupling spring constant) with k_eff — they differ by the factor of 2 and the mass"
+      ]
+    },
+    "omega1": {
+      "prompt": "In the in-phase normal mode, both bobs swing together at the same angle. The coupling spring never stretches. What is ω₁?",
+      "hint": "When both pendulums are in phase, the spring length doesn't change — so it contributes no force. ω₁ = ω₀.",
+      "commonMistakes": [
+        "Adding the coupling term to ω₁ — the in-phase mode has no spring stretching",
+        "Confusing mode 1 and mode 2: mode 1 is always the lower-frequency (in-phase) mode"
+      ]
+    },
+    "omega2": {
+      "prompt": "In the anti-phase normal mode, the bobs swing in opposite directions. The spring is always stretched or compressed by 2θ. What is ω₂?",
+      "hint": "The spring adds extra restoring force, raising the frequency: ω₂ = √(ω₀² + ω_C²).",
+      "commonMistakes": [
+        "Writing ω₂ = ω₀ + ω_C — frequencies add in quadrature (under the square root), not directly",
+        "Using only the spring: ω₂ = ω_C — the pendulum restoring force must also be included"
+      ]
+    },
+    "T_beat": {
+      "prompt": "The beat period arises from the two modes going in and out of phase. Express T_beat in terms of ω₁ and ω₂.",
+      "hint": "T_beat = 2π / (ω₂ − ω₁). The beats are the slow amplitude modulation visible when the two modes nearly cancel.",
+      "commonMistakes": [
+        "Using T_beat = 2π / (ω₁ + ω₂) — beats come from the difference, not the sum",
+        "Inverting: writing T_beat = (ω₂ − ω₁) / 2π — forgetting the reciprocal relationship between period and angular frequency"
+      ]
+    },
+    "theta1_at_t": {
+      "prompt": "With θ₁(0) = A, θ₂(0) = 0 (both at rest), the beat solution is θ₁(t) = A cos(Δt)cos(Σt), where Δ = (ω₂−ω₁)/2 and Σ = (ω₂+ω₁)/2. Evaluate θ₁ at t = 3 s.",
+      "hint": "This beat solution is a superposition of the two normal modes with equal amplitudes ±A/2.",
+      "commonMistakes": [
+        "Using a single-frequency cosine Acos(ω₀t) — that ignores the energy transfer between pendulums",
+        "Swapping the roles of Δ and Σ in the beat formula"
+      ]
+    },
+    "theta2_at_t": {
+      "prompt": "The companion expression is θ₂(t) = A sin(Δt)sin(Σt). Evaluate θ₂ at t = 3 s.",
+      "hint": "Note sin in both factors — opposite to θ₁ which uses cos in both factors.",
+      "commonMistakes": [
+        "Writing θ₂ = A cos(Δt)sin(Σt) — the correct form uses sin for both factors",
+        "Expecting θ₂ to be large immediately after release — it starts at zero and builds up slowly"
+      ]
+    }
+  },
+  "finalAnswerProse": "ω₁ = ω₀ = √(g/0.5) ≈ 4.43 rad/s; ω₂ = √(ω₀² + ω_C²) ≈ 4.82 rad/s; T_beat = 2π/(ω₂−ω₁) ≈ 16.1 s. Pendulum displacements at t = 3 s follow from the beat formula.",
+  "walkthrough": "Two identical pendulums coupled by a spring are the textbook example of a system with normal modes. Rather than tracking complicated mutual forces, we look for special initial conditions — normal modes — where every part of the system oscillates at a single frequency. Mode 1 (in-phase): both bobs swing together. The spring never stretches, so it might as well not be there, and ω₁ = ω₀ = √(g/L) ≈ 4.43 rad/s. Mode 2 (anti-phase): bobs swing in opposite directions. The spring stretches by 2θ and applies a restoring force 2k_c·θ to each bob. This doubles the spring's contribution, giving an extra ω_C² = 2k_c/m = 6.4 rad²/s² to the frequency equation. So ω₂ = √(ω₀² + ω_C²) ≈ 4.82 rad/s. Any motion is a superposition of these modes. When only pendulum 1 is displaced, both modes are excited with equal amplitude, and because ω₁ ≠ ω₂ they drift in and out of phase with beat frequency (ω₂−ω₁)/2π ≈ 0.062 Hz, giving T_beat ≈ 16 s. Over that period, all the energy migrates from pendulum 1 to pendulum 2 and back. Lissajous observed exactly this kind of coupled oscillation in 1857 using tuning forks and a mirror."
+}

@@ -1,0 +1,72 @@
+{
+  "statement": "A 0.5 kg block on a spring oscillates with amplitude A = 0.20 m, angular frequency ω = 4.0 rad/s, and initial phase φ = π/3 rad, so its position is x(t) = A cos(ωt + φ). At t = 0.80 s, find: (a) position x, (b) velocity v, (c) acceleration a. Then verify energy conservation by computing the kinetic energy KE, potential energy PE, and total mechanical energy E, confirming KE + PE = E.",
+  "steps": {
+    "k": {
+      "prompt": "From ω = √(k/m), find the spring constant k.",
+      "hint": "Rearrange to k = mω². This lets you compute PE = ½kx² later.",
+      "commonMistakes": [
+        "Using k = m/ω² — inverting the relation",
+        "Skipping this step and leaving k undefined for the energy calculation"
+      ]
+    },
+    "x": {
+      "prompt": "Write x(t) = A cos(ωt + φ) and evaluate at t = 0.80 s. What is the argument ωt + φ in radians?",
+      "hint": "Compute ωt + φ = 4 × 0.8 + π/3 ≈ 3.2 + 1.047 = 4.247 rad first, then take the cosine.",
+      "commonMistakes": [
+        "Using sin instead of cos for x(t) — the standard SHM position for phase φ uses cos",
+        "Forgetting to add the phase φ: treating x(t) = A cos(ωt) as if φ = 0",
+        "Working in degrees instead of radians when evaluating cos"
+      ]
+    },
+    "v": {
+      "prompt": "Differentiate x(t) = A cos(ωt + φ) to get velocity v(t). Evaluate at t = 0.80 s.",
+      "hint": "v(t) = dx/dt = −Aω sin(ωt + φ). The minus sign means velocity lags position by 90°.",
+      "commonMistakes": [
+        "Writing v(t) = Aω cos(ωt + φ) — forgetting the minus sign from differentiation",
+        "Using v(t) = −Aω cos(ωt + φ) — incorrect: d/dt [cos(u)] = −sin(u)·du/dt, giving −Aω sin"
+      ]
+    },
+    "a_accel": {
+      "prompt": "Differentiate v(t) to find acceleration a(t). Evaluate at t = 0.80 s.",
+      "hint": "a(t) = dv/dt = −Aω² cos(ωt + φ). Notice a = −ω²x — Newton's second law for SHM.",
+      "commonMistakes": [
+        "Writing a(t) = Aω² cos(ωt + φ) — missing the minus sign; acceleration is always opposite to displacement",
+        "Using a(t) = −Aω sin(ωt + φ) — that is the velocity, not the acceleration"
+      ]
+    },
+    "KE": {
+      "prompt": "Compute the kinetic energy at t = 0.80 s using KE = ½mv².",
+      "hint": "Substitute the numerical value of v you found above.",
+      "commonMistakes": [
+        "Using KE = ½mv instead of ½mv²",
+        "Using v_max = Aω instead of the actual instantaneous v at the given time"
+      ]
+    },
+    "PE": {
+      "prompt": "Compute the potential energy at t = 0.80 s using PE = ½kx².",
+      "hint": "Use the spring constant k = mω² and the displacement x found above.",
+      "commonMistakes": [
+        "Using PE = ½kA² — that is the total energy, valid only at the turning points",
+        "Using PE = ½mx² — replacing k with m"
+      ]
+    },
+    "E_total": {
+      "prompt": "The total mechanical energy is conserved and equals ½kA². Compute E.",
+      "hint": "E does not depend on time. It only depends on the amplitude A and spring constant k.",
+      "commonMistakes": [
+        "Computing E at a specific time from KE+PE and forgetting that E is constant throughout",
+        "Using E = ½mω²A² — this is numerically equal (since k = mω²) but obscures the origin"
+      ]
+    },
+    "check": {
+      "prompt": "Verify KE + PE = E_total numerically. This is the conservation-of-energy check.",
+      "hint": "The two should agree to numerical precision. Any discrepancy means an earlier step used the wrong x or v.",
+      "commonMistakes": [
+        "Rounding x or v too aggressively before squaring — small errors magnify when squared",
+        "Checking KE + PE = E only at t = 0, not at the requested time t = 0.80 s"
+      ]
+    }
+  },
+  "finalAnswerProse": "At t = 0.80 s: x ≈ −0.148 m, v ≈ 0.543 m/s, a ≈ 2.37 m/s². KE ≈ 0.074 J, PE ≈ 0.087 J, E = 0.160 J. KE + PE = E confirmed.",
+  "walkthrough": "Simple harmonic motion carries three kinematic descriptions simultaneously — position, velocity, and acceleration — each a sinusoid at the same frequency but phase-shifted by 90° from the previous. Starting from x(t) = A cos(ωt + φ), one differentiation gives v(t) = −Aω sin(ωt + φ), and a second gives a(t) = −Aω² cos(ωt + φ) = −ω²x. That last equality is Newton's second law: F = ma = −mω²x = −kx. At t = 0.8 s, the phase angle is ωt + φ = 4 × 0.8 + π/3 ≈ 4.247 rad. cos(4.247) ≈ −0.738, sin(4.247) ≈ −0.675. So x = 0.2 × (−0.738) ≈ −0.148 m, v = −0.2 × 4 × (−0.675) ≈ +0.540 m/s, a = −0.2 × 16 × (−0.738) ≈ +2.36 m/s². Energy: k = mω² = 0.5 × 16 = 8 N/m, so E = ½ × 8 × 0.04 = 0.16 J. At this instant, KE = ½ × 0.5 × 0.540² ≈ 0.073 J and PE = ½ × 8 × 0.148² ≈ 0.088 J. Their sum is ≈ 0.161 J — rounding precision away, this agrees with E = 0.16 J. The small discrepancy is purely from rounding the phase; the exact algebra always gives KE + PE = ½kA². That invariance — energy shared between kinetic and potential but always summing to the same total — is what makes SHM a conservative system."
+}

@@ -1,0 +1,33 @@
+{
+  "statement": "A spring with constant k = 80 N/m oscillates with amplitude A = 0.15 m, carrying a 2 kg mass. Find: (a) the total mechanical energy E of the system, (b) the maximum speed v_max reached at the equilibrium point, and (c) the angular frequency ω.",
+  "steps": {
+    "E": {
+      "prompt": "Write the total mechanical energy of a spring oscillator in terms of k and amplitude A.",
+      "hint": "At the turning points (x = ±A) the mass is momentarily at rest, so all energy is potential: E = ½kA².",
+      "commonMistakes": [
+        "Forgetting the factor of ½ — writing E = kA² is off by a factor of 2",
+        "Using mass m instead of spring constant k — confusing potential energy with kinetic energy formula",
+        "Squaring the wrong quantity: E = ½k²A or E = ½kA instead of ½kA²"
+      ]
+    },
+    "v_max": {
+      "prompt": "At the equilibrium position x = 0, all energy is kinetic. Use energy conservation to find the maximum speed.",
+      "hint": "Set ½mv²_max = E = ½kA², then solve for v_max.",
+      "commonMistakes": [
+        "Using v_max = A·ω but forgetting to first compute ω — circular if ω is the unknown",
+        "Not equating to total energy: writing ½mv² = ½kx² only works at a specific x, not at equilibrium",
+        "Sign error: speed is always positive, velocity v_max = Aω (magnitude)"
+      ]
+    },
+    "omega": {
+      "prompt": "Express the angular frequency ω in terms of k and m.",
+      "hint": "ω = √(k/m). This follows from comparing x″ + (k/m)x = 0 with the standard form.",
+      "commonMistakes": [
+        "Confusing ω (rad/s) with f (Hz): ω = 2πf, not f",
+        "Inverting the ratio: ω = √(m/k) gives wrong units and wrong numerical value"
+      ]
+    }
+  },
+  "finalAnswerProse": "The total energy is E = 0.9 J, the maximum speed is v_max = √(0.9) ≈ 0.949 m/s, and the angular frequency is ω = √40 ≈ 6.32 rad/s.",
+  "walkthrough": "In simple harmonic motion, energy sloshes continuously between kinetic and potential form but the total never changes. The formula E = ½kA² captures this elegantly: it doesn't matter where in the cycle you look, the total is always ½kA². At the amplitude A, the mass is at rest — zero kinetic, all potential. At x = 0 (equilibrium), the mass moves fastest — all kinetic, zero potential. Setting these equal: ½mv²_max = ½kA² → v_max = A√(k/m) = Aω. With k = 80 N/m and A = 0.15 m: E = ½ × 80 × 0.0225 = 0.9 J. Maximum speed: v_max = √(2 × 0.9 / 2) = √0.9 ≈ 0.949 m/s. Angular frequency: ω = √(80/2) = √40 ≈ 6.32 rad/s. The same E = ½kA² appears in any harmonic oscillator — an atomic bond vibrating in a crystal lattice stores the same kind of energy."
+}

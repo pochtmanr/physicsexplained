@@ -1,0 +1,24 @@
+{
+  "statement": "A 0.5 kg block is attached to a spring with spring constant k = 200 N/m on a frictionless surface. Find the angular frequency ω of oscillation and the period T. (Use x″ + ω²x = 0 — the universal oscillator equation.)",
+  "steps": {
+    "omega": {
+      "prompt": "Write an expression for the angular frequency ω of a mass-spring oscillator in terms of k and m.",
+      "hint": "Compare x″ + (k/m)x = 0 with the standard form x″ + ω²x = 0. The coefficient of x is ω².",
+      "commonMistakes": [
+        "Writing ω = k/m instead of ω = √(k/m) — forgetting the square root",
+        "Confusing ω (angular frequency, rad/s) with f (frequency in Hz) — they differ by a factor of 2π",
+        "Inverting the fraction: ω = √(m/k) belongs to a pendulum (with g/L), not a spring"
+      ]
+    },
+    "T": {
+      "prompt": "Use ω to find the period T. How many radians are in one full cycle?",
+      "hint": "One complete oscillation sweeps 2π radians, so T = 2π/ω.",
+      "commonMistakes": [
+        "Writing T = 1/ω instead of T = 2π/ω",
+        "Confusing period T with frequency f — they are reciprocals, not equal"
+      ]
+    }
+  },
+  "finalAnswerProse": "The angular frequency is ω = 20 rad/s and the period is T = 2π/20 ≈ 0.314 s.",
+  "walkthrough": "The equation of motion for a mass on a spring is F = −kx, or equivalently x″ = −(k/m)x. This is exactly x″ + ω²x = 0 with ω² = k/m. The same mathematical structure appears in pendulums (ω² = g/L), LC circuits (ω² = 1/LC), and even molecular bonds — which is why this topic is called 'oscillators everywhere.' Here, ω = √(200/0.5) = √400 = 20 rad/s. The period follows immediately: T = 2π/ω = 2π/20 ≈ 0.314 s. Note that period decreases with stiffer springs (larger k) and increases with heavier masses (larger m) — both intuitive. Heavier mass → more inertia → slower oscillation. Stiffer spring → stronger restoring force → faster oscillation."
+}
