@@ -37,7 +37,7 @@ export const SCENE_CATALOG: SceneCatalogEntry[] = [
     paramsSchema: z.object({}).partial(),
   },
   {
-    id: "PhaseSpaceScene",
+    id: "PhasePortrait",
     label: "Phase-space portrait",
     description: "Trajectories in (theta, theta-dot) phase space for a pendulum.",
     tags: ["oscillation", "phase-space", "mechanics"],
