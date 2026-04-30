@@ -1,0 +1,101 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BellTwoRocketsScene } from "@/components/physics/bells-spaceship-paradox/two-rockets-scene";
+import { StringStretchesScene } from "@/components/physics/bells-spaceship-paradox/string-stretches-scene";
+import { BornRigidComparisonScene } from "@/components/physics/bells-spaceship-paradox/born-rigid-comparison-scene";
+
+<TopicPageLayout aside={[
+  { type: "term", label: "Bell's spaceship paradox", href: "/dictionary/bell-spaceship-paradox" },
+  { type: "term", label: "Born rigidity", href: "/dictionary/born-rigidity" },
+  { type: "term", label: "Length contraction", href: "/dictionary/length-contraction" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.22 · SR APPLICATIONS"
+  title="BELL'S SPACESHIP PARADOX"
+  subtitle="A string between two synchronized rockets, and the geometry that snaps it."
+/>
+
+<Section index={1} title="The puzzle — two rockets, one string">
+
+In 1976, John S. Bell asked his colleagues at CERN a question. (He had stolen the puzzle, in spirit, from a 1959 note by Edmond Dewan and Michael Beran, but it was Bell's name that stuck.) Take two identical rockets, sitting at rest on the same launch rail, separated by some distance $D_0$. Tie a delicate string between them — long enough to span $D_0$ at rest, with no slack. Now have both rockets ignite their engines at exactly the same instant in the launch frame, and follow exactly the same acceleration profile, second by second, second by second. They speed up in lockstep. Their lab-frame separation never changes.
+
+Question: does the string break?
+
+Bell told the story that he polled the CERN theory cafeteria and got a roughly even split. Half the table said no — the rockets keep the same separation, so the string is fine. The other half said yes — the string is in motion now, and a moving string is length-contracted, so something has to give. Both halves were partly right. Both halves were also partly wrong, because the question they were arguing about is not actually the question that determines whether the string breaks.
+
+The string breaks. The reason is geometry, the same kind of geometry that resolves the [twin paradox](/relativity/the-twin-paradox) and the [barn-pole paradox](/relativity/the-barn-pole-paradox): a hidden assumption about whose simultaneity counts. And once the geometry is on the table, "paradox" stops being the right word.
+
+</Section>
+
+<Section index={2} title="The naïve answer — lab-frame separation never changes">
+
+Start with the picture everyone draws first. In the launch frame, the two rockets are at positions $x_{\text{rear}}(t)$ and $x_{\text{front}}(t) = x_{\text{rear}}(t) + D_0$. Both have the same acceleration $a(t)$, so both worldlines are identical curves — one shifted to the right by $D_0$. At every instant of lab time, the front rocket is exactly $D_0$ ahead of the rear one. That's the setup; it is by construction.
+
+<SceneCard caption="FIG.22a — two rockets on identical hyperbolic worldlines (orange), shifted by D₀ in the launch frame. The magenta string connects them at the playhead's lab time. Lab-frame separation D_lab = D₀ for all time. The HUD tracks γ, the proper separation γ·D₀, and the strain ε = γ − 1.">
+  <BellTwoRocketsScene />
+</SceneCard>
+
+So far, so good. The string, drawn between the two rockets at any single moment of lab time, spans exactly $D_0$ — the same distance it spanned at rest. If "the length of the string" means "the separation between its endpoints in the launch frame," then the string is unchanged, untouched, fine.
+
+The trouble is that this is not what "the length of a string" means. A string is a physical object — it has atoms, bonds, a rest length. The question "is the string stretched?" is a question about the string's *own* frame, not the launch frame. And the string's own frame is not the launch frame, because the string is moving.
+
+</Section>
+
+<Section index={3} title="The right answer — the string lives in the rockets' frame">
+
+Pick a moment when both rockets have reached speed $\beta c$. Boost into their shared instantaneous rest frame — the frame where, right now, the rockets are at rest and the launch pad is sliding past at $-\beta c$. In this frame, the lab-frame separation $D_0$ is a *moving* distance, and you have to undo the <Term slug="length-contraction" /> the launch frame imposed on it. The result, by the standard contraction relation $L_{\text{lab}} = L_{\text{rest}}/\gamma$ run in reverse, is
+
+<EquationBlock id="EQ.01">
+$$D_{\text{proper}} = \gamma \, D_0.$$
+</EquationBlock>
+
+The string's endpoints, in the string's own frame, are now $\gamma D_0$ apart. The string itself — an object whose unstressed length is $D_0$ — has been stretched by a factor of $\gamma$. The strain is $\varepsilon = \gamma - 1$, dimensionless, growing without bound as $\beta \to 1$. Even at a modest $\beta = 0.6$, where $\gamma = 1.25$, the string has been stretched by 25%. Few real strings survive that.
+
+<SceneCard caption="FIG.22b — drag β to compare frames. The launch-frame view (cyan, top) shows two rocket markers separated by D₀ with an unstressed string between them. The proper-frame view (magenta, bottom) shows the same two rockets separated by γ·D₀ with the string visibly stretched. At γ = 2 (β ≈ 0.866) the canonical strain reaches ε = 1, the string snaps, and the visualization frays.">
+  <StringStretchesScene />
+</SceneCard>
+
+Both halves of Bell's CERN cafeteria were arguing past each other. The half who said the string is fine was correct about the launch frame. The half who said something has to give was correct about the rockets' frame. The string breaks because the rockets' frame is the one that determines whether a physical string is stretched, and in that frame the rockets are pulling apart. The launch-frame story is a kinematic illusion: the rockets stay at the same lab-frame distance because the lab frame *says* they do, but the lab frame is not the string.
+
+<Callout variant="intuition">
+The single sentence to remember: physical objects respond to their proper length, not to their lab-frame length. The string doesn't know about the launch frame's coordinate system. It knows about its own atoms. The atoms are being pulled apart in their own rest frame; that is what "the string breaks" means.
+</Callout>
+
+</Section>
+
+<Section index={4} title="What Born rigidity demands">
+
+So what would it take to accelerate two rockets and have the string between them survive? The condition is called *Born rigidity*, after Max Born, who in 1909 worked out the relativistic generalization of "rigid body": an extended object whose proper distances between its parts stay constant in time. A truly Born-rigid pair of accelerating rockets does not have identical lab-frame acceleration profiles. The trailing rocket accelerates *faster* — by exactly the right amount to cancel out the contraction the leading rocket would otherwise impose on their proper separation.
+
+The clean version is the family of *Rindler observers*: rockets whose worldlines are hyperbolas asymptoting to a common past lightlike line. Each rocket has constant proper acceleration $a_i$, and the proper acceleration scales inversely with the rocket's initial position $x_{i,0}$ from the asymptote:
+
+<EquationBlock id="EQ.02">
+$$\frac{a_{\text{rear}}}{a_{\text{front}}} = \frac{x_{\text{front},0}}{x_{\text{rear},0}} = \frac{x_{\text{rear},0} + D_0}{x_{\text{rear},0}}.$$
+</EquationBlock>
+
+For a small initial separation $D_0$ much less than $x_{\text{rear},0}$, this ratio is $1 + D_0/x_{\text{rear},0}$ — only slightly bigger than 1. The asymmetry is tiny. But it is exactly the asymmetry Bell's "identical lab-frame accelerations" rules out by hand, and exactly the asymmetry that keeps the proper separation pinned at $D_0$ instead of letting it drift up to $\gamma D_0$.
+
+<SceneCard caption="FIG.22c — Bell pair (orange, left) versus Born-rigid pair (cyan, right). Both pairs accelerate from rest and reach high γ within the canvas. The Bell pair's string (magenta) stretches as γ grows; the Born-rigid pair's string (green) holds. The HUD reports the Born-rigid acceleration ratio a_rear/a_front, which Bell's setup violates by setting it equal to 1.">
+  <BornRigidComparisonScene />
+</SceneCard>
+
+You can think of <Term slug="born-rigidity" /> as the relativistic version of "everything moves together." In Newtonian mechanics, a rigid body translates rigidly because all its parts have the same velocity at every instant. In relativity, "all parts have the same velocity at every instant of lab time" is no longer the rigid condition — it's actually the Bell condition, and it stretches things. The relativistic rigid condition is "all parts have the same proper distance between them at every instant of *their own* time," and that requires the trailing parts to accelerate harder.
+
+</Section>
+
+<Section index={5} title="The deeper point — coordinate choices have consequences">
+
+Bell's spaceship paradox is not a paradox. It is a lesson about smuggling. The phrase "identical acceleration in the launch frame" sounds like a simple, frame-neutral statement — two rockets, same throttle, same engine burn. It is not. It is a coordinate-dependent statement that picks out a single frame's notion of simultaneity (the launch frame's) and imposes equal-time-equal-velocity as a constraint on the two rockets. That constraint is fine if you only care about the launch frame's bookkeeping, but it is not Born-rigid, and the string knows the difference.
+
+This is the same pattern that resolves the barn-pole paradox: someone claims an apparently frame-independent fact ("the pole fits in the barn"; "the rockets stay the same distance apart") and then runs into a contradiction with another frame's bookkeeping. The contradiction is not in the physics; it is in the assumption that simultaneity is universal. <Term slug="length-contraction" /> is real, but it lives in the geometry of <Term slug="lorentz-transformation" />, not in the launch frame's coordinate choices.
+
+The string breaks because the geometry says it must. The launch-frame setup is a perfectly fine description of two rockets — but it is not a description of one rigid body. Two objects can move at the same velocity at the same lab-frame instant and still be pulling apart in their own rest frame. That is just what relativity is. Once you see it, the puzzle isn't how the string snaps; the puzzle is why anyone expected it to hold.
+
+</Section>
+
+</TopicPageLayout>
