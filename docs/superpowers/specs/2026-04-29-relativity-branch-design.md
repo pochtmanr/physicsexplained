@@ -1,7 +1,7 @@
 # Relativity — Branch Design
 
 **Date:** 2026-04-29
-**Status:** in progress — 20/61 topics shipped (33%); §01+§02+§03+§04 shipped 2026-04-29
+**Status:** in progress — 28/61 topics shipped (46%); §01+§02+§03+§04 shipped 2026-04-29; §05+§06 shipped 2026-04-30 — SR fully complete
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:987-998`.
@@ -324,8 +324,8 @@ Update this table at the end of every session.
 | §02 SR kinematics | 5 | 5 | ☑ complete |
 | §03 Spacetime geometry | 5 | 5 | ☑ complete |
 | §04 Relativistic dynamics | 5 | 5 | ☑ complete |
-| §05 SR applications | 4 | 0 | not started |
-| §06 Equivalence principle | 4 | 0 | not started |
+| §05 SR applications | 4 | 4 | ☑ complete |
+| §06 Equivalence principle | 4 | 4 | ☑ complete |
 | §07 Tensor calculus | 5 | 0 | not started |
 | §08 Curvature & EFE | 5 | 0 | not started |
 | §09 Schwarzschild + tests | 5 | 0 | not started |
@@ -333,7 +333,7 @@ Update this table at the end of every session.
 | §11 Gravitational waves | 4 | 0 | not started |
 | §12 Cosmology | 5 | 0 | not started |
 | §13 Frontiers | 3 | 0 | not started |
-| **Total** | **61** | **20** | **33% complete** |
+| **Total** | **61** | **28** | **46% complete** |
 
 ### Per-topic checklist
 
@@ -358,14 +358,14 @@ Check off as each topic ships.
 - [x] 18 `relativistic-collisions`
 - [x] 19 `compton-scattering`
 - [x] 20 `threshold-energy-and-pair-production`
-- [ ] 21 `the-barn-pole-paradox`
-- [ ] 22 `bells-spaceship-paradox`
-- [ ] 23 `gps-as-relativity`
-- [ ] 24 `precision-tests-of-sr`
-- [ ] 25 `inertial-vs-gravitational-mass`
-- [ ] 26 `einsteins-elevator`
-- [ ] 27 `gravitational-redshift`
-- [ ] 28 `gravity-as-geometry`
+- [x] 21 `the-barn-pole-paradox`
+- [x] 22 `bells-spaceship-paradox`
+- [x] 23 `gps-as-relativity`
+- [x] 24 `precision-tests-of-sr`
+- [x] 25 `inertial-vs-gravitational-mass`
+- [x] 26 `einsteins-elevator`
+- [x] 27 `gravitational-redshift`
+- [x] 28 `gravity-as-geometry`
 - [ ] 29 `manifolds-and-tangent-spaces`
 - [ ] 30 `tensors-on-curved-space`
 - [ ] 31 `the-metric-tensor`
