@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
 import { BRANCHES, getBranch } from "@/lib/content/branches";
+import { makeBranchMetadata } from "@/lib/seo/topic-metadata";
 import { BranchHero } from "@/components/layout/branch-hero";
 import { ModuleChips } from "@/components/layout/module-chips";
 import { TopicCard } from "@/components/layout/topic-card";
@@ -19,21 +20,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; branch: string }>;
 }) {
-  const { locale, branch: slug } = await params;
-  const branch = getBranch(slug);
-  if (!branch) return {};
-  const t = await getTranslations({ locale, namespace: "home.branches" });
-  const items = t.raw("items") as Record<
-    string,
-    { title?: string; subtitle?: string; description?: string } | undefined
-  >;
-  const item = items[slug];
-  const title = item?.title ?? branch.title;
-  const description = item?.subtitle ?? branch.subtitle;
-  return {
-    title: `${title} — physics`,
-    description,
-  };
+  const { branch, locale } = await params;
+  return makeBranchMetadata(branch)({ params: Promise.resolve({ locale }) });
 }
 
 export default async function BranchPage({
