@@ -3,22 +3,73 @@ import { useEffect, useRef } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
-import { step, type Body } from "@/lib/physics/n-body";
-import { attachGestures, BODY_HIT_RADIUS_PX, type GestureCallbacks } from "./gestures";
+import { resolveCollisions, step, type Body } from "@/lib/physics/n-body";
+import { attachGestures, type GestureCallbacks } from "./gestures";
+import {
+  clampScale,
+  defaultCamera,
+  screenToWorld,
+  zoomTowardScreenPoint,
+  type Camera,
+} from "./camera";
+import { hitTest } from "./hit-test";
+import { colorPalette } from "./palette";
+import {
+  appendTrails,
+  clearTrails,
+  createTrailBuffers,
+  pruneOrphans,
+} from "./trails";
+import {
+  drawBackground,
+  drawBodies,
+  drawDragArrow,
+  drawHoverGhost,
+  drawPredictiveTraces,
+  drawSlingshot,
+  drawTrails,
+  prepareCanvas,
+  type DragArrow,
+  type HoverGhost,
+  type PlaceAim,
+} from "./draw";
 
 interface Props {
   bodies: Body[];
+  /**
+   * Called for ANY user-driven change to the body list (place, remove,
+   * drag-to-set-velocity, merge). The parent uses this as the single source
+   * of truth — it both updates `state.bodies` and atomically promotes the
+   * preset to "custom" in one setState.
+   */
   onBodiesChange: (b: Body[]) => void;
   trails: boolean;
   speed: 0.25 | 1 | 4;
   isPlaying: boolean;
-  /** Called when the user creates / edits / deletes bodies (so parent can mark preset = custom) */
-  onUserEdit: () => void;
+  /** Mass used when the user adds a new body via tap */
+  placeMass: number;
+  /** Bumped by the parent to force a full trails rewind / camera recenter. */
+  resetKey: number;
 }
 
-const SIM_DT = 0.005; // physics dt per integration sub-step (independent of frame rate)
-const PX_PER_UNIT_DEFAULT = 80;
-const TRAIL_MAX_AGE_S = 3;
+const SIM_DT = 0.005;
+const BODY_CAP = 8;
+/**
+ * Slingshot amplification on the empty-canvas drag-to-launch gesture. The
+ * gestures module emits a small px→px/s scaling (`0.02`) tuned for nudging
+ * existing bodies. For a satisfying "fling" launch we multiply that by this
+ * factor — at the default camera scale (80 px/unit) a 150 px drag yields
+ * ~7 world u/s, which is well into orbital-velocity territory for the
+ * solar-mini preset (planet orbit is ~8 u/s).
+ */
+const LAUNCH_BOOST = 250;
+/** Forward sim time used for the predictive-orbit overlay when paused. */
+const PREDICTION_SECONDS = 5;
+
+/** Signature that changes whenever the *set* of body ids changes. */
+function bodiesSignature(bodies: Body[]): string {
+  return bodies.map((b) => b.id).sort().join("|");
+}
 
 export function NBodyCanvas({
   bodies,
@@ -26,101 +77,198 @@ export function NBodyCanvas({
   trails,
   speed,
   isPlaying,
-  onUserEdit,
+  placeMass,
+  resetKey,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const colors = useThemeColors();
   const reducedMotion = useReducedMotion();
 
-  // Mutable mirror of `bodies` so the rAF loop doesn't capture stale state.
+  // ── Refs first so the effects below can read them without TDZ surprises ──
   const bodiesRef = useRef<Body[]>(bodies);
+  const trailsRef = useRef(createTrailBuffers());
+  const camRef = useRef<Camera>(defaultCamera());
+  const dragRef = useRef<DragArrow | null>(null);
+  const hoverRef = useRef<HoverGhost | null>(null);
+  const placeAimRef = useRef<PlaceAim | null>(null);
+  const placeMassRef = useRef(placeMass);
+  const onBodiesChangeRef = useRef(onBodiesChange);
+
+  // ── Ref ←→ prop sync ──
+  // Only re-pull `bodies` into the live ref when the *id set* changes (place,
+  // remove, merge, preset switch, URL back-nav). For same-id-set updates
+  // (drag-to-set-velocity, speed/trails toggles, sim-merge that already
+  // propagated through React) we'd otherwise overwrite the freshly-stepped
+  // simulation with a stale React snapshot — visible as a jitter every time
+  // a merge is reported.
+  const incomingSig = bodiesSignature(bodies);
   useEffect(() => {
+    if (bodiesSignature(bodiesRef.current) === incomingSig) return;
     bodiesRef.current = bodies;
-  }, [bodies]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incomingSig]);
 
-  // Trails: per-body ring buffers
-  const trailsRef = useRef<Map<string, Array<{ x: number; y: number; age: number }>>>(new Map());
+  useEffect(() => {
+    placeMassRef.current = placeMass;
+  }, [placeMass]);
 
-  // Camera: zoom + pan (world units → px). Parent doesn't manage camera.
-  const camRef = useRef({ scale: PX_PER_UNIT_DEFAULT, panX: 0, panY: 0 });
+  // `onBodiesChange` is a fresh function every parent render. Holding it in a
+  // ref lets the gesture / mouse effects mount once instead of tearing down
+  // and rebinding on every render (which would, e.g., kill an in-flight
+  // long-press timer).
+  useEffect(() => {
+    onBodiesChangeRef.current = onBodiesChange;
+  }, [onBodiesChange]);
 
-  // Drag state for "drag from body" velocity arrow
-  const dragRef = useRef<{ index: number; toX: number; toY: number } | null>(null);
+  // Prune orphan trail entries (bodies that disappeared via removal or merge).
+  useEffect(() => {
+    pruneOrphans(trailsRef.current, new Set(bodies.map((b) => b.id)));
+    // `incomingSig` encodes the id set (string).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incomingSig]);
 
-  // Hit-test using the latest bodies snapshot
-  function hitTest(x: number, y: number): number {
+  // Hard reset: rewind the live simulation back to the canonical starting
+  // frame, drop trails, recenter camera, abort any in-flight gesture state.
+  useEffect(() => {
+    clearTrails(trailsRef.current);
+    camRef.current = defaultCamera();
+    bodiesRef.current = bodies.map((b) => ({ ...b }));
+    dragRef.current = null;
+    placeAimRef.current = null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetKey]);
+
+  // ── Coordinate helpers ──
+  function viewport(): { w: number; h: number } | null {
     const cv = canvasRef.current;
-    if (!cv) return -1;
-    const w = cv.clientWidth;
-    const h = cv.clientHeight;
-    const cam = camRef.current;
-    const bs = bodiesRef.current;
-    for (let i = 0; i < bs.length; i++) {
-      const b = bs[i]!;
-      const sx = w / 2 + (b.x - cam.panX) * cam.scale;
-      const sy = h / 2 + (b.y - cam.panY) * cam.scale;
-      if (Math.hypot(sx - x, sy - y) <= BODY_HIT_RADIUS_PX) return i;
+    if (!cv) return null;
+    return { w: cv.clientWidth, h: cv.clientHeight };
+  }
+
+  function hit(x: number, y: number): number {
+    const vp = viewport();
+    if (!vp) return -1;
+    return hitTest(bodiesRef.current, camRef.current, vp.w, vp.h, x, y);
+  }
+
+  function toWorld(x: number, y: number): { x: number; y: number } {
+    const vp = viewport();
+    if (!vp) return { x: 0, y: 0 };
+    return screenToWorld(camRef.current, vp.w, vp.h, x, y);
+  }
+
+  // ── Mouse-only desktop affordances: contextmenu = remove, wheel = zoom,
+  //    mousemove = ghost-preview position ──
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    function onContextMenu(e: MouseEvent) {
+      e.preventDefault();
+      const r = el!.getBoundingClientRect();
+      const idx = hit(e.clientX - r.left, e.clientY - r.top);
+      if (idx < 0) return;
+      const removed = bodiesRef.current[idx]!;
+      const bs = bodiesRef.current.filter((_, i) => i !== idx);
+      bodiesRef.current = bs;
+      trailsRef.current.delete(removed.id);
+      onBodiesChangeRef.current(bs);
     }
-    return -1;
-  }
 
-  function screenToWorld(x: number, y: number): { x: number; y: number } {
-    const cv = canvasRef.current!;
-    const w = cv.clientWidth;
-    const h = cv.clientHeight;
-    const cam = camRef.current;
-    return {
-      x: (x - w / 2) / cam.scale + cam.panX,
-      y: (y - h / 2) / cam.scale + cam.panY,
+    function onWheel(e: WheelEvent) {
+      e.preventDefault();
+      const r = el!.getBoundingClientRect();
+      const cx = e.clientX - r.left;
+      const cy = e.clientY - r.top;
+      const vp = viewport();
+      if (!vp) return;
+      const factor = Math.exp(-e.deltaY * 0.0015);
+      zoomTowardScreenPoint(camRef.current, vp.w, vp.h, cx, cy, factor);
+    }
+
+    function onMouseMove(e: MouseEvent) {
+      const r = el!.getBoundingClientRect();
+      hoverRef.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+    function onMouseLeave() {
+      hoverRef.current = null;
+    }
+
+    el.addEventListener("contextmenu", onContextMenu);
+    el.addEventListener("wheel", onWheel, { passive: false });
+    el.addEventListener("mousemove", onMouseMove);
+    el.addEventListener("mouseleave", onMouseLeave);
+    return () => {
+      el.removeEventListener("contextmenu", onContextMenu);
+      el.removeEventListener("wheel", onWheel);
+      el.removeEventListener("mousemove", onMouseMove);
+      el.removeEventListener("mouseleave", onMouseLeave);
     };
-  }
+    // Mount-once on purpose — handlers read state via refs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Gesture wiring
+  // ── Pointer / multitouch gestures ──
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
 
     const cb: GestureCallbacks = {
       onTap: (x, y) => {
-        const { x: wx, y: wy } = screenToWorld(x, y);
-        const next = [
+        const { x: wx, y: wy } = toWorld(x, y);
+        const next: Body[] = [
           ...bodiesRef.current,
           {
-            id: `u${Date.now().toString(36)}`,
-            mass: 1,
+            id: `u${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`,
+            mass: placeMassRef.current,
             x: wx,
             y: wy,
             vx: 0,
             vy: 0,
           },
         ];
-        // Cap at 8; replace the oldest user-spawned body if over.
-        const trimmed = next.length > 8 ? next.slice(next.length - 8) : next;
+        const trimmed =
+          next.length > BODY_CAP ? next.slice(next.length - BODY_CAP) : next;
+        if (trimmed.length < next.length) {
+          // Cap eviction: prune trail state for evicted ids in the same tick
+          // so stale ids can't outlive their bodies in the trails map.
+          for (const dropped of next.slice(0, next.length - trimmed.length)) {
+            trailsRef.current.delete(dropped.id);
+          }
+        }
         bodiesRef.current = trimmed;
-        onBodiesChange(trimmed);
-        onUserEdit();
+        onBodiesChangeRef.current(trimmed);
       },
       onBodyDown: () => {},
       onBodyDrag: (index, x, y) => {
         dragRef.current = { index, toX: x, toY: y };
       },
       onBodyUp: (index, dragVx, dragVy) => {
+        // Bail if the body is gone — Reset / preset switch / merge can wipe
+        // the index mid-drag.
+        if (index < 0 || index >= bodiesRef.current.length) {
+          dragRef.current = null;
+          return;
+        }
         const bs = [...bodiesRef.current];
         const b = bs[index];
-        if (!b) return;
+        if (!b) {
+          dragRef.current = null;
+          return;
+        }
         if (dragVx !== 0 || dragVy !== 0) {
-          // Convert px-velocity to world-unit velocity by dividing by scale.
           const cam = camRef.current;
           bs[index] = { ...b, vx: dragVx / cam.scale, vy: dragVy / cam.scale };
+          bodiesRef.current = bs;
+          onBodiesChangeRef.current(bs);
         }
-        bodiesRef.current = bs;
-        onBodiesChange(bs);
-        onUserEdit();
         dragRef.current = null;
       },
-      onPinch: (scale) => {
-        camRef.current.scale = Math.max(20, Math.min(320, PX_PER_UNIT_DEFAULT * scale));
+      onPinch: (ratio) => {
+        // ratio is per-frame relative; multiply the live scale so wheel-zoom
+        // and pinch-zoom compose instead of fighting.
+        camRef.current.scale = clampScale(camRef.current.scale * ratio);
       },
       onPan: (dx, dy) => {
         const cam = camRef.current;
@@ -128,112 +276,112 @@ export function NBodyCanvas({
         cam.panY -= dy / cam.scale;
       },
       onLongPress: (index) => {
-        // v1: long-press deletes. (Mass picker is a follow-up.)
+        const removed = bodiesRef.current[index];
+        if (!removed) return;
         const bs = bodiesRef.current.filter((_, i) => i !== index);
         bodiesRef.current = bs;
-        onBodiesChange(bs);
-        onUserEdit();
+        trailsRef.current.delete(removed.id);
+        onBodiesChangeRef.current(bs);
+      },
+      onPlaceDrag: (downX, downY, curX, curY) => {
+        placeAimRef.current = { downX, downY, curX, curY };
+      },
+      onPlaceUp: (downX, downY, dragVx, dragVy) => {
+        placeAimRef.current = null;
+        const { x: wx, y: wy } = toWorld(downX, downY);
+        const cam = camRef.current;
+        // Slingshot semantics: pull back, body launches forward. Angry Birds.
+        const next: Body[] = [
+          ...bodiesRef.current,
+          {
+            id: `u${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`,
+            mass: placeMassRef.current,
+            x: wx,
+            y: wy,
+            vx: (-dragVx * LAUNCH_BOOST) / cam.scale,
+            vy: (-dragVy * LAUNCH_BOOST) / cam.scale,
+          },
+        ];
+        const trimmed =
+          next.length > BODY_CAP ? next.slice(next.length - BODY_CAP) : next;
+        if (trimmed.length < next.length) {
+          for (const dropped of next.slice(0, next.length - trimmed.length)) {
+            trailsRef.current.delete(dropped.id);
+          }
+        }
+        bodiesRef.current = trimmed;
+        onBodiesChangeRef.current(trimmed);
+      },
+      onPlaceCancel: () => {
+        placeAimRef.current = null;
       },
     };
 
-    return attachGestures(el, { hit: hitTest }, cb);
+    return attachGestures(el, { hit }, cb);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onBodiesChange, onUserEdit]);
+  }, []);
 
-  // rAF loop
+  // ── rAF render + simulation loop ──
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (_t, dt) => {
-      const cv = canvasRef.current;
-      if (!cv) return;
-      const ctx = cv.getContext("2d");
+      const ctx = prepareCanvas(canvasRef.current);
       if (!ctx) return;
-      const dpr = window.devicePixelRatio || 1;
-      const w = cv.clientWidth;
-      const h = cv.clientHeight;
-      if (cv.width !== w * dpr || cv.height !== h * dpr) {
-        cv.width = w * dpr;
-        cv.height = h * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
+      const cv = canvasRef.current!;
+      const width = cv.clientWidth;
+      const height = cv.clientHeight;
 
-      // Clear
-      ctx.fillStyle = colors.bg0 || "#1A1D24";
-      ctx.fillRect(0, 0, w, h);
-
-      // Step physics
+      // Step physics + resolve collisions (hybrid bounce/absorb).
       if (isPlaying && !reducedMotion) {
         const totalDt = dt * speed;
         const subSteps = Math.max(1, Math.ceil(totalDt / SIM_DT));
         const subDt = totalDt / subSteps;
+        const startLen = bodiesRef.current.length;
         let bs = bodiesRef.current;
-        for (let i = 0; i < subSteps; i++) bs = step(bs, subDt);
+        for (let s = 0; s < subSteps; s++) {
+          bs = step(bs, subDt);
+          bs = resolveCollisions(bs);
+        }
         bodiesRef.current = bs;
+        // If any bodies merged this frame, surface the new list to React so
+        // URL state, the body counter, and trail pruning all stay in sync.
+        if (bs.length < startLen) {
+          onBodiesChangeRef.current(bs);
+        }
       }
 
-      // Trails
+      // Trails: append latest position once per frame.
       if (trails) {
-        for (const b of bodiesRef.current) {
-          const buf = trailsRef.current.get(b.id) ?? [];
-          buf.forEach((p) => (p.age += dt));
-          while (buf.length > 0 && buf[0]!.age > TRAIL_MAX_AGE_S) buf.shift();
-          buf.push({ x: b.x, y: b.y, age: 0 });
-          trailsRef.current.set(b.id, buf);
-        }
+        appendTrails(trailsRef.current, bodiesRef.current, dt);
       } else {
-        trailsRef.current.clear();
+        clearTrails(trailsRef.current);
       }
 
-      const cam = camRef.current;
-      const cx = w / 2;
-      const cy = h / 2;
+      const palette = colorPalette(colors);
+      const d = { ctx, width, height, cam: camRef.current, colors, palette };
 
-      const cyan = colors.cyan || "#6FB8C6";
+      drawBackground(d);
 
-      // Draw trails
-      if (trails) {
-        for (const buf of trailsRef.current.values()) {
-          for (const p of buf) {
-            const alpha = Math.max(0, 1 - p.age / TRAIL_MAX_AGE_S) * 0.5;
-            ctx.globalAlpha = alpha;
-            ctx.fillStyle = cyan;
-            const px = cx + (p.x - cam.panX) * cam.scale;
-            const py = cy + (p.y - cam.panY) * cam.scale;
-            ctx.fillRect(px - 1, py - 1, 2, 2);
-          }
-        }
-        ctx.globalAlpha = 1;
+      if (trails) drawTrails(d, trailsRef.current);
+
+      // Pause-only predictive trace: when frozen the live trail can't show
+      // future motion, so a forward-integrated dashed line answers
+      // "is this orbit closed?" at a glance.
+      if (!isPlaying && !reducedMotion) {
+        drawPredictiveTraces(d, bodiesRef.current, PREDICTION_SECONDS);
       }
 
-      // Draw bodies
-      for (const b of bodiesRef.current) {
-        const px = cx + (b.x - cam.panX) * cam.scale;
-        const py = cy + (b.y - cam.panY) * cam.scale;
-        const r = Math.max(3, Math.min(20, 4 + Math.sqrt(b.mass) * 3));
-        ctx.shadowColor = cyan;
-        ctx.shadowBlur = 12;
-        ctx.fillStyle = cyan;
-        ctx.beginPath();
-        ctx.arc(px, py, r, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
+      drawBodies(d, bodiesRef.current);
 
-      // Drag arrow (velocity-from-body during drag)
-      if (dragRef.current) {
-        const { index, toX, toY } = dragRef.current;
-        const b = bodiesRef.current[index];
-        if (b) {
-          const px = cx + (b.x - cam.panX) * cam.scale;
-          const py = cy + (b.y - cam.panY) * cam.scale;
-          ctx.strokeStyle = cyan;
-          ctx.globalAlpha = 0.9;
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-          ctx.moveTo(px, py);
-          ctx.lineTo(toX, toY);
-          ctx.stroke();
-          ctx.globalAlpha = 1;
+      if (dragRef.current) drawDragArrow(d, bodiesRef.current, dragRef.current);
+
+      const aim = placeAimRef.current;
+      if (aim) {
+        drawSlingshot(d, aim, placeMass);
+      } else {
+        const hover = hoverRef.current;
+        if (hover && hit(hover.x, hover.y) === -1 && !dragRef.current) {
+          drawHoverGhost(d, hover, placeMass);
         }
       }
     },
