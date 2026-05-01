@@ -1,7 +1,7 @@
 // app/api/problems/ocr/route.ts
 import { NextResponse } from "next/server";
-import { extractAndMatch, type OcrResult } from "@/lib/problems/ocr";
-import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
+import type { OcrResult } from "@/lib/problems/ocr";
+import { getOcrRouteDeps } from "./deps";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,42 +10,6 @@ const FREE_OCR_PER_DAY = 1;
 const STARTER_OCR_PER_DAY = 10;
 const MAX_BYTES = 5 * 1024 * 1024;
 
-interface OcrRouteDeps {
-  getUser: () => Promise<{ id: string } | null>;
-  getQuota: (userId: string) => Promise<{ plan: string; ocrUsedToday: number }>;
-  bumpOcrQuota: (userId: string) => Promise<void>;
-  extractAndMatch: typeof extractAndMatch;
-}
-
-let deps: OcrRouteDeps = makeDefaultDeps();
-
-function makeDefaultDeps(): OcrRouteDeps {
-  return {
-    getUser: async () => {
-      const ssr = await getSsrClient();
-      const { data } = await ssr.auth.getUser();
-      return data.user ? { id: data.user.id } : null;
-    },
-    getQuota: async (userId) => {
-      const db = getServiceClient();
-      const { data } = await db.from("user_billing")
-        .select("plan, problem_ocr_used_today")
-        .eq("user_id", userId).maybeSingle();
-      return { plan: data?.plan ?? "free", ocrUsedToday: data?.problem_ocr_used_today ?? 0 };
-    },
-    bumpOcrQuota: async (userId) => {
-      const db = getServiceClient();
-      await db.rpc("increment_problem_ocr_used_today", { p_user_id: userId });
-    },
-    extractAndMatch,
-  };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function _resetOcrRouteDeps(d: Partial<Record<keyof OcrRouteDeps, any>>) {
-  deps = { ...makeDefaultDeps(), ...d } as OcrRouteDeps;
-}
-
 function quotaLimitFor(plan: string): number | null {
   if (plan === "free") return FREE_OCR_PER_DAY;
   if (plan === "starter") return STARTER_OCR_PER_DAY;
@@ -53,6 +17,7 @@ function quotaLimitFor(plan: string): number | null {
 }
 
 export async function POST(req: Request) {
+  const deps = getOcrRouteDeps();
   const user = await deps.getUser();
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
 

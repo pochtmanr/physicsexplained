@@ -7,7 +7,7 @@ vi.mock("@/lib/supabase-server", () => ({
 }));
 
 import { POST } from "@/app/api/problems/[id]/check/route";
-import { _resetCheckRouteDeps } from "@/app/api/problems/[id]/check/route";
+import { _resetCheckRouteDeps } from "@/app/api/problems/[id]/check/deps";
 import type { Problem } from "@/lib/content/types";
 
 const PROBLEM: Problem = {

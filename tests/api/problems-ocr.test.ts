@@ -7,7 +7,8 @@ vi.mock("@/lib/supabase-server", () => ({
   getServiceClient: vi.fn(),
 }));
 
-import { POST, _resetOcrRouteDeps } from "@/app/api/problems/ocr/route";
+import { POST } from "@/app/api/problems/ocr/route";
+import { _resetOcrRouteDeps } from "@/app/api/problems/ocr/deps";
 
 function makeFormReq(file: { name: string; type: string; bytes: Buffer }, locale: string): Request {
   const body = new FormData();

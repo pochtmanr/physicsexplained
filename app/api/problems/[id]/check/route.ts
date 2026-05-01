@@ -9,11 +9,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { verifyStep } from "@/lib/problems/verify";
-import { diagnoseStep } from "@/lib/problems/diagnoser";
-import { getProblem } from "@/lib/content/problems";
-import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
-import { getProblemStringsForLocale } from "@/lib/problems/strings";
-import type { Problem } from "@/lib/content/types";
+import { getCheckRouteDeps } from "./deps";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,74 +20,11 @@ const BodySchema = z.object({
   locale: z.string().min(2).max(5),
 });
 
-interface ProblemStrings {
-  statement: string;
-  steps: Record<string, { prompt: string; hint?: string; commonMistakes?: readonly string[] }>;
-}
-
-interface CheckRouteDeps {
-  getProblem: (id: string) => Problem | undefined;
-  getProblemStrings: (problemId: string, locale: string) => Promise<ProblemStrings | null>;
-  getUser: () => Promise<{ id: string } | null>;
-  getQuota: (userId: string) => Promise<{ plan: string; diagnosesUsedToday: number }>;
-  bumpDiagnosesQuota: (userId: string) => Promise<void>;
-  insertAttempt: (row: { userId: string; problemId: string; stepId: string; studentExpr: string; correct: boolean }) => Promise<{ id: string }>;
-  diagnoseStep: typeof diagnoseStep;
-  insertDiagnosis: (row: { attemptId: string; cacheKey: string; cacheHit: boolean }) => Promise<void>;
-}
-
-let deps: CheckRouteDeps = makeDefaultDeps();
-
-function makeDefaultDeps(): CheckRouteDeps {
-  return {
-    getProblem,
-    getProblemStrings: getProblemStringsForLocale,
-    getUser: async () => {
-      const ssr = await getSsrClient();
-      const { data } = await ssr.auth.getUser();
-      return data.user ? { id: data.user.id } : null;
-    },
-    getQuota: async (userId) => {
-      const db = getServiceClient();
-      const { data } = await db.from("user_billing")
-        .select("plan, problem_diagnoses_used_today")
-        .eq("user_id", userId).maybeSingle();
-      return {
-        plan: data?.plan ?? "free",
-        diagnosesUsedToday: data?.problem_diagnoses_used_today ?? 0,
-      };
-    },
-    bumpDiagnosesQuota: async (userId) => {
-      const db = getServiceClient();
-      await db.rpc("increment_problem_diagnoses_used_today", { p_user_id: userId });
-    },
-    insertAttempt: async (row) => {
-      const db = getServiceClient();
-      const { data, error } = await db.from("problem_attempts").insert({
-        user_id: row.userId, problem_id: row.problemId, step_id: row.stepId,
-        student_expr: row.studentExpr, correct: row.correct,
-      }).select("id").single();
-      if (error) throw error;
-      return { id: data.id };
-    },
-    diagnoseStep,
-    insertDiagnosis: async (row) => {
-      const db = getServiceClient();
-      await db.from("problem_diagnoses").insert({
-        attempt_id: row.attemptId, cache_key: row.cacheKey, cache_hit: row.cacheHit,
-      });
-    },
-  };
-}
-
-export function _resetCheckRouteDeps(d: Partial<Record<keyof CheckRouteDeps, any>>) {
-  deps = { ...makeDefaultDeps(), ...d };
-}
-
 const FREE_DIAGNOSES_PER_DAY = 5;
 
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id: problemId } = await ctx.params;
+  const deps = getCheckRouteDeps();
 
   let body: z.infer<typeof BodySchema>;
   try { body = BodySchema.parse(await req.json()); }
