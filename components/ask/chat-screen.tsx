@@ -8,26 +8,8 @@ import { MessageBubble } from "./message-bubble";
 import { StreamingMessage } from "./streaming-message";
 import { MobileChatRailTrigger } from "./mobile-chat-rail";
 import { UpgradeModal } from "@/components/account/upgrade-modal";
-import { PhotoUpload } from "@/components/problems/photo-upload";
-import { InlineScene } from "./inline-scene";
 
 const MODEL_KEY = "ask.modelId";
-
-function parseDeeplinkParams(raw: string): Record<string, unknown> {
-  if (!raw) return {};
-  try {
-    const padded = raw.replace(/-/g, "+").replace(/_/g, "/");
-    const pad = padded.length % 4;
-    const full = pad ? padded + "=".repeat(4 - pad) : padded;
-    return JSON.parse(
-      typeof window === "undefined"
-        ? Buffer.from(full, "base64").toString("utf-8")
-        : decodeURIComponent(escape(window.atob(full))),
-    ) as Record<string, unknown>;
-  } catch {
-    return {};
-  }
-}
 
 // Pin a fixed-position composer above the iOS / Android virtual keyboard.
 // Writes `bottom` straight to the DOM via ref to avoid a React re-render on
@@ -151,21 +133,11 @@ export function ChatScreen({ conversationId, variant, userName, children, deepli
 
       {showEmpty ? (
         <div className="flex-1 flex items-center justify-center px-4 py-8 md:py-16 pb-[calc(11rem+env(safe-area-inset-bottom))] md:pb-0">
-          {deeplink ? (
-            <div className="px-4 pt-2">
-              <InlineScene id={deeplink.sceneId} params={parseDeeplinkParams(deeplink.params)} />
-            </div>
-          ) : null}
           <EmptyState onPick={(p) => submit(p)} userName={userName ?? null} />
         </div>
       ) : (
         <div ref={scrollRef} className="flex-1 overflow-y-auto">
           <div className="mx-auto w-full max-w-4xl px-4 md:px-6 py-6 pb-[calc(10rem+env(safe-area-inset-bottom))] md:pb-6">
-            {deeplink ? (
-              <div className="px-4 pt-2">
-                <InlineScene id={deeplink.sceneId} params={parseDeeplinkParams(deeplink.params)} />
-              </div>
-            ) : null}
             {children}
             {pending && (
               <>
@@ -194,9 +166,6 @@ export function ChatScreen({ conversationId, variant, userName, children, deepli
         className="fixed inset-x-0 bottom-0 z-30 md:static md:inset-auto md:bottom-auto shrink-0 border-t border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)] pb-[env(safe-area-inset-bottom)] md:pb-0"
       >
         <div className="mx-auto w-full max-w-4xl px-4 md:px-6 pb-3 pt-2 md:pb-4">
-          <div className="mb-2">
-            <PhotoUpload />
-          </div>
           <Composer
             value={text}
             onChange={setText}

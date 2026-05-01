@@ -121,6 +121,71 @@ describe("verifyStep — accepts numeric scalar answers", () => {
   });
 });
 
+describe("verifyStep — concrete-inputs path (numerical-answer UX)", () => {
+  // Simple distance step: d = v * t. With v=25 m/s and t=8 s, d = 200.
+  const D_STEP: ProblemStep = {
+    id: "d",
+    varName: "d",
+    canonicalExpr: "v * t",
+    units: "m",
+    inputDomain: { v: [5, 50], t: [1, 30] },
+    toleranceRel: 1e-6,
+  };
+
+  it("accepts the literal numerical answer at problem inputs", () => {
+    const r = verifyStep({
+      step: D_STEP,
+      studentExpr: "200",
+      concreteInputs: { v: 25, t: 8 },
+    });
+    expect(r.ok).toBe(true);
+    expect(r.canonicalValue).toBe(200);
+    expect(r.studentValue).toBe(200);
+  });
+
+  it("accepts a numeric expression that evaluates to the answer", () => {
+    const r = verifyStep({
+      step: D_STEP,
+      studentExpr: "25 * 8",
+      concreteInputs: { v: 25, t: 8 },
+    });
+    expect(r.ok).toBe(true);
+  });
+
+  it("still accepts the symbolic formula", () => {
+    const r = verifyStep({
+      step: D_STEP,
+      studentExpr: "v * t",
+      concreteInputs: { v: 25, t: 8 },
+    });
+    expect(r.ok).toBe(true);
+    expect(r.canonicalValue).toBe(200);
+  });
+
+  it("rejects a numerical answer that's wrong", () => {
+    const r = verifyStep({
+      step: D_STEP,
+      studentExpr: "199",
+      concreteInputs: { v: 25, t: 8 },
+    });
+    expect(r.ok).toBe(false);
+    expect(r.canonicalValue).toBe(200);
+    expect(r.studentValue).toBe(199);
+  });
+
+  it("rejects a wrong formula at concrete inputs", () => {
+    // v + t = 33, not 200
+    const r = verifyStep({
+      step: D_STEP,
+      studentExpr: "v + t",
+      concreteInputs: { v: 25, t: 8 },
+    });
+    expect(r.ok).toBe(false);
+    expect(r.studentValue).toBe(33);
+    expect(r.canonicalValue).toBe(200);
+  });
+});
+
 describe("verifyStep — student-input normalization", () => {
   it("strips equals-tail before parsing", () => {
     const r = verifyStep({ step: VX_STEP, studentExpr: "v_x = v_0 * cos(theta)" });

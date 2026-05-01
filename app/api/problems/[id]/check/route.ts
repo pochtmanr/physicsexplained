@@ -105,7 +105,16 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
 
   // Verify ALWAYS runs — it's free, deterministic, and what we want every
   // visitor to feel: instant correctness feedback without any sign-in wall.
-  const verify = verifyStep({ step, studentExpr: body.studentExpr });
+  // Pass the problem's concrete numerical inputs so a numerical answer
+  // (e.g. "200" for v=25 m/s, t=8 s) is accepted alongside symbolic forms.
+  const concreteInputs: Record<string, number> = Object.fromEntries(
+    Object.entries(problem.inputs).map(([k, v]) => [k, v.value]),
+  );
+  const verify = verifyStep({
+    step,
+    studentExpr: body.studentExpr,
+    concreteInputs,
+  });
 
   const user = await deps.getUser();
 

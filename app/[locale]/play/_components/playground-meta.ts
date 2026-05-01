@@ -13,6 +13,8 @@ export interface PlaygroundMeta<S extends z.ZodTypeAny = z.ZodTypeAny> {
   sceneId: string;
   schema: S;
   urlMode: UrlMode;
+  /** Show a BETA badge in the playground header */
+  beta?: boolean;
   /** The actual playground component, lazily loaded */
   loader: () => Promise<{ default: ComponentType }>;
 }
@@ -25,6 +27,7 @@ export const PLAYGROUNDS: Record<string, PlaygroundMeta> = {
     sceneId: "OrbitalMechanicsPlayground",
     schema: orbitalSchema,
     urlMode: "blob",
+    beta: true,
     loader: () =>
       import("@/components/playgrounds/orbital-mechanics").then((m) => ({
         default: (m as { OrbitalMechanicsPlayground: ComponentType }).OrbitalMechanicsPlayground,

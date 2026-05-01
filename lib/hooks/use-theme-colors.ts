@@ -11,6 +11,8 @@ export interface ThemeColors {
   bg1: string;
   cyan: string;
   magenta: string;
+  amber: string;
+  mint: string;
 }
 
 function readColors(): ThemeColors {
@@ -24,6 +26,8 @@ function readColors(): ThemeColors {
     bg1: s.getPropertyValue("--color-bg-1").trim(),
     cyan: s.getPropertyValue("--color-cyan").trim(),
     magenta: s.getPropertyValue("--color-magenta").trim(),
+    amber: s.getPropertyValue("--color-amber").trim(),
+    mint: s.getPropertyValue("--color-mint").trim(),
   };
 }
 
@@ -37,6 +41,8 @@ export function useThemeColors(): ThemeColors {
     bg1: "#1A1D24",
     cyan: "#6FB8C6",
     magenta: "#FF6ADE",
+    amber: "#F5C451",
+    mint: "#5BFFAE",
   });
 
   useEffect(() => {

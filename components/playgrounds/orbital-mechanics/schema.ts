@@ -10,12 +10,16 @@ export const bodySchema = z.object({
   vy: z.number(),
 });
 
+export const placeMassSchema = z.union([z.literal(0.5), z.literal(1), z.literal(5), z.literal(20)]);
+export type PlaceMass = z.infer<typeof placeMassSchema>;
+
 export const orbitalSchema = z.object({
   preset: z.enum(["figure-8", "solar-mini", "pythagorean", "random-cluster", "custom"])
     .default("figure-8"),
   bodies: z.array(bodySchema).default([]),
   trails: z.boolean().default(true),
   speed: z.union([z.literal(0.25), z.literal(1), z.literal(4)]).default(1),
+  placeMass: placeMassSchema.default(1),
 });
 
 export type OrbitalState = z.infer<typeof orbitalSchema>;

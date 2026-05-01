@@ -30,10 +30,18 @@ export default async function PlayIndex({
   return (
     <div className="absolute inset-0 overflow-y-auto bg-[var(--color-bg-0)] p-6 md:p-12">
       <div className="mx-auto max-w-3xl">
-        <h1 className="font-display text-3xl tracking-tight text-[var(--color-fg-0)] md:text-5xl">
-          {t("play.indexTitle")}
-        </h1>
+        <div className="flex items-center gap-3">
+          <h1 className="font-display text-3xl tracking-tight text-[var(--color-fg-0)] md:text-5xl">
+            {t("play.indexTitle")}
+          </h1>
+          <span className="border border-[var(--color-cyan-dim)]/60 px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-cyan-dim)]">
+            Beta
+          </span>
+        </div>
         <p className="mt-2 text-[var(--color-fg-1)]">{t("play.indexSubtitle")}</p>
+        <p className="mt-3 border-l-2 border-[var(--color-cyan-dim)]/60 bg-[var(--color-fg-4)]/10 px-3 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)]">
+          {t("play.indexBetaNotice")}
+        </p>
         <ul className="mt-8 grid gap-3">
           {PLAYGROUND_SLUGS.map((slug) => {
             const meta = getPlayground(slug)!;

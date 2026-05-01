@@ -50,6 +50,7 @@ export default async function PlaygroundPage({
       shareTitle={title}
       sceneId={meta.sceneId}
       aiPromptKey={meta.aiPromptKey}
+      beta={meta.beta ?? false}
     >
       <PlaygroundLoader slug={slug} />
     </PlaygroundShell>

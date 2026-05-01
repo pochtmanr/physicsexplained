@@ -2,7 +2,7 @@
   "statement": "A 0.5 kg block is attached to a spring with spring constant k = 200 N/m on a frictionless surface. Find the angular frequency ω of oscillation and the period T. (Use x″ + ω²x = 0 — the universal oscillator equation.)",
   "steps": {
     "omega": {
-      "prompt": "Write an expression for the angular frequency ω of a mass-spring oscillator in terms of k and m.",
+      "prompt": "Compute the angular frequency ω of the mass-spring oscillator using ω = √(k/m) with k = 200 N/m and m = 0.5 kg.",
       "hint": "Compare x″ + (k/m)x = 0 with the standard form x″ + ω²x = 0. The coefficient of x is ω².",
       "commonMistakes": [
         "Writing ω = k/m instead of ω = √(k/m) — forgetting the square root",

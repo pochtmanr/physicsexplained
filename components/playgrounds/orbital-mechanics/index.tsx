@@ -1,12 +1,16 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import { usePlaygroundState } from "@/app/[locale]/play/_components/use-playground-state";
 import { encodeState } from "@/app/[locale]/play/_components/encode-state";
-import { orbitalSchema, type OrbitalState } from "./schema";
+import { orbitalSchema, type OrbitalState, type PlaceMass } from "./schema";
 import { getPreset, type PresetId } from "./presets";
 import { NBodyCanvas } from "./n-body-canvas";
 import { Controls } from "./controls";
+import { InfoPanel } from "./info-panel";
 import type { Body } from "@/lib/physics/n-body";
+
+const INFO_OPEN_KEY = "play.orbital-mechanics.infoOpen";
 
 function bodiesFor(state: OrbitalState): Body[] {
   if (state.preset !== "custom" && state.bodies.length === 0) {
@@ -16,41 +20,33 @@ function bodiesFor(state: OrbitalState): Body[] {
 }
 
 export function OrbitalMechanicsPlayground() {
-  const [state, setState, reset] = usePlaygroundState(orbitalSchema, "blob");
+  const [state, setState, resetUrlState] = usePlaygroundState(orbitalSchema, "blob");
   const [isPlaying, setIsPlaying] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
+  const t = useTranslations("play.controls");
+
+  // Info panel: open by default the first time the user lands here, persist after.
+  const [infoOpen, setInfoOpen] = useState(true);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const stored = window.localStorage.getItem(INFO_OPEN_KEY);
+    if (stored !== null) setInfoOpen(stored === "1");
+  }, []);
+  function changeInfoOpen(next: boolean) {
+    setInfoOpen(next);
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(INFO_OPEN_KEY, next ? "1" : "0");
+    }
+  }
 
   const bodies = useMemo(() => bodiesFor(state), [state]);
 
   function setBodies(next: Body[]) {
+    // setBodies is the SINGLE source of truth for user-driven body changes.
+    // It atomically promotes any preset to "custom" so we never get a second
+    // setState (e.g. an "onUserEdit") racing with this one and snapping the
+    // bodies back to the preset's initial frame.
     setState({ ...state, bodies: next, preset: "custom" });
-  }
-
-  function onUserEdit() {
-    if (state.preset !== "custom") {
-      setState({ ...state, preset: "custom", bodies });
-    }
-  }
-
-  function addBody() {
-    // Place near origin with a small jitter so successive adds don't stack
-    // exactly on top of each other (Plummer softening would still handle it,
-    // but visual separation is friendlier).
-    const i = bodies.length;
-    const jitter = 0.4 * (i + 1);
-    const angle = (i * 137.5 * Math.PI) / 180; // golden-angle spread
-    const next: Body[] = [
-      ...bodies,
-      {
-        id: `u${Date.now().toString(36)}${i}`,
-        mass: 1,
-        x: Math.cos(angle) * jitter,
-        y: Math.sin(angle) * jitter,
-        vx: 0,
-        vy: 0,
-      },
-    ];
-    const trimmed = next.length > 8 ? next.slice(next.length - 8) : next;
-    setBodies(trimmed);
   }
 
   return (
@@ -61,8 +57,19 @@ export function OrbitalMechanicsPlayground() {
         trails={state.trails}
         speed={state.speed}
         isPlaying={isPlaying}
-        onUserEdit={onUserEdit}
+        placeMass={state.placeMass}
+        resetKey={resetKey}
       />
+      <InfoPanel
+        open={infoOpen}
+        activePreset={state.preset}
+        onOpenChange={changeInfoOpen}
+      />
+      {/* Floating discoverability hint */}
+      <div className="pointer-events-none absolute top-16 right-3 z-30 hidden max-w-[16rem] flex-col gap-1 border border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]/70 px-2.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-2)] backdrop-blur-md md:flex">
+        <span>› {t("placeHint")}</span>
+        <span>› {t("removeHint")}</span>
+      </div>
       <Controls
         state={state}
         isPlaying={isPlaying}
@@ -70,12 +77,19 @@ export function OrbitalMechanicsPlayground() {
         onTogglePlay={() => setIsPlaying((p) => !p)}
         onChangeSpeed={(s) => setState({ ...state, speed: s })}
         onChangeTrails={(b) => setState({ ...state, trails: b })}
-        onChangePreset={(p) => setState({ ...state, preset: p, bodies: [] })}
-        onReset={() => {
-          setIsPlaying(true);
-          reset();
+        onChangePreset={(p) => {
+          setState({ ...state, preset: p, bodies: [] });
+          setResetKey((k) => k + 1);
         }}
-        onAddBody={addBody}
+        onChangePlaceMass={(m: PlaceMass) => setState({ ...state, placeMass: m })}
+        onReset={() => {
+          // Full reset: wipe URL state (back to default figure-8 preset, default
+          // mass / speed / trails) and force the canvas to drop trails, frozen
+          // state, drag state, and recenter the camera.
+          setIsPlaying(true);
+          resetUrlState();
+          setResetKey((k) => k + 1);
+        }}
       />
     </div>
   );

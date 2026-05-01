@@ -1,33 +1,58 @@
 {
   "indexTitle": "Playgrounds",
   "indexSubtitle": "Drag, drop, share. Physics that fits in a tweet.",
+  "indexBetaNotice": "Playgrounds are in active development. Expect rough edges — feedback welcome.",
   "back": "Back",
   "share": {
     "copyLink": "Copy link",
     "copied": "Link copied",
     "tweet": "Share on X",
-    "explain": "Explain with AI"
+    "explain": "Ask AI"
   },
   "controls": {
     "play": "Play",
     "pause": "Pause",
     "reset": "Reset",
-    "addBody": "Add body",
+    "addBody": "Add",
+    "placeHint": "Click empty space to add",
+    "removeHint": "Long-press / right-click a body to remove",
+    "mass": "Mass",
     "speed": "Speed",
     "trails": "Trails",
-    "preset": "Preset",
-    "bodies": "Bodies"
+    "preset": "Scenario",
+    "bodies": "Bodies",
+    "info": "Info",
+    "closeInfo": "Close info"
   },
   "orbital-mechanics": {
     "title": "Orbital Mechanics",
     "subtitle": "N-body gravitational chaos",
     "indexCardDescription": "Drop bodies, drag to set velocity, watch the chaos unfold.",
-    "aiPrompt": "Explain what's happening in this gravitational system.",
+    "aiPrompt": "I'm exploring an n-body gravitational simulation. Walk me through what's happening physically — the forces involved, why orbits form (or don't), and what makes this configuration stable or chaotic. Use the current state as your starting point.",
+    "info": {
+      "title": "What you're seeing",
+      "intro": "Each dot is a point mass attracted to every other by gravity (Newton's 1/r²). The integrator is symplectic Velocity-Verlet, so energy is conserved over long runs.",
+      "chaos": "With three or more bodies the motion becomes chaotic — there is no closed-form solution. Tiny changes in starting conditions blow up exponentially.",
+      "interactionsTitle": "How to interact",
+      "interactions": [
+        "Click empty space to drop a new body",
+        "Drag a body to fling it (drag length = velocity)",
+        "Long-press / right-click a body to remove it",
+        "Pinch or scroll to zoom, two-finger drag to pan"
+      ],
+      "scenariosTitle": "Scenarios"
+    },
     "presets": {
       "figure-8": "Figure-8",
       "solar-mini": "Mini solar system",
       "pythagorean": "Pythagorean (chaos)",
       "random-cluster": "Random cluster"
+    },
+    "presetsInfo": {
+      "figure-8": "Three equal masses chase each other along a single ∞-shaped track. A choreographic solution discovered by Chenciner and Montgomery (2000). Zero total momentum, zero angular momentum.",
+      "solar-mini": "A Sun-like body with three small orbiting planets. Stable Keplerian orbits — each planet sweeps equal areas in equal times.",
+      "pythagorean": "Burrau's 1913 problem: masses 3, 4, 5 placed at rest on a 3-4-5 right triangle. Notoriously chaotic — bodies eject and rejoin unpredictably.",
+      "random-cluster": "Five random masses with random velocities. Every reload is the same seed, but every preset switch in your session looks different physical."
     }
   }
 }

@@ -26,7 +26,7 @@
       ]
     },
     "A": {
-      "prompt": "Write an expression for the oscillation amplitude at time t_n using the exponential envelope.",
+      "prompt": "Compute the oscillation amplitude at time t_n using the exponential envelope A₀ exp(−γt/2).",
       "hint": "The amplitude envelope of a damped oscillator decays as A₀ e^(−γt/2). The factor of 2 in the exponent is because the equation of motion uses γ as the full damping coefficient, not the half-coefficient.",
       "commonMistakes": [
         "Using exp(−γt) without the factor of ½ — overestimates the decay",

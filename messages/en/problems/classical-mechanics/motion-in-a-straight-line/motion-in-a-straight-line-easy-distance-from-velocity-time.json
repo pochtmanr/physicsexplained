@@ -2,7 +2,7 @@
   "statement": "A car moves along a straight highway at a constant velocity of 25 m/s. How far does it travel in 8 seconds? Assume no acceleration throughout the journey.",
   "steps": {
     "d": {
-      "prompt": "Write an expression for the distance d covered at constant velocity v over time t.",
+      "prompt": "Compute the distance d the car travels at constant velocity v = 25 m/s over time t = 8 s.",
       "hint": "When velocity is constant, distance is simply the product of speed and time.",
       "commonMistakes": [
         "Dividing velocity by time instead of multiplying",

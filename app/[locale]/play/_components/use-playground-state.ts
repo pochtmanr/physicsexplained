@@ -45,8 +45,15 @@ export function usePlaygroundState<S extends z.ZodTypeAny>(
 
   const reset = useCallback(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
+    // Commit the schema-default state synchronously so consumers (and any
+    // resetKey bumped in the same handler) see the defaults in the same React
+    // commit. The URL replace below catches up the address bar; we don't want
+    // to wait on it because router.replace() is async and the canvas would
+    // otherwise rewind against stale state.
+    const fresh = decodeState(new URLSearchParams(), schema, mode) as z.infer<S>;
+    setStateLocal(fresh);
     router.replace(pathname, { scroll: false });
-  }, [router, pathname]);
+  }, [router, pathname, schema, mode]);
 
   useEffect(() => {
     return () => {

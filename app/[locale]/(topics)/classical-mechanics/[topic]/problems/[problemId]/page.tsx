@@ -1,7 +1,11 @@
 // app/[locale]/(topics)/classical-mechanics/[topic]/problems/[problemId]/page.tsx
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getProblem, PROBLEMS } from "@/lib/content/problems";
+import {
+  getProblem,
+  getProblemsForTopic,
+  PROBLEMS,
+} from "@/lib/content/problems";
 import { getProblemStringsForLocale } from "@/lib/problems/strings";
 import {
   deriveProblemTitle,
@@ -15,6 +19,14 @@ import { EquationRail } from "@/components/problems/equation-rail";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
+
+const DIFFICULTY_ORDER = [
+  "easy",
+  "medium",
+  "hard",
+  "challenge",
+  "exam",
+] as const;
 
 export async function generateStaticParams() {
   return PROBLEMS.filter(
@@ -51,6 +63,26 @@ export default async function ProblemPage({ params }: PageProps) {
   const title = deriveProblemTitle(problemId, topic, problem.difficulty);
   const topicTitle = deriveTopicTitle(topic);
   const eyebrow = `${problem.difficulty.toUpperCase()} · ${topicTitle.toUpperCase()}`;
+
+  // Find the next problem in this topic, sorted by difficulty.
+  // If we're on the last problem, fall back to undefined and the link is hidden.
+  const ordered = [...getProblemsForTopic(topic)].sort(
+    (a, b) =>
+      DIFFICULTY_ORDER.indexOf(a.difficulty) -
+      DIFFICULTY_ORDER.indexOf(b.difficulty),
+  );
+  const currentIndex = ordered.findIndex((p) => p.id === problemId);
+  const nextProblem =
+    currentIndex >= 0 && currentIndex < ordered.length - 1
+      ? ordered[currentIndex + 1]
+      : undefined;
+  const nextName = nextProblem
+    ? deriveProblemTitle(
+        nextProblem.id,
+        nextProblem.primaryTopicSlug,
+        nextProblem.difficulty,
+      )
+    : undefined;
 
   return (
     <TopicPageLayout aside={[]}>
@@ -89,7 +121,7 @@ export default async function ProblemPage({ params }: PageProps) {
         </Link>
       </Section>
 
-      <div className="mt-12 border-t border-[var(--color-fg-4)] pt-6 font-mono text-xs uppercase tracking-wider">
+      <div className="mt-12 flex flex-col gap-4 border-t border-[var(--color-fg-4)] pt-6 font-mono text-xs uppercase tracking-wider sm:flex-row sm:items-center sm:justify-between">
         <Link
           href={`/${locale}/classical-mechanics/${topic}`}
           className="inline-flex items-center gap-2 text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-cyan)]"
@@ -99,6 +131,26 @@ export default async function ProblemPage({ params }: PageProps) {
           </span>
           Back to {topicTitle}
         </Link>
+        {nextProblem && nextName && (
+          <Link
+            href={`/${locale}/classical-mechanics/${topic}/problems/${nextProblem.id}`}
+            className="group inline-flex items-center gap-2 text-[var(--color-cyan-dim)] transition-colors hover:text-[var(--color-cyan)]"
+          >
+            <span className="text-[var(--color-fg-3)]">Next problem ·</span>
+            <span className="border border-[var(--color-cyan-dim)] px-2 py-0.5 text-[10px] tracking-wider text-[var(--color-cyan-dim)]">
+              {nextProblem.difficulty}
+            </span>
+            <span className="normal-case text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)]">
+              {nextName}
+            </span>
+            <span
+              aria-hidden="true"
+              className="inline-block transition-transform duration-200 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5"
+            >
+              →
+            </span>
+          </Link>
+        )}
       </div>
     </TopicPageLayout>
   );
