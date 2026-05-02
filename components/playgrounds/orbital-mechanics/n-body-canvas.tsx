@@ -58,11 +58,11 @@ const BODY_CAP = 8;
  * Slingshot amplification on the empty-canvas drag-to-launch gesture. The
  * gestures module emits a small px→px/s scaling (`0.02`) tuned for nudging
  * existing bodies. For a satisfying "fling" launch we multiply that by this
- * factor — at the default camera scale (80 px/unit) a 150 px drag yields
- * ~7 world u/s, which is well into orbital-velocity territory for the
- * solar-mini preset (planet orbit is ~8 u/s).
+ * factor — at the default camera scale (80 px/unit) a 150 px drag now yields
+ * ~5.6 world u/s, comfortably below the solar-mini orbital velocity (~8 u/s)
+ * so a typical drag tends to fall into orbit rather than ejecting.
  */
-const LAUNCH_BOOST = 250;
+const LAUNCH_BOOST = 200;
 /** Forward sim time used for the predictive-orbit overlay when paused. */
 const PREDICTION_SECONDS = 5;
 
