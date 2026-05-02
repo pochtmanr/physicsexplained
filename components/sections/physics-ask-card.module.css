@@ -27,10 +27,24 @@
     0 24px 56px -20px color-mix(in srgb, var(--color-cyan) 35%, transparent);
 }
 
+/* Cards that carry the playground tone hover with magenta instead of cyan, so
+   the eye learns "cyan = ask, magenta = play" at a glance. */
+.tonePlay:hover {
+  border-color: var(--color-magenta);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-magenta) 30%, transparent),
+    0 24px 56px -20px color-mix(in srgb, var(--color-magenta) 35%, transparent);
+}
+
 /* Accent variant: subtle cyan-tinted surface. */
 .accent {
   background: color-mix(in srgb, var(--color-cyan) 8%, var(--color-bg-1));
   border-color: color-mix(in srgb, var(--color-cyan-dim) 35%, transparent);
+}
+
+.tonePlay.accent {
+  background: color-mix(in srgb, var(--color-magenta) 6%, var(--color-bg-1));
+  border-color: color-mix(in srgb, var(--color-magenta) 30%, transparent);
 }
 
 /* Inverted variant: flips theme variables in scope.
@@ -74,6 +88,10 @@
   border-color: var(--color-cyan);
 }
 
+.tonePlay.inverted:hover {
+  border-color: var(--color-magenta);
+}
+
 /* Body (above the bg layer). */
 .body {
   position: relative;
@@ -86,8 +104,8 @@
 /* Top row */
 .topRow {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
 }
 
 .eyebrow {
@@ -96,6 +114,20 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--color-cyan-dim);
+}
+
+.tonePlay .eyebrow {
+  color: var(--color-magenta);
+}
+
+.kicker {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-fg-3);
+  border-inline-start: 1px solid var(--color-fg-4);
+  padding-inline-start: 0.75rem;
 }
 
 .arrow {
@@ -108,11 +140,16 @@
   line-height: 1;
   color: var(--color-fg-3);
   transition: transform 240ms ease-out, color 240ms ease-out;
+  margin-inline-start: auto;
 }
 
 .card:hover .arrow {
   color: var(--color-cyan);
   transform: rotate(-45deg);
+}
+
+.tonePlay.card:hover .arrow {
+  color: var(--color-magenta);
 }
 
 :global([dir="rtl"]) .arrow {
@@ -144,6 +181,10 @@
   color: var(--color-cyan);
 }
 
+.tonePlay.card:hover .title {
+  color: var(--color-magenta);
+}
+
 .copy {
   position: relative;
   margin-top: 0.75rem;
@@ -157,20 +198,29 @@
   }
 }
 
-/* Bottom pill */
-.pillRow {
+/* When the card has an image bleeding through, wrap the title+body in a
+   localized translucent block so the copy stays legible without tinting the
+   whole image. The block is intentionally narrow — it sits where the text
+   sits, and lets the rest of the image show in full color. No colored stripe. */
+.copyBlock {
   position: relative;
-  margin-top: auto;
-  padding-top: 2rem;
+  isolation: isolate;
+  max-width: 38ch;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem 0.85rem;
+  margin-inline-start: -0.25rem;
+  background: color-mix(in srgb, var(--color-bg-1) 78%, transparent);
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
 }
 
-.pill {
-  display: inline-block;
-  border: 1px solid var(--color-cyan-dim);
-  padding: 0.25rem 0.75rem;
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--color-cyan-dim);
+@media (min-width: 768px) {
+  .copyBlock {
+    max-width: 44ch;
+    padding: 1rem 1.25rem 1.1rem;
+  }
+}
+
+.copyBlock .title {
+  margin-top: 0;
 }

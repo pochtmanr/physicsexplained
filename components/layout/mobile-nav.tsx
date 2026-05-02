@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Menu, X, User, BookOpen, Search, Sun, Moon, Sparkles } from "lucide-react";
+import { Menu, X, User, BookOpen, Search, Sun, Moon, Sparkles, Gamepad2 } from "lucide-react";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { locales, getDirection } from "@/i18n/config";
@@ -224,6 +224,16 @@ export function MobileNav() {
               >
                 <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tNav("dictionary")}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/play"
+                onClick={close}
+                className="flex items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+              >
+                <Gamepad2 aria-hidden="true" size={14} strokeWidth={1.5} />
+                {tNav("play")}
               </Link>
             </li>
             <li>

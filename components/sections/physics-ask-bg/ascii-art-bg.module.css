@@ -1,0 +1,25 @@
+.root {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.image {
+  object-fit: cover;
+  /* Image shows in its natural colors — no blend mode, no tint, no veil.
+     The card body uses a localized translucent block so the copy stays
+     legible without colorizing the rest of the artwork. */
+}
+
+.alignLeft {
+  object-position: left center;
+}
+
+.alignRight {
+  object-position: right center;
+}
+
+.alignCenter {
+  object-position: center center;
+}

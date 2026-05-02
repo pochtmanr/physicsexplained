@@ -243,34 +243,35 @@
     }
   },
   "physicsAsk": {
-    "tag": "§ PHYSICS.ASK",
-    "title": "Talk to physics.",
-    "subtitle": "An AI tutor grounded in every topic on this site. Ask a question, see the math, watch the simulation.",
-    "ctaOpen": "Open Physics.Ask",
+    "tag": "§ PLAY · ASK",
+    "title": "Play, ask, talk physics.",
+    "subtitle": "Two ways in. Ask physics anything in plain language, or drop into a playground and tune the parameters yourself — both grounded in the same hand-written physics on this site.",
+    "ctaAsk": "Open Physics.Ask",
+    "ctaPlay": "Open Playgrounds",
     "cards": {
       "ask": {
         "eyebrow": "01 / ASK",
-        "title": "Any physics question",
-        "body": "From Newton's apple to Schrödinger's cat — in plain language, with citations.",
-        "pill": "AI · CHAT"
+        "kicker": "PHYSICS.ASK",
+        "title": "Talk to physics.",
+        "body": "From Newton's apple to Schrödinger's cat — plain language, live math, every answer cited from the topics on this site."
       },
-      "math": {
-        "eyebrow": "02 / MATH",
-        "title": "Live math, not screenshots",
-        "body": "Equations rendered live. Hover any symbol — it tells you what it means.",
-        "pill": "LATEX · INLINE"
+      "answers": {
+        "eyebrow": "02 / ANSWERS",
+        "kicker": "PHYSICS.ASK",
+        "title": "Math, rendered. Sims, embedded.",
+        "body": "Equations come out live, not as screenshots. When words aren't enough, Physics.Ask drops a live simulation right into the answer."
       },
-      "simulate": {
-        "eyebrow": "03 / SIMULATE",
-        "title": "Answers with simulations",
-        "body": "When words aren't enough, Physics.Ask drops a live simulation right into the answer.",
-        "pill": "INTERACTIVE"
+      "drop": {
+        "eyebrow": "03 / DROP",
+        "kicker": "PLAYGROUNDS",
+        "title": "Drop a body, set it loose.",
+        "body": "Click to add a mass, drag to give it velocity, then watch n-body gravity figure the rest out. Real symplectic Verlet — energy is conserved."
       },
-      "grounded": {
-        "eyebrow": "04 / GROUNDED",
-        "title": "Cited from this site",
-        "body": "Every answer cites the topics on this site — 66 of them, hand-written, peer-checked.",
-        "pill": "66 SOURCES"
+      "trace": {
+        "eyebrow": "04 / TRACE",
+        "kicker": "PLAYGROUNDS",
+        "title": "Past, present, prediction.",
+        "body": "Faded trails behind, predicted ellipses ahead. Figure-8 choreographies, mini solar systems, Burrau's chaos — and every state lives in the URL."
       }
     }
   },

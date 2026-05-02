@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { User, BookOpen, Sparkles } from "lucide-react";
+import { User, BookOpen, Sparkles, Gamepad2 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { Logo } from "./logo";
 import { NavBranchMenu } from "./nav-branch-menu";
@@ -52,6 +52,7 @@ export async function Nav() {
             href="/play"
             className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
           >
+            <Gamepad2 aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("play")}</span>
           </Link>
           <SearchTrigger />
