@@ -1,0 +1,132 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { WeakFieldExpansionScene } from "@/components/physics/the-newtonian-limit/weak-field-expansion-scene";
+import { PoissonVsEfeScene } from "@/components/physics/the-newtonian-limit/poisson-vs-efe-scene";
+import { WhereNewtonFailsScene } from "@/components/physics/the-newtonian-limit/where-newton-fails-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Einstein field equations", href: "/dictionary/einstein-field-equations" },
+  { type: "term", label: "Newtonian limit", href: "/dictionary/newtonian-limit" },
+  { type: "term", label: "Stress-energy tensor", href: "/dictionary/stress-energy-tensor" },
+  { type: "term", label: "Gravitational redshift", href: "/dictionary/gravitational-redshift" },
+  { type: "term", label: "Time dilation", href: "/dictionary/time-dilation" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.38 · CURVATURE & EFE"
+  title="THE NEWTONIAN LIMIT"
+  subtitle="Where GR gives back Newton — and exactly where it refuses."
+/>
+
+<Section index={1} title="The recovery test">
+
+Every new theory of physics must pass a minimum requirement: reproduce the successes of whatever it replaces. <PhysicistLink slug="albert-einstein" /> built the field equations to describe gravity geometrically, but the equations had to recover <PhysicistLink slug="isaac-newton" />'s inverse-square law in every regime where Newton had been tested and confirmed — planetary orbits, falling apples, ocean tides. If the Einstein field equations failed that test, they would be wrong regardless of their mathematical elegance.
+
+The limit that enforces this test has three ingredients, taken simultaneously:
+
+**Weak field.** The metric is nearly flat: $g_{\mu\nu} = \eta_{\mu\nu} + h_{\mu\nu}$ where the perturbation $h_{\mu\nu}$ is small in every component, $|h| \ll 1$. The spacetime curvature is a small ripple on flat Minkowski geometry.
+
+**Slow motion.** All matter moves at speeds much less than light, $v \ll c$. This suppresses the spatial components of the four-velocity relative to the time component, so the geodesic equation simplifies drastically.
+
+**Static field.** The mass distribution is not changing on the timescale of interest, $\partial_t h_{\mu\nu} \approx 0$. No gravitational waves, no time-varying potentials.
+
+Under all three conditions the full machinery of General Relativity collapses, term by term, into a single second-order equation you have known since first-year physics. The derivation of that collapse is the subject of this section.
+
+<SceneCard caption="FIG.38a — the weak-field metric. Drag the slider to vary ε = |Φ|/c². At ε = 0 the metric is flat: g = η. At small ε the time component gains the Newtonian perturbation h_{00} = −2ε. At ε → ½ the linear approximation formally breaks. The colour scale bar marks familiar physical anchors: Earth surface at ε ≈ 7×10⁻¹⁰, solar surface at ε ≈ 2×10⁻⁶, neutron star at ε ≈ 0.2.">
+  <WeakFieldExpansionScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="The weak-field expansion">
+
+Write the metric as
+
+<EquationBlock id="EQ.01">$$g_{\mu\nu} = \eta_{\mu\nu} + h_{\mu\nu}, \quad |h_{\mu\nu}| \ll 1$$</EquationBlock>
+
+and expand the Einstein field equations to first order in $h$. The Christoffel symbols are linear in $\partial h$; the Riemann and Ricci tensors are linear in $\partial^2 h$ (all quadratic terms are dropped). This is the **linearised theory of gravity**, valid everywhere the field is weak.
+
+Now invoke slow motion. The geodesic equation is
+
+$$\frac{d^2 x^\mu}{d\tau^2} + \Gamma^\mu_{\alpha\beta} \frac{dx^\alpha}{d\tau}\frac{dx^\beta}{d\tau} = 0$$
+
+For slow motion, $dx^i/d\tau \ll dx^0/d\tau \approx c$, so the dominant term in the double sum is $(\alpha, \beta) = (0, 0)$. The spatial components of the geodesic equation reduce to
+
+<EquationBlock id="EQ.02">$$\frac{d^2 x^i}{dt^2} \approx -\frac{1}{2}\,\partial^i h_{00}\,c^2$$</EquationBlock>
+
+This is Newton's second law for a particle in a potential, with the right-hand side playing the role of the gravitational acceleration $\mathbf{g} = -\nabla\Phi$. The only metric component that drives slow-motion geodesics is $h_{00}$ — the time-time perturbation. All of the spatial components of the metric are irrelevant at this order.
+
+</Section>
+
+<Section index={3} title="Identify h_{00} with the Newtonian potential">
+
+Comparing EQ.02 with Newton's law $d^2\mathbf{x}/dt^2 = -\nabla\Phi$ immediately gives
+
+<EquationBlock id="EQ.03">$$h_{00} = -\frac{2\Phi}{c^2}$$</EquationBlock>
+
+where $\Phi(\mathbf{x})$ is the Newtonian gravitational potential. The identification is exact in the weak-field, slow-motion, static limit.
+
+The dimensionless parameter $\varepsilon = |\Phi|/c^2$ measures how far from flat the spacetime is:
+
+- **Earth's surface:** $\Phi \approx -6.25 \times 10^7\ \mathrm{J/kg}$, so $\varepsilon \approx 6.9 \times 10^{-10}$. This is the GPS correction from §05.3 — a part-per-billion effect, yet large enough to accumulate 38 microseconds per day.
+- **Solar surface:** $\Phi \approx -1.9 \times 10^{11}\ \mathrm{J/kg}$, so $\varepsilon \approx 2 \times 10^{-6}$. The red-shift of solar spectral lines is measured to this precision.
+- **Neutron star surface:** $\varepsilon \approx 0.1$–$0.3$. The linear approximation begins to fail; post-Newtonian corrections at second order matter.
+- **Black hole horizon:** $\varepsilon \to \frac{1}{2}$ formally. The metric perturbation $h_{00} \to -1$ and $g_{00} \to 0$ — the time component of the metric vanishes, signalling the coordinate singularity of the event horizon. The linearised theory has completely broken down here.
+
+Newton's gravity is the leading order of a perturbation series in $\varepsilon$. It is not wrong — it is a truncation of the deeper theory, accurate to extraordinary precision wherever $\varepsilon \ll 1$.
+
+</Section>
+
+<Section index={4} title="The 00-component of the field equations">
+
+Now take the same weak-field limit on the left-hand side of the EFE. Expand the <Term slug="einstein-tensor" /> $G_{\mu\nu} = R_{\mu\nu} - \frac{1}{2}R\,g_{\mu\nu}$ to first order in $h$. The 00-component in the static case reduces to
+
+$$G_{00} \approx \nabla^2 h_{00}$$
+
+(all time-derivative terms vanish by the static assumption; the spatial Laplacian of $h_{00}$ survives).
+
+On the matter side, the <Term slug="stress-energy-tensor" /> $T_{00}$ for slow, pressureless matter is dominated by the rest-mass energy density:
+
+$$T_{00} \approx \rho c^2$$
+
+The 00-component of the full EFE, $G_{\mu\nu} = \frac{8\pi G}{c^4}\,T_{\mu\nu}$, therefore becomes
+
+$$\nabla^2 h_{00} = \frac{8\pi G}{c^4}\,\rho c^2 = \frac{8\pi G \rho}{c^2}$$
+
+Substitute EQ.03, $h_{00} = -2\Phi/c^2$:
+
+<EquationBlock id="EQ.04">$$\nabla^2\Phi = 4\pi G\rho$$</EquationBlock>
+
+This is **Poisson's equation** — the exact statement of Newtonian gravity for a continuous mass distribution. The coefficient $8\pi G/c^4$ in the Einstein field equations is **uniquely fixed** by requiring this match. Any other coefficient would give a different coupling between geometry and matter and would fail to reproduce Newton's law.
+
+<SceneCard caption="FIG.38b — Newtonian gravity and the linearised EFE side by side. Left: Poisson's equation for a point mass, with equipotential contours and radial field lines. Right: the 00-component of the linearised EFE. Substitute h_{00} = −2Φ/c² and T_{00} ≈ ρc²; the coefficient 8πG/c⁴ cancels to give Poisson's equation exactly. The two panels are the same statement written at different depths of theory.">
+  <PoissonVsEfeScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Where Newton fails — and where GR cashes out next">
+
+Having shown that GR contains Newton, we can ask precisely where Newton stops being sufficient. The answer is a two-dimensional parameter space: field strength $\varepsilon = |\Phi|/c^2$ and velocity ratio $v/c$. Newton is the approximation valid for small $\varepsilon$ and small $v/c$ simultaneously.
+
+The first quantitative departure from the Newtonian prediction is Mercury's perihelion precession. Newton's gravity predicts that a planet in a static spherical gravitational field follows a closed ellipse with no precession. Mercury's orbit is not quite closed — it precesses at a rate that cannot be fully accounted for by planetary perturbations. The residual, once all Newtonian perturbations are subtracted, is **43.0 arcseconds per century**. The General Relativistic post-Newtonian correction, computed from the Schwarzschild geometry, gives exactly 43.0 arcseconds per century. This was one of the three classic tests that confirmed GR.
+
+The second departure is the bending of light at the solar limb. Newton's corpuscular theory of light predicts a deflection of 0.87 arcseconds as a ray grazes the Sun. The correct GR value is **1.75 arcseconds** — exactly twice the Newtonian prediction. The factor of 2 arises because the spatial components of the metric also contribute to photon geodesics, and Newton has no equivalent term. Eddington's 1919 eclipse expedition measured this value and made Einstein famous.
+
+<SceneCard caption="FIG.38c — the regime diagram. Horizontal axis: field strength ε = |Φ|/c² (log scale). Vertical axis: velocity v/c (log scale). The blue region is the Newtonian domain. Mercury sits at the first post-Newtonian correction. The amber region requires GR post-Newtonian corrections. The red region — neutron stars, black holes, the early universe — requires the full field equations.">
+  <WhereNewtonFailsScene />
+</SceneCard>
+
+<Callout variant="intuition">Newton was right where it counted, and the deeper theory shows him exactly where his approximation breaks. The transition from Poisson's equation to the full field equations is not a replacement but a revelation: the Newtonian potential is the leading term $h_{00}$ in a metric perturbation, and the acceleration of a falling body is the gradient of a single metric component. All of Newton's gravity lives in $g_{00}$ alone. The rest of the metric — the spatial components — only become observable when light bends, or orbits precess, or clocks drift.</Callout>
+
+The next step is to find the first exact solution to the Einstein field equations that goes beyond the Newtonian limit: [the Schwarzschild metric](/relativity/the-schwarzschild-metric). <PhysicistLink slug="albert-einstein" /> could derive the 43"/century from the linearised theory, but it was <PhysicistLink slug="albert-einstein" /> working with the exact Schwarzschild solution that gave the definitive calculation. The Schwarzschild metric is the unique spherically symmetric vacuum solution — no approximation, no perturbation, no linearisation. It is the geometry that Newton's inverse-square law is approximating.
+
+</Section>
+
+</TopicPageLayout>
