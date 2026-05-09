@@ -1,0 +1,134 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { StressEnergyComponentsScene } from "@/components/physics/the-stress-energy-tensor/stress-energy-components-scene";
+import { PerfectFluidScene } from "@/components/physics/the-stress-energy-tensor/perfect-fluid-scene";
+import { ConservationScene } from "@/components/physics/the-stress-energy-tensor/conservation-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Stress-energy tensor", href: "/dictionary/stress-energy-tensor" },
+  { type: "term", label: "Einstein tensor", href: "/dictionary/einstein-tensor" },
+  { type: "term", label: "Einstein field equations", href: "/dictionary/einstein-field-equations" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.36 · §08.3 CURVATURE & EFE"
+  title="THE STRESS-ENERGY TENSOR"
+  subtitle="Everything that has energy, momentum, or stress lives in one symmetric object."
+/>
+
+<Section index={1} title="The matter side">
+
+The Einstein field equations have two sides. The left side — the Einstein tensor $G_{\mu\nu}$ introduced in §08.2 — encodes the curvature of spacetime. The right side must encode the source of that curvature: every form of matter and energy. The object that does this job is the <Term slug="stress-energy-tensor" /> $T_{\mu\nu}$.
+
+$T_{\mu\nu}$ is a symmetric $(0,2)$ tensor. In $n$-dimensional spacetime it has $n^2$ components, of which $n(n+1)/2$ are independent because $T_{\mu\nu} = T_{\nu\mu}$. In four spacetime dimensions that gives ten independent numbers at each point. Those ten numbers encode every form of energy, momentum, pressure, and stress that any physical system can carry. There is no additional information about matter and energy that escapes $T_{\mu\nu}$: a complete specification of this single tensor is a complete specification of the matter content of a region.
+
+<SceneCard caption="FIG.36a — the 4×4 grid of T_{μν} components. T_{00} is energy density (pink), T_{0i} and T_{i0} are momentum density (purple), diagonal spatial components T_{ii} are pressure (amber), off-diagonal spatial T_{ij} are shear stress (violet). Toggle between fluid types to see which cells are active.">
+  <StressEnergyComponentsScene />
+</SceneCard>
+
+The matrix layout in FIG.36a is the single most useful mnemonic in GR thermodynamics. Read the top-left corner for energy; read the first row or column for momentum; read the spatial block for mechanical stress. Everything has its place.
+
+</Section>
+
+<Section index={2} title="The components, physically">
+
+Let spacetime coordinates be $(ct, x, y, z)$ so that the index $\mu = 0$ labels the time direction and $\mu = 1, 2, 3$ label the three spatial directions. The components of $T_{\mu\nu}$ then have the following physical meanings.
+
+**$T_{00}$** is the energy density: the amount of energy per unit volume as measured by an observer whose four-velocity is aligned with the $\partial_t$ direction. For a cloud of matter with rest-mass density $\rho$ this is $\rho c^2$; for an electromagnetic field it is $u = \tfrac{1}{2}(\varepsilon_0 E^2 + B^2/\mu_0)$.
+
+**$T_{0i} = T_{i0}$** (with $i = 1, 2, 3$) is the momentum density, or equivalently the energy flux per unit area per unit time divided by $c$. The equality $T_{0i} = T_{i0}$ is not a mathematical coincidence — it is the statement that energy flux and momentum density are the same physical quantity, related by $c^2$. In fluids this is immediately obvious: momentum carried by mass flow is $\rho v$, and energy carried by that same flow is $\rho c^2 v$, differing only by $c^2$.
+
+**$T_{ii}$** (no sum) is the pressure on the $i$-face in the $i$-direction. For an isotropic fluid $T_{11} = T_{22} = T_{33} = p$. Pressure is force per unit area, and force per unit area is momentum flux per unit time per unit area — so $T_{ij}$ is a momentum-flux tensor, also called the **stress tensor**.
+
+**$T_{ij}$ ($i \neq j$)** is the shear stress: the flux of $i$-momentum across a surface of constant $x^j$. A viscous fluid or a solid under shear has non-zero off-diagonal spatial components.
+
+<Callout variant="intuition">
+The $(0,i)$ block and the spatial $(i,j)$ block together form the classical stress tensor from continuum mechanics. $T_{\mu\nu}$ is the relativistic upgrade that welds the stress tensor, the energy density, and the momentum density into a single covariant object.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Special cases: dust, perfect fluid, vacuum">
+
+The most important special case is the **perfect fluid**: a medium with no viscosity and no heat conduction, characterised entirely by its energy density $\rho$ and isotropic pressure $p$. In the rest frame of the fluid — where the four-velocity is $u^\mu = (c, 0, 0, 0)$ — all off-diagonal components vanish and the stress-energy tensor takes the form
+
+<EquationBlock id="EQ.01">$$T_{00} = \rho c^2, \quad T_{11} = T_{22} = T_{33} = p, \quad T_{\mu\nu} = 0 \text{ otherwise}$$</EquationBlock>
+
+Written covariantly in any frame, this is
+
+<EquationBlock id="EQ.02">$$T_{\mu\nu} = \left(\rho + \frac{p}{c^2}\right) u_\mu u_\nu - p\, g_{\mu\nu}$$</EquationBlock>
+
+where $u_\mu = g_{\mu\nu} u^\nu$ is the covariant four-velocity and $g_{\mu\nu}$ is the spacetime metric. This single formula works in any coordinate system and in any gravitational field.
+
+<SceneCard caption="FIG.36b — a box of perfect fluid. Cyan arrows show the rest-frame four-velocity u^μ pointing along the time axis. Amber arrows show outward pressure on each face. Two sliders control ρ and p; the T_{μν} mini-table updates in real time. Dust: p=0. Radiation: p = ρc²/3.">
+  <PerfectFluidScene />
+</SceneCard>
+
+Three limiting cases are worth naming explicitly.
+
+**Pressureless dust** ($p = 0$): the simplest model for slow, cold, non-interacting matter. Only $T_{00} = \rho c^2$ is non-zero. The spatial stress is absent because the particles exert no forces on each other.
+
+**Radiation (traceless fluid)**: for electromagnetic radiation or any massless field, $p = \rho c^2/3$. The trace of $T_{\mu\nu}$ with the inverse metric is $T = g^{\mu\nu} T_{\mu\nu} = \rho c^2 - 3p = 0$. This tracelessness is intimately connected to the conformal invariance of electromagnetism and governs how radiation contributes to cosmological expansion.
+
+**Vacuum**: $T_{\mu\nu} = 0$ everywhere. The Einstein equations then become $G_{\mu\nu} = 0$, whose solutions include Minkowski space and the Schwarzschild black hole — spacetime can be curved in vacuum, because curvature is not sourced pointwise; it is determined by the global boundary conditions.
+
+</Section>
+
+<Section index={4} title="Local energy-momentum conservation">
+
+The most important property of $T_{\mu\nu}$ is its covariant conservation law:
+
+<EquationBlock id="EQ.03">$$\nabla^\mu T_{\mu\nu} = 0$$</EquationBlock>
+
+This is a system of four equations (one for each value of $\nu = 0, 1, 2, 3$). They say that energy-momentum is locally conserved at every point of spacetime: no energy or momentum is created or destroyed inside any infinitesimal region.
+
+<SceneCard caption="FIG.36c — a control volume with energy-momentum flux entering on the left face and leaving on the right. The interior energy density pulses as a packet passes through. The net flux through all faces averages to zero — the continuum statement of ∇^μ T_{μν} = 0.">
+  <ConservationScene />
+</SceneCard>
+
+The $\nu = 0$ equation is energy continuity:
+
+$$\partial_t T_{00} + \partial_i T_{0i} = 0$$
+
+It says the rate of change of energy density equals the negative divergence of energy flux — the relativistic Poynting theorem, the relativistic fluid energy equation, and the first law of thermodynamics, all in one line.
+
+The $\nu = j$ equations ($j = 1, 2, 3$) are momentum continuity:
+
+$$\partial_t T_{0j} + \partial_i T_{ij} = 0$$
+
+The time derivative of momentum density equals the negative divergence of the stress tensor — Newton's second law in disguise, written without reference to forces, generalised to continuous matter, and valid in any curved spacetime.
+
+In flat Minkowski spacetime, $\nabla^\mu = \partial^\mu$ and these equations reduce to the classical conservation laws of fluid mechanics. In curved spacetime, $\nabla^\mu$ is the covariant derivative, and the equations automatically incorporate the effects of gravity on the matter — without any additional input. Gravity acts on the matter through the Christoffel symbols hidden inside $\nabla^\mu$, which are themselves determined by $T_{\mu\nu}$ through the field equations.
+
+<Callout variant="math">
+The conservation law $\nabla^\mu T_{\mu\nu} = 0$ is not imposed on $T_{\mu\nu}$ from outside. In GR it follows automatically from the Bianchi identity $\nabla^\mu G_{\mu\nu} = 0$, which is a geometric identity satisfied by any metric. Because $G_{\mu\nu} = 8\pi G\, T_{\mu\nu}$, the Bianchi identity implies $\nabla^\mu T_{\mu\nu} = 0$. The conservation of energy and momentum is thus encoded in the geometry of spacetime itself.
+</Callout>
+
+</Section>
+
+<Section index={5} title="What this couples to">
+
+The stress-energy tensor and the <Term slug="einstein-tensor" /> $G_{\mu\nu}$ share a structural identity: both are symmetric $(0,2)$ tensors, both are divergence-free ($\nabla^\mu G_{\mu\nu} = 0$ and $\nabla^\mu T_{\mu\nu} = 0$), and both are built from physical fields. <PhysicistLink slug="albert-einstein" /> recognised that this structural match is not a coincidence — it is precisely what allows the two sides to be set equal.
+
+The Einstein field equations
+
+$$G_{\mu\nu} = \frac{8\pi G}{c^4}\, T_{\mu\nu}$$
+
+close the loop. The geometry side $G_{\mu\nu}$ encodes the curvature of spacetime; the matter side $T_{\mu\nu}$ encodes every form of energy and momentum. Each side is a divergence-free symmetric $(0,2)$ tensor. Setting them proportional is the only natural equation one can write that is consistent with both the Bianchi identity and Newtonian gravity in the weak-field limit.
+
+Beyond fluids, any field theory contributes its own $T_{\mu\nu}$. For the electromagnetic field, the stress-energy tensor is constructed from the field-strength tensor $F_{\mu\lambda}$ as
+
+$$T_{\mu\nu}^{\text{EM}} = \frac{1}{\mu_0}\left(F_{\mu\lambda} F_\nu{}^\lambda - \frac{1}{4} g_{\mu\nu} F_{\lambda\rho} F^{\lambda\rho}\right)$$
+
+This single expression encodes the electromagnetic energy density, the Poynting vector, and the Maxwell stress tensor. It is traceless — confirming the radiation pressure relation $p = \rho c^2/3$ — and satisfies $\nabla^\mu T_{\mu\nu}^{\text{EM}} = 0$ when Maxwell's equations hold. The full derivation lives at the [electromagnetic field tensor](/relativity/the-electromagnetic-field-tensor) page.
+
+The next topic, [Einstein&#39;s field equations](/relativity/einsteins-field-equations), derives the proportionality constant, unpacks the Newtonian limit, and explores the first exact solutions. The stress-energy tensor built in this section is the input; the curvature of spacetime is the output.
+
+</Section>
+
+</TopicPageLayout>
