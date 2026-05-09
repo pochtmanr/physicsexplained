@@ -1,0 +1,133 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MetricEllipsesScene } from "@/components/physics/the-metric-tensor/metric-ellipses-scene";
+import { LineElementScene } from "@/components/physics/the-metric-tensor/line-element-scene";
+import { MetricComparisonScene } from "@/components/physics/the-metric-tensor/metric-comparison-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Bernhard Riemann", href: "/physicists/bernhard-riemann" },
+  { type: "physicist", label: "Tullio Levi-Civita", href: "/physicists/tullio-levi-civita" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+  { type: "term", label: "Manifold", href: "/dictionary/manifold" },
+  { type: "term", label: "Invariant interval", href: "/dictionary/invariant-interval" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.31 · §07 TENSOR CALCULUS"
+  title="THE METRIC TENSOR"
+  subtitle="Coordinate differences are just numbers. The metric turns them into actual distances."
+/>
+
+<Section index={1} title="The metric is the geometry">
+
+A smooth manifold — the mathematical model of spacetime — knows only one thing out of the box: which functions are differentiable and which coordinate charts overlap smoothly. It has no ruler. Two nearby points have coordinate labels $(x^\mu)$ and $(x^\mu + dx^\mu)$, but the coordinate difference $dx^\mu$ is not a distance. It is just a number in a chart. Rotating your coordinates changes $dx^\mu$ entirely; the physical separation between the two points does not change at all.
+
+To measure anything — the length of a path, the angle between two tangent vectors, the area of a surface, the volume swept out by a fluid — you need additional structure on the manifold. That structure is the <Term slug="metric-tensor" />, written $g_{\mu\nu}$. It is a symmetric, nondegenerate bilinear form on the tangent space at each point: a $(0,2)$ tensor field that takes two tangent vectors and returns a number. Its job is to assign a squared-length to every tangent vector at every point.
+
+<SceneCard caption="FIG.31a — a 2-sphere of radius 1. Pairs of tangent arrows are drawn at five latitudes. Each pair shows the metric scale factors h_θ = R (meridional) and h_φ = R sin θ (azimuthal) at that latitude. Near the poles the azimuthal arrow shrinks toward zero because sin θ → 0: the metric degenerates in the φ-direction. At the equator both arrows are equal. The non-uniform arrow sizes are the metric made visible. Drag the rotation slider to inspect the sphere from any angle.">
+  <MetricEllipsesScene />
+</SceneCard>
+
+The scene makes this concrete. At the equator, equal coordinate steps $d\theta$ and $d\phi$ produce equal arc lengths — the metric is locally isotropic. Near the poles, the same $d\phi$ step produces a much shorter arc, because the circle of latitude has collapsed. The metric registers this collapse in the component $g_{\phi\phi} = R^2\sin^2\theta$, which tends to zero as $\theta \to 0$. The coordinates are not collapsing; the geometry is. The metric knows the difference.
+
+</Section>
+
+<Section index={2} title="The line element">
+
+The fundamental formula is the **line element**:
+
+<EquationBlock id="EQ.01">$$ds^2 = g_{\mu\nu}\, dx^\mu\, dx^\nu$$</EquationBlock>
+
+Einstein summation is in force: $\mu$ and $\nu$ are each summed from 0 to $n-1$. The result $ds^2$ is an invariant — every coordinate system computes the same number for the squared proper length of the infinitesimal displacement $dx^\mu$.
+
+The metric is symmetric: $g_{\mu\nu} = g_{\nu\mu}$. An antisymmetric part would drop out of EQ.01 by the symmetry of $dx^\mu dx^\nu$, so only the symmetric part carries physical content.
+
+Three standard examples in two dimensions:
+
+**Euclidean plane, Cartesian coordinates** $(x, y)$: $g = \mathrm{diag}(1, 1)$, so $ds^2 = dx^2 + dy^2$. The familiar Pythagorean distance — the metric is the identity.
+
+**Euclidean plane, polar coordinates** $(r, \phi)$: $g = \mathrm{diag}(1, r^2)$, so $ds^2 = dr^2 + r^2\,d\phi^2$. The $r^2$ in the $(1,1)$ component tells you that equal $d\phi$ steps subtend longer arcs the further you are from the origin. The geometry is the same flat plane; only the coordinate description changed. The metric absorbs the change.
+
+**Sphere of radius $R$**, coordinates $(\theta, \phi)$:
+
+<EquationBlock id="EQ.02">$$ds^2 = R^2\bigl(d\theta^2 + \sin^2\theta\, d\phi^2\bigr), \quad g = R^2 \begin{pmatrix} 1 & 0 \\ 0 & \sin^2\theta \end{pmatrix}$$</EquationBlock>
+
+The off-diagonal elements are zero — the coordinate lines are orthogonal — but the diagonal components depend on position. The metric is non-trivial not because the coordinates are exotic but because the geometry itself is curved.
+
+<SceneCard caption="FIG.31b — the same two points A and B in the Cartesian plane. Cyan path: straight line, arc length integrated as ds² = dx² + dy². Amber path: straight line in polar coordinate space (r, φ), so it traces a curve in Cartesian space. Integrating ds² = dr² + r²dφ² along it gives the same arc length. The metric makes length coordinate-independent. Drag the reveal slider to watch both integrals converge.">
+  <LineElementScene />
+</SceneCard>
+
+The scene demonstrates coordinate-independence concretely. The cyan path is straight in Cartesian coordinates; the amber path is straight in polar coordinates. They connect the same two points. Integrating $ds^2$ along each with its own metric gives identical arc lengths — up to numerical precision. The geometry does not care which coordinate map you use, as long as you pair it with the right metric.
+
+<Callout variant="intuition">
+The metric is not a property of your coordinates. It is a property of the space. Changing coordinates changes $g_{\mu\nu}$, but it changes $dx^\mu$ by the inverse transformation, so $g_{\mu\nu}\,dx^\mu\,dx^\nu$ remains constant. That constancy is what "invariant" means.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The Minkowski metric of special relativity">
+
+The metric tensor of special relativity is the <Term slug="invariant-interval" /> in tensor form. In coordinates $(ct, x, y, z)$ the <Term slug="spacetime" /> metric is:
+
+<EquationBlock id="EQ.03">$$\eta_{\mu\nu} = \mathrm{diag}(+1,\, -1,\, -1,\, -1)$$</EquationBlock>
+
+This is the **mostly-minus** convention, carried forward from §03.2. The line element becomes
+
+$$ds^2 = c^2\,dt^2 - dx^2 - dy^2 - dz^2,$$
+
+which is the invariant interval of special relativity: positive for timelike separations, zero for null (light), negative for spacelike. A vector $V^\mu$ is **null** if $\eta_{\mu\nu}V^\mu V^\nu = 0$; it describes the worldline of a photon. It is **timelike** if $\eta_{\mu\nu}V^\mu V^\nu > 0$; it describes a massive particle or observer. It is **spacelike** if $\eta_{\mu\nu}V^\mu V^\nu < 0$; no physical signal travels along a spacelike direction.
+
+The Minkowski metric is flat: the Riemann curvature tensor (§08.1) vanishes everywhere. The curved metrics of GR are those for which the Riemann tensor does not vanish. Near a massive body the time-time component $g_{tt}$ deviates from $-1$ — the gravitational redshift of §06.3 is encoded here. The full Einstein field equations (§08.4) determine how matter and energy source those deviations.
+
+</Section>
+
+<Section index={4} title="The same intrinsic geometry in many coordinate forms">
+
+A flat plane described in Cartesian coordinates has $g = \mathrm{diag}(1, 1)$. Described in polar coordinates it has $g = \mathrm{diag}(1, r^2)$. The two metrics look different. But the geometry is the same — a triangle drawn on the flat plane has interior angles summing to exactly $\pi$, regardless of which coordinate system you use to describe it.
+
+Curved geometry cannot be flattened by a coordinate change. A sphere is not flat in any coordinate system. You can smooth out the degeneracy at the poles, you can make the metric look locally diagonal, but you cannot make the Riemann curvature tensor vanish — it is a tensor, so its vanishing (or non-vanishing) is coordinate-independent.
+
+<SceneCard caption="FIG.31c — three geometries side by side. Left: flat Euclidean plane with a triangle whose interior angles sum to π. Centre: spherical geometry (latitude-longitude grid compressing near poles) with a triangle whose angles sum to more than π. Right: hyperbolic geometry (Poincaré disk) with a triangle whose angles sum to less than π. All three panels encode their geometry in the metric g_{μν}. The curvature lives in the second derivatives of the metric — the Riemann tensor.">
+  <MetricComparisonScene />
+</SceneCard>
+
+The scene shows the clearest experimental signature of curvature: the angle sum of a triangle. On a flat surface it is exactly $\pi$. On a positively curved surface (sphere) it exceeds $\pi$ — a triangle drawn on the Earth between the North Pole and two equatorial points has three right angles, summing to $3\pi/2$. On a negatively curved surface (hyperbolic plane) the angle sum is less than $\pi$. These are not coordinate artifacts. They are invariant properties of the metric, detected by purely intrinsic measurements. The Riemann curvature tensor, introduced in §08.1, is the systematic tool for measuring this curvature from the metric alone.
+
+</Section>
+
+<Section index={5} title="The inverse metric and the volume element">
+
+Every invertible metric has an inverse $g^{\mu\nu}$, defined by
+
+<EquationBlock id="EQ.04">$$g^{\mu\nu}\, g_{\nu\rho} = \delta^\mu{}_\rho$$</EquationBlock>
+
+where $\delta^\mu{}_\rho$ is the Kronecker delta. The inverse metric **raises indices**: starting from a covariant vector (one-form) $V_\mu$, the object $V^\mu = g^{\mu\nu}V_\nu$ is a contravariant vector. The same metric lowers indices: $V_\mu = g_{\mu\nu}V^\nu$. This is how GR passes freely between tangent vectors and cotangent vectors — the metric provides the isomorphism.
+
+The **volume element** that appears in all integrals over a manifold is $\sqrt{|\det g|}\,d^n x$. In flat Cartesian space $\det g = 1$ and this reduces to the ordinary $dx\,dy\,dz$. In polar coordinates $\det g = r^2$ and the volume element becomes $r\,dr\,d\phi$ — the familiar Jacobian from multivariable calculus, but now derived automatically from the metric. On a 2-sphere $\det g = R^4\sin^2\theta$, so $\sqrt{|\det g|} = R^2 |\sin\theta|$ and the surface area element is $R^2\sin\theta\,d\theta\,d\phi$ — the standard formula for integration over a sphere. In GR, every physical integral — over a spacelike hypersurface to compute conserved charges, or over the full spacetime volume to derive the equations of motion — uses $\sqrt{-g}\,d^4x$ where $g = \det g_{\mu\nu}$ and the sign accounts for the Lorentzian signature.
+
+<PhysicistLink slug="bernhard-riemann" /> introduced the concept of the metric tensor in his 1854 Habilitation lecture *Über die Hypothesen, welche der Geometrie zu Grunde liegen* — the same lecture that gave us the Riemann curvature tensor. His central claim was that space itself has a geometry, that geometry is encoded in a symmetric bilinear form on the tangent bundle, and that the geometry could in principle vary from point to point. At the time this was a philosophical speculation. By 1905 it was SR. By 1915 it was GR. <PhysicistLink slug="tullio-levi-civita" /> and Gregorio Ricci-Curbastro developed the systematic calculus for working with metrics — covariant differentiation, the Christoffel symbols, the Riemann tensor — in their 1900 treatise *Méthodes de calcul différentiel absolu*. Einstein learned this calculus from <PhysicistLink slug="tullio-levi-civita" /> while developing GR, and corresponded with him about it.
+
+<Callout variant="math">
+For a diagonal metric $g = \mathrm{diag}(g_{00}, g_{11})$ in two dimensions the inverse is $g^{-1} = \mathrm{diag}(1/g_{00}, 1/g_{11})$ and $\det g = g_{00}\,g_{11}$. For the spherical metric at colatitude $\theta$: $\det g = R^4\sin^2\theta$, so the area element is $\sqrt{\det g}\,d\theta\,d\phi = R^2|\sin\theta|\,d\theta\,d\phi$. Integrating over the full sphere gives $4\pi R^2$ — the familiar formula, but here derived purely from the metric.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Forward — Christoffel symbols and the geodesic equation">
+
+The metric $g_{\mu\nu}$ encodes lengths, angles, and volumes. But moving objects in GR do not just sit at a point — they follow worldlines. To know what "straight line" means on a curved manifold you need to know how to parallel-transport vectors from point to point. That knowledge lives in the **Christoffel symbols** $\Gamma^\rho{}_{\mu\nu}$, which are built entirely from first derivatives of the metric:
+
+$$\Gamma^\rho{}_{\mu\nu} = \tfrac{1}{2}\,g^{\rho\sigma}\bigl(\partial_\mu g_{\nu\sigma} + \partial_\nu g_{\mu\sigma} - \partial_\sigma g_{\mu\nu}\bigr).$$
+
+They encode how the basis vectors twist and tilt as you move around the manifold. From the Christoffel symbols comes the <Term slug="geodesic-equation" />, the relativistic version of Newton's first law. And from the second derivatives of the metric — equivalently from the derivatives of the Christoffel symbols — comes the Riemann curvature tensor. The metric is the root from which all of differential geometry grows.
+
+The next module, §07.3, constructs the Christoffel symbols and the geodesic equation. §08.1 then uses the full metric machinery to define the Riemann tensor, from which the Einstein field equations follow.
+
+</Section>
+
+</TopicPageLayout>
