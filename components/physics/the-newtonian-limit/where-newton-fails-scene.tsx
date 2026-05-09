@@ -240,9 +240,13 @@ export function WhereNewtonFailsScene() {
       const y = vcToY(vc);
       if (x < ML || x > ML + CW || y < MT || y > MT + CH) return;
 
-      // Glow
+      // Glow — parse hex color (#rrggbb) into rgba(r,g,b,0.4)
+      const hex = color.replace("#", "");
+      const r = parseInt(hex.slice(0, 2), 16);
+      const g = parseInt(hex.slice(2, 4), 16);
+      const b = parseInt(hex.slice(4, 6), 16);
       const glow = ctx.createRadialGradient(x, y, 0, x, y, size * 3);
-      glow.addColorStop(0, color.replace(")", ",0.4)").replace("#", "rgba("));
+      glow.addColorStop(0, `rgba(${r},${g},${b},0.4)`);
       glow.addColorStop(1, "rgba(0,0,0,0)");
       ctx.fillStyle = glow;
       ctx.beginPath();
