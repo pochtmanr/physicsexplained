@@ -348,6 +348,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/david-hilbert.avif"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
     ],
   },
   {
@@ -358,6 +359,7 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/felix-klein.webp"),
     relatedTopics: [
       { branchSlug: "classical-mechanics", topicSlug: "noethers-theorem" },
+      { branchSlug: "relativity", topicSlug: "manifolds-and-tangent-spaces" },
     ],
   },
   {
@@ -386,6 +388,11 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
       { branchSlug: "relativity", topicSlug: "gravity-as-geometry" },
       { branchSlug: "relativity", topicSlug: "inertial-vs-gravitational-mass" },
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+      { branchSlug: "relativity", topicSlug: "ricci-and-the-einstein-tensor" },
+      { branchSlug: "relativity", topicSlug: "the-stress-energy-tensor" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+      { branchSlug: "relativity", topicSlug: "the-newtonian-limit" },
     ],
   },
   {
@@ -1095,6 +1102,8 @@ export const PHYSICISTS: readonly Physicist[] = [
     image: storageUrl("physicists/hermann-weyl.webp"),
     relatedTopics: [
       { branchSlug: "electromagnetism", topicSlug: "gauge-theory-origins" },
+      { branchSlug: "relativity", topicSlug: "the-metric-tensor" },
+      { branchSlug: "relativity", topicSlug: "tensors-on-curved-space" },
     ],
   },
   {
@@ -1189,6 +1198,30 @@ export const PHYSICISTS: readonly Physicist[] = [
     relatedTopics: [
       { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
       { branchSlug: "relativity", topicSlug: "einsteins-elevator" },
+    ],
+  },
+  {
+    slug: "bernhard-riemann",
+    born: "1826",
+    died: "1866",
+    nationality: "German",
+    image: storageUrl("physicists/bernhard-riemann.avif"),
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "manifolds-and-tangent-spaces" },
+      { branchSlug: "relativity", topicSlug: "the-metric-tensor" },
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+    ],
+  },
+  {
+    slug: "tullio-levi-civita",
+    born: "1873",
+    died: "1941",
+    nationality: "Italian",
+    image: storageUrl("physicists/tullio-levi-civita.avif"),
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "tensors-on-curved-space" },
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+      { branchSlug: "relativity", topicSlug: "geodesics" },
     ],
   },
 ];

@@ -3043,6 +3043,143 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
     ],
   },
+  // RT §07 — Tensor Calculus
+  {
+    slug: "manifold",
+    category: "concept",
+    relatedPhysicists: ["bernhard-riemann"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "manifolds-and-tangent-spaces" },
+    ],
+  },
+  {
+    slug: "tangent-space",
+    category: "concept",
+    relatedPhysicists: ["bernhard-riemann"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "manifolds-and-tangent-spaces" },
+    ],
+  },
+  {
+    slug: "metric-tensor",
+    category: "concept",
+    relatedPhysicists: ["bernhard-riemann", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-metric-tensor" },
+      { branchSlug: "relativity", topicSlug: "tensors-on-curved-space" },
+    ],
+  },
+  {
+    slug: "christoffel-symbols",
+    category: "concept",
+    relatedPhysicists: ["tullio-levi-civita"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+      { branchSlug: "relativity", topicSlug: "geodesics" },
+    ],
+  },
+  {
+    slug: "parallel-transport",
+    category: "concept",
+    relatedPhysicists: ["tullio-levi-civita"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+    ],
+  },
+  {
+    slug: "holonomy",
+    category: "concept",
+    relatedPhysicists: [],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+    ],
+  },
+  {
+    slug: "geodesic-equation",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "tullio-levi-civita"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "geodesics" },
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+    ],
+  },
+  // RT §08 — Curvature & Einstein's Field Equations
+  {
+    slug: "riemann-tensor",
+    category: "concept",
+    relatedPhysicists: ["bernhard-riemann"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+      { branchSlug: "relativity", topicSlug: "ricci-and-the-einstein-tensor" },
+    ],
+  },
+  {
+    slug: "ricci-tensor",
+    category: "concept",
+    relatedPhysicists: ["bernhard-riemann"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "ricci-and-the-einstein-tensor" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+    ],
+  },
+  {
+    slug: "ricci-scalar",
+    category: "concept",
+    relatedPhysicists: ["bernhard-riemann"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "ricci-and-the-einstein-tensor" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+    ],
+  },
+  {
+    slug: "einstein-tensor",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "ricci-and-the-einstein-tensor" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+    ],
+  },
+  {
+    slug: "stress-energy-tensor",
+    category: "concept",
+    relatedPhysicists: [],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-stress-energy-tensor" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+    ],
+  },
+  {
+    slug: "einstein-field-equations",
+    category: "concept",
+    relatedPhysicists: ["albert-einstein", "david-hilbert"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+      { branchSlug: "relativity", topicSlug: "the-newtonian-limit" },
+    ],
+  },
+  {
+    slug: "newtonian-limit",
+    category: "concept",
+    relatedPhysicists: ["isaac-newton", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "the-newtonian-limit" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+    ],
+  },
+  // RT §08 alias forward-ref ─ gravitational-redshift (topic exists from RT3; glossary alias)
+  {
+    slug: "gravitational-redshift",
+    category: "phenomenon",
+    relatedPhysicists: ["albert-einstein", "pound-rebka"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "gravitational-redshift" },
+      { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
+      { branchSlug: "relativity", topicSlug: "the-newtonian-limit" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
