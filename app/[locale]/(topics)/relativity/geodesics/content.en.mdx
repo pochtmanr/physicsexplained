@@ -1,0 +1,104 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GreatCircleGeodesicScene } from "@/components/physics/geodesics/great-circle-geodesic-scene";
+import { GeodesicEquationSolverScene } from "@/components/physics/geodesics/geodesic-equation-solver-scene";
+import { FallingAppleAsGeodesicScene } from "@/components/physics/geodesics/falling-apple-as-geodesic-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Tullio Levi-Civita", href: "/physicists/tullio-levi-civita" },
+  { type: "term", label: "Geodesic equation", href: "/dictionary/geodesic-equation" },
+  { type: "term", label: "Parallel transport", href: "/dictionary/parallel-transport" },
+  { type: "term", label: "Christoffel symbols", href: "/dictionary/christoffel-symbols" },
+  { type: "term", label: "Equivalence principle", href: "/dictionary/equivalence-principle" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.33 · TENSOR CALCULUS"
+  title="GEODESICS"
+  subtitle="The straightest possible lines on a curved manifold — and why falling apples follow them."
+/>
+
+<Section index={1} title="The straightest possible line">
+
+On a flat sheet of paper, a straight line is the shortest path between two points. There is an older and more fundamental characterisation: a straight line is the curve whose direction never changes. Walk along it and your heading stays fixed. Mathematicians say the tangent vector is *constant* along the path.
+
+On a curved manifold the sentence "direction never changes" has to be rephrased, because the notion of "same direction" is not obvious when the underlying space is bent. This is exactly what <Term slug="parallel-transport" /> supplies: a rule for moving a vector from one tangent space to a neighbouring one without rotating it relative to the local geometry. The geodesic, then, is the curve that parallel-transports its own tangent vector along itself. Walk along it, and the vector pointing in your direction of travel never turns — as seen by an observer riding with you and using the local connection to compare successive tangents.
+
+On a flat space this reduces to the straight line, as it should. On the surface of a sphere it gives great circles — the intersection of the sphere with a plane through the centre. On a 2D hill or saddle the geodesic is a more complicated curve, but the defining property is the same.
+
+<SceneCard caption="FIG.33a — A unit 2-sphere with two highlighted points. The great-circle arc (the geodesic) is drawn in cyan. Drag the end-point sliders to move the second point anywhere on the sphere; the arc updates live. Every such arc is a section of a great circle — the plane through both points and the centre. On the sphere, there is no shorter path between the two points than the one following this arc.">
+  <GreatCircleGeodesicScene />
+</SceneCard>
+
+The great circle is the geodesic on the sphere for the same reason that a straight line is the geodesic on a flat plane: it is the curve along which the tangent vector is parallel-transported. The <Term slug="christoffel-symbols" /> (§07.4) encode exactly how "parallel" must be understood relative to the metric, and on the sphere they produce the great-circle rule.
+
+</Section>
+
+<Section index={2} title="The geodesic equation">
+
+The abstract condition "parallel-transport the tangent vector along itself" becomes a system of differential equations when written in coordinates. If $x^\mu(\lambda)$ is the curve parametrised by affine parameter $\lambda$, and $v^\mu = dx^\mu/d\lambda$ is the tangent, then parallel transport requires
+
+<EquationBlock id="EQ.01">$$\frac{d^2 x^\mu}{d\lambda^2} + \Gamma^\mu{}_{\alpha\beta} \frac{dx^\alpha}{d\lambda} \frac{dx^\beta}{d\lambda} = 0$$</EquationBlock>
+
+This is the <Term slug="geodesic-equation" />. Reading it: $d^2 x^\mu / d\lambda^2$ is the coordinate acceleration. If the manifold were flat the Christoffel symbols would vanish and the equation would say "zero acceleration" — a straight line at constant speed. The Christoffel term corrects for the fact that the coordinate basis vectors themselves are changing from point to point. It is not a force; it is a book-keeping correction that restores geometric straightness in a curved coordinate system.
+
+<SceneCard caption="FIG.33b — Left panel: flat 2D Euclidean space. The geodesic is a straight line — the Christoffel symbols vanish, so no correction appears. Right panel: a 2-sphere shown in its (θ, φ) coordinate chart. The geodesic curves in chart coordinates — it winds and turns on the flat map — but on the sphere itself it is a great-circle arc. The geodesic equation with non-zero Christoffel symbols produces this winding. Adjust the initial direction slider to send the geodesic in different directions from the start point.">
+  <GeodesicEquationSolverScene />
+</SceneCard>
+
+<PhysicistLink slug="tullio-levi-civita" /> and <PhysicistLink slug="bernhard-riemann" /> developed the calculus of connections in the 1890s–1900s; <PhysicistLink slug="albert-einstein" /> recognised in 1915 that geodesics of the Levi-Civita connection of the spacetime metric are exactly the paths of free-falling bodies.
+
+The parameter $\lambda$ is called an *affine parameter*. For timelike geodesics (the paths of massive particles) the natural choice is proper time $\tau$ — the time measured on the particle's own clock. For null geodesics (light rays) there is no proper time, but an affine parameter still exists and can be taken proportional to the wave-phase.
+
+</Section>
+
+<Section index={3} title="The variational principle">
+
+There is an equivalent, and often more powerful, way to characterise geodesics: they are the curves that extremise the arc-length functional
+
+<EquationBlock id="EQ.02">$$\delta \int \sqrt{g_{\mu\nu} \frac{dx^\mu}{d\lambda} \frac{dx^\nu}{d\lambda}} \, d\lambda = 0$$</EquationBlock>
+
+The integrand is the instantaneous speed $|v|_g = \sqrt{g_{\mu\nu} v^\mu v^\nu}$ — the length of the tangent vector as measured by the metric. Extremising the total length gives the Euler-Lagrange equations, which after simplification reproduce the geodesic equation EQ.01 exactly.
+
+For timelike geodesics the integral becomes $\int d\tau$, the total proper time, and the geodesic is the curve that *maximises* proper time between two events. This is the geometry behind the twin paradox (§03.4): the straight worldline (the stay-at-home twin) maximises proper time; the kinked worldline (the traveller) has less. The geodesic is the longest timelike curve, just as the straight line is the shortest spatial curve on a flat plane.
+
+The variational formulation is particularly useful in practice. It is often easier to write down the Lagrangian $\mathcal{L} = g_{\mu\nu} v^\mu v^\nu$ and derive the equations of motion via Euler-Lagrange than to compute the Christoffel symbols explicitly. Any conserved quantities (energy, angular momentum) appear as constants of motion when the metric has the corresponding symmetry — a consequence of Noether's theorem applied to the geodesic Lagrangian.
+
+</Section>
+
+<Section index={4} title="Free-fall is geodesic motion — the honest moment">
+
+<SceneCard caption="FIG.33c — Left: an apple tossed upward, tracing a parabolic arc in space under Newtonian gravity. The red arrow marks the downward force F = mg. Right: the same motion drawn as a worldline in (t, y) spacetime. The worldline is almost straight — it is a geodesic of the weak-field Schwarzschild metric. No force arrow appears on the right; none is needed. Adjust the initial toss speed to watch both views update.">
+  <FallingAppleAsGeodesicScene />
+</SceneCard>
+
+The equivalence principle (§06.1) said: locally, every freely-falling lab is indistinguishable from an inertial frame. The geodesic equation says why. A free-falling particle has no proper acceleration; its worldline is the straightest possible curve through curved spacetime. There is no gravitational force acting on it. The spacetime around the Earth is not flat — the metric $g_{\mu\nu}$ varies with position and time, encoding all of what Newton called the gravitational field — and the geodesic of that metric is what we observe as free-fall.
+
+The apple doesn't fall because the Earth pulls it. The apple follows the straightest available worldline in the curved spacetime geometry that the Earth's mass has produced. That is all. The parabolic arc in space is a projection of a near-straight worldline in spacetime onto the spatial dimensions alone. The "parabola" is the shadow; the geodesic is the object.
+
+<Callout variant="intuition">
+What we called "falling" is just following the straightest possible line in curved spacetime. The apple isn't pulled by a force; it's running along a geodesic. Newton's gravity wasn't wrong — it was the Newtonian limit (§08.5) of a deeper geometric statement: free-fall is geodesic motion, and the Newtonian potential is the leading-order term in the metric's time-time component.
+</Callout>
+
+This is the §07 closer and the GR honest moment. The three tools built in Session 4 — manifolds, the metric tensor, Christoffel symbols — combine here into a single sentence: **a free particle moves along the geodesic of spacetime's metric**. That sentence contains all of Newtonian gravity as a special case, and generalises it to every situation where the metric deviates from flat.
+
+The accelerometer of a free-falling particle reads zero. The accelerometer of a particle sitting on the floor reads $9.81\,\text{m/s}^2$ upward — because the floor is exerting a contact force that pushes the particle *off* its natural geodesic. In GR, the floor is the thing that's accelerating. The apple is at rest in the only sense that matters geometrically.
+
+</Section>
+
+<Section index={5} title="Forward — curvature, Schwarzschild, and the orbits of planets">
+
+The geodesic equation is the relativistic generalisation of Newton's first law: in the absence of non-gravitational forces, particles follow geodesics. What Session 4 has not yet supplied is the equation that determines the metric itself — the field equation that relates the curvature of spacetime to the matter and energy distributed through it. That is the Einstein field equation, derived in §08.
+
+The curvature object that appears in the field equation is the Riemann tensor $R^\rho{}_{\sigma\mu\nu}$, built from the second derivatives of the metric and bilinear in the Christoffel symbols. Its contractions — the Ricci tensor $R_{\mu\nu}$ and Ricci scalar $R$ — enter the left-hand side of the Einstein equation. §08.1 constructs all three.
+
+Once the field equation is in hand, §09.1 gives its simplest non-trivial solution: the [Schwarzschild metric](/relativity/the-schwarzschild-metric), the exact metric outside any spherically symmetric mass. The geodesics of that metric are the orbits of free-falling test bodies — planets, photons, and anything else that doesn't exert non-gravitational forces. §09.2 will show that the precession of Mercury's perihelion by $43''$ per century, unexplained by Newtonian gravity for 60 years, follows directly from the geodesic equation applied to the Schwarzschild metric.
+
+</Section>
+
+</TopicPageLayout>
