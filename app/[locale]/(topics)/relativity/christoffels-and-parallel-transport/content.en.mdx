@@ -1,0 +1,103 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SphericalTriangleHolonomyScene } from "@/components/physics/christoffels-and-parallel-transport/spherical-triangle-holonomy-scene";
+import { CovariantDerivativeScene } from "@/components/physics/christoffels-and-parallel-transport/covariant-derivative-scene";
+import { ChristoffelFormulaScene } from "@/components/physics/christoffels-and-parallel-transport/christoffel-formula-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Tullio Levi-Civita", href: "/physicists/tullio-levi-civita" },
+  { type: "term", label: "Christoffel symbols", href: "/dictionary/christoffel-symbols" },
+  { type: "term", label: "Parallel transport", href: "/dictionary/parallel-transport" },
+  { type: "term", label: "Holonomy", href: "/dictionary/holonomy" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.32 · TENSOR CALCULUS"
+  title="CHRISTOFFEL SYMBOLS AND PARALLEL TRANSPORT"
+  subtitle="The connection that says what 'stays parallel' means on a curved surface."
+/>
+
+<Section index={1} title="The covariant derivative — why ∂_μ V^ν is not a tensor">
+
+In flat space with Cartesian coordinates, the partial derivative of a vector field is perfectly well behaved: differentiate each component, and you get a tensor. The same operation in curved coordinates fails. When you write $\partial_\mu V^\nu$ in polar coordinates on a flat plane — let alone on a curved manifold — the result is not a tensor. It transforms wrongly under coordinate change, picking up spurious terms that come from the fact that the basis vectors $\partial_\mu$ themselves vary from point to point.
+
+<SceneCard caption="FIG.32a — left: the uniform vector field V = (1, 0) in Cartesian coordinates. All arrows are identical; ∂-derivatives vanish; everything is tensorial. Right: the same field in polar coordinates. The basis vectors rotate as φ changes. The partial derivative ∂_φ V^r is non-zero even though V is constant — a pure coordinate artifact. Toggle the amber Γ-correction arrows to see the covariant derivative cancel the spurious term and restore zero.">
+  <CovariantDerivativeScene />
+</SceneCard>
+
+The fix is to add a correction term that compensates for the rotation of the basis. On a general manifold the <Term slug="covariant-derivative" /> of a contravariant vector is
+
+<EquationBlock id="EQ.01">
+$$\nabla_\mu V^\nu = \partial_\mu V^\nu + \Gamma^\nu{}_{\mu\rho} V^\rho$$
+</EquationBlock>
+
+where $\Gamma^\nu{}_{\mu\rho}$ are the <Term slug="christoffel-symbols" />. The extra term subtracts out exactly the coordinate-dependent variation of the basis, leaving a result that transforms as a genuine $(1,1)$ tensor. In flat Cartesian space the $\Gamma$s vanish and $\nabla_\mu = \partial_\mu$. The moment the coordinates curve — or the manifold curves — the $\Gamma$s become non-trivial, and the covariant derivative is the only derivative that tells you something coordinate-invariant.
+
+</Section>
+
+<Section index={2} title="Christoffel symbols from the metric — computable, not chosen">
+
+<SceneCard caption="FIG.32b — the Christoffel formula as a flow diagram. Three derivatives of the metric (cyan, amber, pink) combine via a sum; the result is contracted with the inverse metric to produce Γ^ρ_{μν}. Switch between the flat Cartesian metric (all Γ = 0), the polar Euclidean metric, and the unit sphere to watch the numerical Γ values update in real time.">
+  <ChristoffelFormulaScene />
+</SceneCard>
+
+The correction terms $\Gamma$ are not arbitrary: they are determined uniquely by the <Term slug="metric-tensor" />. The formula is
+
+<EquationBlock id="EQ.02">
+$$\Gamma^\rho{}_{\mu\nu} = \tfrac{1}{2}\, g^{\rho\sigma}\!\left(\partial_\mu g_{\nu\sigma} + \partial_\nu g_{\mu\sigma} - \partial_\sigma g_{\mu\nu}\right)$$
+</EquationBlock>
+
+Three derivatives of the metric, antisymmetrised in a specific pattern, contracted with the inverse metric $g^{\rho\sigma}$. Every term is computable directly from the components of $g_{\mu\nu}$ and their first derivatives — no additional structure is required, no choice is made. The geometry of the manifold, encoded in the metric, completely determines how vectors are connected from one tangent space to the next.
+
+This connection is called the <Term slug="christoffel-symbols">Levi-Civita connection</Term>, discovered by <PhysicistLink slug="tullio-levi-civita" /> in 1917. It has two special properties that single it out uniquely. First, it is *torsion-free*: $\Gamma^\rho{}_{\mu\nu} = \Gamma^\rho{}_{\nu\mu}$ — the symbol is symmetric in its two lower indices, which means the connection does not introduce any spurious "twist" in the manifold. Second, it is *metric-compatible*: $\nabla_\rho g_{\mu\nu} = 0$ — the metric itself is covariantly constant, so the inner product of two parallel-transported vectors does not change. Among all connections on a Riemannian or pseudo-Riemannian manifold, the Levi-Civita connection is the unique one with both properties. This is why it is the connection of general relativity.
+
+</Section>
+
+<Section index={3} title="Parallel transport — moving vectors without changing them">
+
+A vector is *parallel-transported* along a curve when it does not rotate or stretch as measured by the local geometry. More precisely, the covariant derivative of the vector along the curve vanishes: $\nabla_{\dot{x}} V = 0$. Written in components, this becomes an ordinary differential equation along the curve $x^\mu(\lambda)$:
+
+$$\frac{dV^\mu}{d\lambda} = -\Gamma^\mu{}_{\alpha\beta}\, \dot{x}^\alpha V^\beta$$
+
+At each step along the curve, the Christoffel symbols tell you how much to correct the rate of change of $V$ to keep it "parallel" in the intrinsic sense. On flat space, all $\Gamma = 0$, so $dV^\mu/d\lambda = 0$: parallel transport just means "keep the Cartesian components constant," which is exactly what you expect. On a sphere, the $\Gamma$s are non-trivial, and the vector must continuously adjust to stay tangent to the sphere while tracking the curvature of the path. The <Term slug="parallel-transport" /> equation is the relativistic generalisation of "carry a vector without rotating it." A <Term slug="geodesic-equation">geodesic</Term> is the special case where you parallel-transport the tangent vector of the curve itself along the curve: the curve does not accelerate, which is the relativistic version of Newton's first law.
+
+</Section>
+
+<Section index={4} title="The spherical-triangle reveal — holonomy as visible curvature">
+
+<SceneCard caption="FIG.32c — THE MONEY SHOT. A vector (magenta) is parallel-transported along three great-circle segments forming a closed triangle on the unit 2-sphere: east along the equator from φ=0 to φ=π/2, then north along the meridian φ=π/2 to near the pole, then south along φ=0 back to the start. Drag the progress slider to follow the vector as it moves. When it returns to the starting point it has rotated by 90° — the holonomy angle equals the enclosed area divided by R². Rotate the sphere to inspect the geometry from any angle.">
+  <SphericalTriangleHolonomyScene />
+</SceneCard>
+
+Here is the moment where curvature becomes unmistakable. Take a vector on the unit sphere. Parallel-transport it around a closed loop — three great-circle segments forming a triangle. The vector travels along each side without any local rotation. When it returns to the starting point, it is pointing in a different direction. The angle of rotation is
+
+<EquationBlock id="EQ.03">
+$$\Delta\theta_{\text{holonomy}} = \frac{A_{\text{enclosed}}}{R^2}$$
+</EquationBlock>
+
+where $A_{\text{enclosed}}$ is the area of the enclosed region and $R$ is the sphere radius. For the octant triangle above — one eighth of the unit sphere, area $\pi/2$ — the holonomy angle is exactly $\pi/2 = 90°$. The vector arrives pointing 90° away from where it started, without ever having been rotated locally.
+
+This is the <Term slug="holonomy" />. It is the global effect of an infinitesimal connection: each infinitesimal step around the loop rotates the vector by a tiny Christoffel-symbol amount, and after a full loop the tiny rotations accumulate into a finite angle that depends only on the enclosed area. In flat space — no matter how complicated the loop — the holonomy is always zero: you get your vector back unchanged. Only a curved manifold can produce a non-zero holonomy. The Christoffel symbols are the local, infinitesimal version of this story; the Riemann curvature tensor (§08) packages the same information in a coordinate-invariant, tensorial form. The spherical-excess formula $\Delta\theta = A/R^2$ is the prototype for the relation between curvature, area, and holonomy that the Riemann tensor will generalise.
+
+<Callout variant="intuition">
+The holonomy is the smoking gun of curvature. Parallel-transport a gyroscope around any closed loop in flat space and it comes back pointing the same way. Parallel-transport it around a closed path near a massive body and it precedes. The Gravity Probe B satellite measured exactly this effect — geodetic and frame-dragging precession — for gyroscopes in orbit around the Earth, confirming GR at the 0.28% level in 2011.
+</Callout>
+
+</Section>
+
+<Section index={5} title="What this means — curvature as rotation that flat space cannot produce">
+
+The Christoffel symbols are the workhorse of GR calculations, but they are not tensors themselves: their components depend on the choice of coordinates, and they can be made to vanish at any single point by choosing locally flat (normal) coordinates. What they encode is the *connection* — the rule for identifying tangent spaces at nearby points. The connection is an infrastructure layer that makes tensor calculus possible on a curved manifold.
+
+The real, coordinate-invariant measure of curvature comes one level up: the <Term slug="riemann-tensor" /> $R^\rho{}_{\sigma\mu\nu}$ is built from the Christoffel symbols and their derivatives. It tells you exactly how much a vector rotates when parallel-transported around an infinitesimal loop. When the Riemann tensor vanishes everywhere, the manifold is flat; when it does not, the manifold is genuinely curved in a way that no coordinate transformation can hide. [The Riemann tensor](/relativity/the-riemann-tensor) and its contractions — the Ricci tensor and the Ricci scalar — are what appear in the Einstein field equations on the left-hand side, telling spacetime how to curve in response to the matter and energy on the right.
+
+The chain runs: metric $g_{\mu\nu}$ → Christoffel symbols $\Gamma^\rho{}_{\mu\nu}$ → Riemann tensor $R^\rho{}_{\sigma\mu\nu}$ → Einstein tensor $G_{\mu\nu}$ → field equations. Every link in that chain can be expressed in terms of derivatives of the metric. GR is, in a precise sense, a theory of the metric and nothing else.
+
+</Section>
+
+</TopicPageLayout>

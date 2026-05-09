@@ -1319,6 +1319,106 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   HonestMomentScene: lazyScene(() =>
     import("@/components/physics/gravity-as-geometry/honest-moment-scene").then((m) => ({ default: m.HonestMomentScene })),
   ),
+  // RT §07 — manifolds-and-tangent-spaces
+  SphereManifoldScene: lazyScene(() =>
+    import("@/components/physics/manifolds-and-tangent-spaces/sphere-manifold-scene").then((m) => ({ default: m.SphereManifoldScene })),
+  ),
+  ChartOverlapScene: lazyScene(() =>
+    import("@/components/physics/manifolds-and-tangent-spaces/chart-overlap-scene").then((m) => ({ default: m.ChartOverlapScene })),
+  ),
+  TangentSpaceScene: lazyScene(() =>
+    import("@/components/physics/manifolds-and-tangent-spaces/tangent-space-scene").then((m) => ({ default: m.TangentSpaceScene })),
+  ),
+  // RT §07 — tensors-on-curved-space
+  TensorRankScene: lazyScene(() =>
+    import("@/components/physics/tensors-on-curved-space/tensor-rank-scene").then((m) => ({ default: m.TensorRankScene })),
+  ),
+  IndexTransformationScene: lazyScene(() =>
+    import("@/components/physics/tensors-on-curved-space/index-transformation-scene").then((m) => ({ default: m.IndexTransformationScene })),
+  ),
+  RaisingLoweringScene: lazyScene(() =>
+    import("@/components/physics/tensors-on-curved-space/raising-lowering-scene").then((m) => ({ default: m.RaisingLoweringScene })),
+  ),
+  // RT §07 — the-metric-tensor
+  MetricEllipsesScene: lazyScene(() =>
+    import("@/components/physics/the-metric-tensor/metric-ellipses-scene").then((m) => ({ default: m.MetricEllipsesScene })),
+  ),
+  LineElementScene: lazyScene(() =>
+    import("@/components/physics/the-metric-tensor/line-element-scene").then((m) => ({ default: m.LineElementScene })),
+  ),
+  MetricComparisonScene: lazyScene(() =>
+    import("@/components/physics/the-metric-tensor/metric-comparison-scene").then((m) => ({ default: m.MetricComparisonScene })),
+  ),
+  // RT §07 — christoffels-and-parallel-transport
+  SphericalTriangleHolonomyScene: lazyScene(() =>
+    import("@/components/physics/christoffels-and-parallel-transport/spherical-triangle-holonomy-scene").then((m) => ({ default: m.SphericalTriangleHolonomyScene })),
+  ),
+  CovariantDerivativeScene: lazyScene(() =>
+    import("@/components/physics/christoffels-and-parallel-transport/covariant-derivative-scene").then((m) => ({ default: m.CovariantDerivativeScene })),
+  ),
+  ChristoffelFormulaScene: lazyScene(() =>
+    import("@/components/physics/christoffels-and-parallel-transport/christoffel-formula-scene").then((m) => ({ default: m.ChristoffelFormulaScene })),
+  ),
+  // RT §07 — geodesics
+  GreatCircleGeodesicScene: lazyScene(() =>
+    import("@/components/physics/geodesics/great-circle-geodesic-scene").then((m) => ({ default: m.GreatCircleGeodesicScene })),
+  ),
+  GeodesicEquationSolverScene: lazyScene(() =>
+    import("@/components/physics/geodesics/geodesic-equation-solver-scene").then((m) => ({ default: m.GeodesicEquationSolverScene })),
+  ),
+  FallingAppleAsGeodesicScene: lazyScene(() =>
+    import("@/components/physics/geodesics/falling-apple-as-geodesic-scene").then((m) => ({ default: m.FallingAppleAsGeodesicScene })),
+  ),
+  // RT §08 — the-riemann-tensor
+  CommutatorScene: lazyScene(() =>
+    import("@/components/physics/the-riemann-tensor/commutator-scene").then((m) => ({ default: m.CommutatorScene })),
+  ),
+  RiemannSymmetryCounterScene: lazyScene(() =>
+    import("@/components/physics/the-riemann-tensor/riemann-symmetry-counter-scene").then((m) => ({ default: m.RiemannSymmetryCounterScene })),
+  ),
+  RiemannVsFlatScene: lazyScene(() =>
+    import("@/components/physics/the-riemann-tensor/riemann-vs-flat-scene").then((m) => ({ default: m.RiemannVsFlatScene })),
+  ),
+  // RT §08 — ricci-and-the-einstein-tensor
+  RicciTraceScene: lazyScene(() =>
+    import("@/components/physics/ricci-and-the-einstein-tensor/ricci-trace-scene").then((m) => ({ default: m.RicciTraceScene })),
+  ),
+  RicciScalarHeatmapScene: lazyScene(() =>
+    import("@/components/physics/ricci-and-the-einstein-tensor/ricci-scalar-heatmap-scene").then((m) => ({ default: m.RicciScalarHeatmapScene })),
+  ),
+  EinsteinTensorDivergenceScene: lazyScene(() =>
+    import("@/components/physics/ricci-and-the-einstein-tensor/einstein-tensor-divergence-scene").then((m) => ({ default: m.EinsteinTensorDivergenceScene })),
+  ),
+  // RT §08 — the-stress-energy-tensor
+  StressEnergyComponentsScene: lazyScene(() =>
+    import("@/components/physics/the-stress-energy-tensor/stress-energy-components-scene").then((m) => ({ default: m.StressEnergyComponentsScene })),
+  ),
+  PerfectFluidScene: lazyScene(() =>
+    import("@/components/physics/the-stress-energy-tensor/perfect-fluid-scene").then((m) => ({ default: m.PerfectFluidScene })),
+  ),
+  ConservationScene: lazyScene(() =>
+    import("@/components/physics/the-stress-energy-tensor/conservation-scene").then((m) => ({ default: m.ConservationScene })),
+  ),
+  // RT §08 — einsteins-field-equations
+  EFESplitScreenScene: lazyScene(() =>
+    import("@/components/physics/einsteins-field-equations/efe-split-screen-scene").then((m) => ({ default: m.EFESplitScreenScene })),
+  ),
+  November1915TimelineScene: lazyScene(() =>
+    import("@/components/physics/einsteins-field-equations/november-1915-timeline-scene").then((m) => ({ default: m.November1915TimelineScene })),
+  ),
+  EinsteinHilbertActionScene: lazyScene(() =>
+    import("@/components/physics/einsteins-field-equations/einstein-hilbert-action-scene").then((m) => ({ default: m.EinsteinHilbertActionScene })),
+  ),
+  // RT §08 — the-newtonian-limit
+  WeakFieldExpansionScene: lazyScene(() =>
+    import("@/components/physics/the-newtonian-limit/weak-field-expansion-scene").then((m) => ({ default: m.WeakFieldExpansionScene })),
+  ),
+  PoissonVsEfeScene: lazyScene(() =>
+    import("@/components/physics/the-newtonian-limit/poisson-vs-efe-scene").then((m) => ({ default: m.PoissonVsEfeScene })),
+  ),
+  WhereNewtonFailsScene: lazyScene(() =>
+    import("@/components/physics/the-newtonian-limit/where-newton-fails-scene").then((m) => ({ default: m.WhereNewtonFailsScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
