@@ -1,7 +1,7 @@
 # Relativity — Branch Design
 
 **Date:** 2026-04-29
-**Status:** in progress — 28/61 topics shipped (46%); §01+§02+§03+§04 shipped 2026-04-29; §05+§06 shipped 2026-04-30 — SR fully complete
+**Status:** in progress — 38/61 topics shipped (62%); §01+§02+§03+§04 shipped 2026-04-29; §05+§06 shipped 2026-04-30; §07+§08 shipped 2026-05-10 — GR mathematical machinery fully built
 **Repo:** `/Users/romanpochtman/Developer/physics`
 **Supabase project:** `cpcgkkedcfbnlfpzutrc` (`physics.explained`, eu-west-1)
 **Supersedes:** the `coming-soon` stub at `lib/content/branches.ts:987-998`.
@@ -326,14 +326,14 @@ Update this table at the end of every session.
 | §04 Relativistic dynamics | 5 | 5 | ☑ complete |
 | §05 SR applications | 4 | 4 | ☑ complete |
 | §06 Equivalence principle | 4 | 4 | ☑ complete |
-| §07 Tensor calculus | 5 | 0 | not started |
-| §08 Curvature & EFE | 5 | 0 | not started |
+| §07 Tensor calculus | 5 | 5 | ☑ complete |
+| §08 Curvature & EFE | 5 | 5 | ☑ complete |
 | §09 Schwarzschild + tests | 5 | 0 | not started |
 | §10 Black holes | 6 | 0 | not started |
 | §11 Gravitational waves | 4 | 0 | not started |
 | §12 Cosmology | 5 | 0 | not started |
 | §13 Frontiers | 3 | 0 | not started |
-| **Total** | **61** | **28** | **46% complete** |
+| **Total** | **61** | **38** | **62% complete** |
 
 ### Per-topic checklist
 
@@ -366,16 +366,16 @@ Check off as each topic ships.
 - [x] 26 `einsteins-elevator`
 - [x] 27 `gravitational-redshift`
 - [x] 28 `gravity-as-geometry`
-- [ ] 29 `manifolds-and-tangent-spaces`
-- [ ] 30 `tensors-on-curved-space`
-- [ ] 31 `the-metric-tensor`
-- [ ] 32 `christoffels-and-parallel-transport`
-- [ ] 33 `geodesics`
-- [ ] 34 `the-riemann-tensor`
-- [ ] 35 `ricci-and-the-einstein-tensor`
-- [ ] 36 `the-stress-energy-tensor`
-- [ ] 37 `einsteins-field-equations`
-- [ ] 38 `the-newtonian-limit`
+- [x] 29 `manifolds-and-tangent-spaces`
+- [x] 30 `tensors-on-curved-space`
+- [x] 31 `the-metric-tensor`
+- [x] 32 `christoffels-and-parallel-transport`
+- [x] 33 `geodesics`
+- [x] 34 `the-riemann-tensor`
+- [x] 35 `ricci-and-the-einstein-tensor`
+- [x] 36 `the-stress-energy-tensor`
+- [x] 37 `einsteins-field-equations`
+- [x] 38 `the-newtonian-limit`
 - [ ] 39 `the-schwarzschild-metric`
 - [ ] 40 `mercurys-perihelion`
 - [ ] 41 `light-deflection-and-lensing`
