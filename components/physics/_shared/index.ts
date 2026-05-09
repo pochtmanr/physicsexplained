@@ -8,3 +8,4 @@ export type {
   TangentArrow,
   ParallelTransportPath,
 } from "./ManifoldCanvas";
+export * from "./scene-tokens";
