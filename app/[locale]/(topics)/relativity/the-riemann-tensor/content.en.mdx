@@ -34,9 +34,7 @@ The **Riemann curvature tensor** $R^\rho{}_{\sigma\mu\nu}$ is defined as the com
 The commutator $[\nabla_\mu, \nabla_\nu] = \nabla_\mu \nabla_\nu - \nabla_\nu \nabla_\mu$ measures the failure of the two operations to commute. When the space is flat this failure is zero and so is $R^\rho{}_{\sigma\mu\nu}$. When the space is curved the failure is nonzero, and the Riemann tensor is exactly the linear map that takes the initial vector $V^\sigma$ and returns the failure.
 
 <SceneCard caption="FIG.34a — two parallelogram paths A→B→C on a unit sphere. Cyan path: covariant derivative in θ first, then φ. Amber path: φ first, then θ. A vector (green) parallel-transported along the two paths arrives at C with a different orientation — the angular gap is the holonomy. The HUD reports δ/A, which converges to the local Riemann component as the loop shrinks. Drag the sphere to rotate; use the loop-size slider to zoom in.">
-  <SceneCard>
-    <CommutatorScene />
-  </SceneCard>
+  <CommutatorScene />
 </SceneCard>
 
 The geometric picture is a closed parallelogram. Walk a vector around a small loop — first in the $\mu$ direction, then $\nu$, then back — and it returns to the starting point rotated. The rotation per unit area is a Riemann tensor component. This is not an abstract curiosity. It is the precise mathematical definition of curvature in the language of connections: a space is flat if and only if parallel transport is path-independent, which holds if and only if every closed loop produces zero rotation, which holds if and only if $R^\rho{}_{\sigma\mu\nu} = 0$ everywhere.
@@ -66,9 +64,7 @@ All four indices run from 0 to 3 in 4D spacetime. The tensor is a (1,3) tensor �
 A tensor with four indices in 4D naively has $4^4 = 256$ components. But the Riemann tensor has a rich set of symmetries that dramatically reduce the number of algebraically independent entries.
 
 <SceneCard caption="FIG.34b — a step-through breakdown of the counting argument. Each bar shows the component count after applying one symmetry. Click through the steps to watch 256 collapse to 20. The table at the bottom shows the formula n²(n²−1)/12 across 1D–4D.">
-  <SceneCard>
-    <RiemannSymmetryCounterScene />
-  </SceneCard>
+  <RiemannSymmetryCounterScene />
 </SceneCard>
 
 The symmetries are:
@@ -92,9 +88,7 @@ The net result: in four-dimensional spacetime, the Riemann tensor has exactly **
 <Section index={4} title="Curvature is intrinsic">
 
 <SceneCard caption="FIG.34c — two manifolds side by side. Left: a flat plane with R = 0 everywhere — a closed loop of parallel transport returns the vector unchanged. Right: a unit sphere with Ricci scalar R = 2 — the same loop rotates the vector. Color coding: green = transported vector V; the rotation angle at C is A/R² where A is the enclosed area. Enable the toggle to see the transport path.">
-  <SceneCard>
-    <RiemannVsFlatScene />
-  </SceneCard>
+  <RiemannVsFlatScene />
 </SceneCard>
 
 The Riemann tensor vanishes if and only if the manifold is flat — meaning there exist coordinates in which the metric is the standard Euclidean (or Minkowski) metric everywhere in a neighbourhood. This is a theorem, not just a definition. The condition $R^\rho{}_{\sigma\mu\nu} = 0$ everywhere is both necessary and sufficient for the existence of global flat coordinates.
