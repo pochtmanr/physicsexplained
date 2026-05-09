@@ -1,0 +1,128 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CommutatorScene } from "@/components/physics/the-riemann-tensor/commutator-scene";
+import { RiemannSymmetryCounterScene } from "@/components/physics/the-riemann-tensor/riemann-symmetry-counter-scene";
+import { RiemannVsFlatScene } from "@/components/physics/the-riemann-tensor/riemann-vs-flat-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Bernhard Riemann", href: "/physicists/bernhard-riemann" },
+  { type: "term", label: "Riemann tensor", href: "/dictionary/riemann-tensor" },
+  { type: "term", label: "Christoffel symbols", href: "/dictionary/christoffel-symbols" },
+  { type: "term", label: "Parallel transport", href: "/dictionary/parallel-transport" },
+  { type: "term", label: "Holonomy", href: "/dictionary/holonomy" },
+  { type: "term", label: "Ricci tensor", href: "/dictionary/ricci-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.34 · §08 CURVATURE AND EFE"
+  title="THE RIEMANN TENSOR"
+  subtitle="Twenty independent numbers per point that say exactly how a space is bent."
+/>
+
+<Section index={1} title="The non-commutativity of covariant derivatives">
+
+The <Term slug="christoffel-symbols" /> from §07.4 gave us a recipe for parallel-transporting vectors across a curved manifold. But recipes can be combined in different orders, and on a curved space the order matters. Take a vector $V^\rho$ at a point $p$ and try to differentiate it first in the $\mu$ direction, then the $\nu$ direction — versus $\nu$ first and $\mu$ second. On a flat space both give the same answer. On a curved space they don't. The gap between the two results is not noise; it is signal. It is precisely the curvature of the space, and the object that captures it has a name.
+
+The **Riemann curvature tensor** $R^\rho{}_{\sigma\mu\nu}$ is defined as the commutator of two covariant derivatives acting on a vector:
+
+<EquationBlock id="EQ.01">$$[\nabla_\mu, \nabla_\nu] V^\rho = R^\rho{}_{\sigma\mu\nu} V^\sigma$$</EquationBlock>
+
+The commutator $[\nabla_\mu, \nabla_\nu] = \nabla_\mu \nabla_\nu - \nabla_\nu \nabla_\mu$ measures the failure of the two operations to commute. When the space is flat this failure is zero and so is $R^\rho{}_{\sigma\mu\nu}$. When the space is curved the failure is nonzero, and the Riemann tensor is exactly the linear map that takes the initial vector $V^\sigma$ and returns the failure.
+
+<SceneCard caption="FIG.34a — two parallelogram paths A→B→C on a unit sphere. Cyan path: covariant derivative in θ first, then φ. Amber path: φ first, then θ. A vector (green) parallel-transported along the two paths arrives at C with a different orientation — the angular gap is the holonomy. The HUD reports δ/A, which converges to the local Riemann component as the loop shrinks. Drag the sphere to rotate; use the loop-size slider to zoom in.">
+  <SceneCard>
+    <CommutatorScene />
+  </SceneCard>
+</SceneCard>
+
+The geometric picture is a closed parallelogram. Walk a vector around a small loop — first in the $\mu$ direction, then $\nu$, then back — and it returns to the starting point rotated. The rotation per unit area is a Riemann tensor component. This is not an abstract curiosity. It is the precise mathematical definition of curvature in the language of connections: a space is flat if and only if parallel transport is path-independent, which holds if and only if every closed loop produces zero rotation, which holds if and only if $R^\rho{}_{\sigma\mu\nu} = 0$ everywhere.
+
+<PhysicistLink slug="bernhard-riemann" />'s 1854 Habilitation lecture, delivered in Göttingen at the age of 27, first defined this object from purely geometric arguments — long before anyone imagined it would describe the curvature of physical spacetime. Einstein reached for it sixty years later as the only object that could make his field equations work.
+
+</Section>
+
+<Section index={2} title="The explicit formula">
+
+The Riemann tensor is built entirely from the <Term slug="christoffel-symbols" /> and their derivatives. No new ingredients are needed. Start from the definition as a commutator of covariant derivatives, expand each $\nabla$ using the Leibniz rule and the Christoffel connection, and collect terms. The result is:
+
+<EquationBlock id="EQ.02">$$R^\rho{}_{\sigma\mu\nu} = \partial_\mu \Gamma^\rho{}_{\nu\sigma} - \partial_\nu \Gamma^\rho{}_{\mu\sigma} + \Gamma^\rho{}_{\mu\lambda} \Gamma^\lambda{}_{\nu\sigma} - \Gamma^\rho{}_{\nu\lambda} \Gamma^\lambda{}_{\mu\sigma}$$</EquationBlock>
+
+The first two terms are the antisymmetric combination of partial derivatives of the Christoffel symbols — the linear part of the curvature, measuring how the connection changes as you move. The last two terms are quadratic in the Christoffels — they arise from the change-of-basis correction applied twice, once on the outward leg and once on the return. In flat Cartesian coordinates all Christoffels vanish, so all four terms are zero and the Riemann tensor is identically zero. In curved coordinates (polar, spherical, Schwarzschild) the Christoffels are nonzero but the curvature may still be zero — as it is for polar coordinates in flat Euclidean space. The cancellation between linear and quadratic terms is the statement that the polar plane is intrinsically flat.
+
+Every piece of local curvature information is encoded in this object. Given the metric at a point (and its first two derivatives, which are what determine the Christoffels and their derivatives), you can read off the Riemann tensor completely. The Riemann tensor is what makes GR a second-order PDE system for the metric: it involves second derivatives of $g_{\mu\nu}$ (through the derivatives of the Christoffels), and Einstein's field equations set certain contractions of it equal to the matter content.
+
+<Callout variant="formula">
+All four indices run from 0 to 3 in 4D spacetime. The tensor is a (1,3) tensor — one contravariant index up ($\rho$) and three covariant indices down ($\sigma$, $\mu$, $\nu$). The Christoffel symbols $\Gamma^\rho{}_{\mu\nu}$ are built from the metric and its first derivatives (§07.4); the Riemann tensor adds one more derivative layer.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Symmetries — counting components">
+
+A tensor with four indices in 4D naively has $4^4 = 256$ components. But the Riemann tensor has a rich set of symmetries that dramatically reduce the number of algebraically independent entries.
+
+<SceneCard caption="FIG.34b — a step-through breakdown of the counting argument. Each bar shows the component count after applying one symmetry. Click through the steps to watch 256 collapse to 20. The table at the bottom shows the formula n²(n²−1)/12 across 1D–4D.">
+  <SceneCard>
+    <RiemannSymmetryCounterScene />
+  </SceneCard>
+</SceneCard>
+
+The symmetries are:
+
+**Antisymmetry in the last two indices.** The commutator $[\nabla_\mu, \nabla_\nu]$ is antisymmetric by definition, so $R^\rho{}_{\sigma\mu\nu} = -R^\rho{}_{\sigma\nu\mu}$. This halves the count of the last index pair: from 16 ordered pairs down to 6 antisymmetric ones. Count: $4 \times 4 \times 6 = 96$.
+
+**Antisymmetry in the first two indices (after lowering).** When the first index is lowered with the metric, $R_{\rho\sigma\mu\nu} = g_{\rho\lambda} R^\lambda{}_{\sigma\mu\nu}$, the result is antisymmetric in $(\rho, \sigma)$ as well: $R_{\rho\sigma\mu\nu} = -R_{\sigma\rho\mu\nu}$. Both index pairs are antisymmetric. Count: $6 \times 6 = 36$.
+
+**Pair-swap symmetry.** The two antisymmetric pairs can be exchanged: $R_{\rho\sigma\mu\nu} = R_{\mu\nu\rho\sigma}$. This is a symmetry of the $6 \times 6$ matrix formed by the two antisymmetric index pairs — the symmetric part of that matrix has $C(6,2) + 6 = 21$ independent entries.
+
+**The first Bianchi identity.** The totally antisymmetric part of the last three indices vanishes:
+
+<EquationBlock id="EQ.03">$$R^\rho{}_{[\sigma\mu\nu]} = 0$$</EquationBlock>
+
+Written out: $R^\rho{}_{\sigma\mu\nu} + R^\rho{}_{\mu\nu\sigma} + R^\rho{}_{\nu\sigma\mu} = 0$. In 4D this provides exactly one additional algebraic constraint on the block of 21 entries, reducing the count to 20.
+
+The net result: in four-dimensional spacetime, the Riemann tensor has exactly **20 algebraically independent components** at each point. The general formula is $n^2(n^2-1)/12$: zero in 1D (every line is flat), one in 2D (a single Gaussian curvature), six in 3D, twenty in 4D. Those twenty numbers at every point of spacetime encode the complete local geometry.
+
+</Section>
+
+<Section index={4} title="Curvature is intrinsic">
+
+<SceneCard caption="FIG.34c — two manifolds side by side. Left: a flat plane with R = 0 everywhere — a closed loop of parallel transport returns the vector unchanged. Right: a unit sphere with Ricci scalar R = 2 — the same loop rotates the vector. Color coding: green = transported vector V; the rotation angle at C is A/R² where A is the enclosed area. Enable the toggle to see the transport path.">
+  <SceneCard>
+    <RiemannVsFlatScene />
+  </SceneCard>
+</SceneCard>
+
+The Riemann tensor vanishes if and only if the manifold is flat — meaning there exist coordinates in which the metric is the standard Euclidean (or Minkowski) metric everywhere in a neighbourhood. This is a theorem, not just a definition. The condition $R^\rho{}_{\sigma\mu\nu} = 0$ everywhere is both necessary and sufficient for the existence of global flat coordinates.
+
+A cylinder embedded in three-dimensional space looks curved to the eye — it bends around an axis. But a cylinder has zero Riemann tensor. You can unroll it flat without tearing or stretching: cut it along a line parallel to the axis, and you have a rectangle. The "curvature" of a cylinder is entirely extrinsic — it describes how the cylinder sits inside $\mathbb{R}^3$, not anything about the intrinsic geometry of the surface itself. An ant living on the cylinder, measuring distances and angles without ever leaving the surface, would find that all triangles have angle sum exactly $180°$, all circles have circumference exactly $2\pi r$, and parallel lines never converge. The cylinder is intrinsically flat.
+
+A sphere is different. You cannot unroll a sphere into a flat sheet. The orange peel tears. The <Term slug="holonomy" /> of a closed loop is nonzero. The Riemann tensor is nonzero at every point, and its value — $2/R^2$ for the Ricci scalar of a sphere of radius $R$ — is a coordinate-independent fact about the intrinsic geometry. No choice of coordinates on the sphere can make the Riemann tensor vanish, because the curvature is not a choice — it is what the space is.
+
+This is the precise sense in which spacetime curvature is physical. The tidal forces you feel when falling toward a black hole are not artifacts of your coordinate system. They are the Riemann tensor evaluated at your location, contracted with your velocity to produce a tidal acceleration. A freely-falling observer in a genuinely flat region of spacetime would feel no tidal forces, and the Riemann tensor at their location would be zero. Near a mass it is not.
+
+</Section>
+
+<Section index={5} title="The Bianchi identities">
+
+There is a second set of identities for the Riemann tensor — not algebraic like the symmetries above, but differential. They involve covariant derivatives of the Riemann tensor itself, and they turn out to be the deepest structural constraint in all of general relativity.
+
+<EquationBlock id="EQ.04">$$\nabla_\lambda R^\rho{}_{\sigma\mu\nu} + \nabla_\mu R^\rho{}_{\sigma\nu\lambda} + \nabla_\nu R^\rho{}_{\sigma\lambda\mu} = 0$$</EquationBlock>
+
+This is the **differential Bianchi identity**, a cyclic sum of covariant derivatives of $R$ over three indices. It holds automatically as a consequence of the Jacobi identity for commutators of covariant derivatives — it is not an additional assumption but a theorem about any Levi-Civita connection.
+
+The identity looks abstract. Its consequences are not. Contract two pairs of indices with the metric, and the contracted Bianchi identity becomes $\nabla_\mu G^{\mu\nu} = 0$, where $G^{\mu\nu} = R^{\mu\nu} - \frac{1}{2} g^{\mu\nu} R$ is the **Einstein tensor**. The Einstein tensor is automatically divergence-free — not by choice or additional postulate, but because of the geometry. This will be the central fact of §08.2: the left-hand side of Einstein's field equations is divergence-free by the Bianchi identity, which forces the right-hand side (the stress-energy tensor $T^{\mu\nu}$) to also be divergence-free — and that is energy-momentum conservation.
+
+<Callout variant="intuition">
+The Bianchi identity is the geometric reason that Einstein's field equations are consistent with energy conservation. Without it, the equations would over-constrain the system. With it, they are precisely determined — ten second-order PDEs for ten independent metric components, with four gauge freedoms from coordinate invariance, leaving six physical degrees of freedom for each spacetime point.
+</Callout>
+
+<PhysicistLink slug="bernhard-riemann" /> defined the curvature tensor in 1854 from purely geometric arguments — the natural measure of how a manifold departs from flatness. The physical interpretation came sixty years later, in November 1915, when <PhysicistLink slug="albert-einstein" /> wrote down the field equations that bear his name. The two halves of general relativity — the geometry and the physics — met in this object: twenty numbers per point, built from second derivatives of the metric, satisfying differential constraints that encode energy conservation. Everything that follows in §08 is unpacking what those twenty numbers say.
+
+</Section>
+
+</TopicPageLayout>
