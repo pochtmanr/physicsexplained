@@ -1,0 +1,130 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { EFESplitScreenScene } from "@/components/physics/einsteins-field-equations/efe-split-screen-scene";
+import { November1915TimelineScene } from "@/components/physics/einsteins-field-equations/november-1915-timeline-scene";
+import { EinsteinHilbertActionScene } from "@/components/physics/einsteins-field-equations/einstein-hilbert-action-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "David Hilbert", href: "/physicists/david-hilbert" },
+  { type: "term", label: "Einstein tensor", href: "/dictionary/einstein-tensor" },
+  { type: "term", label: "Einstein field equations", href: "/dictionary/einstein-field-equations" },
+  { type: "term", label: "Stress-energy tensor", href: "/dictionary/stress-energy-tensor" },
+  { type: "term", label: "Ricci tensor", href: "/dictionary/ricci-tensor" },
+  { type: "term", label: "Ricci scalar", href: "/dictionary/ricci-scalar" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.37 · CURVATURE & EFE"
+  title="EINSTEIN'S FIELD EQUATIONS"
+  subtitle="Spacetime tells matter how to move; matter tells spacetime how to curve."
+/>
+
+<Section index={1} title="The single most quoted equation">
+
+It took <PhysicistLink slug="albert-einstein" /> eight years.
+
+The 1907 origin was a thought experiment he would later call the happiest thought of his life: a man falling freely from a rooftop feels no gravity. That flash gave Einstein the equivalence principle — the recognition that free-fall and inertia are the same thing. But the principle was local, and local is not enough. Gravity is global. The gravitational field of the Earth is not the same at every point; it varies, and that variation cannot be wished away by choosing a frame of reference. The variation is physical. The variation is curvature.
+
+In 1912 <PhysicistLink slug="albert-einstein" /> wrote a letter to his old friend Marcel Grossmann, a mathematician, asking for help. What geometry could describe a space that is locally flat everywhere but globally curved? Grossmann handed him the answer: Riemannian geometry, the differential geometry of curved manifolds built in the 1850s by <PhysicistLink slug="bernhard-riemann" />, extended to pseudo-Riemannian manifolds that include a time dimension. Einstein spent the next three years learning the apparatus — the metric tensor, Christoffel symbols, the Riemann curvature tensor, the Ricci tensor — and trying to combine them into a field equation that would reproduce Newton's gravity in the appropriate limit.
+
+On November 25, 1915, he stood before the Prussian Academy of Sciences in Berlin and wrote down the final form:
+
+<EquationBlock id="EQ.01">$$G_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$</EquationBlock>
+
+Ten equations in the guise of one. The left side is geometry. The right side is matter. The equals sign is the universe holding itself together. John Archibald Wheeler put it in two sentences that have appeared on blackboards ever since: *spacetime tells matter how to move; matter tells spacetime how to curve.*
+
+<Callout variant="intuition">
+Geometry on the left. Matter on the right. The equals sign is the universe holding itself together.
+</Callout>
+
+</Section>
+
+<Section index={2} title="What it says — the money shot">
+
+<SceneCard caption="FIG.37a — the EFE split-screen. Left: a mass sphere whose density is controlled by the slider, encoding the stress-energy tensor T_{μν}. Right: the Ricci-scalar curvature heatmap on the same spatial domain — the geometry that results. Center: the coupling constant κ = 8πG/c⁴ with a glowing arrow that brightens as density rises. Pull on T; the geometry answers.">
+  <EFESplitScreenScene />
+</SceneCard>
+
+The field equations have three moving parts.
+
+**The left side — G_{μν}:** the <Term slug="einstein-tensor" />, a symmetric $(0,2)$ tensor built from the <Term slug="ricci-tensor" /> and the <Term slug="ricci-scalar" /> as $G_{\mu\nu} = R_{\mu\nu} - \tfrac{1}{2} R \, g_{\mu\nu}$. It encodes, at each point of spacetime, how much the local geometry deviates from flatness. In four dimensions it has 10 independent components.
+
+**The right side — T_{μν}:** the <Term slug="stress-energy-tensor" />, which encodes the distribution of matter and energy. Its components carry everything relevant: the energy density $T_{00}$, the momentum flux, the pressure, and the stress. For a perfect fluid with density $\rho$ and pressure $p$ moving at four-velocity $u^\mu$, it is $T_{\mu\nu} = (\rho + p/c^2) u_\mu u_\nu + p \, g_{\mu\nu}$.
+
+**The coupling constant — κ = 8πG/c⁴:** a number so small ($\approx 2.07 \times 10^{-43}$ in SI units) that enormous concentrations of mass-energy are required to produce measurable curvature. This is why spacetime feels flat in everyday life even though the field equations are never switched off. For a compact object like a neutron star, the curvature near the surface becomes non-negligible; for a black hole, it diverges.
+
+The field equations are not linear. The metric $g_{\mu\nu}$ appears on both sides — the Einstein tensor on the left is constructed from second derivatives of $g_{\mu\nu}$, and $g_{\mu\nu}$ itself appears in $T_{\mu\nu}$ through the covariant volume element. This nonlinearity is responsible for the richness of GR: gravitational waves carry energy and therefore curve spacetime themselves, and two black holes spiraling toward each other emit radiation that back-reacts on their inspiral.
+
+</Section>
+
+<Section index={3} title="Why this exact form — conservation and the Newtonian limit">
+
+The equation $G_{\mu\nu} = \kappa T_{\mu\nu}$ is not arbitrary. Two constraints fix its form completely.
+
+**The Bianchi identity.** The contracted second Bianchi identity is a purely geometric theorem: $\nabla^\mu G_{\mu\nu} = 0$ — the covariant divergence of the Einstein tensor vanishes identically, for any metric. This is not an equation to be solved; it is a structural property of $G_{\mu\nu}$, analogous to $\nabla \cdot (\nabla \times \mathbf{B}) = 0$ in electrodynamics. Because the right-hand side must match, the field equations require $\nabla^\mu T_{\mu\nu} = 0$ — the covariant conservation of energy and momentum. The geometry knows to be consistent with conservation laws before matter is even specified.
+
+**The Newtonian limit.** At slow speeds and weak, nearly-static fields, the field equations must reproduce Poisson's equation $\nabla^2 \Phi = 4\pi G \rho$. Working through the weak-field, slow-motion expansion of the equations — keeping only the dominant term $T_{00} \approx \rho c^2$ and the time-time component of the metric — forces the coupling constant to be exactly $8\pi G / c^4$. Any other coefficient would predict a different numerical value for the perihelion precession of Mercury, the deflection of starlight, and the Pound-Rebka gravitational redshift. The coefficient is pinned by observation.
+
+</Section>
+
+<Section index={4} title="The November 1915 race">
+
+<SceneCard caption="FIG.37b — click each node to read the story of that day. Four events in six weeks: Einstein's near-final form (Nov 4), the corrected form with the R_{μν} − ½ R g_{μν} structure (Nov 18), Hilbert's variational derivation in Göttingen (Nov 20), and Einstein's published final form (Nov 25). The simultaneous race that produced the most productive competition in modern physics.">
+  <November1915TimelineScene />
+</SceneCard>
+
+The story of November 1915 is one of the most dramatic in the history of physics.
+
+On November 4, <PhysicistLink slug="albert-einstein" /> presented a nearly-correct set of field equations to the Prussian Academy of Sciences in Berlin. The form was almost right but still missing the trace term — the $\tfrac{1}{2} R g_{\mu\nu}$ that makes $G_{\mu\nu}$ divergence-free. He knew it. The next two weeks he pushed harder.
+
+Meanwhile in Göttingen, <PhysicistLink slug="david-hilbert" /> — a mathematician Einstein had visited months earlier and briefed on the problem — was working independently from a variational principle. On November 20, Hilbert submitted a paper deriving the field equations from the least-action principle using an action now called the Einstein-Hilbert action.
+
+On November 25, Einstein presented the final, correct, fully covariant form: $G_{\mu\nu} = \kappa T_{\mu\nu}$. The same day he showed that the equations explained the 43 arcseconds per century of Mercury's anomalous perihelion precession — a number that had resisted Newtonian mechanics for sixty years. Einstein described that calculation as producing heart palpitations.
+
+The priority question has been argued for a century. The modern scholarly consensus is that both derivations are independent and approximately simultaneous, and that the credit is genuinely shared — but in different ways. Einstein's route was physical: he started from the equivalence principle, built up the geometrical machinery step by step, and recognized that the equations must match the Newtonian limit. Hilbert's route was mathematical: he wrote down the simplest scalar action for a Riemannian geometry and varied it. The physical insight — understanding *why* $T_{\mu\nu}$ must appear on the right-hand side and what it represents — belongs to Einstein. The elegant variational derivation belongs to Hilbert.
+
+</Section>
+
+<Section index={5} title="The variational form — the Einstein-Hilbert action">
+
+<SceneCard caption="FIG.37c — the Einstein-Hilbert action S = (c⁴/16πG) ∫ R √(−g) d⁴x with annotations for each term. The Euler-Lagrange variation with respect to g_{μν} produces G_{μν} = κ T_{μν} as the stationary-action condition. The same principle that gives the geodesic equation from proper-time minimization, applied to spacetime geometry itself.">
+  <EinsteinHilbertActionScene />
+</SceneCard>
+
+The Einstein-Hilbert action is:
+
+<EquationBlock id="EQ.02">$$S = \frac{c^4}{16\pi G} \int R \sqrt{-g} \, d^4 x$$</EquationBlock>
+
+Here $R$ is the Ricci scalar — the simplest curvature invariant of the metric, a single real number at each spacetime point — and $\sqrt{-g} \, d^4x$ is the covariant 4-volume element, with $g = \det(g_{\mu\nu})$. The prefactor $c^4/16\pi G$ ensures the correct Newtonian limit when matter is added.
+
+Adding a matter action $S_m$ to this gravitational action and requiring the total action to be stationary under variations of the metric $\delta g^{\mu\nu}$ gives:
+
+$$\frac{\delta S}{\delta g^{\mu\nu}} = 0 \quad \Longrightarrow \quad G_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
+
+where $T_{\mu\nu} = -(2/\sqrt{-g})\, \delta S_m / \delta g^{\mu\nu}$ is the stress-energy tensor, emerging automatically from the matter action. The field equations are the Euler-Lagrange equations of the simplest diffeomorphism-invariant action for a Lorentzian manifold.
+
+This variational form is why physicists today think of the Einstein field equations as "canonical." Not only do they describe the correct physics; they emerge from the least-action principle applied to geometry, the same principle that underlies every other fundamental law from electrodynamics to the Standard Model of particle physics.
+
+<Callout variant="math">
+The cosmological constant $\Lambda$ enters naturally by adding a constant term to the action: $S_\Lambda = -(c^4/8\pi G) \int \Lambda \sqrt{-g} \, d^4x$. The resulting equations are $G_{\mu\nu} + \Lambda g_{\mu\nu} = \kappa T_{\mu\nu}$. Einstein introduced $\Lambda$ in 1917 to allow a static universe, then called it his "greatest blunder" after Hubble's 1929 discovery of expansion. Dark-energy observations in 1998 brought it back: the universe is accelerating, and $\Lambda \approx 1.1 \times 10^{-52}$ m$^{-2}$ fits the data. The "blunder" turned out to be a prediction.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Forward — the first solutions">
+
+The field equations are ten coupled nonlinear partial differential equations in the ten independent components of the <Term slug="metric-tensor" />. Exact solutions are rare and prized.
+
+The first, found by Karl Schwarzschild in December 1915 — one month after Einstein published the equations, while Schwarzschild was on the Russian front — describes the spacetime geometry outside a static, spherically symmetric mass. It gives the [Schwarzschild metric](/relativity/the-schwarzschild-metric): the geometry of a non-rotating black hole and the setting for orbital mechanics, gravitational redshift, and light deflection around any compact object. The [Newtonian limit](/relativity/the-newtonian-limit) (§08.5) recovers Poisson's equation from the weak-field expansion, closing the logical loop between GR and the classical mechanics it supersedes.
+
+Every experimental test of GR since 1915 — Mercury's perihelion, Eddington's 1919 eclipse, Pound-Rebka in 1960, the Hulse-Taylor binary pulsar in 1974, LIGO's direct detection of gravitational waves in 2015, the Event Horizon Telescope image of M87* in 2019 — is a solution or approximation of this equation. One equation. All of it.
+
+</Section>
+
+</TopicPageLayout>
