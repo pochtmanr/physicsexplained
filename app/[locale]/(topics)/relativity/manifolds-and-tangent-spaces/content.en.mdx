@@ -1,0 +1,111 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SphereManifoldScene } from "@/components/physics/manifolds-and-tangent-spaces/sphere-manifold-scene";
+import { ChartOverlapScene } from "@/components/physics/manifolds-and-tangent-spaces/chart-overlap-scene";
+import { TangentSpaceScene } from "@/components/physics/manifolds-and-tangent-spaces/tangent-space-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Bernhard Riemann", href: "/physicists/bernhard-riemann" },
+  { type: "term", label: "Manifold", href: "/dictionary/manifold" },
+  { type: "term", label: "Tangent space", href: "/dictionary/tangent-space" },
+  { type: "term", label: "Spacetime", href: "/dictionary/spacetime" },
+  { type: "term", label: "World line", href: "/dictionary/world-line" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.29 · §07 TENSOR CALCULUS"
+  title="MANIFOLDS AND TANGENT SPACES"
+  subtitle="Spacetime is a curved space that locally looks flat. Every point has its own vector space attached."
+/>
+
+<Section index={1} title="Curved spaces are spaces too">
+
+Walk one kilometre on the surface of the Earth and the ground looks flat. Drive a thousand kilometres and you notice you've been following a gentle curve. Cross the ocean and it is undeniable — the surface bends back on itself. The curvature is real, but at every scale your local patch looks like a piece of flat two-dimensional plane. That is the central idea of a manifold: a space that may be globally curved, but which is locally indistinguishable from flat Euclidean space.
+
+This is not a vague analogy. <PhysicistLink slug="bernhard-riemann" /> made it mathematically precise in his 1854 Habilitation lecture — the single most productive hour in the history of differential geometry. Riemann's insight was that you do not need an ambient higher-dimensional space to define curvature. The sphere is not curved because it sits inside three-dimensional Euclidean space; it is curved because of the intrinsic geometry of the surface itself. You can measure that curvature from inside, without ever leaving the surface, by walking around triangles and noticing that their angles add up to more than 180°.
+
+A **smooth n-manifold** is a topological space that, near every point, looks like ℝⁿ — meaning there is a smooth bijection between a neighbourhood of the point and an open subset of ℝⁿ, and the inverse of that bijection is also smooth. The sphere $S^2$ is a 2-manifold; its local patches look like pieces of the plane. The spacetime of general relativity is a 4-manifold; every small neighbourhood looks like Minkowski space. A circle $S^1$ is a 1-manifold: locally it looks like a line. The global topologies are wildly different — a torus is not a sphere, a Klein bottle is not a plane — but locally, every manifold is flat.
+
+The word "locally" is doing real work here. The Earth is round, but humans walked for millennia without noticing. The geometry of spacetime departs from Minkowski only at scales where gravitational tidal forces are non-negligible — on short enough timescales and in small enough regions of space, every freely-falling lab genuinely is an inertial frame. This is the <Term slug="equivalence-principle" /> rephrased in the language of manifolds: spacetime is locally Minkowski because it is a smooth 4-manifold with a Lorentzian metric.
+
+</Section>
+
+<Section index={2} title="Charts and atlases">
+
+To do calculus on a manifold we need coordinates. But a manifold may have no global coordinate system — you cannot chart the entire sphere with a single flat map without tearing or distorting. Instead you use a collection of **coordinate charts**.
+
+<SceneCard caption="FIG.29a — two overlapping coordinate patches φ(U) and ψ(V) on a manifold M. The yellow region is the overlap; the dashed arrow is the transition map φ ∘ ψ⁻¹ between the two chart images in ℝ².">
+  <ChartOverlapScene />
+</SceneCard>
+
+A **chart** is a pair $(U, \varphi)$ where $U$ is an open subset of the manifold and $\varphi: U \to \mathbb{R}^n$ is a homeomorphism onto an open set in $\mathbb{R}^n$. The chart assigns coordinates $(x^1, \ldots, x^n)$ to every point in $U$: if $p \in U$ then $\varphi(p) = (x^1(p), \ldots, x^n(p))$. Those numbers are the coordinates of $p$ in this chart.
+
+An **atlas** is a collection of charts whose domains cover the entire manifold — $\bigcup_\alpha U_\alpha = M$. Where two charts overlap, say $p \in U \cap V$, the point $p$ has two sets of coordinates: $\varphi(p)$ and $\psi(p)$. The **transition map** converts between them:
+
+<EquationBlock id="EQ.01">$$\varphi \circ \psi^{-1}: \mathbb{R}^n \to \mathbb{R}^n$$</EquationBlock>
+
+This is a map from one open subset of $\mathbb{R}^n$ to another — both are flat, both have the usual Euclidean structure — so we can ask whether the transition map is smooth in the ordinary sense. A **smooth manifold** is one where all transition maps are infinitely differentiable ($C^\infty$). That smoothness condition is what makes calculus work intrinsically on the manifold, without any ambient embedding space.
+
+Physics quantities must be independent of the choice of chart. A particle's mass, the curvature of a worldline, the field strength at a point — none of these can depend on which coordinate system you happen to use to describe them. The transition maps encode exactly what happens to coordinates when you change charts, and the whole tensor apparatus of general relativity is designed to ensure that physical laws transform correctly under those changes.
+
+</Section>
+
+<Section index={3} title="The sphere and the surface of Earth">
+
+<SceneCard caption="FIG.29b — a 2-sphere of radius 1 with its latitude-longitude grid. Three tangent arrows at distinct points show the local coordinate directions: ∂/∂φ near the north pole (cyan), ∂/∂θ at the equator (pink), and ∂/∂φ at 45°N (amber). Drag the rotation slider to inspect the sphere from any angle.">
+  <SphereManifoldScene />
+</SceneCard>
+
+The 2-sphere $S^2$ is the cleanest example. In spherical coordinates $(θ, φ)$ — co-latitude $\theta \in [0, \pi]$ and longitude $\varphi \in [0, 2\pi)$ — the embedding into $\mathbb{R}^3$ is
+
+$$x = R \sin\theta\cos\varphi, \quad y = R \sin\theta\sin\varphi, \quad z = R\cos\theta.$$
+
+But there is a catch: the single chart $(\theta, \varphi)$ fails at the poles, because $\varphi$ is undefined at $\theta = 0$ and $\theta = \pi$. To cover the sphere smoothly you need at least two charts — a minimum atlas of two patches. Geographers solve exactly this problem every time they print an atlas: no single flat map can faithfully represent the entire globe, which is why world atlases have multiple projections stitched together at their edges.
+
+The transition maps between the two charts on $S^2$ are smooth diffeomorphisms of open subsets of $\mathbb{R}^2$ — the Mercator projection, the stereographic projection, and the gnomonic projection are all concrete examples of such transition maps. The fact that they are smooth is precisely what makes $S^2$ a smooth 2-manifold, despite its globally non-flat geometry.
+
+Spacetime is the same idea in four dimensions. The <Term slug="spacetime" /> of general relativity is a smooth 4-manifold equipped with a Lorentzian metric. Locally it looks like Minkowski space; globally its topology may be exotic (a black hole, a closed universe, a wormhole). Every <Term slug="world-line" /> is a smooth curve on this manifold. The coordinates $(t, x, y, z)$ are just a chart — a smooth bijection between a patch of spacetime and an open set of $\mathbb{R}^4$. Einstein's field equations, which we reach in §08, govern how the metric on this manifold is determined by its matter content.
+
+</Section>
+
+<Section index={4} title="Tangent vectors as directional derivatives">
+
+<SceneCard caption="FIG.29c — one point p on the sphere highlighted (amber dot); the tangent plane T_pM at that point drawn as a faint parallelogram; and the two basis vectors ∂/∂θ (cyan) and ∂/∂φ (pink) drawn as orthogonal arrows within the plane. Drag the rotation slider to verify that both arrows lie tangent to the sphere.">
+  <TangentSpaceScene />
+</SceneCard>
+
+The most important concept in this module is the correct definition of a tangent vector. The naive picture — "an arrow attached to a point on the surface" — works fine for surfaces embedded in $\mathbb{R}^3$. But spacetime is not embedded in any larger space. We need a definition that works intrinsically, using only operations available on the manifold itself.
+
+The intrinsic definition is this: a **tangent vector at p** is a linear operator that takes a smooth function $f: M \to \mathbb{R}$ and returns a real number — the directional derivative of $f$ in the direction of the vector. In a coordinate chart $(x^\mu)$ near $p$, the coordinate basis tangent vectors $\partial/\partial x^\mu$ act as:
+
+<EquationBlock id="EQ.02">$$v(f) = v^\mu \frac{\partial f}{\partial x^\mu}\bigg|_p$$</EquationBlock>
+
+Here $v^\mu$ are the **components** of the tangent vector in this chart, and Einstein's summation convention (sum over repeated $\mu$) is in effect. The operators $\partial/\partial x^\mu$ for $\mu = 0, 1, \ldots, n-1$ form a **basis** for the tangent space at $p$.
+
+The <Term slug="tangent-space" /> $T_p M$ is the $n$-dimensional vector space spanned by these basis operators. Every tangent vector at $p$ is a unique linear combination $v = v^\mu \partial/\partial x^\mu$. The components $v^\mu$ depend on the chart — if you change coordinates from $(x^\mu)$ to $(\tilde{x}^\mu)$, the basis transforms and so do the components. But the tangent vector itself, as an operator on functions, is coordinate-independent.
+
+This matters for GR in a concrete way. A four-velocity is a tangent vector to the worldline, not a vector in some ambient space. An electromagnetic field is a differential 2-form — a tensor built out of cotangent vectors, the duals of tangent vectors. The curvature of spacetime is the Riemann tensor — a multilinear map on tangent and cotangent vectors at each point. All of it lives in the tangent bundle, the disjoint union $TM = \bigsqcup_{p \in M} T_p M$ of tangent spaces over every point.
+
+<Callout variant="math">
+The tangent vector as directional derivative makes the chain rule automatic. If $\gamma(t)$ is a smooth curve on $M$ with $\gamma(0) = p$, then the tangent vector to $\gamma$ at $p$ is the operator $\dot{\gamma}(0)$ defined by $\dot{\gamma}(0)(f) = (f \circ \gamma)'(0)$ — the rate of change of $f$ along the curve. In a chart with coordinates $x^\mu(\gamma(t))$, this gives components $v^\mu = \dot{x}^\mu(0) = dx^\mu/dt|_{t=0}$, recovering the familiar "velocity components" formula. The abstract definition and the concrete formula are identical.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Why we don't embed">
+
+The embedding into $\mathbb{R}^3$ is a crutch, not a necessity. For surfaces — 2-manifolds — it helps our intuition: we can picture the sphere sitting in three-dimensional space, see the tangent planes visually, watch arrows slide along the surface. But general relativity is a theory of a 4-manifold, and there is no ambient 5-dimensional or higher-dimensional space that spacetime sits inside. The physics must be intrinsic.
+
+<PhysicistLink slug="bernhard-riemann" /> understood this in 1854. His *Habilitationsschrift* defined curvature intrinsically — using only the metric tensor on the manifold, with no reference to any embedding. The Gaussian curvature of a surface is intrinsic (detectable by ant-geodesics), while the extrinsic curvature depends on how you embed it. Riemann generalized Gaussian curvature to arbitrary dimensions without any embedding, giving us what is now called Riemannian geometry.
+
+The payoff is that general relativity can describe spacetime as a 4-manifold with a metric without requiring a larger ambient space. There is no "outside" of the universe. The curvature is intrinsic — encoded in the metric $g_{\mu\nu}(x)$ at every point, measurable by observers living in spacetime, determined by the matter and energy content via the Einstein field equations. The rubber-sheet picture (§06.3) was pedagogically useful but geometrically misleading precisely because it used an extrinsic embedding. The real geometry has no sheet, no extra dimension, and no "down" direction.
+
+From here the path is clear. The next step is to equip the manifold with a <Term slug="metric-tensor" /> — a smooth assignment of an inner product to each tangent space, allowing us to measure lengths, angles, and elapsed proper time. Once we have the metric, we can define <Term slug="christoffel-symbols" /> (the connection) and <Term slug="parallel-transport" /> (how vectors are carried along curves without rotating relative to the geometry). From parallel transport we get the <Term slug="geodesic-equation" />, the relativistic generalization of Newton's first law. And from the failure of parallel transport to commute around a loop we get the <Term slug="riemann-tensor" /> — the coordinate-independent measure of curvature that appears on the left side of the Einstein field equations.
+
+</Section>
+
+</TopicPageLayout>
