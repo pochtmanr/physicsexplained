@@ -1,0 +1,129 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RicciTraceScene } from "@/components/physics/ricci-and-the-einstein-tensor/ricci-trace-scene";
+import { RicciScalarHeatmapScene } from "@/components/physics/ricci-and-the-einstein-tensor/ricci-scalar-heatmap-scene";
+import { EinsteinTensorDivergenceScene } from "@/components/physics/ricci-and-the-einstein-tensor/einstein-tensor-divergence-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Bernhard Riemann", href: "/physicists/bernhard-riemann" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Ricci tensor", href: "/dictionary/ricci-tensor" },
+  { type: "term", label: "Ricci scalar", href: "/dictionary/ricci-scalar" },
+  { type: "term", label: "Einstein tensor", href: "/dictionary/einstein-tensor" },
+  { type: "term", label: "Riemann tensor", href: "/dictionary/riemann-tensor" },
+  { type: "term", label: "Stress-energy tensor", href: "/dictionary/stress-energy-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.35 · §08 CURVATURE AND THE FIELD EQUATIONS"
+  title="RICCI AND THE EINSTEIN TENSOR"
+  subtitle="Two contractions and a divergence-free identity — the geometry that can equal the matter."
+/>
+
+<Section index={1} title="The contraction — Ricci tensor">
+
+<PhysicistLink slug="bernhard-riemann" /> gave us a four-index curvature object: the <Term slug="riemann-tensor" /> $R^\rho{}_{\sigma\mu\nu}$, a rank-(1,3) tensor with 20 independent components in 4D. That is already a vast compression from the 256 raw components — but 20 is still more information than a field equation can conveniently handle on the geometric side. The next step is to ask what simpler objects can be extracted from the Riemann tensor by contraction.
+
+The first contraction sets $\rho = \lambda$ and sums over $\lambda$: fix the first index equal to the third, and let Einstein summation do the rest. The result is the **Ricci tensor**:
+
+<EquationBlock id="EQ.01">
+$$R_{\mu\nu} = R^\lambda{}_{\mu\lambda\nu}$$
+</EquationBlock>
+
+Ricci-Curbastro defined this contraction in his 1887–1900 work on absolute differential calculus. The object $R_{\mu\nu}$ is a symmetric (0,2) tensor — $R_{\mu\nu} = R_{\nu\mu}$ — with 10 independent components in 4D. Symmetric because the full Riemann tensor satisfies the interchange symmetry $R_{\rho\sigma\mu\nu} = R_{\mu\nu\rho\sigma}$ after lowering all indices, which feeds through the contraction.
+
+<SceneCard caption="FIG.35a — Riemann to Ricci contraction. The Riemann tensor has one upper (cyan) slot and three lower slots. Drag the slider to watch the first and third slots identified and summed away: rank-(1,3) collapses to the rank-(0,2) Ricci tensor with two remaining lower indices. The component count drops from 256 to 10 independent entries.">
+  <RicciTraceScene />
+</SceneCard>
+
+What does $R_{\mu\nu}$ measure? It captures how a small sphere of geodesics, emitted in all directions from a point, changes in volume as it propagates. A positive $R_{\mu\nu} u^\mu u^\nu$ for a timelike vector $u^\mu$ means the sphere contracts — the geodesics converge — and there is a gravitational focusing effect in that direction. In vacuum ($T_{\mu\nu} = 0$) the Einstein equations force $R_{\mu\nu} = 0$, so geodesic spheres maintain their volume even while the geometry can be highly curved (Weyl curvature, the traceless part of Riemann, can still be non-zero in vacuum). In the presence of matter $R_{\mu\nu} \neq 0$ and the focusing is real: this is the physical mechanism behind gravitational lensing and the Raychaudhuri focusing theorem.
+
+</Section>
+
+<Section index={2} title="The Ricci scalar">
+
+One more contraction with the inverse metric $g^{\mu\nu}$ collapses the Ricci tensor to a single number at each point: the **Ricci scalar**, also called the **scalar curvature**:
+
+<EquationBlock id="EQ.02">
+$$R = g^{\mu\nu} R_{\mu\nu}$$
+</EquationBlock>
+
+This is the simplest scalar invariant that can be built from the metric and its first two derivatives. It is coordinate-independent — a fact about the geometry, not about the chart used to describe it.
+
+<SceneCard caption="FIG.35b — left: a 2-sphere of adjustable radius r, coloured by Ricci scalar value R = 2/r². The sphere is uniform amber (constant positive curvature everywhere). Right: a flat plane with R = 0 everywhere. Drag the radius slider on the sphere: as r increases, R decreases — a larger sphere is less curved. The two surfaces at a glance: one number per point, one color per surface.">
+  <RicciScalarHeatmapScene />
+</SceneCard>
+
+The sign tells the story. Positive $R$ is sphere-like: parallel geodesics converge, triangles have angles summing to more than $180°$, circles have circumferences smaller than $2\pi r$. Negative $R$ is saddle-like: parallel geodesics diverge, triangle angles sum to less than $180°$, circles are wider than Euclidean. $R = 0$ does not mean flat — the Schwarzschild vacuum solution outside a star has $R = 0$ (because $R_{\mu\nu} = 0$ in vacuum) while having substantial Weyl curvature that bends light and warps time.
+
+For the 2-sphere of radius $r$, the analytic answer is $R = 2/r^2$ — constant, positive, and inversely proportional to the square of the radius. A golf ball and the Earth are both positively curved; the Earth is just less curved by a factor of $(6.4 \times 10^6)^2 / (0.021)^2 \approx 9 \times 10^{16}$.
+
+</Section>
+
+<Section index={3} title="The Bianchi identity, contracted">
+
+There is a deeper algebraic fact lurking inside the Riemann tensor. The **second Bianchi identity** says that the covariant derivative of the Riemann tensor satisfies a cyclic sum:
+
+$$\nabla_\lambda R_{\rho\sigma\mu\nu} + \nabla_\rho R_{\sigma\lambda\mu\nu} + \nabla_\sigma R_{\lambda\rho\mu\nu} = 0$$
+
+Contract this identity twice — once setting $\lambda = \mu$ and summing, once contracting with the inverse metric — and you get the **contracted second Bianchi identity**:
+
+<EquationBlock id="EQ.03">
+$$\nabla^\mu \!\left(R_{\mu\nu} - \tfrac{1}{2}\, R\, g_{\mu\nu}\right) = 0$$
+</EquationBlock>
+
+This is a differential identity that holds for any metric on any smooth manifold — not a field equation, not a physical assumption, but a pure geometric fact, as automatic as $\nabla \cdot (\nabla \times \mathbf{F}) = 0$ in vector calculus. The combination in parentheses has a name, and it is worth giving it now.
+
+</Section>
+
+<Section index={4} title="The Einstein tensor">
+
+Define:
+
+<EquationBlock id="EQ.04">
+$$G_{\mu\nu} = R_{\mu\nu} - \tfrac{1}{2}\, R\, g_{\mu\nu}$$
+</EquationBlock>
+
+This is the **Einstein tensor**. It is symmetric ($G_{\mu\nu} = G_{\nu\mu}$), because both $R_{\mu\nu}$ and $g_{\mu\nu}$ are symmetric. It has 10 independent components in 4D, matching the metric itself. And by equation EQ.03, it is **divergence-free**:
+
+$$\nabla^\mu G_{\mu\nu} = 0$$
+
+<SceneCard caption="FIG.35c — the contracted Bianchi identity as a flux diagram. Each face of a spacetime region carries Einstein tensor flux G_{μν}; the net flux out of the region is exactly zero. The matter side T_{μν} (amber, right) has the same structure — it must also be divergence-free. Both panels pulsate with the same phase: the geometry forces the conservation law. Toggle animate to see the flux breathing in and out.">
+  <EinsteinTensorDivergenceScene />
+</SceneCard>
+
+The Einstein tensor is not the only (0,2) tensor built from the metric and its curvature — one could add any multiple of the metric $\Lambda g_{\mu\nu}$ (the cosmological-constant term) and still satisfy the divergence-free condition. But $G_{\mu\nu}$ is the unique combination that is (1) symmetric, (2) divergence-free, (3) linear in the second derivatives of the metric, and (4) vanishes in flat spacetime. It is, in this sense, the minimal geometric object that can be equated to the matter side of a field equation.
+
+<Callout variant="math">
+In 2D, $R_{\mu\nu} = (R/2)\, g_{\mu\nu}$ is an exact algebraic identity (there is only one independent curvature component, the Gaussian curvature, and it must fit into the metric structure). Therefore $G_{\mu\nu} = R_{\mu\nu} - (1/2) R g_{\mu\nu} = 0$ identically in 2D. The Einstein tensor is trivially zero in two dimensions — a fact that tells us GR has no local gravitational dynamics in 2+1 dimensions without a cosmological constant.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Why divergence-free matters">
+
+The stress-energy tensor $T_{\mu\nu}$ encodes all the matter and energy in a region of spacetime: its components are energy density, momentum flux, pressure, and stress. The local conservation of energy and momentum in GR is the statement:
+
+$$\nabla^\mu T_{\mu\nu} = 0$$
+
+This is the relativistic generalization of the continuity equations of fluid mechanics and electromagnetism — matter and energy cannot be created or destroyed locally; they can only flow.
+
+Now consider the Einstein field equations, which we are about to derive in §08.3:
+
+$$G_{\mu\nu} = \frac{8\pi G}{c^4}\, T_{\mu\nu}$$
+
+If this equation is to be consistent, then the left side and the right side must have the same divergence. The right side has $\nabla^\mu T_{\mu\nu} = 0$ by matter physics. The left side must therefore also satisfy $\nabla^\mu G_{\mu\nu} = 0$ — and it does, automatically, because of the contracted Bianchi identity. The geometry is not just a convenient match for the matter side; the Bianchi identity **forces** the match. This is why <PhysicistLink slug="albert-einstein" /> spent the years 1912 to 1915 searching for a divergence-free geometric object — he needed the left side of a tensor equation to be automatically consistent with energy-momentum conservation on the right side. The Einstein tensor is the answer: the unique object the geometry provides for the purpose.
+
+<Callout variant="intuition">
+The contracted Bianchi identity is the geometric reason that general relativity is self-consistent. Write anything on the right side of $G_{\mu\nu} = \kappa T_{\mu\nu}$ that is not divergence-free and the field equations are inconsistent. The Bianchi identity on the left forces consistency. It is not a physical assumption; it is a theorem of differential geometry that the 4D manifold cannot violate. Matter must conserve energy-momentum because the geometry that encodes gravity leaves no other option.
+</Callout>
+
+The <Term slug="stress-energy-tensor" /> will be the subject of §08.3. For now the punchline is architectural: the Einstein tensor $G_{\mu\nu}$ and the stress-energy tensor $T_{\mu\nu}$ are both symmetric, both divergence-free, and both have 10 independent components in 4D. They were made for each other. The next module closes the loop and writes the full field equations.
+
+</Section>
+
+</TopicPageLayout>
