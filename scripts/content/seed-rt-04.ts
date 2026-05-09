@@ -306,6 +306,21 @@ The recovery of Newton in this limit is what legitimises general relativity. New
       { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
     ],
   },
+  // §07 forward-ref alias ────────────────────────────────────────────
+  {
+    slug: "covariant-derivative",
+    term: "Covariant derivative",
+    category: "concept",
+    shortDefinition: "The generalisation of the partial derivative to curved manifolds, ∇_μ V^ν = ∂_μ V^ν + Γ^ν_{μρ} V^ρ. Unlike ∂_μ V^ν (which is not a tensor on a curved space), the covariant derivative is a (1,1) tensor — the Christoffel correction Γ exactly cancels the non-tensorial transformation behaviour of the partial derivative.",
+    description: `The covariant derivative is the operator that takes the partial-derivative concept to curved manifolds while preserving tensor character. The naïve partial derivative ∂_μ V^ν of a vector field on a curved space fails to transform as a tensor under a change of coordinates — when you differentiate, the basis vectors themselves change, and the partial derivative picks up extra terms that don't cancel covariantly. The fix is the Christoffel correction: define ∇_μ V^ν = ∂_μ V^ν + Γ^ν_{μρ} V^ρ, where Γ are the connection coefficients computed from the metric. The added term exactly compensates the non-tensorial contribution from the changing basis, and the result transforms as a (1,1) tensor.
+
+The covariant derivative reduces to the ordinary partial derivative on a flat manifold (where Γ = 0 in Cartesian coordinates) but differs from it in any curved or curvilinear-coordinate setting. Parallel transport is defined by demanding that the covariant derivative along a curve vanish: ∇_{ẋ} V = 0 — a vector is "parallel-transported" when its covariant derivative along the curve's tangent vanishes. The Riemann curvature tensor (§08.1) is the commutator of two covariant derivatives, [∇_μ, ∇_ν] V^ρ = R^ρ_{σμν} V^σ — the failure of covariant derivatives to commute IS the curvature.`,
+    relatedPhysicists: ["tullio-levi-civita"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+    ],
+  },
   // §08 alias forward-ref ──────────────────────────────────────────────
   {
     slug: "gravitational-redshift",

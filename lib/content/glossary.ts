@@ -3169,6 +3169,16 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "relativity", topicSlug: "einsteins-field-equations" },
     ],
   },
+  // RT §07 forward-ref alias ─ covariant-derivative (used inline in §07.4 prose)
+  {
+    slug: "covariant-derivative",
+    category: "concept",
+    relatedPhysicists: ["tullio-levi-civita"],
+    relatedTopics: [
+      { branchSlug: "relativity", topicSlug: "christoffels-and-parallel-transport" },
+      { branchSlug: "relativity", topicSlug: "the-riemann-tensor" },
+    ],
+  },
   // RT §08 alias forward-ref ─ gravitational-redshift (topic exists from RT3; glossary alias)
   {
     slug: "gravitational-redshift",
