@@ -1,0 +1,134 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TensorRankScene } from "@/components/physics/tensors-on-curved-space/tensor-rank-scene";
+import { IndexTransformationScene } from "@/components/physics/tensors-on-curved-space/index-transformation-scene";
+import { RaisingLoweringScene } from "@/components/physics/tensors-on-curved-space/raising-lowering-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Tullio Levi-Civita", href: "/physicists/tullio-levi-civita" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+  { type: "term", label: "Riemann tensor", href: "/dictionary/riemann-tensor" },
+  { type: "term", label: "Four-vector", href: "/dictionary/four-vector" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.30 · §07.2 TENSOR CALCULUS"
+  title="TENSORS ON CURVED SPACE"
+  subtitle="Indexed objects that don't lie about which way they point."
+/>
+
+<Section index={1} title="What is a tensor?">
+
+The §07.1 manifold gave us a space that locally looks like $\mathbb{R}^4$. At every point $p$ of that space there is a tangent space $T_p M$ — a flat vector space that captures the directions one can move from $p$ — and its dual, the cotangent space $T_p^* M$, whose elements are linear functionals on $T_p M$. A vector field assigns a tangent vector to each point. A covector field assigns a covector. But GR's equations of motion, its field equations, its conservation laws — all of them involve objects with multiple indices. The objects with multiple indices are tensors.
+
+The coordinate-free definition: a **type-(p, q) tensor** at a point $p$ is a multilinear map
+
+$$T: \underbrace{T_p^*M \times \cdots \times T_p^*M}_{p} \times \underbrace{T_pM \times \cdots \times T_pM}_{q} \to \mathbb{R}$$
+
+It eats $p$ covectors and $q$ vectors and returns a number. Linearly in each slot. The requirement of linearity is the whole definition — everything else follows from it. A scalar is a (0, 0) tensor: it takes no arguments and returns a number. A vector is a (1, 0) tensor: feed it a covector, get a number. A covector is a (0, 1) tensor: feed it a vector, get a number. The <Term slug="metric-tensor" /> $g$ is a (0, 2) tensor: feed it two vectors, get their inner product. The <Term slug="riemann-tensor" /> is a (1, 3) tensor: feed it three vectors and a covector, get the curvature of spacetime in that direction.
+
+<SceneCard caption="FIG.30a — five canonical tensor ranks drawn as index-slot diagrams. Cyan boxes above the central blob are contravariant (upper) indices; amber boxes below are covariant (lower) indices. The component count underneath each diagram is 4^(p+q) — the number of independent numbers needed to specify the tensor in 4D spacetime.">
+  <TensorRankScene />
+</SceneCard>
+
+The scene above is the single most important picture in tensor calculus. A rank-(1, 3) tensor has 4 upper slots and 3 lower slots — 256 components in 4D. But those 256 numbers are not arbitrary: they are the components of one geometric object in one basis, and they transform in a completely determined way when you change coordinates. The transformation law is what makes a tensor a tensor.
+
+</Section>
+
+<Section index={2} title="Components and bases">
+
+Pick a coordinate chart $x^\mu$ on the manifold. The coordinate vectors $\partial_\mu = \partial/\partial x^\mu$ form a basis for $T_p M$; their duals $dx^\mu$ form a basis for $T_p^* M$. In this basis, the tensor $T$ of type (p, q) has $n^{p+q}$ components, written with $p$ upper (contravariant) indices and $q$ lower (covariant) indices:
+
+$$T^{\mu_1\cdots\mu_p}{}_{\nu_1\cdots\nu_q}$$
+
+The full tensor is recovered by summing over all index combinations — the **Einstein summation convention**: any index repeated once up and once down is summed over. A tensor of type (0, 2), for example, expands as
+
+<EquationBlock id="EQ.01">
+$$T = T^{\mu\nu} \, \mathbf{e}_\mu \otimes \mathbf{e}_\nu$$
+</EquationBlock>
+
+where $\otimes$ is the tensor product — the instruction to "one factor acts on the first argument, the other on the second." Every rank-(p, q) tensor decomposes this way: $n^{p+q}$ components, $n^{p+q}$ basis elements, one sum (the Einstein convention handles the bookkeeping). The indices up and down are not decorative. They tell you exactly how each component transforms.
+
+</Section>
+
+<Section index={3} title="The transformation laws">
+
+A coordinate change $x^\mu \to x'^\mu$ induces a change of basis. The Jacobian of the transformation is $\partial x'^\mu/\partial x^\nu$; its inverse is $\partial x^\nu/\partial x'^\mu$. These two matrices are the entire story of index gymnastics.
+
+A contravariant (upper-index) component — one that belongs to the tangent space $T_p M$ — transforms with the Jacobian:
+
+$$V'{}^a = \frac{\partial x'{}^a}{\partial x^\mu}\, V^\mu$$
+
+A covariant (lower-index) component — one that belongs to the cotangent space $T_p^* M$ — transforms with the inverse Jacobian:
+
+$$\omega'_a = \frac{\partial x^\mu}{\partial x'{}^a}\, \omega_\mu$$
+
+These are not two separate facts. They are the same fact stated for each type of slot. The reason for the split is that the two transformations are inverses of each other — and their product (a scalar contraction) is invariant:
+
+<EquationBlock id="EQ.02">
+$$V'{}^\mu \omega'_\mu = V^\mu \omega_\mu$$
+</EquationBlock>
+
+If you rotate your coordinate frame, the vector components transform one way and the covector components transform the other way, and their contraction is unchanged. This is the precise meaning of "coordinate-independent."
+
+<SceneCard caption="FIG.30b — a fixed orange vector V in the plane, with two coordinate frames: white (Cartesian S) and purple (rotated S'). The HUD reports the components in both frames. Drag the slider to rotate S'. The vector arrow does not move — only its description changes. The Jacobian is the rotation matrix; its inverse (the transpose) governs the covector components.">
+  <IndexTransformationScene />
+</SceneCard>
+
+The general rule for a type-(p, q) tensor is: apply one Jacobian factor for each upper index and one inverse-Jacobian factor for each lower index. A (0, 2) tensor transforms as
+
+$$T'_{ab} = \frac{\partial x^\mu}{\partial x'{}^a}\,\frac{\partial x^\nu}{\partial x'{}^b}\, T_{\mu\nu}$$
+
+Two inverse-Jacobian factors, one for each lower slot. The <Term slug="metric-tensor" /> $g_{\mu\nu}$ is exactly this kind of object — and its transformation law is what ensures that the inner product $g_{\mu\nu} u^\mu v^\nu$ is a coordinate-independent number even though $u^\mu$, $v^\nu$, and $g_{\mu\nu}$ each transform individually.
+
+</Section>
+
+<Section index={4} title="Index gymnastics">
+
+The <Term slug="metric-tensor" /> $g_{\mu\nu}$ does triple duty: it assigns lengths to tangent vectors, angles between them, and it provides the canonical isomorphism between the tangent space and the cotangent space. The latter operation is index-lowering:
+
+$$V_\mu = g_{\mu\nu}\, V^\nu$$
+
+Feed the metric a contravariant vector $V^\nu$ in one slot and leave the other slot open — the result is a covector $V_\mu$ with the same "physical content" but in the dual space. The inverse metric $g^{\mu\nu}$ (defined by $g^{\mu\lambda} g_{\lambda\nu} = \delta^\mu_\nu$) raises indices:
+
+$$V^\mu = g^{\mu\nu}\, V_\nu$$
+
+These two operations together constitute **index gymnastics** — the bookkeeping that keeps track of which space each object lives in. The squared length of a vector is
+
+<EquationBlock id="EQ.03">
+$$V^\mu V_\mu = g_{\mu\nu}\, V^\mu V^\nu$$
+</EquationBlock>
+
+In flat Minkowski spacetime with $g_{\mu\nu} = \eta_{\mu\nu} = \mathrm{diag}(1,-1,-1,-1)$, lowering an index just flips the signs of the spatial components — the physical content is trivially related to its dual. In a curved geometry the metric components vary from point to point, and the lowered components can look very different from the raised ones.
+
+<SceneCard caption="FIG.30c — V^μ (cyan bars, left) and V_μ = g_{μν} V^ν (amber bars, right) for a fixed vector in 3D. Toggle the metric between flat (η-like) and curved (spherical g = diag(1, r², r²sin²θ)). In the flat case the covariant components differ only by signs. In the curved case the angular components are scaled by r² and r²sin²θ — position-dependent stretching imposed by the geometry of the space.">
+  <RaisingLoweringScene />
+</SceneCard>
+
+The scene makes the point bluntly: in a curved space, raising and lowering is not trivial. The metric encodes the geometry — the departure of the space from flat — and the difference between $V^\mu$ and $V_\mu$ is a direct readout of that geometry. In the spherical metric at radius $r$ and polar angle $\theta$, the $\varphi$-component of the lowered vector is $g_{\varphi\varphi} V^\varphi = r^2 \sin^2\!\theta \cdot V^\varphi$, stretched by the circumference factors. This is not a choice of notation. It is what the space is.
+
+</Section>
+
+<Section index={5} title="Why this matters">
+
+<Callout variant="intuition">
+A tensor equation valid in one coordinate system is valid in every coordinate system. The components transform, but the equation is preserved. Physics laws written as tensor equations are automatically generally covariant.
+</Callout>
+
+The transformation laws are not an inconvenience to be managed. They are the entire point. Consider Newton's second law $F^i = ma^i$. Written in Cartesian coordinates it holds; transformed naively to polar coordinates it fails — extra terms appear that look like forces but are just coordinate artifacts. The solution, which <PhysicistLink slug="tullio-levi-civita" /> and Gregorio Ricci-Curbastro systematised in their 1900 *Méthodes de calcul différentiel absolu*, is to write all physical laws as equations between tensors. If $T^{\mu\nu} = 0$ in one coordinate system, then by the tensor transformation law, $T'^{\mu\nu} = (\partial x'^\mu/\partial x^\alpha)(\partial x'^\nu/\partial x^\beta) T^{\alpha\beta} = 0$ in every coordinate system. The vanishing of a tensor is coordinate-independent.
+
+Albert Einstein learned this machinery from Marcel Grossmann in 1912, when he was searching for a relativistic theory of gravity that would be valid in any coordinate system — not just inertial frames. The tensor calculus of Ricci and Levi-Civita was the answer. The Einstein field equations
+
+$$G_{\mu\nu} = 8\pi G\, T_{\mu\nu}$$
+
+are a tensor equation: $G_{\mu\nu}$ on the left (the Einstein tensor, a (0,2) object built from the curvature of spacetime) equals $T_{\mu\nu}$ on the right (the stress-energy tensor, a (0,2) object built from the distribution of matter and energy). Both sides transform identically under any coordinate change. The equation is therefore valid on a mountaintop, in free-fall, in polar coordinates, in Kruskal coordinates deep inside a black hole — in any chart on the manifold.
+
+The index calculus built in this section is the language that makes that possible. Every downstream result — the geodesic equation, the Riemann tensor, the covariant derivative, the Einstein equations, the Schwarzschild solution — is written in this language. The indices are not bookkeeping clutter. They are the grammar of a coordinate-independent physics.
+
+</Section>
+
+</TopicPageLayout>
