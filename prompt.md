@@ -1,43 +1,51 @@
-Start RT Session 4 — ship §07 Curved Spacetime + Tensor Calculus + §08 Riemann Curvature + Einstein's Field Equations (10 topics, FIG.29–38). RELATIVITY branch is half-shipped (Sessions 1–3 closed SR fully — 28/61 = 46%; FIG.01–28 live). This is the fourth of six RT sessions; **Session 4 is the densest math of the entire branch — tensor calculus from manifolds → Christoffels → Riemann → Einstein's equations across 10 topics**. After this session, GR's mathematical machinery is fully built; Sessions 5+6 cash it out (Schwarzschild, black holes, GW, cosmology, frontiers). The pair this session — §07 (the math machinery without which §08 is unreadable) and §08 (the Riemann tensor → Einstein tensor → field equations → Newtonian limit chain) — is the GR-foundations module + the emotional apex `G_{μν} = (8πG/c⁴) T_{μν}`.
+Start RT Session 5 — ship §09 Schwarzschild + Classical Tests of GR + §10 Black Holes (11 topics, FIG.39–49). RELATIVITY branch is at 38/61 (62%) — Sessions 1–4 closed SR + GR foundations + tensor calculus + Einstein's field equations. This is the densest visualization session of the branch: Schwarzschild metric, Mercury perihelion (§09 money shot — rosette precession overlaid on Le Verrier 1859 data), light deflection, Shapiro delay, event horizon, Kerr ergosphere (§10 money shot — frame-dragging streamlines + Penrose energy extraction), Penrose diagrams, no-hair theorem, BH thermodynamics, Hawking radiation. After this session, GR is fully cashed out; Sessions 6 cleans up (GW, cosmology, frontiers).
 
-Spec: docs/superpowers/specs/2026-04-29-relativity-branch-design.md — READ §07 + §08 + Voice + Calculus policy + Integration checklist + Risk notes + Slug-collision watch first. Especially the calculus-policy section on tensor index notation escape rules and the Risk Notes call-out that **§07 is the densest math the site has shipped — test one representative covariant-derivative equation through the publish CLI before authoring all 5 §07 topics**.
-Spec progress is 28/61 (46%) entering this session; update to 38/61 (62%) at session end.
+Spec: docs/superpowers/specs/2026-04-29-relativity-branch-design.md — READ §09 + §10 + Voice + Calculus policy + Integration checklist + Risk Notes + Slug-collision watch.
 
-Workflow: write Session 4 plan via /superpowers:writing-plans mirroring RT-Session-3 (5-wave structure: Wave 0 promote-to-live + types decision; Wave 1 seed-rt-04.ts with Riemann + Levi-Civita + ~14 glossary terms; **Wave 1.5 BUILD the ManifoldCanvas shared primitive — 5 §07 topics + likely 3+ §08 topics will amortize it; Session 3 log explicitly recommended this**; Wave 2 dispatch 10 parallel per-topic agents; Wave 2.5 orchestrator publish+commit FIG.29→38; Wave 3 seed + smoke + spec + MemPalace log). Then execute via /superpowers:subagent-driven-development token-saving variant, no per-task review. Pre-emit a scene-name lint at Wave 2 dispatch time per Session 3 log's `TwoRocketsScene` collision lesson.
+## ⚠ READ BEFORE BUILDING ANY SCENE — non-negotiable
 
-Topics:
-§07: manifolds-and-tangent-spaces, tensors-on-curved-space, the-metric-tensor, christoffels-and-parallel-transport (§07 money shot — spherical-triangle holonomy reveal), geodesics.
-§08: the-riemann-tensor, ricci-and-the-einstein-tensor, the-stress-energy-tensor, einsteins-field-equations (§08 money shot — split-screen `G_{μν} = (8πG/c⁴) T_{μν}` with mass-density slider — emotional apex of the GR half), the-newtonian-limit.
+The Canvas-2D scene design language was finalized 2026-05-10. Every new scene MUST follow it from the start; no more "we'll fix the chrome later" — the relativity branch already paid that cost (~88 scenes migrated in one session). Before writing a single scene file, read:
 
-New physicists: Bernhard Riemann (1826–1866) for §07.1 + §08.1; Tullio Levi-Civita (1873–1941) for §07.4 (parallel transport / connection). ~2 new entries; Élie Cartan optional (defer if §07 prose carries him as plain text). Hilbert + Klein already exist (used in §08.4 for the November-1915 publication-priority footnote).
+- `components/physics/_shared/README.md` — rules + skeleton + anti-patterns list
+- `components/physics/_shared/scene-tokens.ts` — `useSceneTokens`, `useSceneSize`, `useSceneTick`, `applyDpr`, `SCENE_CANVAS_CLASS`, `hexToRgba`, `drawArrow`, `drawSectionTitle`, `drawHudReadout`, `drawDivider`
+- `components/physics/maxwell-and-the-speed-of-light/foucault-rotating-mirror-scene.tsx` — gold-standard animated RT scene
+- `components/physics/einsteins-field-equations/efe-split-screen-scene.tsx` — gold-standard responsive split-panel
+- `components/physics/dielectric-capacitor-scene.tsx` — gold-standard EM scene with slider + toggle
+- MemPalace drawer `physics/decisions` → "CANONICAL CANVAS-2D SCENE PATTERN" — same content, indexed for search
 
-New glossary terms (~14): manifold, tangent-space, metric-tensor, christoffel-symbols, parallel-transport, holonomy, geodesic-equation, riemann-tensor, ricci-tensor, ricci-scalar, einstein-tensor, stress-energy-tensor, einstein-field-equations, newtonian-limit. Decide at seed-write time whether `bianchi-identity` is its own term or absorbed into `einstein-tensor`'s description (default: absorbed).
+The six rules: (1) tokens not hex literals, (2) don't double the SceneCard frame — canvas is `className={SCENE_CANVAS_CLASS}` only, (3) responsive width via `useSceneSize`, never `width={720}`, (4) DPR via `applyDpr`, (5) controls use CSS-var theme accents `style={{ accentColor: 'var(--color-cyan)' }}`, never `accent-cyan-400`, (6) use `useSceneTick` for ref-based animation. Module-level color constants like `const BG = "#0A0C12"` are forbidden — they freeze at parse time and ignore theme flips. Light theme test every scene before claiming it's done.
 
-Critical voice: §07 is the longest math sit-down of the branch — patient, careful, every tensor-index symbol explained in plain words on first introduction (per spec calculus policy). §07.5 geodesics is the geometric reveal that ties §06.4's "free-fall is the natural state" to §07's machinery. §08 is the dynamics emerging from the geometry — §08.4 einsteins-field-equations is the **emotional apex of the entire GR half**; same role §11.4 played in EM. Don't undersell. The closing of §08.5 the-newtonian-limit must show explicitly how `G_{μν} = (8πG/c⁴) T_{μν}` reduces to `∇²Φ = 4πGρ` (Poisson's equation) in the weak-field static-source limit, and then forward-link to §09.1 the-schwarzschild-metric as plain Markdown. The bridge from "the equations" to "the first exact solution."
+## Workflow
 
-Money shots:
-— §07.4 christoffels-and-parallel-transport: vector parallel-transported along three sides of a spherical triangle (equator → 90°-meridian → equator), arriving rotated by an angle equal to the enclosed area. The holonomy reveal: curvature shows up as a rotation that flat spaces can't produce.
-— §08.4 einsteins-field-equations: split-screen with matter distribution (mass sphere) on one side, Ricci-scalar curvature on the other, `G_{μν} = (8πG/c⁴) T_{μν}` between them. Slider on T (mass density); curvature responds in real time. The single most quoted equation in 20th-century physics, finally readable.
+Same as Session 4: write Session 5 plan via /superpowers:writing-plans (5-wave). Wave 0: promote-to-live + check for any new shared primitives needed (likely a `SchwarzschildEmbeddingCanvas` for §09.1 + §09.2 + §10.1 — funnel surface visualization; assess at plan time). Wave 1: seed-rt-05.ts with new physicists (Schwarzschild, Kerr, Penrose, Hawking, Bekenstein) + ~15 glossary terms (schwarzschild-radius, event-horizon, ergosphere, penrose-diagram, kerr-metric, no-hair-theorem, surface-gravity, hawking-radiation, bekenstein-bound, isco, ringdown, photon-sphere, frame-dragging, shapiro-delay, gravitational-deflection). Wave 2: dispatch 11 parallel per-topic agents — each agent gets the canonical-pattern reference paragraph at the top of its prompt, no exceptions. Wave 2.5: orchestrator publish+commit FIG.39→49. Wave 3: seed + smoke + spec + MemPalace log.
 
-Honest moment: §07.5 geodesics — "What we called 'falling' is just following the straightest possible line in curved spacetime. The apple isn't pulled by a force; it's running along a geodesic. Newton's gravity wasn't wrong — it was the Newtonian limit of a deeper geometric statement, which §08.5 will recover explicitly."
+Then execute via /superpowers:subagent-driven-development token-saving variant, no per-task review.
 
-Slug-collision watch:
-— `gravitational-redshift` (RT Session 3 topic) is NOT a glossary slug yet. If a Wave 2 agent in §08 wants `<Term slug="gravitational-redshift">`, EITHER use plain Markdown link to /relativity/gravitational-redshift OR add the glossary entry as part of seed-rt-04 (small alias entry, safe).
-— `manifold` could clash with future ML/AI usage — keep relativity-specific in the glossary entry.
-— `riemann-tensor` vs `riemann-curvature-tensor` — settle on `riemann-tensor` for the glossary slug, `the-riemann-tensor` for the topic slug. Same kind-namespaced precedent as Sessions 1–3.
-— `einstein-tensor` glossary slug + `einsteins-field-equations` topic slug — different roots, no collision.
-— `einstein-field-equations` glossary slug vs `einsteins-field-equations` topic slug — different (one possessive, one not). Keep this distinction; cross-reference in glossary entry.
+## Topics (per spec)
 
-CRITICAL gotchas (carried forward from Sessions 1+3 — still active):
-— `paragraphsToBlocks` MUST be flat string[] — copy verbatim from seed-rt-03.ts.
-— HTML entities (`&gt;`, `&lt;`, `&amp;`) DON'T decode inside `$...$` math — use literal characters.
-— `<Term>` and `<PhysicistLink>` MUST be inline in a paragraph, NEVER block-level.
-— `\begin{pmatrix}`, `\begin{aligned}`, `\Lambda^\mu{}_\nu`, `\nabla_\mu T^{\mu\nu}` confirmed clean across Sessions 1–3 — use freely. **TEST a covariant-derivative equation `\\nabla_\\mu V^\\nu = \\partial_\\mu V^\\nu + \\Gamma^\\nu{}_{\\mu\\rho} V^\\rho` through `pnpm content:publish` BEFORE authoring §07's 5 topics** per spec Risk Notes — if it parses empty, fall back to `\begin{aligned}` per-line form for the rest of the session.
-— Multi-line tensor-equation environments (Bianchi identities, Einstein-tensor derivation) may need single-line `$$...$$` per equation OR `\begin{aligned}` row form. Don't fight micromark; one EquationBlock per identity.
-— Pre-emit a scene-name lint at Wave 2 dispatch — Session 3 hit `TwoRocketsScene` colliding with §02 velocity-addition; ManifoldCanvas-using scenes will tempt names like `SphereManifoldScene` that could clash. Cheap to prevent.
-— Pre-existing dirty files (`components/layout/mobile-nav.tsx`, sometimes prompt.md) — DO NOT touch unless task-relevant.
-— Branch is main; commit directly per `feedback_execution_style.md`. Token-saving variant of subagent-driven-development.
+§09: the-schwarzschild-metric, mercury-perihelion (money shot), gravitational-deflection-of-light, shapiro-delay, photon-sphere-and-isco.
+§10: event-horizons, kerr-and-the-ergosphere (money shot), penrose-diagrams, no-hair-theorem, bh-thermodynamics, hawking-radiation.
 
-End-of-session deliverables: 10 topics live at FIG.29–38; Riemann + Levi-Civita in PHYSICISTS; ~14 glossary entries; ManifoldCanvas shared primitive shipped to `components/physics/_shared/`; spec 38/61 (62%); MemPalace log to `wing=physics, room=decisions, file=implementation_log_rt_session_4_tensor_calculus_efe.md`.
+## Slug-collision watch
+- `event-horizon` (§10.1) is a glossary term AND a topic root — different but adjacent. Use `event-horizons` (plural) for the topic slug, `event-horizon` for the glossary. Same precedent as RT §05.
+- `kerr-metric` glossary vs `kerr-and-the-ergosphere` topic — different roots, no collision.
+- `hawking-radiation` glossary vs `hawking-radiation` topic — give the topic an article: `hawking-radiation-and-bh-evaporation`.
+- `schwarzschild-radius` (glossary) is fine alongside `the-schwarzschild-metric` (topic).
 
-Next session after this: §09 Schwarzschild + Classical Tests + §10 Black Holes (11 topics, FIG.39–49). Densest visualization session of the branch — Schwarzschild metric, Mercury's perihelion (§09 money shot — rosette precession), light deflection, Shapiro delay, event horizon, Kerr ergosphere (§10 money shot — frame-dragging streamlines), Penrose diagrams, Hawking radiation. ManifoldCanvas built in Session 4 will pay off here.
+## Critical voice
+
+§09.2 mercury-perihelion is the **first quantitative confirmation of GR** — Le Verrier observed the 43"/century anomaly in 1859, Einstein derived it from the Schwarzschild geodesic in November 1915 (literally the same week as the field equations, before the paper went to press). That timing is the lede. §10.7 hawking-radiation must NOT oversell — semiclassical, not quantum-gravity; the temperature formula is the deliverable. Honest moment: §10 is the place GR's predictions get exotic, but every prediction here has been observationally confirmed (event horizon imaged 2019, gravitational waves 2015, Shapiro delay 1964, Mercury 1859→1915).
+
+## Critical gotchas (carried forward)
+
+- `paragraphsToBlocks` MUST be flat string[]. HTML entities don't decode inside `$...$`. `<Term>`/`<PhysicistLink>` MUST be inline, never block. Pre-emit a scene-name lint at Wave 2 dispatch — `EventHorizonScene`, `KerrScene`, `PenroseDiagramScene` could clash with future astro topics; namespace per-topic.
+- Pre-existing dirty files (`components/layout/mobile-nav.tsx`, sometimes prompt.md, sometimes ascii-spiral.avif) — DO NOT touch unless task-relevant.
+- Branch is main; commit directly. Token-saving variant of subagent-driven-development.
+
+## End-of-session deliverables
+
+11 topics live at FIG.39–49; Schwarzschild + Kerr + Penrose + Hawking + Bekenstein in PHYSICISTS; ~15 new glossary entries; any shared primitives shipped to `components/physics/_shared/`; spec 49/61 (80%); MemPalace log to `wing=physics, room=decisions, file=implementation_log_rt_session_5_schwarzschild_black_holes.md`.
+
+## Next session after this
+
+§11 Gravitational Waves + §12 Cosmology + §13 Frontiers (12 topics, FIG.50–61). Closes the relativity branch. After that, RT is shipped at 61/61 (100%) and the next branch to plan is Quantum Mechanics or Statistical Mechanics.

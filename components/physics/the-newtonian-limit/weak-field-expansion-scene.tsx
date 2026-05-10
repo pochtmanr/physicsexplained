@@ -4,34 +4,43 @@ import { useEffect, useRef, useState } from "react";
 import {
   h00FromPotential,
   weakFieldG00,
-  newtonianPotential,
 } from "@/lib/physics/relativity/newtonian-limit";
-import { G_SI, SPEED_OF_LIGHT } from "@/lib/physics/constants";
+import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  FONT_HUD,
+  FONT_HUD_SMALL,
+  drawHudReadout,
+  drawSectionTitle,
+  drawDivider,
+  hexToRgba,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * WEAK-FIELD EXPANSION SCENE — §08 THE NEWTONIAN LIMIT
  *
- * Slider: ε = Φ/c² (dimensionless strain). At ε = 0 the metric is flat η.
+ * Slider: ε = h_{00}/2 (dimensionless strain). At ε = 0 the metric is flat η.
  * At small ε the perturbation h_{00} = −2ε is tiny. At ε → 1 the linear
  * approximation formally breaks and the metric becomes degenerate.
  *
  * The canvas shows:
- *   - A 4×4 metric matrix with g_{00} highlighted in amber (the perturbed
- *     component) and the spatial diagonal in cyan (unchanged at this order).
- *   - A "physical scale" gauge mapping ε to familiar objects.
- *   - Numeric readout of h_{00} and g_{00}.
+ *   - g_{00} vs ε plot: exact value (CYAN dot) + linear approximation (CYAN line)
+ *   - 4×4 metric matrix with g_{00} highlighted in AMBER
+ *   - HUD readout via drawHudReadout: "g_{00} = {value}" (CYAN)
+ *   - drawSectionTitle "WEAK-FIELD METRIC"
  */
-
-const W = 540;
-const H = 340;
-const BG = "#0f172a";
 
 // Reference potentials Φ/c² for physical anchors
 const ANCHORS = [
   { label: "Earth surface", eps: 6.25e7 / (SPEED_OF_LIGHT * SPEED_OF_LIGHT) },
   { label: "Solar surface", eps: 1.905e11 / (SPEED_OF_LIGHT * SPEED_OF_LIGHT) },
   { label: "Neutron star", eps: 0.15 },
-  { label: "Black hole horizon (formal)", eps: 0.5 },
+  { label: "BH horizon", eps: 0.5 },
 ];
 
 function drawMatrix(
@@ -41,20 +50,26 @@ function drawMatrix(
   cy: number,
   cellSize: number,
   eps: number,
+  tokens: SceneTokens,
 ) {
   const labels = ["0", "1", "2", "3"];
   const off = cellSize * 2.6;
+  const intensity = Math.min(1, eps / 0.5);
 
   // Row and column index labels
-  ctx.fillStyle = "rgba(148,163,184,0.6)";
-  ctx.font = "11px monospace";
+  ctx.fillStyle = tokens.textFaint;
+  ctx.font = FONT_HUD_SMALL;
+  ctx.textBaseline = "middle";
   for (let i = 0; i < 4; i++) {
-    ctx.fillText(labels[i], cx + i * cellSize - off + cellSize / 2 - 4, cy - off - 8);
-    ctx.fillText(labels[i], cx - off - 18, cy + i * cellSize - off + cellSize / 2 + 4);
+    ctx.textAlign = "center";
+    ctx.fillText(labels[i], cx + i * cellSize - off + cellSize / 2 - 4, cy - off - 10);
+    ctx.textAlign = "right";
+    ctx.fillText(labels[i], cx - off - 8, cy + i * cellSize - off + cellSize / 2);
   }
+  ctx.textBaseline = "alphabetic";
 
   // Matrix bracket lines
-  ctx.strokeStyle = "rgba(148,163,184,0.4)";
+  ctx.strokeStyle = hexToRgba(tokens.amber, 0.25);
   ctx.lineWidth = 1.5;
   const x0 = cx - off;
   const y0 = cy - off;
@@ -84,48 +99,264 @@ function drawMatrix(
       let cellColor: string;
 
       if (mu === 0 && nu === 0) {
-        // g_{00} = 1 - 2ε — highlighted
         value = g00.toFixed(6);
-        const intensity = Math.min(1, eps / 0.5);
-        cellColor = `rgba(251,146,60,${0.08 + intensity * 0.25})`;
-        ctx.strokeStyle = `rgba(251,146,60,${0.3 + intensity * 0.5})`;
+        cellColor = hexToRgba(tokens.amber, 0.08 + intensity * 0.22);
+        ctx.strokeStyle = hexToRgba(tokens.amber, 0.3 + intensity * 0.45);
       } else if (mu === nu) {
-        // spatial diagonal: −1
         value = "−1";
-        cellColor = "rgba(103,232,249,0.05)";
-        ctx.strokeStyle = "rgba(103,232,249,0.2)";
+        cellColor = hexToRgba(tokens.cyan, 0.05);
+        ctx.strokeStyle = hexToRgba(tokens.cyan, 0.18);
       } else {
-        // off-diagonal: 0
         value = "0";
-        cellColor = "rgba(255,255,255,0.02)";
-        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        cellColor = hexToRgba(tokens.textBright, 0.02);
+        ctx.strokeStyle = tokens.grid;
       }
 
-      // Cell background
       ctx.fillStyle = cellColor;
       ctx.fillRect(px, py, cellSize - 2, cellSize - 2);
       ctx.lineWidth = 0.8;
       ctx.strokeRect(px, py, cellSize - 2, cellSize - 2);
 
-      // Cell text
       ctx.fillStyle =
         mu === 0 && nu === 0
-          ? "#fb923c"
+          ? tokens.amber
           : mu === nu
-          ? "#67e8f9"
-          : "rgba(148,163,184,0.4)";
-      ctx.font = mu === 0 && nu === 0 ? "bold 10px monospace" : "10px monospace";
+          ? tokens.cyan
+          : tokens.textFaint;
+      ctx.font = mu === 0 && nu === 0 ? `bold ${FONT_HUD_SMALL}` : FONT_HUD_SMALL;
       ctx.textAlign = "center";
-      ctx.fillText(value, px + (cellSize - 2) / 2, py + (cellSize - 2) / 2 + 4);
+      ctx.textBaseline = "middle";
+      ctx.fillText(value, px + (cellSize - 2) / 2, py + (cellSize - 2) / 2);
+      ctx.textBaseline = "alphabetic";
     }
   }
   ctx.textAlign = "left";
 }
 
+function draw(
+  ctx: CanvasRenderingContext2D,
+  eps: number,
+  g00: number,
+  h00: number,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
+) {
+  ctx.fillStyle = tokens.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── Section title ──────────────────────────────────────────────────────
+  drawSectionTitle(ctx, 16, 14, "WEAK-FIELD METRIC", tokens.textMute);
+
+  // ── Main label ─────────────────────────────────────────────────────────
+  ctx.font = FONT_HUD;
+  ctx.fillStyle = tokens.textDim;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillText("g\u{5F}\u{7B}\u{03BC}\u{03BD}\u{7D} = \u{03B7}\u{5F}\u{7B}\u{03BC}\u{03BD}\u{7D} + h\u{5F}\u{7B}\u{03BC}\u{03BD}\u{7D}", 16, 32);
+  ctx.textBaseline = "alphabetic";
+
+  // ── 4×4 matrix (left side) ─────────────────────────────────────────────
+  const CELL = Math.min(52, Math.max(36, (W * 0.35) / 4 - 8));
+  const matrixCX = Math.max(120, W * 0.21);
+  const matrixCY = H * 0.51;
+  drawMatrix(ctx, g00, matrixCX, matrixCY, CELL, eps, tokens);
+
+  // ── Plot: g_{00} vs ε (right side) ─────────────────────────────────────
+  const plotX = Math.max(280, W * 0.44);
+  const plotY = 48;
+  const plotW = W - plotX - 24;
+  const plotH = H - plotY - 80;
+
+  // Plot border
+  ctx.strokeStyle = tokens.grid;
+  ctx.lineWidth = 1;
+  ctx.strokeRect(plotX, plotY, plotW, plotH);
+
+  // Axis labels
+  ctx.fillStyle = tokens.textMute;
+  ctx.font = FONT_HUD_SMALL;
+  ctx.textAlign = "center";
+  ctx.fillText("ε = h\u{5F}{00}/2", plotX + plotW / 2, plotY + plotH + 18);
+  ctx.save();
+  ctx.translate(plotX - 18, plotY + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText("g\u{5F}{00}", 0, 0);
+  ctx.restore();
+
+  // Grid lines
+  const epsMax = 0.5;
+  const g00Min = 1 - 2 * epsMax - 0.05;
+  const g00Max = 1.05;
+
+  function epsToPlotX(e: number): number {
+    return plotX + (e / epsMax) * plotW;
+  }
+  function g00ToPlotY(g: number): number {
+    return plotY + plotH - ((g - g00Min) / (g00Max - g00Min)) * plotH;
+  }
+
+  // Tick lines (x)
+  [0, 0.1, 0.2, 0.3, 0.4, 0.5].forEach((e) => {
+    const tx = epsToPlotX(e);
+    ctx.strokeStyle = tokens.grid;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(tx, plotY);
+    ctx.lineTo(tx, plotY + plotH);
+    ctx.stroke();
+    ctx.fillStyle = tokens.textFaint;
+    ctx.font = FONT_HUD_SMALL;
+    ctx.textAlign = "center";
+    ctx.fillText(e.toFixed(1), tx, plotY + plotH + 10);
+  });
+
+  // Tick lines (y): g_{00} = 1, 0.5, 0
+  [1.0, 0.5, 0.0].forEach((g) => {
+    const ty = g00ToPlotY(g);
+    if (ty < plotY || ty > plotY + plotH) return;
+    ctx.strokeStyle = tokens.grid;
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    ctx.moveTo(plotX, ty);
+    ctx.lineTo(plotX + plotW, ty);
+    ctx.stroke();
+    ctx.fillStyle = tokens.textFaint;
+    ctx.font = FONT_HUD_SMALL;
+    ctx.textAlign = "right";
+    ctx.fillText(g.toFixed(1), plotX - 4, ty + 4);
+  });
+
+  // g_{00} = 1 reference line (flat spacetime)
+  const refY = g00ToPlotY(1.0);
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.15);
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 4]);
+  ctx.beginPath();
+  ctx.moveTo(plotX, refY);
+  ctx.lineTo(plotX + plotW, refY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = tokens.textFaint;
+  ctx.font = FONT_HUD_SMALL;
+  ctx.textAlign = "left";
+  ctx.fillText("flat η", plotX + 4, refY - 3);
+
+  // Linear approximation line: g_{00} ≈ 1 - 2ε  (CYAN)
+  ctx.strokeStyle = hexToRgba(tokens.cyan, 0.45);
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([6, 3]);
+  ctx.beginPath();
+  ctx.moveTo(epsToPlotX(0), g00ToPlotY(1.0));
+  ctx.lineTo(epsToPlotX(epsMax), g00ToPlotY(1 - 2 * epsMax));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Linear approx label
+  ctx.fillStyle = hexToRgba(tokens.cyan, 0.55);
+  ctx.font = FONT_HUD_SMALL;
+  ctx.textAlign = "left";
+  ctx.fillText("1 − 2ε (linear)", epsToPlotX(0.12), g00ToPlotY(1 - 2 * 0.12) - 10);
+
+  // Physical anchors on the plot baseline
+  ANCHORS.forEach(({ label, eps: ae }) => {
+    const ax = epsToPlotX(Math.min(ae / epsMax, 1) * epsMax);
+    if (ax < plotX || ax > plotX + plotW) return;
+    ctx.strokeStyle = hexToRgba(tokens.green, 0.5);
+    ctx.lineWidth = 0.8;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath();
+    ctx.moveTo(ax, plotY);
+    ctx.lineTo(ax, plotY + plotH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // tick at bottom
+    ctx.fillStyle = tokens.green;
+    ctx.font = "9px ui-monospace, monospace";
+    ctx.textAlign = "center";
+    const shortLabel = label.replace(" surface", "").replace(" star", "★");
+    ctx.fillText(shortLabel, ax, plotY + plotH + 28);
+  });
+
+  // Breakdown region (ε > ~0.4) subtle fill
+  if (epsMax >= 0.4) {
+    const breakX = epsToPlotX(0.4);
+    ctx.fillStyle = hexToRgba(tokens.red, 0.07);
+    ctx.fillRect(breakX, plotY, plotX + plotW - breakX, plotH);
+    ctx.fillStyle = hexToRgba(tokens.red, 0.5);
+    ctx.font = FONT_HUD_SMALL;
+    ctx.textAlign = "center";
+    ctx.fillText("breakdown", breakX + (plotX + plotW - breakX) / 2, plotY + 12);
+  }
+
+  // Exact g_{00} value: cyan dot at current ε
+  const dotX = epsToPlotX(eps);
+  const dotY = g00ToPlotY(g00);
+  const dotInPlot = dotX >= plotX && dotX <= plotX + plotW && dotY >= plotY && dotY <= plotY + plotH;
+
+  if (dotInPlot) {
+    // Glow
+    const glow = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 10);
+    glow.addColorStop(0, hexToRgba(tokens.cyan, 0.45));
+    glow.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 10, 0, Math.PI * 2);
+    ctx.fill();
+    // Dot
+    ctx.fillStyle = tokens.cyan;
+    ctx.beginPath();
+    ctx.arc(dotX, dotY, 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // ── Divider between plot and HUD ───────────────────────────────────────
+  drawDivider(ctx, 16, plotX - 10, H - 68, tokens.grid);
+
+  // ── HUD readouts ────────────────────────────────────────────────────────
+  const hudX = 16;
+  let hudY = H - 60;
+
+  const g00Str = Math.abs(g00 - 1) < 1e-3 ? g00.toFixed(9) : g00.toFixed(6);
+  const h00Str = Math.abs(h00) < 1e-3 ? h00.toExponential(3) : h00.toFixed(6);
+  const epsStr = eps < 1e-3 ? eps.toExponential(2) : eps.toFixed(4);
+
+  const hudStep = Math.max(140, (W - 60) / 3);
+  hudY = drawHudReadout(ctx, hudX, hudY, "g\u{5F}{00} = ", g00Str, tokens.textDim, tokens.cyan, 16);
+  drawHudReadout(ctx, hudX + hudStep, H - 60, "h\u{5F}{00} = −2ε = ", h00Str, tokens.textDim, tokens.amber, 16);
+  drawHudReadout(ctx, hudX + hudStep * 2, H - 60, "ε = ", epsStr, tokens.textDim, tokens.green, 16);
+
+  // Regime note
+  ctx.font = FONT_HUD_SMALL;
+  let regimeStr: string;
+  let regimeColor: string;
+  if (eps < 1e-5) {
+    regimeStr = "weak field — GPS / satellite corrections";
+    regimeColor = tokens.textDim;
+  } else if (eps < 0.01) {
+    regimeStr = "stellar fields — linear approx. good";
+    regimeColor = tokens.textDim;
+  } else if (eps < 0.3) {
+    regimeStr = "neutron star / strong field — higher-order terms matter";
+    regimeColor = tokens.amber;
+  } else {
+    regimeStr = "near horizon — linearisation BREAKS DOWN";
+    regimeColor = tokens.red;
+  }
+  ctx.fillStyle = regimeColor;
+  ctx.textAlign = "left";
+  ctx.fillText(regimeStr, 16, H - 14);
+}
+
 export function WeakFieldExpansionScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  // ε = |Φ|/c²  (slider covers 0 to 0.5 in log-ish fashion)
-  const [eps, setEps] = useState(1e-9); // start near Earth surface
+  const [eps, setEps] = useState(1e-9);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
 
   const Phi = -eps * SPEED_OF_LIGHT * SPEED_OF_LIGHT;
   const h00 = h00FromPotential(Phi);
@@ -134,142 +365,37 @@ export function WeakFieldExpansionScene() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
+    draw(ctx, eps, g00, h00, tokens, width, height);
+  }, [eps, g00, h00, tokens, width, height]);
 
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = BG;
-    ctx.fillRect(0, 0, W, H);
-
-    // Title
-    ctx.fillStyle = "rgba(148,163,184,0.85)";
-    ctx.font = "bold 12px monospace";
-    ctx.fillText("METRIC IN THE WEAK-FIELD LIMIT", 16, 22);
-
-    // Matrix label
-    ctx.fillStyle = "rgba(148,163,184,0.55)";
-    ctx.font = "11px monospace";
-    ctx.fillText("g_{μν} = η_{μν} + h_{μν}", 16, 42);
-
-    // Draw the 4×4 matrix
-    const CELL = 56;
-    drawMatrix(ctx, g00, 220, 190, CELL, eps);
-
-    // ─── Right panel: readout + scale gauge ───────────────────────────────────
-    const rx = 340;
-
-    ctx.fillStyle = "rgba(251,146,60,0.9)";
-    ctx.font = "bold 11px monospace";
-    ctx.fillText("h_{00} = −2Φ/c²", rx, 80);
-
-    ctx.fillStyle = "rgba(251,146,60,0.75)";
-    ctx.font = "12px monospace";
-    const h00Str = Math.abs(h00) < 1e-3 ? h00.toExponential(3) : h00.toFixed(6);
-    ctx.fillText(`= ${h00Str}`, rx, 100);
-
-    ctx.fillStyle = "rgba(103,232,249,0.9)";
-    ctx.font = "bold 11px monospace";
-    ctx.fillText("g_{00} = 1 + h_{00}", rx, 126);
-
-    ctx.fillStyle = "rgba(103,232,249,0.75)";
-    ctx.font = "12px monospace";
-    ctx.fillText(`= ${g00.toFixed(9)}`, rx, 146);
-
-    // ε label
-    ctx.fillStyle = "rgba(163,230,53,0.9)";
-    ctx.font = "bold 11px monospace";
-    const epsStr = eps < 1e-3 ? eps.toExponential(2) : eps.toFixed(4);
-    ctx.fillText(`ε = |Φ|/c² = ${epsStr}`, rx, 175);
-
-    // Regime label
-    ctx.fillStyle = "rgba(148,163,184,0.5)";
-    ctx.font = "10px monospace";
-    if (eps < 1e-5) {
-      ctx.fillText("Regime: Weak field — GPS correction", rx, 195);
-      ctx.fillText("Linear approx. excellent", rx, 209);
-    } else if (eps < 0.01) {
-      ctx.fillText("Regime: Solar/stellar fields", rx, 195);
-      ctx.fillText("Linear approx. good", rx, 209);
-    } else if (eps < 0.3) {
-      ctx.fillText("Regime: Neutron star / strong field", rx, 195);
-      ctx.fillText("Higher-order terms matter", rx, 209);
-    } else {
-      ctx.fillStyle = "rgba(239,68,68,0.75)";
-      ctx.fillText("Regime: Near horizon — linear", rx, 195);
-      ctx.fillText("approx. BREAKS DOWN", rx, 209);
-    }
-
-    // Warning stripe at ε ≥ 0.4
-    if (eps >= 0.4) {
-      ctx.save();
-      ctx.globalAlpha = 0.15;
-      ctx.fillStyle = "#ef4444";
-      ctx.fillRect(0, 0, W, H);
-      ctx.restore();
-      ctx.fillStyle = "rgba(239,68,68,0.8)";
-      ctx.font = "bold 11px monospace";
-      ctx.textAlign = "center";
-      ctx.fillText("⚠  h_{μν} ≫ 1  — linearisation invalid", W / 2, H - 16);
-      ctx.textAlign = "left";
-    }
-
-    // Physical anchor dots on a tiny scale bar at the bottom-left
-    const barX = 16;
-    const barY = H - 30;
-    const barW = 180;
-    ctx.fillStyle = "rgba(148,163,184,0.3)";
-    ctx.fillRect(barX, barY, barW, 3);
-    ANCHORS.forEach(({ label, eps: ae }) => {
-      const xPos = barX + Math.min(ae / 0.5, 1) * barW;
-      ctx.fillStyle = "#a3e635";
-      ctx.fillRect(xPos - 1, barY - 4, 2, 11);
-      ctx.fillStyle = "rgba(163,230,53,0.7)";
-      ctx.font = "9px monospace";
-      // stagger labels
-      const yOff = label.startsWith("E") ? -8 : label.startsWith("S") ? 16 : label.startsWith("N") ? -8 : 16;
-      ctx.fillText(label, xPos + 2, barY + yOff);
-    });
-
-    // Current position marker on bar
-    const markerX = barX + Math.min(eps / 0.5, 1) * barW;
-    ctx.fillStyle = "#fb923c";
-    ctx.beginPath();
-    ctx.arc(markerX, barY + 1.5, 5, 0, Math.PI * 2);
-    ctx.fill();
-
-  }, [eps, g00, h00]);
+  const epsStr = eps < 1e-3 ? eps.toExponential(2) : eps.toFixed(3);
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div ref={containerRef} className="relative w-full pb-4">
       <canvas
         ref={canvasRef}
-        width={W}
-        height={H}
-        className="max-w-full rounded-lg border border-white/10"
-        style={{ background: BG }}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+        aria-label="Weak-field metric expansion: g_{00} vs ε = h_{00}/2. Shows the 4×4 metric tensor with g_{00} perturbed in AMBER, the linear approximation 1−2ε in CYAN, and the exact value as a CYAN dot. Physical anchors mark Earth surface, solar surface, neutron star, and black-hole horizon."
       />
-      <div className="flex w-full max-w-[540px] flex-col gap-2 font-mono text-xs text-white/70">
-        <div className="flex items-center gap-3">
-          <label htmlFor="eps-slider" className="w-28 shrink-0 text-right">
-            ε = |Φ|/c²
-          </label>
-          <input
-            id="eps-slider"
-            type="range"
-            min={0}
-            max={0.5}
-            step={0.001}
-            value={eps}
-            onChange={(e) => setEps(parseFloat(e.target.value))}
-            className="flex-1"
-          />
-          <span className="w-20 text-right">
-            {eps < 1e-3 ? eps.toExponential(2) : eps.toFixed(3)}
-          </span>
-        </div>
-        <p className="text-white/40">
-          At ε = 0: flat spacetime, g = η. At small ε: h_{"{00}"} = −2ε, g_{"{00}"} ≈ 1 − 2ε. At ε → ½: the linear approximation breaks.
-        </p>
+      <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)]">
+        <label htmlFor="eps-slider" className="w-28 shrink-0 text-right">
+          ε = |Φ|/c²
+        </label>
+        <input
+          id="eps-slider"
+          type="range"
+          min={0}
+          max={0.5}
+          step={0.001}
+          value={eps}
+          onChange={(e) => setEps(parseFloat(e.target.value))}
+          className="flex-1"
+          style={{ accentColor: "var(--color-amber)" }}
+        />
+        <span className="w-20 text-right">{epsStr}</span>
       </div>
     </div>
   );

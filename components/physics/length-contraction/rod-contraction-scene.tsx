@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { gamma } from "@/lib/physics/relativity/types";
 import { contractedLength } from "@/lib/physics/relativity/length-contraction";
 
@@ -30,7 +35,8 @@ const MAX_HEIGHT = 360;
 export function RodContractionScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const colors = tokens.colors;
 
   const [beta, setBeta] = useState(0.6);
   const betaRef = useRef(beta);
@@ -38,38 +44,23 @@ export function RodContractionScene() {
     betaRef.current = beta;
   }, [beta]);
 
-  const [size, setSize] = useState({ width: 720, height: 400 });
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width: sizeWidth, height: sizeHeight } = useSceneSize(containerRef, {
+    ratio: RATIO,
+    maxHeight: MAX_HEIGHT,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const width = sizeWidth;
+      const height = sizeHeight;
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
-
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const b = betaRef.current;
       const g = gamma(b);
@@ -316,10 +307,10 @@ export function RodContractionScene() {
     <div ref={containerRef} className="w-full pb-3">
       <canvas
         ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block bg-[#0A0C12]"
+        style={{ width: sizeWidth, height: sizeHeight, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <div className="mt-3 flex items-center gap-3 px-2 font-mono text-xs text-white/70">
+      <div className="mt-3 flex items-center gap-3 px-2 font-mono text-xs text-[var(--color-fg-2)]">
         <label htmlFor="beta-rod" className="shrink-0">
           β = {beta.toFixed(3)}
         </label>
@@ -331,7 +322,8 @@ export function RodContractionScene() {
           step={0.001}
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
-          className="w-full accent-[#FF6ADE]"
+          className="w-full"
+          style={{ accentColor: "var(--color-magenta)" }}
         />
       </div>
     </div>

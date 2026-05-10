@@ -1,11 +1,18 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import {
   compareAtVariousV,
   type PostulateComparisonSample,
 } from "@/lib/physics/relativity/postulates";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.04a — the two postulates as two graphs.
@@ -25,8 +32,6 @@ import {
  * relativity is the geometry forced by taking the cyan line at face value.
  */
 
-const RATIO = 0.55;
-const MAX_HEIGHT = 360;
 const N_SAMPLES = 161;
 
 function buildSamples(): PostulateComparisonSample[] {
@@ -42,38 +47,22 @@ const SAMPLES = buildSamples();
 
 export function PostulateComparisonScene() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [size, setSize] = useState<{ w: number; h: number }>({ w: 700, h: 360 });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
   const [beta, setBeta] = useState(0.6);
-  const colors = useThemeColors();
-
-  // Keep canvas responsive to its container width.
-  useEffect(() => {
-    const el = canvasRef.current?.parentElement;
-    if (!el) return;
-    const ro = new ResizeObserver(() => {
-      const w = Math.max(320, Math.min(900, el.clientWidth));
-      const h = Math.min(MAX_HEIGHT, Math.round(w * RATIO));
-      setSize({ w, h });
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
 
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = size.w * dpr;
-    canvas.height = size.h * dpr;
-    canvas.style.width = `${size.w}px`;
-    canvas.style.height = `${size.h}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    const W = size.w;
-    const H = size.h;
+    const W = width;
+    const H = height;
     const PAD_L = 56;
     const PAD_R = 24;
     const PAD_T = 24;
@@ -88,11 +77,12 @@ export function PostulateComparisonScene() {
     const Y_MAX = 1.6;
     const yOf = (y: number) => PAD_T + plotH - ((y - Y_MIN) / (Y_MAX - Y_MIN)) * plotH;
 
-    ctx.fillStyle = "rgba(10, 12, 18, 0.6)";
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = tokens.bg;
     ctx.fillRect(0, 0, W, H);
 
     // axes + gridlines
-    ctx.strokeStyle = colors.fg3 || "#2a2f3a";
+    ctx.strokeStyle = tokens.panelBorder;
     ctx.lineWidth = 1;
     ctx.beginPath();
     // x-axis at y = 0
@@ -104,7 +94,7 @@ export function PostulateComparisonScene() {
     ctx.stroke();
 
     // horizontal gridlines at y = 1 (the value of c) and y = -1
-    ctx.strokeStyle = "rgba(255,255,255,0.06)";
+    ctx.strokeStyle = tokens.grid;
     ctx.beginPath();
     for (const y of [-1, 1]) {
       ctx.moveTo(PAD_L, yOf(y));
@@ -113,8 +103,8 @@ export function PostulateComparisonScene() {
     ctx.stroke();
 
     // axis labels
-    ctx.fillStyle = colors.fg2 || "#9aa3b2";
-    ctx.font = "11px ui-monospace, SFMono-Regular, monospace";
+    ctx.fillStyle = tokens.textMute;
+    ctx.font = tokens.fontHudSmall;
     ctx.fillText("β = v/c", PAD_L + plotW - 50, yOf(0) + 18);
     ctx.fillText("measured speed (units of c)", PAD_L - 8, PAD_T - 8);
     ctx.fillText("0", xOf(0) - 8, yOf(0) + 14);
@@ -124,7 +114,7 @@ export function PostulateComparisonScene() {
     ctx.fillText("β=1", xOf(1) - 12, PAD_T + plotH + 16);
 
     // Galilean dashed line
-    ctx.strokeStyle = "#f4a23e";
+    ctx.strokeStyle = tokens.amber;
     ctx.lineWidth = 1.6;
     ctx.setLineDash([6, 4]);
     ctx.beginPath();
@@ -138,7 +128,7 @@ export function PostulateComparisonScene() {
     ctx.setLineDash([]);
 
     // Einstein solid line
-    ctx.strokeStyle = colors.cyan || "#4cc7ff";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2.2;
     ctx.beginPath();
     SAMPLES.forEach((s, i) => {
@@ -152,7 +142,7 @@ export function PostulateComparisonScene() {
 
     // Slider read-out: vertical line at β
     const xb = xOf(beta);
-    ctx.strokeStyle = "rgba(255,255,255,0.28)";
+    ctx.strokeStyle = hexToRgba(tokens.textBright, 0.28);
     ctx.lineWidth = 1;
     ctx.setLineDash([2, 4]);
     ctx.beginPath();
@@ -164,11 +154,11 @@ export function PostulateComparisonScene() {
     // Markers at the two predictions
     const galilean = 1 - beta;
     const einstein = 1;
-    ctx.fillStyle = "#f4a23e";
+    ctx.fillStyle = tokens.amber;
     ctx.beginPath();
     ctx.arc(xb, yOf(galilean), 4, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = colors.cyan || "#4cc7ff";
+    ctx.fillStyle = tokens.cyan;
     ctx.beginPath();
     ctx.arc(xb, yOf(einstein), 4, 0, Math.PI * 2);
     ctx.fill();
@@ -176,23 +166,27 @@ export function PostulateComparisonScene() {
     // Legend
     const legX = PAD_L + 12;
     const legY = PAD_T + 16;
-    ctx.fillStyle = "#f4a23e";
+    ctx.fillStyle = tokens.amber;
     ctx.fillRect(legX, legY - 6, 18, 2);
-    ctx.fillStyle = colors.fg2 || "#9aa3b2";
+    ctx.fillStyle = tokens.textMute;
     ctx.fillText("Galilean: c − v", legX + 24, legY);
-    ctx.fillStyle = colors.cyan || "#4cc7ff";
+    ctx.fillStyle = tokens.cyan;
     ctx.fillRect(legX, legY + 10, 18, 3);
-    ctx.fillStyle = colors.fg2 || "#9aa3b2";
+    ctx.fillStyle = tokens.textMute;
     ctx.fillText("Einstein: c (postulate 2)", legX + 24, legY + 16);
-  }, [size, beta, colors]);
+  }, [width, height, beta, tokens]);
 
   return (
-    <div className="w-full max-w-[900px] mx-auto p-3 bg-[#0A0C12] rounded-md">
-      <canvas ref={canvasRef} />
+    <div ref={containerRef} className="w-full max-w-[900px] mx-auto p-3">
+      <canvas
+        ref={canvasRef}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3 flex items-center gap-3">
         <label
           htmlFor="postulate-beta"
-          className="font-mono text-xs text-white/70"
+          className="font-mono text-xs text-[var(--color-fg-2)]"
         >
           β = {beta.toFixed(2)}
         </label>
@@ -205,13 +199,16 @@ export function PostulateComparisonScene() {
           value={beta}
           onChange={(e) => setBeta(Number(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
       </div>
       <div className="mt-2 grid grid-cols-2 gap-3 font-mono text-xs">
-        <div className="text-amber-400/90">
+        <div style={{ color: "var(--color-amber)" }}>
           Galilean predicts: {(1 - beta).toFixed(3)} c
         </div>
-        <div className="text-cyan-300/90">Einstein predicts: 1.000 c</div>
+        <div style={{ color: "var(--color-cyan)" }}>
+          Einstein predicts: 1.000 c
+        </div>
       </div>
     </div>
   );

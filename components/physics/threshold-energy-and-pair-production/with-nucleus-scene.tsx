@@ -5,25 +5,29 @@
  *
  * γ + nucleus → e⁺ + e⁻ + (recoiling nucleus)
  *
- * A photon comes from the left and strikes a stationary nucleus.
- * Below the 1.022 MeV threshold: the nucleus recoils but no pair appears.
- * Above threshold: e⁺ and e⁻ tracks emerge, slightly asymmetric because
- * the nucleus takes some recoil.
- *
- * The user can slide photon energy to explore the threshold.
- *
  * Palette: amber = photon; cyan = e⁻; magenta = e⁺; blue = nucleus.
  */
 
 import { useEffect, useRef, useState } from "react";
-
-const WIDTH = 720;
-const HEIGHT = 380;
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 const THRESHOLD_MEV = 1.022;
 
 export function WithNucleusScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
+
   const frameRef = useRef<number>(0);
   const tRef = useRef<number>(0);
   const [energyMeV, setEnergyMeV] = useState(1.2);
@@ -36,22 +40,18 @@ export function WithNucleusScene() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = WIDTH * dpr;
-    canvas.height = HEIGHT * dpr;
-    canvas.style.width = `${WIDTH}px`;
-    canvas.style.height = `${HEIGHT}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
+    const WIDTH = width;
+    const HEIGHT = height;
     const CY = HEIGHT / 2;
     const NUCLEUS_X = WIDTH / 2;
     const NUCLEUS_R = 18;
 
     function drawPhoton(x: number, y: number) {
       ctx!.save();
-      ctx!.strokeStyle = "#FBBF24";
+      ctx!.strokeStyle = tokens.amber;
       ctx!.lineWidth = 2.5;
       ctx!.beginPath();
       for (let i = 0; i < 80; i++) {
@@ -61,7 +61,7 @@ export function WithNucleusScene() {
         else ctx!.lineTo(px, py);
       }
       ctx!.stroke();
-      ctx!.fillStyle = "#FBBF24";
+      ctx!.fillStyle = tokens.amber;
       ctx!.beginPath();
       ctx!.arc(x, y, 6, 0, Math.PI * 2);
       ctx!.fill();
@@ -69,18 +69,17 @@ export function WithNucleusScene() {
     }
 
     function drawNucleus(x: number, y: number, label: string) {
-      // gradient fill for nucleus
       const grad = ctx!.createRadialGradient(x, y, 2, x, y, NUCLEUS_R);
-      grad.addColorStop(0, "#60A5FA");
-      grad.addColorStop(1, "#1D4ED8");
+      grad.addColorStop(0, tokens.blue);
+      grad.addColorStop(1, tokens.purple);
       ctx!.fillStyle = grad;
       ctx!.beginPath();
       ctx!.arc(x, y, NUCLEUS_R, 0, Math.PI * 2);
       ctx!.fill();
-      ctx!.strokeStyle = "rgba(255,255,255,0.3)";
+      ctx!.strokeStyle = tokens.panelBorder;
       ctx!.lineWidth = 1;
       ctx!.stroke();
-      ctx!.fillStyle = "white";
+      ctx!.fillStyle = tokens.textBright;
       ctx!.font = "bold 11px ui-monospace, monospace";
       ctx!.textAlign = "center";
       ctx!.textBaseline = "middle";
@@ -121,11 +120,10 @@ export function WithNucleusScene() {
 
     function draw() {
       ctx!.clearRect(0, 0, WIDTH, HEIGHT);
-      ctx!.fillStyle = "#0A0C12";
+      ctx!.fillStyle = tokens.bg;
       ctx!.fillRect(0, 0, WIDTH, HEIGHT);
 
-      // Grid
-      ctx!.strokeStyle = "rgba(255,255,255,0.03)";
+      ctx!.strokeStyle = tokens.grid;
       ctx!.lineWidth = 1;
       for (let x = 0; x < WIDTH; x += 60) {
         ctx!.beginPath();
@@ -139,17 +137,13 @@ export function WithNucleusScene() {
       const t = tRef.current % PERIOD;
       const progress = t / PERIOD;
 
-      // Phase: 0–0.4 = photon approach; 0.4–0.6 = collision; 0.6–1 = aftermath
       if (progress < 0.4) {
-        // Photon approaching
         const p = progress / 0.4;
         const photonX = 60 + p * (NUCLEUS_X - 60 - NUCLEUS_R - 20);
         drawPhoton(photonX, CY);
-        // Static nucleus
         drawNucleus(NUCLEUS_X, CY, "Z");
 
-        // Threshold indicator
-        const threshColor = aboveThreshold ? "#4ADE80" : "#EF4444";
+        const threshColor = aboveThreshold ? tokens.green : tokens.red;
         ctx!.fillStyle = threshColor;
         ctx!.font = "13px ui-monospace, monospace";
         ctx!.textAlign = "center";
@@ -159,56 +153,52 @@ export function WithNucleusScene() {
           40,
         );
       } else if (progress < 0.6) {
-        // Collision flash
         const flashP = (progress - 0.4) / 0.2;
         const flashAlpha = Math.sin(flashP * Math.PI);
         ctx!.save();
         ctx!.globalAlpha = flashAlpha * 0.6;
-        ctx!.fillStyle = "#FBBF24";
+        ctx!.fillStyle = tokens.amber;
         ctx!.beginPath();
         ctx!.arc(NUCLEUS_X, CY, 40 + flashAlpha * 20, 0, Math.PI * 2);
         ctx!.fill();
         ctx!.restore();
         drawNucleus(NUCLEUS_X, CY, "Z");
       } else {
-        // Aftermath
         const p = (progress - 0.6) / 0.4;
-        const nucRecoil = p * 60; // nucleus recoils right
+        const nucRecoil = p * 60;
         drawNucleus(NUCLEUS_X + nucRecoil, CY + 10, "Z'");
 
         if (aboveThreshold) {
-          // Pair emerging
           const spread = p * 160;
-          const tiltE = 20; // slight asymmetry for realism
+          const tiltE = 20;
           drawTrack(
             NUCLEUS_X,
             CY,
             NUCLEUS_X + spread,
             CY - spread * 0.6 + tiltE,
-            "#FF6ADE",
+            tokens.magenta,
           );
           drawTrack(
             NUCLEUS_X,
             CY,
             NUCLEUS_X - spread * 0.9,
             CY + spread * 0.55 + tiltE,
-            "#67E8F9",
+            tokens.cyan,
           );
           drawLepton(
             NUCLEUS_X + spread,
             CY - spread * 0.6 + tiltE,
             "e⁺",
-            "#FF6ADE",
+            tokens.magenta,
           );
           drawLepton(
             NUCLEUS_X - spread * 0.9,
             CY + spread * 0.55 + tiltE,
             "e⁻",
-            "#67E8F9",
+            tokens.cyan,
           );
         } else {
-          // No pair — show red X at vertex
-          ctx!.strokeStyle = "#EF4444";
+          ctx!.strokeStyle = tokens.red;
           ctx!.lineWidth = 5;
           ctx!.lineCap = "round";
           const r = 22;
@@ -220,15 +210,14 @@ export function WithNucleusScene() {
           ctx!.moveTo(NUCLEUS_X + r, CY - r);
           ctx!.lineTo(NUCLEUS_X - r, CY + r);
           ctx!.stroke();
-          ctx!.fillStyle = "#EF4444";
+          ctx!.fillStyle = tokens.red;
           ctx!.font = "13px ui-monospace, monospace";
           ctx!.textAlign = "center";
           ctx!.fillText("below threshold — no pair", NUCLEUS_X, CY + 55);
         }
       }
 
-      // HUD
-      ctx!.fillStyle = "rgba(255,255,255,0.5)";
+      ctx!.fillStyle = tokens.textMute;
       ctx!.font = "12px ui-monospace, monospace";
       ctx!.textAlign = "left";
       ctx!.fillText(
@@ -243,15 +232,16 @@ export function WithNucleusScene() {
 
     frameRef.current = requestAnimationFrame(draw);
     return () => cancelAnimationFrame(frameRef.current);
-  }, []);
+  }, [tokens, width, height]);
 
   return (
-    <div className="flex flex-col items-center gap-3 p-4">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <label className="flex w-full max-w-[640px] items-center gap-3 font-mono text-xs text-white/70">
+      <label className="mt-3 flex w-full items-center gap-3 font-mono text-xs text-[var(--color-fg-3)]">
         <span className="w-36">E_γ = {energyMeV.toFixed(3)} MeV</span>
         <input
           type="range"
@@ -261,11 +251,12 @@ export function WithNucleusScene() {
           value={energyMeV}
           onChange={(e) => setEnergyMeV(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-amber)" }}
         />
         <span
-          className={
-            energyMeV >= THRESHOLD_MEV ? "text-green-400" : "text-red-400"
-          }
+          style={{
+            color: energyMeV >= THRESHOLD_MEV ? "var(--color-mint)" : "var(--color-red)",
+          }}
         >
           {energyMeV >= THRESHOLD_MEV ? "above" : "below"} 1.022 MeV
         </span>

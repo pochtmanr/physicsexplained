@@ -2,66 +2,49 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  EARTH_RADIUS_M,
   GPS_ORBIT_RADIUS_M,
   gpsOrbitalSpeed,
   grCorrectionSecondsPerDay,
   netCorrectionMicrosecondsPerDay,
   srCorrectionSecondsPerDay,
 } from "@/lib/physics/relativity/gps-corrections";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
- * §05.3 GPS ORBIT — FIG.23, the §05 money shot.
- *
- * Top-down Canvas 2D view of Earth and a GPS satellite on a circular
- * orbit at 20,200 km altitude. Two clock readouts:
- *   • ground clock (sea level)
- *   • satellite clock (orbiting)
- * Below the orbit, a stacked bar:
- *   • SR contribution: red descending (slows by ~7 μs/day)
- *   • GR contribution: green ascending (speeds by ~46 μs/day)
- *   • net: amber band (+38 μs/day)
- *
- * The orbital position slider (or play/pause) is purely cosmetic — for a
- * circular orbit the corrections are constant. The visual is the
- * permanent fact: at every angle, the satellite clock gains 38 μs/day
- * relative to the ground.
- *
- * Scene-color conventions:
- *   • cyan/blue — ground reference frame (stationary)
- *   • amber — satellite trajectory (the "moving" frame, but colour-coded
- *     amber per the §03 light/photon/satellite convention)
- *   • red — SR slowing
- *   • green — GR speeding
+ * §05.3 GPS ORBIT — top-down view of Earth + GPS satellite. Bars show SR
+ * slowing (~−7 μs/day), GR speeding (~+46 μs/day), net (~+38 μs/day).
  */
 
-const BG = "#0A0C12";
-const TEXT_DIM = "rgba(255,255,255,0.65)";
-const TEXT_BRIGHT = "rgba(255,255,255,0.92)";
-const CYAN = "#67E8F9";
-const AMBER = "#FFB36B";
-const RED = "#F87171";
-const GREEN = "#4ADE80";
-const EARTH_BLUE = "#3B82F6";
-const EARTH_GREEN = "#22C55E";
-
-const ORBIT_PERIOD_MS = 16_000; // 16s per orbit on screen — purely cosmetic
+const ORBIT_PERIOD_MS = 16_000;
 
 const ORBITAL_SPEED_MS = gpsOrbitalSpeed();
-const SR_US_PER_DAY = srCorrectionSecondsPerDay(ORBITAL_SPEED_MS) * 1e6; // ≈ −7.21
-const GR_US_PER_DAY = grCorrectionSecondsPerDay(GPS_ORBIT_RADIUS_M) * 1e6; // ≈ +45.72
-const NET_US_PER_DAY = netCorrectionMicrosecondsPerDay(); // ≈ +38.51
+const SR_US_PER_DAY = srCorrectionSecondsPerDay(ORBITAL_SPEED_MS) * 1e6;
+const GR_US_PER_DAY = grCorrectionSecondsPerDay(GPS_ORBIT_RADIUS_M) * 1e6;
+const NET_US_PER_DAY = netCorrectionMicrosecondsPerDay();
 
-// Visual orbit ratio: GPS_ORBIT_RADIUS / EARTH_RADIUS ≈ 4.17. We squash it
-// slightly for the canvas (use ratio 3.0) so both Earth and orbit are visible
-// at readable sizes.
 const VISUAL_ORBIT_RATIO = 3.0;
 
 export function GpsOrbitScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
   const rafRef = useRef<number | null>(null);
   const [paused, setPaused] = useState(false);
-  const [angleDeg, setAngleDeg] = useState(0); // 0..360, controlled via slider when paused
+  const [angleDeg, setAngleDeg] = useState(0);
+
+  const { width: W, height: H } = useSceneSize(containerRef, {
+    ratio: 0.65,
+    maxHeight: SCENE_HEIGHT_TALL + 20,
+    minHeight: 380,
+  });
 
   const orbitalSpeedKmS = useMemo(() => ORBITAL_SPEED_MS / 1000, []);
   const beta = useMemo(() => ORBITAL_SPEED_MS / 2.99792458e8, []);
@@ -69,17 +52,11 @@ export function GpsOrbitScene() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
-    const W = canvas.clientWidth;
-    const H = canvas.clientHeight;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, W, H);
     if (!ctx) return;
-    ctx.scale(dpr, dpr);
 
     let startTs: number | null = null;
-    let lastAngleAtPauseDeg = angleDeg;
+    const lastAngleAtPauseDeg = angleDeg;
 
     const tick = (ts: number) => {
       if (startTs === null) startTs = ts;
@@ -88,43 +65,62 @@ export function GpsOrbitScene() {
         currentAngleDeg = angleDeg;
       } else {
         const elapsed = ts - startTs;
-        currentAngleDeg = (lastAngleAtPauseDeg + (elapsed / ORBIT_PERIOD_MS) * 360) % 360;
+        currentAngleDeg =
+          (lastAngleAtPauseDeg + (elapsed / ORBIT_PERIOD_MS) * 360) % 360;
       }
-      draw(ctx, W, H, currentAngleDeg);
+      draw(ctx, tokens, W, H, currentAngleDeg);
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  }, [paused, angleDeg]);
+  }, [paused, angleDeg, tokens, W, H]);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={containerRef} className="flex w-full flex-col gap-3 pb-4">
       <canvas
         ref={canvasRef}
-        style={{ width: "100%", height: 460, display: "block" }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width: W, height: H, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
         aria-label="A top-down view of Earth with a GPS satellite orbiting at 20,200 km altitude. Bars below show the SR clock-slowing (-7 microseconds per day) and GR clock-speeding (+46 microseconds per day) corrections, with a net of +38 microseconds per day."
       />
 
-      <div className="grid grid-cols-1 gap-3 font-mono text-[11px] text-white/70 sm:grid-cols-3">
-        <div className="rounded-md border border-red-300/20 bg-red-300/[0.04] p-3">
-          <div className="text-red-300/85">SR · kinematic dilation</div>
+      <div className="grid grid-cols-1 gap-3 font-mono text-[11px] text-[var(--color-fg-2)] sm:grid-cols-3">
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-red) 30%, transparent)",
+            background: "color-mix(in srgb, var(--color-red) 6%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-red)" }}>SR · kinematic dilation</div>
           <div className="mt-1 opacity-80">
             Δτ_SR ≈ {SR_US_PER_DAY.toFixed(2)} μs/day
           </div>
           <div className="opacity-60">moving clock runs slow</div>
         </div>
-        <div className="rounded-md border border-emerald-300/20 bg-emerald-300/[0.04] p-3">
-          <div className="text-emerald-300/85">GR · gravitational dilation</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-mint) 30%, transparent)",
+            background: "color-mix(in srgb, var(--color-mint) 6%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-mint)" }}>GR · gravitational dilation</div>
           <div className="mt-1 opacity-80">
             Δτ_GR ≈ +{GR_US_PER_DAY.toFixed(2)} μs/day
           </div>
           <div className="opacity-60">higher Φ → clock runs fast</div>
         </div>
-        <div className="rounded-md border border-amber-300/20 bg-amber-300/[0.04] p-3">
-          <div className="text-amber-300/85">NET · receiver correction</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-amber) 30%, transparent)",
+            background: "color-mix(in srgb, var(--color-amber) 6%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-amber)" }}>NET · receiver correction</div>
           <div className="mt-1 opacity-80">
             Δτ ≈ +{NET_US_PER_DAY.toFixed(2)} μs/day
           </div>
@@ -132,11 +128,11 @@ export function GpsOrbitScene() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-white/70">
+      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <button
           type="button"
           onClick={() => setPaused((p) => !p)}
-          className="rounded border border-white/20 bg-white/5 px-3 py-1 hover:bg-white/10"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:text-[var(--color-fg-1)]"
         >
           {paused ? "play" : "pause"}
         </button>
@@ -145,7 +141,7 @@ export function GpsOrbitScene() {
         </span>
       </div>
 
-      <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+      <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-32">orbit angle (cosmetic)</span>
         <input
           type="range"
@@ -158,6 +154,7 @@ export function GpsOrbitScene() {
             setAngleDeg(parseFloat(e.target.value));
           }}
           className="flex-1"
+          style={{ accentColor: "var(--color-amber)" }}
           disabled={!paused}
         />
         <span className="w-16 text-right">{Math.round(angleDeg)}°</span>
@@ -168,29 +165,25 @@ export function GpsOrbitScene() {
 
 function draw(
   ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
   W: number,
   H: number,
   angleDeg: number,
 ) {
-  // Background
-  ctx.fillStyle = BG;
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Orbit panel: top 2/3
   const orbitPanelH = H * 0.62;
   const orbitCx = W / 2;
   const orbitCy = orbitPanelH / 2 + 8;
 
-  // Choose Earth radius in pixels so the orbit fits with margin.
   const orbitRadiusPx = Math.min(W * 0.32, orbitPanelH * 0.42);
   const earthRadiusPx = orbitRadiusPx / VISUAL_ORBIT_RATIO;
 
-  // Background star field (subtle)
-  drawStars(ctx, W, orbitPanelH, orbitCx, orbitCy, orbitRadiusPx);
+  drawStars(ctx, tokens, W, orbitPanelH, orbitCx, orbitCy, orbitRadiusPx);
 
-  // Orbit ring
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.18)";
+  ctx.strokeStyle = tokens.panelBorder;
   ctx.setLineDash([3, 4]);
   ctx.lineWidth = 1;
   ctx.beginPath();
@@ -199,38 +192,35 @@ function draw(
   ctx.setLineDash([]);
   ctx.restore();
 
-  // Earth disk
-  drawEarth(ctx, orbitCx, orbitCy, earthRadiusPx);
+  drawEarth(ctx, tokens, orbitCx, orbitCy, earthRadiusPx);
 
-  // Ground observer marker (top of Earth disk)
+  // Ground observer marker
   const groundX = orbitCx;
   const groundY = orbitCy - earthRadiusPx;
   ctx.save();
-  ctx.fillStyle = CYAN;
+  ctx.fillStyle = tokens.cyan;
   ctx.beginPath();
   ctx.arc(groundX, groundY, 4, 0, Math.PI * 2);
   ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.7)";
+  ctx.strokeStyle = tokens.textBright;
   ctx.lineWidth = 1;
   ctx.stroke();
   ctx.restore();
 
-  // Ground-clock label
   ctx.save();
   ctx.font = "11px ui-monospace, monospace";
-  ctx.fillStyle = CYAN;
+  ctx.fillStyle = tokens.cyan;
   ctx.textAlign = "center";
   ctx.fillText("ground clock", groundX, groundY - 10);
   ctx.restore();
 
-  // Satellite position
-  const angleRad = (angleDeg * Math.PI) / 180 - Math.PI / 2; // start at top
+  // Satellite
+  const angleRad = (angleDeg * Math.PI) / 180 - Math.PI / 2;
   const satX = orbitCx + orbitRadiusPx * Math.cos(angleRad);
   const satY = orbitCy + orbitRadiusPx * Math.sin(angleRad);
 
-  // Faint trail behind the satellite (last 90°)
   ctx.save();
-  ctx.strokeStyle = "rgba(255,179,107,0.35)";
+  ctx.strokeStyle = hexToRgba(tokens.amber, 0.35);
   ctx.lineWidth = 2;
   ctx.beginPath();
   const trailStart = angleRad - Math.PI / 2;
@@ -238,13 +228,11 @@ function draw(
   ctx.stroke();
   ctx.restore();
 
-  // Satellite glyph
-  drawSatellite(ctx, satX, satY, angleRad);
+  drawSatellite(ctx, tokens, satX, satY, angleRad);
 
-  // Satellite-clock label
   ctx.save();
   ctx.font = "11px ui-monospace, monospace";
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.textAlign = "center";
   const labelOffset = 18;
   const lx = satX + Math.cos(angleRad) * labelOffset * 1.4;
@@ -252,9 +240,9 @@ function draw(
   ctx.fillText("satellite clock", lx, ly);
   ctx.restore();
 
-  // Altitude bracket annotation
+  // Altitude bracket
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.35)";
+  ctx.strokeStyle = tokens.textMute;
   ctx.lineWidth = 1;
   ctx.setLineDash([2, 3]);
   ctx.beginPath();
@@ -263,13 +251,9 @@ function draw(
   ctx.stroke();
   ctx.setLineDash([]);
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "left";
-  ctx.fillText(
-    "altitude  20 200 km",
-    orbitCx + earthRadiusPx + 8,
-    orbitCy - 6,
-  );
+  ctx.fillText("altitude  20 200 km", orbitCx + earthRadiusPx + 8, orbitCy - 6);
   ctx.fillText(
     `r = R⊕ + h ≈ 26 571 km`,
     orbitCx + earthRadiusPx + 8,
@@ -280,52 +264,60 @@ function draw(
   // Title
   ctx.save();
   ctx.font = "bold 14px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.textAlign = "center";
-  ctx.fillText("GPS satellite — two relativistic corrections, all day, every day", W / 2, 22);
+  ctx.fillText(
+    "GPS satellite — two relativistic corrections, all day, every day",
+    W / 2,
+    22,
+  );
   ctx.restore();
 
-  // Correction-bar panel: bottom 1/3
   const barPanelTop = orbitPanelH + 8;
-  drawCorrectionBars(ctx, W, barPanelTop, H - barPanelTop - 8);
+  drawCorrectionBars(ctx, tokens, W, barPanelTop, H - barPanelTop - 8);
 }
 
 function drawEarth(
   ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
   cx: number,
   cy: number,
   r: number,
 ) {
-  // Ocean disk gradient
   ctx.save();
-  const grad = ctx.createRadialGradient(cx - r * 0.3, cy - r * 0.3, r * 0.1, cx, cy, r);
-  grad.addColorStop(0, "#3F8AFB");
-  grad.addColorStop(0.7, EARTH_BLUE);
-  grad.addColorStop(1, "#1B3A7A");
+  // Theme-stable Earth ocean: blue family, but pick from token blue.
+  const baseBlue = tokens.blue;
+  const grad = ctx.createRadialGradient(
+    cx - r * 0.3,
+    cy - r * 0.3,
+    r * 0.1,
+    cx,
+    cy,
+    r,
+  );
+  grad.addColorStop(0, hexToRgba(baseBlue, 0.95));
+  grad.addColorStop(0.7, baseBlue);
+  grad.addColorStop(1, hexToRgba(baseBlue, 0.65));
   ctx.fillStyle = grad;
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, Math.PI * 2);
   ctx.fill();
 
-  // Continent blobs (decorative — not geographically accurate)
-  ctx.fillStyle = EARTH_GREEN;
+  // Continents using mint/green
+  ctx.fillStyle = tokens.mint;
   ctx.globalAlpha = 0.55;
-  // Africa-ish blob
   ctx.beginPath();
   ctx.ellipse(cx - r * 0.15, cy + r * 0.05, r * 0.22, r * 0.35, -0.3, 0, Math.PI * 2);
   ctx.fill();
-  // Eurasia-ish blob
   ctx.beginPath();
   ctx.ellipse(cx + r * 0.25, cy - r * 0.25, r * 0.32, r * 0.18, 0.3, 0, Math.PI * 2);
   ctx.fill();
-  // Americas-ish blob
   ctx.beginPath();
   ctx.ellipse(cx - r * 0.45, cy - r * 0.1, r * 0.18, r * 0.32, 0.4, 0, Math.PI * 2);
   ctx.fill();
   ctx.globalAlpha = 1;
 
-  // Limb
-  ctx.strokeStyle = "rgba(255,255,255,0.2)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.2);
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -335,6 +327,7 @@ function drawEarth(
 
 function drawSatellite(
   ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
   x: number,
   y: number,
   angleRad: number,
@@ -342,21 +335,18 @@ function drawSatellite(
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(angleRad);
-  // Body
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.fillRect(-5, -5, 10, 10);
-  // Solar panels
-  ctx.fillStyle = "#5BA8F5";
+  ctx.fillStyle = tokens.blue;
   ctx.fillRect(-16, -3, 10, 6);
   ctx.fillRect(6, -3, 10, 6);
-  ctx.strokeStyle = "rgba(255,255,255,0.35)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.35);
   ctx.lineWidth = 0.5;
   ctx.strokeRect(-16, -3, 10, 6);
   ctx.strokeRect(6, -3, 10, 6);
-  // Glow
-  ctx.shadowColor = AMBER;
+  ctx.shadowColor = tokens.amber;
   ctx.shadowBlur = 12;
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.beginPath();
   ctx.arc(0, 0, 3, 0, Math.PI * 2);
   ctx.fill();
@@ -365,6 +355,7 @@ function drawSatellite(
 
 function drawStars(
   ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
   W: number,
   panelH: number,
   cx: number,
@@ -372,8 +363,7 @@ function drawStars(
   rExclude: number,
 ) {
   ctx.save();
-  ctx.fillStyle = "rgba(255,255,255,0.55)";
-  // Deterministic pseudo-random so the pattern is stable across renders
+  ctx.fillStyle = tokens.textMute;
   let seed = 17;
   const rnd = () => {
     seed = (seed * 9301 + 49297) % 233280;
@@ -396,31 +386,26 @@ function drawStars(
 
 function drawCorrectionBars(
   ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
   W: number,
   top: number,
   height: number,
 ) {
-  // Layout: an SR bar (red, descending below zero), a GR bar (green,
-  // ascending above zero), and a net amber tick. We render a single
-  // horizontal axis with zero in the middle.
   const padX = 36;
   const axisY = top + height / 2;
   const axisLeft = padX;
   const axisRight = W - padX;
 
-  // Background
   ctx.save();
-  ctx.fillStyle = "rgba(255,255,255,0.04)";
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.04);
   ctx.fillRect(8, top + 2, W - 16, height - 4);
   ctx.restore();
 
-  // Pick scale: max amplitude = 50 μs/day for headroom
   const maxAbs = 50;
   const halfH = (height - 32) / 2;
 
-  // Axis line
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.strokeStyle = tokens.axes;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(axisLeft, axisY);
@@ -428,59 +413,52 @@ function drawCorrectionBars(
   ctx.stroke();
   ctx.restore();
 
-  // Bar geometry
   const barWidth = 64;
   const slot = (axisRight - axisLeft) / 4;
   const srX = axisLeft + slot * 1 - barWidth / 2;
   const grX = axisLeft + slot * 2 - barWidth / 2;
   const netX = axisLeft + slot * 3 - barWidth / 2;
 
-  // SR bar (descending, red)
   const srH = (Math.abs(SR_US_PER_DAY) / maxAbs) * halfH;
-  ctx.fillStyle = RED;
+  ctx.fillStyle = tokens.red;
   ctx.fillRect(srX, axisY, barWidth, srH);
-  // GR bar (ascending, green)
   const grH = (Math.abs(GR_US_PER_DAY) / maxAbs) * halfH;
-  ctx.fillStyle = GREEN;
+  ctx.fillStyle = tokens.mint;
   ctx.fillRect(grX, axisY - grH, barWidth, grH);
-  // Net bar (above zero, amber)
   const netH = (Math.abs(NET_US_PER_DAY) / maxAbs) * halfH;
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.fillRect(netX, axisY - netH, barWidth, netH);
 
-  // Labels above/below bars
   ctx.save();
   ctx.font = "11px ui-monospace, monospace";
   ctx.textAlign = "center";
 
-  ctx.fillStyle = RED;
+  ctx.fillStyle = tokens.red;
   ctx.fillText("SR", srX + barWidth / 2, axisY - 4);
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText(`${SR_US_PER_DAY.toFixed(1)} μs/day`, srX + barWidth / 2, axisY + srH + 14);
 
-  ctx.fillStyle = GREEN;
+  ctx.fillStyle = tokens.mint;
   ctx.fillText("GR", grX + barWidth / 2, axisY + 14);
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText(`+${GR_US_PER_DAY.toFixed(1)} μs/day`, grX + barWidth / 2, axisY - grH - 4);
 
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.fillText("NET", netX + barWidth / 2, axisY + 14);
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText(`+${NET_US_PER_DAY.toFixed(1)} μs/day`, netX + barWidth / 2, axisY - netH - 4);
   ctx.restore();
 
-  // 0 reference label
   ctx.save();
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "right";
   ctx.fillText("0", axisLeft - 4, axisY + 4);
   ctx.restore();
 
-  // Caption
   ctx.save();
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "center";
   ctx.fillText(
     "SR slows the satellite clock; GR speeds it up; GR wins by ~6×.",

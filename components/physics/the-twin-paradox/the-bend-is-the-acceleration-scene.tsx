@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * §03.5 THE BEND IS THE ACCELERATION — annotated zoom on the turnaround.
@@ -19,30 +27,29 @@ import { useEffect, useRef, useState } from "react";
  * the corner soften without changing the shorter-path conclusion.
  */
 
-const WIDTH = 560;
-const HEIGHT = 420;
 const PAD = 36;
 
 export function TheBendIsTheAccelerationScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width: WIDTH, height: HEIGHT } = useSceneSize(containerRef, {
+    ratio: 0.75,
+    maxHeight: SCENE_HEIGHT_TALL,
+  });
   // softening radius in (x, ct) units; 0 = sharp corner.
   const [softening, setSoftening] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, WIDTH, HEIGHT);
     if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = WIDTH * dpr;
-    canvas.height = HEIGHT * dpr;
-    canvas.style.width = `${WIDTH}px`;
-    canvas.style.height = `${HEIGHT}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-    // Plot region. We zoom on the turnaround at (x = 1.6, ct = 2).
-    // X axis from -0.5 to 2.5; ct from 0 to 4.
+    // Plot region.
     const xRange: [number, number] = [-0.5, 2.5];
     const tRange: [number, number] = [0, 4];
     const plotW = WIDTH - 2 * PAD;
@@ -53,7 +60,7 @@ export function TheBendIsTheAccelerationScene() {
       HEIGHT - PAD - ((t - tRange[0]) / (tRange[1] - tRange[0])) * plotH;
 
     // Grid
-    ctx.strokeStyle = "rgba(255,255,255,0.06)";
+    ctx.strokeStyle = tokens.grid;
     ctx.lineWidth = 1;
     for (let x = Math.ceil(xRange[0]); x <= Math.floor(xRange[1]); x++) {
       ctx.beginPath();
@@ -69,7 +76,7 @@ export function TheBendIsTheAccelerationScene() {
     }
 
     // Axes
-    ctx.strokeStyle = "rgba(255,255,255,0.45)";
+    ctx.strokeStyle = tokens.axes;
     ctx.lineWidth = 1.25;
     ctx.beginPath();
     ctx.moveTo(xToPx(0), tToPx(tRange[0]));
@@ -77,38 +84,34 @@ export function TheBendIsTheAccelerationScene() {
     ctx.moveTo(xToPx(xRange[0]), tToPx(0));
     ctx.lineTo(xToPx(xRange[1]), tToPx(0));
     ctx.stroke();
-    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "10px ui-monospace, monospace";
     ctx.fillText("x", xToPx(xRange[1]) - 12, tToPx(0) - 6);
     ctx.fillText("ct", xToPx(0) + 6, tToPx(tRange[1]) + 12);
 
     // Home twin (cyan) — vertical
-    ctx.strokeStyle = "#67E8F9";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.moveTo(xToPx(0), tToPx(0));
     ctx.lineTo(xToPx(0), tToPx(4));
     ctx.stroke();
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.font = "11px ui-monospace, monospace";
     ctx.fillText("home", xToPx(0) - 38, tToPx(3.5));
 
     // Traveler (orange): outbound (0,0) → turnaround (1.6, 2) → inbound (0, 4).
-    // If softening > 0, replace the sharp corner with a quadratic Bezier whose
-    // control point is the turnaround event itself.
     const turnaroundX = 1.6;
     const turnaroundT = 2;
     const r = Math.max(0, Math.min(0.9, softening));
-    // Choose endpoints of the soft corner along each leg, distance r from the
-    // turnaround in the (x, ct) plane.
     const legLen = Math.sqrt(turnaroundX * turnaroundX + turnaroundT * turnaroundT);
-    const fr = r / legLen; // fractional offset along each leg
+    const fr = r / legLen;
     const aX = turnaroundX * (1 - fr);
     const aT = turnaroundT * (1 - fr);
     const bX = turnaroundX * (1 - fr);
     const bT = turnaroundT * (1 + fr);
 
-    ctx.strokeStyle = "#FFB36B";
+    ctx.strokeStyle = tokens.orange;
     ctx.lineWidth = 2.75;
     ctx.beginPath();
     ctx.moveTo(xToPx(0), tToPx(0));
@@ -125,11 +128,11 @@ export function TheBendIsTheAccelerationScene() {
     }
     ctx.lineTo(xToPx(0), tToPx(4));
     ctx.stroke();
-    ctx.fillStyle = "#FFB36B";
+    ctx.fillStyle = tokens.orange;
     ctx.fillText("traveler", xToPx(turnaroundX) + 8, tToPx(turnaroundT));
 
     // Reunion + start dots
-    ctx.fillStyle = "#FFFFFF";
+    ctx.fillStyle = tokens.textBright;
     for (const ev of [
       { x: 0, t: 0, label: "departure" },
       { x: 0, t: 4, label: "reunion" },
@@ -137,16 +140,16 @@ export function TheBendIsTheAccelerationScene() {
       ctx.beginPath();
       ctx.arc(xToPx(ev.x), tToPx(ev.t), 4, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillStyle = tokens.textDim;
       ctx.font = "10px ui-monospace, monospace";
       ctx.fillText(ev.label, xToPx(ev.x) + 8, tToPx(ev.t) + 4);
-      ctx.fillStyle = "#FFFFFF";
+      ctx.fillStyle = tokens.textBright;
     }
 
     // Annotation arrow pointing at the kink
     const kinkPx = xToPx(turnaroundX);
     const kinkPy = tToPx(turnaroundT);
-    ctx.strokeStyle = "rgba(255, 214, 107, 0.9)";
+    ctx.strokeStyle = hexToRgba(tokens.amber, 0.9);
     ctx.lineWidth = 1.5;
     ctx.beginPath();
     const labelX = kinkPx + 90;
@@ -162,28 +165,32 @@ export function TheBendIsTheAccelerationScene() {
     ctx.lineTo(kinkPx + 22, kinkPy - 2);
     ctx.stroke();
 
-    ctx.fillStyle = "#FFD66B";
+    ctx.fillStyle = tokens.amber;
     ctx.font = "11px ui-monospace, monospace";
     ctx.fillText("THE BEND", labelX + 4, labelY - 4);
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.fillStyle = tokens.textDim;
     ctx.font = "10px ui-monospace, monospace";
     ctx.fillText("= acceleration", labelX + 4, labelY + 10);
     ctx.fillText("= the asymmetry", labelX + 4, labelY + 22);
 
     // HUD
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.fillStyle = tokens.textDim;
     ctx.font = "11px ui-monospace, monospace";
     ctx.fillText(
       `softening radius r = ${r.toFixed(2)}`,
       PAD,
       HEIGHT - 10,
     );
-  }, [softening]);
+  }, [softening, tokens, WIDTH, HEIGHT]);
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      <canvas ref={canvasRef} className="rounded-md border border-white/10 bg-black/40" />
-      <label className="flex w-full max-w-[560px] items-center gap-3 font-mono text-xs text-white/70">
+    <div ref={containerRef} className="flex w-full flex-col items-center gap-3">
+      <canvas
+        ref={canvasRef}
+        style={{ width: WIDTH, height: HEIGHT, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
+      <label className="flex w-full items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-32">corner radius r</span>
         <input
           type="range"
@@ -193,10 +200,11 @@ export function TheBendIsTheAccelerationScene() {
           value={softening}
           onChange={(e) => setSoftening(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-amber)" }}
         />
         <span className="w-16">{softening.toFixed(2)}</span>
       </label>
-      <p className="max-w-[560px] text-center font-mono text-[11px] text-white/50">
+      <p className="w-full text-center font-mono text-[11px] text-[var(--color-fg-3)]">
         The bend is the only frame-asymmetric event in the round trip. Soften
         the corner — the kink remains a kink. The geometry is what aged the
         traveler less, not a force.

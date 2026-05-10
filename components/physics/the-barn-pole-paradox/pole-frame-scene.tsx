@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
 import {
   contractedBarnLength,
@@ -50,6 +51,7 @@ function lorentzBoostX(
 }
 
 export function PoleFrameScene() {
+  const tokens = useSceneTokens();
   const [beta, setBeta] = useState(Math.sqrt(3) / 2); // ≈ 0.866 → γ = 2
   const g = gamma(beta);
 
@@ -89,22 +91,22 @@ export function PoleFrameScene() {
 
     const rearPole: Worldline = {
       events: rearPoleEvents,
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "pole rear",
     };
     const frontPole: Worldline = {
       events: frontPoleEvents,
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "pole front",
     };
     const rearDoor: Worldline = {
       events: rearDoorEvents,
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "rear door",
     };
     const frontDoor: Worldline = {
       events: frontDoorEvents,
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "front door",
     };
 
@@ -122,7 +124,7 @@ export function PoleFrameScene() {
           z: 0,
         },
       ],
-      color: "#FFD66B",
+      color: tokens.amber,
       label: "rear closed",
     };
     const frontEvent: Worldline = {
@@ -134,12 +136,12 @@ export function PoleFrameScene() {
           z: 0,
         },
       ],
-      color: "#FFD66B",
+      color: tokens.amber,
       label: "front closed",
     };
 
     return [rearDoor, frontDoor, rearPole, frontPole, rearEvent, frontEvent];
-  }, [beta]);
+  }, [beta, tokens]);
 
   const lag = doorEventLagInPoleFrame(L_BARN, beta, 1); // c = 1 in our units
   const barnContracted = contractedBarnLength(L_BARN, beta);
@@ -156,9 +158,15 @@ export function PoleFrameScene() {
         height={400}
       />
 
-      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-white/70">
-        <div className="rounded-md border border-pink-300/20 bg-pink-300/[0.04] p-3">
-          <div className="text-pink-300/85">POLE FRAME · pole at rest</div>
+      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-[var(--color-fg-2)]">
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-magenta) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-magenta) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-magenta)" }}>POLE FRAME · pole at rest</div>
           <div className="mt-1 opacity-80">
             L_pole = {L_POLE} m (proper length)
           </div>
@@ -166,8 +174,14 @@ export function PoleFrameScene() {
             barn contracts to {barnContracted.toFixed(3)} m
           </div>
         </div>
-        <div className="rounded-md border border-amber-300/20 bg-amber-300/[0.04] p-3">
-          <div className="text-amber-300/85">DOOR EVENTS · NOT simultaneous</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-amber) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-amber) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-amber)" }}>DOOR EVENTS · NOT simultaneous</div>
           <div className="mt-1 opacity-80">
             Δt' = {lag.toFixed(3)} (ct units)
           </div>
@@ -177,7 +191,7 @@ export function PoleFrameScene() {
         </div>
       </div>
 
-      <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+      <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-20">β = {beta.toFixed(3)}</span>
         <input
           type="range"
@@ -187,6 +201,7 @@ export function PoleFrameScene() {
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
         <span className="w-36">|Δt'|/L_barn = {(Math.abs(lag) / L_BARN).toFixed(3)}</span>
       </label>

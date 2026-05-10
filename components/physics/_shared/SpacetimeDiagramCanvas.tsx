@@ -2,6 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Worldline } from "@/lib/physics/relativity/types";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  useSceneSize,
+  useSceneTokens,
+} from "./scene-tokens";
 
 export interface SpacetimeDiagramProps {
   worldlines: readonly Worldline[];
@@ -14,7 +20,9 @@ export interface SpacetimeDiagramProps {
   onBoostChange?: (beta: number) => void;
   xRange?: [number, number];
   tRange?: [number, number];
+  /** When provided (legacy), pin canvas width; otherwise it tracks the container. */
   width?: number;
+  /** When provided (legacy), pin canvas height; otherwise derived from width × ratio. */
   height?: number;
   palette?: Partial<SpacetimePalette>;
 }
@@ -28,15 +36,6 @@ interface SpacetimePalette {
   axes: string;
 }
 
-const DEFAULT_PALETTE: SpacetimePalette = {
-  stationary: "#67E8F9",
-  boosted: "#FF6ADE",
-  lightCone: "#FFD66B",
-  accelerated: "#FFB36B",
-  grid: "rgba(255,255,255,0.08)",
-  axes: "rgba(255,255,255,0.6)",
-};
-
 export function SpacetimeDiagramCanvas({
   worldlines,
   lightCone = true,
@@ -48,37 +47,53 @@ export function SpacetimeDiagramCanvas({
   onBoostChange,
   xRange = [-2, 2],
   tRange = [0, 4],
-  width = 480,
-  height = 360,
+  width: widthProp,
+  height: heightProp,
   palette,
 }: SpacetimeDiagramProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const colors = { ...DEFAULT_PALETTE, ...palette };
+  const tokens = useSceneTokens();
   const [internalBeta, setInternalBeta] = useState(boostBeta ?? 0);
   const beta = onBoostChange !== undefined ? (boostBeta ?? 0) : internalBeta;
+
+  // Theme-aware palette defaults — caller may override via `palette`.
+  const defaultPalette: SpacetimePalette = {
+    stationary: tokens.cyan,
+    boosted: tokens.magenta,
+    lightCone: tokens.amber,
+    accelerated: tokens.orange,
+    grid: tokens.grid,
+    axes: tokens.axes,
+  };
+  const colors = { ...defaultPalette, ...palette };
+
+  // Responsive sizing — when `width`/`height` are passed, pin to those values
+  // for backwards compatibility; otherwise track the container.
+  const responsive = useSceneSize(containerRef, {
+    ratio: 0.7,
+    maxHeight: 460,
+    minHeight: 260,
+    initialWidth: widthProp ?? 520,
+  });
+  const W = widthProp ?? responsive.width;
+  const H = heightProp ?? responsive.height;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, W, H);
     if (!ctx) return;
-
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, W, H);
 
     // Map (x, ct) world coords to canvas pixel coords. Origin at lower-left + margin.
     const margin = 36;
-    const plotW = width - 2 * margin;
-    const plotH = height - 2 * margin;
+    const plotW = W - 2 * margin;
+    const plotH = H - 2 * margin;
     const [xMin, xMax] = xRange;
     const [tMin, tMax] = tRange;
     const xToPx = (x: number) => margin + ((x - xMin) / (xMax - xMin)) * plotW;
-    const tToPx = (t: number) => height - margin - ((t - tMin) / (tMax - tMin)) * plotH;
+    const tToPx = (t: number) => H - margin - ((t - tMin) / (tMax - tMin)) * plotH;
 
     // Grid
     ctx.strokeStyle = colors.grid;
@@ -125,10 +140,8 @@ export function SpacetimeDiagramCanvas({
       ctx.strokeStyle = colors.boosted;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      // ct' axis: x = β·ct, so points (β·t, t) for t ∈ tRange
       ctx.moveTo(xToPx(beta * tMin), tToPx(tMin));
       ctx.lineTo(xToPx(beta * tMax), tToPx(tMax));
-      // x' axis: ct = β·x
       ctx.moveTo(xToPx(xMin), tToPx(beta * xMin));
       ctx.lineTo(xToPx(xMax), tToPx(beta * xMax));
       ctx.stroke();
@@ -138,7 +151,6 @@ export function SpacetimeDiagramCanvas({
     if (simultaneitySlice) {
       const { tPrime, beta: sliceBeta } = simultaneitySlice;
       const g = 1 / Math.sqrt(1 - sliceBeta * sliceBeta);
-      // t = tPrime / γ + β · x
       const t1 = tPrime / g + sliceBeta * xMin;
       const t2 = tPrime / g + sliceBeta * xMax;
       ctx.strokeStyle = colors.boosted;
@@ -158,7 +170,6 @@ export function SpacetimeDiagramCanvas({
       ctx.beginPath();
       let first = true;
       for (const ev of wl.events) {
-        // Use ev.t directly as the ct coordinate (caller is expected to pass ct units).
         const px = xToPx(ev.x);
         const py = tToPx(ev.t);
         if (first) {
@@ -170,7 +181,6 @@ export function SpacetimeDiagramCanvas({
       }
       ctx.stroke();
 
-      // Label at last event
       if (wl.label && wl.events.length > 0) {
         const last = wl.events[wl.events.length - 1];
         ctx.fillStyle = wl.accelerated ? colors.accelerated : wl.color;
@@ -178,13 +188,32 @@ export function SpacetimeDiagramCanvas({
         ctx.fillText(wl.label, xToPx(last.x) + 6, tToPx(last.t));
       }
     }
-  }, [worldlines, lightCone, simultaneitySlice, beta, xRange, tRange, width, height, colors]);
+  }, [
+    worldlines,
+    lightCone,
+    simultaneitySlice,
+    beta,
+    xRange,
+    tRange,
+    W,
+    H,
+    colors.grid,
+    colors.axes,
+    colors.lightCone,
+    colors.boosted,
+    colors.accelerated,
+    colors.stationary,
+  ]);
 
   return (
-    <div className="flex flex-col gap-2">
-      <canvas ref={canvasRef} className="rounded-md border border-white/10 bg-black/40" />
+    <div ref={containerRef} className="flex w-full flex-col gap-2">
+      <canvas
+        ref={canvasRef}
+        style={{ width: W, height: H, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       {onBoostChange !== undefined ? (
-        <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+        <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
           <span>β = {beta.toFixed(2)}</span>
           <input
             type="range"
@@ -192,8 +221,13 @@ export function SpacetimeDiagramCanvas({
             max={boostMax}
             step={boostStep}
             value={beta}
-            onChange={(e) => onBoostChange(parseFloat(e.target.value))}
+            onChange={(e) => {
+              const v = parseFloat(e.target.value);
+              setInternalBeta(v);
+              onBoostChange(v);
+            }}
             className="flex-1"
+            style={{ accentColor: "var(--color-magenta)" }}
           />
         </label>
       ) : null}

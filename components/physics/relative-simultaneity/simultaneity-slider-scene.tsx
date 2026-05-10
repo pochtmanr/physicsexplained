@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { tPrimeDifference } from "@/lib/physics/relativity/simultaneity";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
 
@@ -21,37 +29,39 @@ import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
  *   "There is no privileged 'now' extending across space."
  */
 
-const W = 720;
-const H = 360;
 const L = 600; // meters between events along x
 const T_MAX_FRAMING = (1.05 * L) / SPEED_OF_LIGHT; // domain for the strip mapping
 
 export function SimultaneitySliderScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
   const [beta, setBeta] = useState(0);
+
+  const { width: W, height: H } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, W, H);
     if (!ctx) return;
-
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, W, H);
 
     // Common strip layout: time axis maps from -T_MAX to +T_MAX onto the strip.
-    const stripX0 = 130;
+    const stripX0 = Math.max(110, W * 0.18);
     const stripX1 = W - 50;
     const stripW = stripX1 - stripX0;
     const cxStrip = stripX0 + stripW / 2;
     const tToFraction = (t: number) =>
       Math.max(-1, Math.min(1, t / T_MAX_FRAMING));
     const tToPx = (t: number) => cxStrip + tToFraction(t) * (stripW / 2);
+
+    const rowYs = [H * 0.31, H * 0.5, H * 0.69];
 
     // Observer mappings. Events A at x = 0, B at x = +L, both at t = 0 (lab).
     type ObserverRow = {
@@ -65,31 +75,31 @@ export function SimultaneitySliderScene() {
       {
         label: "stationary",
         betaUsed: 0,
-        color: "#67E8F9",
-        y: 110,
+        color: tokens.cyan,
+        y: rowYs[0],
         conclusion: "A and B simultaneous",
       },
       {
         label: "toward A",
         betaUsed: -Math.abs(beta),
-        color: "#FF6ADE",
-        y: 180,
+        color: tokens.magenta,
+        y: rowYs[1],
         conclusion: "A first",
       },
       {
         label: "toward B",
         betaUsed: +Math.abs(beta),
-        color: "#FFD66B",
-        y: 250,
+        color: tokens.amber,
+        y: rowYs[2],
         conclusion: "B first",
       },
     ];
 
     // Headers
-    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillStyle = tokens.textBright;
     ctx.font = "13px ui-monospace, monospace";
     ctx.fillText("Three observers, one pair of events", 12, 28);
-    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "11px ui-monospace, monospace";
     ctx.fillText(
       `A at x = 0,  B at x = ${L} m,  both at t = 0 (lab frame).  |β| = ${Math.abs(beta).toFixed(2)}`,
@@ -98,15 +108,15 @@ export function SimultaneitySliderScene() {
     );
 
     // Time axis label
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.fillText("← earlier   t' (each observer's frame)   later →", stripX0, 70);
 
     // Center reference line
-    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.strokeStyle = hexToRgba(tokens.textFaint, 0.5);
     ctx.setLineDash([2, 4]);
     ctx.beginPath();
-    ctx.moveTo(cxStrip, 90);
-    ctx.lineTo(cxStrip, 280);
+    ctx.moveTo(cxStrip, rowYs[0] - 20);
+    ctx.lineTo(cxStrip, rowYs[2] + 30);
     ctx.stroke();
     ctx.setLineDash([]);
 
@@ -124,14 +134,12 @@ export function SimultaneitySliderScene() {
       ctx.fillStyle = obs.color;
       ctx.font = "12px ui-monospace, monospace";
       ctx.fillText(obs.label, 12, obs.y - 4);
-      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.fillStyle = tokens.textMute;
       ctx.font = "10px ui-monospace, monospace";
       ctx.fillText(`β = ${obs.betaUsed.toFixed(2)}`, 12, obs.y + 12);
 
       // Compute t'_A and t'_B in this observer's frame using the lab event
       // pair (A at (0,0), B at (0, L)). Reference event = A.
-      // tPrimeDifference returns t1' − t2'; we compute each individually
-      // by setting the second arg to (0, 0) for "subtract A".
       const dtA = tPrimeDifference(0, 0, 0, 0, obs.betaUsed); // = 0
       const dtB = tPrimeDifference(0, L, 0, 0, obs.betaUsed); // = γ ( -β L / c )
 
@@ -146,12 +154,12 @@ export function SimultaneitySliderScene() {
         ctx.beginPath();
         ctx.arc(px, obs.y, 5, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "rgba(255,255,255,0.85)";
+        ctx.fillStyle = tokens.textBright;
         ctx.font = "11px ui-monospace, monospace";
         ctx.fillText(label, px - 3, obs.y - 10);
       };
-      drawMark(dtA, "A", "#67E8F9");
-      drawMark(dtB, "B", "#FFD66B");
+      drawMark(dtA, "A", tokens.cyan);
+      drawMark(dtB, "B", tokens.amber);
 
       // Conclusion text (right-aligned at end of row)
       const concText =
@@ -168,20 +176,21 @@ export function SimultaneitySliderScene() {
 
     // Bottom conclusion (fades in past |β| > 0.05)
     const opacity = Math.min(1, Math.max(0, (Math.abs(beta) - 0.05) / 0.15));
-    ctx.fillStyle = `rgba(255, 214, 107, ${opacity})`;
+    ctx.fillStyle = hexToRgba(tokens.amber, opacity);
     ctx.font = 'italic 13px ui-monospace, monospace';
     const conclusion = "There is no privileged 'now' extending across space.";
     const cwidth = ctx.measureText(conclusion).width;
     ctx.fillText(conclusion, (W - cwidth) / 2, H - 24);
-  }, [beta]);
+  }, [beta, tokens, W, H]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div ref={containerRef} className="flex w-full flex-col gap-2">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width: W, height: H, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+      <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span>|β| = {Math.abs(beta).toFixed(2)}</span>
         <input
           type="range"
@@ -191,6 +200,7 @@ export function SimultaneitySliderScene() {
           value={Math.abs(beta)}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
       </label>
     </div>

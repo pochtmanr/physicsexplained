@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useEffect, useMemo, useRef } from "react";
 import {
   predictedFringeShiftAtAngle,
   expectedNullThreshold,
@@ -9,9 +8,15 @@ import {
   SODIUM_D_WAVELENGTH,
   MICHELSON_1887_ARM_LENGTH,
 } from "@/lib/physics/relativity/michelson-morley";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
-const RATIO = 0.62;
-const MAX_HEIGHT = 460;
 const N_SAMPLES = 240;
 
 /**
@@ -35,8 +40,11 @@ const N_SAMPLES = 240;
 export function FringePredictionVsDataScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
-  const [size, setSize] = useState({ width: 720, height: 440 });
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.62,
+    maxHeight: SCENE_HEIGHT_TALL,
+  });
 
   // Pre-compute prediction + data sample arrays. Pure functions of θ;
   // no animation needed — the message is "look how far apart these are."
@@ -65,34 +73,14 @@ export function FringePredictionVsDataScene() {
   }, []);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
 
-    const { width, height } = size;
-    const dpr = window.devicePixelRatio || 1;
-    if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-    }
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, width, height);
 
     // ── Plot area ──
     const padL = 64;
@@ -113,7 +101,7 @@ export function FringePredictionVsDataScene() {
       padT + plotH - ((y - yMin) / (yMax - yMin)) * plotH;
 
     // ── Background grid ──
-    ctx.strokeStyle = colors.fg3;
+    ctx.strokeStyle = tokens.panelBorder;
     ctx.lineWidth = 1;
     // Horizontal gridlines every 0.1 fringe
     const yStep = 0.1;
@@ -140,9 +128,9 @@ export function FringePredictionVsDataScene() {
 
     // ── Noise-floor band at ±0.01 fringes (very thin grey strip) ──
     const noise = samples.noise;
-    ctx.fillStyle = "rgba(150, 170, 200, 0.10)";
+    ctx.fillStyle = hexToRgba(tokens.textMute, 0.10);
     ctx.fillRect(padL, yToPx(noise), plotW, yToPx(-noise) - yToPx(noise));
-    ctx.strokeStyle = "rgba(150, 170, 200, 0.45)";
+    ctx.strokeStyle = hexToRgba(tokens.textMute, 0.45);
     ctx.setLineDash([3, 3]);
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -154,7 +142,7 @@ export function FringePredictionVsDataScene() {
     ctx.setLineDash([]);
 
     // ── Dashed amber: classical aether prediction ──
-    ctx.strokeStyle = "#FFC852";
+    ctx.strokeStyle = tokens.amber;
     ctx.lineWidth = 2.4;
     ctx.setLineDash([10, 6]);
     ctx.beginPath();
@@ -168,7 +156,7 @@ export function FringePredictionVsDataScene() {
     ctx.setLineDash([]);
 
     // ── Solid cyan: observed shift (1887 result) ──
-    ctx.strokeStyle = "#6FB8C6";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2.0;
     ctx.beginPath();
     for (let i = 0; i < N_SAMPLES; i++) {
@@ -180,7 +168,7 @@ export function FringePredictionVsDataScene() {
     ctx.stroke();
 
     // ── Axes ──
-    ctx.strokeStyle = colors.fg2;
+    ctx.strokeStyle = tokens.axes;
     ctx.lineWidth = 1.2;
     ctx.beginPath();
     ctx.moveTo(padL, padT);
@@ -189,8 +177,8 @@ export function FringePredictionVsDataScene() {
     ctx.stroke();
 
     // Y tick labels
-    ctx.fillStyle = colors.fg2;
-    ctx.font = "11px monospace";
+    ctx.fillStyle = tokens.textMute;
+    ctx.font = tokens.fontHudSmall;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     for (let y = -0.4; y <= 0.4 + 1e-9; y += 0.2) {
@@ -203,31 +191,31 @@ export function FringePredictionVsDataScene() {
     ctx.save();
     ctx.translate(16, padT + plotH / 2);
     ctx.rotate(-Math.PI / 2);
-    ctx.fillStyle = colors.fg1;
-    ctx.font = "11px monospace";
+    ctx.fillStyle = tokens.textDim;
+    ctx.font = tokens.fontHudSmall;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("fringe shift Δn", 0, 0);
     ctx.restore();
 
     // X tick labels
-    ctx.fillStyle = colors.fg2;
-    ctx.font = "11px monospace";
+    ctx.fillStyle = tokens.textMute;
+    ctx.font = tokens.fontHudSmall;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     for (let deg = 0; deg <= 360; deg += 45) {
       const xp = xToPx((deg * Math.PI) / 180);
       ctx.fillText(`${deg}°`, xp, padT + plotH + 6);
     }
-    ctx.fillStyle = colors.fg1;
-    ctx.font = "11px monospace";
+    ctx.fillStyle = tokens.textDim;
+    ctx.font = tokens.fontHudSmall;
     ctx.fillText("apparatus rotation θ", padL + plotW / 2, padT + plotH + 26);
 
     // ── Legend ──
     const legY = padT + 6;
     const legX = padL + 14;
     // Dashed amber sample
-    ctx.strokeStyle = "#FFC852";
+    ctx.strokeStyle = tokens.amber;
     ctx.lineWidth = 2.4;
     ctx.setLineDash([10, 6]);
     ctx.beginPath();
@@ -235,14 +223,14 @@ export function FringePredictionVsDataScene() {
     ctx.lineTo(legX + 28, legY);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = colors.fg1;
-    ctx.font = "11px monospace";
+    ctx.fillStyle = tokens.textDim;
+    ctx.font = tokens.fontHudSmall;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
     ctx.fillText("aether prediction (2L/λ)(v²/c²)·cos(2θ)", legX + 36, legY);
 
     const legY2 = legY + 18;
-    ctx.strokeStyle = "#6FB8C6";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2.0;
     ctx.beginPath();
     ctx.moveTo(legX, legY2);
@@ -251,22 +239,22 @@ export function FringePredictionVsDataScene() {
     ctx.fillText("observed (Cleveland 1887)", legX + 36, legY2);
 
     // ── Title above plot ──
-    ctx.fillStyle = colors.fg0;
-    ctx.font = "12px monospace";
+    ctx.fillStyle = tokens.textBright;
+    ctx.font = tokens.fontHud;
     ctx.textAlign = "right";
     ctx.fillText(
       `peak prediction: ${samples.peak.toFixed(2)} fringes  ·  noise floor: ±${noise.toFixed(2)}`,
       padL + plotW,
       legY + 2,
     );
-  }, [size, colors, samples]);
+  }, [width, height, tokens, samples]);
 
   return (
     <div ref={containerRef} className="w-full pb-3">
       <canvas
         ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
     </div>
   );

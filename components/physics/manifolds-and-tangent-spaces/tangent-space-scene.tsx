@@ -1,7 +1,16 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { ManifoldCanvas } from "@/components/physics/_shared";
+import { useState, useEffect, useMemo, useRef } from "react";
+import {
+  ManifoldCanvas,
+  FONT_HUD_SMALL,
+  SCENE_HEIGHT_DEFAULT,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared";
 import { sphereEmbedding } from "@/lib/physics/relativity/manifolds";
 import type { TangentArrow, ManifoldEmbedding } from "@/components/physics/_shared";
 
@@ -18,26 +27,10 @@ import type { TangentArrow, ManifoldEmbedding } from "@/components/physics/_shar
 const EMBED: ManifoldEmbedding = sphereEmbedding(1);
 
 // Highlighted point: 50°N, φ = π/2 (on the left-side meridian)
-const BASE_U = Math.PI * (1 - 50 / 180);  // θ from north pole ≈ 130° → 50°N is θ = 40° = π*(40/180)
 const BASE_V = Math.PI / 2;
 
 // Re-derive: 50°N means latitude = 50° which is co-latitude θ = 90° - 50° = 40°
-const THETA_50N = Math.PI * 40 / 180;
-
-const TANGENT_ARROWS: readonly TangentArrow[] = [
-  {
-    base: { u: THETA_50N, v: BASE_V },
-    vector: [1, 0] as const,
-    color: "#67E8F9",
-    label: "∂/∂θ",
-  },
-  {
-    base: { u: THETA_50N, v: BASE_V },
-    vector: [0, 1] as const,
-    color: "#FF6ADE",
-    label: "∂/∂φ",
-  },
-];
+const THETA_50N = (Math.PI * 40) / 180;
 
 /**
  * Overlay that draws the tangent plane rectangle for the highlighted point.
@@ -47,38 +40,75 @@ const TANGENT_ARROWS: readonly TangentArrow[] = [
  */
 
 export function TangentSpaceScene() {
+  const tokens = useSceneTokens();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.76,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+    minHeight: 280,
+    initialWidth: 500,
+  });
   const [theta, setTheta] = useState(0.9);
 
+  const tangentArrows = useMemo<readonly TangentArrow[]>(
+    () => [
+      {
+        base: { u: THETA_50N, v: BASE_V },
+        vector: [1, 0] as const,
+        color: tokens.cyan,
+        label: "∂/∂θ",
+      },
+      {
+        base: { u: THETA_50N, v: BASE_V },
+        vector: [0, 1] as const,
+        color: tokens.magenta,
+        label: "∂/∂φ",
+      },
+    ],
+    [tokens.cyan, tokens.magenta],
+  );
+
+  const palette = useMemo(
+    () => ({
+      surface: tokens.grid,
+      highlight: tokens.cyan,
+      transport: tokens.magenta,
+      background: tokens.bg,
+      axes: tokens.axes,
+    }),
+    [tokens.grid, tokens.cyan, tokens.magenta, tokens.bg, tokens.axes],
+  );
+
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div className="relative">
+    <div ref={containerRef} className="relative w-full flex flex-col items-center gap-3 pb-4">
+      <div className="relative" style={{ width, height }}>
         <ManifoldCanvas
           embedding={EMBED}
           uRange={[0, Math.PI]}
           vRange={[0, 2 * Math.PI]}
           uSteps={14}
           vSteps={20}
-          tangentArrows={TANGENT_ARROWS}
+          tangentArrows={tangentArrows}
           rotationY={theta}
           onRotationChange={setTheta}
           rotationMin={-Math.PI}
           rotationMax={Math.PI}
-          width={500}
-          height={380}
-          palette={{ highlight: "#67E8F9" }}
+          width={width}
+          height={height}
+          palette={palette}
         />
-        <TangentPlaneOverlay theta={theta} />
+        <TangentPlaneOverlay theta={theta} tokens={tokens} width={width} height={height} />
       </div>
-      <div className="flex w-full max-w-[500px] flex-col gap-1 font-mono text-xs text-white/60">
+      <div className="flex w-full flex-col gap-1 font-mono text-xs text-[var(--color-fg-3)]">
         <div className="flex items-center gap-2">
-          <span className="inline-block h-2 w-2 rounded-full bg-[#67E8F9]" />
+          <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: tokens.cyan }} />
           <span>∂/∂θ — meridional basis vector at the point</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className="inline-block h-2 w-2 rounded-full bg-[#FF6ADE]" />
+          <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: tokens.magenta }} />
           <span>∂/∂φ — azimuthal basis vector at the point</span>
         </div>
-        <p className="mt-1 text-white/40">
+        <p className="mt-1 text-[var(--color-fg-4)]">
           T_pM is spanned by these two vectors. Every tangent vector at p is a
           linear combination v = v^θ ∂/∂θ + v^φ ∂/∂φ.
         </p>
@@ -89,23 +119,26 @@ export function TangentSpaceScene() {
 
 // ─── Tangent plane overlay (drawn as a faint rotated parallelogram) ────────────
 
-function TangentPlaneOverlay({ theta }: { theta: number }) {
+function TangentPlaneOverlay({
+  theta,
+  tokens,
+  width,
+  height,
+}: {
+  theta: number;
+  tokens: SceneTokens;
+  width: number;
+  height: number;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const W = 500;
-  const H = 380;
+  const W = width;
+  const H = height;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, W, H);
     if (!ctx) return;
-
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
 
     // We need to replicate the same projection math used by ManifoldCanvas
@@ -198,8 +231,8 @@ function TangentPlaneOverlay({ theta }: { theta: number }) {
     const screenCorners = corners.map(toScreen);
 
     // Draw the tangent plane as a faint filled quadrilateral
-    ctx.fillStyle = "rgba(251, 191, 36, 0.10)";
-    ctx.strokeStyle = "rgba(251, 191, 36, 0.40)";
+    ctx.fillStyle = hexToRgba(tokens.amber, 0.10);
+    ctx.strokeStyle = hexToRgba(tokens.amber, 0.40);
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(screenCorners[0][0], screenCorners[0][1]);
@@ -212,17 +245,18 @@ function TangentPlaneOverlay({ theta }: { theta: number }) {
 
     // Dot at the base point
     const [bx, by] = toScreen(baseP);
-    ctx.fillStyle = "#FBBF24";
+    ctx.fillStyle = tokens.amber;
     ctx.beginPath();
     ctx.arc(bx, by, 4, 0, 2 * Math.PI);
     ctx.fill();
 
     // "T_p M" label
-    ctx.fillStyle = "rgba(251,191,36,0.9)";
-    ctx.font = "11px ui-monospace, monospace";
+    ctx.fillStyle = hexToRgba(tokens.amber, 0.9);
+    ctx.font = FONT_HUD_SMALL;
     ctx.textAlign = "left";
+    ctx.textBaseline = "top";
     ctx.fillText("T_p M", bx + 8, by - 10);
-  }, [theta]);
+  }, [theta, tokens, W, H]);
 
   return (
     <canvas

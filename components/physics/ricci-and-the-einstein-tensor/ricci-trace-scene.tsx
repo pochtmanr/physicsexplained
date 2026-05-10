@@ -1,28 +1,37 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  FONT_HUD,
+  FONT_HUD_SMALL,
+  FONT_SECTION,
+  drawSectionTitle,
+  drawDivider,
+  hexToRgba,
+  useSceneTokens,
+  useSceneSize,
+  type SceneTokens,
+  SCENE_HEIGHT_SHORT,
+} from "@/components/physics/_shared";
 
 /**
  * FIG.35a — Ricci Tensor Contraction Schematic.
  *
  * The Riemann tensor R^ρ_{σμν} is a rank-(1,3) object — four index slots.
- * The Ricci tensor R_{μν} = R^λ_{μλν} is obtained by setting ρ = μ and
- * summing (Einstein convention). This contracts the first and third indices,
- * reducing rank-(1,3) to rank-(0,2).
+ * The Ricci tensor R_{μν} = R^λ_{μλν} is obtained by setting the first and
+ * third slots equal and summing (Einstein convention). This contracts the
+ * first and third indices, reducing rank-(1,3) to rank-(0,2).
  *
- * Visual layout:
- *  - Left panel: Riemann tensor as a blob with 1 cyan upper box (ρ) and
- *    3 amber lower boxes (σ, μ, ν). The first and third boxes are highlighted
- *    to show which pair is contracted.
- *  - Right panel: Ricci tensor — blob with 2 amber lower boxes (μ, ν).
- *  - Slider: "contraction progress" 0→1 that animates the two contracted boxes
- *    collapsing together and disappearing, leaving the Ricci blob.
- *
- * The label always shows the tensor equation R_{μν} = R^λ_{μλν}.
+ * Animation (4-second cycle):
+ *   0-50%: The 4 Riemann boxes are shown — 4 CYAN-bordered "index slots".
+ *          An AMBER connecting line grows between slot 0 (upper λ) and slot 2
+ *          (lower λ). The two λ boxes slide toward each other with a glowing
+ *          AMBER glow.
+ *   50-100%: The contracted slots have collapsed; the Riemann blob fades out
+ *            and the Ricci blob fades in showing 2 MAGENTA-bordered boxes.
  */
-
-const W = 680;
-const H = 320;
 
 const BLOB_R = 24;
 const BOX_W = 22;
@@ -31,6 +40,10 @@ const SLOT_GAP = 8;
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
+}
+
+function easeInOut(t: number): number {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
 }
 
 function drawBox(
@@ -42,18 +55,19 @@ function drawBox(
   strokeColor: string,
   alpha = 1,
 ) {
+  ctx.save();
   ctx.globalAlpha = alpha;
   ctx.fillStyle = fillColor;
   ctx.fillRect(x, y, BOX_W, BOX_H);
   ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = 1.2;
+  ctx.lineWidth = 1.5;
   ctx.strokeRect(x, y, BOX_W, BOX_H);
   ctx.fillStyle = strokeColor;
-  ctx.font = "bold 10px ui-monospace, monospace";
+  ctx.font = `bold ${FONT_HUD_SMALL}`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(label, x + BOX_W / 2, y + BOX_H / 2);
-  ctx.globalAlpha = 1;
+  ctx.restore();
 }
 
 function drawConnector(
@@ -65,6 +79,7 @@ function drawConnector(
   color: string,
   alpha = 0.3,
 ) {
+  ctx.save();
   ctx.globalAlpha = alpha;
   ctx.strokeStyle = color;
   ctx.lineWidth = 1;
@@ -72,7 +87,7 @@ function drawConnector(
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
   ctx.stroke();
-  ctx.globalAlpha = 1;
+  ctx.restore();
 }
 
 function drawBlob(
@@ -80,134 +95,153 @@ function drawBlob(
   cx: number,
   cy: number,
   symbol: string,
+  tokens: SceneTokens,
   alpha = 1,
 ) {
+  ctx.save();
   ctx.globalAlpha = alpha;
   ctx.beginPath();
   ctx.arc(cx, cy, BLOB_R, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(255,255,255,0.08)";
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.08);
   ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.35)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.35);
   ctx.lineWidth = 1.5;
   ctx.stroke();
-  ctx.fillStyle = "rgba(255,255,255,0.9)";
-  ctx.font = "bold 14px ui-monospace, monospace";
+  ctx.fillStyle = tokens.textBright;
+  ctx.font = `bold 14px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText(symbol, cx, cy);
-  ctx.globalAlpha = 1;
+  ctx.restore();
 }
 
-function render(ctx: CanvasRenderingContext2D, t: number) {
+function render(
+  ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
+  t: number,
+) {
   ctx.clearRect(0, 0, W, H);
-  ctx.fillStyle = "#0A0C12";
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // ── Title ─────────────────────────────────────────────────────────────────
-  ctx.fillStyle = "rgba(255,255,255,0.35)";
-  ctx.font = "10px ui-monospace, monospace";
-  ctx.textAlign = "left";
-  ctx.textBaseline = "alphabetic";
-  ctx.fillText("RIEMANN → RICCI CONTRACTION", 12, 18);
+  // Section title
+  drawSectionTitle(ctx, 12, 10, "CONTRACTION", tokens.textMute);
 
-  // ── Equation line ─────────────────────────────────────────────────────────
-  ctx.fillStyle = "rgba(255,255,255,0.65)";
-  ctx.font = "13px ui-monospace, monospace";
+  // Equation line at bottom
+  ctx.save();
+  ctx.font = `13px ui-monospace, monospace`;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "center";
-  ctx.fillText("R_{μν} = R^λ_{μλν}", W / 2, H - 14);
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText("R_{μν} = R^λ_{μλν}", W / 2, H - 10);
+  ctx.restore();
 
-  // ── Left side: Riemann tensor ──────────────────────────────────────────────
+  // Progress: first half = contract, second half = show result
+  const contracted = easeInOut(Math.min(1, t * 2));
+  const showing = easeInOut(Math.max(0, (t - 0.5) * 2));
+
+  // ── Left side: Riemann tensor ──────────────────────────────────────────
   const riemannCX = W * 0.26;
-  const riemannCY = H / 2;
+  const riemannCY = H / 2 + 10;
 
-  // How far along the contraction we are
-  const contracted = Math.min(1, t * 2);    // first half: contract
-  const showing = Math.max(0, (t - 0.5) * 2); // second half: show result
+  const lowerY = riemannCY + BLOB_R + 12;
+  const upperY = riemannCY - BLOB_R - 12 - BOX_H;
 
-  // Labels for lower indices: σ(amber), μ(cyan-highlighted), ν(amber)
-  // In R^ρ_{σμν} we contract ρ (upper) with the third lower slot (second λ position)
-  // i.e. set ρ = λ and contract over λ to get R^λ_{μλν} = R_{μν}
-  // We'll show: upper slot ρ (cyan) and lower slots: μ, λ, ν
-  // Contract the upper ρ slot with the middle lower λ slot.
-
+  // 4 boxes in a row: upper λ (slot 0), lower μ λ ν (slots 1-3).
+  // The contraction is λ(upper) with λ(lower, index 1).
   const numLower = 3;
   const totalLowerW = numLower * BOX_W + (numLower - 1) * SLOT_GAP;
   const lowerStartX = riemannCX - totalLowerW / 2;
-  const lowerY = riemannCY + BLOB_R + 10;
-  const upperY = riemannCY - BLOB_R - 10 - BOX_H;
 
-  // Upper slot: λ (cyan) — this is the index being contracted
   const upperX = riemannCX - BOX_W / 2;
-
-  // Lower boxes: indices μ, λ, ν (positions 0,1,2)
-  const lowerLabels = ["μ", "λ", "ν"];
-  const lowerColors = [
-    ["rgba(103,232,249,0.18)", "#67E8F9"], // μ — cyan
-    ["rgba(251,191,36,0.18)", "#FBBF24"],  // λ — amber (being contracted)
-    ["rgba(103,232,249,0.18)", "#67E8F9"], // ν — cyan
-  ];
-
-  // Riemann blob (fades out after contraction)
-  const riemannAlpha = lerp(1, 0, showing);
-  drawBlob(ctx, riemannCX, riemannCY, "R", riemannAlpha);
-
-  // Upper box (λ) — moves toward the contracted lower λ box
   const lowerLamX = lowerStartX + 1 * (BOX_W + SLOT_GAP);
+
+  const riemannAlpha = lerp(1, 0, showing);
+
+  drawBlob(ctx, riemannCX, riemannCY, "R", tokens, riemannAlpha);
+
+  // AMBER connecting line between the two λ slots (grows during contraction)
+  if (contracted > 0.02) {
+    const lineAlpha = Math.min(contracted, 1 - contracted) * 2 * riemannAlpha;
+    ctx.save();
+    ctx.globalAlpha = lineAlpha;
+    // glow
+    ctx.shadowColor = tokens.amber;
+    ctx.shadowBlur = 8;
+    ctx.strokeStyle = tokens.amber;
+    ctx.lineWidth = 2;
+    const p1x = upperX + BOX_W / 2;
+    const p1y = upperY + BOX_H / 2;
+    const p2x = lowerLamX + BOX_W / 2;
+    const p2y = lowerY + BOX_H / 2;
+    ctx.beginPath();
+    ctx.moveTo(p1x, p1y);
+    ctx.lineTo(p2x, p2y);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  }
+
+  // Upper box λ — slides toward lower λ during contraction
   const contractedUpperX = lerp(upperX, lowerLamX, contracted);
   const contractedUpperY = lerp(upperY, lowerY, contracted);
   const contractedAlpha = lerp(1, 0, contracted) * riemannAlpha;
 
-  drawConnector(ctx, upperX + BOX_W / 2, upperY + BOX_H, riemannCX, riemannCY - BLOB_R, "#67E8F9", 0.3 * riemannAlpha);
-  drawBox(ctx, contractedUpperX, contractedUpperY, "λ", "rgba(103,232,249,0.25)", "#67E8F9", contractedAlpha);
+  drawConnector(ctx, upperX + BOX_W / 2, upperY + BOX_H, riemannCX, riemannCY - BLOB_R, tokens.cyan, 0.3 * riemannAlpha);
+  drawBox(ctx, contractedUpperX, contractedUpperY, "λ", hexToRgba(tokens.cyan, 0.25), tokens.cyan, contractedAlpha);
 
-  // Lower boxes
+  // Lower boxes: μ, λ, ν — all CYAN borders
+  const lowerLabels = ["μ", "λ", "ν"];
   for (let i = 0; i < 3; i++) {
     const bx = lowerStartX + i * (BOX_W + SLOT_GAP);
-    const [fill, stroke] = lowerColors[i];
     const isLambda = i === 1;
     const alpha = isLambda ? lerp(1, 0, contracted) * riemannAlpha : riemannAlpha;
-    drawConnector(ctx, bx + BOX_W / 2, lowerY, riemannCX, riemannCY + BLOB_R, stroke, 0.3 * alpha);
-    drawBox(ctx, bx, lowerY, lowerLabels[i], fill, stroke, alpha);
+    drawConnector(ctx, bx + BOX_W / 2, lowerY, riemannCX, riemannCY + BLOB_R, tokens.cyan, 0.3 * alpha);
+    drawBox(ctx, bx, lowerY, lowerLabels[i], hexToRgba(tokens.cyan, 0.18), tokens.cyan, alpha);
   }
 
-  // "contraction" arc annotation
+  // "contract" label annotation
   if (contracted > 0.05 && contracted < 0.95) {
-    const arcX = riemannCX;
-    const arcY = lowerY - 18;
-    ctx.globalAlpha = Math.min(contracted, 1 - contracted) * 2 * riemannAlpha;
-    ctx.strokeStyle = "#FF6ADE";
+    const arcAlpha = Math.min(contracted, 1 - contracted) * 2 * riemannAlpha;
+    ctx.save();
+    ctx.globalAlpha = arcAlpha;
+    ctx.strokeStyle = tokens.amber;
     ctx.lineWidth = 1.5;
     ctx.setLineDash([3, 3]);
     ctx.beginPath();
-    ctx.arc(arcX, arcY, 38, 0.3, Math.PI - 0.3);
+    ctx.arc(riemannCX, lowerY - 18, 38, 0.3, Math.PI - 0.3);
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = "#FF6ADE";
-    ctx.font = "10px ui-monospace, monospace";
+    ctx.fillStyle = tokens.amber;
+    ctx.font = FONT_HUD_SMALL;
     ctx.textAlign = "center";
-    ctx.fillText("contract", arcX, arcY - 44);
-    ctx.globalAlpha = 1;
+    ctx.fillText("contract", riemannCX, lowerY - 62);
+    ctx.restore();
   }
 
-  // "Riemann" label
+  // "Riemann (1,3)" label
+  ctx.save();
   ctx.globalAlpha = riemannAlpha;
-  ctx.fillStyle = "rgba(255,255,255,0.5)";
-  ctx.font = "11px ui-monospace, monospace";
+  ctx.font = FONT_HUD;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "center";
-  ctx.fillText("Riemann  (1,3)", riemannCX, H - 60);
-  ctx.fillStyle = "rgba(255,255,255,0.35)";
-  ctx.font = "10px ui-monospace, monospace";
-  ctx.fillText("4⁴ = 256 components", riemannCX, H - 46);
-  ctx.globalAlpha = 1;
+  ctx.fillText("Riemann (1,3)", riemannCX, H - 48);
+  ctx.font = FONT_HUD_SMALL;
+  ctx.fillStyle = tokens.textMute;
+  ctx.fillText("4⁴ = 256 components", riemannCX, H - 34);
+  ctx.restore();
 
-  // ── Arrow ─────────────────────────────────────────────────────────────────
-  const arrowAlpha = Math.min(t / 0.4, 1);
+  // ── Arrow ─────────────────────────────────────────────────────────────
+  const arrowAlpha = Math.min(t / 0.4, 1) * 0.6;
+  ctx.save();
   ctx.globalAlpha = arrowAlpha;
-  ctx.strokeStyle = "rgba(255,255,255,0.4)";
+  const ax1 = riemannCX + 72;
+  const ax2 = W * 0.62 - 72;
+  const ay = riemannCY;
+  ctx.strokeStyle = tokens.textDim;
   ctx.lineWidth = 1.5;
-  const ax1 = riemannCX + 70;
-  const ax2 = W * 0.62 - 70;
-  const ay = H / 2;
   ctx.beginPath();
   ctx.moveTo(ax1, ay);
   ctx.lineTo(ax2, ay);
@@ -218,94 +252,93 @@ function render(ctx: CanvasRenderingContext2D, t: number) {
   ctx.moveTo(ax2, ay);
   ctx.lineTo(ax2 - 8, ay + 5);
   ctx.stroke();
-  ctx.fillStyle = "#FF6ADE";
-  ctx.font = "10px ui-monospace, monospace";
+  ctx.fillStyle = tokens.textDim;
+  ctx.font = FONT_HUD_SMALL;
   ctx.textAlign = "center";
-  ctx.fillText("R^λ_{μλν}", (ax1 + ax2) / 2, ay - 12);
-  ctx.globalAlpha = 1;
+  ctx.fillText("R^λ_{μλν}", (ax1 + ax2) / 2, ay - 10);
+  ctx.restore();
 
-  // ── Right side: Ricci tensor ───────────────────────────────────────────────
+  // ── Right side: Ricci tensor ───────────────────────────────────────────
   const ricciCX = W * 0.76;
-  const ricciCY = H / 2;
+  const ricciCY = H / 2 + 10;
   const ricciAlpha = showing;
 
-  drawBlob(ctx, ricciCX, ricciCY, "Ric", ricciAlpha);
+  drawBlob(ctx, ricciCX, ricciCY, "Ric", tokens, ricciAlpha);
 
-  // Two lower boxes: μ, ν (cyan)
   const ricciLowerW = 2 * BOX_W + SLOT_GAP;
   const ricciLowerStartX = ricciCX - ricciLowerW / 2;
-  const ricciLowerY = ricciCY + BLOB_R + 10;
+  const ricciLowerY = ricciCY + BLOB_R + 12;
 
+  // Ricci has 2 MAGENTA-bordered boxes
   ["μ", "ν"].forEach((label, i) => {
     const bx = ricciLowerStartX + i * (BOX_W + SLOT_GAP);
-    drawConnector(ctx, bx + BOX_W / 2, ricciLowerY, ricciCX, ricciCY + BLOB_R, "#67E8F9", 0.3 * ricciAlpha);
-    drawBox(ctx, bx, ricciLowerY, label, "rgba(103,232,249,0.18)", "#67E8F9", ricciAlpha);
+    drawConnector(ctx, bx + BOX_W / 2, ricciLowerY, ricciCX, ricciCY + BLOB_R, tokens.magenta, 0.3 * ricciAlpha);
+    drawBox(ctx, bx, ricciLowerY, label, hexToRgba(tokens.magenta, 0.18), tokens.magenta, ricciAlpha);
   });
 
+  ctx.save();
   ctx.globalAlpha = ricciAlpha;
-  ctx.fillStyle = "rgba(255,255,255,0.5)";
-  ctx.font = "11px ui-monospace, monospace";
+  ctx.font = FONT_HUD;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "center";
-  ctx.fillText("Ricci  (0,2)", ricciCX, H - 60);
-  ctx.fillStyle = "rgba(255,255,255,0.35)";
-  ctx.font = "10px ui-monospace, monospace";
-  ctx.fillText("10 independent", ricciCX, H - 46);
-  ctx.globalAlpha = 1;
+  ctx.fillText("Ricci (0,2)", ricciCX, H - 48);
+  ctx.font = FONT_HUD_SMALL;
+  ctx.fillStyle = tokens.textMute;
+  ctx.fillText("10 independent", ricciCX, H - 34);
+  ctx.restore();
 
-  // ── Legend ────────────────────────────────────────────────────────────────
-  ctx.fillStyle = "#67E8F9";
-  ctx.font = "9px ui-monospace, monospace";
+  drawDivider(ctx, 0, W, H - 22, tokens.grid);
+
+  // ── Legend ────────────────────────────────────────────────────────────
+  ctx.save();
+  ctx.font = FONT_SECTION;
   ctx.textAlign = "right";
   ctx.textBaseline = "alphabetic";
-  ctx.fillText("cyan = free index", W - 130, 18);
-  ctx.fillStyle = "#FBBF24";
-  ctx.fillText("amber = contracted index", W - 12, 18);
+  ctx.fillStyle = tokens.cyan;
+  ctx.fillText("cyan = free index", W - 130, 20);
+  ctx.fillStyle = tokens.magenta;
+  ctx.fillText("magenta = result", W - 12, 20);
+  ctx.restore();
 }
 
 export function RicciTraceScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [t, setT] = useState(0);
+  const rafRef = useRef<number>(0);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.45,
+    maxHeight: SCENE_HEIGHT_SHORT,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
 
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const PERIOD = 4000; // 4-second cycle
+    const start = performance.now();
 
-    render(ctx, t);
-  }, [t]);
+    const loop = (now: number) => {
+      const t = ((now - start) % PERIOD) / PERIOD;
+      render(ctx, tokens, width, height, t);
+      rafRef.current = requestAnimationFrame(loop);
+    };
+
+    rafRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [tokens, width, height]);
 
   return (
-    <div className="flex flex-col gap-3 p-2">
+    <div ref={containerRef} className="relative w-full pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+        aria-label="Animation of Riemann tensor contraction R^λ_{μλν} to produce the Ricci tensor R_{μν}. Four CYAN index-slot boxes collapse as the first and third slots are identified and traced over, leaving two MAGENTA boxes representing the rank-(0,2) Ricci tensor."
       />
-      <label className="flex items-center gap-3 font-mono text-xs text-white/70">
-        <span>contraction</span>
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={t}
-          onChange={(e) => setT(parseFloat(e.target.value))}
-          className="flex-1"
-        />
-        <span className="w-8 text-right">{(t * 100).toFixed(0)}%</span>
-      </label>
-      <p className="px-1 font-mono text-xs text-white/40">
-        The Riemann tensor R&#955;<sub>&#956;&#955;&#957;</sub> has 4 index slots. Setting the first and third slots equal and
-        summing (the trace over &#955;) collapses rank-(1,3) to rank-(0,2): the Ricci tensor R<sub>&#956;&#957;</sub>.
-        4D spacetime: 256 components &#8594; 10 independent.
-      </p>
     </div>
   );
 }

@@ -1,6 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  FONT_HUD,
+  FONT_HUD_SMALL,
+  FONT_LABEL,
+  drawHudReadout,
+  drawSectionTitle,
+  drawDivider,
+  drawArrow,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared";
 
 /**
  * COMMUTATOR SCENE — §08 THE RIEMANN TENSOR
@@ -9,49 +25,62 @@ import { useEffect, useRef, useState } from "react";
  * (sphere) returns a vector rotated by an angle proportional to the loop area.
  * This rotation per unit area is a component of the Riemann tensor.
  *
+ * Two paths shown: CYAN (∇_θ then ∇_φ) and MAGENTA (∇_φ then ∇_θ). A moving
+ * GREEN dot animates the loop traversal. HUD shows δ/A in AMBER converging to
+ * the Riemann scalar component as loop → 0.
+ *
  * Controls:
- *   - "Loop size" slider: shrinks the parallelogram; the ratio (rotation / area)
- *     converges to the local R-value as the loop → 0.
+ *   - "Loop size" slider: shrinks the parallelogram.
+ *   - Drag sphere to rotate.
  */
 
-const W = 540;
-const H = 360;
-const CX = W / 2;
-const CY = H / 2 - 10;
-const SPHERE_R = 100; // projected sphere radius in px
-
 /** Project a point on the unit sphere (given θ, φ) to 2D canvas. */
-function project(theta: number, phi: number, rotY: number): [number, number, number] {
-  // Rotate around Y axis for a pleasing 3D look
+function project(
+  theta: number,
+  phi: number,
+  rotY: number,
+  cx: number,
+  cy: number,
+  sphereR: number,
+): [number, number, number] {
   const x0 = Math.sin(theta) * Math.cos(phi);
   const y0 = Math.cos(theta);
   const z0 = Math.sin(theta) * Math.sin(phi);
   const x1 = x0 * Math.cos(rotY) + z0 * Math.sin(rotY);
   const z1 = -x0 * Math.sin(rotY) + z0 * Math.cos(rotY);
-  return [CX + x1 * SPHERE_R, CY - y0 * SPHERE_R, z1];
+  return [cx + x1 * sphereR, cy - y0 * sphereR, z1];
 }
 
-/** Sample several points along a geodesic segment from (θ1,φ1) to (θ2,φ2) on unit sphere. */
+/** Sample several points along a geodesic segment from (θ1,φ1) to (θ2,φ2). */
 function geodesicPoints(
-  theta1: number, phi1: number,
-  theta2: number, phi2: number,
+  theta1: number,
+  phi1: number,
+  theta2: number,
+  phi2: number,
   steps: number,
   rotY: number,
+  cx: number,
+  cy: number,
+  sphereR: number,
 ): [number, number][] {
   const pts: [number, number][] = [];
   for (let i = 0; i <= steps; i++) {
     const t = i / steps;
-    // Spherical linear interpolation
     const th = theta1 + (theta2 - theta1) * t;
     const ph = phi1 + (phi2 - phi1) * t;
-    const [sx, sy] = project(th, ph, rotY);
+    const [sx, sy] = project(th, ph, rotY, cx, cy, sphereR);
     pts.push([sx, sy]);
   }
   return pts;
 }
 
 /** Draw a polyline on 2D canvas. */
-function drawPolyline(ctx: CanvasRenderingContext2D, pts: [number, number][], color: string, width: number) {
+function drawPolyline(
+  ctx: CanvasRenderingContext2D,
+  pts: [number, number][],
+  color: string,
+  width: number,
+) {
   if (pts.length < 2) return;
   ctx.beginPath();
   ctx.moveTo(pts[0][0], pts[0][1]);
@@ -61,43 +90,35 @@ function drawPolyline(ctx: CanvasRenderingContext2D, pts: [number, number][], co
   ctx.stroke();
 }
 
-/** Draw an arrow head at (tx, ty) pointing in direction (dx, dy). */
-function arrowHead(ctx: CanvasRenderingContext2D, tx: number, ty: number, dx: number, dy: number, size: number, color: string) {
-  const len = Math.sqrt(dx * dx + dy * dy);
-  if (len < 1e-6) return;
-  const ux = dx / len;
-  const uy = dy / len;
-  ctx.beginPath();
-  ctx.moveTo(tx, ty);
-  ctx.lineTo(tx - size * ux + size * 0.4 * uy, ty - size * uy - size * 0.4 * ux);
-  ctx.lineTo(tx - size * ux - size * 0.4 * uy, ty - size * uy + size * 0.4 * ux);
-  ctx.closePath();
-  ctx.fillStyle = color;
-  ctx.fill();
-}
-
-/** Draw a sphere latitude-longitude grid with depth-based opacity. */
-function drawSphere(ctx: CanvasRenderingContext2D, rotY: number, alpha: number) {
+/** Draw a lat/lon sphere grid. */
+function drawSphereGrid(
+  ctx: CanvasRenderingContext2D,
+  rotY: number,
+  alpha: number,
+  tokens: SceneTokens,
+  cx: number,
+  cy: number,
+  sphereR: number,
+) {
   ctx.save();
   ctx.globalAlpha = alpha;
   const LATS = 7;
   const LONS = 10;
-  ctx.lineWidth = 0.5;
-  ctx.strokeStyle = "#4a5568";
+  const gridColor = tokens.grid;
   // Latitudes
   for (let i = 1; i < LATS; i++) {
     const th = (i / LATS) * Math.PI;
     const pts: [number, number][] = [];
     for (let j = 0; j <= 40; j++) {
       const ph = (j / 40) * 2 * Math.PI;
-      const [sx, sy, sz] = project(th, ph, rotY);
+      const [sx, sy, sz] = project(th, ph, rotY, cx, cy, sphereR);
       if (sz > -0.05) pts.push([sx, sy]);
       else {
-        if (pts.length > 1) drawPolyline(ctx, pts, "#4a5568", 0.5);
+        if (pts.length > 1) drawPolyline(ctx, pts, gridColor, 0.6);
         pts.length = 0;
       }
     }
-    if (pts.length > 1) drawPolyline(ctx, pts, "#4a5568", 0.5);
+    if (pts.length > 1) drawPolyline(ctx, pts, gridColor, 0.6);
   }
   // Longitudes
   for (let j = 0; j < LONS; j++) {
@@ -105,175 +126,285 @@ function drawSphere(ctx: CanvasRenderingContext2D, rotY: number, alpha: number) 
     const pts: [number, number][] = [];
     for (let i = 0; i <= 30; i++) {
       const th = (i / 30) * Math.PI;
-      const [sx, sy, sz] = project(th, ph, rotY);
+      const [sx, sy, sz] = project(th, ph, rotY, cx, cy, sphereR);
       if (sz > -0.05) pts.push([sx, sy]);
       else {
-        if (pts.length > 1) drawPolyline(ctx, pts, "#4a5568", 0.5);
+        if (pts.length > 1) drawPolyline(ctx, pts, gridColor, 0.6);
         pts.length = 0;
       }
     }
-    if (pts.length > 1) drawPolyline(ctx, pts, "#4a5568", 0.5);
+    if (pts.length > 1) drawPolyline(ctx, pts, gridColor, 0.6);
   }
   ctx.restore();
 }
 
+/** Get point on a concatenated path at parameter t ∈ [0, 1]. */
+function pathAtT(
+  segments: [number, number][][],
+  t: number,
+): [number, number] {
+  const total = segments.reduce((s, seg) => s + seg.length - 1, 0);
+  const idx = Math.floor(t * total);
+  let count = 0;
+  for (const seg of segments) {
+    const len = seg.length - 1;
+    if (idx < count + len) {
+      const local = (idx - count) / len;
+      const a = seg[idx - count];
+      const b = seg[idx - count + 1];
+      return [a[0] + (b[0] - a[0]) * local, a[1] + (b[1] - a[1]) * local];
+    }
+    count += len;
+  }
+  return segments[segments.length - 1][
+    segments[segments.length - 1].length - 1
+  ];
+}
+
+function draw(
+  ctx: CanvasRenderingContext2D,
+  loopSize: number,
+  rotY: number,
+  animT: number,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
+) {
+  const SPHERE_CX = W * 0.38;
+  const SPHERE_CY = H / 2 - 10;
+  const SPHERE_R = Math.min(110, Math.min(W * 0.25, H * 0.40));
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = tokens.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw sphere grid
+  drawSphereGrid(ctx, rotY, 0.7, tokens, SPHERE_CX, SPHERE_CY, SPHERE_R);
+
+  // Loop parameters
+  const th0 = Math.PI / 2;
+  const ph0 = 0.4 + rotY * 0.15;
+  const dth = 0.4 * loopSize;
+  const dph = 0.6 * loopSize;
+
+  const A = [th0, ph0] as const;
+  const B = [th0 + dth, ph0] as const;
+  const C = [th0 + dth, ph0 + dph] as const;
+  const D = [th0, ph0 + dph] as const;
+
+  const [ax, ay] = project(A[0], A[1], rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  const [bx, by] = project(B[0], B[1], rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  const [cx, cy] = project(C[0], C[1], rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  const [dx, dy] = project(D[0], D[1], rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+
+  // Path 1: A→B→C (CYAN — ∇_θ first, then ∇_φ)
+  const pathAB = geodesicPoints(A[0], A[1], B[0], B[1], 20, rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  const pathBC = geodesicPoints(B[0], B[1], C[0], C[1], 20, rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  ctx.save();
+  ctx.shadowColor = tokens.cyan;
+  ctx.shadowBlur = 8;
+  drawPolyline(ctx, pathAB, tokens.cyan, 2);
+  drawPolyline(ctx, pathBC, tokens.cyan, 2);
+  ctx.restore();
+  // Arrowheads path 1
+  if (pathAB.length >= 2) {
+    const [px, py] = pathAB[pathAB.length - 2];
+    drawArrow(ctx, px, py, bx, by, tokens.cyan, 2, 7);
+  }
+  if (pathBC.length >= 2) {
+    const [px, py] = pathBC[pathBC.length - 2];
+    drawArrow(ctx, px, py, cx, cy, tokens.cyan, 2, 7);
+  }
+
+  // Path 2: A→D→C (MAGENTA — ∇_φ first, then ∇_θ)
+  const pathAD = geodesicPoints(A[0], A[1], D[0], D[1], 20, rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  const pathDC = geodesicPoints(D[0], D[1], C[0], C[1], 20, rotY, SPHERE_CX, SPHERE_CY, SPHERE_R);
+  ctx.save();
+  ctx.shadowColor = tokens.magenta;
+  ctx.shadowBlur = 8;
+  drawPolyline(ctx, pathAD, tokens.magenta, 2);
+  drawPolyline(ctx, pathDC, tokens.magenta, 2);
+  ctx.restore();
+  if (pathAD.length >= 2) {
+    const [px, py] = pathAD[pathAD.length - 2];
+    drawArrow(ctx, px, py, dx, dy, tokens.magenta, 2, 7);
+  }
+  if (pathDC.length >= 2) {
+    const [px, py] = pathDC[pathDC.length - 2];
+    drawArrow(ctx, px, py, cx, cy, tokens.magenta, 2, 7);
+  }
+
+  // Animated GREEN dot traversing path 1 (A→B→C)
+  const dotPos = pathAtT([pathAB, pathBC], animT);
+  ctx.save();
+  ctx.shadowColor = tokens.green;
+  ctx.shadowBlur = 12;
+  ctx.fillStyle = tokens.green;
+  ctx.beginPath();
+  ctx.arc(dotPos[0], dotPos[1], 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  // Initial vector at A (GREEN)
+  const vLen = 28;
+  const vecAngle0 = -Math.PI / 6;
+  const vx0 = vLen * Math.cos(vecAngle0);
+  const vy0 = vLen * Math.sin(vecAngle0);
+  drawArrow(ctx, ax, ay, ax + vx0, ay + vy0, tokens.green, 2, 7);
+
+  // Holonomy angle
+  const area = Math.sin(th0) * dth * dph;
+  const holoAngle = area;
+  const vecAngleC = vecAngle0 + holoAngle;
+  const vxC = vLen * Math.cos(vecAngleC);
+  const vyC = vLen * Math.sin(vecAngleC);
+
+  // Faded original direction at C
+  ctx.save();
+  ctx.globalAlpha = 0.32;
+  ctx.setLineDash([4, 4]);
+  drawArrow(ctx, cx, cy, cx + vx0, cy + vy0, tokens.green, 1.5, 6);
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  // Rotated transported vector at C (GREEN with glow)
+  ctx.save();
+  ctx.shadowColor = tokens.green;
+  ctx.shadowBlur = 10;
+  drawArrow(ctx, cx, cy, cx + vxC, cy + vyC, tokens.green, 2.5, 8);
+  ctx.restore();
+
+  // Rotation label at C
+  ctx.save();
+  ctx.font = FONT_HUD;
+  ctx.fillStyle = tokens.green;
+  ctx.textBaseline = "top";
+  ctx.fillText(`δ = ${holoAngle.toFixed(3)} rad`, cx + 14, cy - 18);
+  ctx.restore();
+
+  // Corner labels A and C
+  ctx.save();
+  ctx.font = FONT_LABEL;
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = tokens.textBright;
+  ctx.fillText("A", ax - 16, ay);
+  ctx.fillText("C", cx + 10, cy);
+  ctx.restore();
+
+  // Area label at midpoint
+  const [midX, midY] = [(ax + cx) / 2, (ay + cy) / 2];
+  ctx.save();
+  ctx.font = FONT_HUD_SMALL;
+  ctx.fillStyle = tokens.textDim;
+  ctx.textBaseline = "top";
+  ctx.fillText(`A = ${area.toFixed(3)}`, midX + 10, midY - 6);
+  ctx.restore();
+
+  // ── Divider between sphere and HUD ──
+  drawDivider(ctx, W * 0.63, W - 16, H / 2, tokens.grid);
+
+  // ── HUD panel (right side) ──
+  const hudX = W * 0.64;
+  const hudY = 20;
+
+  drawSectionTitle(ctx, hudX, hudY, "PARALLEL TRANSPORT — SPHERE", tokens.textMute);
+  drawDivider(ctx, hudX, W - 16, hudY + 18, tokens.grid);
+
+  let hy = hudY + 28;
+  const ratio = area > 1e-6 ? holoAngle / area : 1.0;
+
+  hy = drawHudReadout(ctx, hudX, hy, "loop area  A = ", area.toFixed(4), tokens.textDim, tokens.cyan);
+  hy = drawHudReadout(ctx, hudX, hy, "rotation   δ = ", holoAngle.toFixed(4), tokens.textDim, tokens.green);
+  hy = drawHudReadout(ctx, hudX, hy, "ratio   δ/A   = ", ratio.toFixed(4), tokens.textDim, tokens.amber);
+  hy = drawHudReadout(ctx, hudX, hy, "R¹₂₁₂ (exact)  ", "1.0000", tokens.textDim, tokens.textDim);
+
+  drawDivider(ctx, hudX, W - 16, hy + 4, tokens.grid);
+  hy += 14;
+
+  // Convergence bar
+  const conv = Math.min(1, 1 - Math.abs(ratio - 1));
+  ctx.save();
+  ctx.fillStyle = hexToRgba(tokens.amber, 0.15);
+  ctx.fillRect(hudX, hy, 160, 10);
+  ctx.fillStyle = tokens.amber;
+  ctx.fillRect(hudX, hy, 160 * conv, 10);
+  ctx.restore();
+  ctx.save();
+  ctx.font = FONT_HUD_SMALL;
+  ctx.fillStyle = tokens.textMute;
+  ctx.textBaseline = "top";
+  ctx.fillText("convergence δ/A → R  (shrink loop)", hudX, hy + 14);
+  ctx.restore();
+
+  hy += 36;
+  drawDivider(ctx, hudX, W - 16, hy, tokens.grid);
+  hy += 12;
+
+  // Legend
+  drawSectionTitle(ctx, hudX, hy, "PATHS", tokens.textMute);
+  hy += 16;
+
+  ctx.save();
+  ctx.font = FONT_HUD;
+  ctx.textBaseline = "top";
+  ctx.fillStyle = tokens.cyan;
+  ctx.fillText("▬  ∇_θ then ∇_φ", hudX, hy);
+  hy += 18;
+  ctx.fillStyle = tokens.magenta;
+  ctx.fillText("▬  ∇_φ then ∇_θ", hudX, hy);
+  hy += 18;
+  ctx.fillStyle = tokens.green;
+  ctx.fillText("▬  parallel-transported V", hudX, hy);
+  ctx.restore();
+
+  // Footer
+  ctx.save();
+  ctx.font = FONT_HUD_SMALL;
+  ctx.fillStyle = tokens.textMute;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "bottom";
+  ctx.fillText(
+    "R = δ/A as loop area → 0  ·  drag sphere to rotate",
+    W / 2,
+    H - 8,
+  );
+  ctx.restore();
+}
+
 export function CommutatorScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [loopSize, setLoopSize] = useState(0.5); // 0.1 .. 1.0
+  const [loopSize, setLoopSize] = useState(0.5);
   const [rotY, setRotY] = useState(0.4);
   const [isDragging, setIsDragging] = useState(false);
   const lastX = useRef(0);
+  const animTRef = useRef(0);
+  const rafRef = useRef(0);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.58,
+    maxHeight: SCENE_HEIGHT_TALL,
+  });
 
+  // Smooth RAF loop for the moving dot
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    const start = performance.now();
+    const loop = (t: number) => {
+      const elapsed = (t - start) / 1000;
+      animTRef.current = (elapsed % 3) / 3;
 
-    ctx.clearRect(0, 0, W, H);
-
-    // Background
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, W, H);
-
-    // Draw sphere grid
-    drawSphere(ctx, rotY, 0.6);
-
-    // Loop parameters — a small parallelogram in θ-φ space on the sphere
-    const th0 = Math.PI / 2; // base θ: equator
-    const ph0 = 0.4 + rotY * 0.2; // base φ: slightly dynamic for visual clarity
-    const dth = 0.4 * loopSize;
-    const dph = 0.6 * loopSize;
-
-    // Four corners of the loop
-    const A = [th0, ph0] as const;
-    const B = [th0 + dth, ph0] as const;
-    const C = [th0 + dth, ph0 + dph] as const;
-    const D = [th0, ph0 + dph] as const;
-
-    // Project corners
-    const [ax, ay, az] = project(A[0], A[1], rotY);
-    const [bx, by, bz] = project(B[0], B[1], rotY);
-    const [cx, cy, cz] = project(C[0], C[1], rotY);
-    const [dx, dy, dz] = project(D[0], D[1], rotY);
-    void az; void bz; void cz; void dz;
-
-    // Draw two paths around the loop
-    // Path 1: A→B→C (cyan, "go θ first, then φ")
-    const pathAB = geodesicPoints(A[0], A[1], B[0], B[1], 20, rotY);
-    const pathBC = geodesicPoints(B[0], B[1], C[0], C[1], 20, rotY);
-    ctx.save();
-    ctx.shadowColor = "#22d3ee";
-    ctx.shadowBlur = 8;
-    drawPolyline(ctx, pathAB, "#22d3ee", 2);
-    drawPolyline(ctx, pathBC, "#22d3ee", 2);
-    ctx.restore();
-    // Arrows on path 1
-    if (pathAB.length >= 2) {
-      const [x1, y1] = pathAB[pathAB.length - 2];
-      arrowHead(ctx, bx, by, bx - x1, by - y1, 8, "#22d3ee");
-    }
-    if (pathBC.length >= 2) {
-      const [x1, y1] = pathBC[pathBC.length - 2];
-      arrowHead(ctx, cx, cy, cx - x1, cy - y1, 8, "#22d3ee");
-    }
-
-    // Path 2: A→D→C (amber, "go φ first, then θ")
-    const pathAD = geodesicPoints(A[0], A[1], D[0], D[1], 20, rotY);
-    const pathDC = geodesicPoints(D[0], D[1], C[0], C[1], 20, rotY);
-    ctx.save();
-    ctx.shadowColor = "#fb923c";
-    ctx.shadowBlur = 8;
-    drawPolyline(ctx, pathAD, "#fb923c", 2);
-    drawPolyline(ctx, pathDC, "#fb923c", 2);
-    ctx.restore();
-    if (pathAD.length >= 2) {
-      const [x1, y1] = pathAD[pathAD.length - 2];
-      arrowHead(ctx, dx, dy, dx - x1, dy - y1, 8, "#fb923c");
-    }
-    if (pathDC.length >= 2) {
-      const [x1, y1] = pathDC[pathDC.length - 2];
-      arrowHead(ctx, cx, cy, cx - x1, cy - y1, 8, "#fb923c");
-    }
-
-    // Draw initial vector at A
-    const vLen = 30;
-    const vecAngle0 = -Math.PI / 6;
-    const vx0 = vLen * Math.cos(vecAngle0);
-    const vy0 = vLen * Math.sin(vecAngle0);
-    ctx.strokeStyle = "#a3e635";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(ax, ay);
-    ctx.lineTo(ax + vx0, ay + vy0);
-    ctx.stroke();
-    arrowHead(ctx, ax + vx0, ay + vy0, vx0, vy0, 8, "#a3e635");
-
-    // Holonomy angle at C: rotation = area / R²
-    // Area of the loop ≈ sin(theta0) * dth * dph for unit sphere
-    const area = Math.sin(th0) * dth * dph;
-    const holoAngle = area; // R=1: rotation = area/R² = area
-    const vecAngleC = vecAngle0 + holoAngle;
-    const vxC = vLen * Math.cos(vecAngleC);
-    const vyC = vLen * Math.sin(vecAngleC);
-
-    // Draw transported vector at C (original, faded)
-    ctx.strokeStyle = "rgba(163,230,53,0.3)";
-    ctx.lineWidth = 1.5;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + vx0, cy + vy0);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Draw rotated vector at C (bright)
-    ctx.strokeStyle = "#a3e635";
-    ctx.lineWidth = 2.5;
-    ctx.save();
-    ctx.shadowColor = "#a3e635";
-    ctx.shadowBlur = 10;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + vxC, cy + vyC);
-    ctx.stroke();
-    ctx.restore();
-    arrowHead(ctx, cx + vxC, cy + vyC, vxC, vyC, 8, "#a3e635");
-
-    // Label the rotation
-    ctx.fillStyle = "#a3e635";
-    ctx.font = "bold 12px monospace";
-    ctx.fillText(`δ = ${holoAngle.toFixed(3)} rad`, cx + 16, cy - 14);
-
-    // Loop area label
-    const areaLabel = `A = ${area.toFixed(3)}`;
-    const [midX, midY] = [(ax + cx) / 2, (ay + cy) / 2];
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "11px monospace";
-    ctx.fillText(areaLabel, midX + 12, midY);
-
-    // Legend
-    ctx.font = "11px monospace";
-    ctx.fillStyle = "#22d3ee";
-    ctx.fillText("∇_θ then ∇_φ", 16, H - 44);
-    ctx.fillStyle = "#fb923c";
-    ctx.fillText("∇_φ then ∇_θ", 16, H - 28);
-    ctx.fillStyle = "#a3e635";
-    ctx.fillText("parallel-transported V", 16, H - 12);
-
-    // HUD: ratio δ/A → R
-    const ratio = area > 1e-6 ? holoAngle / area : 1.0;
-    ctx.fillStyle = "rgba(148,163,184,0.9)";
-    ctx.font = "11px monospace";
-    ctx.fillText(`δ/A = ${ratio.toFixed(3)}  (→ R = 1 as A→0)`, W - 200, 20);
-
-    // Corner labels
-    ctx.font = "bold 12px monospace";
-    ctx.fillStyle = "#e2e8f0";
-    ctx.fillText("A", ax - 14, ay + 4);
-    ctx.fillText("C", cx + 8, cy + 4);
-
-  }, [loopSize, rotY]);
+      const canvas = canvasRef.current;
+      if (!canvas) {
+        rafRef.current = requestAnimationFrame(loop);
+        return;
+      }
+      const ctx = applyDpr(canvas, width, height);
+      if (ctx) draw(ctx, loopSize, rotY, animTRef.current, tokens, width, height);
+      rafRef.current = requestAnimationFrame(loop);
+    };
+    rafRef.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [loopSize, rotY, tokens, width, height]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
@@ -281,43 +412,39 @@ export function CommutatorScene() {
   };
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
-    const dx = e.clientX - lastX.current;
+    const delta = e.clientX - lastX.current;
     lastX.current = e.clientX;
-    setRotY((r) => r + dx * 0.01);
+    setRotY((r) => r + delta * 0.01);
   };
   const handleMouseUp = () => setIsDragging(false);
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div ref={containerRef} className="relative w-full pb-4">
       <canvas
         ref={canvasRef}
-        width={W}
-        height={H}
-        className="max-w-full cursor-grab rounded-lg border border-white/10 active:cursor-grabbing"
+        className={`${SCENE_CANVAS_CLASS} cursor-grab active:cursor-grabbing`}
+        style={{ width, height, display: "block" }}
+        aria-label="Sphere with two parallelogram paths showing covariant derivative ordering. CYAN: ∇_θ then ∇_φ. MAGENTA: ∇_φ then ∇_θ. A GREEN dot traverses the loop; a GREEN vector at C shows the holonomy rotation. HUD shows δ/A converging to the Riemann component as the loop shrinks."
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        style={{ background: "#0f172a" }}
       />
-      <div className="flex w-full max-w-[540px] flex-col gap-2 font-mono text-xs text-white/70">
-        <div className="flex items-center gap-3">
-          <label htmlFor="loop-size" className="w-24 shrink-0">Loop size</label>
-          <input
-            id="loop-size"
-            type="range"
-            min={0.08}
-            max={1.0}
-            step={0.01}
-            value={loopSize}
-            onChange={(e) => setLoopSize(Number(e.target.value))}
-            className="flex-1"
-          />
-          <span className="w-14 text-right">{loopSize.toFixed(2)}</span>
-        </div>
-        <p className="text-white/40">
-          Drag the sphere to rotate. Shrink the loop: the rotation-per-unit-area δ/A converges to the local Riemann component.
-        </p>
+      <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)]">
+        <label htmlFor="commutator-loop-size" className="w-24 shrink-0">
+          Loop size
+        </label>
+        <input
+          id="commutator-loop-size"
+          type="range"
+          min={0.08}
+          max={1.0}
+          step={0.01}
+          value={loopSize}
+          onChange={(e) => setLoopSize(Number(e.target.value))}
+          className="flex-1"
+        />
+        <span className="w-14 text-right">{loopSize.toFixed(2)}</span>
       </div>
     </div>
   );

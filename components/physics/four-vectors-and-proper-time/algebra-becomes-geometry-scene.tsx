@@ -1,9 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { gamma, minkowskiNormSquared } from "@/lib/physics/relativity/types";
-import { rapidityFromBeta, betaFromRapidity } from "@/lib/physics/relativity/four-vectors";
+import { gamma } from "@/lib/physics/relativity/types";
+import { rapidityFromBeta } from "@/lib/physics/relativity/four-vectors";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.14c — The §03 honest-moment: the §02 algebra collapses into a single
@@ -17,24 +25,11 @@ import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
  *   5. Velocity-addition: w' = (u − v) / (1 − uv/c²)  [u fixed at 0.5c]
  *   6. Doppler shift:   f'/f = √((1+β)/(1−β))
  *
- * As the β slider moves, each row lights up sequentially by rapidity
- * quartile, so the reader sees the formulas "unlock" one by one from
- * the same underlying parameter η = atanh(β).
- *
  * RIGHT PANEL — the upper sheet of the unit hyperbola u^μ u_μ = c² in
- * the (u⁰/c, u¹/c) = (γ, γβ) plane. A single vector sweeps along this
- * hyperbola as β moves from 0 to 1. The hyperbola is the geometric object
- * that contains all six §02 formulas simultaneously — moving the β slider
- * rotates the vector by rapidity η, and each formula is just one projection
- * of that single rotation.
+ * the (u⁰/c, u¹/c) = (γ, γβ) plane.
  */
 
-const W = 700;
-const H = 340;
 const PAD = 20;
-const LEFT_W = 340;
-const RIGHT_X0 = LEFT_W + PAD;
-const RIGHT_W = W - RIGHT_X0 - PAD;
 
 const ROW_LABELS = [
   "β (speed / c)",
@@ -45,19 +40,15 @@ const ROW_LABELS = [
   "f′/f  (Doppler, approaching)",
 ];
 
-/**
- * Rapidity thresholds at which each §02 row lights up.
- * The six rows map to six equal bands of η ∈ [0, atanh(0.99)].
- */
 function unlockThreshold(rowIndex: number, etaMax: number): number {
   return (rowIndex / 6) * etaMax;
 }
 
 function rowValue(rowIndex: number, beta: number, c: number): string {
   const g = gamma(beta);
-  const DT_REF = 1.0; // lab time = 1 for time-dilation example
-  const L_REF = 1.0;  // proper length = 1 for length-contraction example
-  const U_REF = 0.5 * c; // probe velocity for velocity-addition example
+  const DT_REF = 1.0;
+  const L_REF = 1.0;
+  const U_REF = 0.5 * c;
   switch (rowIndex) {
     case 0: return beta.toFixed(4);
     case 1: return g.toFixed(4);
@@ -76,22 +67,30 @@ function rowValue(rowIndex: number, beta: number, c: number): string {
 }
 
 export function AlgebraBecomesGeometryScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
   const [beta, setBeta] = useState(0.0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
+    ctx.clearRect(0, 0, width, height);
 
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, width, height);
+
+    const W = width;
+    const H = height;
+    const LEFT_W = Math.max(280, W * 0.5);
+    const RIGHT_X0 = LEFT_W + PAD;
+    const RIGHT_W = W - RIGHT_X0 - PAD;
 
     const c = SPEED_OF_LIGHT;
     const eta = beta > 0 ? rapidityFromBeta(Math.min(beta, 0.9999)) : 0;
@@ -100,21 +99,19 @@ export function AlgebraBecomesGeometryScene() {
 
     // ── LEFT PANEL: §02 algebra rows ─────────────────────────────────────
     const rowH = (H - PAD * 2 - 32) / 6;
-    const colW = 20;
 
-    // Header
-    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillStyle = tokens.textBright;
     ctx.font = "bold 11px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText("§02 algebra — all shadows of one rotation", PAD, PAD + 14);
 
     const COLORS_ACTIVE = [
-      "#67E8F9", // cyan — β
-      "#A78BFA", // violet — γ
-      "#F472B6", // pink — time-dilation
-      "#FB923C", // orange — length-contraction
-      "#34D399", // green — velocity-addition
-      "#FFD66B", // amber — Doppler
+      tokens.cyan,
+      tokens.purple,
+      tokens.magenta,
+      tokens.orange,
+      tokens.mint,
+      tokens.amber,
     ];
 
     for (let i = 0; i < 6; i++) {
@@ -123,29 +120,27 @@ export function AlgebraBecomesGeometryScene() {
       const unlocked = eta >= threshold;
       const lit = beta > 0 && unlocked;
 
-      // Row background
       ctx.fillStyle = lit
-        ? `rgba(255,255,255,0.06)`
-        : "rgba(255,255,255,0.02)";
+        ? hexToRgba(tokens.textBright, 0.06)
+        : hexToRgba(tokens.textBright, 0.02);
       ctx.fillRect(PAD, rowY, LEFT_W - PAD * 2, rowH - 3);
 
-      // Rapidity indicator bar
       const barFill = Math.min(
         1,
         etaMax > 0 ? (eta - threshold) / (etaMax / 6) : 0,
       );
-      ctx.fillStyle = lit ? COLORS_ACTIVE[i] + "55" : "rgba(255,255,255,0.04)";
+      ctx.fillStyle = lit
+        ? hexToRgba(COLORS_ACTIVE[i], 0.33)
+        : hexToRgba(tokens.textBright, 0.04);
       ctx.fillRect(PAD, rowY, (LEFT_W - PAD * 2) * barFill, rowH - 3);
 
-      // Label
-      ctx.fillStyle = lit ? COLORS_ACTIVE[i] : "rgba(255,255,255,0.28)";
+      ctx.fillStyle = lit ? COLORS_ACTIVE[i] : tokens.textFaint;
       ctx.font = `${lit ? "bold " : ""}10px ui-monospace, monospace`;
       ctx.textAlign = "left";
       ctx.fillText(ROW_LABELS[i], PAD + 6, rowY + rowH * 0.45);
 
-      // Value
       if (lit) {
-        ctx.fillStyle = "rgba(255,255,255,0.90)";
+        ctx.fillStyle = tokens.textBright;
         ctx.font = "10px ui-monospace, monospace";
         ctx.textAlign = "right";
         ctx.fillText(
@@ -154,15 +149,14 @@ export function AlgebraBecomesGeometryScene() {
           rowY + rowH * 0.45,
         );
       } else if (beta === 0 && i === 0) {
-        ctx.fillStyle = "rgba(255,255,255,0.40)";
+        ctx.fillStyle = tokens.textMute;
         ctx.font = "10px ui-monospace, monospace";
         ctx.textAlign = "right";
         ctx.fillText("← drag β to begin", LEFT_W - PAD - 6, rowY + rowH * 0.45);
       }
     }
 
-    // Rapidity HUD
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "10px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText(
@@ -172,7 +166,7 @@ export function AlgebraBecomesGeometryScene() {
     );
 
     // ── DIVIDER ───────────────────────────────────────────────────────────
-    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.strokeStyle = tokens.panelBorder;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(LEFT_W, PAD);
@@ -180,19 +174,14 @@ export function AlgebraBecomesGeometryScene() {
     ctx.stroke();
 
     // ── RIGHT PANEL: the unit hyperbola u^μ u_μ = c² ─────────────────────
-    // Draw in (γ, γβ) space — i.e. (u⁰/c, u¹/c).
-    // The canvas x-axis is γβ (spatial component), y-axis is γ (time component).
-    // We flip y so γ grows upward.
-
     const cx = RIGHT_X0 + RIGHT_W / 2 - 24;
     const cy = H - PAD - 20;
-    const scale = (H - PAD * 2 - 40) / 3.2; // 1 unit = scale px; fits γ up to ~3
+    const scale = (H - PAD * 2 - 40) / 3.2;
 
     const toCanvasX = (u1: number) => cx + u1 * scale;
     const toCanvasY = (u0: number) => cy - u0 * scale;
 
-    // Axes
-    ctx.strokeStyle = "rgba(255,255,255,0.20)";
+    ctx.strokeStyle = tokens.axes;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(cx - 10, cy);
@@ -201,17 +190,15 @@ export function AlgebraBecomesGeometryScene() {
     ctx.lineTo(cx, PAD + 16);
     ctx.stroke();
 
-    // Axis labels
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "10px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText("u¹/c = γβ →", toCanvasX(0) + 4, cy + 14);
     ctx.textAlign = "center";
     ctx.fillText("u⁰/c = γ", cx, PAD + 14);
 
-    // Tick marks
     for (let tick = 0; tick <= 3; tick++) {
-      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx.strokeStyle = tokens.grid;
       ctx.lineWidth = 0.5;
       ctx.setLineDash([3, 4]);
       const ty = toCanvasY(tick);
@@ -220,15 +207,13 @@ export function AlgebraBecomesGeometryScene() {
       ctx.lineTo(cx + RIGHT_W - 30, ty);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "rgba(255,255,255,0.30)";
+      ctx.fillStyle = tokens.textFaint;
       ctx.font = "9px ui-monospace, monospace";
       ctx.textAlign = "right";
       if (tick > 0) ctx.fillText(String(tick), cx - 10, ty + 4);
     }
 
-    // The unit hyperbola u^μ u_μ = c² → u⁰ = √(1 + (u¹)²) in units of c.
-    // We trace it from β = 0 (point (1, 0)) to β → 1 (up and right).
-    ctx.strokeStyle = "#A78BFA";
+    ctx.strokeStyle = tokens.purple;
     ctx.lineWidth = 1.5;
     ctx.setLineDash([]);
     ctx.beginPath();
@@ -237,8 +222,8 @@ export function AlgebraBecomesGeometryScene() {
     for (let s = 0; s <= steps; s++) {
       const b = (s / steps) * betaMax;
       const gb = gamma(b);
-      const u1 = gb * b; // γβ
-      const u0 = gb;     // γ
+      const u1 = gb * b;
+      const u0 = gb;
       const px = toCanvasX(u1);
       const py = toCanvasY(u0);
       if (s === 0) ctx.moveTo(px, py);
@@ -246,14 +231,12 @@ export function AlgebraBecomesGeometryScene() {
     }
     ctx.stroke();
 
-    // Hyperbola label
-    ctx.fillStyle = "#A78BFA";
+    ctx.fillStyle = tokens.purple;
     ctx.font = "10px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText("u^μ u_μ = c²", toCanvasX(0.4), toCanvasY(1.05));
 
-    // Light asymptote u⁰ = u¹ (45° line in this coord system)
-    ctx.strokeStyle = "#FFD66B55";
+    ctx.strokeStyle = hexToRgba(tokens.amber, 0.33);
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 5]);
     ctx.beginPath();
@@ -262,12 +245,11 @@ export function AlgebraBecomesGeometryScene() {
     ctx.lineTo(toCanvasX(asymLen), toCanvasY(asymLen));
     ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = "#FFD66B99";
+    ctx.fillStyle = hexToRgba(tokens.amber, 0.6);
     ctx.font = "9px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText("light asymptote (β→1)", toCanvasX(asymLen * 0.4), toCanvasY(asymLen * 0.4) - 6);
 
-    // Four-velocity vector from origin to (γ, γβ)
     const u1 = g * beta;
     const u0 = g;
     const tipX = toCanvasX(u1);
@@ -275,18 +257,16 @@ export function AlgebraBecomesGeometryScene() {
     const origX = toCanvasX(0);
     const origY = toCanvasY(0);
 
-    // Shaft
-    ctx.strokeStyle = "#67E8F9";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.moveTo(origX, origY);
     ctx.lineTo(tipX, tipY);
     ctx.stroke();
 
-    // Arrowhead
     const ang = Math.atan2(tipY - origY, tipX - origX);
     const hl = 8;
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.beginPath();
     ctx.moveTo(tipX, tipY);
     ctx.lineTo(tipX - hl * Math.cos(ang - Math.PI / 6), tipY - hl * Math.sin(ang - Math.PI / 6));
@@ -294,34 +274,30 @@ export function AlgebraBecomesGeometryScene() {
     ctx.closePath();
     ctx.fill();
 
-    // Dot at tip
     ctx.beginPath();
     ctx.arc(tipX, tipY, 3.5, 0, Math.PI * 2);
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.fill();
 
-    // Dashed projections to axes
-    ctx.strokeStyle = "#67E8F955";
+    ctx.strokeStyle = hexToRgba(tokens.cyan, 0.33);
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 4]);
     ctx.beginPath();
     ctx.moveTo(tipX, tipY);
-    ctx.lineTo(origX, tipY); // projection to y-axis → γ component
+    ctx.lineTo(origX, tipY);
     ctx.moveTo(tipX, tipY);
-    ctx.lineTo(tipX, origY); // projection to x-axis → γβ component
+    ctx.lineTo(tipX, origY);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Labels at projections
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.font = "9px ui-monospace, monospace";
     ctx.textAlign = "right";
     ctx.fillText(`γ=${g.toFixed(2)}`, origX - 10, tipY + 3);
     ctx.textAlign = "center";
     ctx.fillText(`γβ=${u1.toFixed(2)}`, tipX, origY + 12);
 
-    // HUD
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "10px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText(
@@ -330,21 +306,21 @@ export function AlgebraBecomesGeometryScene() {
       H - PAD - 4,
     );
 
-    // Panel header
-    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillStyle = tokens.textBright;
     ctx.font = "bold 11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("one geometry — one rotation", cx, PAD + 14);
-  }, [beta]);
+  }, [beta, tokens, width, height]);
 
   return (
-    <div className="flex flex-col gap-3 p-2">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <div className="flex flex-col gap-2 px-1">
-        <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+      <div className="mt-3 flex flex-col gap-2 px-1">
+        <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-3)]">
           <span className="w-28">β = {beta.toFixed(3)}</span>
           <input
             type="range"
@@ -354,9 +330,10 @@ export function AlgebraBecomesGeometryScene() {
             value={beta}
             onChange={(e) => setBeta(parseFloat(e.target.value))}
             className="flex-1"
+            style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
-        <p className="font-mono text-xs text-white/40">
+        <p className="font-mono text-xs text-[var(--color-fg-4)]">
           Drag β rightward. Each §02 formula lights up as the same rapidity η = atanh(β) unlocks it.
           The vector on the right sweeps the hyperbola u^μ u_μ = c² — one object, all formulas.
         </p>

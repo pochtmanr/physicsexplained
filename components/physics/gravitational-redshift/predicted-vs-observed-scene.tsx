@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   POUND_REBKA_PREDICTED,
   POUND_REBKA_MEASURED,
@@ -8,129 +8,117 @@ import {
   POUND_SNIDER_RATIO,
   POUND_SNIDER_RATIO_ERROR,
 } from "@/lib/physics/relativity/gravitational-redshift";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * PredictedVsObservedScene — FIG.27c
- *
- * Two side-by-side displays:
- *   (a) PREDICTED vs MEASURED — bars with error bars.
- *       Predicted: 2.46 × 10⁻¹⁵  (deterministic, gh/c²)
- *       Measured (Pound-Rebka 1960): (2.57 ± 0.26) × 10⁻¹⁵
- *       Pound-Snider 1965 ratio: 0.999 ± 0.008  → 1% agreement
- *
- *   (b) Timeline of subsequent confirmations:
- *       Pound-Rebka 1960 — first lab test, 10%
- *       Pound-Snider 1965 — refined, 1%
- *       Vessot-Levine GP-A 1976 — hydrogen-maser rocket, 10⁻⁴
- *       Optical-clock comparison 2010s — 10⁻⁵+
- *
- * Canvas 2D, dark bg. PascalCase export: PredictedVsObservedScene.
  */
-
-const BG = "#0A0C12";
-const TEXT_BRIGHT = "rgba(255,255,255,0.92)";
-const TEXT_DIM = "rgba(255,255,255,0.65)";
-const TEXT_MUTE = "rgba(255,255,255,0.45)";
-const AMBER = "#FFB36B";
-const GREEN = "#86EFAC";
-const CYAN = "#67E8F9";
-const VIOLET = "#A78BFA";
-const RED_PALE = "#FCA5A5";
 
 interface ConfirmationEntry {
   year: number;
   experiment: string;
   precision: string;
-  fractional: number; // for sorting / chart placement
+  fractional: number;
   color: string;
 }
 
-const TIMELINE: readonly ConfirmationEntry[] = [
-  {
-    year: 1960,
-    experiment: "Pound-Rebka",
-    precision: "10%",
-    fractional: 0.1,
-    color: GREEN,
-  },
-  {
-    year: 1965,
-    experiment: "Pound-Snider",
-    precision: "1%",
-    fractional: 0.01,
-    color: CYAN,
-  },
-  {
-    year: 1976,
-    experiment: "Vessot GP-A (hydrogen maser, 10 000 km rocket)",
-    precision: "10⁻⁴",
-    fractional: 1e-4,
-    color: VIOLET,
-  },
-  {
-    year: 2010,
-    experiment: "Optical-clock altitude comparison (NIST)",
-    precision: "10⁻⁵",
-    fractional: 1e-5,
-    color: AMBER,
-  },
-] as const;
-
 export function PredictedVsObservedScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.62,
+    maxHeight: SCENE_HEIGHT_TALL,
+    minHeight: 360,
+  });
+
+  const timeline = useMemo<readonly ConfirmationEntry[]>(
+    () => [
+      {
+        year: 1960,
+        experiment: "Pound-Rebka",
+        precision: "10%",
+        fractional: 0.1,
+        color: tokens.mint,
+      },
+      {
+        year: 1965,
+        experiment: "Pound-Snider",
+        precision: "1%",
+        fractional: 0.01,
+        color: tokens.cyan,
+      },
+      {
+        year: 1976,
+        experiment: "Vessot GP-A (hydrogen maser, 10 000 km rocket)",
+        precision: "10⁻⁴",
+        fractional: 1e-4,
+        color: tokens.purple,
+      },
+      {
+        year: 2010,
+        experiment: "Optical-clock altitude comparison (NIST)",
+        precision: "10⁻⁵",
+        fractional: 1e-5,
+        color: tokens.amber,
+      },
+    ],
+    [tokens.mint, tokens.cyan, tokens.purple, tokens.amber],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
-    const W = canvas.clientWidth;
-    const H = canvas.clientHeight;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-    ctx.scale(dpr, dpr);
-    draw(ctx, W, H);
-  }, []);
+    draw(ctx, width, height, tokens, timeline);
+  }, [tokens, width, height, timeline]);
 
   return (
-    <div className="relative w-full">
+    <div ref={containerRef} className="relative w-full pb-4">
       <canvas
         ref={canvasRef}
-        style={{ width: "100%", height: 440, display: "block" }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
         aria-label="Bar chart of predicted vs measured gravitational redshift for the Pound-Rebka 1960 experiment, plus a timeline of subsequent confirmations from 1960 to 2010."
       />
     </div>
   );
 }
 
-function draw(ctx: CanvasRenderingContext2D, W: number, H: number) {
-  ctx.fillStyle = BG;
+function draw(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  tokens: SceneTokens,
+  timeline: readonly ConfirmationEntry[],
+) {
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // ── header ──
   ctx.save();
   ctx.font = "bold 13px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.textAlign = "center";
-  ctx.fillText(
-    "Δν / ν  for the 22.5 m Jefferson tower",
-    W / 2,
-    24,
-  );
+  ctx.fillText("Δν / ν  for the 22.5 m Jefferson tower", W / 2, 24);
   ctx.restore();
 
-  // ── Top half: predicted vs measured bars ──
   const topY = 50;
   const topH = 200;
   const bottomY = topY + topH + 40;
 
-  drawBarsPanel(ctx, 30, topY, W - 60, topH);
+  drawBarsPanel(ctx, 30, topY, W - 60, topH, tokens);
 
-  // ── separator ──
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.06)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.06);
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(30, bottomY - 20);
@@ -138,8 +126,7 @@ function draw(ctx: CanvasRenderingContext2D, W: number, H: number) {
   ctx.stroke();
   ctx.restore();
 
-  // ── Bottom half: timeline of confirmations ──
-  drawTimelinePanel(ctx, 30, bottomY, W - 60, H - bottomY - 16);
+  drawTimelinePanel(ctx, 30, bottomY, W - 60, H - bottomY - 16, tokens, timeline);
 }
 
 function drawBarsPanel(
@@ -148,6 +135,7 @@ function drawBarsPanel(
   y: number,
   w: number,
   h: number,
+  tokens: SceneTokens,
 ) {
   const padL = 70;
   const padR = 24;
@@ -156,42 +144,37 @@ function drawBarsPanel(
   const plotW = w - padL - padR;
   const plotH = h - padT - padB;
 
-  // y-axis goes from 0 to ~ 3.0 × 10⁻¹⁵
   const yMax = 3.0e-15;
   const yToPx = (v: number) => y + padT + plotH - (v / yMax) * plotH;
 
-  // ── frame + y ticks ──
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.08)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.08);
   ctx.strokeRect(x + padL, y + padT, plotW, plotH);
 
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_MUTE;
+  ctx.fillStyle = tokens.textFaint;
   ctx.textAlign = "right";
   for (const yv of [0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0]) {
     const yp = yToPx(yv * 1e-15);
     ctx.fillText(`${yv.toFixed(1)}`, x + padL - 6, yp + 3);
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
+    ctx.strokeStyle = hexToRgba(tokens.textBright, 0.05);
     ctx.moveTo(x + padL, yp);
     ctx.lineTo(x + padL + plotW, yp);
     ctx.stroke();
   }
 
-  // y-axis label
   ctx.save();
   ctx.translate(x + 14, y + padT + plotH / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textAlign = "center";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText("Δν / ν  (×10⁻¹⁵)", 0, 0);
   ctx.restore();
 
   ctx.restore();
 
-  // ── two bars: PREDICTED, MEASURED ──
   const barW = 80;
-  const gap = 100;
   const barLeftX = x + padL + plotW * 0.25 - barW / 2;
   const barRightX = x + padL + plotW * 0.65 - barW / 2;
 
@@ -199,14 +182,14 @@ function drawBarsPanel(
   const predTop = yToPx(POUND_REBKA_PREDICTED);
   const predBot = yToPx(0);
   ctx.save();
-  ctx.fillStyle = "rgba(255,179,107,0.35)";
-  ctx.strokeStyle = AMBER;
+  ctx.fillStyle = hexToRgba(tokens.amber, 0.35);
+  ctx.strokeStyle = tokens.amber;
   ctx.lineWidth = 1.5;
   ctx.fillRect(barLeftX, predTop, barW, predBot - predTop);
   ctx.strokeRect(barLeftX, predTop, barW, predBot - predTop);
 
   ctx.font = "bold 11px ui-monospace, monospace";
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.textAlign = "center";
   ctx.fillText(
     `${(POUND_REBKA_PREDICTED * 1e15).toFixed(2)} × 10⁻¹⁵`,
@@ -215,10 +198,10 @@ function drawBarsPanel(
   );
 
   ctx.font = "11px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText("PREDICTED", barLeftX + barW / 2, predBot + 16);
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_MUTE;
+  ctx.fillStyle = tokens.textFaint;
   ctx.fillText("g h / c²", barLeftX + barW / 2, predBot + 30);
   ctx.restore();
 
@@ -226,16 +209,15 @@ function drawBarsPanel(
   const measTop = yToPx(POUND_REBKA_MEASURED);
   const measBot = yToPx(0);
   ctx.save();
-  ctx.fillStyle = "rgba(134,239,172,0.35)";
-  ctx.strokeStyle = GREEN;
+  ctx.fillStyle = hexToRgba(tokens.mint, 0.35);
+  ctx.strokeStyle = tokens.mint;
   ctx.lineWidth = 1.5;
   ctx.fillRect(barRightX, measTop, barW, measBot - measTop);
   ctx.strokeRect(barRightX, measTop, barW, measBot - measTop);
 
-  // error bars
   const errTop = yToPx(POUND_REBKA_MEASURED + POUND_REBKA_MEASUREMENT_ERROR);
   const errBot = yToPx(POUND_REBKA_MEASURED - POUND_REBKA_MEASUREMENT_ERROR);
-  ctx.strokeStyle = GREEN;
+  ctx.strokeStyle = tokens.mint;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(barRightX + barW / 2, errTop);
@@ -247,7 +229,7 @@ function drawBarsPanel(
   ctx.stroke();
 
   ctx.font = "bold 11px ui-monospace, monospace";
-  ctx.fillStyle = GREEN;
+  ctx.fillStyle = tokens.mint;
   ctx.textAlign = "center";
   ctx.fillText(
     `(${(POUND_REBKA_MEASURED * 1e15).toFixed(2)} ± ${(POUND_REBKA_MEASUREMENT_ERROR * 1e15).toFixed(2)}) × 10⁻¹⁵`,
@@ -256,17 +238,16 @@ function drawBarsPanel(
   );
 
   ctx.font = "11px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText("MEASURED", barRightX + barW / 2, measBot + 16);
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_MUTE;
+  ctx.fillStyle = tokens.textFaint;
   ctx.fillText("Pound-Rebka 1960", barRightX + barW / 2, measBot + 30);
   ctx.restore();
 
-  // ── ratio annotation ──
   ctx.save();
   ctx.font = "bold 11px ui-monospace, monospace";
-  ctx.fillStyle = CYAN;
+  ctx.fillStyle = tokens.cyan;
   ctx.textAlign = "right";
   const labelX = x + padL + plotW - 8;
   ctx.fillText(
@@ -275,14 +256,13 @@ function drawBarsPanel(
     y + padT + 14,
   );
   ctx.font = "10px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText("(measured / predicted — agreement to 1%)", labelX, y + padT + 28);
   ctx.restore();
 
-  // ── header ──
   ctx.save();
   ctx.font = "bold 11px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.textAlign = "left";
   ctx.fillText("Predicted vs measured", x + padL, y + 20);
   ctx.restore();
@@ -294,19 +274,16 @@ function drawTimelinePanel(
   y: number,
   w: number,
   h: number,
+  tokens: SceneTokens,
+  timeline: readonly ConfirmationEntry[],
 ) {
   ctx.save();
   ctx.font = "bold 11px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.textAlign = "left";
-  ctx.fillText(
-    "Half a century of confirmations",
-    x,
-    y + 14,
-  );
+  ctx.fillText("Half a century of confirmations", x, y + 14);
   ctx.restore();
 
-  // simple horizontal timeline
   const padL = 50;
   const padR = 30;
   const lineY = y + h - 28;
@@ -314,7 +291,7 @@ function drawTimelinePanel(
   const lineX1 = x + w - padR;
 
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.18)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.18);
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(lineX0, lineY);
@@ -327,15 +304,14 @@ function drawTimelinePanel(
   const yearToPx = (yr: number) =>
     lineX0 + ((yr - yearMin) / (yearMax - yearMin)) * (lineX1 - lineX0);
 
-  // year ticks
   ctx.save();
   ctx.font = "9px ui-monospace, monospace";
-  ctx.fillStyle = TEXT_MUTE;
+  ctx.fillStyle = tokens.textFaint;
   ctx.textAlign = "center";
   for (const yr of [1960, 1970, 1980, 1990, 2000, 2010]) {
     const xp = yearToPx(yr);
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(255,255,255,0.15)";
+    ctx.strokeStyle = hexToRgba(tokens.textBright, 0.15);
     ctx.moveTo(xp, lineY - 2);
     ctx.lineTo(xp, lineY + 4);
     ctx.stroke();
@@ -343,12 +319,10 @@ function drawTimelinePanel(
   }
   ctx.restore();
 
-  // markers
-  for (const e of TIMELINE) {
+  for (const e of timeline) {
     const xp = yearToPx(e.year);
     const dotY = lineY;
 
-    // vertical leader
     ctx.save();
     ctx.strokeStyle = e.color;
     ctx.globalAlpha = 0.6;
@@ -361,7 +335,6 @@ function drawTimelinePanel(
     ctx.setLineDash([]);
     ctx.restore();
 
-    // dot
     ctx.save();
     ctx.fillStyle = e.color;
     ctx.beginPath();
@@ -370,9 +343,8 @@ function drawTimelinePanel(
     ctx.restore();
   }
 
-  // labels with stagger
-  for (let i = 0; i < TIMELINE.length; i++) {
-    const e = TIMELINE[i];
+  for (let i = 0; i < timeline.length; i++) {
+    const e = timeline[i];
     const xp = yearToPx(e.year);
     const labelY = y + 30 + (i % 2) * 26;
     ctx.save();
@@ -381,11 +353,11 @@ function drawTimelinePanel(
     ctx.textAlign = "left";
     ctx.fillText(`${e.year}`, xp + 8, labelY);
     ctx.font = "9px ui-monospace, monospace";
-    ctx.fillStyle = TEXT_DIM;
+    ctx.fillStyle = tokens.textDim;
     const exp = e.experiment.length > 38 ? e.experiment.slice(0, 36) + "…" : e.experiment;
     ctx.fillText(exp, xp + 8, labelY + 12);
     ctx.font = "9px ui-monospace, monospace";
-    ctx.fillStyle = RED_PALE;
+    ctx.fillStyle = tokens.red;
     ctx.fillText(`precision ${e.precision}`, xp + 8, labelY + 24);
     ctx.restore();
   }

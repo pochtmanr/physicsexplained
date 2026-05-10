@@ -2,6 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { tidalAccelerationOverSeparation } from "@/lib/physics/relativity/elevator";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * TidalLimitScene — FIG.26c
@@ -9,71 +18,47 @@ import { tidalAccelerationOverSeparation } from "@/lib/physics/relativity/elevat
  * The equivalence principle is local. Two test masses far apart in a real
  * gravitational field experience slightly different g (the tide), so the
  * elevator-equivalence breaks down over a finite region.
- *
- * Animation: two test masses fall freely in Earth's field, separated by an
- * adjustable distance Δr. As Δr grows, the residual relative acceleration
- * (the tide) grows visibly: |Δa| = 2 g Δr / R.
- *
- * Slider: Δr from 1 m (essentially zero tide — the EP is excellent) to
- * 1000 km (large tide — the EP fails).
- *
- * Canvas 2D, dark bg.
  */
 
-const BG = "#0A0C12";
-const TEXT_DIM = "rgba(255,255,255,0.55)";
-const TEXT_BRIGHT = "rgba(255,255,255,0.92)";
-const HUD = "rgba(255,255,255,0.7)";
-const AMBER = "#FFB36B";
-const CYAN = "#67C4F0";
-const RED = "#E66B6B";
-
 export function TidalLimitScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+    minHeight: 280,
+  });
   const rafRef = useRef<number | null>(null);
   const t0Ref = useRef<number | null>(null);
 
-  // Δr in meters. Slider is logarithmic: 0 → 1 m, 1 → 1e6 m (1000 km).
   const [logDeltaR, setLogDeltaR] = useState(0.5);
-  const deltaR = Math.pow(10, logDeltaR * 6); // 1 m to 1e6 m
+  const deltaR = Math.pow(10, logDeltaR * 6);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-
-    const setupCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const W = canvas.clientWidth;
-      const H = canvas.clientHeight;
-      if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-      return { W, H };
-    };
 
     const tick = (now: number) => {
       if (t0Ref.current === null) t0Ref.current = now;
       const t = (now - t0Ref.current) / 1000;
-      const { W, H } = setupCanvas();
-      draw(ctx, W, H, t, deltaR);
+      draw(ctx, width, height, t, deltaR, tokens);
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  }, [deltaR]);
+  }, [deltaR, tokens, width, height]);
 
   return (
-    <div className="relative w-full">
+    <div ref={containerRef} className="relative w-full pb-4">
       <canvas
         ref={canvasRef}
-        style={{ width: "100%", height: 360, display: "block" }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
         aria-label="Two test masses falling toward Earth's centre, separated by a variable distance Δr. The slider controls Δr from 1 metre to 1000 kilometres. The relative tidal acceleration grows linearly with Δr."
       />
       <div className="mt-3 flex items-center gap-3 px-2">
@@ -87,7 +72,8 @@ export function TidalLimitScene() {
           step={0.001}
           value={logDeltaR}
           onChange={(e) => setLogDeltaR(parseFloat(e.target.value))}
-          className="flex-1 accent-[#FFB36B]"
+          className="flex-1"
+          style={{ accentColor: "var(--color-amber)" }}
         />
         <span className="w-28 text-right font-mono text-xs text-[var(--color-fg-1)]">
           {formatDistance(deltaR)}
@@ -116,8 +102,9 @@ function draw(
   H: number,
   t: number,
   deltaR: number,
+  tokens: SceneTokens,
 ) {
-  ctx.fillStyle = BG;
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
   // Earth at the bottom
@@ -125,7 +112,7 @@ function draw(
   const earthRpx = Math.min(W * 0.6, 280);
   const earthCY = H + earthRpx - 26;
 
-  // Earth disk
+  // Earth disk — physical Earth blue, kept literal
   ctx.save();
   const eg = ctx.createRadialGradient(cx, earthCY - earthRpx * 0.3, 0, cx, earthCY, earthRpx);
   eg.addColorStop(0, "rgba(80, 130, 170, 0.35)");
@@ -139,33 +126,22 @@ function draw(
   ctx.beginPath();
   ctx.arc(cx, earthCY, earthRpx, 0, Math.PI * 2);
   ctx.stroke();
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.font = `11px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.fillText("Earth", cx, H - 8);
   ctx.restore();
 
-  // Two test masses fall under the centre-of-mass acceleration.
-  // The relative drift in the elevator-frame is given by Δa = 2 g Δr / R.
-  // For the animation we exaggerate the geometric separation so the slider's
-  // effect is visible, but the readout shows the actual SI value of Δa.
-  const cycle = 5; // animation period
-  const tCycle = (t % cycle) / cycle; // 0..1
-  // Vertical drop of the centre of mass on the canvas (just so motion is visible).
+  const cycle = 5;
+  const tCycle = (t % cycle) / cycle;
   const yTop = 50;
   const yBottom = H - earthRpx + 30;
   const yMid = yTop + (yBottom - yTop) * tCycle;
 
-  // Geometric pixel separation: log-scaled relative to canvas width.
-  // 1 m → ~12 px; 1 km → ~80 px; 1000 km → 200 px (clamped).
   const sepPx = Math.min(12 + 32 * Math.log10(Math.max(deltaR, 1)), W * 0.42);
 
-  // Convergence drift visualisation: the two masses drift toward each other
-  // by an amount proportional to (Δa) × (t)². We show this as a small inward
-  // wobble that grows over the cycle.
   const tideSI = tidalAccelerationOverSeparation(deltaR);
   const tideMagnitude = Math.abs(tideSI);
-  // log-scale drift visualisation: 0 at deltaR=1 m, growing visibly by 1000 km.
   const driftScale = Math.min(0.20 * Math.log10(Math.max(tideMagnitude / 3e-6, 1) + 1), 0.35);
   const drift = sepPx * driftScale * (tCycle * tCycle);
 
@@ -174,7 +150,7 @@ function draw(
 
   // Trails (subtle)
   ctx.save();
-  ctx.strokeStyle = "rgba(255,255,255,0.10)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.10);
   ctx.setLineDash([3, 4]);
   ctx.beginPath();
   ctx.moveTo(cx - sepPx / 2, yTop);
@@ -185,13 +161,12 @@ function draw(
   ctx.setLineDash([]);
   ctx.restore();
 
-  // Two test masses
-  drawTestMass(ctx, xLeft, yMid, CYAN, "A");
-  drawTestMass(ctx, xRight, yMid, RED, "B");
+  drawTestMass(ctx, xLeft, yMid, tokens.cyan, "A", tokens);
+  drawTestMass(ctx, xRight, yMid, tokens.red, "B", tokens);
 
   // Connecting Δr label
   ctx.save();
-  ctx.strokeStyle = "rgba(255, 220, 120, 0.45)";
+  ctx.strokeStyle = hexToRgba(tokens.amber, 0.45);
   ctx.lineWidth = 1;
   ctx.setLineDash([2, 3]);
   ctx.beginPath();
@@ -199,7 +174,7 @@ function draw(
   ctx.lineTo(xRight - 8, yMid);
   ctx.stroke();
   ctx.setLineDash([]);
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.font = `11px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.fillText(`Δr = ${formatDistance(deltaR)}`, (xLeft + xRight) / 2, yMid - 8);
@@ -207,24 +182,22 @@ function draw(
 
   // Title
   ctx.save();
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.font = `bold 14px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.fillText("The EP is local — over a finite region, real gravity tides give it away", cx, 22);
   ctx.restore();
 
-  // HUD readout
   const hudY = 50;
   ctx.save();
-  ctx.fillStyle = HUD;
+  ctx.fillStyle = tokens.textDim;
   ctx.font = `11px ui-monospace, monospace`;
   ctx.textAlign = "left";
   ctx.fillText("|Δa|  =  2 g Δr / R", 24, hudY);
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.fillText(`     =  ${formatTide(tideSI)}`, 24, hudY + 16);
 
-  // Verdict
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.font = `11px ui-monospace, monospace`;
   ctx.textAlign = "right";
   let verdict: string;
@@ -232,7 +205,7 @@ function draw(
   else if (tideMagnitude < 1e-3) verdict = "EP good — tide is small";
   else verdict = "EP breaks down — tide visible";
   ctx.fillText(verdict, W - 24, hudY);
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText(`R = 6371 km, g = 9.81 m/s²`, W - 24, hudY + 16);
   ctx.restore();
 }
@@ -243,9 +216,9 @@ function drawTestMass(
   y: number,
   color: string,
   label: string,
+  tokens: SceneTokens,
 ) {
   ctx.save();
-  // Glow
   ctx.shadowColor = color;
   ctx.shadowBlur = 14;
   ctx.fillStyle = color;
@@ -253,8 +226,7 @@ function drawTestMass(
   ctx.arc(x, y, 6, 0, Math.PI * 2);
   ctx.fill();
   ctx.shadowBlur = 0;
-  // Label
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.font = `bold 10px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.fillText(label, x, y - 12);

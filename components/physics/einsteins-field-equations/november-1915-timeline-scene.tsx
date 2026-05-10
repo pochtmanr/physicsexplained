@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_SHORT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.37b — November 1915 timeline.
@@ -16,8 +24,6 @@ import { useEffect, useRef, useState } from "react";
  * Clicking on each node expands a detail card below the timeline.
  */
 
-const W = 700;
-const H = 300;
 const PAD = 24;
 
 interface TimelineEvent {
@@ -31,7 +37,9 @@ interface TimelineEvent {
   color: string;
 }
 
-const EVENTS: TimelineEvent[] = [
+type EventSpec = Omit<TimelineEvent, "color"> & { colorKey: "cyan" | "magenta" };
+
+const EVENT_SPECS: EventSpec[] = [
   {
     id: "nov4",
     date: "November 4, 1915",
@@ -41,7 +49,7 @@ const EVENTS: TimelineEvent[] = [
     headline: "Near-final form",
     detail:
       "Einstein presents an almost-complete set of field equations to the Prussian Academy of Sciences in Berlin. The form is not yet fully covariant — the trace term is missing. But the machinery is in place.",
-    color: "#67E8F9",
+    colorKey: "cyan",
   },
   {
     id: "nov18",
@@ -52,7 +60,7 @@ const EVENTS: TimelineEvent[] = [
     headline: "Corrected form + Mercury",
     detail:
       "Einstein submits the corrected equations R_{μν} − ½ R g_{μν} = κ T_{μν} and uses them to calculate the 43-arcsecond-per-century precession of Mercury's perihelion. \"I was beside myself with joy,\" he wrote to a friend.",
-    color: "#67E8F9",
+    colorKey: "cyan",
   },
   {
     id: "nov20",
@@ -63,7 +71,7 @@ const EVENTS: TimelineEvent[] = [
     headline: "Variational derivation",
     detail:
       "David Hilbert presents the Einstein-Hilbert action S = ∫ R √(−g) d⁴x in Göttingen. Varying this action with respect to the metric yields the field equations as the Euler-Lagrange conditions — the canonical \"why\" behind the equations.",
-    color: "#F9A8D4",
+    colorKey: "magenta",
   },
   {
     id: "nov25",
@@ -74,37 +82,52 @@ const EVENTS: TimelineEvent[] = [
     headline: "Final form published",
     detail:
       "Einstein publishes the definitive paper: G_{μν} = 8πG T_{μν} (in units where c = 1). General relativity is complete. Modern scholarship credits Einstein with the physical derivation and Hilbert with the variational form — both contributions stand independently.",
-    color: "#67E8F9",
+    colorKey: "cyan",
   },
 ];
 
 export function November1915TimelineScene() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.43,
+    maxHeight: SCENE_HEIGHT_SHORT,
+  });
   const [selected, setSelected] = useState<string | null>(null);
 
-  const trackY = 120;
-  const innerW = W - PAD * 2;
+  const trackY = height * 0.4;
+
+  const events = useMemo<TimelineEvent[]>(
+    () =>
+      EVENT_SPECS.map((spec) => ({
+        id: spec.id,
+        date: spec.date,
+        dateShort: spec.dateShort,
+        x: spec.x,
+        actor: spec.actor,
+        headline: spec.headline,
+        detail: spec.detail,
+        color: tokens[spec.colorKey],
+      })),
+    [tokens],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = width;
+    const H = height;
     ctx.clearRect(0, 0, W, H);
 
     // Background
-    ctx.fillStyle = "#050508";
+    ctx.fillStyle = tokens.bg;
     ctx.fillRect(0, 0, W, H);
 
     // Title
-    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillStyle = tokens.textDim;
     ctx.font = "bold 11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("NOVEMBER 1915 — SIX WEEKS THAT CHANGED PHYSICS", W / 2, PAD + 6);
@@ -114,12 +137,12 @@ export function November1915TimelineScene() {
     const trackX1 = W - PAD - 12;
 
     // Month label
-    ctx.fillStyle = "rgba(255,255,255,0.20)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.font = "9px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText("BERLIN / GÖTTINGEN  ·  Nov 1915", trackX0, trackY - 28);
 
-    ctx.strokeStyle = "rgba(255,255,255,0.18)";
+    ctx.strokeStyle = tokens.gridHeavy;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(trackX0, trackY);
@@ -127,7 +150,7 @@ export function November1915TimelineScene() {
     ctx.stroke();
 
     // End markers
-    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.strokeStyle = tokens.grid;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(trackX0, trackY - 8);
@@ -136,14 +159,14 @@ export function November1915TimelineScene() {
     ctx.lineTo(trackX1, trackY + 8);
     ctx.stroke();
 
-    ctx.fillStyle = "rgba(255,255,255,0.18)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.font = "8px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("Nov 1", trackX0, trackY + 20);
     ctx.fillText("Nov 30", trackX1, trackY + 20);
 
     // Events
-    for (const ev of EVENTS) {
+    for (const ev of events) {
       const x = trackX0 + ev.x * (trackX1 - trackX0);
       const isSelected = selected === ev.id;
       const nodeR = isSelected ? 10 : 7;
@@ -153,9 +176,7 @@ export function November1915TimelineScene() {
       const connectorLen = 50;
       const labelY = above ? trackY - connectorLen : trackY + connectorLen;
 
-      ctx.strokeStyle = isSelected
-        ? ev.color
-        : `${ev.color}55`;
+      ctx.strokeStyle = isSelected ? ev.color : hexToRgba(ev.color, 0.33);
       ctx.lineWidth = isSelected ? 1.5 : 1;
       ctx.setLineDash([2, 2]);
       ctx.beginPath();
@@ -167,49 +188,49 @@ export function November1915TimelineScene() {
       // Node circle
       if (isSelected) {
         const glow = ctx.createRadialGradient(x, trackY, nodeR, x, trackY, nodeR * 4);
-        glow.addColorStop(0, `${ev.color}55`);
-        glow.addColorStop(1, `${ev.color}00`);
+        glow.addColorStop(0, hexToRgba(ev.color, 0.33));
+        glow.addColorStop(1, hexToRgba(ev.color, 0));
         ctx.fillStyle = glow;
         ctx.beginPath();
         ctx.arc(x, trackY, nodeR * 4, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      ctx.fillStyle = isSelected ? ev.color : `${ev.color}88`;
+      ctx.fillStyle = isSelected ? ev.color : hexToRgba(ev.color, 0.53);
       ctx.beginPath();
       ctx.arc(x, trackY, nodeR, 0, Math.PI * 2);
       ctx.fill();
 
       // Date label
-      ctx.fillStyle = isSelected ? ev.color : "rgba(255,255,255,0.55)";
+      ctx.fillStyle = isSelected ? ev.color : tokens.textDim;
       ctx.font = `${isSelected ? "bold " : ""}10px ui-monospace, monospace`;
       ctx.textAlign = "center";
       ctx.fillText(ev.dateShort, x, above ? labelY - 22 : labelY + 22);
 
       // Headline label
-      ctx.fillStyle = isSelected ? ev.color : "rgba(255,255,255,0.45)";
+      ctx.fillStyle = isSelected ? ev.color : tokens.textMute;
       ctx.font = `${isSelected ? "bold " : ""}9px ui-monospace, monospace`;
       ctx.textAlign = "center";
       ctx.fillText(ev.headline, x, above ? labelY - 10 : labelY + 34);
 
       // Actor label
       const actorLabel = ev.actor === "einstein" ? "EINSTEIN · BERLIN" : "HILBERT · GÖTTINGEN";
-      ctx.fillStyle = isSelected ? `${ev.color}cc` : "rgba(255,255,255,0.25)";
+      ctx.fillStyle = isSelected ? hexToRgba(ev.color, 0.8) : tokens.textFaint;
       ctx.font = "8px ui-monospace, monospace";
       ctx.textAlign = "center";
       ctx.fillText(actorLabel, x, above ? labelY + 2 : labelY + 48);
     }
 
     // Detail card at bottom
-    const activeEvent = EVENTS.find((e) => e.id === selected);
+    const activeEvent = events.find((e) => e.id === selected);
     if (activeEvent) {
       const cardY = H - 82;
-      ctx.fillStyle = "rgba(15,10,30,0.90)";
+      ctx.fillStyle = hexToRgba(tokens.bg, 0.9);
       ctx.beginPath();
       ctx.roundRect(PAD, cardY, W - PAD * 2, 68, 6);
       ctx.fill();
 
-      ctx.strokeStyle = `${activeEvent.color}44`;
+      ctx.strokeStyle = hexToRgba(activeEvent.color, 0.27);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.roundRect(PAD, cardY, W - PAD * 2, 68, 6);
@@ -220,7 +241,7 @@ export function November1915TimelineScene() {
       ctx.textAlign = "left";
       ctx.fillText(`${activeEvent.date} — ${activeEvent.headline}`, PAD + 10, cardY + 18);
 
-      ctx.fillStyle = "rgba(255,255,255,0.65)";
+      ctx.fillStyle = tokens.textDim;
       ctx.font = "9px ui-monospace, monospace";
       ctx.textAlign = "left";
       const words = activeEvent.detail.split(" ");
@@ -238,12 +259,12 @@ export function November1915TimelineScene() {
       }
       if (line) ctx.fillText(line, PAD + 10, lineY);
     } else {
-      ctx.fillStyle = "rgba(255,255,255,0.22)";
+      ctx.fillStyle = tokens.textFaint;
       ctx.font = "9px ui-monospace, monospace";
       ctx.textAlign = "center";
       ctx.fillText("← click a node to read the story of each day →", W / 2, H - 50);
     }
-  }, [selected, trackY]);
+  }, [selected, trackY, tokens, events, width, height]);
 
   function handleClick(e: React.MouseEvent<HTMLCanvasElement>) {
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -251,9 +272,9 @@ export function November1915TimelineScene() {
     const mx = e.clientX - rect.left;
     const my = e.clientY - rect.top;
     const trackX0 = PAD + 12;
-    const trackX1 = W - PAD - 12;
+    const trackX1 = width - PAD - 12;
 
-    for (const ev of EVENTS) {
+    for (const ev of events) {
       const x = trackX0 + ev.x * (trackX1 - trackX0);
       const dist = Math.sqrt((mx - x) ** 2 + (my - trackY) ** 2);
       if (dist < 18) {
@@ -264,13 +285,14 @@ export function November1915TimelineScene() {
   }
 
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div ref={containerRef} className="flex flex-col gap-2 p-2 w-full">
       <canvas
         ref={canvasRef}
         onClick={handleClick}
-        className="cursor-pointer rounded-md border border-white/10 bg-black/60"
+        className={`cursor-pointer ${SCENE_CANVAS_CLASS}`}
+        style={{ width, height, display: "block" }}
       />
-      <p className="px-1 font-mono text-xs text-white/40">
+      <p className="px-1 font-mono text-xs text-[var(--color-fg-3)]">
         Six weeks, November 1915. Einstein and Hilbert working independently — the
         physical derivation and the variational form of the same equation. Click each
         node to read the story of that day.

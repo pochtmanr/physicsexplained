@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import {
   EARTH_ORBITAL_SPEED,
   predictedFringeShift,
@@ -10,9 +9,14 @@ import {
   MICHELSON_1887_ARM_LENGTH,
   SODIUM_D_WAVELENGTH,
 } from "@/lib/physics/relativity/michelson-morley";
-
-const RATIO = 0.66;
-const MAX_HEIGHT = 460;
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.03c — The aether wind that should have been there.
@@ -38,40 +42,22 @@ const MAX_HEIGHT = 460;
 export function AetherWindAttemptScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
-  const [size, setSize] = useState({ width: 640, height: 420 });
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.66,
+    maxHeight: SCENE_HEIGHT_TALL,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
-
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       // ── Layout: orbit on left 65%, HUD/inset on right 35% ──
       const orbitW = width * 0.65;
@@ -91,7 +77,7 @@ export function AetherWindAttemptScene() {
       const vy = Math.cos(phi);
 
       // ── Orbit path ──
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 1;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -101,15 +87,15 @@ export function AetherWindAttemptScene() {
 
       // ── Sun ──
       ctx.save();
-      ctx.shadowColor = "rgba(255, 200, 80, 0.85)";
+      ctx.shadowColor = hexToRgba(tokens.amber, 0.85);
       ctx.shadowBlur = 24;
-      ctx.fillStyle = "#FFC852";
+      ctx.fillStyle = tokens.amber;
       ctx.beginPath();
       ctx.arc(cx, cy, 12, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
-      ctx.fillStyle = colors.fg2;
-      ctx.font = "10px monospace";
+      ctx.fillStyle = tokens.textMute;
+      ctx.font = tokens.fontHudSmall;
       ctx.textAlign = "center";
       ctx.fillText("Sun", cx, cy + 28);
       ctx.fillText("(aether at rest here)", cx, cy + 42);
@@ -118,7 +104,7 @@ export function AetherWindAttemptScene() {
       // Static streaks anchored to the lab/aether frame, drifting backward
       // past Earth as Earth moves through them.
       ctx.save();
-      ctx.strokeStyle = "rgba(140, 200, 255, 0.10)";
+      ctx.strokeStyle = hexToRgba(tokens.cyan, 0.10);
       ctx.lineWidth = 1;
       const nStreaks = 32;
       for (let i = 0; i < nStreaks; i++) {
@@ -134,21 +120,21 @@ export function AetherWindAttemptScene() {
 
       // ── Earth ──
       ctx.save();
-      ctx.shadowColor = "rgba(140, 200, 255, 0.85)";
+      ctx.shadowColor = hexToRgba(tokens.cyan, 0.85);
       ctx.shadowBlur = 14;
-      ctx.fillStyle = "#6FB8C6";
+      ctx.fillStyle = tokens.cyan;
       ctx.beginPath();
       ctx.arc(ex, ey, 8, 0, Math.PI * 2);
       ctx.fill();
       ctx.restore();
-      ctx.fillStyle = colors.fg2;
-      ctx.font = "9px monospace";
+      ctx.fillStyle = tokens.textMute;
+      ctx.font = tokens.fontHudSmall;
       ctx.textAlign = "center";
       ctx.fillText("Earth (v = 30 km/s)", ex, ey - 14);
 
       // ── Earth's velocity arrow (small, blue, tangent) ──
       const vArrLen = 26;
-      drawArrow(ctx, ex, ey, ex + vArrLen * vx, ey + vArrLen * vy, "#6FB8C6", 1.6);
+      drawArrow(ctx, ex, ey, ex + vArrLen * vx, ey + vArrLen * vy, tokens.cyan, 1.6);
 
       // ── Aether wind arrow (anti-parallel to v) ──
       const wArrLen = 38;
@@ -158,11 +144,11 @@ export function AetherWindAttemptScene() {
         ey - wArrLen * vy * 0.2,
         ex - wArrLen * vx,
         ey - wArrLen * vy,
-        "#FFC852",
+        tokens.amber,
         2.2,
       );
-      ctx.fillStyle = "#FFC852";
-      ctx.font = "9px monospace";
+      ctx.fillStyle = tokens.amber;
+      ctx.font = tokens.fontHudSmall;
       ctx.textAlign = "center";
       ctx.fillText("aether wind?", ex - wArrLen * vx, ey - wArrLen * vy - 6);
 
@@ -172,7 +158,7 @@ export function AetherWindAttemptScene() {
       ctx.save();
       ctx.translate(ex, ey);
       ctx.rotate(localTheta);
-      ctx.strokeStyle = "rgba(238, 242, 249, 0.85)";
+      ctx.strokeStyle = hexToRgba(tokens.textBright, 0.85);
       ctx.lineWidth = 1.2;
       const a2 = 11;
       ctx.beginPath();
@@ -197,12 +183,12 @@ export function AetherWindAttemptScene() {
       const noise = expectedNullThreshold();
       const observed = noise * 0.6 * Math.sin(t * 0.5);
 
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "11px monospace";
+      ctx.fillStyle = tokens.textDim;
+      ctx.font = tokens.fontHudSmall;
       ctx.textAlign = "left";
       ctx.fillText("AETHER-WIND PREDICTION", hudX, hudY);
 
-      ctx.fillStyle = colors.fg2;
+      ctx.fillStyle = tokens.textMute;
       ctx.font = "10px monospace";
       let yy = hudY + 18;
       const lines = [
@@ -222,14 +208,14 @@ export function AetherWindAttemptScene() {
       ];
       for (const l of lines) {
         if (l.startsWith("verdict")) {
-          ctx.fillStyle = "#FF8C8C";
-          ctx.font = "11px monospace";
+          ctx.fillStyle = tokens.red;
+          ctx.font = tokens.fontHudSmall;
         } else if (l.startsWith("predicted")) {
-          ctx.fillStyle = "#FFC852";
+          ctx.fillStyle = tokens.amber;
         } else if (l.startsWith("observed")) {
-          ctx.fillStyle = "#6FB8C6";
+          ctx.fillStyle = tokens.cyan;
         } else {
-          ctx.fillStyle = colors.fg2;
+          ctx.fillStyle = tokens.textMute;
           ctx.font = "10px monospace";
         }
         ctx.fillText(l, hudX, yy);
@@ -237,7 +223,7 @@ export function AetherWindAttemptScene() {
       }
 
       // Faint wrap-around frame
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 1;
       ctx.strokeRect(hudX - 6, hudY - 14, hudW, yy - hudY + 6);
     },
@@ -247,8 +233,8 @@ export function AetherWindAttemptScene() {
     <div ref={containerRef} className="w-full pb-3">
       <canvas
         ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
     </div>
   );

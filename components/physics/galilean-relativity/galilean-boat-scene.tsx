@@ -2,8 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { boatOnRiverShoreSpeed } from "@/lib/physics/relativity/galilean";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_SHORT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.01a — Boat on a river.
@@ -20,18 +27,19 @@ import { boatOnRiverShoreSpeed } from "@/lib/physics/relativity/galilean";
  *                     amber = numerical readout.
  */
 
-const RATIO = 0.5;
-const MAX_HEIGHT = 320;
 const SCENE_LENGTH_M = 40; // shore-x range visible
 
 export function GalileanBoatScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
 
   const [boatSpeed, setBoatSpeed] = useState(5); // m/s, in water frame
   const [currentSpeed, setCurrentSpeed] = useState(3); // m/s, water vs shore
-  const [size, setSize] = useState({ width: 560, height: 280 });
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_SHORT,
+  });
 
   const boatSpeedRef = useRef(boatSpeed);
   const currentSpeedRef = useRef(currentSpeed);
@@ -42,37 +50,17 @@ export function GalileanBoatScene() {
     currentSpeedRef.current = currentSpeed;
   }, [currentSpeed]);
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
 
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const u = boatSpeedRef.current;
       const v = currentSpeedRef.current;
@@ -90,27 +78,27 @@ export function GalileanBoatScene() {
       const waterY = shoreY + laneH + 8;
 
       // Shore lane label
-      ctx.fillStyle = colors.fg2;
-      ctx.font = "11px monospace";
+      ctx.fillStyle = tokens.textMute;
+      ctx.font = tokens.fontHudSmall;
       ctx.textAlign = "left";
       ctx.fillText("SHORE FRAME (lab)", margin, shoreY - 6);
 
       // Shore lane background
-      ctx.fillStyle = "rgba(255,255,255,0.02)";
+      ctx.fillStyle = hexToRgba(tokens.textBright, 0.02);
       ctx.fillRect(margin, shoreY, plotW, laneH);
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 0.7;
       ctx.strokeRect(margin + 0.5, shoreY + 0.5, plotW - 1, laneH - 1);
 
       // Water lane label
-      ctx.fillStyle = colors.fg2;
+      ctx.fillStyle = tokens.textMute;
       ctx.fillText("WATER FRAME (boat's frame is here, drifting at v)", margin, waterY - 6);
 
       // Water lane background — cyan-tinted, scrolling stripes for the current.
-      ctx.fillStyle = "rgba(116,220,255,0.05)";
+      ctx.fillStyle = hexToRgba(tokens.cyan, 0.05);
       ctx.fillRect(margin, waterY, plotW, laneH);
       // current stripes
-      ctx.strokeStyle = "rgba(116,220,255,0.35)";
+      ctx.strokeStyle = hexToRgba(tokens.cyan, 0.35);
       ctx.lineWidth = 1;
       const stripeSpacing = 4; // metres
       const stripeOffset = wrap(v * t);
@@ -121,7 +109,7 @@ export function GalileanBoatScene() {
         ctx.lineTo(xx + 8, waterY + laneH - 4);
         ctx.stroke();
       }
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 0.7;
       ctx.strokeRect(margin + 0.5, waterY + 0.5, plotW - 1, laneH - 1);
 
@@ -134,9 +122,9 @@ export function GalileanBoatScene() {
       const boatWaterPx = margin + boatWaterX * pxPerMeter;
 
       // Draw the cyan boat in the water lane
-      drawBoat(ctx, boatWaterPx, waterY + laneH / 2, "#74DCFF");
+      drawBoat(ctx, boatWaterPx, waterY + laneH / 2, tokens.cyan);
       // Draw the magenta marker in the shore lane (shore-frame projection)
-      drawBoat(ctx, boatShorePx, shoreY + laneH / 2, "#FF6ADE");
+      drawBoat(ctx, boatShorePx, shoreY + laneH / 2, tokens.magenta);
 
       // Velocity arrow — shore frame
       drawArrow(
@@ -145,7 +133,7 @@ export function GalileanBoatScene() {
         shoreY + laneH - 8,
         margin + 4 + Math.min(plotW - 16, shoreSpeed * 8),
         shoreY + laneH - 8,
-        "#FF6ADE",
+        tokens.magenta,
         `u = ${shoreSpeed.toFixed(2)} m/s`,
       );
       // Velocity arrow — water frame (boat's engine)
@@ -155,13 +143,13 @@ export function GalileanBoatScene() {
         waterY + laneH - 8,
         margin + 4 + Math.min(plotW - 16, u * 8),
         waterY + laneH - 8,
-        "#74DCFF",
+        tokens.cyan,
         `u′ = ${u.toFixed(2)} m/s`,
       );
 
       // HUD bar at bottom — the addition statement
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "13px monospace";
+      ctx.fillStyle = tokens.textDim;
+      ctx.font = tokens.fontHudLarge;
       ctx.textAlign = "center";
       ctx.fillText(
         `u  =  u′ + v   ⇒   ${u.toFixed(2)} + ${v.toFixed(2)} = ${shoreSpeed.toFixed(2)} m/s`,
@@ -172,8 +160,12 @@ export function GalileanBoatScene() {
   });
 
   return (
-    <div ref={containerRef} className="w-full bg-[#0A0C12] pb-3">
-      <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
+    <div ref={containerRef} className="w-full pb-3">
+      <canvas
+        ref={canvasRef}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3 grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-2 px-3 text-xs">
         <label className="font-mono text-[var(--color-fg-3)]">u′ (boat in water)</label>
         <input
@@ -183,7 +175,7 @@ export function GalileanBoatScene() {
           step={0.1}
           value={boatSpeed}
           onChange={(e) => setBoatSpeed(parseFloat(e.target.value))}
-          className="accent-[#74DCFF]"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
         <span className="w-20 text-right font-mono text-[var(--color-fg-1)]">{boatSpeed.toFixed(2)} m/s</span>
 
@@ -195,7 +187,7 @@ export function GalileanBoatScene() {
           step={0.1}
           value={currentSpeed}
           onChange={(e) => setCurrentSpeed(parseFloat(e.target.value))}
-          className="accent-[#74DCFF]"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
         <span className="w-20 text-right font-mono text-[var(--color-fg-1)]">{currentSpeed.toFixed(2)} m/s</span>
       </div>

@@ -38,6 +38,13 @@
   --color-magenta:  #FF6ADE;
   --color-mint:     #5BFFAE;
 
+  /* Extended accents — used by canvas scenes (relativity, EM, CM). */
+  --color-red:    #F87171; /* forbidden / redshift / warning */
+  --color-blue:   #7DD3FC; /* blueshift / cool / secondary */
+  --color-purple: #A78BFA; /* tertiary accent */
+  --color-orange: #FB923C; /* accelerated / non-inertial */
+  --color-green:  #86EFAC; /* conserved / correct (alias of mint at lower saturation) */
+
   --color-grid: rgba(111, 184, 198, 0.08);
   --color-glow: rgba(111, 184, 198, 0.35); /* trial — matches cyan-dim */
 
@@ -63,6 +70,13 @@
   --color-magenta:  #B6219E;
   --color-amber:    #9A6410;
   --color-mint:     #037A4B;
+
+  /* Extended accents — re-derived for light backgrounds (AA-readable). */
+  --color-red:    #C4304B;
+  --color-blue:   #1E5C8A;
+  --color-purple: #6B3FA0;
+  --color-orange: #B0531A;
+  --color-green:  #15803D;
 
   --color-grid: rgba(90, 134, 147, 0.10);
   --color-glow: rgba(11, 114, 133, 0.28);

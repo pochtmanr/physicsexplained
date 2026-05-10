@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import type { Worldline } from "@/lib/physics/relativity/types";
 
 /**
@@ -27,8 +28,9 @@ const X_RANGE: [number, number] = [-2.5, 2.5];
 const BETA = 0.6;
 
 export function MinkowskiAxesScene() {
+  const tokens = useSceneTokens();
+
   const worldlines = useMemo<Worldline[]>(() => {
-    // Stationary observer at x = -1 (cyan, vertical)
     const stationaryLeft: Worldline = {
       events: Array.from({ length: 33 }, (_, i) => ({
         t: T_RANGE[0] + (i / 32) * (T_RANGE[1] - T_RANGE[0]),
@@ -36,10 +38,9 @@ export function MinkowskiAxesScene() {
         y: 0,
         z: 0,
       })),
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "x = -1",
     };
-    // Stationary observer at x = +1 (cyan, vertical)
     const stationaryRight: Worldline = {
       events: Array.from({ length: 33 }, (_, i) => ({
         t: T_RANGE[0] + (i / 32) * (T_RANGE[1] - T_RANGE[0]),
@@ -47,20 +48,19 @@ export function MinkowskiAxesScene() {
         y: 0,
         z: 0,
       })),
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "x = +1",
     };
-    // Moving worldline from origin at slope β: x = β · ct, parametrized by t.
     const moving: Worldline = {
       events: Array.from({ length: 33 }, (_, i) => {
         const tt = T_RANGE[0] + (i / 32) * (T_RANGE[1] - T_RANGE[0]);
         return { t: tt, x: BETA * tt, y: 0, z: 0 };
       }),
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: `β = ${BETA}`,
     };
     return [stationaryLeft, stationaryRight, moving];
-  }, []);
+  }, [tokens.cyan, tokens.magenta]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -69,20 +69,36 @@ export function MinkowskiAxesScene() {
         lightCone={true}
         xRange={X_RANGE}
         tRange={T_RANGE}
-        width={520}
-        height={420}
       />
-      <div className="grid grid-cols-3 gap-3 font-mono text-[11px] text-white/70">
-        <div className="rounded-md border border-cyan-300/20 bg-cyan-300/[0.04] p-3">
-          <div className="text-cyan-300/85">STATIONARY · vertical</div>
+      <div className="grid grid-cols-3 gap-3 font-mono text-[11px] text-[var(--color-fg-2)]">
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-cyan) 30%, transparent)",
+            background: "color-mix(in srgb, var(--color-cyan) 6%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-cyan)" }}>STATIONARY · vertical</div>
           <div className="mt-1 opacity-80">slope = 0 → β = 0</div>
         </div>
-        <div className="rounded-md border border-pink-300/20 bg-pink-300/[0.04] p-3">
-          <div className="text-pink-300/85">MOVING · tilted</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-magenta) 30%, transparent)",
+            background: "color-mix(in srgb, var(--color-magenta) 6%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-magenta)" }}>MOVING · tilted</div>
           <div className="mt-1 opacity-80">slope = β = {BETA.toFixed(2)}</div>
         </div>
-        <div className="rounded-md border border-amber-300/20 bg-amber-300/[0.04] p-3">
-          <div className="text-amber-300/85">LIGHT · 45°</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-amber) 30%, transparent)",
+            background: "color-mix(in srgb, var(--color-amber) 6%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-amber)" }}>LIGHT · 45°</div>
           <div className="mt-1 opacity-80">slope = ±1 (universal limit)</div>
         </div>
       </div>

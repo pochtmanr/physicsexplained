@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
 import {
   fresnelDragCoefficient,
@@ -53,13 +58,11 @@ const PRESETS: Record<"water" | "glass", number> = {
 export function FizeauWaterTubeScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const colors = tokens.colors;
 
   const [preset, setPreset] = useState<Preset>("water");
   const [customN, setCustomN] = useState(1.33);
-  // Water-speed slider expressed as fraction of c. Default 0.05 c — far
-  // above Fizeau's actual rate (~2e-8 c) but visually meaningful and
-  // mathematically still in the linear-Fresnel regime.
   const [betaWater, setBetaWater] = useState(0.05);
 
   const presetRef = useRef(preset);
@@ -75,21 +78,10 @@ export function FizeauWaterTubeScene() {
     betaRef.current = betaWater;
   }, [betaWater]);
 
-  const [size, setSize] = useState({ width: 720, height: 360 });
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width: sizeWidth, height: sizeHeight } = useSceneSize(containerRef, {
+    ratio: RATIO,
+    maxHeight: MAX_HEIGHT,
+  });
 
   const currentN = (): number => {
     if (presetRef.current === "custom") return customNRef.current;
@@ -101,18 +93,13 @@ export function FizeauWaterTubeScene() {
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const width = sizeWidth;
+      const height = sizeHeight;
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
-
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const c = SPEED_OF_LIGHT;
       const n = currentN();
@@ -164,7 +151,7 @@ export function FizeauWaterTubeScene() {
         ctx.fill();
       };
       drawPhoton(uStationary, colors.cyan, -tubeH / 2 - 14);
-      drawPhoton(uFullDrag, "#FFC857", tubeH / 2 + 14);
+      drawPhoton(uFullDrag, tokens.amber, tubeH / 2 + 14);
       drawPhoton(uRelativistic, colors.magenta, 0);
 
       // Legend on the right
@@ -180,7 +167,7 @@ export function FizeauWaterTubeScene() {
         ly,
       );
       ly += 16;
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.fillText("●", legendX, ly);
       ctx.fillStyle = colors.fg2;
       ctx.fillText(
@@ -226,14 +213,13 @@ export function FizeauWaterTubeScene() {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div
-        className="relative w-full overflow-hidden rounded-md bg-[#0A0C12]"
-        style={{ height: size.height }}
-      >
-        <canvas ref={canvasRef} className="block h-full w-full" />
-      </div>
+      <canvas
+        ref={canvasRef}
+        style={{ width: sizeWidth, height: sizeHeight, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <div className="font-mono text-xs text-white/70">
+        <div className="font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1">Medium</div>
           <div className="flex flex-wrap gap-2">
             {(["water", "glass", "custom"] as const).map((p) => (
@@ -241,11 +227,12 @@ export function FizeauWaterTubeScene() {
                 key={p}
                 type="button"
                 onClick={() => setPreset(p)}
-                className={`rounded border px-2 py-1 ${
+                className="rounded border px-2 py-1"
+                style={
                   preset === p
-                    ? "border-fuchsia-400 text-fuchsia-300"
-                    : "border-white/20 text-white/60 hover:border-white/40"
-                }`}
+                    ? { borderColor: "var(--color-magenta)", color: "var(--color-magenta)" }
+                    : { borderColor: "var(--color-fg-4)", color: "var(--color-fg-3)" }
+                }
               >
                 {p === "water"
                   ? "water (n = 1.33)"
@@ -268,12 +255,13 @@ export function FizeauWaterTubeScene() {
                 step={0.001}
                 value={customN}
                 onChange={(e) => setCustomN(parseFloat(e.target.value))}
-                className="w-full accent-fuchsia-400"
+                className="w-full"
+                style={{ accentColor: "var(--color-magenta)" }}
               />
             </label>
           ) : null}
         </div>
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>Water speed: β = v_water / c</span>
             <span className="opacity-60">{betaWater.toFixed(3)} c</span>
@@ -285,11 +273,12 @@ export function FizeauWaterTubeScene() {
             step={0.001}
             value={betaWater}
             onChange={(e) => setBetaWater(parseFloat(e.target.value))}
-            className="w-full accent-cyan-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
       </div>
-      <p className="mt-2 font-mono text-[11px] text-white/50">
+      <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         Fizeau&apos;s 1851 setup ran water at ~7 m/s — about 2×10⁻⁸ c, well
         below the slider&apos;s minimum tick. The Fresnel drag coefficient
         1 − 1/n² ≈ 0.434 for water that he extracted is the v/c-order

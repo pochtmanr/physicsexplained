@@ -1,6 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.16a — The energy-momentum-mass triangle.
@@ -23,58 +31,53 @@ import { useEffect, useRef, useState } from "react";
  *   Palette: cyan = rest energy (mc²); magenta = pc; amber = total E.
  */
 
-const WIDTH = 720;
-const HEIGHT = 400;
-
-// Natural units: c = 1, mc² = 1. We scale to fit the canvas.
+// Natural units: c = 1, mc² = 1.
 const MC2 = 1; // rest energy in natural units
-const VERT_PIXELS = 220; // pixels representing mc² = 1
-const ORIGIN_X = 140;
-const ORIGIN_Y = HEIGHT - 80;
 
 export function EnergyMomentumTriangleScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
   const [beta, setBeta] = useState(0.6);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = WIDTH * dpr;
-    canvas.height = HEIGHT * dpr;
-    canvas.style.width = `${WIDTH}px`;
-    canvas.style.height = `${HEIGHT}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, width, height);
+
+    // Layout: scale the triangle to the available canvas size.
+    const ORIGIN_X = Math.max(80, width * 0.18);
+    const ORIGIN_Y = height - 80;
+    const VERT_PIXELS = Math.min(220, height - 130);
 
     // Compute γ, pc, E in natural units (c = 1, m = 1).
     const g = 1 / Math.sqrt(1 - beta * beta);
     const pc = g * beta * MC2; // pc = γmβc²; with m = c = 1: γβ
     const E = g * MC2; // E = γmc²; with m = c = 1: γ
 
-    // Pixel scaling: vertical leg mc² = 1 → VERT_PIXELS px.
     const scale = VERT_PIXELS / MC2;
     const vertLen = MC2 * scale;
     const horizLen = pc * scale;
-    const hypLen = E * scale;
 
-    // Triangle vertices on canvas:
-    //   A = origin (bottom-left, right angle)
-    //   B = (origin + horizLen px right, origin)         — bottom-right
-    //   C = (origin, origin − vertLen px)                 — top-left
-    // The hypotenuse runs from B (bottom-right) to C (top-left).
     const A = { x: ORIGIN_X, y: ORIGIN_Y };
     const B = { x: ORIGIN_X + horizLen, y: ORIGIN_Y };
     const C = { x: ORIGIN_X, y: ORIGIN_Y - vertLen };
 
     // Background grid (faint)
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
+    ctx.strokeStyle = hexToRgba(tokens.textFaint, 0.35);
     ctx.lineWidth = 1;
     for (let xv = 0; xv <= 6; xv++) {
       const px = ORIGIN_X + xv * (VERT_PIXELS / 2);
-      if (px > WIDTH - 20) break;
+      if (px > width - 20) break;
       ctx.beginPath();
       ctx.moveTo(px, 30);
       ctx.lineTo(px, ORIGIN_Y);
@@ -84,12 +87,12 @@ export function EnergyMomentumTriangleScene() {
       const py = ORIGIN_Y - yv * (VERT_PIXELS / 2);
       ctx.beginPath();
       ctx.moveTo(ORIGIN_X, py);
-      ctx.lineTo(WIDTH - 30, py);
+      ctx.lineTo(width - 30, py);
       ctx.stroke();
     }
 
     // Right-angle marker at A
-    ctx.strokeStyle = "rgba(255,255,255,0.4)";
+    ctx.strokeStyle = tokens.axes;
     ctx.lineWidth = 1;
     const tick = 10;
     ctx.beginPath();
@@ -99,7 +102,7 @@ export function EnergyMomentumTriangleScene() {
     ctx.stroke();
 
     // Vertical leg: mc² (cyan)
-    ctx.strokeStyle = "#67E8F9";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(A.x, A.y);
@@ -107,7 +110,7 @@ export function EnergyMomentumTriangleScene() {
     ctx.stroke();
 
     // Horizontal leg: pc (magenta)
-    ctx.strokeStyle = "#FF6ADE";
+    ctx.strokeStyle = tokens.magenta;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(A.x, A.y);
@@ -115,7 +118,7 @@ export function EnergyMomentumTriangleScene() {
     ctx.stroke();
 
     // Hypotenuse: E (amber)
-    ctx.strokeStyle = "#FBBF24";
+    ctx.strokeStyle = tokens.amber;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(B.x, B.y);
@@ -123,7 +126,7 @@ export function EnergyMomentumTriangleScene() {
     ctx.stroke();
 
     // Vertex dots
-    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.fillStyle = tokens.textBright;
     for (const v of [A, B, C]) {
       ctx.beginPath();
       ctx.arc(v.x, v.y, 3, 0, Math.PI * 2);
@@ -134,56 +137,57 @@ export function EnergyMomentumTriangleScene() {
     ctx.font = "13px ui-monospace, monospace";
 
     // mc² label — left of the vertical leg
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.textAlign = "right";
     ctx.fillText("mc²", A.x - 12, (A.y + C.y) / 2 + 4);
 
     // pc label — below the horizontal leg
-    ctx.fillStyle = "#FF6ADE";
+    ctx.fillStyle = tokens.magenta;
     ctx.textAlign = "center";
     ctx.fillText(`pc = ${pc.toFixed(3)}`, (A.x + B.x) / 2, A.y + 22);
 
     // E label — along the hypotenuse, slightly above
-    ctx.fillStyle = "#FBBF24";
+    ctx.fillStyle = tokens.amber;
     ctx.textAlign = "left";
     const midH = { x: (B.x + C.x) / 2, y: (B.y + C.y) / 2 };
     ctx.fillText(`E = ${E.toFixed(3)}`, midH.x + 8, midH.y - 6);
 
     // mc² value at the cyan tick
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.textAlign = "right";
     ctx.fillText(`= ${MC2.toFixed(3)}`, A.x - 12, (A.y + C.y) / 2 + 22);
 
     // Axis hint labels
-    ctx.fillStyle = "rgba(255,255,255,0.4)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.textAlign = "left";
-    ctx.fillText("→ pc", WIDTH - 60, A.y + 22);
+    ctx.fillText("→ pc", width - 60, A.y + 22);
     ctx.fillText("↑ mc²", A.x - 28, 40);
 
     // HUD
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
-    ctx.font = "12px ui-monospace, monospace";
+    ctx.fillStyle = tokens.textDim;
+    ctx.font = tokens.fontHud;
     ctx.textAlign = "left";
     ctx.fillText(
       `β = ${beta.toFixed(2)}   γ = ${g.toFixed(4)}   E² = (pc)² + (mc²)² = ${(pc * pc + MC2 * MC2).toFixed(4)}   E² = ${(E * E).toFixed(4)}`,
       20,
-      HEIGHT - 22,
+      height - 22,
     );
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = tokens.textMute;
     ctx.fillText(
       "natural units (c = 1, m = 1) — at β=0 the magenta leg vanishes, hypotenuse = mc²",
       20,
-      HEIGHT - 6,
+      height - 6,
     );
-  }, [beta]);
+  }, [beta, tokens, width, height]);
 
   return (
-    <div className="flex flex-col items-center gap-3 p-4">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <label className="flex w-full max-w-[640px] items-center gap-3 font-mono text-xs text-white/70">
+      <label className="mt-3 flex w-full items-center gap-3 font-mono text-xs text-[var(--color-fg-3)]">
         <span className="w-24">β = {beta.toFixed(2)}</span>
         <input
           type="range"
@@ -193,6 +197,7 @@ export function EnergyMomentumTriangleScene() {
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
       </label>
     </div>

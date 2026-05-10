@@ -2,33 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gamma } from "@/lib/physics/relativity/types";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.12c — PROPER TIME BAR CHART.
  *
- * Three bars displayed side by side:
- *   1. Δt   — lab frame coordinate time between the two events.
- *   2. γ    — the Lorentz factor, plotted as a dimensionless multiplier.
- *   3. Δτ   — proper time = √(s²) / c, the invariant heartbeat.
- *
- * β slider: drag β from 0 → 0.95.
- *   • Δt stretches by γ (time dilation).
- *   • γ bar grows in lockstep.
- *   • Δτ bar stays exactly the same height — it is Lorentz-invariant.
- *
- * The two events are fixed in the rest frame of the moving clock:
- *   A = (t=0, x=0),  B = (t=Δτ₀, x=β·c·Δτ₀)
- * so the proper time is a constant Δτ₀ = 3 s regardless of β, and the
- * lab-frame time is Δt = γ · Δτ₀.
- *
- * Convention: c = 1 normalised; numbers on the bars are dimensionless
- * (time in "light-seconds" units). Only the RATIO matters for the demo.
+ * Three bars: Δt (lab time), γ (Lorentz factor), Δτ (proper time, invariant).
+ * Drag β: Δt and γ stretch in lockstep; Δτ stays the same. Δτ is the only
+ * Lorentz scalar of the three.
  */
 
-const DELTA_TAU_0 = 3; // proper time in normalised units (c = 1)
+const DELTA_TAU_0 = 3;
 const MAX_BETA = 0.95;
-const CANVAS_W = 520;
-const CANVAS_H = 300;
 const BAR_MARGIN_X = 60;
 const BAR_MARGIN_Y = 30;
 const BAR_GAP = 24;
@@ -43,61 +35,59 @@ type BarDef = {
 
 function drawScene(
   ctx: CanvasRenderingContext2D,
-  dpr: number,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
   beta: number,
 ) {
   const g = gamma(beta);
-  const dt = g * DELTA_TAU_0;   // lab time
-  const dtau = DELTA_TAU_0;     // proper time — invariant
+  const dt = g * DELTA_TAU_0;
+  const dtau = DELTA_TAU_0;
   const gammaVal = g;
 
-  // Max reference heights: dt can reach γ·Δτ₀ at β → MAX_BETA
   const gMax = gamma(MAX_BETA);
   const dtMax = gMax * DELTA_TAU_0;
   const gammaMax = gMax;
-  const dtauMax = DELTA_TAU_0 * 1.05; // a little padding so bar doesn't touch ceiling
+  const dtauMax = DELTA_TAU_0 * 1.05;
 
   const bars: BarDef[] = [
     {
       label: "Δt",
       value: dt,
       maxValue: dtMax,
-      color: "#67E8F9",  // cyan — lab/stationary frame convention
+      color: tokens.cyan,
       sublabel: `= γ · Δτ  = ${dt.toFixed(2)}`,
     },
     {
       label: "γ",
       value: gammaVal,
       maxValue: gammaMax,
-      color: "#FFD66B",  // amber — a distinct modifier
+      color: tokens.amber,
       sublabel: `= ${gammaVal.toFixed(3)}`,
     },
     {
       label: "Δτ",
       value: dtau,
       maxValue: dtauMax,
-      color: "#A78BFA",  // violet — invariant, stands out
+      color: tokens.purple,
       sublabel: `= ${dtau.toFixed(2)}  (INVARIANT)`,
     },
   ];
 
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = tokens.bg;
+  ctx.fillRect(0, 0, W, H);
 
-  // Background
-  ctx.fillStyle = "rgba(0,0,0,0)";
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
-
-  const plotW = CANVAS_W - 2 * BAR_MARGIN_X;
-  const plotH = CANVAS_H - BAR_MARGIN_Y - 40; // leave bottom room for labels
+  const plotW = W - 2 * BAR_MARGIN_X;
+  const plotH = H - BAR_MARGIN_Y - 40;
   const barCount = bars.length;
   const totalGap = BAR_GAP * (barCount + 1);
   const barW = (plotW - totalGap) / barCount;
 
   const baseY = BAR_MARGIN_Y + plotH;
 
-  // Faint horizontal grid lines
-  ctx.strokeStyle = "rgba(255,255,255,0.07)";
+  // Faint grid lines
+  ctx.strokeStyle = tokens.grid;
   ctx.lineWidth = 1;
   for (let i = 1; i <= 4; i++) {
     const y = baseY - (i / 4) * plotH;
@@ -108,7 +98,7 @@ function drawScene(
   }
 
   // Baseline
-  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.strokeStyle = tokens.axes;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.moveTo(BAR_MARGIN_X, baseY);
@@ -121,47 +111,50 @@ function drawScene(
     const barH = fraction * plotH;
     const y = baseY - barH;
 
-    // Bar fill (with light gradient)
+    // Gradient fill
     const grad = ctx.createLinearGradient(x, y, x, baseY);
     grad.addColorStop(0, bar.color);
-    grad.addColorStop(1, bar.color + "55");
+    grad.addColorStop(1, hexToRgba(bar.color, 0.33));
     ctx.fillStyle = grad;
     ctx.fillRect(x, y, barW, barH);
 
-    // Bar border
     ctx.strokeStyle = bar.color;
     ctx.lineWidth = 1.5;
     ctx.strokeRect(x, y, barW, barH);
 
-    // Value label on top
     ctx.fillStyle = bar.color;
     ctx.font = `bold 11px ui-monospace, monospace`;
     ctx.textAlign = "center";
     ctx.fillText(bar.value.toFixed(2), x + barW / 2, y - 5);
 
-    // Bar label (large, at bottom)
-    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    ctx.fillStyle = tokens.textBright;
     ctx.font = `bold 14px ui-monospace, monospace`;
     ctx.textAlign = "center";
     ctx.fillText(bar.label, x + barW / 2, baseY + 18);
 
-    // Sub-label (small, below bar label)
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = `10px ui-monospace, monospace`;
     ctx.textAlign = "center";
     ctx.fillText(bar.sublabel, x + barW / 2, baseY + 30);
   });
 
-  // Title note on top-right
-  ctx.fillStyle = "rgba(255,255,255,0.35)";
+  ctx.fillStyle = tokens.textFaint;
   ctx.font = "10px ui-monospace, monospace";
   ctx.textAlign = "right";
-  ctx.fillText("Δτ₀ = 3 (rest-frame proper time)", CANVAS_W - BAR_MARGIN_X, BAR_MARGIN_Y - 12);
+  ctx.fillText("Δτ₀ = 3 (rest-frame proper time)", W - BAR_MARGIN_X, BAR_MARGIN_Y - 12);
 }
 
 export function ProperTimeBarScene() {
   const [beta, setBeta] = useState(0.0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+
+  const { width: W, height: H } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: 320,
+    minHeight: 260,
+  });
 
   const g = gamma(beta);
   const dt = g * DELTA_TAU_0;
@@ -169,25 +162,20 @@ export function ProperTimeBarScene() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, W, H);
     if (!ctx) return;
-    const dpr = typeof window !== "undefined" ? (window.devicePixelRatio || 1) : 1;
-    canvas.width = CANVAS_W * dpr;
-    canvas.height = CANVAS_H * dpr;
-    canvas.style.width = `${CANVAS_W}px`;
-    canvas.style.height = `${CANVAS_H}px`;
-    drawScene(ctx, dpr, beta);
-  }, [beta]);
+    drawScene(ctx, tokens, W, H, beta);
+  }, [beta, tokens, W, H]);
 
   return (
-    <div className="flex flex-col items-center gap-3 p-4">
+    <div ref={containerRef} className="flex w-full flex-col items-center gap-3 pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        style={{ width: W, height: H, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
 
-      {/* β slider */}
-      <label className="flex w-full max-w-[520px] items-center gap-3 font-mono text-xs text-white/70">
+      <label className="flex w-full max-w-[520px] items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span>β = {beta.toFixed(2)}</span>
         <input
           type="range"
@@ -197,30 +185,30 @@ export function ProperTimeBarScene() {
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
         <span>γ = {g.toFixed(3)}</span>
       </label>
 
-      {/* HUD row */}
-      <div className="grid w-full max-w-[520px] grid-cols-3 gap-x-4 font-mono text-xs text-white/70">
+      <div className="grid w-full max-w-[520px] grid-cols-3 gap-x-4 font-mono text-xs text-[var(--color-fg-2)]">
         <div className="text-center">
-          <span className="text-cyan-300">Δt = {dt.toFixed(3)}</span>
+          <span style={{ color: "var(--color-cyan)" }}>Δt = {dt.toFixed(3)}</span>
           <br />
-          <span className="text-white/40">lab time</span>
+          <span className="text-[var(--color-fg-3)]">lab time</span>
         </div>
         <div className="text-center">
-          <span className="text-amber-300">γ = {g.toFixed(4)}</span>
+          <span style={{ color: "var(--color-amber)" }}>γ = {g.toFixed(4)}</span>
           <br />
-          <span className="text-white/40">Lorentz factor</span>
+          <span className="text-[var(--color-fg-3)]">Lorentz factor</span>
         </div>
         <div className="text-center">
-          <span className="text-violet-300">Δτ = {DELTA_TAU_0.toFixed(3)}</span>
+          <span style={{ color: "var(--color-purple)" }}>Δτ = {DELTA_TAU_0.toFixed(3)}</span>
           <br />
-          <span className="text-white/40">proper time ✓ invariant</span>
+          <span className="text-[var(--color-fg-3)]">proper time ✓ invariant</span>
         </div>
       </div>
 
-      <p className="font-mono text-[11px] text-white/40">
+      <p className="font-mono text-[11px] text-[var(--color-fg-3)]">
         Δτ is the Lorentz scalar — the same number in every frame.
         Δt = γ·Δτ grows without bound as β → 1.
       </p>

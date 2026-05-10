@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
 import { properSeparation } from "@/lib/physics/relativity/bell-spaceship";
 
@@ -52,6 +53,7 @@ function rocketBeta(ct: number): number {
 }
 
 export function BellTwoRocketsScene() {
+  const tokens = useSceneTokens();
   const [playing, setPlaying] = useState(false);
   const [labCT, setLabCT] = useState(0);
   const lastTsRef = useRef<number | null>(null);
@@ -95,13 +97,13 @@ export function BellTwoRocketsScene() {
 
     const rear: Worldline = {
       events: sample(0),
-      color: "#FFB36B",
+      color: tokens.orange,
       label: "rear",
       accelerated: true,
     };
     const front: Worldline = {
       events: sample(D0),
-      color: "#FFB36B",
+      color: tokens.orange,
       label: "front",
       accelerated: true,
     };
@@ -114,12 +116,12 @@ export function BellTwoRocketsScene() {
         { t: labCT, x: rocketX(labCT, 0), y: 0, z: 0 },
         { t: labCT, x: rocketX(labCT, D0), y: 0, z: 0 },
       ],
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "string",
     };
 
     return [rear, front, string];
-  }, [labCT]);
+  }, [labCT, tokens]);
 
   const beta = rocketBeta(labCT);
   const g = gamma(Math.min(Math.abs(beta), 0.9999));
@@ -137,24 +139,36 @@ export function BellTwoRocketsScene() {
         height={420}
       />
 
-      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-white/70">
-        <div className="rounded-md border border-amber-300/20 bg-amber-300/[0.04] p-3">
-          <div className="text-amber-300/85">LAUNCH FRAME · two rockets</div>
+      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-[var(--color-fg-2)]">
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-amber) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-amber) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-amber)" }}>LAUNCH FRAME · two rockets</div>
           <div className="mt-1 opacity-80">D_lab = {D0.toFixed(3)} (constant)</div>
           <div className="opacity-80">β = {beta.toFixed(3)}</div>
         </div>
-        <div className="rounded-md border border-fuchsia-300/20 bg-fuchsia-300/[0.04] p-3">
-          <div className="text-fuchsia-300/85">PROPER FRAME · the string</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-magenta) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-magenta) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-magenta)" }}>PROPER FRAME · the string</div>
           <div className="mt-1 opacity-80">D_proper = γ·D₀ = {dProper.toFixed(3)}</div>
           <div className="opacity-80">strain ε = γ − 1 = {strain.toFixed(3)}</div>
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-white/70">
+      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
-          className="rounded border border-white/20 bg-white/5 px-3 py-1 hover:bg-white/10"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:opacity-90"
         >
           {playing ? "pause" : labCT >= T_HOME ? "replay" : "play"}
         </button>
@@ -164,7 +178,7 @@ export function BellTwoRocketsScene() {
             setPlaying(false);
             setLabCT(0);
           }}
-          className="rounded border border-white/20 bg-white/5 px-3 py-1 hover:bg-white/10"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:opacity-90"
         >
           reset
         </button>

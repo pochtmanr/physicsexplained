@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { gamma } from "@/lib/physics/relativity/types";
 import {
   classicalSurvivalFraction,
@@ -47,7 +54,11 @@ interface Muon {
 export function MuonShowerScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [size, setSize] = useState({ width: 700, height: 460 });
+  const tokens = useSceneTokens();
+  const { width: sizeWidth, height: sizeHeight } = useSceneSize(containerRef, {
+    ratio: RATIO,
+    maxHeight: MAX_HEIGHT,
+  });
   const muons = useMemo<Muon[]>(() => {
     const arr: Muon[] = [];
     for (let i = 0; i < N_MUONS; i++) {
@@ -61,39 +72,18 @@ export function MuonShowerScene() {
     return arr;
   }, []);
 
-  // Resize
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const width = sizeWidth;
+      const height = sizeHeight;
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
-
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       // Lab time loops every 5 seconds for replay.
       const tLab =
@@ -118,7 +108,7 @@ export function MuonShowerScene() {
       ctx.fillRect(colX0, colY0, colWidth, colHeight);
 
       // Column borders
-      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.strokeStyle = hexToRgba(tokens.textFaint, 0.7);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(colX0, colY0);
@@ -128,8 +118,8 @@ export function MuonShowerScene() {
       ctx.stroke();
 
       // Altitude grid (every 2 km)
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
-      ctx.fillStyle = "rgba(255,255,255,0.45)";
+      ctx.strokeStyle = tokens.grid;
+      ctx.fillStyle = tokens.textFaint;
       ctx.font = "10px ui-monospace, monospace";
       ctx.textAlign = "right";
       for (let km = 0; km <= 10; km += 2) {
@@ -143,9 +133,9 @@ export function MuonShowerScene() {
 
       // Top label, bottom label
       ctx.textAlign = "center";
-      ctx.fillStyle = "rgba(103, 232, 249, 0.85)";
+      ctx.fillStyle = hexToRgba(tokens.cyan, 0.85);
       ctx.fillText("muons created here", (colX0 + colX1) / 2, colY0 - 10);
-      ctx.fillStyle = "rgba(255, 214, 107, 0.85)";
+      ctx.fillStyle = hexToRgba(tokens.amber, 0.85);
       ctx.fillText("sea level — detector", (colX0 + colX1) / 2, colY1 + 14);
 
       // ─── Muons ─────────────────────────────────────────────────────────
@@ -167,7 +157,7 @@ export function MuonShowerScene() {
           );
           const decayY = colY0 + (decayDist / ALT_M) * colHeight;
           const xPos = (colX0 + colX1) / 2 + m.xJitter * (colWidth * 0.4);
-          ctx.fillStyle = "rgba(255,106,222,0.18)";
+          ctx.fillStyle = hexToRgba(tokens.magenta, 0.18);
           ctx.beginPath();
           ctx.arc(xPos, decayY, 1.3, 0, Math.PI * 2);
           ctx.fill();
@@ -176,7 +166,7 @@ export function MuonShowerScene() {
         alive++;
         const xPos = (colX0 + colX1) / 2 + m.xJitter * (colWidth * 0.4);
         // Living muon: cyan dot at current y
-        ctx.fillStyle = "#67E8F9";
+        ctx.fillStyle = tokens.cyan;
         ctx.beginPath();
         ctx.arc(xPos, muonY, 2.1, 0, Math.PI * 2);
         ctx.fill();
@@ -206,32 +196,32 @@ export function MuonShowerScene() {
       let hy = 18;
       const lh = 16;
 
-      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.fillStyle = tokens.textBright;
       ctx.fillText(`β = ${BETA}`, hudX, hy);
       hy += lh;
       ctx.fillText(`γ = ${g.toFixed(3)}`, hudX, hy);
       hy += lh;
-      ctx.fillStyle = "#67E8F9";
+      ctx.fillStyle = tokens.cyan;
       ctx.fillText(`lab clock     = ${(tLab * 1e6).toFixed(2)} μs`, hudX, hy);
       hy += lh;
-      ctx.fillStyle = "#FF6ADE";
+      ctx.fillStyle = tokens.magenta;
       ctx.fillText(`proper clock  = ${(tProper * 1e6).toFixed(3)} μs`, hudX, hy);
       hy += lh;
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillStyle = tokens.textDim;
       ctx.fillText(`τ (half-life) = ${(TAU * 1e6).toFixed(1)} μs`, hudX, hy);
       hy += lh + 4;
 
-      ctx.fillStyle = "#67E8F9";
+      ctx.fillStyle = tokens.cyan;
       ctx.fillText(`alive (rel)   = ${alive}/${N_MUONS}`, hudX, hy);
       hy += lh;
-      ctx.fillStyle = "rgba(255,255,255,0.7)";
+      ctx.fillStyle = tokens.textDim;
       ctx.fillText(
         `predicted rel = ${(relFrac * N_MUONS).toFixed(0)}  (${(relFrac * 100).toFixed(1)}%)`,
         hudX,
         hy,
       );
       hy += lh;
-      ctx.fillStyle = "#FFB36B";
+      ctx.fillStyle = tokens.orange;
       ctx.fillText(
         `classical     = ${(classicalFrac * N_MUONS).toFixed(0)}  (${(classicalFrac * 100).toFixed(1)}%)`,
         hudX,
@@ -239,11 +229,11 @@ export function MuonShowerScene() {
       );
       hy += lh;
       const ratio = relFrac / Math.max(1e-30, classicalFrac);
-      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.fillStyle = tokens.textBright;
       ctx.fillText(`excess factor = ×${ratio < 1e6 ? ratio.toFixed(0) : ratio.toExponential(1)}`, hudX, hy);
 
       // Bottom-right: status caption
-      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.fillStyle = tokens.textFaint;
       ctx.textAlign = "right";
       ctx.fillText(
         "both observers agree on the count — only the bookkeeping differs",
@@ -258,10 +248,10 @@ export function MuonShowerScene() {
     <div ref={containerRef} className="flex flex-col gap-2">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
-        style={{ width: size.width, height: size.height }}
+        className={SCENE_CANVAS_CLASS}
+        style={{ width: sizeWidth, height: sizeHeight, display: "block" }}
       />
-      <p className="font-mono text-[11px] text-white/55">
+      <p className="font-mono text-[11px] text-[var(--color-fg-3)]">
         300 muons, 10 km column, β = 0.995. Cyan dots = living muons; faint
         magenta dots mark where each muon decayed. The cyan reading is what
         sea-level detectors actually see; the orange reading is the

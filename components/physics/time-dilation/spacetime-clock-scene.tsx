@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
 
 /**
@@ -27,6 +28,7 @@ const X_RANGE: [number, number] = [-3, 3];
 const PROPER_TICK = 1; // proper-time tick interval in same units as ct
 
 export function SpacetimeClockScene() {
+  const tokens = useSceneTokens();
   const [beta, setBeta] = useState(0.6);
 
   const worldlines = useMemo<Worldline[]>(() => {
@@ -37,7 +39,7 @@ export function SpacetimeClockScene() {
         y: 0,
         z: 0,
       })),
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "rest",
     };
     // Moving clock: x = β · ct, so events parameterized by lab-time t
@@ -47,11 +49,11 @@ export function SpacetimeClockScene() {
         const tt = T_RANGE[0] + (i / 64) * (T_RANGE[1] - T_RANGE[0]);
         return { t: tt, x: beta * tt, y: 0, z: 0 };
       }),
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "moving",
     };
     return [stationary, moving];
-  }, [beta]);
+  }, [beta, tokens]);
 
   // Tick positions (computed for the legend / overlay HUD only — the canvas
   // primitive draws the worldlines themselves).
@@ -101,9 +103,15 @@ function TickAnnotations({
   movingTicks,
 }: TickAnnotationsProps) {
   return (
-    <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-white/70">
-      <div className="rounded-md border border-cyan-300/20 bg-cyan-300/[0.04] p-3">
-        <div className="text-cyan-300/85">REST CLOCK · vertical worldline</div>
+    <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-[var(--color-fg-2)]">
+      <div
+        className="rounded-md border p-3"
+        style={{
+          borderColor: "color-mix(in srgb, var(--color-cyan) 30%, transparent)",
+          backgroundColor: "color-mix(in srgb, var(--color-cyan) 5%, transparent)",
+        }}
+      >
+        <div style={{ color: "var(--color-cyan)" }}>REST CLOCK · vertical worldline</div>
         <div className="mt-1 opacity-80">
           ticks at proper time τ = ct
         </div>
@@ -111,8 +119,14 @@ function TickAnnotations({
           {stationaryTicks} ticks across the visible diagram
         </div>
       </div>
-      <div className="rounded-md border border-pink-300/20 bg-pink-300/[0.04] p-3">
-        <div className="text-pink-300/85">MOVING CLOCK · tilted worldline</div>
+      <div
+        className="rounded-md border p-3"
+        style={{
+          borderColor: "color-mix(in srgb, var(--color-magenta) 30%, transparent)",
+          backgroundColor: "color-mix(in srgb, var(--color-magenta) 5%, transparent)",
+        }}
+      >
+        <div style={{ color: "var(--color-magenta)" }}>MOVING CLOCK · tilted worldline</div>
         <div className="mt-1 opacity-80">
           ticks at lab time = γ · τ = {gamma.toFixed(3)} · τ
         </div>

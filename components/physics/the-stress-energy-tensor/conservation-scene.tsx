@@ -1,7 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_SHORT,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.36c — LOCAL ENERGY-MOMENTUM CONSERVATION
@@ -19,24 +28,25 @@ import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
  *   ∂_t T_{0j} + ∂_i T_{ij} = 0  (momentum continuity)
  */
 
-const W = 560;
-const H = 300;
-const BG = "#0A0C12";
+function drawFrame(
+  ctx: CanvasRenderingContext2D,
+  t: number,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
+) {
+  const labelColor = hexToRgba(tokens.textBright, 0.7);
+  const dimColor = hexToRgba(tokens.textBright, 0.3);
 
-const C_IN = "#67E8F9";
-const C_OUT = "#FBBF24";
-const C_STORED = "#FF6ADE";
-const C_LABEL = "rgba(255,255,255,0.70)";
-const C_DIM = "rgba(255,255,255,0.30)";
+  // Layout adapts to the current canvas size. The control volume box is
+  // centred horizontally with margin for arrows on each side.
+  const ARROW_GUTTER = 60;
+  const BOX_W = Math.max(120, Math.min(280, W - 2 * ARROW_GUTTER - 40));
+  const BOX_H = Math.max(80, H - 160);
+  const BOX_X = (W - BOX_W) / 2;
+  const BOX_Y = 80;
 
-// ─── Layout constants ──────────────────────────────────────────────────────
-const BOX_X = 160;
-const BOX_Y = 80;
-const BOX_W = 240;
-const BOX_H = 140;
-
-function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
-  ctx.fillStyle = BG;
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
   const cx = BOX_X + BOX_W / 2;
@@ -47,14 +57,14 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
   const packetX = BOX_X - 30 + phase * (BOX_W + 60);
 
   // ── Control volume box ─────────────────────────────────────────────────
-  ctx.strokeStyle = "rgba(255,255,255,0.18)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.18);
   ctx.lineWidth = 1.5;
   ctx.setLineDash([6, 4]);
   ctx.strokeRect(BOX_X, BOX_Y, BOX_W, BOX_H);
   ctx.setLineDash([]);
 
   // Box label
-  ctx.fillStyle = C_DIM;
+  ctx.fillStyle = dimColor;
   ctx.font = "9px ui-monospace, monospace";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
@@ -64,16 +74,16 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
   // Pulse as packet passes through
   const inside = packetX > BOX_X && packetX < BOX_X + BOX_W;
   const storeAlpha = inside ? 0.15 + 0.12 * Math.sin(t * 4) : 0.05;
-  ctx.fillStyle = `rgba(255,106,222,${storeAlpha})`;
+  ctx.fillStyle = hexToRgba(tokens.magenta, storeAlpha);
   ctx.fillRect(BOX_X + 1, BOX_Y + 1, BOX_W - 2, BOX_H - 2);
 
-  ctx.fillStyle = C_STORED;
+  ctx.fillStyle = tokens.magenta;
   ctx.font = "bold 12px ui-monospace, monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText("T₀₀", cx, cy - 18);
 
-  ctx.fillStyle = "rgba(255,106,222,0.65)";
+  ctx.fillStyle = hexToRgba(tokens.magenta, 0.65);
   ctx.font = "9px ui-monospace, monospace";
   ctx.fillText("energy density", cx, cy - 4);
 
@@ -90,14 +100,14 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
     );
     ctx.beginPath();
     ctx.arc(packetX, cy + 20, pR, 0, 2 * Math.PI);
-    ctx.fillStyle = `rgba(103,232,249,${pAlpha * 0.7})`;
+    ctx.fillStyle = hexToRgba(tokens.cyan, pAlpha * 0.7);
     ctx.fill();
-    ctx.strokeStyle = `rgba(103,232,249,${pAlpha * 0.90})`;
+    ctx.strokeStyle = hexToRgba(tokens.cyan, pAlpha * 0.9);
     ctx.lineWidth = 1.5;
     ctx.stroke();
 
     // Arrow direction
-    ctx.strokeStyle = `rgba(103,232,249,${pAlpha * 0.85})`;
+    ctx.strokeStyle = hexToRgba(tokens.cyan, pAlpha * 0.85);
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(packetX - pR + 2, cy + 20);
@@ -115,7 +125,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
   // ── Flux arrows on faces ───────────────────────────────────────────────
   // Left face: T_{01} in (energy flux entering)
   const inAlpha = 0.5 + 0.4 * Math.sin(t * 2 * Math.PI * 0.8 - Math.PI * 0.5);
-  ctx.strokeStyle = `rgba(103,232,249,${Math.max(0, inAlpha)})`;
+  ctx.strokeStyle = hexToRgba(tokens.cyan, Math.max(0, inAlpha));
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(BOX_X - 50, cy);
@@ -128,7 +138,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
   ctx.lineTo(BOX_X - 14, cy + 6);
   ctx.stroke();
 
-  ctx.fillStyle = C_IN;
+  ctx.fillStyle = tokens.cyan;
   ctx.font = "9px ui-monospace, monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
@@ -136,7 +146,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
 
   // Right face: T_{01} out
   const outAlpha = 0.5 + 0.4 * Math.sin(t * 2 * Math.PI * 0.8);
-  ctx.strokeStyle = `rgba(251,191,36,${Math.max(0, outAlpha)})`;
+  ctx.strokeStyle = hexToRgba(tokens.amber, Math.max(0, outAlpha));
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(BOX_X + BOX_W + 4, cy);
@@ -149,7 +159,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
   ctx.lineTo(BOX_X + BOX_W + 40, cy + 6);
   ctx.stroke();
 
-  ctx.fillStyle = C_OUT;
+  ctx.fillStyle = tokens.amber;
   ctx.font = "9px ui-monospace, monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "bottom";
@@ -157,19 +167,19 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
 
   // ── Conservation equations ────────────────────────────────────────────
   const eqY = H - 76;
-  ctx.fillStyle = C_LABEL;
+  ctx.fillStyle = labelColor;
   ctx.font = "bold 10px ui-monospace, monospace";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   ctx.fillText("∇^μ T_{μν} = 0", 10, eqY);
 
-  ctx.fillStyle = C_DIM;
+  ctx.fillStyle = dimColor;
   ctx.font = "9px ui-monospace, monospace";
   ctx.fillText("ν=0:  ∂_t T₀₀ + ∂_i T₀ᵢ = 0   (energy continuity)", 10, eqY + 16);
   ctx.fillText("ν=j:  ∂_t T₀ⱼ + ∂_i Tᵢⱼ = 0   (momentum continuity)", 10, eqY + 30);
 
   // ── Covariant divergence label ─────────────────────────────────────────
-  ctx.fillStyle = "rgba(255,255,255,0.40)";
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.4);
   ctx.font = "9px ui-monospace, monospace";
   ctx.textAlign = "right";
   ctx.textBaseline = "bottom";
@@ -181,7 +191,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
   const fluxIn = 0.5 + 0.4 * Math.sin(t * 2 * Math.PI * 0.8 - Math.PI * 0.5);
   const fluxOut = 0.5 + 0.4 * Math.sin(t * 2 * Math.PI * 0.8);
   const net = fluxOut - fluxIn;
-  ctx.fillStyle = Math.abs(net) < 0.1 ? "rgba(103,232,249,0.70)" : "rgba(255,100,100,0.70)";
+  ctx.fillStyle = Math.abs(net) < 0.1 ? hexToRgba(tokens.cyan, 0.7) : hexToRgba(tokens.red, 0.7);
   ctx.font = "9px ui-monospace, monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
@@ -195,20 +205,19 @@ function drawFrame(ctx: CanvasRenderingContext2D, t: number) {
 export function ConservationScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.54,
+    maxHeight: SCENE_HEIGHT_SHORT,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawFrame(ctx, 0);
-  }, []);
+    drawFrame(ctx, 0, tokens, width, height);
+  }, [tokens, width, height]);
 
   useAnimationFrame({
     elementRef: containerRef,
@@ -217,17 +226,18 @@ export function ConservationScene() {
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
-      drawFrame(ctx, t);
+      drawFrame(ctx, t, tokens, width, height);
     },
   });
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center gap-3">
+    <div ref={containerRef} className="relative w-full pb-4 flex flex-col items-center gap-3">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <p className="font-mono text-[10px] text-white/40 max-w-[560px] text-center">
+      <p className="font-mono text-[10px] text-[var(--color-fg-3)] text-center">
         A packet of energy-momentum crosses the control volume. The net flux through
         all faces sums to zero: ∇^&#8202;μ T&#8202;_{"{μν}"} = 0. The temporal part is energy
         continuity; the spatial parts are momentum continuity — Newton&#8202;&apos;s second law

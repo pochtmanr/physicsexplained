@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import type { Worldline } from "@/lib/physics/relativity/types";
 
 /**
@@ -26,6 +27,7 @@ const EVENT_A = { x: -1, t: 2 } as const; // lab simultaneous events at ct = 2
 const EVENT_B = { x: +1, t: 2 } as const;
 
 export function SpacetimeDiagramScene() {
+  const tokens = useSceneTokens();
   const [beta, setBeta] = useState(0);
 
   // Worldline = single dot rendered as a 2-point degenerate polyline so the
@@ -45,8 +47,8 @@ export function SpacetimeDiagramScene() {
   });
 
   const worldlines: Worldline[] = [
-    eventDot(EVENT_A, "#FFD66B", "A"),
-    eventDot(EVENT_B, "#FFD66B", "B"),
+    eventDot(EVENT_A, tokens.amber, "A"),
+    eventDot(EVENT_B, tokens.amber, "B"),
   ];
 
   // Anchor the simultaneity slice to event A in the boosted frame:
@@ -71,13 +73,13 @@ export function SpacetimeDiagramScene() {
         height={360}
         lightCone
       />
-      <div className="font-mono text-xs text-white/70">
+      <div className="font-mono text-xs text-[var(--color-fg-2)]">
         <p>
           A = (x = −1, ct = 2), B = (x = +1, ct = 2). Lab-frame Δt = 0.
         </p>
         <p>
           In the boost,{" "}
-          <span className="text-[#FF6ADE]">
+          <span style={{ color: "var(--color-magenta)" }}>
             Δt&apos; = γ (Δt − β Δx) = {dtPrime.toFixed(3)}
           </span>{" "}
           (ct units). Magenta dashed line: events on the boosted observer&apos;s

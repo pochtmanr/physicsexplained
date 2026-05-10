@@ -4,6 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import type { Worldline } from "@/lib/physics/relativity/types";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
 import {
+  SCENE_HEIGHT_DEFAULT,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
+import {
   isCausallyConnected,
   lightConeBoundary,
   quadrant,
@@ -12,51 +20,39 @@ import {
 /**
  * FIG.13a — The light cone of an event at the origin.
  *
- * One observer sits at the apex (0, 0). The 45° dashed lines drawn by
- * `SpacetimeDiagramCanvas` are her future and past light cones (in (x, ct)
- * units, c is set to 1 so the cone is literally at slope ±1).
- *
  * Click anywhere inside the diagram to drop an event. Each event is auto-
  * classified by `quadrant()` and `isCausallyConnected()`:
  *
  *   • cyan dot       — timelike-future (causally reachable from apex)
  *   • magenta dot    — timelike-past   (causally reaches the apex)
  *   • amber dot      — null (on the cone)
- *   • white/dim dot  — spacelike (elsewhere; no signal connects)
- *
- * The HUD lists each dropped event with its classification and a single
- * sentence on its causal relation to the apex.
+ *   • dim dot        — spacelike (elsewhere; no signal connects)
  */
 
 interface DroppedEvent {
-  x: number; // x in plot units (we work in c = 1 ct-units)
-  ct: number; // ct in plot units
+  x: number;
+  ct: number;
 }
 
 const X_RANGE: [number, number] = [-3, 3];
 const T_RANGE: [number, number] = [-3, 3];
-const W = 520;
-const H = 380;
 const MARGIN = 36;
 
-/** Color a dropped event by its quadrant relative to the origin. */
-function colorFor(ev: DroppedEvent): string {
-  // Use light-cone helpers in unit-c convention by passing c = 1 below.
-  // We classify with quadrant on a fake (t, x) pair with c = 1.
+function colorFor(ev: DroppedEvent, tokens: SceneTokens): string {
   const apex = { t: 0, x: 0, y: 0, z: 0 };
   const q = quadrant(apex, { t: ev.ct, x: ev.x, y: 0, z: 0 }, 1);
   switch (q) {
     case "timelike-future":
-      return "#67E8F9"; // cyan
+      return tokens.cyan;
     case "timelike-past":
-      return "#FF6ADE"; // magenta
+      return tokens.magenta;
     case "null-future":
     case "null-past":
-      return "#FFD66B"; // amber
+      return tokens.amber;
     case "spacelike":
-      return "rgba(255,255,255,0.55)";
+      return tokens.textMute;
     default:
-      return "rgba(255,255,255,0.85)";
+      return tokens.textBright;
   }
 }
 
@@ -86,26 +82,27 @@ function classifyLabel(ev: DroppedEvent): string {
 
 export function LightConeScene() {
   const [events, setEvents] = useState<DroppedEvent[]>([
-    { x: 1, ct: 2 }, // pre-seeded: timelike-future
-    { x: 2, ct: 0.5 }, // pre-seeded: spacelike
-    { x: -1.5, ct: -1.5 }, // pre-seeded: null-past (on the cone)
+    { x: 1, ct: 2 },
+    { x: 2, ct: 0.5 },
+    { x: -1.5, ct: -1.5 },
   ]);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const overlayRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
 
-  // Render dots overlay on top of the SpacetimeDiagramCanvas.
+  const { width: W, height: H } = useSceneSize(containerRef, {
+    ratio: 0.7,
+    maxHeight: SCENE_HEIGHT_DEFAULT + 40,
+    minHeight: 320,
+  });
+
   useEffect(() => {
     const canvas = overlayRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, W, H);
     if (!ctx) return;
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
 
     const plotW = W - 2 * MARGIN;
@@ -116,16 +113,14 @@ export function LightConeScene() {
     const tToPx = (t: number) =>
       H - MARGIN - ((t - tMin) / (tMax - tMin)) * plotH;
 
-    // Shade future and past cones (c = 1).
-    ctx.fillStyle = "rgba(255, 214, 107, 0.07)";
-    // future cone: triangle from origin to (xMin, |xMin|) and (xMax, |xMax|)
+    // Shade future and past cones with amber tint.
+    ctx.fillStyle = hexToRgba(tokens.amber, 0.07);
     ctx.beginPath();
     ctx.moveTo(xToPx(0), tToPx(0));
     ctx.lineTo(xToPx(xMin), tToPx(-xMin));
     ctx.lineTo(xToPx(xMax), tToPx(xMax));
     ctx.closePath();
     ctx.fill();
-    // past cone
     ctx.beginPath();
     ctx.moveTo(xToPx(0), tToPx(0));
     ctx.lineTo(xToPx(xMin), tToPx(xMin));
@@ -134,12 +129,12 @@ export function LightConeScene() {
     ctx.fill();
 
     for (const ev of events) {
-      ctx.fillStyle = colorFor(ev);
+      ctx.fillStyle = colorFor(ev, tokens);
       ctx.beginPath();
       ctx.arc(xToPx(ev.x), tToPx(ev.ct), 5, 0, Math.PI * 2);
       ctx.fill();
     }
-  }, [events]);
+  }, [events, W, H, tokens]);
 
   function handleClick(e: React.MouseEvent<HTMLDivElement>) {
     const wrap = wrapperRef.current;
@@ -161,18 +156,17 @@ export function LightConeScene() {
     setEvents([]);
   }
 
-  // Apex worldline (origin marker — a single tiny vertical stub at x = 0).
   const apexMarker: Worldline = {
     events: [
       { t: -0.06, x: 0, y: 0, z: 0 },
       { t: 0.06, x: 0, y: 0, z: 0 },
     ],
-    color: "#FFFFFF",
+    color: tokens.textBright,
     label: "apex",
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={containerRef} className="flex w-full flex-col gap-3 pb-4">
       <div
         ref={wrapperRef}
         className="relative cursor-crosshair select-none"
@@ -194,8 +188,8 @@ export function LightConeScene() {
         />
       </div>
       <div className="flex items-start justify-between gap-3">
-        <div className="font-mono text-xs text-white/70">
-          <p className="mb-1 text-white/85">
+        <div className="font-mono text-xs text-[var(--color-fg-2)]">
+          <p className="mb-1 text-[var(--color-fg-1)]">
             Click anywhere in the diagram to drop an event. Each is classified
             by its interval relative to the apex (origin).
           </p>
@@ -204,12 +198,9 @@ export function LightConeScene() {
           ) : (
             <ul className="space-y-0.5">
               {events.map((ev, i) => {
-                const apex = { t: 0, x: 0, y: 0, z: 0 };
-                const s2 =
-                  ev.ct * ev.ct - ev.x * ev.x; // c = 1 in this scene
-                void apex;
+                const s2 = ev.ct * ev.ct - ev.x * ev.x;
                 return (
-                  <li key={i} style={{ color: colorFor(ev) }}>
+                  <li key={i} style={{ color: colorFor(ev, tokens) }}>
                     ({ev.x.toFixed(2)}, {ev.ct.toFixed(2)}) · s² = {s2.toFixed(2)}
                     {" · "}
                     {classifyLabel(ev)}
@@ -222,17 +213,15 @@ export function LightConeScene() {
         <button
           type="button"
           onClick={clearEvents}
-          className="shrink-0 rounded border border-white/15 px-2 py-1 font-mono text-xs text-white/70 hover:bg-white/5"
+          className="shrink-0 rounded border border-[var(--color-fg-4)] px-2 py-1 font-mono text-xs text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
         >
           clear
         </button>
       </div>
-      <p className="font-mono text-[10px] text-white/40">
+      <p className="font-mono text-[10px] text-[var(--color-fg-3)]">
         amber shading · light cones (future above, past below). lightConeBoundary(t, x) = c|t| − |x|, sign tells you the quadrant.
       </p>
       <span className="hidden">
-        {/* Touch the boundary helper so the import is exercised — also useful
-            if someone wants to wire a numeric HUD without re-classifying. */}
         {events.map((ev, i) => (
           <span key={i}>{lightConeBoundary(ev.ct, ev.x, 1)}</span>
         ))}

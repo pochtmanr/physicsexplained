@@ -1,6 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.37c — The Einstein-Hilbert action.
@@ -16,9 +24,6 @@ import { useEffect, useRef } from "react";
  * a centered monospace equation with radial callout lines pointing to
  * annotated boxes explaining each symbol.
  */
-
-const W = 680;
-const H = 340;
 
 interface Annotation {
   /** The substring of the equation this annotation points to (for x-positioning). */
@@ -37,7 +42,10 @@ interface Annotation {
   color: string;
 }
 
-const ANNOTATIONS: Annotation[] = [
+/** Annotation specs sans color — color is resolved per-theme at render time. */
+type AnnotationSpec = Omit<Annotation, "color"> & { colorKey: "amber" | "purple" | "mint" | "cyan" };
+
+const ANNOTATION_SPECS: AnnotationSpec[] = [
   {
     symbol: "c⁴/16πG",
     xFrac: 0.18,
@@ -46,7 +54,7 @@ const ANNOTATIONS: Annotation[] = [
     tipDy: -72,
     label: "coupling",
     desc: "c⁴/16πG — fixes units\nand Newtonian limit",
-    color: "#FCD34D",
+    colorKey: "amber",
   },
   {
     symbol: "R",
@@ -56,7 +64,7 @@ const ANNOTATIONS: Annotation[] = [
     tipDy: -78,
     label: "Ricci scalar",
     desc: "R — scalar curvature of spacetime\nat each point of the manifold",
-    color: "#C084FC",
+    colorKey: "purple",
   },
   {
     symbol: "√(−g)",
@@ -66,7 +74,7 @@ const ANNOTATIONS: Annotation[] = [
     tipDy: 80,
     label: "volume element",
     desc: "√(−g) d⁴x — covariant measure;\nensures coordinate independence",
-    color: "#6EE7B7",
+    colorKey: "mint",
   },
   {
     symbol: "d⁴x",
@@ -76,33 +84,49 @@ const ANNOTATIONS: Annotation[] = [
     tipDy: -72,
     label: "integration",
     desc: "∫ over all of spacetime —\nthe action is a global quantity",
-    color: "#67E8F9",
+    colorKey: "cyan",
   },
 ];
 
 export function EinsteinHilbertActionScene() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
+
+  const annotations = useMemo<Annotation[]>(
+    () =>
+      ANNOTATION_SPECS.map((spec) => ({
+        symbol: spec.symbol,
+        xFrac: spec.xFrac,
+        side: spec.side,
+        tipDx: spec.tipDx,
+        tipDy: spec.tipDy,
+        label: spec.label,
+        desc: spec.desc,
+        color: tokens[spec.colorKey],
+      })),
+    [tokens],
+  );
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = width;
+    const H = height;
     ctx.clearRect(0, 0, W, H);
 
     // Background
-    ctx.fillStyle = "#050508";
+    ctx.fillStyle = tokens.bg;
     ctx.fillRect(0, 0, W, H);
 
     // Title
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "10px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("THE EINSTEIN-HILBERT ACTION — VARIATIONAL ORIGIN OF THE FIELD EQUATIONS", W / 2, 20);
@@ -111,7 +135,7 @@ export function EinsteinHilbertActionScene() {
     const eqY = H / 2 - 8;
     const eqX = W / 2;
 
-    ctx.fillStyle = "rgba(255,255,255,0.92)";
+    ctx.fillStyle = tokens.textBright;
     ctx.font = "bold 20px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("S  =  (c⁴/16πG)  ∫  R  √(−g)  d⁴x", eqX, eqY);
@@ -119,7 +143,7 @@ export function EinsteinHilbertActionScene() {
     // Underline
     const eqMeasure = ctx.measureText("S  =  (c⁴/16πG)  ∫  R  √(−g)  d⁴x");
     const eqLeft = eqX - eqMeasure.width / 2;
-    ctx.strokeStyle = "rgba(255,255,255,0.12)";
+    ctx.strokeStyle = tokens.grid;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(eqLeft - 8, eqY + 6);
@@ -127,14 +151,14 @@ export function EinsteinHilbertActionScene() {
     ctx.stroke();
 
     // Annotation callouts
-    for (const ann of ANNOTATIONS) {
+    for (const ann of annotations) {
       const rootX = eqLeft + ann.xFrac * eqMeasure.width;
       const rootY = eqY;
       const tipX = rootX + ann.tipDx;
       const tipY = eqY + ann.tipDy;
 
       // Dashed callout line
-      ctx.strokeStyle = `${ann.color}66`;
+      ctx.strokeStyle = hexToRgba(ann.color, 0.4);
       ctx.lineWidth = 1;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -150,12 +174,12 @@ export function EinsteinHilbertActionScene() {
       const boxX = tipX - boxW / 2;
       const boxY = ann.side === "above" ? tipY - boxH + 8 : tipY - 8;
 
-      ctx.fillStyle = "rgba(12,8,28,0.90)";
+      ctx.fillStyle = hexToRgba(tokens.bg, 0.9);
       ctx.beginPath();
       ctx.roundRect(boxX, boxY, boxW, boxH, 5);
       ctx.fill();
 
-      ctx.strokeStyle = `${ann.color}44`;
+      ctx.strokeStyle = hexToRgba(ann.color, 0.27);
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.roundRect(boxX, boxY, boxW, boxH, 5);
@@ -168,7 +192,7 @@ export function EinsteinHilbertActionScene() {
       ctx.fillText(ann.label, tipX, boxY + 14);
 
       // Description lines
-      ctx.fillStyle = "rgba(255,255,255,0.60)";
+      ctx.fillStyle = tokens.textDim;
       ctx.font = "8.5px ui-monospace, monospace";
       ctx.textAlign = "center";
       lines.forEach((line, i) => {
@@ -184,12 +208,12 @@ export function EinsteinHilbertActionScene() {
 
     // Euler-Lagrange result arrow + label
     const resultY = H - 38;
-    ctx.fillStyle = "rgba(255,255,255,0.18)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.font = "9px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("vary S with respect to g_{μν}", W / 2, resultY - 2);
 
-    ctx.strokeStyle = "rgba(255,230,60,0.55)";
+    ctx.strokeStyle = hexToRgba(tokens.amber, 0.55);
     ctx.lineWidth = 1.5;
     const arrX = W / 2;
     ctx.beginPath();
@@ -197,7 +221,7 @@ export function EinsteinHilbertActionScene() {
     ctx.lineTo(arrX + 32, resultY + 10);
     ctx.stroke();
     // arrowhead
-    ctx.fillStyle = "rgba(255,230,60,0.55)";
+    ctx.fillStyle = hexToRgba(tokens.amber, 0.55);
     ctx.beginPath();
     ctx.moveTo(arrX + 36, resultY + 10);
     ctx.lineTo(arrX + 28, resultY + 6);
@@ -205,25 +229,26 @@ export function EinsteinHilbertActionScene() {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = "rgba(255,230,60,0.75)";
+    ctx.fillStyle = hexToRgba(tokens.amber, 0.85);
     ctx.font = "bold 11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("G_{μν} = κ T_{μν}", W / 2 + 68 + 32, resultY + 13);
 
     // Hilbert label
-    ctx.fillStyle = "rgba(249,168,212,0.45)";
+    ctx.fillStyle = hexToRgba(tokens.magenta, 0.55);
     ctx.font = "8px ui-monospace, monospace";
     ctx.textAlign = "right";
     ctx.fillText("— David Hilbert, November 20, 1915, Göttingen", W - 16, H - 12);
-  }, []);
+  }, [tokens, annotations, width, height]);
 
   return (
-    <div className="flex flex-col gap-2 p-2">
+    <div ref={containerRef} className="flex flex-col gap-2 p-2 w-full">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/60"
+        className={SCENE_CANVAS_CLASS}
+        style={{ width, height, display: "block" }}
       />
-      <p className="px-1 font-mono text-xs text-white/40">
+      <p className="px-1 font-mono text-xs text-[var(--color-fg-3)]">
         The Einstein-Hilbert action. Vary the Ricci scalar action with respect to the
         metric g_&#123;μν&#125; and the Euler-Lagrange equations are G_&#123;μν&#125; = κ T_&#123;μν&#125; — the field
         equations emerge as the least-action condition on spacetime geometry.

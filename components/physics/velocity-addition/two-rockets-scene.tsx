@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
 import {
   galileanLimit,
@@ -39,7 +44,8 @@ const MAX_HEIGHT = 360;
 export function TwoRocketsScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const colors = tokens.colors;
 
   const [betaA, setBetaA] = useState(0.6);
   const [betaB, setBetaB] = useState(0.6);
@@ -52,39 +58,23 @@ export function TwoRocketsScene() {
     betaBRef.current = betaB;
   }, [betaB]);
 
-  const [size, setSize] = useState({ width: 720, height: 360 });
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width: sizeWidth, height: sizeHeight } = useSceneSize(containerRef, {
+    ratio: RATIO,
+    maxHeight: MAX_HEIGHT,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const width = sizeWidth;
+      const height = sizeHeight;
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
-
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const c = SPEED_OF_LIGHT;
       const vA = betaARef.current * c;
@@ -104,7 +94,7 @@ export function TwoRocketsScene() {
       ctx.stroke();
 
       // Earth marker (left edge)
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.beginPath();
       ctx.arc(padX, trackY, 5, 0, Math.PI * 2);
       ctx.fill();
@@ -115,7 +105,7 @@ export function TwoRocketsScene() {
       // c-marker (right edge represents x = c · t for animation period)
       const usable = width - 2 * padX;
       // Light-line mark — the wall the rockets cannot cross.
-      ctx.strokeStyle = "#FFC857";
+      ctx.strokeStyle = tokens.amber;
       ctx.setLineDash([4, 4]);
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -123,7 +113,7 @@ export function TwoRocketsScene() {
       ctx.lineTo(padX + usable, trackY + 30);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.fillText("c", padX + usable + 6, trackY + 4);
 
       // Animate three travellers — anim phase resets every 4 s.
@@ -202,14 +192,13 @@ export function TwoRocketsScene() {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div
-        className="relative w-full overflow-hidden rounded-md bg-[#0A0C12]"
-        style={{ height: size.height }}
-      >
-        <canvas ref={canvasRef} className="block h-full w-full" />
-      </div>
+      <canvas
+        ref={canvasRef}
+        style={{ width: sizeWidth, height: sizeHeight, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>Rocket A speed (Earth frame): β_A</span>
             <span className="opacity-60">{betaA.toFixed(3)} c</span>
@@ -221,10 +210,11 @@ export function TwoRocketsScene() {
             step={0.001}
             value={betaA}
             onChange={(e) => setBetaA(parseFloat(e.target.value))}
-            className="w-full accent-cyan-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>Rocket B speed (in A&rsquo;s frame): β&prime;_B</span>
             <span className="opacity-60">{betaB.toFixed(3)} c</span>
@@ -236,11 +226,12 @@ export function TwoRocketsScene() {
             step={0.001}
             value={betaB}
             onChange={(e) => setBetaB(parseFloat(e.target.value))}
-            className="w-full accent-fuchsia-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-magenta)" }}
           />
         </label>
       </div>
-      <p className="mt-2 font-mono text-[11px] text-white/50">
+      <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         Galileo (cyan ghost) says Earth sees Rocket B at v_A + v&prime;_B —
         which crosses c at β_A + β&prime;_B = 1. Einstein (magenta) says
         u = (v_A + v&prime;_B) / (1 + v_A v&prime;_B/c²) — strictly &lt; c

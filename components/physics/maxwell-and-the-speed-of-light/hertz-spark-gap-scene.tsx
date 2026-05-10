@@ -2,9 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
 import { hertzWavelength } from "@/lib/physics/relativity/maxwell-c";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.02c — Heinrich Hertz's 1887 dipole-and-spark-gap experiment.
@@ -32,13 +39,10 @@ import { hertzWavelength } from "@/lib/physics/relativity/maxwell-c";
  *   magenta — B-field oscillation
  */
 
-const RATIO = 0.5;
-const MAX_HEIGHT = 360;
-
 export function HertzSparkGapScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
 
   const [frequencyMHz, setFrequencyMHz] = useState(50);
   const fRef = useRef(frequencyMHz);
@@ -46,39 +50,22 @@ export function HertzSparkGapScene() {
     fRef.current = frequencyMHz;
   }, [frequencyMHz]);
 
-  const [size, setSize] = useState({ width: 720, height: 360 });
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
 
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const f = fRef.current * 1e6; // Hz
       const lambda = hertzWavelength(f); // metres
@@ -100,7 +87,7 @@ export function HertzSparkGapScene() {
       const amp = height * 0.18;
 
       // E (cyan) — vertical sinusoid
-      ctx.strokeStyle = colors.cyan;
+      ctx.strokeStyle = tokens.cyan;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       for (let x = 0; x <= sep; x += 2) {
@@ -111,7 +98,7 @@ export function HertzSparkGapScene() {
       ctx.stroke();
 
       // B (magenta) — quarter-period offset
-      ctx.strokeStyle = colors.magenta;
+      ctx.strokeStyle = tokens.magenta;
       ctx.lineWidth = 1.5;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -126,7 +113,7 @@ export function HertzSparkGapScene() {
       // Wavelength bracket on the wave
       const lambdaStartX = txX + 20;
       const lambdaEndX = lambdaStartX + wavelengthPx;
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(lambdaStartX, cy + amp + 14);
@@ -136,8 +123,8 @@ export function HertzSparkGapScene() {
       ctx.moveTo(lambdaEndX, cy + amp + 9);
       ctx.lineTo(lambdaEndX, cy + amp + 19);
       ctx.stroke();
-      ctx.fillStyle = colors.fg2;
-      ctx.font = "12px ui-monospace, SFMono-Regular, monospace";
+      ctx.fillStyle = tokens.textMute;
+      ctx.font = tokens.fontHud;
       const lambdaLabel = `λ = ${lambda < 1 ? `${(lambda * 100).toFixed(2)} cm` : `${lambda.toFixed(2)} m`}`;
       ctx.fillText(
         lambdaLabel,
@@ -147,7 +134,7 @@ export function HertzSparkGapScene() {
 
       // ── Transmitter dipole (TX) — two metal balls + spark gap
       const ballR = 10;
-      ctx.fillStyle = colors.cyan;
+      ctx.fillStyle = tokens.cyan;
       ctx.beginPath();
       ctx.arc(txX, cy - 30, ballR, 0, Math.PI * 2);
       ctx.fill();
@@ -156,7 +143,7 @@ export function HertzSparkGapScene() {
       ctx.fill();
       // sparking gap (amber flicker tied to phase)
       const sparkAlpha = 0.5 + 0.5 * Math.sin(phase * 2);
-      ctx.strokeStyle = `rgba(255, 200, 87, ${sparkAlpha})`;
+      ctx.strokeStyle = hexToRgba(tokens.amber, sparkAlpha);
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(txX - 4, cy - ballR - 6);
@@ -164,12 +151,12 @@ export function HertzSparkGapScene() {
       ctx.lineTo(txX - 3, cy + 3);
       ctx.lineTo(txX + 4, cy + ballR + 6);
       ctx.stroke();
-      ctx.fillStyle = colors.fg2;
+      ctx.fillStyle = tokens.textMute;
       ctx.fillText("TX (Hertz dipole)", txX - 50, cy + 60);
 
       // ── Receiver loop (RX) — circle with a small gap, fires when wave reaches it
       const loopR = 22;
-      ctx.strokeStyle = colors.cyan;
+      ctx.strokeStyle = tokens.cyan;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.arc(rxX, cy, loopR, 0.18, Math.PI * 2 - 0.18);
@@ -177,7 +164,7 @@ export function HertzSparkGapScene() {
       // RX spark — fires only on certain phases (when E at RX is near peak)
       const rxField = Math.sin(k * sep - phase);
       if (Math.abs(rxField) > 0.85) {
-        ctx.strokeStyle = "rgba(255, 200, 87, 1)";
+        ctx.strokeStyle = tokens.amber;
         ctx.lineWidth = 1.6;
         ctx.beginPath();
         ctx.moveTo(rxX + Math.cos(0.18) * loopR, cy + Math.sin(0.18) * loopR);
@@ -185,34 +172,33 @@ export function HertzSparkGapScene() {
         ctx.lineTo(rxX + Math.cos(-0.18) * loopR, cy - Math.sin(0.18) * loopR);
         ctx.stroke();
       }
-      ctx.fillStyle = colors.fg2;
+      ctx.fillStyle = tokens.textMute;
       ctx.fillText("RX (loop receiver)", rxX - 56, cy + 50);
 
       // ── HUD readout
-      ctx.fillStyle = colors.fg2;
+      ctx.fillStyle = tokens.textMute;
       let yh = 22;
       ctx.fillText(`f = ${(f / 1e6).toFixed(1)} MHz`, padX, yh);
       yh += 16;
       ctx.fillText(`c = ${SPEED_OF_LIGHT.toExponential(4)} m/s (Maxwell)`, padX, yh);
       yh += 16;
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.fillText(`λ = c / f = ${lambdaLabel.replace("λ = ", "")}`, padX, yh);
     },
   });
 
   return (
     <div ref={containerRef} className="w-full">
-      <div
-        className="relative w-full overflow-hidden rounded-md bg-[#0A0C12]"
-        style={{ height: size.height }}
-      >
-        <canvas ref={canvasRef} className="block h-full w-full" />
-      </div>
+      <canvas
+        ref={canvasRef}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3">
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>Driving frequency (MHz)</span>
-            <span className="opacity-60">{frequencyMHz.toFixed(0)} MHz</span>
+            <span className="text-[var(--color-fg-3)]">{frequencyMHz.toFixed(0)} MHz</span>
           </div>
           <input
             type="range"
@@ -221,11 +207,12 @@ export function HertzSparkGapScene() {
             step={1}
             value={frequencyMHz}
             onChange={(e) => setFrequencyMHz(parseFloat(e.target.value))}
-            className="w-full accent-amber-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-amber)" }}
           />
         </label>
       </div>
-      <p className="mt-2 font-mono text-[11px] text-white/50">
+      <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         Hertz's 1887–1888 apparatus operated near 50 MHz (λ ≈ 6 m). The receiver loop
         fires a sympathetic spark whenever the electric component of the arriving
         wave is near its peak — Maxwell's electromagnetic waves, produced and

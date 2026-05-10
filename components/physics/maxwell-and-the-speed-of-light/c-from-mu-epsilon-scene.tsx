@@ -2,9 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { EPSILON_0, MU_0, SPEED_OF_LIGHT } from "@/lib/physics/constants";
 import { cFromMuEpsilon } from "@/lib/physics/relativity/maxwell-c";
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.02a — Sliders for μ₀ and ε₀, live readout of c = 1/√(μ₀ε₀).
@@ -26,13 +32,10 @@ import { cFromMuEpsilon } from "@/lib/physics/relativity/maxwell-c";
  *   magenta — the μ₀ track / magnetic character
  */
 
-const RATIO = 0.45;
-const MAX_HEIGHT = 360;
-
 export function CFromMuEpsilonScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
 
   const [muMult, setMuMult] = useState(1);
   const [epsMult, setEpsMult] = useState(1);
@@ -45,39 +48,22 @@ export function CFromMuEpsilonScene() {
     epsRef.current = epsMult;
   }, [epsMult]);
 
-  const [size, setSize] = useState({ width: 720, height: 320 });
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.45,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
 
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const mu = MU_0 * muRef.current;
       const eps = EPSILON_0 * epsRef.current;
@@ -86,7 +72,7 @@ export function CFromMuEpsilonScene() {
 
       // axis baseline
       const cy = height * 0.55;
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(40, cy);
@@ -103,7 +89,7 @@ export function CFromMuEpsilonScene() {
       const amp = height * 0.24;
 
       // E-field component (cyan, vertical sine)
-      ctx.strokeStyle = colors.cyan;
+      ctx.strokeStyle = tokens.cyan;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       for (let px = 0; px <= usable; px += 2) {
@@ -115,7 +101,7 @@ export function CFromMuEpsilonScene() {
 
       // B-field component (magenta, also vertical, π/2 phase shifted into the page —
       // we draw it as a dashed mirror to suggest the orthogonal component)
-      ctx.strokeStyle = colors.magenta;
+      ctx.strokeStyle = tokens.magenta;
       ctx.lineWidth = 1.5;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -129,7 +115,7 @@ export function CFromMuEpsilonScene() {
 
       // Leading wavefront marker (amber tick)
       const frontX = padX + ((phase / (2 * Math.PI)) * wavelengthPx) % usable;
-      ctx.strokeStyle = "#FFC857";
+      ctx.strokeStyle = tokens.amber;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(frontX, cy - amp - 10);
@@ -137,19 +123,19 @@ export function CFromMuEpsilonScene() {
       ctx.stroke();
 
       // HUD: numerical readout
-      ctx.fillStyle = colors.fg2;
-      ctx.font = "12px ui-monospace, SFMono-Regular, monospace";
+      ctx.fillStyle = tokens.textMute;
+      ctx.font = tokens.fontHud;
       const x0 = padX;
       let yh = 22;
       ctx.fillText(`μ₀ = ${(mu * 1e6).toFixed(6)} × 10⁻⁶ N/A²`, x0, yh);
       yh += 16;
       ctx.fillText(`ε₀ = ${(eps * 1e12).toFixed(6)} × 10⁻¹² F/m`, x0, yh);
       yh += 16;
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.fillText(`c = 1 / √(μ₀ε₀) = ${c.toExponential(8)} m/s`, x0, yh);
 
       // Right-side: deviation from modern SI value
-      ctx.fillStyle = colors.fg2;
+      ctx.fillStyle = tokens.textMute;
       const dev = ((c - SPEED_OF_LIGHT) / SPEED_OF_LIGHT) * 100;
       const devText = `Δ from modern c: ${dev >= 0 ? "+" : ""}${dev.toFixed(2)}%`;
       ctx.fillText(devText, width - padX - ctx.measureText(devText).width, 22);
@@ -158,17 +144,16 @@ export function CFromMuEpsilonScene() {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div
-        className="relative w-full overflow-hidden rounded-md bg-[#0A0C12]"
-        style={{ height: size.height }}
-      >
-        <canvas ref={canvasRef} className="block h-full w-full" />
-      </div>
+      <canvas
+        ref={canvasRef}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>μ₀ multiplier</span>
-            <span className="opacity-60">{muMult.toFixed(3)}×</span>
+            <span className="text-[var(--color-fg-3)]">{muMult.toFixed(3)}×</span>
           </div>
           <input
             type="range"
@@ -177,13 +162,14 @@ export function CFromMuEpsilonScene() {
             step={0.001}
             value={muMult}
             onChange={(e) => setMuMult(parseFloat(e.target.value))}
-            className="w-full accent-fuchsia-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-magenta)" }}
           />
         </label>
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>ε₀ multiplier</span>
-            <span className="opacity-60">{epsMult.toFixed(3)}×</span>
+            <span className="text-[var(--color-fg-3)]">{epsMult.toFixed(3)}×</span>
           </div>
           <input
             type="range"
@@ -192,11 +178,12 @@ export function CFromMuEpsilonScene() {
             step={0.001}
             value={epsMult}
             onChange={(e) => setEpsMult(parseFloat(e.target.value))}
-            className="w-full accent-cyan-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
       </div>
-      <p className="mt-2 font-mono text-[11px] text-white/50">
+      <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         At μ₀ × 1.000 and ε₀ × 1.000 the readout locks to c = 299,792,458 m/s
         — the value Maxwell predicted in 1862 from two electrostatic and
         magnetostatic constants that had nothing to do with optics.

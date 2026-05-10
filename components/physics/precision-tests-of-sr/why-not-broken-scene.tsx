@@ -5,6 +5,10 @@ import {
   naturalnessGapOrders,
   precisionTestTimeline,
 } from "@/lib/physics/relativity/precision-tests";
+import {
+  hexToRgba,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.24c — WhyNotBrokenScene.
@@ -45,39 +49,40 @@ interface MarkerEntry {
   readonly color: string;
 }
 
-const NAIVE = naivePlanckScaleBound(); // ~1e-4
+const NAIVE = naivePlanckScaleBound();
 const TL = precisionTestTimeline();
-const PHOTON_FRONTIER = TL[TL.length - 1].bound; // 1e-18
-
-const MARKERS: readonly MarkerEntry[] = [
-  {
-    log10: 0,
-    label: "Newtonian limit",
-    sub: "no Lorentz constraint",
-    color: "rgba(255,255,255,0.35)",
-  },
-  {
-    log10: Math.log10(NAIVE),
-    label: "naïve quantum-gravity expectation",
-    sub: "≈ v⊕ / c",
-    color: "#FCA5A5", // red — the "natural" estimate
-  },
-  {
-    log10: Math.log10(PHOTON_FRONTIER),
-    label: "modern photon-sector bound",
-    sub: "Sr / Yb optical clocks",
-    color: "#67E8F9", // cyan — the data
-  },
-  {
-    log10: -31,
-    label: "neutron-sector bound",
-    sub: "He-3 / Xe co-magnetometer",
-    color: "#86EFAC", // green
-  },
-];
+const PHOTON_FRONTIER = TL[TL.length - 1].bound;
 
 export function WhyNotBrokenScene() {
+  const tokens = useSceneTokens();
   const plotW = WIDTH - PAD_L - PAD_R;
+
+  const MARKERS: readonly MarkerEntry[] = [
+    {
+      log10: 0,
+      label: "Newtonian limit",
+      sub: "no Lorentz constraint",
+      color: tokens.textMute,
+    },
+    {
+      log10: Math.log10(NAIVE),
+      label: "naïve quantum-gravity expectation",
+      sub: "≈ v⊕ / c",
+      color: tokens.red,
+    },
+    {
+      log10: Math.log10(PHOTON_FRONTIER),
+      label: "modern photon-sector bound",
+      sub: "Sr / Yb optical clocks",
+      color: tokens.cyan,
+    },
+    {
+      log10: -31,
+      label: "neutron-sector bound",
+      sub: "He-3 / Xe co-magnetometer",
+      color: tokens.green,
+    },
+  ];
 
   const xToPx = (log10: number) => {
     const t = (LOG_LEFT - log10) / (LOG_LEFT - LOG_RIGHT);
@@ -90,37 +95,34 @@ export function WhyNotBrokenScene() {
   const gap = naturalnessGapOrders(PHOTON_FRONTIER);
 
   return (
-    <div className="flex w-full justify-center p-4">
+    <div className="flex w-full justify-center">
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         width="100%"
-        style={{ maxWidth: WIDTH }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ maxWidth: WIDTH, background: tokens.bg }}
+        className="block"
         role="img"
         aria-label="Comparison of naïve quantum-gravity expectation versus modern bounds on Lorentz violation."
       >
-        {/* Title */}
         <text
           x={PAD_L}
           y={PAD_T - 14}
           fontSize={12}
           fontFamily="ui-monospace, monospace"
           fontWeight={600}
-          fill="rgba(255,255,255,0.85)"
+          fill={tokens.textDim}
         >
           The naturalness puzzle: bounds vs. naïve expectation
         </text>
 
-        {/* Main axis */}
         <line
           x1={PAD_L}
           y1={axisY}
           x2={PAD_L + plotW}
           y2={axisY}
-          stroke="rgba(255,255,255,0.5)"
+          stroke={tokens.axes}
         />
 
-        {/* Tick marks + labels */}
         {xTicks.map((t) => (
           <g key={`xt-${t}`}>
             <line
@@ -128,7 +130,7 @@ export function WhyNotBrokenScene() {
               y1={axisY}
               x2={xToPx(t)}
               y2={axisY + 4}
-              stroke="rgba(255,255,255,0.5)"
+              stroke={tokens.axes}
             />
             <text
               x={xToPx(t)}
@@ -136,7 +138,7 @@ export function WhyNotBrokenScene() {
               textAnchor="middle"
               fontSize={10}
               fontFamily="ui-monospace, monospace"
-              fill="rgba(255,255,255,0.55)"
+              fill={tokens.textMute}
             >
               10
               <tspan fontSize={8} dy={-3}>
@@ -146,38 +148,38 @@ export function WhyNotBrokenScene() {
           </g>
         ))}
 
-        {/* Axis title */}
         <text
           x={PAD_L + plotW / 2}
           y={HEIGHT - 18}
           textAnchor="middle"
           fontSize={11}
           fontFamily="ui-monospace, monospace"
-          fill="rgba(255,255,255,0.65)"
+          fill={tokens.textDim}
         >
           fractional Lorentz-violating coefficient (log scale)
         </text>
 
-        {/* The "naturalness gap" shaded band — between naïve and modern */}
+        {/* Naturalness gap shaded band */}
         <rect
           x={xToPx(Math.log10(NAIVE))}
           y={PAD_T + 16}
-          width={Math.max(1, xToPx(Math.log10(PHOTON_FRONTIER)) - xToPx(Math.log10(NAIVE)))}
+          width={Math.max(
+            1,
+            xToPx(Math.log10(PHOTON_FRONTIER)) - xToPx(Math.log10(NAIVE)),
+          )}
           height={axisY - PAD_T - 16}
           fill="url(#gapFill)"
           opacity={0.18}
         />
         <defs>
           <linearGradient id="gapFill" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#FCA5A5" stopOpacity={0.6} />
-            <stop offset="100%" stopColor="#67E8F9" stopOpacity={0.6} />
+            <stop offset="0%" stopColor={tokens.red} stopOpacity={0.6} />
+            <stop offset="100%" stopColor={tokens.cyan} stopOpacity={0.6} />
           </linearGradient>
         </defs>
 
-        {/* Markers — vertical lines + labels */}
         {MARKERS.map((m, i) => {
           const x = xToPx(m.log10);
-          // Stagger label heights so they don't overlap.
           const labelY = PAD_T + 22 + (i % 2 === 0 ? 0 : 28);
           return (
             <g key={`m-${i}`}>
@@ -197,7 +199,7 @@ export function WhyNotBrokenScene() {
                 y={labelY - 12}
                 width={180}
                 height={32}
-                fill="rgba(10,12,18,0.85)"
+                fill={hexToRgba(tokens.bg, 0.85)}
                 stroke={m.color}
                 strokeOpacity={0.4}
                 strokeWidth={0.6}
@@ -220,7 +222,7 @@ export function WhyNotBrokenScene() {
                 textAnchor="middle"
                 fontSize={9}
                 fontFamily="ui-monospace, monospace"
-                fill="rgba(255,255,255,0.55)"
+                fill={tokens.textMute}
               >
                 {m.sub}
               </text>
@@ -228,7 +230,6 @@ export function WhyNotBrokenScene() {
           );
         })}
 
-        {/* The gap callout */}
         <g>
           <text
             x={
@@ -240,7 +241,7 @@ export function WhyNotBrokenScene() {
             fontSize={11}
             fontFamily="ui-monospace, monospace"
             fontWeight={600}
-            fill="rgba(255,179,107,0.92)"
+            fill={hexToRgba(tokens.amber, 0.92)}
           >
             ← {gap.toFixed(0)} orders of magnitude →
           </text>
@@ -253,13 +254,12 @@ export function WhyNotBrokenScene() {
             textAnchor="middle"
             fontSize={10}
             fontFamily="ui-monospace, monospace"
-            fill="rgba(255,179,107,0.7)"
+            fill={hexToRgba(tokens.amber, 0.7)}
           >
             the naturalness gap
           </text>
         </g>
 
-        {/* HUD: motivations to look + the verdict */}
         <g>
           <text
             x={WIDTH - PAD_R - 6}
@@ -267,7 +267,7 @@ export function WhyNotBrokenScene() {
             textAnchor="end"
             fontSize={10}
             fontFamily="ui-monospace, monospace"
-            fill="rgba(255,255,255,0.55)"
+            fill={tokens.textMute}
           >
             quantum gravity · string vacua · Lorentz cosmologies
           </text>

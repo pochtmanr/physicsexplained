@@ -3,66 +3,63 @@
 import { useEffect, useRef, useState } from "react";
 import { inelasticMergerMass } from "@/lib/physics/relativity/relativistic-collision";
 import { gamma } from "@/lib/physics/relativity/types";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.18b — Inelastic merger: kinetic energy becomes rest mass.
  *
- * Two particles of mass m collide head-on at ±β and merge into a single
- * particle at rest in the CoM frame. The final rest mass is:
- *
  *   m_final = 2γ(β)·m
- *
- * which is strictly greater than the Newtonian 2m. The difference
- * (2γ − 2)m is kinetic energy that has been converted to rest mass.
- *
- * At β = 0.5: γ = 1/√(1−0.25) ≈ 1.1547, m_final ≈ 2.309m — a 15.5% surplus.
- *
- * Sliders: mass m (0.5–5), velocity β (0.01–0.95).
  *
  * Color palette:
  *   cyan    = particle 1 (incoming)
  *   magenta = particle 2 (incoming)
- *   amber   = merged particle (final state)
+ *   amber   = merged particle
  */
 
-const WIDTH = 720;
-const HEIGHT = 320;
-
 export function InelasticMergerScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.45,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
   const [beta, setBeta] = useState(0.5);
   const [mass, setMass] = useState(1.0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = WIDTH * dpr;
-    canvas.height = HEIGHT * dpr;
-    canvas.style.width = `${WIDTH}px`;
-    canvas.style.height = `${HEIGHT}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.clearRect(0, 0, width, height);
+
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, width, height);
+
+    const WIDTH = width;
+    const HEIGHT = height;
 
     const g = gamma(beta);
-    // c = 1 natural units for display. inelasticMergerMass uses SPEED_OF_LIGHT
-    // internally but we call it with dimensionless β and then express m_final
-    // as a multiple of m. We pass c = 1 override to work in natural units.
     const mFinal = inelasticMergerMass(mass, beta, mass, -beta, 1);
     const mNewton = 2 * mass;
-    const massExcess = (mFinal - mNewton) / mNewton; // fractional excess
+    const massExcess = (mFinal - mNewton) / mNewton;
 
-    // Layout
     const midX = WIDTH / 2;
     const lineY = HEIGHT / 2 - 20;
-    const arrowLen = 130;
-    const ballR1 = 14; // incoming ball radius
-    const ballRFinal = ballR1 * Math.sqrt(mFinal / (mass * 1.5)); // scale visual size
+    const arrowLen = Math.min(130, WIDTH * 0.18);
+    const ballR1 = 14;
+    const ballRFinal = ballR1 * Math.sqrt(mFinal / (mass * 1.5));
 
     // Background subtle grid
-    ctx.strokeStyle = "rgba(255,255,255,0.04)";
+    ctx.strokeStyle = tokens.grid;
     ctx.lineWidth = 1;
     for (let xv = 0; xv <= WIDTH; xv += 60) {
       ctx.beginPath();
@@ -71,18 +68,16 @@ export function InelasticMergerScene() {
       ctx.stroke();
     }
 
-    // --- INCOMING PARTICLE 1 (cyan, from left) ---
+    // --- PARTICLE 1 (cyan) ---
     const p1x = midX - arrowLen - ballR1 - 30;
 
-    // Arrow from particle to center
-    ctx.strokeStyle = "#67E8F9";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.moveTo(p1x + ballR1, lineY);
     ctx.lineTo(midX - 15, lineY);
     ctx.stroke();
-    // arrowhead
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.beginPath();
     ctx.moveTo(midX - 8, lineY);
     ctx.lineTo(midX - 20, lineY - 6);
@@ -90,31 +85,30 @@ export function InelasticMergerScene() {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.beginPath();
     ctx.arc(p1x, lineY, ballR1, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "#0A0C12";
+    ctx.fillStyle = tokens.bg;
     ctx.font = "bold 10px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("m", p1x, lineY + 4);
 
-    // β label
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText(`β = +${beta.toFixed(3)}`, p1x, lineY - ballR1 - 8);
 
-    // --- INCOMING PARTICLE 2 (magenta, from right) ---
+    // --- PARTICLE 2 (magenta) ---
     const p2x = midX + arrowLen + ballR1 + 30;
 
-    ctx.strokeStyle = "#FF6ADE";
+    ctx.strokeStyle = tokens.magenta;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
     ctx.moveTo(p2x - ballR1, lineY);
     ctx.lineTo(midX + 15, lineY);
     ctx.stroke();
-    ctx.fillStyle = "#FF6ADE";
+    ctx.fillStyle = tokens.magenta;
     ctx.beginPath();
     ctx.moveTo(midX + 8, lineY);
     ctx.lineTo(midX + 20, lineY - 6);
@@ -122,22 +116,22 @@ export function InelasticMergerScene() {
     ctx.closePath();
     ctx.fill();
 
-    ctx.fillStyle = "#FF6ADE";
+    ctx.fillStyle = tokens.magenta;
     ctx.beginPath();
     ctx.arc(p2x, lineY, ballR1, 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "#0A0C12";
+    ctx.fillStyle = tokens.bg;
     ctx.font = "bold 10px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText("m", p2x, lineY + 4);
 
-    ctx.fillStyle = "#FF6ADE";
+    ctx.fillStyle = tokens.magenta;
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText(`β = −${beta.toFixed(3)}`, p2x, lineY - ballR1 - 8);
 
     // --- COLLISION SPARK ---
-    ctx.strokeStyle = "rgba(255,200,100,0.8)";
+    ctx.strokeStyle = hexToRgba(tokens.amber, 0.8);
     ctx.lineWidth = 1.5;
     for (let i = 0; i < 8; i++) {
       const angle = (i * Math.PI) / 4;
@@ -147,19 +141,18 @@ export function InelasticMergerScene() {
       ctx.stroke();
     }
 
-    // --- MERGED PARTICLE (amber, at rest) ---
+    // --- MERGED PARTICLE ---
     const mergedY = lineY + 80;
-    ctx.fillStyle = "#FBBF24";
+    ctx.fillStyle = tokens.amber;
     ctx.beginPath();
     ctx.arc(midX, mergedY, Math.max(ballRFinal, 18), 0, Math.PI * 2);
     ctx.fill();
-    ctx.fillStyle = "#0A0C12";
+    ctx.fillStyle = tokens.bg;
     ctx.font = `bold ${Math.round(Math.min(11, 10 + mFinal / mass))}px ui-monospace, monospace`;
     ctx.textAlign = "center";
     ctx.fillText("M", midX, mergedY + 4);
 
-    // Arrow from collision point to merged particle
-    ctx.strokeStyle = "#FBBF24";
+    ctx.strokeStyle = tokens.amber;
     ctx.lineWidth = 2;
     ctx.setLineDash([4, 3]);
     ctx.beginPath();
@@ -168,54 +161,54 @@ export function InelasticMergerScene() {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // β = 0 label for merged particle
-    ctx.fillStyle = "#FBBF24";
+    ctx.fillStyle = tokens.amber;
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText("β = 0 (at rest in CoM)", midX + Math.max(ballRFinal, 18) + 8, mergedY + 4);
 
     // --- HUD ---
     const hudY = HEIGHT - 88;
-    ctx.fillStyle = "rgba(10, 12, 18, 0.88)";
+    ctx.fillStyle = hexToRgba(tokens.bg, 0.88);
     ctx.fillRect(0, hudY, WIDTH, 88);
 
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "left";
 
-    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.fillStyle = tokens.textMute;
     ctx.fillText(`m = ${mass.toFixed(2)}   β = ${beta.toFixed(3)}   γ = ${g.toFixed(6)}`, 12, hudY + 16);
 
-    ctx.fillStyle = "#67E8F9";
+    ctx.fillStyle = tokens.cyan;
     ctx.fillText(`Newtonian  M_final = 2m = ${mNewton.toFixed(6)}`, 12, hudY + 32);
 
-    ctx.fillStyle = "#FBBF24";
+    ctx.fillStyle = tokens.amber;
     ctx.fillText(
       `Relativistic M_final = 2γm = ${mFinal.toFixed(6)}   (${(massExcess * 100).toFixed(2)}% heavier)`,
       12,
       hudY + 48,
     );
 
-    ctx.fillStyle = "#4ADE80";
+    ctx.fillStyle = tokens.green;
     ctx.fillText(
       `Mass excess = (2γ − 2)m = ${(mFinal - mNewton).toFixed(6)}   [was kinetic energy]`,
       12,
       hudY + 64,
     );
 
-    ctx.fillStyle = "rgba(255,255,255,0.3)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.textAlign = "right";
     ctx.font = "10px ui-monospace, monospace";
     ctx.fillText("c = 1 natural units — Σp^μ conserved, rest mass is NOT", WIDTH - 12, hudY + 80);
-  }, [beta, mass]);
+  }, [beta, mass, tokens, width, height]);
 
   return (
-    <div className="flex flex-col items-center gap-3 p-4">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <div className="flex w-full max-w-[720px] flex-col gap-2">
-        <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+      <div className="mt-3 flex w-full flex-col gap-2">
+        <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-3)]">
           <span className="w-24">β = {beta.toFixed(3)}</span>
           <input
             type="range"
@@ -225,9 +218,10 @@ export function InelasticMergerScene() {
             value={beta}
             onChange={(e) => setBeta(parseFloat(e.target.value))}
             className="flex-1"
+            style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
-        <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+        <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-3)]">
           <span className="w-24">m = {mass.toFixed(1)}</span>
           <input
             type="range"
@@ -237,6 +231,7 @@ export function InelasticMergerScene() {
             value={mass}
             onChange={(e) => setMass(parseFloat(e.target.value))}
             className="flex-1"
+            style={{ accentColor: "var(--color-amber)" }}
           />
         </label>
       </div>

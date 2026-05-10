@@ -1,6 +1,10 @@
 "use client";
 
 import { precisionTestTimeline } from "@/lib/physics/relativity/precision-tests";
+import {
+  hexToRgba,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.24a — TimelineScene.
@@ -34,6 +38,7 @@ const LOG_BOTTOM = -19; // 10^-19
 
 export function TimelineScene() {
   const data = precisionTestTimeline();
+  const tokens = useSceneTokens();
 
   const plotW = WIDTH - PAD_L - PAD_R;
   const plotH = HEIGHT - PAD_T - PAD_B;
@@ -55,12 +60,12 @@ export function TimelineScene() {
   const latest = data[data.length - 1];
 
   return (
-    <div className="flex w-full justify-center p-4">
+    <div className="flex w-full justify-center">
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         width="100%"
-        style={{ maxWidth: WIDTH }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ maxWidth: WIDTH, background: tokens.bg }}
+        className="block"
         role="img"
         aria-label="Timeline of Lorentz-invariance tests from 1887 to 2025."
       >
@@ -71,7 +76,7 @@ export function TimelineScene() {
           width={plotW}
           height={plotH}
           fill="none"
-          stroke="rgba(255,255,255,0.08)"
+          stroke={tokens.panelBorder}
         />
 
         {/* Grid */}
@@ -82,7 +87,7 @@ export function TimelineScene() {
             y1={PAD_T}
             x2={xToPx(y)}
             y2={PAD_T + plotH}
-            stroke="rgba(255,255,255,0.04)"
+            stroke={tokens.grid}
           />
         ))}
         {logTicks.map((log10) => (
@@ -92,7 +97,7 @@ export function TimelineScene() {
             y1={yToPx(Math.pow(10, log10))}
             x2={PAD_L + plotW}
             y2={yToPx(Math.pow(10, log10))}
-            stroke="rgba(255,255,255,0.04)"
+            stroke={tokens.grid}
           />
         ))}
 
@@ -102,14 +107,14 @@ export function TimelineScene() {
           y1={PAD_T + plotH}
           x2={PAD_L + plotW}
           y2={PAD_T + plotH}
-          stroke="rgba(255,255,255,0.5)"
+          stroke={tokens.axes}
         />
         <line
           x1={PAD_L}
           y1={PAD_T}
           x2={PAD_L}
           y2={PAD_T + plotH}
-          stroke="rgba(255,255,255,0.5)"
+          stroke={tokens.axes}
         />
 
         {/* X axis ticks + labels */}
@@ -120,7 +125,7 @@ export function TimelineScene() {
               y1={PAD_T + plotH}
               x2={xToPx(y)}
               y2={PAD_T + plotH + 4}
-              stroke="rgba(255,255,255,0.5)"
+              stroke={tokens.axes}
             />
             <text
               x={xToPx(y)}
@@ -128,7 +133,7 @@ export function TimelineScene() {
               textAnchor="middle"
               fontSize={11}
               fontFamily="ui-monospace, monospace"
-              fill="rgba(255,255,255,0.6)"
+              fill={tokens.textMute}
             >
               {y}
             </text>
@@ -143,7 +148,7 @@ export function TimelineScene() {
               y1={yToPx(Math.pow(10, log10))}
               x2={PAD_L}
               y2={yToPx(Math.pow(10, log10))}
-              stroke="rgba(255,255,255,0.5)"
+              stroke={tokens.axes}
             />
             <text
               x={PAD_L - 8}
@@ -151,7 +156,7 @@ export function TimelineScene() {
               textAnchor="end"
               fontSize={11}
               fontFamily="ui-monospace, monospace"
-              fill="rgba(255,255,255,0.6)"
+              fill={tokens.textMute}
             >
               10
               <tspan fontSize={9} dy={-4}>
@@ -168,7 +173,7 @@ export function TimelineScene() {
           textAnchor="middle"
           fontSize={12}
           fontFamily="ui-monospace, monospace"
-          fill="rgba(255,255,255,0.75)"
+          fill={tokens.textDim}
         >
           year
         </text>
@@ -178,7 +183,7 @@ export function TimelineScene() {
           textAnchor="middle"
           fontSize={12}
           fontFamily="ui-monospace, monospace"
-          fill="rgba(255,255,255,0.75)"
+          fill={tokens.textDim}
           transform={`rotate(-90 20 ${PAD_T + plotH / 2})`}
         >
           fractional bound on Lorentz violation (log scale)
@@ -188,7 +193,7 @@ export function TimelineScene() {
         <polyline
           points={polyline}
           fill="none"
-          stroke="#67E8F9"
+          stroke={tokens.cyan}
           strokeWidth={1.5}
           strokeDasharray="4 4"
           opacity={0.55}
@@ -199,15 +204,13 @@ export function TimelineScene() {
           const isLatest = i === data.length - 1;
           const x = xToPx(p.year);
           const y = yToPx(p.bound);
-          const fill = isLatest ? "#FFB36B" : "#67E8F9";
-          const stroke = isLatest ? "#FFB36B" : "#67E8F9";
-          // Stagger labels above/below so they don't collide.
+          const fill = isLatest ? tokens.amber : tokens.cyan;
+          const stroke = fill;
           const labelAbove = i % 2 === 0;
           const labelDy = labelAbove ? -14 : 26;
           const subDy = labelAbove ? -28 : 40;
           return (
             <g key={`pt-${p.year}-${i}`}>
-              {/* Vertical drop line down to the year axis */}
               <line
                 x1={x}
                 y1={y}
@@ -245,7 +248,7 @@ export function TimelineScene() {
                 textAnchor="middle"
                 fontSize={9}
                 fontFamily="ui-monospace, monospace"
-                fill="rgba(255,255,255,0.55)"
+                fill={tokens.textMute}
               >
                 {p.year} · 10
                 <tspan fontSize={8} dy={-3}>
@@ -256,7 +259,7 @@ export function TimelineScene() {
           );
         })}
 
-        {/* Improvement arrow + caption */}
+        {/* Improvement caption */}
         <g>
           <text
             x={WIDTH - PAD_R - 6}
@@ -264,7 +267,7 @@ export function TimelineScene() {
             textAnchor="end"
             fontSize={10}
             fontFamily="ui-monospace, monospace"
-            fill="rgba(255,179,107,0.85)"
+            fill={hexToRgba(tokens.amber, 0.85)}
           >
             modern frontier · {latest.experiment.split(" (")[0]}
           </text>
@@ -274,7 +277,7 @@ export function TimelineScene() {
             textAnchor="end"
             fontSize={10}
             fontFamily="ui-monospace, monospace"
-            fill="rgba(255,255,255,0.5)"
+            fill={tokens.textMute}
           >
             9 orders of magnitude · 138 years
           </text>

@@ -18,6 +18,9 @@
  * Translations are Stachel's, from THE COLLECTED PAPERS OF ALBERT EINSTEIN
  * vol. 2 (Princeton, 1989). Pull-quote text is rendered crisply rather than
  * scanned, so the typography stays legible at any zoom.
+ *
+ * The parchment + ink colors are intrinsic to the artifact (a real 1905
+ * journal page) and are kept literal across themes.
  */
 
 const W = 760;
@@ -25,7 +28,7 @@ const H = 460;
 
 export function Einstein1905PaperScene() {
   return (
-    <div className="w-full max-w-[820px] mx-auto p-3 bg-[#0A0C12] rounded-md">
+    <div className="w-full max-w-[820px] mx-auto p-3">
       <svg
         viewBox={`0 0 ${W} ${H}`}
         xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +157,7 @@ export function Einstein1905PaperScene() {
         </g>
       </svg>
 
-      <p className="mt-2 font-mono text-xs text-white/50">
+      <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
         Annalen der Physik 17 (1905) p. 891. Translation after Stachel, COLLECTED
         PAPERS, vol. 2 (Princeton, 1989). Two postulates. The rest of the paper
         — and a century of physics — drops out of these two sentences.

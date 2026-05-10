@@ -1,6 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_TALL,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * AcceleratingRocketScene — FIG.26b
@@ -8,71 +17,44 @@ import { useEffect, useRef } from "react";
  * The reverse equivalence. A rocket accelerating at g in deep space
  * (no gravitational field) is locally indistinguishable from a stationary
  * lab on Earth's surface.
- *
- * Layout: split panel.
- *   • Left: rocket in deep space, exhaust plume, accelerating upward at g.
- *     Inside the cabin, three test bodies feel an apparent "gravity"
- *     pulling them to the floor (the floor is pushing them up at g).
- *   • Right: a stationary lab on Earth's surface. Same three bodies sit on
- *     the floor under real gravity g.
- *
- * From inside the lab, the two are indistinguishable.
- *
- * Canvas 2D, dark bg.
  */
 
-const BG = "#0A0C12";
-const PANEL_BG = "rgba(255,255,255,0.025)";
-const PANEL_BORDER = "rgba(255,255,255,0.12)";
-const TEXT_DIM = "rgba(255,255,255,0.55)";
-const TEXT_BRIGHT = "rgba(255,255,255,0.92)";
-const HUD = "rgba(255,255,255,0.7)";
-const AMBER = "#FFB36B";
-const ORANGE = "#FF8C42";
-const CYAN = "#67C4F0";
-
 export function AcceleratingRocketScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_TALL,
+    minHeight: 320,
+  });
   const rafRef = useRef<number | null>(null);
   const t0Ref = useRef<number | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-
-    const setupCanvas = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const W = canvas.clientWidth;
-      const H = canvas.clientHeight;
-      if (canvas.width !== W * dpr || canvas.height !== H * dpr) {
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-      return { W, H };
-    };
 
     const tick = (now: number) => {
       if (t0Ref.current === null) t0Ref.current = now;
       const t = (now - t0Ref.current) / 1000;
-      const { W, H } = setupCanvas();
-      draw(ctx, W, H, t);
+      draw(ctx, width, height, t, tokens);
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [tokens, width, height]);
 
   return (
-    <div className="relative w-full">
+    <div ref={containerRef} className="relative w-full pb-4">
       <canvas
         ref={canvasRef}
-        style={{ width: "100%", height: 440, display: "block" }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
         aria-label="Two side-by-side scenes. Left: a rocket in deep space accelerating upward at g, with three objects pressed to the cabin floor by the apparent gravity of acceleration. Right: a stationary lab on Earth's surface with the same three objects on the floor under real gravity. From inside, the two are indistinguishable."
       />
     </div>
@@ -84,8 +66,9 @@ function draw(
   W: number,
   H: number,
   t: number,
+  tokens: SceneTokens,
 ) {
-  ctx.fillStyle = BG;
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
   const midX = W / 2;
@@ -93,16 +76,16 @@ function draw(
   const panelH = H - 100;
   const panelY = 40;
 
-  drawPanelBg(ctx, 16, panelY, panelW, panelH);
-  drawRocketScene(ctx, 16, panelY, panelW, panelH, t);
+  drawPanelBg(ctx, 16, panelY, panelW, panelH, tokens);
+  drawRocketScene(ctx, 16, panelY, panelW, panelH, t, tokens);
 
-  drawPanelBg(ctx, midX + 8, panelY, panelW, panelH);
-  drawEarthLabScene(ctx, midX + 8, panelY, panelW, panelH);
+  drawPanelBg(ctx, midX + 8, panelY, panelW, panelH, tokens);
+  drawEarthLabScene(ctx, midX + 8, panelY, panelW, panelH, tokens);
 
   // Title
   ctx.save();
   ctx.font = `bold 14px ui-monospace, monospace`;
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.textAlign = "center";
   ctx.fillText("Accelerating at g ≡ stationary in a g field — locally", midX, 24);
   ctx.restore();
@@ -110,12 +93,12 @@ function draw(
   // Bottom HUD
   const hudY = H - 50;
   ctx.save();
-  ctx.fillStyle = HUD;
+  ctx.fillStyle = tokens.textDim;
   ctx.font = `11px ui-monospace, monospace`;
   ctx.textAlign = "left";
   ctx.fillText("rocket (deep space, a = g):  floor pushes bodies upward at g  →  apparent weight mg", 24, hudY);
   ctx.fillText("Earth lab (stationary, g = g):  floor pushes bodies upward at g  →  weight mg", 24, hudY + 18);
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.textAlign = "right";
   ctx.fillText("g_apparent = g (both)", W - 24, hudY + 9);
   ctx.restore();
@@ -127,11 +110,12 @@ function drawPanelBg(
   y: number,
   w: number,
   h: number,
+  tokens: SceneTokens,
 ) {
   ctx.save();
-  ctx.fillStyle = PANEL_BG;
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.025);
   ctx.fillRect(x, y, w, h);
-  ctx.strokeStyle = PANEL_BORDER;
+  ctx.strokeStyle = tokens.panelBorder;
   ctx.lineWidth = 1;
   ctx.strokeRect(x, y, w, h);
   ctx.restore();
@@ -144,9 +128,10 @@ function drawRocketScene(
   pw: number,
   ph: number,
   t: number,
+  tokens: SceneTokens,
 ) {
   // Stars
-  drawStars(ctx, px, py, pw, ph);
+  drawStars(ctx, px, py, pw, ph, tokens);
 
   const cx = px + pw / 2;
   const rocketTop = py + 36;
@@ -154,9 +139,8 @@ function drawRocketScene(
   const rocketH = rocketBottom - rocketTop;
   const rocketW = Math.min(pw * 0.32, 96);
 
-  // Rocket body
+  // Rocket body — neutral hull tones, kept as-is (physical materials, not chrome).
   ctx.save();
-  // Nose cone
   ctx.fillStyle = "rgba(220, 230, 245, 0.85)";
   ctx.beginPath();
   ctx.moveTo(cx, rocketTop);
@@ -165,7 +149,6 @@ function drawRocketScene(
   ctx.closePath();
   ctx.fill();
 
-  // Body cylinder
   ctx.fillStyle = "rgba(200, 215, 235, 0.7)";
   ctx.fillRect(
     cx - rocketW / 2,
@@ -179,9 +162,9 @@ function drawRocketScene(
   const cabH = rocketH * 0.42;
   const cabX = cx - cabW / 2;
   const cabY = rocketTop + rocketH * 0.28;
-  ctx.fillStyle = "rgba(15,20,30,0.85)";
+  ctx.fillStyle = hexToRgba(tokens.bg, 0.85);
   ctx.fillRect(cabX, cabY, cabW, cabH);
-  ctx.strokeStyle = "rgba(255,255,255,0.35)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.35);
   ctx.lineWidth = 1;
   ctx.strokeRect(cabX, cabY, cabW, cabH);
 
@@ -201,7 +184,7 @@ function drawRocketScene(
   ctx.fill();
   ctx.restore();
 
-  // Exhaust plume — animated flicker
+  // Exhaust plume — animated flicker (real flame colors)
   const flameH = 60 + 8 * Math.sin(t * 24);
   const flameTop = rocketTop + rocketH * 0.92;
   ctx.save();
@@ -219,8 +202,8 @@ function drawRocketScene(
 
   // Acceleration arrow on the side: "a = g" pointing UP
   ctx.save();
-  ctx.strokeStyle = AMBER;
-  ctx.fillStyle = AMBER;
+  ctx.strokeStyle = tokens.amber;
+  ctx.fillStyle = tokens.amber;
   ctx.lineWidth = 1.8;
   const ax = px + pw - 38;
   const ay0 = py + ph * 0.65;
@@ -241,14 +224,14 @@ function drawRocketScene(
   ctx.restore();
 
   // Bodies on the cabin floor (bottom of the window)
-  drawSeatedBodies(ctx, cabX + cabW / 2, cabY + cabH);
+  drawSeatedBodies(ctx, cabX + cabW / 2, cabY + cabH, tokens);
 
   // Weight arrows on the bodies (apparent g pulls them down)
-  drawApparentGravityArrows(ctx, cabX + cabW / 2, cabY + cabH);
+  drawApparentGravityArrows(ctx, cabX + cabW / 2, cabY + cabH, tokens);
 
   // Caption
   ctx.save();
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.font = `bold 12px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.fillText("rocket accelerating at g (deep space)", px + pw / 2, py + ph - 4);
@@ -261,8 +244,9 @@ function drawEarthLabScene(
   py: number,
   pw: number,
   ph: number,
+  tokens: SceneTokens,
 ) {
-  // Sky/ground gradient
+  // Sky/ground gradient — real environmental colors, not chrome
   ctx.save();
   const g = ctx.createLinearGradient(px, py, px, py + ph);
   g.addColorStop(0, "rgba(40, 60, 90, 0.25)");
@@ -277,8 +261,7 @@ function drawEarthLabScene(
   ctx.save();
   ctx.fillStyle = "rgba(120, 90, 60, 0.35)";
   ctx.fillRect(px, groundY, pw, ph - (groundY - py));
-  // hatch
-  ctx.strokeStyle = "rgba(255,255,255,0.15)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.15);
   ctx.lineWidth = 1;
   for (let i = 0; i < 14; i++) {
     const x0 = px + (i / 14) * pw;
@@ -289,29 +272,27 @@ function drawEarthLabScene(
   }
   ctx.restore();
 
-  // Lab box (stationary lab on the ground)
+  // Lab box
   const labW = pw * 0.6;
   const labH = ph * 0.45;
   const labX = px + (pw - labW) / 2;
   const labY = groundY - labH;
   ctx.save();
-  ctx.fillStyle = "rgba(15,20,30,0.85)";
+  ctx.fillStyle = hexToRgba(tokens.bg, 0.85);
   ctx.fillRect(labX, labY, labW, labH);
-  ctx.strokeStyle = "rgba(255,255,255,0.35)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.35);
   ctx.lineWidth = 1;
   ctx.strokeRect(labX, labY, labW, labH);
   ctx.restore();
 
   // Bodies on lab floor
-  drawSeatedBodies(ctx, labX + labW / 2, labY + labH);
-
-  // Weight arrows
-  drawApparentGravityArrows(ctx, labX + labW / 2, labY + labH);
+  drawSeatedBodies(ctx, labX + labW / 2, labY + labH, tokens);
+  drawApparentGravityArrows(ctx, labX + labW / 2, labY + labH, tokens);
 
   // Earth-gravity arrow (down) on the side
   ctx.save();
-  ctx.strokeStyle = "rgba(255, 220, 120, 0.7)";
-  ctx.fillStyle = "rgba(255, 220, 120, 0.7)";
+  ctx.strokeStyle = hexToRgba(tokens.amber, 0.7);
+  ctx.fillStyle = hexToRgba(tokens.amber, 0.7);
   ctx.lineWidth = 1.8;
   const ax = px + 28;
   const ay0 = py + ph * 0.30;
@@ -333,7 +314,7 @@ function drawEarthLabScene(
 
   // Caption
   ctx.save();
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.font = `bold 12px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.fillText("stationary lab (Earth surface)", px + pw / 2, py + ph - 4);
@@ -341,7 +322,7 @@ function drawEarthLabScene(
 
   // Earth surface label
   ctx.save();
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.font = `10px ui-monospace, monospace`;
   ctx.textAlign = "right";
   ctx.fillText("Earth surface", px + pw - 12, groundY - 4);
@@ -352,12 +333,13 @@ function drawSeatedBodies(
   ctx: CanvasRenderingContext2D,
   cx: number,
   floorY: number,
+  tokens: SceneTokens,
 ) {
   // Three bodies sitting on the floor (centred)
   const bodies = [
-    { dx: -28, r: 10, color: "#E66B6B", shape: "apple" as const },
-    { dx: 0, r: 13, color: AMBER, shape: "beaker" as const },
-    { dx: 28, r: 11, color: CYAN, shape: "ball" as const },
+    { dx: -28, r: 10, color: tokens.red, shape: "apple" as const },
+    { dx: 0, r: 13, color: tokens.amber, shape: "beaker" as const },
+    { dx: 28, r: 11, color: tokens.cyan, shape: "ball" as const },
   ];
   for (const b of bodies) {
     const cy = floorY - b.r - 1;
@@ -381,7 +363,7 @@ function drawSeatedBodies(
         cy,
         b.r,
       );
-      grad.addColorStop(0, "rgba(255,255,255,0.5)");
+      grad.addColorStop(0, hexToRgba(tokens.textBright, 0.5));
       grad.addColorStop(1, b.color);
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -393,7 +375,7 @@ function drawSeatedBodies(
       const h = b.r * 1.6;
       const bx = cx + b.dx - w / 2;
       const by = floorY - h - 1;
-      ctx.strokeStyle = "rgba(255,255,255,0.6)";
+      ctx.strokeStyle = hexToRgba(tokens.textBright, 0.6);
       ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(bx, by);
@@ -414,10 +396,11 @@ function drawApparentGravityArrows(
   ctx: CanvasRenderingContext2D,
   cx: number,
   floorY: number,
+  tokens: SceneTokens,
 ) {
   ctx.save();
-  ctx.strokeStyle = ORANGE;
-  ctx.fillStyle = ORANGE;
+  ctx.strokeStyle = tokens.orange;
+  ctx.fillStyle = tokens.orange;
   ctx.lineWidth = 1.2;
   for (const dx of [-28, 0, 28]) {
     const x0 = cx + dx;
@@ -443,6 +426,7 @@ function drawStars(
   py: number,
   pw: number,
   ph: number,
+  tokens: SceneTokens,
 ) {
   const stars: Array<[number, number, number]> = [
     [0.08, 0.12, 1.0],
@@ -460,7 +444,7 @@ function drawStars(
   ];
   ctx.save();
   for (const [u, v, r] of stars) {
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = hexToRgba(tokens.textBright, 0.45);
     ctx.beginPath();
     ctx.arc(px + u * pw, py + v * ph, r, 0, Math.PI * 2);
     ctx.fill();

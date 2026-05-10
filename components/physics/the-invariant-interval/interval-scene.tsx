@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
 
 /**
@@ -53,6 +54,7 @@ const PRESETS: Record<Preset, EventPair> = {
 export function IntervalScene() {
   const [beta, setBeta] = useState(0.0);
   const [preset, setPreset] = useState<Preset>("timelike");
+  const tokens = useSceneTokens();
 
   const pair = PRESETS[preset];
 
@@ -76,7 +78,7 @@ export function IntervalScene() {
   const worldlines = useMemo<Worldline[]>(
     () => [
       {
-        color: "#67E8F9",
+        color: tokens.cyan,
         label: "A→B (lab)",
         events: [
           { t: pair.A.t, x: pair.A.x, y: 0, z: 0 },
@@ -84,7 +86,7 @@ export function IntervalScene() {
         ],
       },
     ],
-    [pair],
+    [pair, tokens.cyan],
   );
 
   const quadrant =
@@ -104,8 +106,8 @@ export function IntervalScene() {
             onClick={() => setPreset(k)}
             className={`rounded border px-3 py-1 transition ${
               preset === k
-                ? "border-white/60 bg-white/10 text-white"
-                : "border-white/15 text-white/60 hover:border-white/30 hover:text-white/85"
+                ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
+                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
             }`}
           >
             {PRESETS[k].label}
@@ -123,13 +125,11 @@ export function IntervalScene() {
         boostStep={0.01}
         xRange={[-2, 3]}
         tRange={[-0.5, 3]}
-        width={520}
-        height={360}
       />
 
-      <div className="grid w-full max-w-[520px] grid-cols-2 gap-x-6 gap-y-1 font-mono text-xs text-white/70">
-        <span className="text-white/85">LAB FRAME</span>
-        <span className="text-white/85">
+      <div className="grid w-full max-w-[520px] grid-cols-2 gap-x-6 gap-y-1 font-mono text-xs text-[var(--color-fg-2)]">
+        <span className="text-[var(--color-fg-1)]">LAB FRAME</span>
+        <span className="text-[var(--color-fg-1)]">
           BOOSTED FRAME (β = {beta.toFixed(2)}, γ = {g.toFixed(3)})
         </span>
         <span>
@@ -150,10 +150,10 @@ export function IntervalScene() {
         <span>
           Δt' = {dtP.toFixed(2)}, Δx' = {dxP.toFixed(2)}
         </span>
-        <span className="text-cyan-300">s² = {s2Lab.toFixed(4)}</span>
-        <span className="text-fuchsia-300">s'² = {s2Boost.toFixed(4)}</span>
+        <span style={{ color: "var(--color-cyan)" }}>s² = {s2Lab.toFixed(4)}</span>
+        <span style={{ color: "var(--color-magenta)" }}>s'² = {s2Boost.toFixed(4)}</span>
       </div>
-      <p className="font-mono text-[11px] text-white/55">
+      <p className="font-mono text-[11px] text-[var(--color-fg-3)]">
         s² invariant ({quadrant}); |s² − s'²| ={" "}
         {Math.abs(s2Lab - s2Boost).toExponential(2)}
       </p>

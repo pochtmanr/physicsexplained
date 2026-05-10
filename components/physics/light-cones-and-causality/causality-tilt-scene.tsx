@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import type { Worldline } from "@/lib/physics/relativity/types";
 
 /**
@@ -62,13 +63,14 @@ function deltaTPrime(
 
 export function CausalityTiltScene() {
   const [beta, setBeta] = useState(0);
+  const tokens = useSceneTokens();
 
   // Timelike pair drawn in cyan (their causal order is invariant).
-  const t1 = dotWorldline(PAIR_T.a.x, PAIR_T.a.ct, "#67E8F9", "T1");
-  const t2 = dotWorldline(PAIR_T.b.x, PAIR_T.b.ct, "#67E8F9", "T2");
+  const t1 = dotWorldline(PAIR_T.a.x, PAIR_T.a.ct, tokens.cyan, "T1");
+  const t2 = dotWorldline(PAIR_T.b.x, PAIR_T.b.ct, tokens.cyan, "T2");
   // Spacelike pair drawn in amber (their order tilts with the boost).
-  const s1 = dotWorldline(PAIR_S.a.x, PAIR_S.a.ct, "#FFD66B", "S1");
-  const s2 = dotWorldline(PAIR_S.b.x, PAIR_S.b.ct, "#FFD66B", "S2");
+  const s1 = dotWorldline(PAIR_S.a.x, PAIR_S.a.ct, tokens.amber, "S1");
+  const s2 = dotWorldline(PAIR_S.b.x, PAIR_S.b.ct, tokens.amber, "S2");
 
   const dtT = deltaTPrime(PAIR_T.a, PAIR_T.b, beta);
   const dtS = deltaTPrime(PAIR_S.a, PAIR_S.b, beta);
@@ -85,22 +87,20 @@ export function CausalityTiltScene() {
         onBoostChange={setBeta}
         xRange={[-3, 3]}
         tRange={[-0.5, 3.5]}
-        width={560}
-        height={380}
         lightCone
       />
-      <div className="grid grid-cols-1 gap-1 font-mono text-xs text-white/70 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-1 font-mono text-xs text-[var(--color-fg-2)] sm:grid-cols-2">
         <div>
-          <span className="text-[#67E8F9]">timelike pair (T1 → T2):</span>{" "}
+          <span style={{ color: "var(--color-cyan)" }}>timelike pair (T1 → T2):</span>{" "}
           Δt&apos; = {dtT.toFixed(3)} ct{" "}
-          <span className="text-white/50">
+          <span className="text-[var(--color-fg-3)]">
             ({dtT > 0 ? "T2 still in T1&apos;s future" : "impossible — would violate s² > 0"})
           </span>
         </div>
         <div>
-          <span className="text-[#FFD66B]">spacelike pair (S1, S2):</span>{" "}
+          <span style={{ color: "var(--color-amber)" }}>spacelike pair (S1, S2):</span>{" "}
           Δt&apos; = {dtS.toFixed(3)} ct{" "}
-          <span className="text-white/50">
+          <span className="text-[var(--color-fg-3)]">
             ({Math.abs(dtS) < 0.02
               ? "simultaneous in this frame"
               : dtS > 0
@@ -109,7 +109,7 @@ export function CausalityTiltScene() {
           </span>
         </div>
       </div>
-      <p className="font-mono text-[10px] text-white/45">
+      <p className="font-mono text-[10px] text-[var(--color-fg-3)]">
         At |β| ≳ {Math.abs(flipBeta).toFixed(3)} the spacelike pair&apos;s temporal order
         flips. The timelike pair&apos;s order is invariant for all |β| &lt; 1.
       </p>

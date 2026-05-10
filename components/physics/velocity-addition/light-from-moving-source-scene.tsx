@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import {
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
 import { relativisticVelocityAdd } from "@/lib/physics/relativity/velocity-addition";
 
@@ -41,7 +46,8 @@ const MAX_HEIGHT = 320;
 export function LightFromMovingSourceScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const colors = tokens.colors;
 
   const [betaShip, setBetaShip] = useState(0.6);
   const betaRef = useRef(betaShip);
@@ -49,39 +55,23 @@ export function LightFromMovingSourceScene() {
     betaRef.current = betaShip;
   }, [betaShip]);
 
-  const [size, setSize] = useState({ width: 720, height: 320 });
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width: sizeWidth, height: sizeHeight } = useSceneSize(containerRef, {
+    ratio: RATIO,
+    maxHeight: MAX_HEIGHT,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const width = sizeWidth;
+      const height = sizeHeight;
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
-
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const c = SPEED_OF_LIGHT;
       const beta = betaRef.current;
@@ -135,7 +125,7 @@ export function LightFromMovingSourceScene() {
       // Galilean ghost: would be at τ · (1 + β) · usable
       const xGhostRaw = padX + tau * (1 + beta) * usable;
       const xGhost = Math.min(xGhostRaw, width - 6);
-      ctx.strokeStyle = "#FFC857";
+      ctx.strokeStyle = tokens.amber;
       ctx.lineWidth = 1.4;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -143,7 +133,7 @@ export function LightFromMovingSourceScene() {
       ctx.lineTo(xGhost, trackY + 14);
       ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.fillText("Galilean ghost (c + v)", xGhost + 4, trackY + 26);
 
       // Earth marker
@@ -159,7 +149,7 @@ export function LightFromMovingSourceScene() {
       let yh = 22;
       ctx.fillText(`v_ship = ${beta.toFixed(3)} c`, padX, yh);
       yh += 16;
-      ctx.fillStyle = "#FFC857";
+      ctx.fillStyle = tokens.amber;
       ctx.fillText(
         `Galilean: c + v = ${(uGalilean / c).toFixed(3)} c  ⚠ > c`,
         padX,
@@ -177,14 +167,13 @@ export function LightFromMovingSourceScene() {
 
   return (
     <div ref={containerRef} className="w-full">
-      <div
-        className="relative w-full overflow-hidden rounded-md bg-[#0A0C12]"
-        style={{ height: size.height }}
-      >
-        <canvas ref={canvasRef} className="block h-full w-full" />
-      </div>
+      <canvas
+        ref={canvasRef}
+        style={{ width: sizeWidth, height: sizeHeight, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3">
-        <label className="block font-mono text-xs text-white/70">
+        <label className="block font-mono text-xs text-[var(--color-fg-2)]">
           <div className="mb-1 flex items-center justify-between">
             <span>Spaceship speed (Earth frame): β</span>
             <span className="opacity-60">{betaShip.toFixed(3)} c</span>
@@ -196,11 +185,12 @@ export function LightFromMovingSourceScene() {
             step={0.001}
             value={betaShip}
             onChange={(e) => setBetaShip(parseFloat(e.target.value))}
-            className="w-full accent-cyan-400"
+            className="w-full"
+            style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
       </div>
-      <p className="mt-2 font-mono text-[11px] text-white/50">
+      <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         Whatever the ship&apos;s speed, the cyan photon front moves at
         exactly c in the lab frame. Galileo&apos;s amber ghost — at c + v —
         is what classical kinematics demands and what the universe refuses

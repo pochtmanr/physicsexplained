@@ -1,27 +1,14 @@
 "use client";
 
 import { smeBounds } from "@/lib/physics/relativity/precision-tests";
+import {
+  hexToRgba,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
- * FIG.24b — SmeBoundsScene.
- *
- * Bar chart of representative present-day bounds on Standard-Model
- * Extension (SME) coefficients across the photon, electron, proton, and
- * neutron sectors. Bars render on a log scale because the bounds span
- * 10⁻¹⁴ … 10⁻³¹ — sixteen orders of magnitude.
- *
- * The SME is the framework Kostelecký + collaborators systematized in the
- * 1990s. Each experiment constrains a specific subset of coefficients;
- * the *Data Tables for Lorentz and CPT Violation* (Rev. Mod. Phys.,
- * updated annually) compile the global picture.
- *
- * Static SVG. Data: `smeBounds()`.
- *
- * Palette per sector:
- *   • photon   — cyan
- *   • electron — magenta
- *   • proton   — amber
- *   • neutron  — green
+ * FIG.24b — Bar chart of SME coefficient bounds across sectors.
+ * Bars on log scale because bounds span 10⁻¹⁴ … 10⁻³¹.
  */
 
 const WIDTH = 760;
@@ -34,24 +21,22 @@ const PAD_B = 64;
 const LOG_LEFT = -14;
 const LOG_RIGHT = -32;
 
-const SECTOR_COLOR: Record<string, string> = {
-  photon: "#67E8F9",
-  electron: "#F0ABFC",
-  proton: "#FFB36B",
-  neutron: "#86EFAC",
-};
-
 export function SmeBoundsScene() {
   const data = smeBounds();
+  const tokens = useSceneTokens();
+
+  const sectorColor: Record<string, string> = {
+    photon: tokens.cyan,
+    electron: tokens.magenta,
+    proton: tokens.amber,
+    neutron: tokens.green,
+  };
 
   const plotW = WIDTH - PAD_L - PAD_R;
   const plotH = HEIGHT - PAD_T - PAD_B;
 
   const barH = plotH / data.length;
 
-  // x maps log10(bound) to a horizontal position.
-  // LOG_LEFT (less tight, larger bound) → left edge of plot.
-  // LOG_RIGHT (tighter, smaller bound) → right edge.
   const xToPx = (log10: number) => {
     const t = (LOG_LEFT - log10) / (LOG_LEFT - LOG_RIGHT);
     return PAD_L + t * plotW;
@@ -60,12 +45,12 @@ export function SmeBoundsScene() {
   const xTicks = [-14, -18, -22, -26, -30];
 
   return (
-    <div className="flex w-full justify-center p-4">
+    <div className="flex w-full justify-center">
       <svg
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         width="100%"
-        style={{ maxWidth: WIDTH }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ maxWidth: WIDTH, background: tokens.bg }}
+        className="block"
         role="img"
         aria-label="Bar chart of SME coefficient bounds across the photon, electron, proton, and neutron sectors."
       >
@@ -76,7 +61,7 @@ export function SmeBoundsScene() {
           width={plotW}
           height={plotH}
           fill="none"
-          stroke="rgba(255,255,255,0.08)"
+          stroke={tokens.panelBorder}
         />
 
         {/* Vertical grid */}
@@ -87,7 +72,7 @@ export function SmeBoundsScene() {
             y1={PAD_T}
             x2={xToPx(t)}
             y2={PAD_T + plotH}
-            stroke="rgba(255,255,255,0.05)"
+            stroke={tokens.grid}
           />
         ))}
 
@@ -97,7 +82,7 @@ export function SmeBoundsScene() {
           y1={PAD_T + plotH}
           x2={PAD_L + plotW}
           y2={PAD_T + plotH}
-          stroke="rgba(255,255,255,0.5)"
+          stroke={tokens.axes}
         />
 
         {/* X tick labels */}
@@ -108,7 +93,7 @@ export function SmeBoundsScene() {
               y1={PAD_T + plotH}
               x2={xToPx(t)}
               y2={PAD_T + plotH + 4}
-              stroke="rgba(255,255,255,0.5)"
+              stroke={tokens.axes}
             />
             <text
               x={xToPx(t)}
@@ -116,7 +101,7 @@ export function SmeBoundsScene() {
               textAnchor="middle"
               fontSize={11}
               fontFamily="ui-monospace, monospace"
-              fill="rgba(255,255,255,0.6)"
+              fill={tokens.textMute}
             >
               10
               <tspan fontSize={9} dy={-4}>
@@ -133,7 +118,7 @@ export function SmeBoundsScene() {
           textAnchor="middle"
           fontSize={12}
           fontFamily="ui-monospace, monospace"
-          fill="rgba(255,255,255,0.75)"
+          fill={tokens.textDim}
         >
           upper bound on |SME coefficient| (log scale, tighter →)
         </text>
@@ -145,43 +130,38 @@ export function SmeBoundsScene() {
           const barHeight = barH * 0.64;
           const log10 = Math.log10(b.bound);
           const xEnd = xToPx(log10);
-          const color = SECTOR_COLOR[b.sector] ?? "#67E8F9";
+          const color = sectorColor[b.sector] ?? tokens.cyan;
           return (
             <g key={`bar-${i}`}>
-              {/* Coefficient label (left of axis) */}
               <text
                 x={PAD_L - 10}
                 y={yMid - 1}
                 textAnchor="end"
                 fontSize={10}
                 fontFamily="ui-monospace, monospace"
-                fill="rgba(255,255,255,0.85)"
+                fill={tokens.textDim}
               >
                 {b.coefficient}
               </text>
-              {/* Source under coefficient */}
               <text
                 x={PAD_L - 10}
                 y={yMid + 12}
                 textAnchor="end"
                 fontSize={9}
                 fontFamily="ui-monospace, monospace"
-                fill="rgba(255,255,255,0.45)"
+                fill={tokens.textMute}
               >
                 {b.source}
               </text>
 
-              {/* The bar */}
               <rect
                 x={PAD_L}
                 y={yTop}
                 width={Math.max(2, xEnd - PAD_L)}
                 height={barHeight}
-                fill={color}
-                opacity={0.78}
+                fill={hexToRgba(color, 0.78)}
               />
 
-              {/* Bound value at bar end */}
               <text
                 x={xEnd + 6}
                 y={yMid + 4}
@@ -199,7 +179,6 @@ export function SmeBoundsScene() {
           );
         })}
 
-        {/* Sector legend (top right) */}
         <g>
           {(["photon", "electron", "proton", "neutron"] as const).map(
             (sector, j) => (
@@ -209,15 +188,14 @@ export function SmeBoundsScene() {
                   y={PAD_T + 4 + j * 16}
                   width={10}
                   height={10}
-                  fill={SECTOR_COLOR[sector]}
-                  opacity={0.85}
+                  fill={hexToRgba(sectorColor[sector], 0.85)}
                 />
                 <text
                   x={WIDTH - PAD_R - 96}
                   y={PAD_T + 13 + j * 16}
                   fontSize={10}
                   fontFamily="ui-monospace, monospace"
-                  fill="rgba(255,255,255,0.7)"
+                  fill={tokens.textDim}
                 >
                   {sector}
                 </text>
@@ -226,13 +204,12 @@ export function SmeBoundsScene() {
           )}
         </g>
 
-        {/* HUD attribution */}
         <text
           x={PAD_L}
           y={PAD_T - 14}
           fontSize={10}
           fontFamily="ui-monospace, monospace"
-          fill="rgba(255,255,255,0.5)"
+          fill={tokens.textMute}
         >
           Kostelecký + Russell · Data Tables for Lorentz and CPT Violation
         </text>

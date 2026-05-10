@@ -1,50 +1,60 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  FONT_HUD,
+  FONT_HUD_SMALL,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  applyDpr,
+  hexToRgba,
+  drawDivider,
+  drawSectionTitle,
+  drawHudReadout,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
 
 /**
  * FIG.33c — The §07.5 honest-moment payoff.
  *
  * Two side-by-side panels:
  *
- *   Left  "Space view":  An apple tossed upward, tracing a parabolic arc in (x, y)
- *         space under Newtonian gravity.  The Earth sits below.  This is what we
- *         see every day.  A downward force arrow is annotated: "F = mg (Newton)".
+ *   Left  "Space view":  A parabolic apple trajectory in (x, y) space.
+ *         The apple (AMBER dot) animates continuously (3 s cycle).
+ *         The force arrow is in RED. Subtle AMBER radial gradient near
+ *         the ground indicates weak-field curvature.
  *
- *   Right "Spacetime view": The same motion drawn as a worldline in (t, y) spacetime.
- *         Near the Earth the metric is slightly curved (weak-field Schwarzschild).
- *         The worldline is drawn as a thick line — very nearly straight.  Annotation:
- *         "no force; this is a geodesic of curved spacetime."
+ *   Right "Spacetime view": The same motion drawn as a worldline in (t, y).
+ *         Worldline in MAGENTA (nearly straight). Ground in CYAN.
+ *         Faint AMBER radial glow near ground = curvature hint.
  *
- * A slider lets the reader vary the initial upward toss speed, watching both views
- * update simultaneously.
+ * A "callout" annotation at the bottom delivers the honest-moment message
+ * in AMBER TEXT_BRIGHT, preceded by a drawDivider.
  *
- * The honest-moment callout is rendered below the canvas.
+ * Slider: initial upward toss speed v₀.
  */
 
-const W = 660;
-const H = 320;
-const PANEL_W = 300;
-const PANEL_H = 280;
 const PAD = 28;
-const OX_LEFT = 14;
-const OX_RIGHT = W / 2 + 14;
 
 // ── Physics ──────────────────────────────────────────────────────────────────
 
-const G_GRAV = 9.8;   // m/s²
-const Y0 = 1.5;       // launch height (m above ground reference)
+const G_GRAV = 9.8;
+const Y0 = 1.5;
 const X0 = 0;
+const V0X = 0.8;
 
-/** Parabolic trajectory in (x, y) space. y = y0 + v0_y t − ½ g t². */
-function parabolaPoints(v0y: number, v0x: number, nSteps = 80): { t: number; x: number; y: number }[] {
+function parabolaPoints(
+  v0y: number,
+  nSteps = 80,
+): { t: number; x: number; y: number }[] {
   const tFall = (v0y + Math.sqrt(v0y * v0y + 2 * G_GRAV * Y0)) / G_GRAV;
   const dt = tFall / nSteps;
   const pts: { t: number; x: number; y: number }[] = [];
   for (let i = 0; i <= nSteps; i++) {
     const t = i * dt;
     const y = Y0 + v0y * t - 0.5 * G_GRAV * t * t;
-    const x = X0 + v0x * t;
+    const x = X0 + V0X * t;
     if (y < 0) break;
     pts.push({ t, x, y });
   }
@@ -53,56 +63,88 @@ function parabolaPoints(v0y: number, v0x: number, nSteps = 80): { t: number; x: 
 
 // ── Rendering helpers ─────────────────────────────────────────────────────────
 
-/** Map world (x, y) ∈ [−3, 3] × [0, 5] to canvas pixels in the LEFT panel. */
-function spaceToScreen(x: number, y: number): [number, number] {
-  const scaleX = (PANEL_W - 2 * PAD) / 6;
-  const scaleY = (PANEL_H - 2 * PAD) / 5;
-  const sx = OX_LEFT + PAD + (x + 3) * scaleX;
-  const sy = 8 + PANEL_H - PAD - y * scaleY;
+function spaceToScreen(
+  x: number,
+  y: number,
+  panelW: number,
+  panelH: number,
+  oxLeft: number,
+): [number, number] {
+  const scaleX = (panelW - 2 * PAD) / 6;
+  const scaleY = (panelH - 2 * PAD) / 5;
+  const sx = oxLeft + PAD + (x + 3) * scaleX;
+  const sy = 8 + panelH - PAD - y * scaleY;
   return [sx, sy];
 }
 
-/** Map (t, y) to canvas pixels in the RIGHT spacetime panel.
- *  t ∈ [0, tMax], y ∈ [0, 5]. Spacetime axis: t rightward, y upward. */
-function stToScreen(t: number, y: number, tMax: number): [number, number] {
-  const scaleT = (PANEL_W - 2 * PAD) / (tMax || 1);
-  const scaleY = (PANEL_H - 2 * PAD) / 5;
-  const sx = OX_RIGHT + PAD + t * scaleT;
-  const sy = 8 + PANEL_H - PAD - y * scaleY;
+function stToScreen(
+  t: number,
+  y: number,
+  tMax: number,
+  panelW: number,
+  panelH: number,
+  oxRight: number,
+): [number, number] {
+  const scaleT = (panelW - 2 * PAD) / (tMax || 1);
+  const scaleY = (panelH - 2 * PAD) / 5;
+  const sx = oxRight + PAD + t * scaleT;
+  const sy = 8 + panelH - PAD - y * scaleY;
   return [sx, sy];
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function FallingAppleAsGeodesicScene() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [v0y, setV0y] = useState(4.0); // initial upward speed m/s
-  const v0x = 0.8;
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
+  const [v0y, setV0y] = useState(4.0);
+  // 0..1 animation phase (3 s cycle)
+  const [phase, setPhase] = useState(0);
+
+  // 3-second animation cycle
+  useEffect(() => {
+    let raf = 0;
+    const CYCLE = 3000;
+    const start = performance.now();
+    const loop = (t: number) => {
+      setPhase(((t - start) % CYCLE) / CYCLE);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
+    const W = width;
+    const H = height;
+    const PANEL_W = W / 2 - 24;
+    const PANEL_H = H - 90;
+    const OX_LEFT = 14;
+    const OX_RIGHT = W / 2 + 14;
+    const sp = (x: number, y: number) => spaceToScreen(x, y, PANEL_W, PANEL_H, OX_LEFT);
+    const stp = (t: number, y: number, tMax: number) =>
+      stToScreen(t, y, tMax, PANEL_W, PANEL_H, OX_RIGHT);
 
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
-
-    ctx.fillStyle = "#0A0C12";
+    ctx.fillStyle = tokens.bg;
     ctx.fillRect(0, 0, W, H);
 
-    const pts = parabolaPoints(v0y, v0x);
+    const pts = parabolaPoints(v0y);
     const tMax = pts.length > 0 ? pts[pts.length - 1].t : 1;
 
     // ── Panel backgrounds ─────────────────────────────────────────────────
     for (const ox of [OX_LEFT, OX_RIGHT]) {
-      ctx.fillStyle = "rgba(255,255,255,0.03)";
-      ctx.strokeStyle = "rgba(255,255,255,0.08)";
+      ctx.fillStyle = hexToRgba(tokens.textBright, 0.03);
+      ctx.strokeStyle = tokens.panelBorder;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.roundRect(ox, 8, PANEL_W, PANEL_H, 6);
@@ -112,92 +154,113 @@ export function FallingAppleAsGeodesicScene() {
 
     // ─── LEFT: Space view ─────────────────────────────────────────────────
 
-    // Ground line.
-    ctx.strokeStyle = "rgba(255,255,255,0.2)";
+    drawSectionTitle(ctx, OX_LEFT + 8, 14, "space view (Newton)", tokens.textMute);
+
+    // Subtle AMBER radial gradient near ground = weak-field curvature hint
+    {
+      const [gx, gy] = sp(0, 0);
+      const rg = ctx.createRadialGradient(gx, gy, 0, gx, gy, 80);
+      rg.addColorStop(0, hexToRgba(tokens.amber, 0.06));
+      rg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = rg;
+      ctx.fillRect(OX_LEFT, 8, PANEL_W, PANEL_H);
+    }
+
+    // Ground line (CYAN)
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 1.5;
-    const [gx0, gy0] = spaceToScreen(-3, 0);
-    const [gx1, gy1] = spaceToScreen(3, 0);
+    const [gx0, gy0] = sp(-3, 0);
+    const [gx1, gy1] = sp(3, 0);
     ctx.beginPath();
     ctx.moveTo(gx0, gy0);
     ctx.lineTo(gx1, gy1);
     ctx.stroke();
 
-    // Earth ellipse at bottom.
-    const [ecx, ecy] = spaceToScreen(0, -0.4);
-    ctx.fillStyle = "rgba(100,160,255,0.25)";
-    ctx.strokeStyle = "rgba(100,160,255,0.6)";
+    // Earth ellipse
+    const [ecx, ecy] = sp(0, -0.4);
+    ctx.fillStyle = hexToRgba(tokens.blue, 0.18);
+    ctx.strokeStyle = hexToRgba(tokens.blue, 0.5);
     ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.ellipse(ecx, ecy, 60, 18, 0, 0, 2 * Math.PI);
+    ctx.ellipse(ecx, ecy, 58, 16, 0, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
-    ctx.fillStyle = "rgba(255,255,255,0.35)";
-    ctx.font = "9px ui-monospace, monospace";
+    ctx.save();
+    ctx.font = FONT_HUD_SMALL;
+    ctx.fillStyle = tokens.textMute;
     ctx.textAlign = "center";
-    ctx.fillText("Earth", ecx, ecy + 4);
+    ctx.textBaseline = "middle";
+    ctx.fillText("Earth", ecx, ecy);
+    ctx.restore();
 
-    // Gravity force arrow (at midpoint of trajectory).
+    // Gravity force arrow (RED) at mid-trajectory
     if (pts.length > 1) {
       const midPt = pts[Math.floor(pts.length / 2)];
-      const [arx, ary] = spaceToScreen(midPt.x, midPt.y);
-      const arrowLen = 28;
-      ctx.strokeStyle = "#F87171";
+      const [arx, ary] = sp(midPt.x, midPt.y);
+      const arrowLen = 26;
+      ctx.strokeStyle = tokens.red;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(arx, ary);
       ctx.lineTo(arx, ary + arrowLen);
       ctx.stroke();
-      // Arrowhead.
-      ctx.fillStyle = "#F87171";
+      ctx.fillStyle = tokens.red;
       ctx.beginPath();
       ctx.moveTo(arx, ary + arrowLen);
       ctx.lineTo(arx - 5, ary + arrowLen - 8);
       ctx.lineTo(arx + 5, ary + arrowLen - 8);
       ctx.closePath();
       ctx.fill();
-      ctx.fillStyle = "#F87171";
-      ctx.font = "9px ui-monospace, monospace";
+      ctx.save();
+      ctx.font = FONT_HUD_SMALL;
+      ctx.fillStyle = tokens.red;
       ctx.textAlign = "left";
-      ctx.fillText("F = mg", arx + 6, ary + arrowLen - 4);
+      ctx.textBaseline = "top";
+      ctx.fillText("F = mg", arx + 6, ary + arrowLen - 8);
+      ctx.restore();
     }
 
-    // Parabolic arc.
+    // Parabolic arc (AMBER)
     if (pts.length > 1) {
-      ctx.strokeStyle = "#67E8F9";
+      ctx.strokeStyle = tokens.amber;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
-      const [px0, py0] = spaceToScreen(pts[0].x, pts[0].y);
+      const [px0, py0] = sp(pts[0].x, pts[0].y);
       ctx.moveTo(px0, py0);
       for (let i = 1; i < pts.length; i++) {
-        const [px, py] = spaceToScreen(pts[i].x, pts[i].y);
+        const [px, py] = sp(pts[i].x, pts[i].y);
         ctx.lineTo(px, py);
       }
       ctx.stroke();
     }
 
-    // Apple dot.
-    if (pts.length > 0) {
-      const [adx, ady] = spaceToScreen(pts[0].x, pts[0].y);
-      ctx.fillStyle = "#86EFAC";
+    // Animated AMBER apple dot
+    if (pts.length > 1) {
+      const idx = Math.min(Math.floor(phase * pts.length), pts.length - 1);
+      const [adx, ady] = sp(pts[idx].x, pts[idx].y);
+      const glowA = ctx.createRadialGradient(adx, ady, 0, adx, ady, 14);
+      glowA.addColorStop(0, hexToRgba(tokens.amber, 0.5));
+      glowA.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glowA;
+      ctx.beginPath();
+      ctx.arc(adx, ady, 14, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillStyle = tokens.amber;
       ctx.beginPath();
       ctx.arc(adx, ady, 5, 0, 2 * Math.PI);
       ctx.fill();
     }
 
-    // Panel title.
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
-    ctx.font = "bold 10px ui-monospace, monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("SPACE VIEW (Newton)", OX_LEFT + PANEL_W / 2, PANEL_H + 4);
-
     // ─── RIGHT: Spacetime view ────────────────────────────────────────────
 
-    // Spacetime grid (t lines at constant y, y lines at constant t).
-    ctx.strokeStyle = "rgba(255,255,255,0.05)";
+    drawSectionTitle(ctx, OX_RIGHT + 8, 14, "spacetime view (GR)", tokens.textMute);
+
+    // Spacetime grid
+    ctx.strokeStyle = tokens.grid;
     ctx.lineWidth = 0.5;
     for (let yg = 0; yg <= 5; yg++) {
-      const [sx0, sy0] = stToScreen(0, yg, tMax);
-      const [sx1, sy1] = stToScreen(tMax, yg, tMax);
+      const [sx0, sy0] = stp(0, yg, tMax);
+      const [sx1, sy1] = stp(tMax, yg, tMax);
       ctx.beginPath();
       ctx.moveTo(sx0, sy0);
       ctx.lineTo(sx1, sy1);
@@ -205,80 +268,137 @@ export function FallingAppleAsGeodesicScene() {
     }
     for (let tg = 0; tg <= 4; tg++) {
       const t = (tg / 4) * tMax;
-      const [sx0, sy0] = stToScreen(t, 0, tMax);
-      const [sx1, sy1] = stToScreen(t, 5, tMax);
+      const [sx0, sy0] = stp(t, 0, tMax);
+      const [sx1, sy1] = stp(t, 5, tMax);
       ctx.beginPath();
       ctx.moveTo(sx0, sy0);
       ctx.lineTo(sx1, sy1);
       ctx.stroke();
     }
 
-    // Ground line in spacetime.
-    ctx.strokeStyle = "rgba(255,255,255,0.2)";
+    // AMBER radial gradient near ground = curvature indicator
+    {
+      const [gx, gy] = stp(tMax / 2, 0, tMax);
+      const rg = ctx.createRadialGradient(gx, gy, 0, gx, gy, 90);
+      rg.addColorStop(0, hexToRgba(tokens.amber, 0.06));
+      rg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = rg;
+      ctx.fillRect(OX_RIGHT, 8, PANEL_W, PANEL_H);
+    }
+
+    // Ground line in spacetime (CYAN)
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 1.5;
-    const [st_gx0, st_gy0] = stToScreen(0, 0, tMax);
-    const [st_gx1, st_gy1] = stToScreen(tMax, 0, tMax);
+    const [st_gx0, st_gy0] = stp(0, 0, tMax);
+    const [st_gx1, st_gy1] = stp(tMax, 0, tMax);
     ctx.beginPath();
     ctx.moveTo(st_gx0, st_gy0);
     ctx.lineTo(st_gx1, st_gy1);
     ctx.stroke();
+    ctx.save();
+    ctx.font = FONT_HUD_SMALL;
+    ctx.fillStyle = tokens.cyan;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    ctx.fillText("ground", (st_gx0 + st_gx1) / 2, st_gy0 + 3);
+    ctx.restore();
 
-    // Draw "curvature" of metric — a faint warp shading near y = 0.
-    const warpGrad = ctx.createLinearGradient(OX_RIGHT + PAD, 8 + PANEL_H - PAD, OX_RIGHT + PAD, 8 + PANEL_H - PAD - 40);
-    warpGrad.addColorStop(0, "rgba(167,139,250,0.13)");
-    warpGrad.addColorStop(1, "rgba(167,139,250,0.00)");
-    ctx.fillStyle = warpGrad;
-    ctx.fillRect(OX_RIGHT + PAD, 8 + PANEL_H - PAD - 40, PANEL_W - 2 * PAD, 40);
-
-    // Worldline in spacetime: y(t).
+    // Worldline in spacetime (MAGENTA)
     if (pts.length > 1) {
-      ctx.strokeStyle = "#A78BFA";
+      ctx.strokeStyle = tokens.magenta;
       ctx.lineWidth = 2.5;
       ctx.beginPath();
-      const [stx0, sty0] = stToScreen(pts[0].t, pts[0].y, tMax);
+      const [stx0, sty0] = stp(pts[0].t, pts[0].y, tMax);
       ctx.moveTo(stx0, sty0);
       for (let i = 1; i < pts.length; i++) {
-        const [stx, sty] = stToScreen(pts[i].t, pts[i].y, tMax);
+        const [stx, sty] = stp(pts[i].t, pts[i].y, tMax);
         ctx.lineTo(stx, sty);
       }
       ctx.stroke();
     }
 
-    // "Geodesic" annotation on the worldline.
+    // "geodesic" annotation on the worldline
     if (pts.length > 2) {
-      const midIdx = Math.floor(pts.length * 0.6);
-      const [lx, ly] = stToScreen(pts[midIdx].t, pts[midIdx].y, tMax);
-      ctx.fillStyle = "#A78BFA";
-      ctx.font = "9px ui-monospace, monospace";
+      const midIdx = Math.floor(pts.length * 0.55);
+      const [lx, ly] = stp(pts[midIdx].t, pts[midIdx].y, tMax);
+      ctx.save();
+      ctx.font = FONT_HUD_SMALL;
+      ctx.fillStyle = tokens.magenta;
       ctx.textAlign = "left";
-      ctx.fillText("geodesic", lx + 6, ly - 4);
+      ctx.textBaseline = "top";
+      ctx.fillText("geodesic", lx + 7, ly - 14);
+      ctx.restore();
     }
 
-    // Axis labels.
-    ctx.fillStyle = "rgba(255,255,255,0.35)";
-    ctx.font = "9px ui-monospace, monospace";
+    // Animated AMBER apple tracer in spacetime panel
+    if (pts.length > 1) {
+      const idx = Math.min(Math.floor(phase * pts.length), pts.length - 1);
+      const [tdx, tdy] = stp(pts[idx].t, pts[idx].y, tMax);
+      const glowST = ctx.createRadialGradient(tdx, tdy, 0, tdx, tdy, 14);
+      glowST.addColorStop(0, hexToRgba(tokens.amber, 0.5));
+      glowST.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = glowST;
+      ctx.beginPath();
+      ctx.arc(tdx, tdy, 14, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.fillStyle = tokens.amber;
+      ctx.beginPath();
+      ctx.arc(tdx, tdy, 5, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+
+    // Axis labels
+    ctx.save();
+    ctx.font = FONT_HUD_SMALL;
+    ctx.fillStyle = tokens.textMute;
     ctx.textAlign = "center";
-    const [t_axis_x, t_axis_y] = stToScreen(tMax / 2, 0, tMax);
-    ctx.fillText("time →", t_axis_x, t_axis_y + 14);
+    ctx.textBaseline = "top";
+    const [t_axis_x, t_axis_y] = stp(tMax / 2, 0, tMax);
+    ctx.fillText("time →", t_axis_x, t_axis_y + 12);
     ctx.save();
     ctx.translate(OX_RIGHT + 14, 8 + PANEL_H / 2);
     ctx.rotate(-Math.PI / 2);
     ctx.fillText("height y", 0, 0);
     ctx.restore();
+    ctx.restore();
 
-    // Panel title.
-    ctx.fillStyle = "rgba(255,255,255,0.5)";
-    ctx.font = "bold 10px ui-monospace, monospace";
+    // HUD readout: toss speed
+    drawHudReadout(ctx, OX_LEFT + 8, PANEL_H + 14, "v₀: ", `${v0y.toFixed(1)} m/s`, tokens.textDim, tokens.amber);
+
+    // Divider above callout
+    drawDivider(ctx, 10, W - 10, H - 54, tokens.gridHeavy);
+
+    // Honest-moment callout text (AMBER)
+    ctx.save();
+    ctx.font = FONT_HUD;
+    ctx.fillStyle = tokens.amber;
     ctx.textAlign = "center";
-    ctx.fillText("SPACETIME VIEW (GR)", OX_RIGHT + PANEL_W / 2, PANEL_H + 4);
-  }, [v0y, v0x]);
+    ctx.textBaseline = "top";
+    ctx.fillText(
+      "the apple isn't pulled; it's running along a geodesic of curved spacetime",
+      W / 2,
+      H - 46,
+    );
+    ctx.font = FONT_HUD_SMALL;
+    ctx.fillStyle = tokens.textDim;
+    ctx.fillText(
+      "the “force” Newton saw is the Christoffel correction — a coordinate artefact",
+      W / 2,
+      H - 28,
+    );
+    ctx.restore();
+  }, [v0y, phase, tokens, width, height]);
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <canvas ref={canvasRef} className="rounded-md border border-white/10 bg-black/40" />
+    <div ref={containerRef} className="relative w-full pb-4">
+      <canvas
+        ref={canvasRef}
+        className={SCENE_CANVAS_CLASS}
+        style={{ width, height, display: "block" }}
+        aria-label="Split-panel falling apple scene. Left: parabolic trajectory in (x, y) space with a Newtonian force arrow. Right: the same motion as a nearly-straight worldline in (t, y) spacetime — a geodesic of curved spacetime. An amber apple animates on both panels simultaneously."
+      />
 
-      {/* Speed slider */}
-      <div className="flex w-full max-w-[660px] items-center gap-3 font-mono text-xs text-white/70">
+      <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)]">
         <span className="w-40 shrink-0">Initial toss speed v₀</span>
         <input
           type="range"
@@ -288,30 +408,28 @@ export function FallingAppleAsGeodesicScene() {
           value={v0y}
           onChange={(e) => setV0y(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-amber)" }}
         />
         <span className="w-16 text-right">{v0y.toFixed(1)} m/s</span>
       </div>
 
-      {/* Legend */}
-      <div className="flex gap-6 font-mono text-xs text-white/60">
+      <div className="mt-3 flex gap-6 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-4 rounded bg-[#67E8F9]" />
-          parabola (space)
+          <span className="inline-block h-2 w-4 rounded" style={{ background: tokens.amber }} />
+          apple / trajectory
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-4 rounded bg-[#A78BFA]" />
-          worldline (spacetime geodesic)
+          <span className="inline-block h-2 w-4 rounded" style={{ background: tokens.magenta }} />
+          spacetime worldline
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-2 w-4 rounded bg-[#F87171]" />
+          <span className="inline-block h-2 w-4 rounded" style={{ background: tokens.cyan }} />
+          ground
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block h-2 w-4 rounded" style={{ background: tokens.red }} />
           Newtonian force
         </span>
-      </div>
-
-      {/* Honest-moment callout */}
-      <div className="w-full max-w-[660px] rounded border border-purple-400/30 bg-purple-950/30 p-4 font-mono text-xs leading-relaxed text-white/80">
-        <span className="font-bold text-purple-300">The apple isn&apos;t being pulled.</span>
-        {" "}It&apos;s running along the straightest possible line in curved spacetime. In the spacetime view the worldline looks nearly straight — it is a geodesic of the Schwarzschild metric. The &quot;force&quot; Newton saw was the Christoffel correction keeping the tangent vector parallel-transported along the worldline. The same object, two descriptions: one geometric, one illusory.
       </div>
     </div>
   );

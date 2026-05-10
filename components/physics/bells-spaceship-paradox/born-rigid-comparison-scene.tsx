@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import type { Worldline } from "@/lib/physics/relativity/types";
 import { bornRigidAccelerationRatio } from "@/lib/physics/relativity/bell-spaceship";
 
@@ -49,6 +50,7 @@ function rindlerX(ct: number, x0FromHorizon: number, shift: number): number {
 }
 
 export function BornRigidComparisonScene() {
+  const tokens = useSceneTokens();
   const [playing, setPlaying] = useState(false);
   const [labCT, setLabCT] = useState(0);
   const lastTsRef = useRef<number | null>(null);
@@ -90,13 +92,13 @@ export function BornRigidComparisonScene() {
     }
     const bellRear: Worldline = {
       events: bellRearEvents,
-      color: "#FFB36B",
+      color: tokens.orange,
       label: "Bell rear",
       accelerated: true,
     };
     const bellFront: Worldline = {
       events: bellFrontEvents,
-      color: "#FFB36B",
+      color: tokens.orange,
       label: "Bell front",
       accelerated: true,
     };
@@ -122,12 +124,12 @@ export function BornRigidComparisonScene() {
     }
     const rigidRear: Worldline = {
       events: rigidRearEvents,
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "rigid rear",
     };
     const rigidFront: Worldline = {
       events: rigidFrontEvents,
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "rigid front",
     };
 
@@ -137,7 +139,7 @@ export function BornRigidComparisonScene() {
         { t: labCT, x: bellX(labCT, X_REAR_BELL), y: 0, z: 0 },
         { t: labCT, x: bellX(labCT, X_REAR_BELL + D0), y: 0, z: 0 },
       ],
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "Bell string",
     };
     const rigidString: Worldline = {
@@ -145,12 +147,12 @@ export function BornRigidComparisonScene() {
         { t: labCT, x: rindlerX(labCT, X_REAR_RIGID, 2.0), y: 0, z: 0 },
         { t: labCT, x: rindlerX(labCT, X_REAR_RIGID + D0, 2.0), y: 0, z: 0 },
       ],
-      color: "#7CF59A",
+      color: tokens.green,
       label: "rigid string",
     };
 
     return [bellRear, bellFront, rigidRear, rigidFront, bellString, rigidString];
-  }, [labCT]);
+  }, [labCT, tokens]);
 
   const ratio = bornRigidAccelerationRatio(X_REAR_RIGID, D0);
 
@@ -165,14 +167,26 @@ export function BornRigidComparisonScene() {
         height={420}
       />
 
-      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-white/70">
-        <div className="rounded-md border border-amber-300/20 bg-amber-300/[0.04] p-3">
-          <div className="text-amber-300/85">BELL PAIR · launch-frame-identical</div>
+      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-[var(--color-fg-2)]">
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-amber) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-amber) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-amber)" }}>BELL PAIR · launch-frame-identical</div>
           <div className="mt-1 opacity-80">a_rear / a_front = 1 (by setup)</div>
           <div className="opacity-80">proper separation grows as γ·D₀ → string stretches</div>
         </div>
-        <div className="rounded-md border border-cyan-300/20 bg-cyan-300/[0.04] p-3">
-          <div className="text-cyan-300/85">BORN-RIGID PAIR · Rindler observers</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-cyan) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-cyan) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-cyan)" }}>BORN-RIGID PAIR · Rindler observers</div>
           <div className="mt-1 opacity-80">
             a_rear / a_front = {ratio.toFixed(3)} (&gt; 1)
           </div>
@@ -180,11 +194,11 @@ export function BornRigidComparisonScene() {
         </div>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-white/70">
+      <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <button
           type="button"
           onClick={() => setPlaying((p) => !p)}
-          className="rounded border border-white/20 bg-white/5 px-3 py-1 hover:bg-white/10"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:opacity-90"
         >
           {playing ? "pause" : labCT >= T_HOME ? "replay" : "play"}
         </button>
@@ -194,7 +208,7 @@ export function BornRigidComparisonScene() {
             setPlaying(false);
             setLabCT(0);
           }}
-          className="rounded border border-white/20 bg-white/5 px-3 py-1 hover:bg-white/10"
+          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:opacity-90"
         >
           reset
         </button>

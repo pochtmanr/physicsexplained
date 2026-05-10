@@ -1,6 +1,15 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  applyDpr,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_SHORT,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * POISSON VS EFE SCENE — §08 THE NEWTONIAN LIMIT
@@ -16,15 +25,6 @@ import { useEffect, useRef } from "react";
  * that these are the same physical statement at different levels of theory.
  */
 
-const W = 540;
-const H = 320;
-const BG = "#0f172a";
-
-// Colours
-const COL_NEWTON = "#67e8f9"; // cyan for Newtonian panel
-const COL_EINSTEIN = "#fb923c"; // amber for GR panel
-const COL_BRIDGE = "#a3e635"; // lime for the coefficient 8πG/c⁴
-
 /** Draw equipotential contours for −GM/r around a central point mass. */
 function drawPotentialContours(
   ctx: CanvasRenderingContext2D,
@@ -38,7 +38,7 @@ function drawPotentialContours(
     const alpha = 0.5 - i * 0.08;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.strokeStyle = color.replace(")", `,${alpha})`).replace("rgb", "rgba");
+    ctx.strokeStyle = hexToRgba(color, alpha);
     ctx.lineWidth = 1.2;
     ctx.setLineDash([3, 3]);
     ctx.stroke();
@@ -96,186 +96,202 @@ function drawFieldLines(
   }
 }
 
+function drawScene(
+  ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
+) {
+  // Panel accent colours — derived from semantic tokens
+  const colNewton = tokens.cyan;     // cyan for Newtonian panel
+  const colEinstein = tokens.orange; // orange for GR panel
+  const colBridge = tokens.green;    // green for the coefficient 8πG/c⁴
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = tokens.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // ─── LAYOUT ───────────────────────────────────────────────────────────────
+  const midX = W / 2;
+  const leftCX = midX * 0.38; // centre of left panel
+  const rightCX = midX + midX * 0.62; // centre of right panel
+
+  // Divider
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.08);
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.moveTo(midX, 8);
+  ctx.lineTo(midX, H - 8);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ═══ "=" bridge sign ════════════════════════════════════════════════════
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.6);
+  ctx.font = "bold 22px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("=", midX, H / 2 + 8);
+  ctx.textAlign = "left";
+
+  // ─── LEFT PANEL — Newtonian ────────────────────────────────────────────
+  const leftCY = H * 0.41;
+
+  // Panel label
+  ctx.fillStyle = colNewton;
+  ctx.font = "bold 11px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("NEWTONIAN GRAVITY", leftCX, 20);
+
+  // Point mass glyph
+  ctx.beginPath();
+  ctx.arc(leftCX, leftCY, 8, 0, Math.PI * 2);
+  const grad = ctx.createRadialGradient(leftCX, leftCY, 0, leftCX, leftCY, 8);
+  grad.addColorStop(0, hexToRgba(colNewton, 0.9));
+  grad.addColorStop(1, hexToRgba(colNewton, 0.1));
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  drawFieldLines(ctx, leftCX, leftCY, 14, 80, 8, colNewton);
+  drawPotentialContours(ctx, leftCX, leftCY, 90, colNewton);
+
+  // Label: M
+  ctx.fillStyle = colNewton;
+  ctx.font = "bold 12px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("M", leftCX, leftCY + 22);
+
+  // Poisson equation
+  ctx.font = "13px monospace";
+  ctx.fillStyle = colNewton;
+  ctx.textAlign = "center";
+  ctx.fillText("∇²Φ = 4πGρ", leftCX, H - 60);
+
+  ctx.font = "10px monospace";
+  ctx.fillStyle = hexToRgba(tokens.textMute, 0.85);
+  ctx.fillText("Poisson's equation", leftCX, H - 44);
+  ctx.fillText("(Newton, 1687 / Poisson, 1813)", leftCX, H - 30);
+
+  // ─── RIGHT PANEL — linearised EFE ─────────────────────────────────────
+  const rightCY = H * 0.41;
+
+  ctx.fillStyle = colEinstein;
+  ctx.font = "bold 11px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("GENERAL RELATIVITY  (linearised)", rightCX, 20);
+
+  // Curved-space glyph: a wavy grid suggesting curvature
+  ctx.save();
+  ctx.translate(rightCX, rightCY);
+  const GRID_N = 5;
+  const STEP = 16;
+  ctx.strokeStyle = hexToRgba(colEinstein, 0.35);
+  ctx.lineWidth = 1;
+  for (let i = -GRID_N; i <= GRID_N; i++) {
+    ctx.beginPath();
+    for (let j = -GRID_N; j <= GRID_N; j++) {
+      const px = j * STEP;
+      const dist = Math.sqrt(px * px + (i * STEP) * (i * STEP));
+      const warp = 18 / (1 + dist * 0.05);
+      const py = i * STEP - warp * Math.exp(-dist * dist / 1800);
+      if (j === -GRID_N) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+  }
+  for (let j = -GRID_N; j <= GRID_N; j++) {
+    ctx.beginPath();
+    for (let i = -GRID_N; i <= GRID_N; i++) {
+      const px = j * STEP;
+      const dist = Math.sqrt(px * px + (i * STEP) * (i * STEP));
+      const warp = 18 / (1 + dist * 0.05);
+      const py = i * STEP - warp * Math.exp(-dist * dist / 1800);
+      if (i === -GRID_N) ctx.moveTo(px, py);
+      else ctx.lineTo(px, py);
+    }
+    ctx.stroke();
+  }
+  // Central mass dot
+  ctx.beginPath();
+  ctx.arc(0, 0, 7, 0, Math.PI * 2);
+  const grad2 = ctx.createRadialGradient(0, 0, 0, 0, 0, 7);
+  grad2.addColorStop(0, hexToRgba(colEinstein, 0.9));
+  grad2.addColorStop(1, hexToRgba(colEinstein, 0.1));
+  ctx.fillStyle = grad2;
+  ctx.fill();
+  ctx.restore();
+
+  // Equation stack — three lines with alignment
+  const eqY = H - 80;
+  ctx.textAlign = "center";
+
+  // Line 1: G_{00} = (8πG/c⁴) T_{00}
+  ctx.font = "12px monospace";
+  ctx.fillStyle = colEinstein;
+  ctx.fillText("G_{00} = (8πG/c⁴) T_{00}", rightCX, eqY);
+
+  // Bridge: highlight 8πG/c⁴
+  // Re-draw the coefficient in green
+  ctx.font = "bold 12px monospace";
+  ctx.fillStyle = colBridge;
+  // The coefficient is at a rough offset — redraw the full line with colour split
+  ctx.fillStyle = colEinstein;
+  ctx.font = "12px monospace";
+
+  // Line 2: linearised + T_00 ≈ ρc²
+  ctx.fillStyle = hexToRgba(tokens.textMute, 0.9);
+  ctx.font = "10px monospace";
+  ctx.fillText("∇²h_{00} = (8πG/c⁴)·ρc²", rightCX, eqY + 18);
+
+  // Line 3: → ∇²Φ = 4πGρ  (key result)
+  ctx.fillStyle = colBridge;
+  ctx.font = "bold 12px monospace";
+  ctx.fillText("⟹  ∇²Φ = 4πGρ", rightCX, eqY + 38);
+
+  // Caption
+  ctx.fillStyle = hexToRgba(tokens.textMute, 0.85);
+  ctx.font = "10px monospace";
+  ctx.fillText("8πG/c⁴ is fixed by this match", rightCX, eqY + 56);
+
+  ctx.textAlign = "left";
+
+  // ─── Bridging annotation ──────────────────────────────────────────────
+  ctx.fillStyle = colBridge;
+  ctx.font = "bold 10px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText("8πG/c⁴", midX, H / 2 - 12);
+  ctx.fillStyle = hexToRgba(colBridge, 0.5);
+  ctx.font = "9px monospace";
+  ctx.fillText("the bridge", midX, H / 2 + 24);
+  ctx.textAlign = "left";
+}
+
 export function PoissonVsEfeScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.6,
+    maxHeight: SCENE_HEIGHT_SHORT,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-
-    ctx.clearRect(0, 0, W, H);
-    ctx.fillStyle = BG;
-    ctx.fillRect(0, 0, W, H);
-
-    // ─── LAYOUT ───────────────────────────────────────────────────────────────
-    const midX = W / 2;
-    const leftCX = midX * 0.38; // centre of left panel
-    const rightCX = midX + midX * 0.62; // centre of right panel
-
-    // Divider
-    ctx.strokeStyle = "rgba(255,255,255,0.08)";
-    ctx.lineWidth = 1;
-    ctx.setLineDash([5, 5]);
-    ctx.beginPath();
-    ctx.moveTo(midX, 8);
-    ctx.lineTo(midX, H - 8);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // ═══ "=" bridge sign ════════════════════════════════════════════════════
-    ctx.fillStyle = "rgba(255,255,255,0.6)";
-    ctx.font = "bold 22px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("=", midX, H / 2 + 8);
-    ctx.textAlign = "left";
-
-    // ─── LEFT PANEL — Newtonian ────────────────────────────────────────────
-    const leftCY = 130;
-
-    // Panel label
-    ctx.fillStyle = COL_NEWTON;
-    ctx.font = "bold 11px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("NEWTONIAN GRAVITY", leftCX, 20);
-
-    // Point mass glyph
-    ctx.beginPath();
-    ctx.arc(leftCX, leftCY, 8, 0, Math.PI * 2);
-    const grad = ctx.createRadialGradient(leftCX, leftCY, 0, leftCX, leftCY, 8);
-    grad.addColorStop(0, "rgba(103,232,249,0.9)");
-    grad.addColorStop(1, "rgba(103,232,249,0.1)");
-    ctx.fillStyle = grad;
-    ctx.fill();
-
-    drawFieldLines(ctx, leftCX, leftCY, 14, 80, 8, COL_NEWTON);
-    drawPotentialContours(ctx, leftCX, leftCY, 90, COL_NEWTON);
-
-    // Label: M
-    ctx.fillStyle = COL_NEWTON;
-    ctx.font = "bold 12px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("M", leftCX, leftCY + 22);
-
-    // Poisson equation
-    ctx.font = "13px monospace";
-    ctx.fillStyle = COL_NEWTON;
-    ctx.textAlign = "center";
-    ctx.fillText("∇²Φ = 4πGρ", leftCX, H - 60);
-
-    ctx.font = "10px monospace";
-    ctx.fillStyle = "rgba(148,163,184,0.6)";
-    ctx.fillText("Poisson's equation", leftCX, H - 44);
-    ctx.fillText("(Newton, 1687 / Poisson, 1813)", leftCX, H - 30);
-
-    // ─── RIGHT PANEL — linearised EFE ─────────────────────────────────────
-    const rightCY = 130;
-
-    ctx.fillStyle = COL_EINSTEIN;
-    ctx.font = "bold 11px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("GENERAL RELATIVITY  (linearised)", rightCX, 20);
-
-    // Curved-space glyph: a wavy grid suggesting curvature
-    ctx.save();
-    ctx.translate(rightCX, rightCY);
-    const GRID = 5;
-    const STEP = 16;
-    ctx.strokeStyle = "rgba(251,146,60,0.35)";
-    ctx.lineWidth = 1;
-    for (let i = -GRID; i <= GRID; i++) {
-      ctx.beginPath();
-      for (let j = -GRID; j <= GRID; j++) {
-        const px = j * STEP;
-        const dist = Math.sqrt(px * px + (i * STEP) * (i * STEP));
-        const warp = 18 / (1 + dist * 0.05);
-        const py = i * STEP - warp * Math.exp(-dist * dist / 1800);
-        if (j === -GRID) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.stroke();
-    }
-    for (let j = -GRID; j <= GRID; j++) {
-      ctx.beginPath();
-      for (let i = -GRID; i <= GRID; i++) {
-        const px = j * STEP;
-        const dist = Math.sqrt(px * px + (i * STEP) * (i * STEP));
-        const warp = 18 / (1 + dist * 0.05);
-        const py = i * STEP - warp * Math.exp(-dist * dist / 1800);
-        if (i === -GRID) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
-      }
-      ctx.stroke();
-    }
-    // Central mass dot
-    ctx.beginPath();
-    ctx.arc(0, 0, 7, 0, Math.PI * 2);
-    const grad2 = ctx.createRadialGradient(0, 0, 0, 0, 0, 7);
-    grad2.addColorStop(0, "rgba(251,146,60,0.9)");
-    grad2.addColorStop(1, "rgba(251,146,60,0.1)");
-    ctx.fillStyle = grad2;
-    ctx.fill();
-    ctx.restore();
-
-    // Equation stack — three lines with alignment
-    const eqY = H - 80;
-    ctx.textAlign = "center";
-
-    // Line 1: G_{00} = (8πG/c⁴) T_{00}
-    ctx.font = "12px monospace";
-    ctx.fillStyle = COL_EINSTEIN;
-    ctx.fillText("G_{00} = (8πG/c⁴) T_{00}", rightCX, eqY);
-
-    // Bridge: highlight 8πG/c⁴
-    // Re-draw the coefficient in lime
-    ctx.font = "bold 12px monospace";
-    ctx.fillStyle = COL_BRIDGE;
-    // The coefficient is at a rough offset — redraw the full line with colour split
-    ctx.fillStyle = COL_EINSTEIN;
-    ctx.font = "12px monospace";
-
-    // Line 2: linearised + T_00 ≈ ρc²
-    ctx.fillStyle = "rgba(148,163,184,0.65)";
-    ctx.font = "10px monospace";
-    ctx.fillText("∇²h_{00} = (8πG/c⁴)·ρc²", rightCX, eqY + 18);
-
-    // Line 3: → ∇²Φ = 4πGρ  (key result)
-    ctx.fillStyle = COL_BRIDGE;
-    ctx.font = "bold 12px monospace";
-    ctx.fillText("⟹  ∇²Φ = 4πGρ", rightCX, eqY + 38);
-
-    // Caption
-    ctx.fillStyle = "rgba(148,163,184,0.55)";
-    ctx.font = "10px monospace";
-    ctx.fillText("8πG/c⁴ is fixed by this match", rightCX, eqY + 56);
-
-    ctx.textAlign = "left";
-
-    // ─── Bridging annotation ──────────────────────────────────────────────
-    ctx.fillStyle = COL_BRIDGE;
-    ctx.font = "bold 10px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("8πG/c⁴", midX, H / 2 - 12);
-    ctx.fillStyle = "rgba(163,230,53,0.5)";
-    ctx.font = "9px monospace";
-    ctx.fillText("the bridge", midX, H / 2 + 24);
-    ctx.textAlign = "left";
-
-  }, []);
+    drawScene(ctx, tokens, width, height);
+  }, [tokens, width, height]);
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div ref={containerRef} className="relative w-full pb-4 flex flex-col items-center gap-3">
       <canvas
         ref={canvasRef}
-        width={W}
-        height={H}
-        className="max-w-full rounded-lg border border-white/10"
-        style={{ background: BG }}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
-      <p className="max-w-[540px] font-mono text-[10px] text-white/40">
-        Left: Poisson's equation — the exact statement of Newtonian gravity for a continuous source.
-        Right: the 00-component of the linearised EFE. Substitute h_{"{00}"} = −2Φ/c² and T_{"{00}"} ≈ ρc²; the coefficient 8πG/c⁴ cancels to give Poisson's equation identically.
+      <p className="font-mono text-[10px] text-[var(--color-fg-3)]">
+        Left: Poisson&apos;s equation — the exact statement of Newtonian gravity for a continuous source.
+        Right: the 00-component of the linearised EFE. Substitute h_{"{00}"} = −2Φ/c² and T_{"{00}"} ≈ ρc²; the coefficient 8πG/c⁴ cancels to give Poisson&apos;s equation identically.
       </p>
     </div>
   );

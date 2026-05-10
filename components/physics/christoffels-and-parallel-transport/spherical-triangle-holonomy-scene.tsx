@@ -1,7 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { ManifoldCanvas } from "@/components/physics/_shared";
+import { useMemo, useRef, useState } from "react";
+import {
+  ManifoldCanvas,
+  SCENE_HEIGHT_DEFAULT,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
 import { sphereEmbedding } from "@/lib/physics/relativity/manifolds";
 import {
   christoffelSymbols,
@@ -24,6 +30,7 @@ import type { ParallelTransportPath, ManifoldChartPoint } from "@/components/phy
  * pointing "east" (∂/∂φ, normalised): visibly rotated by 90°.
  *
  * A "progress" slider shows the vector at each point along the path.
+ * Design: scene-tokens palette + idle sphere rotation.
  */
 
 const EMBED = sphereEmbedding(1);
@@ -31,7 +38,7 @@ const METRIC = sphericalMetric(1);
 const STEPS_PER_LEG = 60;
 
 /** Build the closed triangle curve and transport vectors up to `progressFrac` ∈ [0,1]. */
-function buildTransport(progressFrac: number): ParallelTransportPath {
+function buildTransport(progressFrac: number, color: string): ParallelTransportPath {
   // ── Sample the three legs ────────────────────────────────────────────────
   const curve: ManifoldChartPoint[] = [];
 
@@ -86,23 +93,33 @@ function buildTransport(progressFrac: number): ParallelTransportPath {
     curve: curveTruncated,
     initialVector,
     transportedVectors: vectorsTruncated,
-    color: "#FF6ADE",
+    color,
     label: "V",
   };
 }
 
 export function SphericalTriangleHolonomyScene() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.76,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
   const [progress, setProgress] = useState(1.0);
   const [rotationY, setRotationY] = useState(0.55);
 
-  const transport = useMemo(() => buildTransport(progress), [progress]);
+  const transport = useMemo(
+    () => buildTransport(progress, tokens.magenta),
+    [progress, tokens.magenta],
+  );
 
   const holonomyAngle = sphericalHolonomyAngle(Math.PI / 2, 1);
   const progressFraction = progress;
   const progressDeg = (progressFraction * holonomyAngle * (180 / Math.PI)).toFixed(1);
+  const enclosedArea = (Math.PI / 2).toFixed(3);
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div ref={containerRef} className="relative w-full flex flex-col items-center gap-3 pb-4">
       <ManifoldCanvas
         embedding={EMBED}
         uRange={[0, Math.PI]}
@@ -114,14 +131,16 @@ export function SphericalTriangleHolonomyScene() {
         onRotationChange={setRotationY}
         rotationMin={-Math.PI}
         rotationMax={Math.PI}
-        width={500}
-        height={380}
+        width={width}
+        height={height}
         palette={{
-          surface: "rgba(255,255,255,0.15)",
-          transport: "#FF6ADE",
+          surface: hexToRgba(tokens.cyan, 0.4),
+          transport: tokens.magenta,
+          background: tokens.bg,
+          highlight: tokens.cyan,
         }}
       />
-      <label className="flex w-full max-w-[500px] items-center gap-3 font-mono text-xs text-white/70">
+      <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)] w-full">
         <span className="shrink-0 w-20">progress</span>
         <input
           type="range"
@@ -131,23 +150,42 @@ export function SphericalTriangleHolonomyScene() {
           value={progress}
           onChange={(e) => setProgress(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-magenta)" }}
         />
         <span className="shrink-0 w-12 text-right">{(progress * 100).toFixed(0)}%</span>
-      </label>
-      <div className="flex w-full max-w-[500px] flex-col gap-1 rounded-md border border-white/10 bg-white/5 p-3 font-mono text-xs text-white/70">
+      </div>
+      <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)] w-full">
+        <span className="shrink-0 w-20">rotate</span>
+        <input
+          type="range"
+          min={-Math.PI}
+          max={Math.PI}
+          step={0.01}
+          value={rotationY}
+          onChange={(e) => setRotationY(parseFloat(e.target.value))}
+          className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
+        />
+        <span className="shrink-0 w-12 text-right">{rotationY.toFixed(2)}</span>
+      </div>
+      {/* HUD card — mirrors the canvas HUD readout in HTML for accessibility */}
+      <div className="flex w-full flex-col gap-1 rounded-md border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-3 font-mono text-xs">
+        <p className="text-[var(--color-fg-3)] uppercase tracking-wider text-[11px] mb-1">Parallel Transport</p>
         <div className="flex justify-between">
-          <span>enclosed area</span>
-          <span className="text-white/90">π/2 sr (one octant)</span>
+          <span className="text-[var(--color-fg-2)]">enclosed area:</span>
+          <span style={{ color: tokens.amber }} className="font-semibold">{enclosedArea} sr</span>
         </div>
         <div className="flex justify-between">
-          <span>holonomy angle  Δθ = A/R²</span>
-          <span className="text-[#FF6ADE] font-semibold">π/2 = 90°</span>
+          <span className="text-[var(--color-fg-2)]">rotation: Δθ = A/R²</span>
+          <span style={{ color: tokens.green }} className="font-semibold">
+            {(holonomyAngle * 180 / Math.PI).toFixed(2)}° (full)
+          </span>
         </div>
         <div className="flex justify-between">
-          <span>rotation so far</span>
-          <span className="text-white/90">≈ {progressDeg}°</span>
+          <span className="text-[var(--color-fg-2)]">rotation so far:</span>
+          <span className="text-[var(--color-fg-0)]">≈ {progressDeg}°</span>
         </div>
-        <p className="mt-1 text-white/40 leading-relaxed">
+        <p className="mt-1 text-[var(--color-fg-3)] leading-relaxed">
           V starts pointing south (∂/∂θ). After traversing the full triangle it points east (∂/∂φ) — rotated 90°
           by the curvature of the sphere. Flat space cannot do this.
         </p>

@@ -40,16 +40,16 @@ export function LorentzMatrixScene() {
   return (
     <div className="flex flex-col items-center gap-4 p-4">
       <div className="flex w-full max-w-[600px] flex-col items-center gap-2">
-        <div className="font-mono text-xs uppercase tracking-wider text-white/55">
+        <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
           Λ(β) — the boost matrix that replaces Galileo
         </div>
-        <div className="font-mono text-xs text-white/70">
+        <div className="font-mono text-xs text-[var(--color-fg-2)]">
           β = {beta.toFixed(2)}    γ = {g.toFixed(4)}    γβ = {(g * beta).toFixed(4)}
         </div>
       </div>
 
       {/* The 4×4 grid */}
-      <div className="rounded-lg border border-white/10 bg-black/40 p-4">
+      <div className="rounded-lg border border-[var(--color-fg-4)] p-4">
         <div
           className="grid gap-1 font-mono text-xs"
           style={{
@@ -61,7 +61,7 @@ export function LorentzMatrixScene() {
           {SOURCES.map((s) => (
             <div
               key={s}
-              className="text-center font-mono text-[11px] text-white/45"
+              className="text-center font-mono text-[11px] text-[var(--color-fg-3)]"
             >
               {s}
             </div>
@@ -83,14 +83,14 @@ export function LorentzMatrixScene() {
       </div>
 
       {/* Active-row explanation */}
-      <div className="min-h-[36px] w-full max-w-[600px] rounded-md border border-white/10 bg-white/5 px-3 py-2 font-mono text-xs text-white/85">
+      <div className="min-h-[36px] w-full max-w-[600px] rounded-md border border-[var(--color-fg-4)] px-3 py-2 font-mono text-xs text-[var(--color-fg-1)]">
         {activeRow === null
           ? "click a row to read off the transform of that primed coordinate"
           : ROW_FORMULAS[activeRow](g, beta)}
       </div>
 
       {/* β slider */}
-      <label className="flex w-full max-w-[600px] items-center gap-3 font-mono text-xs text-white/70">
+      <label className="flex w-full max-w-[600px] items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-24">β = {beta.toFixed(2)}</span>
         <input
           type="range"
@@ -100,10 +100,11 @@ export function LorentzMatrixScene() {
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
       </label>
 
-      <p className="max-w-[640px] text-center font-mono text-[11px] leading-relaxed text-white/55">
+      <p className="max-w-[640px] text-center font-mono text-[11px] leading-relaxed text-[var(--color-fg-3)]">
         The upper-left 2×2 block carries all the relativistic mixing. The y
         and z rows/columns are inert — the boost is purely along x.
       </p>
@@ -127,11 +128,17 @@ function RowBlock({
       <button
         type="button"
         onClick={onClick}
-        className={`flex h-12 items-center justify-center rounded font-mono text-[11px] transition ${
+        className="flex h-12 items-center justify-center rounded font-mono text-[11px] transition"
+        style={
           isActive
-            ? "bg-fuchsia-500/20 text-white"
-            : "text-white/45 hover:bg-white/5 hover:text-white/85"
-        }`}
+            ? {
+                background: "color-mix(in srgb, var(--color-magenta) 20%, transparent)",
+                color: "var(--color-fg-0)",
+              }
+            : {
+                color: "var(--color-fg-3)",
+              }
+        }
       >
         {LABELS[i]}
       </button>
@@ -164,31 +171,28 @@ function Cell({
   const isOne = Math.abs(value - 1) < 1e-9 && !isLive;
   const intensity = isLive ? Math.min(1, Math.abs(value)) : 0;
 
-  // Color: cyan for the +γ entries (diagonal of the 2×2 block); magenta for
-  // −γβ off-diagonal entries; muted for the y, z block; neutral for zeros.
-  let bg = "rgba(255,255,255,0.04)";
-  let textColor = "text-white/60";
+  let bg = "color-mix(in srgb, var(--color-fg-4) 20%, transparent)";
+  let color = "var(--color-fg-2)";
   if (isLive && row === col) {
-    bg = `rgba(103, 232, 249, ${0.18 + 0.45 * intensity})`;
-    textColor = "text-cyan-200";
+    const a = 0.18 + 0.45 * intensity;
+    bg = `color-mix(in srgb, var(--color-cyan) ${(a * 100).toFixed(1)}%, transparent)`;
+    color = "var(--color-cyan)";
   } else if (isLive && row !== col && !isZero) {
-    bg = `rgba(255, 106, 222, ${0.18 + 0.45 * intensity})`;
-    textColor = "text-fuchsia-200";
+    const a = 0.18 + 0.45 * intensity;
+    bg = `color-mix(in srgb, var(--color-magenta) ${(a * 100).toFixed(1)}%, transparent)`;
+    color = "var(--color-magenta)";
   } else if (isOne) {
-    bg = "rgba(255,255,255,0.1)";
-    textColor = "text-white/85";
+    bg = "color-mix(in srgb, var(--color-fg-4) 35%, transparent)";
+    color = "var(--color-fg-1)";
   }
-  if (highlightRow) {
-    bg =
-      bg === "rgba(255,255,255,0.04)"
-        ? "rgba(255,255,255,0.08)"
-        : bg;
+  if (highlightRow && !isLive && !isOne) {
+    bg = "color-mix(in srgb, var(--color-fg-4) 30%, transparent)";
   }
 
   return (
     <div
-      className={`flex h-12 items-center justify-center rounded ${textColor} font-mono`}
-      style={{ background: bg, transition: "background 120ms" }}
+      className="flex h-12 items-center justify-center rounded font-mono"
+      style={{ background: bg, color, transition: "background 120ms" }}
     >
       <span className="text-[12px]">
         {isZero ? "0" : isOne ? "1" : value.toFixed(3)}

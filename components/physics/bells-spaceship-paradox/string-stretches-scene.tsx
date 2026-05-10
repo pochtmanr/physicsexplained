@@ -1,6 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_SHORT,
+  applyDpr,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 import { gamma } from "@/lib/physics/relativity/types";
 import {
   properSeparation,
@@ -21,63 +28,53 @@ import {
  *     In this frame the string spans γ·D₀ and is visibly stretched. Tick
  *     marks on the string get farther apart as β rises. At γ = 1 + ε_c the
  *     string snaps; we render that with a frayed break.
- *
- * The HUD shows β, γ, the proper-length multiple γ·D₀/D₀, and the strain.
- * A reference line marks the snap point (assumed ε_c = 1, i.e. γ_crit = 2,
- * β_snap = √3/2 ≈ 0.866 — generous for a "delicate" string but matches the
- * canonical Bell scenario).
  */
 
-const WIDTH = 640;
-const HEIGHT = 320;
 const PAD_X = 48;
 const PAD_Y = 36;
 const D0_PIXELS = 200; // lab-frame string length in pixels at β = 0.
-const EPSILON_C = 1; // snap at γ = 2 ↔ β = √3/2 ≈ 0.866 (canonical demo value)
+const EPSILON_C = 1; // snap at γ = 2 ↔ β = √3/2 ≈ 0.866
 
 export function StringStretchesScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
   const [beta, setBeta] = useState(0.6);
+  const { width: WIDTH, height: HEIGHT } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_SHORT,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, WIDTH, HEIGHT);
     if (!ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = WIDTH * dpr;
-    canvas.height = HEIGHT * dpr;
-    canvas.style.width = `${WIDTH}px`;
-    canvas.style.height = `${HEIGHT}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = tokens.bg;
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
     const g = gamma(beta);
     const eps = stringStrain(beta);
     const snapped = eps >= EPSILON_C;
-    const properMult = g; // γ · D₀ / D₀ = γ.
+    const properMult = g;
 
-    // Two rows: top = launch frame (fixed D₀), bottom = proper frame (γ · D₀).
     const rowY1 = PAD_Y + 60;
     const rowY2 = HEIGHT - PAD_Y - 50;
 
-    // Origin x for both rows
     const x0 = PAD_X + 80;
 
     // === LAUNCH FRAME (top) ===
-    drawFrameLabel(ctx, "LAUNCH FRAME", "rgba(103, 232, 249, 0.85)", PAD_X, rowY1 - 26);
-    // Rocket markers (cyan)
-    drawRocket(ctx, x0, rowY1, "#67E8F9", "rear");
-    drawRocket(ctx, x0 + D0_PIXELS, rowY1, "#67E8F9", "front");
-    // String
-    ctx.strokeStyle = "#67E8F9";
+    drawFrameLabel(ctx, "LAUNCH FRAME", tokens.cyan, PAD_X, rowY1 - 26);
+    drawRocket(ctx, x0, rowY1, tokens.cyan, "rear", tokens.textFaint);
+    drawRocket(ctx, x0 + D0_PIXELS, rowY1, tokens.cyan, "front", tokens.textFaint);
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(x0 + 14, rowY1);
     ctx.lineTo(x0 + D0_PIXELS - 14, rowY1);
     ctx.stroke();
-    // Length label
-    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText(
@@ -87,23 +84,20 @@ export function StringStretchesScene() {
     );
 
     // === PROPER FRAME (bottom) ===
-    drawFrameLabel(ctx, "PROPER FRAME", "rgba(255, 106, 222, 0.85)", PAD_X, rowY2 - 26);
+    drawFrameLabel(ctx, "PROPER FRAME", tokens.magenta, PAD_X, rowY2 - 26);
     const properW = D0_PIXELS * properMult;
-    // Cap visual stretch so it doesn't overflow the canvas
     const visualMax = WIDTH - x0 - PAD_X;
     const properWClamped = Math.min(properW, visualMax);
-    drawRocket(ctx, x0, rowY2, "#FF6ADE", "rear");
-    drawRocket(ctx, x0 + properWClamped, rowY2, "#FF6ADE", "front");
+    drawRocket(ctx, x0, rowY2, tokens.magenta, "rear", tokens.textFaint);
+    drawRocket(ctx, x0 + properWClamped, rowY2, tokens.magenta, "front", tokens.textFaint);
 
-    // Stretched string with tick marks
     if (!snapped) {
-      ctx.strokeStyle = "#FF6ADE";
+      ctx.strokeStyle = tokens.magenta;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(x0 + 14, rowY2);
       ctx.lineTo(x0 + properWClamped - 14, rowY2);
       ctx.stroke();
-      // Strain ticks: more spread = visibly stretched
       const nTicks = 9;
       for (let i = 1; i < nTicks; i++) {
         const tx = x0 + 14 + ((properWClamped - 28) * i) / nTicks;
@@ -113,9 +107,8 @@ export function StringStretchesScene() {
         ctx.stroke();
       }
     } else {
-      // Snapped string: two frayed halves with a gap.
       const breakX = x0 + properWClamped / 2;
-      ctx.strokeStyle = "#FF6ADE";
+      ctx.strokeStyle = tokens.magenta;
       ctx.lineWidth = 2;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
@@ -125,13 +118,12 @@ export function StringStretchesScene() {
       ctx.lineTo(x0 + properWClamped - 14, rowY2);
       ctx.stroke();
       ctx.setLineDash([]);
-      // SNAP marker
-      ctx.fillStyle = "#FF6ADE";
+      ctx.fillStyle = tokens.magenta;
       ctx.font = "11px ui-monospace, monospace";
       ctx.textAlign = "center";
       ctx.fillText("SNAP", breakX, rowY2 - 12);
     }
-    ctx.fillStyle = "rgba(255,255,255,0.6)";
+    ctx.fillStyle = tokens.textMute;
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "center";
     ctx.fillText(
@@ -143,7 +135,7 @@ export function StringStretchesScene() {
     );
 
     // HUD top-left
-    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.fillStyle = tokens.textDim;
     ctx.font = "11px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText(`β = ${beta.toFixed(3)}`, PAD_X, 18);
@@ -156,7 +148,7 @@ export function StringStretchesScene() {
     );
 
     // Bottom legend
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
+    ctx.fillStyle = tokens.textFaint;
     ctx.font = "10px ui-monospace, monospace";
     ctx.textAlign = "left";
     ctx.fillText(
@@ -164,12 +156,16 @@ export function StringStretchesScene() {
       PAD_X,
       HEIGHT - 8,
     );
-  }, [beta]);
+  }, [beta, tokens, WIDTH, HEIGHT]);
 
   return (
-    <div className="flex flex-col items-center gap-3">
-      <canvas ref={canvasRef} className="rounded-md border border-white/10 bg-black/40" />
-      <label className="flex w-full max-w-[640px] items-center gap-3 font-mono text-xs text-white/70">
+    <div ref={containerRef} className="flex w-full flex-col items-center gap-3">
+      <canvas
+        ref={canvasRef}
+        style={{ width: WIDTH, height: HEIGHT, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
+      <label className="flex w-full items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-20">β = {beta.toFixed(2)}</span>
         <input
           type="range"
@@ -179,6 +175,7 @@ export function StringStretchesScene() {
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
         <span className="w-28">γ = {gamma(beta).toFixed(3)}</span>
         <span className="w-32">
@@ -208,12 +205,13 @@ function drawRocket(
   y: number,
   color: string,
   label: string,
+  labelColor: string,
 ) {
   ctx.fillStyle = color;
   ctx.beginPath();
   ctx.arc(x, y, 6, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = "rgba(255,255,255,0.55)";
+  ctx.fillStyle = labelColor;
   ctx.font = "10px ui-monospace, monospace";
   ctx.textAlign = "center";
   ctx.fillText(label, x, y - 14);

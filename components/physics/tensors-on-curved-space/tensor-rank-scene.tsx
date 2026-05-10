@@ -1,6 +1,20 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  FONT_HUD_SMALL,
+  FONT_SECTION,
+  SCENE_CANVAS_CLASS,
+  applyDpr,
+  drawSectionTitle,
+  drawDivider,
+  drawHudReadout,
+  hexToRgba,
+  SCENE_WIDTH_DEFAULT,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared";
 
 /**
  * FIG.30a — Tensor Rank Schematic.
@@ -13,39 +27,35 @@ import { useEffect, useRef } from "react";
  *   • (1,3) Riemann tensor  — 256 components, 1 upper + 3 lower boxes
  *
  * Each tensor is drawn as a central blob (the tensor itself) with coloured
- * "index slots" attached: cyan boxes above for contravariant (upper) indices
- * and amber boxes below for covariant (lower) indices.
+ * "index slots" attached: CYAN boxes above for contravariant (upper) indices
+ * and MAGENTA boxes below for covariant (lower) indices.
  *
- * The component count n^(p+q) with n = 4 is displayed beneath each diagram
- * to reinforce that rank determines count.
+ * The component count n^(p+q) with n = 4 is displayed next to each row in
+ * AMBER via drawHudReadout. Animated: rows pulse-highlight at ~1.5s per row.
  */
 
-const W = 700;
-const H = 300;
+const W = SCENE_WIDTH_DEFAULT;
+const H = SCENE_HEIGHT_DEFAULT;
 
 interface TensorSpec {
   label: string;
   pqLabel: string;
-  p: number; // contravariant indices (upper, cyan)
-  q: number; // covariant indices (lower, amber)
+  p: number; // contravariant indices (upper, CYAN)
+  q: number; // covariant indices (lower, MAGENTA)
   components: number;
   symbol: string;
 }
 
 const TENSORS: TensorSpec[] = [
-  { label: "scalar", pqLabel: "(0,0)", p: 0, q: 0, components: 1, symbol: "φ" },
-  { label: "vector", pqLabel: "(1,0)", p: 1, q: 0, components: 4, symbol: "Vⁿ" },
-  { label: "covector", pqLabel: "(0,1)", p: 0, q: 1, components: 4, symbol: "ωₙ" },
-  { label: "metric", pqLabel: "(0,2)", p: 0, q: 2, components: 16, symbol: "gₘₙ" },
-  {
-    label: "Riemann",
-    pqLabel: "(1,3)",
-    p: 1,
-    q: 3,
-    components: 256,
-    symbol: "Rⁿₘₙₗ",
-  },
+  { label: "scalar",   pqLabel: "(0,0)", p: 0, q: 0, components: 1,   symbol: "φ"    },
+  { label: "vector",   pqLabel: "(1,0)", p: 1, q: 0, components: 4,   symbol: "Vⁿ"   },
+  { label: "covector", pqLabel: "(0,1)", p: 0, q: 1, components: 4,   symbol: "ωₙ"   },
+  { label: "metric",   pqLabel: "(0,2)", p: 0, q: 2, components: 16,  symbol: "gₘₙ"  },
+  { label: "Riemann",  pqLabel: "(1,3)", p: 1, q: 3, components: 256, symbol: "Rⁿₘₙₗ"},
 ];
+
+// CYCLE_MS / TENSORS.length ≈ 1.5 s per row
+const CYCLE_MS = TENSORS.length * 1500;
 
 const BOX_W = 18;
 const BOX_H = 14;
@@ -57,47 +67,54 @@ function drawTensor(
   spec: TensorSpec,
   cx: number,
   cy: number,
+  highlighted: boolean,
+  tokens: SceneTokens,
 ) {
   const { p, q, label, pqLabel, components, symbol } = spec;
 
-  // ── Central blob ──────────────────────────────────────────────────────────
+  const glowAlpha = highlighted ? 0.22 : 0.07;
+  const strokeAlpha = highlighted ? 0.70 : 0.30;
+
+  // ── Central blob ─────────────────────────────────────────────────────────
   ctx.beginPath();
   ctx.arc(cx, cy, BLOB_R, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(255,255,255,0.07)";
+  ctx.fillStyle = highlighted
+    ? hexToRgba(tokens.amber, 0.14)
+    : hexToRgba(tokens.textBright, 0.07);
   ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.30)";
-  ctx.lineWidth = 1.2;
+  ctx.strokeStyle = highlighted
+    ? hexToRgba(tokens.amber, 0.70)
+    : hexToRgba(tokens.textBright, 0.30);
+  ctx.lineWidth = highlighted ? 1.8 : 1.2;
   ctx.stroke();
 
   // Symbol inside blob
-  ctx.fillStyle = "rgba(255,255,255,0.85)";
-  ctx.font = "bold 13px ui-monospace, monospace";
+  ctx.font = `bold 13px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
+  ctx.fillStyle = highlighted ? tokens.amber : tokens.textBright;
   ctx.fillText(symbol, cx, cy);
 
-  // ── Upper index boxes (contravariant) ─────────────────────────────────────
+  // ── Upper index boxes (contravariant — CYAN) ──────────────────────────────
   const upperTotalW = p * BOX_W + Math.max(0, p - 1) * SLOT_GAP;
   const upperStartX = cx - upperTotalW / 2;
   const upperY = cy - BLOB_R - 8 - BOX_H;
 
   for (let i = 0; i < p; i++) {
     const bx = upperStartX + i * (BOX_W + SLOT_GAP);
-    ctx.fillStyle = "rgba(103,232,249,0.18)";
+    ctx.fillStyle = hexToRgba(tokens.cyan, glowAlpha);
     ctx.fillRect(bx, upperY, BOX_W, BOX_H);
-    ctx.strokeStyle = "rgba(103,232,249,0.70)";
+    ctx.strokeStyle = hexToRgba(tokens.cyan, strokeAlpha);
     ctx.lineWidth = 1;
     ctx.strokeRect(bx, upperY, BOX_W, BOX_H);
 
-    // Greek index label
-    ctx.fillStyle = "#67E8F9";
-    ctx.font = "10px ui-monospace, monospace";
+    ctx.fillStyle = tokens.cyan;
+    ctx.font = FONT_HUD_SMALL;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("μ", bx + BOX_W / 2, upperY + BOX_H / 2);
 
-    // Connecting line from blob to box
-    ctx.strokeStyle = "rgba(103,232,249,0.30)";
+    ctx.strokeStyle = hexToRgba(tokens.cyan, 0.30);
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(cx, cy - BLOB_R);
@@ -105,26 +122,26 @@ function drawTensor(
     ctx.stroke();
   }
 
-  // ── Lower index boxes (covariant) ─────────────────────────────────────────
+  // ── Lower index boxes (covariant — MAGENTA) ───────────────────────────────
   const lowerTotalW = q * BOX_W + Math.max(0, q - 1) * SLOT_GAP;
   const lowerStartX = cx - lowerTotalW / 2;
   const lowerY = cy + BLOB_R + 8;
 
   for (let i = 0; i < q; i++) {
     const bx = lowerStartX + i * (BOX_W + SLOT_GAP);
-    ctx.fillStyle = "rgba(251,191,36,0.15)";
+    ctx.fillStyle = hexToRgba(tokens.magenta, glowAlpha * 0.8);
     ctx.fillRect(bx, lowerY, BOX_W, BOX_H);
-    ctx.strokeStyle = "rgba(251,191,36,0.65)";
+    ctx.strokeStyle = hexToRgba(tokens.magenta, strokeAlpha);
     ctx.lineWidth = 1;
     ctx.strokeRect(bx, lowerY, BOX_W, BOX_H);
 
-    ctx.fillStyle = "#FBBF24";
-    ctx.font = "10px ui-monospace, monospace";
+    ctx.fillStyle = tokens.magenta;
+    ctx.font = FONT_HUD_SMALL;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("ν", bx + BOX_W / 2, lowerY + BOX_H / 2);
 
-    ctx.strokeStyle = "rgba(251,191,36,0.30)";
+    ctx.strokeStyle = hexToRgba(tokens.magenta, 0.30);
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(cx, cy + BLOB_R);
@@ -132,93 +149,131 @@ function drawTensor(
     ctx.stroke();
   }
 
-  // ── Labels below ─────────────────────────────────────────────────────────
+  // ── Labels below ──────────────────────────────────────────────────────────
   const bottomY = cy + BLOB_R + 8 + BOX_H + 16;
-  ctx.fillStyle = "rgba(255,255,255,0.75)";
-  ctx.font = "bold 11px ui-monospace, monospace";
+  ctx.fillStyle = highlighted ? tokens.textBright : tokens.textDim;
+  ctx.font = `bold 11px ui-monospace, monospace`;
   ctx.textAlign = "center";
   ctx.textBaseline = "alphabetic";
   ctx.fillText(label, cx, bottomY);
 
-  ctx.fillStyle = "rgba(255,255,255,0.45)";
-  ctx.font = "10px ui-monospace, monospace";
+  ctx.fillStyle = tokens.textMute;
+  ctx.font = FONT_HUD_SMALL;
   ctx.fillText(pqLabel, cx, bottomY + 14);
 
-  ctx.fillStyle =
-    components === 1
-      ? "rgba(167,239,167,0.75)"
-      : components === 4
-        ? "rgba(103,232,249,0.75)"
-        : components === 16
-          ? "rgba(167,139,250,0.75)"
-          : "rgba(251,191,36,0.75)";
-  ctx.font = "10px ui-monospace, monospace";
-  ctx.fillText(`${components} component${components > 1 ? "s" : ""}`, cx, bottomY + 28);
+  // Component count via drawHudReadout style (inline here for positioning)
+  ctx.save();
+  ctx.font = FONT_HUD_SMALL;
+  ctx.textBaseline = "alphabetic";
+  ctx.textAlign = "center";
+  ctx.fillStyle = highlighted ? tokens.amber : hexToRgba(tokens.amber, 0.65);
+  ctx.fillText(`4^${p + q} = ${components}`, cx, bottomY + 28);
+  ctx.restore();
 }
 
 export function TensorRankScene() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  // We drive animation via RAF, storing tick in a ref to avoid re-renders
+  const tickRef = useRef(0);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    let raf = 0;
 
-    const dpr =
-      typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
+    const loop = (t: number) => {
+      tickRef.current = t;
+      const canvas = canvasRef.current;
+      if (!canvas) { raf = requestAnimationFrame(loop); return; }
+      const ctx = applyDpr(canvas, W, H);
+      if (!ctx) { raf = requestAnimationFrame(loop); return; }
 
-    // Dividers
-    ctx.strokeStyle = "rgba(255,255,255,0.07)";
-    ctx.lineWidth = 1;
-    const colW = W / TENSORS.length;
-    for (let i = 1; i < TENSORS.length; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * colW, 20);
-      ctx.lineTo(i * colW, H - 20);
-      ctx.stroke();
-    }
+      draw(ctx, t, tokens);
+      raf = requestAnimationFrame(loop);
+    };
 
-    // Header
-    ctx.fillStyle = "rgba(255,255,255,0.35)";
-    ctx.font = "10px ui-monospace, monospace";
-    ctx.textAlign = "left";
-    ctx.textBaseline = "alphabetic";
-    ctx.fillText("TENSOR RANKS  (n = 4 dimensions)", 12, 16);
-
-    // Legend
-    ctx.fillStyle = "#67E8F9";
-    ctx.font = "10px ui-monospace, monospace";
-    ctx.textAlign = "right";
-    ctx.fillText("cyan = contravariant (upper)", W - 130, 16);
-    ctx.fillStyle = "#FBBF24";
-    ctx.fillText("amber = covariant (lower)", W - 12, 16);
-
-    TENSORS.forEach((spec, i) => {
-      const cx = colW * i + colW / 2;
-      const cy = H / 2 - 10;
-      drawTensor(ctx, spec, cx, cy);
-    });
-  }, []);
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, [tokens]);
 
   return (
-    <div className="flex flex-col gap-3 p-2">
+    <div className="relative w-full">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        className={SCENE_CANVAS_CLASS}
+        aria-label="Tensor rank schematic showing scalar (0,0), vector (1,0), covector (0,1), metric (0,2), and Riemann (1,3) tensors as index-slot diagrams. Cyan boxes are contravariant upper indices; magenta boxes are covariant lower indices."
       />
-      <p className="px-1 font-mono text-xs text-white/40">
-        Each tensor is its index slots. Cyan boxes above the blob = contravariant
-        (upper) indices; amber boxes below = covariant (lower) indices. Component
-        count = 4^(p+q). A rank-(1,3) Riemann tensor has 4^4 = 256 components in
-        4D spacetime.
-      </p>
     </div>
   );
+}
+
+function draw(ctx: CanvasRenderingContext2D, t: number, tokens: SceneTokens) {
+  ctx.fillStyle = tokens.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Which row is highlighted
+  const cyclePos = (t % CYCLE_MS) / CYCLE_MS; // 0..1
+  const highlightIdx = Math.floor(cyclePos * TENSORS.length);
+
+  // ── Section header ────────────────────────────────────────────────────────
+  drawSectionTitle(ctx, 12, 12, "TENSOR RANK", tokens.textMute);
+
+  // ── Legend (AMBER top-right) ──────────────────────────────────────────────
+  const legendY = 12;
+  ctx.save();
+  ctx.font = FONT_SECTION;
+  ctx.textBaseline = "top";
+  ctx.textAlign = "right";
+  // contravariant
+  ctx.fillStyle = tokens.cyan;
+  ctx.fillText("↑ contravariant (upper)", W - 130, legendY);
+  // covariant
+  ctx.fillStyle = tokens.magenta;
+  ctx.fillText("↓ covariant (lower)", W - 12, legendY);
+  ctx.restore();
+
+  // Sub-caption
+  ctx.save();
+  ctx.font = FONT_HUD_SMALL;
+  ctx.fillStyle = tokens.textMute;
+  ctx.textBaseline = "top";
+  ctx.textAlign = "left";
+  ctx.fillText("n = 4 dimensions", 12, 26);
+  ctx.restore();
+
+  // ── Column dividers ───────────────────────────────────────────────────────
+  const colW = W / TENSORS.length;
+  // Vertical dividers (drawDivider is horizontal-only, draw manually)
+  ctx.save();
+  ctx.strokeStyle = tokens.grid;
+  ctx.lineWidth = 1;
+  for (let i = 1; i < TENSORS.length; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * colW, 30);
+    ctx.lineTo(i * colW, H - 20);
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  // ── Highlight band behind active row ─────────────────────────────────────
+  const hlCol = highlightIdx * colW;
+  ctx.save();
+  ctx.fillStyle = hexToRgba(tokens.amber, 0.05);
+  ctx.fillRect(hlCol + 1, 30, colW - 2, H - 50);
+  ctx.restore();
+
+  // ── Tensor diagrams ───────────────────────────────────────────────────────
+  const cy = H / 2 - 10;
+  TENSORS.forEach((spec, i) => {
+    const cx = colW * i + colW / 2;
+    drawTensor(ctx, spec, cx, cy, i === highlightIdx, tokens);
+  });
+
+  // ── HUD readout strip at bottom ───────────────────────────────────────────
+  // Show the highlighted tensor's component count prominently
+  const active = TENSORS[highlightIdx];
+  let hudY = H - 34;
+  drawDivider(ctx, 12, W - 12, hudY - 6, tokens.grid);
+  hudY = drawHudReadout(ctx, 12, hudY, "rank: ", active.pqLabel, tokens.textDim, tokens.amber);
+  drawHudReadout(ctx, 180, H - 34, "symbol: ", active.symbol, tokens.textDim, tokens.textBright);
+  drawHudReadout(ctx, 360, H - 34, "components: ", `${active.components}  (4^${active.p + active.q})`, tokens.textDim, tokens.amber);
 }

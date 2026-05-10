@@ -2,8 +2,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { galileanWaveSpeed } from "@/lib/physics/relativity/galilean";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * FIG.01b — Maxwell is not Galilean-invariant.
@@ -22,13 +29,10 @@ import { galileanWaveSpeed } from "@/lib/physics/relativity/galilean";
  *   plot"); v is the boost as a fraction of c.
  */
 
-const RATIO = 0.65;
-const MAX_HEIGHT = 380;
-
 export function MaxwellNotGalileanScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
 
   const [v, setV] = useState(0.4); // boost fraction of c
   const vRef = useRef(v);
@@ -36,39 +40,22 @@ export function MaxwellNotGalileanScene() {
     vRef.current = v;
   }, [v]);
 
-  const [size, setSize] = useState({ width: 560, height: 360 });
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.65,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
 
   useAnimationFrame({
     elementRef: containerRef,
     onFrame: (t) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = applyDpr(canvas, width, height);
       if (!ctx) return;
 
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
       ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = tokens.bg;
+      ctx.fillRect(0, 0, width, height);
 
       const margin = 24;
       const plotW = width - 2 * margin;
@@ -85,16 +72,16 @@ export function MaxwellNotGalileanScene() {
           title: "LAB FRAME",
           subtitle: "Maxwell wave equation: speed = c.",
           speed: cScene,
-          color: "#FFD66B",
-          accent: colors.fg2,
+          color: tokens.amber,
+          accent: tokens.textMute,
         },
         {
           y: 12 + rowH + rowGap,
           title: "BOOSTED FRAME — Galilean prediction",
           subtitle: `If kinematics were Galilean, observer at +v would measure c − v = ${cMinusV.toFixed(2)} c.`,
           speed: cMinusV,
-          color: "#FFB36B",
-          accent: "#FF6ADE",
+          color: tokens.orange,
+          accent: tokens.magenta,
           flag: vRef.current !== 0 ? "PREDICTION ≠ EXPERIMENT" : null,
         },
         {
@@ -102,22 +89,22 @@ export function MaxwellNotGalileanScene() {
           title: "BOOSTED FRAME — what Maxwell + measurement actually give",
           subtitle: "Speed = c. Same as the lab. Galilean rule fails for light.",
           speed: cScene,
-          color: "#FFD66B",
-          accent: "#74DCFF",
+          color: tokens.amber,
+          accent: tokens.cyan,
         },
       ] as const;
 
       for (const r of rows) {
         // panel background
-        ctx.fillStyle = "rgba(255,255,255,0.02)";
+        ctx.fillStyle = hexToRgba(tokens.textBright, 0.02);
         ctx.fillRect(margin, r.y, plotW, rowH);
-        ctx.strokeStyle = colors.fg3;
+        ctx.strokeStyle = tokens.panelBorder;
         ctx.lineWidth = 0.6;
         ctx.strokeRect(margin + 0.5, r.y + 0.5, plotW - 1, rowH - 1);
 
         // title
-        ctx.fillStyle = colors.fg1;
-        ctx.font = "11px monospace";
+        ctx.fillStyle = tokens.textDim;
+        ctx.font = tokens.fontHudSmall;
         ctx.textAlign = "left";
         ctx.fillText(r.title, margin + 6, r.y + 14);
         ctx.fillStyle = r.accent;
@@ -126,7 +113,7 @@ export function MaxwellNotGalileanScene() {
 
         // axis
         const axY = r.y + rowH - 18;
-        ctx.strokeStyle = colors.fg3;
+        ctx.strokeStyle = tokens.panelBorder;
         ctx.setLineDash([3, 3]);
         ctx.beginPath();
         ctx.moveTo(margin + 6, axY);
@@ -173,7 +160,7 @@ export function MaxwellNotGalileanScene() {
 
         // failure flag
         if ("flag" in r && r.flag) {
-          ctx.fillStyle = "#FF6ADE";
+          ctx.fillStyle = tokens.magenta;
           ctx.font = "10px monospace";
           ctx.textAlign = "right";
           ctx.fillText(r.flag, margin + plotW - 6, r.y + 28);
@@ -181,8 +168,8 @@ export function MaxwellNotGalileanScene() {
       }
 
       // Bottom HUD
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "12px monospace";
+      ctx.fillStyle = tokens.textDim;
+      ctx.font = tokens.fontHud;
       ctx.textAlign = "center";
       ctx.fillText(
         `boost v = ${vRef.current.toFixed(2)} c   →   Galilean predicts c − v = ${cMinusV.toFixed(2)} c   ✗`,
@@ -193,8 +180,12 @@ export function MaxwellNotGalileanScene() {
   });
 
   return (
-    <div ref={containerRef} className="w-full bg-[#0A0C12] pb-3">
-      <canvas ref={canvasRef} style={{ width: size.width, height: size.height }} className="block" />
+    <div ref={containerRef} className="w-full pb-3">
+      <canvas
+        ref={canvasRef}
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
+      />
       <div className="mt-3 grid grid-cols-[auto_1fr_auto] items-center gap-x-3 gap-y-2 px-3 text-xs">
         <label className="font-mono text-[var(--color-fg-3)]">boost v / c</label>
         <input
@@ -204,7 +195,7 @@ export function MaxwellNotGalileanScene() {
           step={0.01}
           value={v}
           onChange={(e) => setV(parseFloat(e.target.value))}
-          className="accent-[#FF6ADE]"
+          style={{ accentColor: "var(--color-magenta)" }}
         />
         <span className="w-20 text-right font-mono text-[var(--color-fg-1)]">{v.toFixed(2)} c</span>
       </div>

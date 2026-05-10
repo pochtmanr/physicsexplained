@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
 import { contractedPoleLength } from "@/lib/physics/relativity/barn-pole";
 
@@ -29,6 +30,7 @@ const X_RANGE: [number, number] = [-2, 8];
 const T_RANGE: [number, number] = [-3, 3];
 
 export function BarnFrameScene() {
+  const tokens = useSceneTokens();
   const [beta, setBeta] = useState(Math.sqrt(3) / 2); // ≈ 0.866 → γ = 2
 
   const g = gamma(beta);
@@ -53,7 +55,7 @@ export function BarnFrameScene() {
         { t: tMin, x: L_BARN + beta * tMin, y: 0, z: 0 },
         { t: tMax, x: L_BARN + beta * tMax, y: 0, z: 0 },
       ],
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "pole front",
     };
     const rearPole: Worldline = {
@@ -61,7 +63,7 @@ export function BarnFrameScene() {
         { t: tMin, x: 0 + beta * tMin, y: 0, z: 0 },
         { t: tMax, x: 0 + beta * tMax, y: 0, z: 0 },
       ],
-      color: "#FF6ADE",
+      color: tokens.magenta,
       label: "pole rear",
     };
 
@@ -72,7 +74,7 @@ export function BarnFrameScene() {
         { t: tMin, x: 0, y: 0, z: 0 },
         { t: tMax, x: 0, y: 0, z: 0 },
       ],
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "rear door",
     };
     const frontDoor: Worldline = {
@@ -80,7 +82,7 @@ export function BarnFrameScene() {
         { t: tMin, x: L_BARN, y: 0, z: 0 },
         { t: tMax, x: L_BARN, y: 0, z: 0 },
       ],
-      color: "#67E8F9",
+      color: tokens.cyan,
       label: "front door",
     };
 
@@ -88,17 +90,17 @@ export function BarnFrameScene() {
     // to mark the events as labeled points on the diagram.
     const rearEvent: Worldline = {
       events: [{ t: 0, x: 0, y: 0, z: 0 }],
-      color: "#FFD66B",
+      color: tokens.amber,
       label: "rear closed",
     };
     const frontEvent: Worldline = {
       events: [{ t: 0, x: L_BARN, y: 0, z: 0 }],
-      color: "#FFD66B",
+      color: tokens.amber,
       label: "front closed",
     };
 
     return [rearDoor, frontDoor, rearPole, frontPole, rearEvent, frontEvent];
-  }, [beta]);
+  }, [beta, tokens]);
 
   // Build a non-null simultaneity slice at t' = 0 for boost β = 0 — but
   // boostBeta = 0 means no boosted axes drawn, and we just want the t = 0
@@ -117,14 +119,26 @@ export function BarnFrameScene() {
         height={400}
       />
 
-      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-white/70">
-        <div className="rounded-md border border-cyan-300/20 bg-cyan-300/[0.04] p-3">
-          <div className="text-cyan-300/85">BARN FRAME · barn at rest</div>
+      <div className="grid grid-cols-2 gap-3 font-mono text-[11px] text-[var(--color-fg-2)]">
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-cyan) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-cyan) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-cyan)" }}>BARN FRAME · barn at rest</div>
           <div className="mt-1 opacity-80">L_barn = {L_BARN.toFixed(2)} m</div>
           <div className="opacity-80">doors closed at t = 0 (simultaneous)</div>
         </div>
-        <div className="rounded-md border border-pink-300/20 bg-pink-300/[0.04] p-3">
-          <div className="text-pink-300/85">POLE · contracted in this frame</div>
+        <div
+          className="rounded-md border p-3"
+          style={{
+            borderColor: "color-mix(in srgb, var(--color-magenta) 30%, transparent)",
+            backgroundColor: "color-mix(in srgb, var(--color-magenta) 5%, transparent)",
+          }}
+        >
+          <div style={{ color: "var(--color-magenta)" }}>POLE · contracted in this frame</div>
           <div className="mt-1 opacity-80">
             L_pole / γ = {polePixContracted.toFixed(3)} m
           </div>
@@ -134,7 +148,7 @@ export function BarnFrameScene() {
         </div>
       </div>
 
-      <label className="flex items-center gap-3 font-mono text-xs text-white/70">
+      <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-20">β = {beta.toFixed(3)}</span>
         <input
           type="range"
@@ -144,6 +158,7 @@ export function BarnFrameScene() {
           value={beta}
           onChange={(e) => setBeta(parseFloat(e.target.value))}
           className="flex-1"
+          style={{ accentColor: "var(--color-cyan)" }}
         />
         <span className="w-32">
           fits? {polePixContracted <= L_BARN + 1e-9 ? "yes" : "no"}

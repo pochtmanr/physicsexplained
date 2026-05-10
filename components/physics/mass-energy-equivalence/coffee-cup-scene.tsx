@@ -2,6 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import { massDeficitFromEnergy } from "@/lib/physics/relativity/mass-energy";
+import {
+  applyDpr,
+  hexToRgba,
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
  * CoffeeCupScene — FIG.17b
@@ -9,58 +18,41 @@ import { massDeficitFromEnergy } from "@/lib/physics/relativity/mass-energy";
  * A hot cup of coffee weighs m + ΔE/c² more than a cold one.
  *
  * Numbers (real physics):
- *   • 1 cup of water (250 g) cooling 100°C → 20°C:
- *     ΔE = m·c_p·ΔT = 0.250 kg × 4186 J/(kg·K) × 80 K ≈ 83 720 J ≈ 83.7 kJ
- *     (plan quotes 280 kJ for a larger cup; we use the standard 250 ml cup)
- *   • Mass deficit: Δm = ΔE / c² ≈ 83 720 / (2.998e8)² ≈ 9.3 × 10⁻¹³ kg ≈ 0.93 pg
- *
- * We display the plan's canonical 280 kJ / 3.1 pg figure (approx. 670 ml "mug")
- * for maximum punch and faithfulness to the spec, while keeping the physics
- * derivation transparently in the HUD.
- *
- * Canvas 2D, dark bg. PascalCase export: CoffeeCupScene.
+ *   • ΔE ≈ 280 kJ for a 1-mug cool-down.
+ *   • Δm = ΔE / c² ≈ 3.1 × 10⁻¹² kg ≈ 3.1 pg.
  */
 
-const DELTA_E_J = 280_000; // J — plan figure (large mug, 100°C → 20°C)
-const DELTA_M_KG = massDeficitFromEnergy(DELTA_E_J); // ≈ 3.1e-12 kg
+const DELTA_E_J = 280_000;
+const DELTA_M_KG = massDeficitFromEnergy(DELTA_E_J);
 
 function formatPicograms(kg: number): string {
   const pg = kg * 1e12;
   return `${pg.toFixed(1)} pg`;
 }
 
-const HOT_COLOR = "#FF6B35";
-const COLD_COLOR = "#67C4F0";
-const STEAM_COLOR = "rgba(255,255,255,0.45)";
-const TEXT_DIM = "rgba(255,255,255,0.65)";
-const TEXT_BRIGHT = "rgba(255,255,255,0.92)";
-const AMBER = "#FFB36B";
-const CYAN = "#67E8F9";
-const BG = "#0A0C12";
-
 export function CoffeeCupScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
-    const W = canvas.clientWidth;
-    const H = canvas.clientHeight;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-    ctx.scale(dpr, dpr);
-    draw(ctx, W, H);
-  }, []);
+    draw(ctx, tokens, width, height);
+  }, [tokens, width, height]);
 
   return (
-    <div className="relative w-full">
+    <div ref={containerRef} className="w-full pb-4">
       <canvas
         ref={canvasRef}
-        style={{ width: "100%", height: 360, display: "block" }}
-        className="rounded-md border border-white/10 bg-[#0A0C12]"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
         aria-label="Two coffee cups side by side: hot (100°C) and cold (20°C). The hot cup is annotated as heavier by 3.1 picograms."
       />
     </div>
@@ -72,9 +64,10 @@ function drawSteam(
   cx: number,
   baseY: number,
   alpha: number,
+  steamColor: string,
 ) {
   ctx.save();
-  ctx.strokeStyle = STEAM_COLOR;
+  ctx.strokeStyle = steamColor;
   ctx.lineWidth = 2;
   ctx.globalAlpha = alpha;
   for (let i = -1; i <= 1; i++) {
@@ -95,6 +88,7 @@ function drawCup(
   label: string,
   tempLabel: string,
   isHot: boolean,
+  tokens: SceneTokens,
 ) {
   const cupW = 80;
   const cupH = 90;
@@ -110,13 +104,12 @@ function drawCup(
   ctx.lineTo(cx - cupW / 2, baseY);
   ctx.closePath();
 
-  // Fill with liquid colour gradient
   const grad = ctx.createLinearGradient(cx - cupW / 2, rimY, cx + cupW / 2, baseY);
   grad.addColorStop(0, liquidColor);
-  grad.addColorStop(1, "rgba(0,0,0,0.6)");
+  grad.addColorStop(1, hexToRgba(tokens.bg, 0.6));
   ctx.fillStyle = grad;
   ctx.fill();
-  ctx.strokeStyle = "rgba(255,255,255,0.25)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.25);
   ctx.lineWidth = 1.5;
   ctx.stroke();
   ctx.restore();
@@ -125,26 +118,26 @@ function drawCup(
   ctx.save();
   ctx.beginPath();
   ctx.arc(cx + cupW / 2 + 12, cy + 10, 18, -Math.PI * 0.6, Math.PI * 0.6);
-  ctx.strokeStyle = "rgba(255,255,255,0.3)";
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.3);
   ctx.lineWidth = 6;
   ctx.stroke();
   ctx.restore();
 
   // Rim
   ctx.save();
-  ctx.fillStyle = "rgba(255,255,255,0.12)";
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.12);
   ctx.fillRect(cx - cupW / 2 + 8 - 4, rimY - 5, cupW - 16 + 8, 8);
   ctx.restore();
 
   // Steam (hot only)
   if (isHot) {
-    drawSteam(ctx, cx, rimY, 1);
+    drawSteam(ctx, cx, rimY, 1, hexToRgba(tokens.textBright, 0.45));
   }
 
   // Temperature label
   ctx.save();
   ctx.font = `bold 15px ui-monospace, monospace`;
-  ctx.fillStyle = isHot ? HOT_COLOR : COLD_COLOR;
+  ctx.fillStyle = isHot ? tokens.orange : tokens.blue;
   ctx.textAlign = "center";
   ctx.fillText(tempLabel, cx, baseY + 22);
   ctx.restore();
@@ -152,15 +145,19 @@ function drawCup(
   // Cup label
   ctx.save();
   ctx.font = `13px ui-monospace, monospace`;
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "center";
   ctx.fillText(label, cx, baseY + 40);
   ctx.restore();
 }
 
-function draw(ctx: CanvasRenderingContext2D, W: number, H: number) {
-  // Background
-  ctx.fillStyle = BG;
+function draw(
+  ctx: CanvasRenderingContext2D,
+  tokens: SceneTokens,
+  W: number,
+  H: number,
+) {
+  ctx.fillStyle = tokens.bg;
   ctx.fillRect(0, 0, W, H);
 
   const midX = W / 2;
@@ -168,16 +165,13 @@ function draw(ctx: CanvasRenderingContext2D, W: number, H: number) {
   const leftX = midX - 140;
   const rightX = midX + 140;
 
-  // Hot cup
-  drawCup(ctx, leftX, cupY, HOT_COLOR, "hot coffee", "100 °C", true);
-
-  // Cold cup
-  drawCup(ctx, rightX, cupY, COLD_COLOR, "cold coffee", "20 °C", false);
+  drawCup(ctx, leftX, cupY, tokens.orange, "hot coffee", "100 °C", true, tokens);
+  drawCup(ctx, rightX, cupY, tokens.blue, "cold coffee", "20 °C", false, tokens);
 
   // Arrow + mass annotation
   const arrowY = cupY - 10;
   ctx.save();
-  ctx.strokeStyle = AMBER;
+  ctx.strokeStyle = tokens.amber;
   ctx.lineWidth = 1.5;
   ctx.setLineDash([4, 3]);
   ctx.beginPath();
@@ -186,9 +180,8 @@ function draw(ctx: CanvasRenderingContext2D, W: number, H: number) {
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // Arrowheads
   const ah = 7;
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.beginPath();
   ctx.moveTo(leftX + 46, arrowY - ah / 2);
   ctx.lineTo(leftX + 46 - ah, arrowY);
@@ -201,39 +194,38 @@ function draw(ctx: CanvasRenderingContext2D, W: number, H: number) {
   ctx.fill();
   ctx.restore();
 
-  // Delta-m label above arrow
   ctx.save();
   ctx.font = `bold 13px ui-monospace, monospace`;
-  ctx.fillStyle = AMBER;
+  ctx.fillStyle = tokens.amber;
   ctx.textAlign = "center";
   ctx.fillText(`Δm = ΔE / c² ≈ ${formatPicograms(DELTA_M_KG)}`, midX, arrowY - 10);
   ctx.restore();
 
-  // HUD panel (bottom)
+  // HUD
   const hudY = H - 72;
   ctx.save();
-  ctx.fillStyle = "rgba(255,255,255,0.04)";
+  ctx.fillStyle = hexToRgba(tokens.textBright, 0.04);
   ctx.fillRect(16, hudY, W - 32, 56);
 
   ctx.font = `11px ui-monospace, monospace`;
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.textAlign = "left";
 
   const col1 = 28;
   const col2 = midX + 8;
   ctx.fillText("ΔE  =  280 kJ  (1 mug, 100 °C → 20 °C)", col1, hudY + 18);
   ctx.fillText("Δm  =  ΔE / c²", col1, hudY + 36);
-  ctx.fillStyle = CYAN;
+  ctx.fillStyle = tokens.cyan;
   ctx.fillText(`    =  ${DELTA_M_KG.toExponential(2)} kg  ≈  3.1 picograms`, col1 + 90, hudY + 36);
 
-  ctx.fillStyle = TEXT_DIM;
+  ctx.fillStyle = tokens.textDim;
   ctx.fillText("In principle: real. In practice: 20 000× lighter than a bacterium.", col2, hudY + 54);
   ctx.restore();
 
   // Title
   ctx.save();
   ctx.font = `bold 14px ui-monospace, monospace`;
-  ctx.fillStyle = TEXT_BRIGHT;
+  ctx.fillStyle = tokens.textBright;
   ctx.textAlign = "center";
   ctx.fillText("Mass is energy — the hot cup weighs more", midX, 22);
   ctx.restore();

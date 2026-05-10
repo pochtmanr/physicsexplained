@@ -1,132 +1,128 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import {
+  SCENE_CANVAS_CLASS,
+  SCENE_HEIGHT_DEFAULT,
+  applyDpr,
+  hexToRgba,
+  useSceneSize,
+  useSceneTokens,
+  type SceneTokens,
+} from "@/components/physics/_shared/scene-tokens";
 
 /**
- * FIG.28c — The §06.4 closer. A text-and-equation panel that lands the
- * honest moment plainly:
- *
- *     There is no force called gravity. There is curvature.
- *
- * Below the headline, a teaser-equation: the Einstein field equations,
- *
- *     R_{μν} − (1/2) g_{μν} R = (8π G/c⁴) T_{μν}
- *
- * — labeled "Session 4 will derive this." The reader sees the geometry
- * that gravity IS, before the math arrives in §07–§08.
- *
- * No interactivity. The scene is a static, deliberately flat canvas — the
- * intent is that the reader pause on it. Interactive cleverness would
- * undermine the moment.
+ * FIG.28c — The §06.4 closer. A static text-and-equation panel.
  */
 
-const W = 700;
-const H = 360;
-
 export function HonestMomentScene() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.5,
+    maxHeight: SCENE_HEIGHT_DEFAULT,
+    minHeight: 280,
+  });
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = applyDpr(canvas, width, height);
     if (!ctx) return;
-
-    const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = `${W}px`;
-    canvas.style.height = `${H}px`;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, W, H);
-
-    // Background tint — slightly violet to distinguish from the prose page.
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
-    bgGrad.addColorStop(0, "rgba(167,139,250,0.06)");
-    bgGrad.addColorStop(1, "rgba(0,0,0,0.30)");
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, W, H);
-
-    // ── HEADLINE ─────────────────────────────────────────────────────────
-    ctx.fillStyle = "rgba(255,255,255,0.92)";
-    ctx.font = "bold 22px ui-sans-serif, system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("There is no force called gravity.", W / 2, 84);
-
-    ctx.fillStyle = "#A78BFA";
-    ctx.font = "bold 22px ui-sans-serif, system-ui, sans-serif";
-    ctx.fillText("There is curvature.", W / 2, 116);
-
-    // ── DIVIDER ──────────────────────────────────────────────────────────
-    ctx.strokeStyle = "rgba(255,255,255,0.14)";
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(W / 2 - 100, 142);
-    ctx.lineTo(W / 2 + 100, 142);
-    ctx.stroke();
-
-    // ── EFE TEASER ────────────────────────────────────────────────────────
-    ctx.fillStyle = "rgba(255,255,255,0.55)";
-    ctx.font = "11px ui-monospace, monospace";
-    ctx.textAlign = "center";
-    ctx.fillText(
-      "Session 4 derives the geometry. The equation is —",
-      W / 2,
-      168,
-    );
-
-    // Render the EFE in plain monospace text — KaTeX is overkill for a canvas
-    // and the readability is fine for a teaser line.
-    ctx.fillStyle = "#FFD66B";
-    ctx.font = "bold 20px ui-monospace, monospace";
-    ctx.textAlign = "center";
-    ctx.fillText(
-      "R_μν − ½ g_μν R = (8π G / c⁴) T_μν",
-      W / 2,
-      210,
-    );
-
-    // Equation gloss
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
-    ctx.font = "10px ui-monospace, monospace";
-    ctx.fillText(
-      "left side: how spacetime curves   ·   right side: where the matter and energy are",
-      W / 2,
-      236,
-    );
-
-    // ── FOOTER: the bridge to §07 ────────────────────────────────────────
-    ctx.fillStyle = "rgba(255,255,255,0.78)";
-    ctx.font = "12px ui-sans-serif, system-ui, sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText(
-      "Free-falling along curvature looks like falling.",
-      W / 2,
-      284,
-    );
-
-    ctx.fillStyle = "rgba(255,255,255,0.78)";
-    ctx.fillText(
-      "The next module formalizes the geometry.",
-      W / 2,
-      306,
-    );
-
-    ctx.fillStyle = "#A78BFA";
-    ctx.font = "11px ui-monospace, monospace";
-    ctx.fillText(
-      "→  §07: manifolds, tangent spaces, metrics, Christoffels, geodesics.",
-      W / 2,
-      334,
-    );
-  }, []);
+    ctx.clearRect(0, 0, width, height);
+    draw(ctx, width, height, tokens);
+  }, [tokens, width, height]);
 
   return (
-    <div className="flex flex-col gap-3 p-2">
+    <div ref={containerRef} className="flex w-full flex-col gap-3 pb-4">
       <canvas
         ref={canvasRef}
-        className="rounded-md border border-white/10 bg-black/40"
+        style={{ width, height, display: "block" }}
+        className={SCENE_CANVAS_CLASS}
       />
     </div>
+  );
+}
+
+function draw(
+  ctx: CanvasRenderingContext2D,
+  W: number,
+  H: number,
+  tokens: SceneTokens,
+) {
+  // Background tint — slight violet wash, derived from theme purple.
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+  bgGrad.addColorStop(0, hexToRgba(tokens.purple, 0.06));
+  bgGrad.addColorStop(1, hexToRgba(tokens.bg, 0.30));
+  ctx.fillStyle = tokens.bg;
+  ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.fillStyle = tokens.textBright;
+  ctx.font = "bold 22px ui-sans-serif, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("There is no force called gravity.", W / 2, 84);
+
+  ctx.fillStyle = tokens.purple;
+  ctx.font = "bold 22px ui-sans-serif, system-ui, sans-serif";
+  ctx.fillText("There is curvature.", W / 2, 116);
+
+  ctx.strokeStyle = hexToRgba(tokens.textBright, 0.14);
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 100, 142);
+  ctx.lineTo(W / 2 + 100, 142);
+  ctx.stroke();
+
+  ctx.fillStyle = tokens.textDim;
+  ctx.font = "11px ui-monospace, monospace";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    "Session 4 derives the geometry. The equation is —",
+    W / 2,
+    168,
+  );
+
+  ctx.fillStyle = tokens.amber;
+  ctx.font = "bold 20px ui-monospace, monospace";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    "R_μν − ½ g_μν R = (8π G / c⁴) T_μν",
+    W / 2,
+    210,
+  );
+
+  ctx.fillStyle = tokens.textFaint;
+  ctx.font = "10px ui-monospace, monospace";
+  ctx.fillText(
+    "left side: how spacetime curves   ·   right side: where the matter and energy are",
+    W / 2,
+    236,
+  );
+
+  ctx.fillStyle = tokens.textDim;
+  ctx.font = "12px ui-sans-serif, system-ui, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(
+    "Free-falling along curvature looks like falling.",
+    W / 2,
+    284,
+  );
+
+  ctx.fillStyle = tokens.textDim;
+  ctx.fillText(
+    "The next module formalizes the geometry.",
+    W / 2,
+    306,
+  );
+
+  ctx.fillStyle = tokens.purple;
+  ctx.font = "11px ui-monospace, monospace";
+  ctx.fillText(
+    "→  §07: manifolds, tangent spaces, metrics, Christoffels, geodesics.",
+    W / 2,
+    334,
   );
 }
