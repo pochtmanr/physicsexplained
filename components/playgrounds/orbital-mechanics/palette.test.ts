@@ -13,6 +13,11 @@ const COLORS: ThemeColors = {
   magenta: "#mage",
   amber: "#ambr",
   mint: "#mint",
+  red: "#red0",
+  blue: "#blue",
+  purple: "#purp",
+  orange: "#orng",
+  green: "#gren",
 };
 
 describe("palette", () => {

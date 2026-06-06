@@ -71,7 +71,7 @@ describe("POST /api/problems/[id]/check", () => {
       insertAttempt: mockInsertAttempt,
       diagnoseStep: mockDiagnose,
       insertDiagnosis: mockInsertDiag,
-    });
+    } as Parameters<typeof _resetCheckRouteDeps>[0]);
   });
 
   it("anonymous correct: returns verify.ok=true, no attempt logged", async () => {

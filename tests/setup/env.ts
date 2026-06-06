@@ -5,4 +5,7 @@
 // test suites before a single test runs.
 //
 // Registered via `test.setupFiles` in `vitest.config.ts`.
-import "dotenv/config";
+import { config } from "dotenv";
+
+config();
+config({ path: ".env.local" });

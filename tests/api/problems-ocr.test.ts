@@ -33,7 +33,7 @@ describe("POST /api/problems/ocr", () => {
       getQuota: mockGetQuota,
       bumpOcrQuota: mockBumpQuota,
       extractAndMatch: mockExtract,
-    });
+    } as Parameters<typeof _resetOcrRouteDeps>[0]);
   });
 
   it("rejects unauthenticated", async () => {
