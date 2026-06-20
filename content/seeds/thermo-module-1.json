@@ -1,0 +1,628 @@
+{
+  "glossary": [
+    {
+      "slug": "temperature",
+      "title": "Temperature",
+      "subtitle": "The intensity of thermal motion — the quantity that equalises when two bodies touch, and that decides which way heat flows.",
+      "definition": [
+        "Temperature is a measure of the average thermal energy per microscopic degree of freedom in a body — an intensity, not an amount. It is defined operationally by thermal equilibrium: temperature is the single quantity that two bodies come to share when placed in contact, and the existence of a consistent numerical temperature is guaranteed by the zeroth law of thermodynamics. Two systems are at the same temperature precisely when no net heat flows between them.",
+        "Crucially, temperature is distinct from heat. Heat is energy in transit, measured in joules; temperature is the intensity that sets the direction of that flow — always from higher temperature to lower. A spark may be far hotter than a bathtub yet carry far less thermal energy. Temperature tells you which way heat will move on contact; it says nothing on its own about how much.",
+        "Only the absolute (Kelvin) scale makes temperature a true ratio quantity, because its zero is the physical floor of thermal motion. Statistical mechanics later identifies the precise microscopic meaning of temperature through the relation 1/T = ∂S/∂U — the reciprocal of temperature is how a system's entropy responds to added energy."
+      ],
+      "history": "The concept matured only once instruments existed to make it quantitative: Galileo's thermoscope (1592), Fahrenheit's sealed mercury thermometer (1714), Celsius's centigrade scale (1742), and Kelvin's absolute scale (1848). The microscopic interpretation as mean molecular energy came with the kinetic theory of the nineteenth century.",
+      "category": "concept",
+      "relatedPhysicists": ["galileo-galilei", "lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "thermometer",
+      "title": "Thermometer",
+      "subtitle": "An instrument that gives temperature a number by letting a measurable physical property come to equilibrium with the thing measured.",
+      "definition": [
+        "A thermometer is any device that converts temperature into a readable quantity by exploiting a physical property that varies reproducibly with it — the volume of a liquid, the pressure of a gas, the resistance of a wire, or the radiation emitted by a hot surface. It works because of thermal equilibrium: the thermometer is a small body allowed to reach the same temperature as its subject, so its property reports the subject's temperature by proxy.",
+        "Galileo's thermoscope (c. 1592) was the first such instrument, but it had no fixed scale and responded to air pressure as well as heat. The quantitative thermometer arrived when Fahrenheit sealed mercury into a glass tube in 1714, removing the pressure dependence and anchoring the scale to reproducible fixed points. Modern thermometry spans mercury and alcohol thermometers, platinum-resistance and thermocouple sensors, and infrared pyrometers.",
+        "The two requirements of a good thermometer are a property that varies smoothly and monotonically with temperature, and fixed points that can be reproduced anywhere — historically the freezing and boiling of water, and now the triple point of water and other defined standards."
+      ],
+      "history": "From Galileo's open thermoscope to Fahrenheit's sealed mercury instrument (1714) and Celsius's calibrated scale (1742); the triple point of water defined the kelvin from 1954 until the 2019 SI redefinition in terms of the Boltzmann constant.",
+      "category": "instrument",
+      "relatedPhysicists": ["galileo-galilei", "daniel-fahrenheit", "anders-celsius"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" }
+      ]
+    },
+    {
+      "slug": "thermal-equilibrium",
+      "title": "Thermal equilibrium",
+      "subtitle": "The state two bodies reach when net heat flow between them has stopped and they share a single temperature.",
+      "definition": [
+        "Two bodies are in thermal equilibrium when, placed in thermal contact, no net heat flows between them — equivalently, when they share the same temperature. It is the defining relation behind temperature itself: temperature is the quantity that equalises at equilibrium. An isolated pair reaches a shared value equal to the heat-capacity-weighted mean of their starting temperatures, since the heat lost by one equals the heat gained by the other.",
+        "The approach to equilibrium is governed by Newton's law of cooling, an exponential relaxation T(t) = T_eq + (T₀ − T_eq) e^(−kt) in which the temperature gap shrinks by a fixed fraction in each time interval. The rate constant k depends on the thermal coupling between the bodies — fast through a metal bridge, slow across a vacuum gap.",
+        "Thermal equilibrium is the simplest case of thermodynamic equilibrium, in which all bulk flows (of heat, matter, and momentum) have ceased. It is the reference state from which the entire formalism of thermodynamics is built."
+      ],
+      "history": "Implicit in eighteenth-century calorimetry and made precise by the zeroth law in the twentieth century; the transitivity of equilibrium (A~B, B~C ⟹ A~C) is what licenses a thermometer to compare bodies that never touch.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" }
+      ]
+    },
+    {
+      "slug": "zeroth-law-of-thermodynamics",
+      "title": "Zeroth law of thermodynamics",
+      "subtitle": "If A is in thermal equilibrium with B, and B with C, then A is in equilibrium with C — the transitivity that makes temperature meaningful.",
+      "definition": [
+        "The zeroth law states that thermal equilibrium is transitive: if body A is in equilibrium with body B, and B with C, then A and C are in equilibrium with each other. Though it sounds trivially obvious, it is a genuine physical postulate, and without it the notion of temperature as a single consistent number would collapse.",
+        "Its practical content is the justification for thermometry. A thermometer (B) can be used to compare two bodies (A and C) that never touch: if B reads the same against each, then A and C are at the same temperature, guaranteed by transitivity. The law therefore underwrites the assignment of a unique numerical temperature to every body in equilibrium.",
+        "The peculiar name reflects history rather than logic. The first, second, and third laws had already been numbered and named when Ralph Fowler, in the 1930s, recognised that this more fundamental fact had been assumed all along. Numbering it 'zeroth' acknowledged its logical priority while preserving the established names of the others."
+      ],
+      "history": "Articulated and named by Ralph Fowler and Edward Guggenheim in the 1930s, formalising an assumption that had been taken for granted since the beginnings of thermometry.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" }
+      ]
+    },
+    {
+      "slug": "kelvin-scale",
+      "title": "Kelvin scale",
+      "subtitle": "The absolute temperature scale whose zero is the floor of thermal motion, making it the only scale on which temperature is a true ratio.",
+      "definition": [
+        "The Kelvin scale is the SI absolute temperature scale. It uses the same degree size as Celsius (T_K = T_C + 273.15) but places its zero at absolute zero, the point at which thermal motion is minimal. Because its zero is physical rather than conventional, the kelvin is a true ratio scale: 600 K really does correspond to twice the mean thermal energy per particle of 300 K, a statement meaningless on the Celsius or Fahrenheit scales.",
+        "Every fundamental equation of thermodynamics and statistical mechanics — the ideal gas law, the Boltzmann factor e^(−E/kT), the efficiency of a Carnot engine, the definition of entropy — is written in kelvin, because each depends on temperature measured from absolute zero rather than from an arbitrary reference.",
+        "Introduced by William Thomson (Lord Kelvin) in 1848 on thermodynamic grounds, the scale was for decades fixed by the triple point of water (exactly 273.16 K). Since the 2019 SI redefinition the kelvin is defined by fixing the Boltzmann constant, tying temperature directly to energy."
+      ],
+      "history": "Proposed by William Thomson in 1848 from the temperature-independence of Carnot efficiency; realised through the triple point of water until 2019, then redefined via the Boltzmann constant.",
+      "category": "concept",
+      "relatedPhysicists": ["lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-third-law" }
+      ]
+    },
+    {
+      "slug": "absolute-zero",
+      "title": "Absolute zero",
+      "subtitle": "The lowest possible temperature, 0 K (−273.15 °C), where thermal motion reaches the minimum permitted by quantum mechanics.",
+      "definition": [
+        "Absolute zero is the zero of the Kelvin scale, −273.15 °C, the temperature at which a system's thermal energy is as small as the laws of physics allow. It is not a state of literally no motion — quantum mechanics forbids that through zero-point energy — but the state of minimum possible energy, in which a system settles into its quantum ground state.",
+        "Absolute zero is unattainable. The third law of thermodynamics implies that reaching it would require infinitely many steps or infinite work, because the entropy change available to cool a system shrinks to zero as the temperature does. Laboratories have come extraordinarily close — to within billionths of a kelvin — using laser and evaporative cooling, but never to zero itself.",
+        "The concept gives the Kelvin scale its physical anchor and underlies the third law and phenomena such as Bose–Einstein condensation that emerge only in the deep cold. This entry is a stub; the approach to absolute zero and the third law are treated in depth later in the branch."
+      ],
+      "history": "Extrapolated from gas-law behaviour (Amontons, Charles, Gay-Lussac) and placed on firm footing by Kelvin's absolute scale in 1848; its unattainability was formalised by Nernst's heat theorem (the third law) in 1906.",
+      "category": "concept",
+      "relatedPhysicists": ["lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-approach-to-absolute-zero" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-third-law" }
+      ]
+    },
+    {
+      "slug": "heat",
+      "title": "Heat",
+      "subtitle": "Energy transferred between bodies because of a temperature difference — an amount, measured in joules, not a substance.",
+      "definition": [
+        "Heat is energy in transit, flowing spontaneously from a hotter body to a colder one purely because of their temperature difference. It is an amount of energy, measured in joules, and it is one of the two ways (the other being work) that a system's internal energy can change. Heat is not a property a body 'contains'; a body holds internal energy, and heat is the name for energy crossing a boundary by thermal means.",
+        "The modern understanding overturned the eighteenth-century caloric theory, which treated heat as a conserved fluid. Rumford's cannon-boring experiment and Joule's paddle-wheel measurements showed instead that heat is interconvertible with mechanical work at a fixed exchange rate — the mechanical equivalent of heat — establishing heat as a form of energy.",
+        "Heat must be distinguished sharply from temperature: temperature is an intensity that sets the direction of flow, while heat is the quantity that flows. Confusing the two is the most common error in the subject."
+      ],
+      "history": "Reconceived through the work of Rumford (1798), Davy (1799), and Joule (1843–45), which demolished the caloric theory and led to the first law of thermodynamics.",
+      "category": "concept",
+      "relatedPhysicists": ["james-prescott-joule", "count-rumford"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" },
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" }
+      ]
+    },
+    {
+      "slug": "caloric-theory",
+      "title": "Caloric theory",
+      "subtitle": "The discredited eighteenth-century idea that heat is a weightless, conserved fluid called caloric that flows from hot bodies to cold.",
+      "definition": [
+        "The caloric theory held that heat is a material substance — a weightless, invisible, indestructible fluid named caloric — that flows from hotter bodies into colder ones until balance is reached. It successfully explained thermal equilibrium, thermal expansion (caloric crowding pushes particles apart), and the warming of compressed gases, and it dominated the science of heat for most of the eighteenth century.",
+        "Its fatal commitment was conservation: caloric could move but could not be created or destroyed. Count Rumford's 1798 observation that boring cannon produced heat without limit, and Humphry Davy's melting of ice by friction in a cold vacuum, showed that mechanical work could generate heat inexhaustibly — impossible for a finite, conserved fluid. Joule's later measurement of the mechanical equivalent of heat sealed the case.",
+        "The theory is a textbook example of a productive idea that was eventually falsified: it organised real phenomena and made predictions, but a single class of experiments — friction without limit — revealed that heat is energy, not substance."
+      ],
+      "history": "Championed by Lavoisier (who listed caloric among the elements) and dominant through the eighteenth century; overturned by Rumford (1798), Davy (1799), and the energy physics of Joule, Mayer, and Helmholtz in the 1840s.",
+      "category": "concept",
+      "relatedPhysicists": ["count-rumford", "humphry-davy"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" }
+      ]
+    },
+    {
+      "slug": "mechanical-equivalent-of-heat",
+      "title": "Mechanical equivalent of heat",
+      "subtitle": "The fixed conversion factor between mechanical work and heat — 4.186 joules per calorie — that proved heat is a form of energy.",
+      "definition": [
+        "The mechanical equivalent of heat is the constant ratio between an amount of mechanical work and the heat it produces: 1 calorie = 4.186 joules. Its constancy — the same number however the energy is delivered, by friction, stirring, or electric current — is what establishes heat and work as two forms of a single conserved quantity, energy.",
+        "James Joule measured it most precisely with his paddle-wheel apparatus (1843–45), in which a falling weight of known mass and drop turned a paddle in insulated water; the work m g h reappeared exactly as a measured temperature rise. Earlier and contemporary estimates came from Rumford's cannon data and from Julius Robert von Mayer's reasoning about gases.",
+        "The mechanical equivalent is the quantitative seed of the first law of thermodynamics. Once heat and work share a common unit and a fixed exchange rate, energy can be tracked as a conserved currency across thermal and mechanical processes."
+      ],
+      "history": "Estimated by Mayer (1842) and measured precisely by Joule (1843–45); its universality underpinned the statements of the first law of thermodynamics by Helmholtz, Clausius, and Kelvin.",
+      "category": "concept",
+      "relatedPhysicists": ["james-prescott-joule"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" },
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" }
+      ]
+    },
+    {
+      "slug": "joule",
+      "title": "Joule",
+      "subtitle": "The SI unit of energy — one newton acting through one metre — named for James Prescott Joule.",
+      "definition": [
+        "The joule (symbol J) is the SI unit of energy, work, and heat, defined as the work done when a force of one newton acts through a distance of one metre: 1 J = 1 N·m = 1 kg·m²/s². Because heat is a form of energy, heat too is measured in joules, a unification made possible by Joule's own demonstration of the mechanical equivalent of heat.",
+        "One joule is a modest amount on the human scale — roughly the energy to lift a small apple one metre. Related quantities include the watt (one joule per second of power), the calorie (4.186 J), and the kilowatt-hour (3.6 million J). The thermochemical calorie used in nutrition is actually a kilocalorie, 4186 J.",
+        "The unit's adoption as the universal measure of energy reflects the nineteenth-century insight that mechanical, thermal, electrical, and chemical energy are interconvertible and should share a single unit."
+      ],
+      "history": "Named in honour of James Prescott Joule and adopted by the international scientific community; it became the SI unit of energy in the twentieth century.",
+      "category": "unit",
+      "relatedPhysicists": ["james-prescott-joule"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" }
+      ]
+    },
+    {
+      "slug": "calorie",
+      "title": "Calorie",
+      "subtitle": "A thermal unit of energy — the heat needed to raise one gram of water by one degree Celsius — equal to 4.186 joules.",
+      "definition": [
+        "The calorie is a unit of energy defined thermally: the small (gram) calorie is the heat required to raise one gram of water by one degree Celsius, approximately 4.186 joules. It predates the recognition that heat is energy, which is why it was originally defined through water rather than through mechanics.",
+        "Because water's specific heat varies slightly with temperature, the calorie has several precise definitions (the 15 °C calorie, the thermochemical calorie of exactly 4.184 J, and others); for most purposes 1 cal ≈ 4.186 J. The 'Calorie' on food labels, written with a capital C, is in fact a kilocalorie — 1000 small calories, about 4186 J.",
+        "Since the calorie and the joule both measure the same quantity, the calorie is now a non-SI unit retained mainly in nutrition and some chemistry; the joule is preferred in physics. The bridge between them is Joule's mechanical equivalent of heat."
+      ],
+      "history": "Introduced in early-nineteenth-century calorimetry (the term is attributed to Nicolas Clément, c. 1819–24); superseded in physics by the joule once the mechanical equivalent of heat was established.",
+      "category": "unit",
+      "relatedPhysicists": ["james-prescott-joule"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" }
+      ]
+    },
+    {
+      "slug": "specific-heat-capacity",
+      "title": "Specific heat capacity",
+      "subtitle": "The heat required to raise one unit mass of a substance by one degree — large for water, small for metals.",
+      "definition": [
+        "The specific heat capacity c of a substance is the heat needed to raise one unit of its mass by one degree of temperature, so that Q = m c ΔT. It quantifies how much a material resists changing temperature when heat is added: a large c means a large heat input produces only a small temperature rise.",
+        "Values vary enormously. Liquid water's specific heat, about 4.186 J/(g·K), is anomalously high — a consequence of its hydrogen-bond network, which stores energy in flexing and breaking bonds as well as in molecular motion. Metals are far lower: copper about 0.385, lead about 0.13 J/(g·K). This is why oceans moderate climate, why a cast-iron skillet heats quickly, and why a pound of water and a pound of mercury given equal heat reach very different temperatures.",
+        "Specific heat is measured by calorimetry — typically the method of mixtures — and it splits into constant-volume and constant-pressure versions for gases. The per-mole counterpart, the molar heat capacity, exposes the deeper regularity captured by the Dulong–Petit law and equipartition."
+      ],
+      "history": "Discovered and named by Joseph Black in the 1760s, who recognised that substances differ in their 'capacity' for heat; refined throughout the nineteenth century and explained microscopically by kinetic theory and quantum statistics.",
+      "category": "concept",
+      "relatedPhysicists": ["joseph-black"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" }
+      ]
+    },
+    {
+      "slug": "molar-heat-capacity",
+      "title": "Molar heat capacity",
+      "subtitle": "The heat to raise one mole of a substance by one degree — the per-atom measure that reveals the Dulong–Petit regularity.",
+      "definition": [
+        "The molar heat capacity is the heat required to raise one mole of a substance — a fixed number of particles — by one degree of temperature, in J/(mol·K). Measuring per mole rather than per gram exposes regularities hidden by mass-based specific heat, because it counts atoms directly rather than weighing them.",
+        "For simple solids the molar heat capacity clusters near 3R ≈ 24.9 J/(mol·K) at ordinary temperatures, the Dulong–Petit law, reflecting that each atom holds energy in three vibrational degrees of freedom (kinetic and potential), as predicted by equipartition. For ideal gases the molar capacity comes in two forms, C_v and C_p, differing by R; their ratio γ governs adiabatic processes and the speed of sound.",
+        "At low temperatures the classical values fail and heat capacities fall toward zero, a quantum effect (the Einstein and Debye theories of solids) and one of the early clues that classical physics was incomplete."
+      ],
+      "history": "Grew from Dulong and Petit's 1819 measurements; reconciled with experiment at low temperature only by Einstein (1907) and Debye (1912) using quantum theory.",
+      "category": "concept",
+      "relatedPhysicists": ["pierre-louis-dulong", "alexis-petit"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" },
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "calorimetry",
+      "title": "Calorimetry",
+      "subtitle": "The measurement of heat — classically by dropping a hot body into insulated water and reading the final temperature.",
+      "definition": [
+        "Calorimetry is the experimental measurement of heat exchanged in physical and chemical processes. Its classic technique, the method of mixtures, drops a hot object of known mass into a measured quantity of cool water inside an insulated vessel (a calorimeter) and reads the equilibrium temperature. Conservation of energy — heat lost by the hot body equals heat gained by the water — then yields the unknown, usually the specific heat of the object.",
+        "Because an ideal calorimeter exchanges no heat with its surroundings, the balance m_s c_s (T_s − T_eq) = m_w c_w (T_eq − T_w) holds, with every quantity measurable except the one being sought. Real calorimeters correct for the small heat capacity of the vessel itself and for residual losses.",
+        "Calorimetry was the workhorse that turned heat from a quality into a quantity, producing the first tables of specific and latent heats. Modern variants — bomb calorimeters, differential scanning calorimetry — measure combustion energies, reaction enthalpies, and the heat signatures of phase transitions."
+      ],
+      "history": "Developed by Joseph Black and Antoine Lavoisier in the eighteenth century (Lavoisier and Laplace built an ice calorimeter c. 1782) and refined into a precision technique through the nineteenth and twentieth centuries.",
+      "category": "concept",
+      "relatedPhysicists": ["joseph-black"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" }
+      ]
+    },
+    {
+      "slug": "dulong-petit-law",
+      "title": "Dulong–Petit law",
+      "subtitle": "Most simple solids have a molar heat capacity near 3R — an early hint of energy equipartition among atomic vibrations.",
+      "definition": [
+        "The Dulong–Petit law states that the molar heat capacity of most simple crystalline solids is approximately 3R ≈ 24.9 J/(mol·K), nearly independent of which element it is. Lead, copper, iron, and silver all cluster near this value at room temperature, so that elements with heavy atoms have small specific heats per gram and light-atom elements have large ones, but all have nearly the same heat capacity per atom.",
+        "The classical explanation is equipartition: each atom in a solid lattice vibrates in three dimensions, contributing both kinetic and potential energy, for a total of six half-units of (1/2)R each — hence 3R per mole. The law was historically used to estimate atomic weights of newly isolated elements by measuring their specific heats.",
+        "Its breakdown at low temperatures — where measured heat capacities fall well below 3R toward zero — was a genuine anomaly for classical physics, resolved only by the quantum theories of Einstein (1907) and Debye (1912), which freeze out vibrational modes as temperature drops."
+      ],
+      "history": "Announced by Pierre Louis Dulong and Alexis Petit in 1819; its low-temperature failure became one of the motivating puzzles of early quantum theory.",
+      "category": "concept",
+      "relatedPhysicists": ["pierre-louis-dulong", "alexis-petit"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" },
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "cv-cp",
+      "title": "Heat capacity at constant volume and pressure (C_v, C_p)",
+      "subtitle": "A gas has two heat capacities: one at fixed volume and one at fixed pressure, differing by R because expansion does work.",
+      "definition": [
+        "For a gas, the heat capacity depends on the conditions under which heat is added. At constant volume (C_v) all the heat raises the internal energy, hence the temperature. At constant pressure (C_p) the gas also expands and does work on its surroundings, so more heat is needed for the same temperature rise. Consequently C_p is always greater than C_v.",
+        "For an ideal gas the difference is exactly the gas constant, Mayer's relation C_p − C_v = R, because the expansion work per mole per kelvin at constant pressure is precisely R. The ratio γ = C_p / C_v (the adiabatic index, 5/3 for a monatomic gas and 7/5 for a diatomic gas at room temperature) governs adiabatic compression and the speed of sound.",
+        "The two capacities are a clean demonstration that heat can leave a system as work rather than temperature, a distinction central to the first law and to the analysis of engines and adiabatic processes."
+      ],
+      "history": "The constant-pressure/constant-volume distinction and the relation C_p − C_v = R were established by Julius Robert von Mayer (1842) and developed in the kinetic theory of gases.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" },
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" }
+      ]
+    },
+    {
+      "slug": "phase",
+      "title": "Phase",
+      "subtitle": "A physically distinct, uniform state of matter — solid, liquid, or gas — set by the arrangement of its molecular bonds.",
+      "definition": [
+        "A phase is a region of matter that is uniform in its physical properties and chemical composition — most familiarly the solid, liquid, and gaseous states (plasma being a fourth, treated elsewhere). The phases differ in how their molecules are arranged and bound: rigidly ordered in a solid, mobile but touching in a liquid, and far apart and nearly independent in a gas.",
+        "Which phase a substance adopts depends on both temperature and pressure, mapped by its phase diagram. A given chemical substance can also have several solid phases (for example the many crystalline forms of ice), each a distinct phase with its own structure.",
+        "The boundaries between phases are coexistence curves along which two phases are in equilibrium; crossing one is a phase transition, accompanied by latent heat. The phase concept organises everything from melting and boiling to the exotic states near the critical and triple points."
+      ],
+      "history": "The systematic treatment of phases and their equilibria was founded by Josiah Willard Gibbs in the 1870s, whose phase rule relates the number of coexisting phases to the system's degrees of freedom.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" }
+      ]
+    },
+    {
+      "slug": "phase-transition",
+      "title": "Phase transition",
+      "subtitle": "A change from one phase to another — melting, boiling, sublimation — that occurs at a definite temperature and pressure and absorbs or releases latent heat.",
+      "definition": [
+        "A phase transition is the transformation of a substance from one phase to another: melting (solid to liquid), freezing, vaporisation (liquid to gas), condensation, sublimation (solid to gas), and deposition. It occurs along a coexistence curve in the pressure–temperature plane, at a sharply defined temperature for a given pressure.",
+        "First-order transitions, such as ordinary melting and boiling, absorb or release latent heat at constant temperature and involve a discontinuous change in density and other properties. Continuous (second-order) transitions, such as the loss of ferromagnetism at the Curie point, have no latent heat but show diverging response functions — the subject of critical phenomena.",
+        "Transitions generally require nucleation: melting and freezing begin at sites such as impurities or surfaces. In their absence a substance can be driven past the transition into a metastable state — supercooled liquid or superheated liquid — until a disturbance triggers the change."
+      ],
+      "history": "Latent heat at transitions was discovered by Joseph Black (1760s); the modern theory of continuous transitions and universality developed through the twentieth century, culminating in the renormalization group.",
+      "category": "phenomenon",
+      "relatedPhysicists": ["joseph-black"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-clausius-clapeyron-relation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "critical-phenomena-and-universality" }
+      ]
+    },
+    {
+      "slug": "latent-heat",
+      "title": "Latent heat",
+      "subtitle": "The heat absorbed or released during a phase change at constant temperature — energy spent on bonds, not on warming.",
+      "definition": [
+        "Latent heat is the energy a substance absorbs or releases as it changes phase, with no accompanying change in temperature. The word means 'hidden': the heat does not raise the thermometer because it goes into rearranging or breaking molecular bonds rather than into molecular motion. It breaks the simple Q = mcΔT picture, since here ΔT = 0 while Q is large.",
+        "Each transition has its own latent heat per unit mass — the latent heat of fusion for melting, of vaporisation for boiling, of sublimation for solid-to-gas — so that Q = mL. The energy is released again on the reverse transition: freezing gives back the heat of fusion, condensation the heat of vaporisation.",
+        "Latent heat explains why ice is an effective coolant, why sweat and evaporation cool, why steam burns are severe, and why melting and boiling appear as flat plateaus on a heating curve. It also enters the Clausius–Clapeyron relation, which links the latent heat to the slope of the coexistence curve."
+      ],
+      "history": "Discovered by Joseph Black in the 1760s, who observed that ice absorbs heat while melting without changing temperature, and who used the idea to advise James Watt on the steam engine.",
+      "category": "concept",
+      "relatedPhysicists": ["joseph-black"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" }
+      ]
+    },
+    {
+      "slug": "latent-heat-of-fusion",
+      "title": "Latent heat of fusion",
+      "subtitle": "The heat needed to melt a unit mass of a solid at its melting point — 334 kJ/kg for water — released again on freezing.",
+      "definition": [
+        "The latent heat of fusion is the energy required to melt one unit mass of a solid at its melting point without raising its temperature, Q = m L_f. For water it is 334 kJ/kg — comparable to the energy needed to heat the same mass of liquid water from 0 °C to about 80 °C, which is why ice is such an effective thermal buffer.",
+        "The energy goes into loosening the rigid bonds of the crystal lattice so the molecules can flow as a liquid. The identical quantity is released when the liquid refreezes, which is why spraying crops with water can protect them from frost: the freezing water holds the buds at 0 °C as it gives up its heat of fusion.",
+        "On a heating curve the heat of fusion appears as the first flat plateau, where temperature holds at the melting point until the last of the solid has melted."
+      ],
+      "history": "Quantified through the calorimetry founded by Joseph Black, whose study of melting ice introduced the concept of latent heat.",
+      "category": "concept",
+      "relatedPhysicists": ["joseph-black"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" }
+      ]
+    },
+    {
+      "slug": "latent-heat-of-vaporisation",
+      "title": "Latent heat of vaporisation",
+      "subtitle": "The heat needed to boil a unit mass of a liquid at its boiling point — 2260 kJ/kg for water — far larger than the heat of fusion.",
+      "definition": [
+        "The latent heat of vaporisation is the energy required to turn one unit mass of a liquid into gas at its boiling point, Q = m L_v. For water it is 2260 kJ/kg, nearly seven times its heat of fusion, because vaporisation pulls the molecules entirely apart rather than merely loosening them.",
+        "This large value explains everyday extremes. Evaporation cools efficiently — each gram of sweat leaving the skin carries off about 2.4 kJ — which is the basis of perspiration, evaporative coolers, and a panting dog. Conversely, condensing steam dumps the full heat back, making a 100 °C steam burn far more damaging than 100 °C water.",
+        "On a heating curve the heat of vaporisation is the tall second plateau, dwarfing the melting plateau; it is released in full when the vapour condenses."
+      ],
+      "history": "Measured through nineteenth-century calorimetry following Black's discovery of latent heat; central to the steam-engine era and to the Clausius–Clapeyron analysis of boiling.",
+      "category": "concept",
+      "relatedPhysicists": ["joseph-black"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" }
+      ]
+    },
+    {
+      "slug": "triple-point",
+      "title": "Triple point",
+      "subtitle": "The single pressure and temperature at which solid, liquid, and gas of a substance coexist in equilibrium.",
+      "definition": [
+        "The triple point is the unique combination of temperature and pressure at which all three phases of a substance — solid, liquid, and vapour — coexist in stable equilibrium. On a phase diagram it is the single point where the sublimation, vaporisation, and melting curves meet. For water it lies at 0.01 °C and 611.657 Pa.",
+        "Because it is a single, sharply defined, reproducible state of a pure substance, the triple point of water served to define the kelvin from 1954 until 2019: the kelvin was exactly 1/273.16 of the thermodynamic temperature of the triple point of water. The 2019 SI redefinition shifted the definition to a fixed Boltzmann constant, but the triple point remains a key practical fixed point in thermometry.",
+        "This entry is a stub; the triple point is treated in more depth alongside the critical point and the Clausius–Clapeyron relation later in the branch."
+      ],
+      "history": "Implicit in Gibbs's phase rule (1870s); adopted as the defining fixed point of the kelvin in 1954 and used until the 2019 SI redefinition.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-clausius-clapeyron-relation" }
+      ]
+    },
+    {
+      "slug": "critical-point",
+      "title": "Critical point",
+      "subtitle": "The end of the liquid–vapour boundary, above which liquid and gas become a single indistinguishable supercritical fluid.",
+      "definition": [
+        "The critical point is the temperature and pressure at which the liquid–vapour coexistence curve terminates. Beyond it — above both the critical temperature and critical pressure — there is no distinction between liquid and gas: the substance becomes a single supercritical fluid that can be compressed continuously from gas-like to liquid-like densities without ever crossing a phase boundary. For water the critical point is 374 °C and 22.06 MPa.",
+        "Approaching the critical point, the difference in density between liquid and vapour shrinks to zero and fluctuations grow without bound, producing striking effects such as critical opalescence, where the fluid turns milky as density fluctuations scatter light. These divergences are the domain of critical phenomena and universality.",
+        "Supercritical fluids have practical uses — supercritical CO₂ is a tunable, residue-free solvent for decaffeinating coffee and extracting essences. This entry is a stub; the critical point and critical phenomena are explored in depth later in the branch."
+      ],
+      "history": "Discovered by Charles Cagniard de la Tour (1822) and named and characterised by Thomas Andrews (1869) in his studies of carbon dioxide; later central to the theory of critical phenomena.",
+      "category": "concept",
+      "relatedPhysicists": ["benoit-clapeyron"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-clausius-clapeyron-relation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "critical-phenomena-and-universality" }
+      ]
+    }
+  ],
+  "physicists": [
+    {
+      "slug": "daniel-fahrenheit",
+      "name": "Daniel Gabriel Fahrenheit",
+      "subtitle": "Dutch-German instrument maker who built the first precision mercury thermometer and the scale that bears his name.",
+      "born": "1686",
+      "died": "1736",
+      "nationality": "Dutch-German",
+      "bio": [
+        "Daniel Gabriel Fahrenheit was born in 1686 in Danzig (now Gdańsk), then part of the Polish–Lithuanian Commonwealth, into a merchant family of German descent. Orphaned at fifteen when both parents died from eating poisonous mushrooms, he was apprenticed to a merchant in Amsterdam, but his fascination with scientific instruments drew him away from commerce and into the trade of glassblowing and instrument making, in which he became the finest practitioner of his age.",
+        "Fahrenheit's central achievement, around 1714, was the first reliable mercury-in-glass thermometer. Mercury expands more uniformly than the alcohol used by earlier makers and remains liquid over a wide range, and Fahrenheit's skill in producing fine, even bores made his instruments reproducible — two of his thermometers would agree, something no earlier maker could guarantee. This reproducibility, more than any single invention, made quantitative thermometry possible.",
+        "He fixed his scale to reproducible points: zero at the temperature of a freezing brine of ice, water, and ammonium chloride, and a higher mark near human body temperature. On the resulting scale water freezes at 32° and boils at 212°, a span of 180 degrees. The fine resolution of the Fahrenheit scale made it popular for meteorology and it remains in everyday use in the United States.",
+        "Fahrenheit also studied the supercooling of water, the dependence of boiling point on pressure, and the densities of liquids with a hydrometer of his own design. Elected to the Royal Society in 1724, he spent most of his career in the Dutch Republic and died in The Hague in 1736."
+      ],
+      "contributions": [
+        "First precise, reproducible mercury-in-glass thermometer (c. 1714)",
+        "The Fahrenheit temperature scale, with reproducible fixed points",
+        "Early observation of the supercooling of water",
+        "Discovered that boiling point depends on atmospheric pressure"
+      ],
+      "majorWorks": [
+        "Papers communicated to the Royal Society (Philosophical Transactions, 1724)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" }
+      ]
+    },
+    {
+      "slug": "anders-celsius",
+      "name": "Anders Celsius",
+      "subtitle": "Swedish astronomer who devised the centigrade temperature scale — originally inverted — that became the Celsius scale.",
+      "born": "1701",
+      "died": "1744",
+      "nationality": "Swedish",
+      "bio": [
+        "Anders Celsius was born in Uppsala, Sweden, in 1701, into a family of scientists — both his grandfathers were professors, and his father taught astronomy. He became professor of astronomy at Uppsala University in 1730 and founded the Uppsala Astronomical Observatory in 1741, the oldest in Sweden.",
+        "Celsius was an accomplished observational astronomer. He travelled across Europe visiting major observatories, and in 1736 took part in the French Academy's expedition to Lapland led by Maupertuis to measure the length of a degree of meridian near the pole. The expedition's results confirmed Newton's prediction that the Earth is flattened at the poles, a major vindication of Newtonian physics, and made Celsius well known in European science.",
+        "In 1742 Celsius proposed a temperature scale with exactly 100 degrees between the freezing and boiling points of water — but in the reverse of the modern convention, setting 0 for the boiling point and 100 for the freezing point. The scale was inverted to its present form within a few years of his death; the botanist Carl Linnaeus is among those credited with the reversal. Celsius valued the scale for its decimal simplicity and its reliance on two universally reproducible fixed points.",
+        "Celsius also made early studies of the aurora borealis and was among the first to connect it with the Earth's magnetic field. He died of tuberculosis in 1744, at just 42; the centigrade scale was officially renamed in his honour in 1948."
+      ],
+      "contributions": [
+        "The centigrade (later Celsius) temperature scale, 1742",
+        "Confirmed the flattening of the Earth via the Lapland meridian expedition",
+        "Founded the Uppsala Astronomical Observatory (1741)",
+        "Early systematic observations of the aurora borealis"
+      ],
+      "majorWorks": [
+        "Observations of two persistent degrees on a thermometer (1742)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" }
+      ]
+    },
+    {
+      "slug": "lord-kelvin",
+      "name": "William Thomson, Lord Kelvin",
+      "subtitle": "British physicist who introduced the absolute temperature scale and helped found thermodynamics.",
+      "born": "1824",
+      "died": "1907",
+      "nationality": "British",
+      "bio": [
+        "William Thomson was born in Belfast in 1824 and raised in Glasgow, where his father was a mathematics professor. A prodigy, he entered Glasgow University at ten and went on to Cambridge, becoming professor of natural philosophy at Glasgow in 1846 at the age of twenty-two — a post he held for fifty-three years. He was raised to the peerage as Baron Kelvin in 1892, taking his title from the River Kelvin that runs past the university.",
+        "In 1848 Thomson proposed an absolute thermodynamic temperature scale whose zero lies at the point where no more heat can be extracted from a body, independent of any particular substance. The scale followed from Carnot's analysis of heat engines, whose efficiency depends only on temperature; the unit of absolute temperature, the kelvin, is named for him. He worked closely with James Joule, and the Joule–Thomson effect — the cooling of a gas on expansion — emerged from their collaboration.",
+        "Thomson was a principal architect of the first and second laws of thermodynamics, giving an early statement of the second law and the principle of energy dissipation. His range was vast, spanning electromagnetism, elasticity, hydrodynamics, and geophysics, where his estimate of the age of the Earth (too low, because he did not know of radioactive heating) famously clashed with geologists and biologists.",
+        "He was also a consummate engineer and entrepreneur. His theory of signal transmission and his sensitive galvanometers made the first successful transatlantic telegraph cable possible in 1866, for which he was knighted, and he patented dozens of instruments. He died in 1907 and is buried in Westminster Abbey, next to Newton."
+      ],
+      "contributions": [
+        "The absolute (Kelvin) thermodynamic temperature scale (1848)",
+        "Co-formulation of the first and second laws of thermodynamics",
+        "The Joule–Thomson effect, with James Joule",
+        "Theory and instruments enabling the transatlantic telegraph cable"
+      ],
+      "majorWorks": [
+        "On an Absolute Thermometric Scale (1848)",
+        "On the Dynamical Theory of Heat (1851)",
+        "Treatise on Natural Philosophy, with P. G. Tait (1867)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "what-is-temperature" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-third-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-approach-to-absolute-zero" }
+      ]
+    },
+    {
+      "slug": "count-rumford",
+      "name": "Benjamin Thompson, Count Rumford",
+      "subtitle": "American-born adventurer whose cannon-boring experiment dealt the caloric theory its fatal blow.",
+      "born": "1753",
+      "died": "1814",
+      "nationality": "American-British",
+      "bio": [
+        "Benjamin Thompson was born in 1753 in Woburn, Massachusetts. A Loyalist during the American Revolution, he spied for the British and fled to England when the war turned, abandoning his wife and child. There he rose rapidly, and later entered the service of the Elector of Bavaria, reforming the army, founding workhouses for the poor, and laying out Munich's English Garden. For these services he was made a Count of the Holy Roman Empire in 1791, taking the name Rumford after the New Hampshire town (now Concord) where he had married.",
+        "Rumford's most consequential scientific work came from supervising the boring of brass cannon in Munich around 1798. He was struck that the barrels grew hotter the longer the boring continued, apparently without limit. Using a deliberately blunt tool that rubbed rather than cut, and immersing the work in water, he showed that the friction could bring the water to a boil with no fire — and that the heat produced was, as far as he could tell, inexhaustible.",
+        "He argued that anything an isolated body can supply without limit cannot be a material substance, directly contradicting the caloric theory's assumption that heat is a conserved fluid. Though the old guard resisted, his experiment, together with Davy's, set the stage for the recognition that heat is a form of motion or energy, confirmed quantitatively by Joule a generation later.",
+        "Rumford was also a gifted practical inventor, devising improved fireplaces and chimneys, the double boiler, a drip coffee percolator, and thermal underwear, and he studied the insulating properties of clothing and the convection of heat in fluids. He helped found the Royal Institution in London, settled in France, and married Lavoisier's widow before they separated; he died near Paris in 1814."
+      ],
+      "contributions": [
+        "Cannon-boring experiment (1798) refuting the caloric theory of heat",
+        "Demonstrated that friction can generate heat without limit",
+        "Pioneering studies of heat convection and the insulating value of clothing",
+        "Co-founder of the Royal Institution of Great Britain"
+      ],
+      "majorWorks": [
+        "An Inquiry Concerning the Source of the Heat which is Excited by Friction (1798)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" }
+      ]
+    },
+    {
+      "slug": "humphry-davy",
+      "name": "Sir Humphry Davy",
+      "subtitle": "British chemist who melted ice by friction to attack the caloric theory and discovered a host of chemical elements.",
+      "born": "1778",
+      "died": "1829",
+      "nationality": "British",
+      "bio": [
+        "Humphry Davy was born in Penzance, Cornwall, in 1778. Largely self-taught in chemistry, he made his early name at the Pneumatic Institution in Bristol investigating the physiological effects of gases, including nitrous oxide (laughing gas), whose anaesthetic potential he noted. His brilliance as a lecturer and experimenter brought him to the Royal Institution in London, where his public lectures became fashionable events.",
+        "Around 1799, while still young, Davy reportedly rubbed two pieces of ice together by clockwork in a vacuum, in surroundings kept below freezing, and observed them melt. Since no caloric fluid could have entered from the colder surroundings, he argued that the heat must have been generated by the motion itself — an early experimental blow against the caloric theory, complementing Rumford's cannon work.",
+        "Davy's greatest chemical achievements came through electrolysis. Using the powerful voltaic batteries of the Royal Institution, he isolated potassium and sodium in 1807 and calcium, strontium, barium, magnesium, and boron soon after — more elements than any other person before or since. He also showed that chlorine is an element and invented the miners' safety lamp (the Davy lamp), which saved countless lives.",
+        "He was knighted, made a baronet, and served as president of the Royal Society. Perhaps his most important act for science was hiring a young bookbinder named Michael Faraday as his assistant. Davy's health declined and he died in Geneva in 1829."
+      ],
+      "contributions": [
+        "Friction experiment melting ice, undermining the caloric theory (c. 1799)",
+        "Isolated potassium, sodium, calcium, strontium, barium, magnesium, and boron",
+        "Invented the Davy miners' safety lamp",
+        "Mentored Michael Faraday"
+      ],
+      "majorWorks": [
+        "Researches, Chemical and Philosophical (1800)",
+        "Elements of Chemical Philosophy (1812)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" }
+      ]
+    },
+    {
+      "slug": "joseph-black",
+      "name": "Joseph Black",
+      "subtitle": "Scottish chemist who discovered latent heat and specific heat capacity and founded quantitative calorimetry.",
+      "born": "1728",
+      "died": "1799",
+      "nationality": "Scottish",
+      "bio": [
+        "Joseph Black was born in Bordeaux in 1728 to a Scottish-Irish wine merchant and educated in Belfast, Glasgow, and Edinburgh. He became professor of medicine and chemistry at Glasgow and later at Edinburgh, where he was a central figure of the Scottish Enlightenment and a renowned, meticulous lecturer.",
+        "Black's earliest fame came from his chemical work on 'fixed air' (carbon dioxide), which he showed was produced by combustion, respiration, and the action of acids on carbonates, and which behaved as a distinct gas — among the first demonstrations that air is not a single substance. This work helped open the path to modern pneumatic chemistry.",
+        "His enduring contribution to thermodynamics was the discovery, in the 1760s, of two distinct quantities. He recognised that different substances have different capacities for heat — what we now call specific heat capacity — by observing that equal masses given equal heat reach different temperatures. And he discovered latent heat: ice absorbs heat while melting without any rise in temperature, and water absorbs still more on boiling. He founded the method of mixtures, the calorimetric technique that turned heat into a measurable quantity.",
+        "Black's ideas had immediate practical consequence. He was a friend and mentor to James Watt, and his understanding of latent heat informed Watt's analysis of the steam engine's efficiency. Black died in Edinburgh in 1799, his careful experimental style having shaped a generation of chemists."
+      ],
+      "contributions": [
+        "Discovery of latent heat (heat absorbed during phase change at constant temperature)",
+        "Concept of specific heat capacity",
+        "Founded quantitative calorimetry (the method of mixtures)",
+        "Isolated and characterised carbon dioxide ('fixed air')"
+      ],
+      "majorWorks": [
+        "Experiments upon Magnesia Alba, Quicklime, and other Alcaline Substances (1756)",
+        "Lectures on the Elements of Chemistry (published posthumously, 1803)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" },
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" }
+      ]
+    },
+    {
+      "slug": "pierre-louis-dulong",
+      "name": "Pierre Louis Dulong",
+      "subtitle": "French chemist and physicist, co-discoverer of the Dulong–Petit law of molar heat capacities.",
+      "born": "1785",
+      "died": "1838",
+      "nationality": "French",
+      "bio": [
+        "Pierre Louis Dulong was born in Rouen in 1785 and orphaned young. He trained at the École Polytechnique in Paris and worked initially in medicine before turning to chemistry and physics, becoming an assistant to the great chemist Claude Louis Berthollet.",
+        "Dulong's research was marked by both brilliance and danger. In 1812 he discovered nitrogen trichloride, a violently explosive compound, and the investigation cost him an eye and several fingers — a price he reportedly concealed at first so that others would be warned only after he had finished the work. He went on to study the thermal expansion of gases, the measurement of high temperatures, and the specific heats of substances.",
+        "With Alexis Petit he established, in 1819, the law that bears their names: the molar heat capacities of simple solid elements are nearly constant, close to what we now write as 3R. The regularity, soon used to estimate atomic weights, hinted at the equal sharing of energy among atomic vibrations that equipartition would later explain, and its low-temperature failure would help motivate quantum theory.",
+        "Dulong rose to lead the École Polytechnique and was elected to the Académie des sciences. He continued precise thermal and optical measurements until his death in Paris in 1838."
+      ],
+      "contributions": [
+        "Co-discovery of the Dulong–Petit law of molar heat capacities (1819)",
+        "Discovery of nitrogen trichloride (1812)",
+        "Precise measurements of thermal expansion and high-temperature thermometry"
+      ],
+      "majorWorks": [
+        "Recherches sur quelques points importants de la théorie de la chaleur, with A. T. Petit (1819)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" },
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "alexis-petit",
+      "name": "Alexis Thérèse Petit",
+      "subtitle": "French physicist who, with Dulong, found the law of molar heat capacities — and died at twenty-nine.",
+      "born": "1791",
+      "died": "1820",
+      "nationality": "French",
+      "bio": [
+        "Alexis Thérèse Petit was born in Vesoul, France, in 1791. A precocious student, he is said to have qualified for entry to the École Polytechnique at an exceptionally young age, and he graduated at the top of his class. By his mid-twenties he held the chair of physics at the École Polytechnique, a remarkable ascent.",
+        "Petit's early work, some of it with the young Dominique François Jean Arago, examined the refractive indices of gases and questions in optics and the theory of heat. He was an advocate of the wave theory of light at a time when the corpuscular theory still held sway in France.",
+        "His lasting fame rests on the 1819 collaboration with Pierre Louis Dulong on the specific heats of solids, which produced the Dulong–Petit law: the molar heat capacity of simple solids is nearly constant. The result became a tool for determining atomic weights and, much later, a benchmark that classical and then quantum theories of solids had to explain.",
+        "Petit's career was cut tragically short. He contracted tuberculosis and died in Paris in 1820 at the age of twenty-nine, only months after the publication of the work that secured his name in the history of physics."
+      ],
+      "contributions": [
+        "Co-discovery of the Dulong–Petit law of molar heat capacities (1819)",
+        "Early measurements of the refractive indices of gases",
+        "Advocacy of the wave theory of light in France"
+      ],
+      "majorWorks": [
+        "Recherches sur quelques points importants de la théorie de la chaleur, with P. L. Dulong (1819)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" },
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "benoit-clapeyron",
+      "name": "Benoît Paul Émile Clapeyron",
+      "subtitle": "French engineer who gave Carnot's heat-engine theory its graphical form and whose name lives on in the Clausius–Clapeyron relation.",
+      "born": "1799",
+      "died": "1864",
+      "nationality": "French",
+      "bio": [
+        "Benoît Paul Émile Clapeyron was born in Paris in 1799 and trained as an engineer at the École Polytechnique and the École des Mines. He spent the 1820s in Russia teaching and building infrastructure, then returned to France, where he became a leading railway engineer, designing locomotives and bridges and helping build some of the country's first rail lines.",
+        "In 1834 Clapeyron rescued the work of Sadi Carnot from obscurity. Carnot's 1824 treatise on the motive power of heat had been almost entirely ignored; Clapeyron restated its reasoning analytically and, crucially, in graphical form, introducing the pressure–volume diagram to represent the Carnot cycle. This gave thermodynamics its first piece of enduring graphic notation and made Carnot's ideas accessible to Clausius and Kelvin, who built the second law upon them.",
+        "From the analysis of phase equilibria came the relation now called the Clausius–Clapeyron equation, which links the slope of a coexistence curve to the latent heat of the transition and the volume change across it. Clapeyron derived an early form; Clausius later put it on a firm thermodynamic footing.",
+        "Clapeyron was elected to the Académie des sciences in 1858 and remained active in engineering and the theory of elastic structures until his death in Paris in 1864."
+      ],
+      "contributions": [
+        "Introduced the pressure–volume diagram for the Carnot cycle (1834)",
+        "Revived and formalised Carnot's theory of heat engines",
+        "Early form of the Clausius–Clapeyron relation for phase boundaries",
+        "Theorem of three moments in structural engineering"
+      ],
+      "majorWorks": [
+        "Mémoire sur la puissance motrice de la chaleur (1834)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "phase-changes-and-latent-heat" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-clausius-clapeyron-relation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    }
+  ]
+}
