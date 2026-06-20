@@ -1573,6 +1573,45 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
     ],
   },
+
+  // ─── Module 3 second-law (thermo sprint 2026-06-20) ───
+  {
+    slug: "lazare-carnot",
+    born: "1753",
+    died: "1823",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "rudolf-clausius",
+    born: "1822",
+    died: "1888",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+    ],
+  },
+  {
+    slug: "max-planck",
+    born: "1858",
+    died: "1947",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+    ],
+  },
+  {
+    slug: "ludwig-boltzmann",
+    born: "1844",
+    died: "1906",
+    nationality: "Austrian",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

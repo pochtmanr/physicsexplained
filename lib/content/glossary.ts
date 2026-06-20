@@ -3888,6 +3888,121 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
     ],
   },
+
+  // ─── Module 3 second-law (thermo sprint 2026-06-20) ───
+  {
+    slug: "heat-engine",
+    category: "concept",
+    relatedPhysicists: ["lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "carnot-cycle",
+    category: "concept",
+    relatedPhysicists: ["lazare-carnot"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "carnot-efficiency",
+    category: "concept",
+    relatedPhysicists: ["lazare-carnot", "lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "efficiency",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "working-substance",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "second-law-of-thermodynamics",
+    category: "concept",
+    relatedPhysicists: ["rudolf-clausius", "lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+    ],
+  },
+  {
+    slug: "clausius-statement",
+    category: "concept",
+    relatedPhysicists: ["rudolf-clausius"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+    ],
+  },
+  {
+    slug: "kelvin-planck-statement",
+    category: "concept",
+    relatedPhysicists: ["lord-kelvin", "max-planck"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+    ],
+  },
+  {
+    slug: "perpetual-motion",
+    category: "concept",
+    relatedPhysicists: ["lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+    ],
+  },
+  {
+    slug: "clausius-inequality",
+    category: "concept",
+    relatedPhysicists: ["rudolf-clausius"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+    ],
+  },
+  {
+    slug: "entropy",
+    category: "concept",
+    relatedPhysicists: ["rudolf-clausius", "ludwig-boltzmann"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+      { branchSlug: "thermodynamics", topicSlug: "the-second-law" },
+    ],
+  },
+  {
+    slug: "entropy-of-mixing",
+    category: "concept",
+    relatedPhysicists: ["ludwig-boltzmann"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+    ],
+  },
+  {
+    slug: "isentropic-process",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "heat-death",
+    category: "concept",
+    relatedPhysicists: ["rudolf-clausius"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

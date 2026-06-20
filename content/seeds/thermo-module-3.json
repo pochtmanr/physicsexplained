@@ -1,0 +1,343 @@
+{
+  "glossary": [
+    {
+      "slug": "heat-engine",
+      "title": "Heat engine",
+      "subtitle": "A cyclic device that takes heat from a hot reservoir, turns part of it into work, and rejects the rest to a cold reservoir.",
+      "definition": [
+        "A heat engine is any device that operates in a repeating cycle to convert heat into mechanical work. In each cycle it absorbs heat Q_h from a hot reservoir, performs net work W, and discards the remaining heat Q_c to a cold reservoir. Because the working substance returns to its original state every cycle, its internal energy is unchanged over a full loop, and the first law reduces to the bookkeeping identity W = Q_h − Q_c.",
+        "The cold reservoir is not an engineering defect but a structural necessity: the Kelvin–Planck statement of the second law forbids any cyclic engine from converting heat entirely into work. Some heat must always be rejected. Steam engines, internal-combustion engines, gas and steam turbines, and thermoelectric generators are all heat engines, differing only in their working substance and the path it traces.",
+        "Sadi Carnot's central discovery was that the maximum efficiency of a heat engine depends only on the temperatures of its two reservoirs, not on the engine's design or working substance, and equals 1 − T_c/T_h for a reversible engine."
+      ],
+      "history": "The concept crystallised with Sadi Carnot's 1824 analysis of the steam engine, was given mathematical form by Clapeyron in 1834, and became the foundation on which Clausius and Kelvin built the second law of thermodynamics in the 1850s.",
+      "category": "concept",
+      "relatedPhysicists": ["lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "carnot-cycle",
+      "title": "Carnot cycle",
+      "subtitle": "The idealised, fully reversible engine cycle of two isotherms and two adiabats that sets the efficiency ceiling for all heat engines.",
+      "definition": [
+        "The Carnot cycle is a reversible thermodynamic cycle composed of four legs: isothermal expansion at the hot temperature T_h (absorbing heat Q_h), adiabatic expansion (cooling the working substance to T_c), isothermal compression at T_c (rejecting heat Q_c), and adiabatic compression (returning to the start). Only the two isothermal legs exchange heat with the surroundings; the two adiabatic legs are isentropic.",
+        "Because every step is reversible — carried out infinitely slowly through a continuous succession of equilibrium states — the Carnot cycle wastes no work to friction, turbulence, or finite-temperature-difference heat flow. It is therefore the most efficient cycle possible between two given temperatures, a result known as Carnot's theorem.",
+        "In the pressure–volume plane the cycle is a curved quadrilateral whose enclosed area is the net work; in the temperature–entropy plane it becomes a clean rectangle, since the isotherms are horizontal and the reversible adiabats are vertical lines of constant entropy."
+      ],
+      "history": "Sadi Carnot described the cycle in his 1824 Réflexions sur la puissance motrice du feu, reasoning about an idealised engine before the first law of thermodynamics or the concept of entropy existed. Clapeyron later drew it on the indicator (P–V) diagram that made it calculable.",
+      "category": "concept",
+      "relatedPhysicists": ["lazare-carnot"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "carnot-efficiency",
+      "title": "Carnot efficiency",
+      "subtitle": "The maximum possible efficiency of any heat engine running between two temperatures: η = 1 − T_c/T_h.",
+      "definition": [
+        "Carnot efficiency is the upper bound on the fraction of absorbed heat that any heat engine can convert into work while operating between a hot reservoir at absolute temperature T_h and a cold reservoir at T_c. It is given by η_Carnot = 1 − T_c/T_h, with both temperatures measured in kelvin.",
+        "Its most striking feature is universality: the bound depends only on the two temperatures, never on the working substance or the mechanical design. Helium, steam, and air engines running between the same reservoirs share exactly the same ceiling. Reaching it would require a perfectly reversible engine; all real engines, beset by friction and finite-rate heat transfer, fall short.",
+        "The formula also shows why perfect efficiency is unattainable: η = 1 would demand T_c = 0, a cold reservoir at absolute zero, which the third law places forever out of reach. Every engine pays the temperature ratio as an unavoidable tax."
+      ],
+      "history": "Carnot derived the result in 1824 in caloric language; Clausius and Kelvin re-derived it in the 1850s from the second law and used its substance-independence to define the absolute (Kelvin) temperature scale.",
+      "category": "concept",
+      "relatedPhysicists": ["lazare-carnot", "lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "efficiency",
+      "title": "Thermal efficiency",
+      "subtitle": "The fraction of the heat supplied to an engine that emerges as useful work, η = W/Q_h.",
+      "definition": [
+        "The thermal efficiency of a heat engine is the ratio of the net work it delivers to the heat it absorbs from the hot reservoir: η = W/Q_h = 1 − Q_c/Q_h. It is a dimensionless number between 0 and 1, often quoted as a percentage.",
+        "Efficiency measures how much of the energy you pay for is returned as work rather than dumped as waste heat. A perfectly efficient engine (η = 1) would reject no heat at all; a useless one (η = 0) would convert nothing. Real engines sit between: a few percent for early steam engines, around 25% for a car engine, 40% for a coal plant, and up to about 60% for a combined-cycle gas turbine.",
+        "No engine's efficiency can exceed the Carnot value 1 − T_c/T_h set by its reservoir temperatures, so improving efficiency in practice usually means raising the combustion temperature or lowering the exhaust temperature rather than refining the mechanism."
+      ],
+      "history": "The pursuit of efficiency drove the entire steam age and motivated Carnot's 1824 inquiry into whether a maximum existed; the modern definition as work over heat input followed the establishment of the first law in the 1840s.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "working-substance",
+      "title": "Working substance",
+      "subtitle": "The matter — gas, vapour, or fluid — that an engine repeatedly expands and compresses to convert heat into work.",
+      "definition": [
+        "The working substance is the material medium inside a heat engine whose expansion and compression actually do the pushing: the steam in a steam engine, the air–fuel mixture in a petrol engine, the refrigerant in a heat pump. Heat flows into and out of the working substance, and its changes in volume against a piston or turbine blade deliver the work.",
+        "Carnot's deepest and most surprising conclusion was that, at the reversible limit, the choice of working substance does not matter: the maximum efficiency depends only on the reservoir temperatures. This independence let thermodynamics make universal statements about engines without specifying what was inside them.",
+        "In practice the working substance is chosen for engineering reasons — water for its abundance and large latent heat, particular refrigerants for their boiling points and stability — but none of these choices can push efficiency past the Carnot ceiling."
+      ],
+      "history": "Eighteenth- and nineteenth-century engineers experimented with steam, air, and other fluids in search of a more efficient medium; Carnot's theorem of 1824 showed that for an ideal reversible engine the search was futile, since the ceiling is substance-independent.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "second-law-of-thermodynamics",
+      "title": "Second law of thermodynamics",
+      "subtitle": "The law fixing the direction of spontaneous change: the entropy of an isolated system never decreases.",
+      "definition": [
+        "The second law of thermodynamics states that natural processes have a preferred direction. In its most general form it asserts that the total entropy of an isolated system — or of the universe — never decreases: ΔS_universe ≥ 0, with equality only for an idealised reversible process and strict increase for every real one.",
+        "It has several equivalent formulations. The Clausius statement: heat does not flow spontaneously from a colder to a hotter body. The Kelvin–Planck statement: no cyclic process can convert heat from a single reservoir entirely into work. The Clausius inequality: ∮ dQ/T ≤ 0 for any cycle. Each can be derived from the others, and all express the same underlying constraint on the arrow of time.",
+        "The second law is what distinguishes past from future. The first law permits a cup of coffee to reheat itself by drawing warmth from the room, conserving energy perfectly; the second law forbids it, because such a process would lower the entropy of the universe."
+      ],
+      "history": "The law emerged from Carnot's 1824 engine analysis, was stated explicitly by Clausius (1850) and Kelvin (1851), and was given its modern entropy formulation by Clausius in 1865 — 'the entropy of the universe tends to a maximum' — with Planck and Boltzmann supplying its statistical foundations.",
+      "category": "concept",
+      "relatedPhysicists": ["rudolf-clausius", "lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" }
+      ]
+    },
+    {
+      "slug": "clausius-statement",
+      "title": "Clausius statement",
+      "subtitle": "Heat does not pass spontaneously from a colder body to a hotter one.",
+      "definition": [
+        "The Clausius statement of the second law asserts that no process is possible whose sole result is the transfer of heat from a colder body to a hotter one. Heat left to itself always flows downhill in temperature; the reverse never happens spontaneously.",
+        "The qualifier 'sole result' is essential. A refrigerator or heat pump does move heat from cold to hot, but only by consuming work and warming its surroundings more than it cools its interior. Remove the work input and the uphill flow stops; there is no machine that carries heat from cold to hot for free.",
+        "The Clausius statement is logically equivalent to the Kelvin–Planck statement: a violation of either can be wired into a violation of the other, so forbidding one forbids both."
+      ],
+      "history": "Rudolf Clausius gave this formulation in 1850 in the paper that launched the mathematical theory of the second law, capturing in a single sentence the directional asymmetry Carnot had relied upon a generation earlier.",
+      "category": "concept",
+      "relatedPhysicists": ["rudolf-clausius"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" }
+      ]
+    },
+    {
+      "slug": "kelvin-planck-statement",
+      "title": "Kelvin–Planck statement",
+      "subtitle": "No cyclic engine can turn heat from a single reservoir entirely into work with no other effect.",
+      "definition": [
+        "The Kelvin–Planck statement of the second law asserts that no process is possible whose sole result is the complete conversion of heat drawn from a single reservoir into work. Every heat engine must reject some heat to a colder reservoir; a perfectly efficient engine is impossible.",
+        "This is why a heat engine needs two reservoirs, not one. An engine that ran by cooling the ocean alone would conserve energy perfectly yet still be impossible — it would be a perpetual-motion machine of the second kind. The cold sink is mandatory.",
+        "The statement is equivalent to the Clausius statement and to the Clausius inequality; the three are interchangeable expressions of the second law, each easiest to apply in a different setting."
+      ],
+      "history": "William Thomson (Lord Kelvin) gave the original form in 1851; Max Planck sharpened it into its modern wording in the 1880s and 1890s, which is why the combined name has stuck.",
+      "category": "concept",
+      "relatedPhysicists": ["lord-kelvin", "max-planck"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" }
+      ]
+    },
+    {
+      "slug": "perpetual-motion",
+      "title": "Perpetual motion",
+      "subtitle": "A machine that runs forever or produces work from nothing — forbidden by the first or second law of thermodynamics.",
+      "definition": [
+        "Perpetual-motion machines come in two kinds. A machine of the first kind would produce work with no energy input at all, violating the first law (conservation of energy). A machine of the second kind would extract heat from a single reservoir and convert it entirely into work, violating the second law (the Kelvin–Planck statement).",
+        "The second kind is the subtler and more instructive: it breaks no conservation law. A ship that propelled itself by cooling the sea by a fraction of a degree would conserve energy exactly. It is impossible only because it would require heat to flow with no compensating increase in entropy elsewhere — which the second law forbids.",
+        "The repeated failure of such machines is one of the strongest experimental supports for the laws of thermodynamics; patent offices in several countries refuse to consider perpetual-motion claims without a working model precisely because the laws make them impossible."
+      ],
+      "history": "Inventors pursued perpetual motion for centuries; by the mid-nineteenth century the first and second laws had explained exactly why each scheme failed, turning a history of frustration into a proof of physical principle.",
+      "category": "concept",
+      "relatedPhysicists": ["lord-kelvin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" }
+      ]
+    },
+    {
+      "slug": "clausius-inequality",
+      "title": "Clausius inequality",
+      "subtitle": "For any thermodynamic cycle, ∮ dQ/T ≤ 0, with equality only for a reversible cycle.",
+      "definition": [
+        "The Clausius inequality states that for any cyclic process, the integral of the heat exchanged divided by the temperature at which it is exchanged, taken around the complete cycle, is never positive: ∮ dQ/T ≤ 0. The equality ∮ dQ/T = 0 holds if and only if the cycle is reversible.",
+        "It is the second law compressed into a single line of calculus. For an irreversible cycle the strict inequality measures exactly how much entropy the process generates. For a reversible cycle the vanishing of the integral means dQ_rev/T is an exact differential — the differential of a state function, which Clausius named entropy.",
+        "The inequality is therefore both a statement of the second law and the bridge to the concept of entropy: it is the reason a state function S with dS = dQ_rev/T exists at all."
+      ],
+      "history": "Clausius established the inequality in the 1850s and used it in 1865 to introduce entropy as a state function, completing the mathematical structure of classical thermodynamics.",
+      "category": "concept",
+      "relatedPhysicists": ["rudolf-clausius"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" }
+      ]
+    },
+    {
+      "slug": "entropy",
+      "title": "Entropy",
+      "subtitle": "The state function S with dS = dQ_rev/T — the quantity that stays constant on reversible paths and grows on every other.",
+      "definition": [
+        "Entropy is a thermodynamic state function, denoted S and measured in joules per kelvin, defined through its differential dS = dQ_rev/T: the reversible heat added to a system divided by the absolute temperature at which it is added. Because the Clausius inequality makes ∮ dQ_rev/T vanish around any reversible cycle, S depends only on the state of the system, not on the path taken to reach it.",
+        "The entropy difference between two states is found by integrating dQ_rev/T along any reversible path connecting them — even an imaginary one. This makes entropy computable for irreversible processes too: invent a reversible route between the same endpoints and integrate along it. For an ideal gas, isothermal expansion gives ΔS = nR ln(V₂/V₁); reversible adiabatic processes are isentropic, ΔS = 0.",
+        "The second law, in its most general form, states that the entropy of an isolated system never decreases. Microscopically — as Boltzmann showed — entropy counts the number of microscopic arrangements consistent with a system's macroscopic state, so its increase is the overwhelming statistical tendency of systems to move toward more probable, more disordered configurations. This is the deep reason behind the arrow of time."
+      ],
+      "history": "Clausius coined the word entropy in 1865 from the Greek for 'transformation', deliberately shaping it to rhyme with energy. Boltzmann (1877) and Gibbs later gave it a statistical interpretation, and the formula S = k log W is carved on Boltzmann's tombstone in Vienna.",
+      "category": "concept",
+      "relatedPhysicists": ["rudolf-clausius", "ludwig-boltzmann"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" }
+      ]
+    },
+    {
+      "slug": "entropy-of-mixing",
+      "title": "Entropy of mixing",
+      "subtitle": "The entropy increase when distinct gases interdiffuse — positive even though no heat is added.",
+      "definition": [
+        "When two different ideal gases, initially separated and at the same temperature and pressure, are allowed to interdiffuse and fill a common volume, the entropy of the system rises by ΔS_mix = −R(n_A ln x_A + n_B ln x_B), where x_A and x_B are the mole fractions. The quantity is always positive, and for equal amounts it reduces to (n_A + n_B)R ln 2.",
+        "What makes the entropy of mixing remarkable is that it occurs with no heat added, no work done, and no change in temperature. The increase reflects only the larger number of microscopic arrangements available once each species can roam the whole volume. It is one of the clearest demonstrations that entropy is fundamentally about counting configurations rather than tracking heat.",
+        "The result applies only to distinguishable species; mixing a gas with more of itself produces no entropy change, a subtlety known as the Gibbs paradox that pointed toward the quantum indistinguishability of identical particles."
+      ],
+      "history": "The entropy of mixing was worked out by Gibbs in the 1870s; the paradox it raised for identical gases became an early hint of the deep role of particle indistinguishability later clarified by quantum mechanics.",
+      "category": "concept",
+      "relatedPhysicists": ["ludwig-boltzmann"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" }
+      ]
+    },
+    {
+      "slug": "isentropic-process",
+      "title": "Isentropic process",
+      "subtitle": "A reversible adiabatic process, during which the entropy stays constant.",
+      "definition": [
+        "An isentropic process is one in which the entropy of the system does not change, ΔS = 0. For a closed system this is achieved by a process that is both adiabatic (no heat crosses the boundary, so dQ = 0) and reversible (no entropy is generated internally). Since dS = dQ_rev/T, both conditions together force dS = 0.",
+        "Reversible adiabatic compressions and expansions are the canonical examples, which is why adiabats are also called isentropes. For an ideal gas an isentropic process follows PV^γ = constant and TV^(γ−1) = constant, where γ is the ratio of heat capacities.",
+        "Isentropic legs are the vertical sides of the Carnot cycle in the temperature–entropy plane and serve as the ideal benchmark against which the efficiency of real compressors and turbines is measured."
+      ],
+      "history": "The isentropic ideal grew out of the study of adiabatic processes in the nineteenth century and Carnot's reversible cycle; it became central to the engineering analysis of turbines and compressors in the twentieth.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "heat-death",
+      "title": "Heat death of the universe",
+      "subtitle": "The hypothetical final state in which entropy reaches its maximum and no usable energy gradients remain.",
+      "definition": [
+        "The heat death of the universe is the conjectured end state implied by extrapolating the second law to the cosmos as a whole. If the entropy of the universe always increases, it must eventually approach a maximum: a state of uniform temperature with no gradients to drive heat flow, no free energy to extract as work, and so no possibility of any process — including life.",
+        "The idea does not require the universe to run out of energy; energy is conserved. It requires the energy to become uniformly distributed and thermodynamically unavailable. Work can only be extracted from differences — in temperature, pressure, or concentration — and at maximum entropy all such differences have been erased.",
+        "Modern cosmology complicates the nineteenth-century picture with gravity, cosmic expansion, and dark energy, which change how entropy and equilibrium behave on the largest scales, but the heat death remains the canonical thermodynamic vision of the far future."
+      ],
+      "history": "Clausius spelled out the heat death in 1865 in the same lecture that named entropy; the bleak prospect was debated by Helmholtz, Kelvin, and Boltzmann, and remains a touchstone in discussions of the arrow of time and the fate of the universe.",
+      "category": "concept",
+      "relatedPhysicists": ["rudolf-clausius"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" }
+      ]
+    }
+  ],
+  "physicists": [
+    {
+      "slug": "lazare-carnot",
+      "name": "Lazare Carnot",
+      "subtitle": "French mathematician, engineer, and revolutionary statesman — the 'Organiser of Victory' and father of Sadi Carnot.",
+      "born": "1753",
+      "died": "1823",
+      "nationality": "French",
+      "bio": [
+        "Lazare Nicolas Marguerite Carnot was born in Nolay, Burgundy, in 1753 and trained as a military engineer. A man of formidable range, he combined a career in mathematics and mechanics with a leading role in the politics of the French Revolution and the Napoleonic era.",
+        "As a member of the Committee of Public Safety from 1793, he organised and supplied the armies of the young Republic with such success that he was hailed as the 'Organiser of Victory' (l'Organisateur de la Victoire). He later served Napoleon as Minister of War and Minister of the Interior, but his unbending republican principles repeatedly put him at odds with those in power; after the fall of Napoleon in 1815 he was exiled, and he died in Magdeburg in 1823.",
+        "His scientific work centred on the foundations of mechanics and on geometry. In Essai sur les machines en général (1783) he analysed the efficiency of machines and the losses caused by sudden impacts and abrupt changes of motion — an early concern with wasted work that would echo, transformed, in his son's thermodynamics. He also made lasting contributions to projective geometry.",
+        "His scientific cast of mind shaped his household. His son Sadi Carnot, raised amid these ideas about machines and motive power, would carry the family's preoccupation with the efficiency of engines to its profoundest conclusion."
+      ],
+      "contributions": [
+        "Analysed the general efficiency of machines and the dissipation of work in his Essai sur les machines en général (1783).",
+        "Made foundational contributions to projective and synthetic geometry.",
+        "Shaped, through his engineering outlook, the intellectual formation of his son Sadi Carnot, founder of thermodynamics."
+      ],
+      "majorWorks": [
+        "Essai sur les machines en général (1783)",
+        "Géométrie de position (1803)",
+        "Réflexions sur la métaphysique du calcul infinitésimal (1797)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "rudolf-clausius",
+      "name": "Rudolf Clausius",
+      "subtitle": "German physicist who gave thermodynamics its formal structure, stated the second law, and coined the word entropy.",
+      "born": "1822",
+      "died": "1888",
+      "nationality": "German",
+      "bio": [
+        "Rudolf Julius Emanuel Clausius was born in 1822 in Köslin, Pomerania (now Koszalin, Poland), one of many children of a pastor and schoolmaster. He studied at Berlin and Halle and went on to hold professorships at Zürich, Würzburg, and finally Bonn.",
+        "Clausius is the physicist who turned thermodynamics from a collection of engine lore into a rigorous mathematical science. In his landmark 1850 paper he reconciled Carnot's principle with the newly established conservation of energy, stating the second law in the form that heat cannot of itself pass from a colder to a hotter body. Over the following fifteen years he refined the subject, culminating in the introduction of entropy.",
+        "In 1865 he coined the word entropy from the Greek trope, transformation, deliberately modelling it on the word energy so that the two great quantities of physics would sound alike. He summarised the laws of thermodynamics in two sentences that have become famous: 'The energy of the universe is constant. The entropy of the universe tends to a maximum.'",
+        "He also did pioneering work in the kinetic theory of gases, introducing the concept of the mean free path. He was seriously wounded leading a student ambulance corps in the Franco-Prussian War of 1870, and suffered chronic pain for the rest of his life, which slowed his later research."
+      ],
+      "contributions": [
+        "Stated the second law of thermodynamics (1850) and reconciled it with energy conservation.",
+        "Introduced entropy as a state function (1865) and the Clausius inequality ∮ dQ/T ≤ 0.",
+        "Developed the kinetic theory of gases, introducing the mean free path.",
+        "Formulated the Clausius–Clapeyron relation governing phase boundaries."
+      ],
+      "majorWorks": [
+        "Über die bewegende Kraft der Wärme (1850)",
+        "Über verschiedene für die Anwendung bequeme Formen der Hauptgleichungen der mechanischen Wärmetheorie (1865)",
+        "Die mechanische Wärmetheorie (treatise, from 1865)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" }
+      ]
+    },
+    {
+      "slug": "max-planck",
+      "name": "Max Planck",
+      "subtitle": "German physicist who sharpened the second law as a young thermodynamicist before founding quantum theory.",
+      "born": "1858",
+      "died": "1947",
+      "nationality": "German",
+      "bio": [
+        "Max Karl Ernst Ludwig Planck was born in Kiel in 1858 and studied in Munich and Berlin, where he was taught by Helmholtz and Kirchhoff. His earliest research, in the 1880s, was in thermodynamics, the subject of his doctoral dissertation on the second law.",
+        "As a young thermodynamicist Planck tightened the Kelvin statement of the second law into the precise, modern form now known as the Kelvin–Planck statement, and he clarified the meaning of entropy and irreversibility with a rigour that became a model for the field. His thermodynamic instincts would prove decisive in what came next.",
+        "In 1900, studying the spectrum of blackbody radiation, Planck found he could match the data only by assuming that energy is exchanged in discrete packets, or quanta, of size E = hν. This act of desperation, as he later called it, cracked thermodynamics open into quantum mechanics and earned him the 1918 Nobel Prize in Physics. His full profile belongs to the quantum branch of physics; here he appears for his foundational work on the second law.",
+        "Planck remained in Germany through both world wars, a figure of great personal integrity amid catastrophe; his son Erwin was executed by the Nazi regime in 1945. He died in 1947, and Germany's principal research organisation, the Max Planck Society, bears his name."
+      ],
+      "contributions": [
+        "Sharpened the Kelvin–Planck statement of the second law of thermodynamics.",
+        "Clarified the thermodynamic meaning of entropy and irreversibility.",
+        "Introduced the energy quantum E = hν (1900), founding quantum theory.",
+        "Awarded the 1918 Nobel Prize in Physics."
+      ],
+      "majorWorks": [
+        "Über den zweiten Hauptsatz der mechanischen Wärmetheorie (doctoral thesis, 1879)",
+        "Vorlesungen über Thermodynamik (1897)",
+        "Zur Theorie des Gesetzes der Energieverteilung im Normalspectrum (1900)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-second-law" }
+      ]
+    },
+    {
+      "slug": "ludwig-boltzmann",
+      "name": "Ludwig Boltzmann",
+      "subtitle": "Austrian physicist who tied entropy to molecular probability and founded statistical mechanics.",
+      "born": "1844",
+      "died": "1906",
+      "nationality": "Austrian",
+      "bio": [
+        "Ludwig Eduard Boltzmann was born in Vienna in 1844 and held a series of professorships across the Austro-Hungarian and German worlds — Graz, Vienna, Munich, Leipzig — moving restlessly throughout his life. He was a brilliant lecturer and a passionate defender of the atomic theory of matter at a time when many leading scientists doubted that atoms were real.",
+        "Boltzmann's central achievement was to give entropy a microscopic meaning. Where Clausius had defined entropy through heat and temperature, Boltzmann showed that it counts the number of microscopic arrangements — microstates — consistent with a system's macroscopic state. The more ways a state can be realised, the higher its entropy, and the overwhelming statistical tendency toward more probable states is the second law.",
+        "This insight is captured in the formula S = k log W, relating entropy S to the number of microstates W through Boltzmann's constant k. The equation is carved on his tombstone in Vienna's Zentralfriedhof. His full profile belongs with the kinetic theory and statistical mechanics he founded; here he appears for the statistical reading of entropy.",
+        "Boltzmann suffered from bouts of severe depression, worsened by fierce scientific opposition to his atomistic views from figures such as Mach and Ostwald. He took his own life in 1906 while on holiday at Duino, near Trieste — only a few years before experiments on Brownian motion settled the reality of atoms decisively in his favour."
+      ],
+      "contributions": [
+        "Founded statistical mechanics, linking thermodynamics to the motion of atoms and molecules.",
+        "Gave entropy its microscopic interpretation, S = k log W.",
+        "Derived the Maxwell–Boltzmann distribution of molecular speeds and the Boltzmann transport equation.",
+        "Defended the physical reality of atoms decades before it was experimentally confirmed."
+      ],
+      "majorWorks": [
+        "Weitere Studien über das Wärmegleichgewicht unter Gasmolekülen (1872)",
+        "Über die Beziehung zwischen dem zweiten Hauptsatze (1877)",
+        "Vorlesungen über Gastheorie (1896–1898)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "entropy-and-the-clausius-inequality" }
+      ]
+    }
+  ]
+}
