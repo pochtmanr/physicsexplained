@@ -1,0 +1,110 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { HeatingCurveScene } from "@/components/physics/phase-changes-and-latent-heat/heating-curve-scene";
+import { PhaseDiagramScene } from "@/components/physics/phase-changes-and-latent-heat/phase-diagram-scene";
+import { SupercoolingScene } from "@/components/physics/phase-changes-and-latent-heat/supercooling-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Black", href: "/physicists/joseph-black" },
+  { type: "physicist", label: "Benoît Clapeyron", href: "/physicists/benoit-clapeyron" },
+  { type: "term", label: "Phase", href: "/dictionary/phase" },
+  { type: "term", label: "Phase transition", href: "/dictionary/phase-transition" },
+  { type: "term", label: "Latent heat", href: "/dictionary/latent-heat" },
+  { type: "term", label: "Latent heat of fusion", href: "/dictionary/latent-heat-of-fusion" },
+  { type: "term", label: "Triple point", href: "/dictionary/triple-point" },
+  { type: "term", label: "Critical point", href: "/dictionary/critical-point" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.04 · TEMPERATURE & HEAT"
+  title="PHASE CHANGES AND LATENT HEAT"
+  subtitle="Where the energy hides while the thermometer stands still."
+/>
+
+<Section index={1} title="The half-hour the thermometer stood still">
+
+In the same Glasgow laboratory where he measured specific heats, <PhysicistLink slug="joseph-black" /> set a beaker of ice-water on a warm hearth and watched. The ice melted slowly — for half an hour — while his thermometer refused to budge from 0 °C. Heat was pouring in from the fire the whole time, yet the temperature did not rise until the last sliver of ice was gone. The energy was going *somewhere*, but not into warmth.
+
+Black named it <Term slug="latent-heat" /> — *latent*, from the Latin for "hidden." It is heat absorbed or released during a change of <Term slug="phase" /> that does no work on the thermometer at all. To understand it you have to think about what a phase *is*: a distinct arrangement of matter — solid, liquid, or gas (we set aside plasma, which belongs to the astrophysics module). In a solid the molecules are locked in a lattice; in a liquid they slide past one another while still touching; in a gas they fly apart and ignore each other almost entirely. Changing from one to the next means rearranging or breaking the bonds that hold the molecules together, and that costs energy — energy that goes into the bonds, not into motion, so the temperature holds steady through the whole transition.
+
+<SceneCard caption="FIG.04a — the heating curve of 1 kg of water. Scrub the heat (or press play) and the temperature climbs in five legs: ice warming, the melting plateau (flat at 0 °C), water warming, the boiling plateau (flat at 100 °C), and steam warming. On the two plateaus the heat is latent — pouring in with no rise in temperature. Notice how the boiling plateau dwarfs the melting one.">
+  <HeatingCurveScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Latent heat of fusion">
+
+Melting a solid at its melting point — without raising its temperature — takes a fixed amount of energy per kilogram, the <Term slug="latent-heat-of-fusion" />. For water it is large:
+
+<EquationBlock id="EQ.01">$$Q = m\,L_f, \qquad L_f^{\text{water}} = 334\ \text{kJ/kg}$$</EquationBlock>
+
+In words: to melt a mass $m$ of ice already at 0 °C you must supply $334$ kilojoules for every kilogram, and the temperature does not move until it is all melted. To feel how large that is, compare it with the specific heat from the [previous topic](/thermodynamics/heat-capacity-and-calorimetry): the same 334 kJ would heat that same kilogram of *liquid* water from 0 °C almost to 80 °C. Melting the ice costs as much energy as warming the meltwater four-fifths of the way to boiling.
+
+This is why ice is such an effective thermal buffer. A drink stays cold not because the ice is cold but because melting it quietly absorbs enormous quantities of heat at a fixed 0 °C. It is also why a late frost can be fought by *spraying crops with water*: as the water freezes it releases its latent heat, holding the buds at 0 °C rather than letting them plunge below.
+
+</Section>
+
+<Section index={3} title="Latent heat of vaporisation">
+
+Boiling is far more expensive than melting, because turning a liquid into a gas means pulling the molecules entirely apart, not merely loosening them. The <Term slug="latent-heat-of-vaporisation" /> of water is nearly seven times its latent heat of fusion:
+
+<EquationBlock id="EQ.02">$$Q = m\,L_v, \qquad L_v^{\text{water}} = 2260\ \text{kJ/kg}$$</EquationBlock>
+
+In words: vaporising a kilogram of water already at 100 °C demands $2260$ kilojoules — the tall plateau in the heating-curve scene above. That single number explains two everyday extremes. It is why sweat cools you so effectively: each gram that evaporates from your skin carries off about 2.4 kJ, stolen directly from your body. And it is why a steam burn is so vicious — when 100 °C steam condenses on your skin it dumps that entire latent heat back, far more damage than 100 °C water alone.
+
+<Callout variant="intuition">
+Evaporation is refrigeration you already own. A clay pot kept damp, a wet cloth on the brow, a dog's panting tongue — all run on $L_v$. The water leaving as vapour takes its 2260 kJ/kg with it, and what stays behind is left cooler.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Phase diagrams — the map of states">
+
+Whether a substance is solid, liquid, or gas depends on *both* temperature and pressure. The map of which phase wins where is the **phase diagram**, plotted on pressure–temperature axes. Its regions are separated by coexistence curves — lines along which two phases live in balance — and those lines meet at two special places.
+
+<SceneCard caption="FIG.04b — the P–T phase diagram. Drag the marker through the solid, liquid, and vapour regions to read its phase. Toggle water vs CO₂: water's solid–liquid line leans left (negative slope), CO₂'s leans right. Note the triple point where all three curves meet, and the critical point where the liquid–vapour line simply stops.">
+  <PhaseDiagramScene />
+</SceneCard>
+
+The <Term slug="triple-point" /> is the single pressure and temperature at which solid, liquid, and gas coexist — for water, a precise 0.01 °C and 611 Pa, so exact and reproducible that it served to *define* the kelvin until 2019. The <Term slug="critical-point" /> is where the liquid–vapour boundary ends: above it (for water, 374 °C and 22 MPa) liquid and gas become indistinguishable, merging into a single supercritical fluid. These two landmarks get full treatments later in the branch; here they are the corners of the map. (A <Term slug="phase-transition" /> is simply the act of crossing one of these lines.)
+
+</Section>
+
+<Section index={5} title="Why ice skates — Clausius–Clapeyron, first look">
+
+Look closely at the solid–liquid line for water in the scene: it slopes *backward*. For almost every substance, raising the pressure raises the melting point — squeeze it and it prefers the denser solid. Water is the famous exception, because ice is *less* dense than liquid water (which is why ice floats). Squeeze ice and you push it toward the denser liquid: pressure *lowers* its melting point.
+
+The slope of any coexistence curve is fixed by the Clausius–Clapeyron relation, which the French engineer <PhysicistLink slug="benoit-clapeyron" /> first cast in graphical form:
+
+<EquationBlock id="EQ.03">$$\frac{dP}{dT} = \frac{L}{T\,\Delta V}$$</EquationBlock>
+
+In words: the steepness of a phase boundary equals the latent heat of the transition divided by the temperature times the *volume change* across it. The sign of $\Delta V$ sets the direction of the slope — and because water *shrinks* when it melts ($\Delta V < 0$ going solid→liquid), its melting line tilts the unusual way. The popular story that this is "why you can skate" is only partly right: the pressure of a blade lowers the melting point by a fraction of a degree, helped along by frictional heating, and the two together leave a thin film of water the skate glides on. The [full derivation](/thermodynamics/the-clausius-clapeyron-relation) comes later in the branch; here it is enough that one equation ties the slope of the boundary to the latent heat we just met.
+
+</Section>
+
+<Section index={6} title="Supercooling and superheating">
+
+A phase transition needs somewhere to *start*. Freezing usually begins on an impurity, a scratch, a speck of dust — a nucleation site. Take those away and pure water can be cooled well below 0 °C and *stay liquid*, a metastable state called supercooling. It is poised, not stable: the slightest disturbance triggers the change it has been holding off.
+
+<SceneCard caption="FIG.04c — supercooling. Hold pure water below 0 °C with no crystal to grow on and it stays liquid. Drop in a nucleation seed and the whole vessel flash-freezes in a moment — and the temperature jumps back up to 0 °C, because the latent heat released by the freezing warms the slush to its own melting point.">
+  <SupercoolingScene />
+</SceneCard>
+
+The temperature jump is the surprise, and it is pure latent heat. As the supercooled water freezes, each gram releases its 334 kJ/kg of fusion heat — and with nowhere else to go, that heat warms the half-frozen mixture straight back up to 0 °C, where it sits as an ice-and-water slush. The same trick runs in reverse: clean water in a smooth cup can be *superheated* in a microwave past 100 °C without boiling, then erupt violently when finally disturbed. Both are reminders that a phase transition is an event that has to be *nucleated*, not merely a temperature that has to be reached.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We have followed energy through every form it takes in this branch's first module: into temperature, into the bonds of melting and boiling, across the map of phases. In every case the bookkeeping balanced — the heat that went in was accounted for, whether it raised a temperature or hid as latent heat.
+
+That balancing is not a coincidence; it is a law. The recognition that energy is *conserved* as it shuttles between heat and work — that you can track every joule into and out of a system — is the [first law of thermodynamics](/thermodynamics/internal-energy-and-the-first-law), the subject of the next module. It builds directly on Joule's discovery that [heat is energy](/thermodynamics/heat-and-the-caloric-theory) and on the [heat capacities](/thermodynamics/heat-capacity-and-calorimetry) that tell us how much energy each change of state requires.
+
+</Section>
+
+</TopicPageLayout>

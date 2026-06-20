@@ -1650,6 +1650,15 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CvCpPistonScene: lazyScene(() =>
     import("@/components/physics/heat-capacity-and-calorimetry/cv-cp-piston-scene").then((m) => ({ default: m.CvCpPistonScene })),
   ),
+  HeatingCurveScene: lazyScene(() =>
+    import("@/components/physics/phase-changes-and-latent-heat/heating-curve-scene").then((m) => ({ default: m.HeatingCurveScene })),
+  ),
+  PhaseDiagramScene: lazyScene(() =>
+    import("@/components/physics/phase-changes-and-latent-heat/phase-diagram-scene").then((m) => ({ default: m.PhaseDiagramScene })),
+  ),
+  SupercoolingScene: lazyScene(() =>
+    import("@/components/physics/phase-changes-and-latent-heat/supercooling-scene").then((m) => ({ default: m.SupercoolingScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
