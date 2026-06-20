@@ -1,0 +1,110 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ClausiusVsKelvinScene } from "@/components/physics/the-second-law/clausius-vs-kelvin-scene";
+import { PerpetualMotionScene } from "@/components/physics/the-second-law/perpetual-motion-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Rudolf Clausius", href: "/physicists/rudolf-clausius" },
+  { type: "physicist", label: "Lord Kelvin", href: "/physicists/lord-kelvin" },
+  { type: "physicist", label: "Max Planck", href: "/physicists/max-planck" },
+  { type: "term", label: "Second law of thermodynamics", href: "/dictionary/second-law-of-thermodynamics" },
+  { type: "term", label: "Clausius statement", href: "/dictionary/clausius-statement" },
+  { type: "term", label: "Kelvin–Planck statement", href: "/dictionary/kelvin-planck-statement" },
+  { type: "term", label: "Perpetual motion", href: "/dictionary/perpetual-motion" },
+  { type: "term", label: "Clausius inequality", href: "/dictionary/clausius-inequality" },
+  { type: "term", label: "Entropy", href: "/dictionary/entropy" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.09 · THE SECOND LAW"
+  title="THE SECOND LAW"
+  subtitle="The energy of the universe is constant; its entropy tends to a maximum."
+/>
+
+<Section index={1} title="Two sentences in Zürich">
+
+In 1865, lecturing in Zürich, <PhysicistLink slug="rudolf-clausius" /> needed a name for a quantity he had been tracking for a decade. He took it from the Greek *trope*, "transformation," and shaped the word so that it would echo *Energie* — the two great words of physics made to rhyme. He called it *Entropie*. Then he wrote a pair of sentences that have unsettled readers ever since:
+
+> *Die Energie der Welt ist constant. Die Entropie der Welt strebt einem Maximum zu.*
+
+"The energy of the universe is constant. The entropy of the universe tends to a maximum." The first sentence is the first law, the conservation of energy. The second is something genuinely new — a law not of *how much* but of *which way*. It is the only fundamental law of physics that singles out a direction in time, and the whole of this topic is an unpacking of what it forbids and why.
+
+</Section>
+
+<Section index={2} title="The problem the first law leaves open">
+
+The first law is a perfect accountant and a useless guide. It tells you energy is never created or destroyed, but it has nothing whatever to say about *direction*. Drop an ice cube into warm water and it melts, the warmth spreading until everything is lukewarm. Run that film backward — lukewarm water spontaneously separating into ice and hot water, energy flowing from cool to warm — and not a single joule goes missing. The first law is perfectly content with the reversed film.
+
+Yet we never see it. Coffee cools; it does not reheat itself by drawing warmth from the kitchen. A dropped glass shatters; shards do not leap back into a glass. The world has a grain to it, an arrow, and the first law cannot see the arrow at all. The Second Law is the statement of that arrow, and remarkably it can be written in two very different-looking sentences that turn out to be the same sentence.
+
+</Section>
+
+<Section index={3} title="The Clausius statement">
+
+Clausius's own version is about heat and temperature. The <Term slug="clausius-statement" /> says: **heat does not pass spontaneously from a colder body to a hotter one.** Left alone, warmth always trickles downhill, from hot to cold, never the reverse.
+
+This is not to say heat can *never* be moved uphill — your refrigerator does it every second, pumping heat out of cold food into the warm kitchen. The crucial words are *spontaneously* and *with no other effect*. The fridge moves heat the wrong way only by consuming electrical work, and it warms the room more than it cools the food. Remove the work — unplug it — and the flow reverses to its natural downhill direction. There is no machine that shuttles heat from cold to hot for free.
+
+</Section>
+
+<Section index={4} title="The Kelvin–Planck statement">
+
+<PhysicistLink slug="lord-kelvin" />'s version is about heat and work, later sharpened into its modern form by a young <PhysicistLink slug="max-planck" /> in the 1880s. The <Term slug="kelvin-planck-statement" /> says: **no cyclic process can take heat from a single reservoir and convert it entirely into work, with no other effect.** Some heat must always be rejected; the cold reservoir of the [previous topic](/thermodynamics/heat-engines-and-carnot) is mandatory, not optional.
+
+This is why a perfectly efficient engine is impossible. For any engine running in a cycle, the rejected heat $Q_c$ is strictly positive, so the work it delivers always falls short of the heat it swallows:
+
+<EquationBlock id="EQ.01">$$W = Q_h - Q_c < Q_h \qquad (Q_c > 0)$$</EquationBlock>
+
+In words: you can never get all your heat back as work — a leftover always escapes to the cold side. An engine that defied this would be a <Term slug="perpetual-motion" /> machine of the second kind: not one that creates energy (that breaks the first law) but one that turns a single reservoir's heat fully into work. The ocean holds an unimaginable store of thermal energy; a ship that could drive itself by cooling the sea by a fraction of a degree would violate no conservation law at all. It would violate the Second Law, and so it cannot be built.
+
+<SceneCard caption="FIG.09b — the ocean engine. With only the warm surface to draw on, it stalls: extracting work from a single reservoir is perpetual motion of the second kind, and the efficiency bound is exactly zero. Switch on a colder deep-water reservoir and it runs, now capped by (T_surface − T_deep)/T_surface — a few percent, but real: this is the principle of ocean-thermal energy conversion. Drag the two temperatures to see the bound open and close.">
+  <PerpetualMotionScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Why the two statements are one">
+
+Clausius talks about heat flowing uphill; Kelvin and Planck talk about heat becoming work. They sound unrelated. They are logically identical: assume a machine that breaks one, and you can build a machine that breaks the other. This is the same *reductio* that powered Carnot's theorem, run in both directions.
+
+<SceneCard caption="FIG.09a — the equivalence, made mechanical. Start with the two independently forbidden engines. Then 'wire Kelvin → Clausius': feed a Kelvin–Planck violator's free work into an ordinary refrigerator, and the pair moves heat cold → hot with nothing else changing — a Clausius violation. Or 'wire Clausius → Kelvin': let a Clausius pump return an engine's waste heat, and the cold reservoir breaks even while work pours out of the hot one alone — a Kelvin–Planck violation. Drag the temperatures and watch the ledger rebalance.">
+  <ClausiusVsKelvinScene />
+</SceneCard>
+
+Take a Kelvin–Planck violator — an engine that turns heat fully into work — and use its free work to drive a normal refrigerator. The refrigerator pumps heat from cold to hot; since no net work was supplied from outside, the combination moves heat uphill with no other effect, which Clausius forbids. Run the argument the other way and a Clausius violator, wired to an ordinary engine, manufactures a Kelvin–Planck violation. To forbid either is to forbid both. They are two faces of one law.
+
+<Callout variant="intuition">
+The Second Law is not a statement about engines or refrigerators in particular. Those are just the cleanest machines to argue with. It is a statement about the *direction* of every spontaneous process — a constraint that sits underneath all the bookkeeping of the first law and quietly decides which of two energy-conserving futures actually happens.
+</Callout>
+
+</Section>
+
+<Section index={6} title="The Clausius inequality — the seed of entropy">
+
+Clausius found a way to turn the verbal law into a single inequality. Follow any engine around a complete cycle, adding up the heat $dQ$ it exchanges at each step divided by the temperature $T$ at which the exchange happens. The sum can never be positive:
+
+<EquationBlock id="EQ.02">$$\oint \frac{dQ}{T} \le 0$$</EquationBlock>
+
+This says that over any closed cycle, the heat-weighted-by-inverse-temperature ledger always comes out zero or negative — never in your favour. The <Term slug="clausius-inequality" /> is the Second Law compressed into one line of calculus. And it carries a gift: the inequality becomes an *equality* precisely when the cycle is reversible.
+
+<EquationBlock id="EQ.03">$$\oint \frac{dQ_{\text{rev}}}{T} = 0$$</EquationBlock>
+
+A quantity whose integral around every closed loop vanishes is the differential of a *state function* — something that depends only on where you are, not on how you got there, exactly as a conservative force has a potential. Clausius gave that state function the name he had coined:
+
+<EquationBlock id="EQ.04">$$dS = \frac{dQ_{\text{rev}}}{T}$$</EquationBlock>
+
+— entropy changes by the reversible heat added divided by the temperature. The cancellation of logarithms that fixed Carnot's efficiency was this same quantity, $Q/T$, surfacing for the first time.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We now have the Second Law in three equivalent forms — Clausius's, Kelvin and Planck's, and the inequality $\oint dQ/T \le 0$ — and we have glimpsed the state function hiding inside it. The next step is to take that function seriously: to define [entropy](/thermodynamics/entropy-and-the-clausius-inequality) properly, compute it for real processes, and watch $\Delta S_{\text{universe}} \ge 0$ become the sharpest and most general statement of the arrow of time. The two sentences from Zürich are about to acquire their full mathematical force.
+
+</Section>
+
+</TopicPageLayout>
