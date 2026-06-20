@@ -1139,7 +1139,7 @@ export const BRANCHES: readonly Branch[] = [
       "Energy flows one way. Entropy only grows. Out of these two facts come steam engines, refrigerators, the arrow of time, and the heat death of the universe. Thermodynamics is the part of physics that feels most like philosophy.",
     modules: THERMODYNAMICS_MODULES,
     topics: THERMODYNAMICS_TOPICS,
-    status: "coming-soon",
+    status: "live",
   },
   {
     slug: "quantum",
