@@ -19,6 +19,7 @@ import {
   ringdownDampingTimeDimensionless,
   ringdownWaveform,
 } from "@/lib/physics/relativity/no-hair-theorem";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.47a — Collapse and ringdown: how a black hole loses its hair.
@@ -89,13 +90,9 @@ export function CollapseRingdownScene() {
       />
 
       <div className="mt-3 flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
-          onClick={() => setPlaying((p) => !p)}
-          className="rounded-sm border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-2)] hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
-        >
+        <Button onClick={() => setPlaying((p) => !p)}>
           {playing ? "❚❚ pause" : "▶ replay"}
-        </button>
+        </Button>
         <span className="font-mono text-[var(--color-fg-3)]">
           M ω_R = {omegaR.toFixed(3)} · τ = {tau.toFixed(1)} M
         </span>

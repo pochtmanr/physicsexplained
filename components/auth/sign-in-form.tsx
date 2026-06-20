@@ -1,6 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import { signInWithGoogle } from "@/app/actions/auth";
+import { Button } from "@/components/ui/button";
 
 export function SignInForm({ next }: { next: string }) {
   const [errMsg, setErrMsg] = useState<string | null>(null);
@@ -14,20 +15,24 @@ export function SignInForm({ next }: { next: string }) {
 
   return (
     <>
-      <button
+      <Button
+        variant="primary"
+        size="sm"
         type="button"
         onClick={onGoogle}
         disabled={pending}
-        className="nav-link btn-tracer group relative inline-flex w-full items-center justify-center gap-2 bg-[var(--color-cyan)] px-4 py-2.5 font-mono text-xs uppercase tracking-wider text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] disabled:cursor-not-allowed disabled:opacity-60 md:py-3 md:text-sm"
+        className="w-full"
       >
-        {pending ? "Connecting…" : "Continue with Google"}
-        <span
+        <svg
           aria-hidden="true"
-          className="inline-block transition-transform duration-[180ms] ease-out group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="h-3.5 w-3.5"
         >
-          →
-        </span>
-      </button>
+          <path d="M12.24 10.285V14.4h6.806c-.275 1.765-2.056 5.174-6.806 5.174-4.095 0-7.439-3.389-7.439-7.574s3.345-7.574 7.439-7.574c2.33 0 3.891.989 4.785 1.849l3.254-3.138C18.189 1.186 15.479 0 12.24 0c-6.635 0-12 5.365-12 12s5.365 12 12 12c6.926 0 11.52-4.869 11.52-11.726 0-.788-.085-1.39-.189-1.989H12.24z" />
+        </svg>
+        {pending ? "Connecting…" : "Continue with Google"}
+      </Button>
 
       {errMsg && (
         <p className="mt-4 font-mono text-xs uppercase tracking-wider text-[var(--color-magenta)]">

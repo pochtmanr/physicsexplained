@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.5;
 const MAX_HEIGHT = 360;
@@ -131,27 +132,15 @@ export function CompassScene() {
           </span>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            onClick={() => setCurrent(0)}
-            className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-xs font-mono text-[var(--color-fg-1)]"
-          >
+          <Button variant="ghost" onClick={() => setCurrent(0)}>
             current off
-          </button>
-          <button
-            type="button"
-            onClick={() => setCurrent(1.5)}
-            className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-xs font-mono text-[var(--color-fg-1)]"
-          >
+          </Button>
+          <Button variant="ghost" onClick={() => setCurrent(1.5)}>
             switch on
-          </button>
-          <button
-            type="button"
-            onClick={() => setCurrent(-1.5)}
-            className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-xs font-mono text-[var(--color-fg-1)]"
-          >
+          </Button>
+          <Button variant="ghost" onClick={() => setCurrent(-1.5)}>
             reverse
-          </button>
+          </Button>
         </div>
       </div>
     </div>

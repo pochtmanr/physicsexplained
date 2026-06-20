@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.7;
 const MAX_HEIGHT = 420;
@@ -254,24 +255,18 @@ export function LiouvilleFlowScene() {
       <div className="mt-3 flex flex-wrap items-center gap-2 px-2">
         <span className="font-mono text-xs text-[var(--color-fg-3)]">flow</span>
         {(["sho", "pendulum", "shear"] as Mode[]).map((m) => (
-          <button
-            key={m}
-            onClick={() => setMode(m)}
-            className={`font-mono text-xs px-2 py-1 border transition ${
-              mode === m
-                ? "border-[#6FB8C6] text-[#6FB8C6]"
-                : "border-[var(--color-fg-3)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-            }`}
-          >
+          <Button key={m} active={mode === m} onClick={() => setMode(m)}>
             {m === "sho" ? "harmonic" : m === "pendulum" ? "pendulum" : "shear"}
-          </button>
+          </Button>
         ))}
-        <button
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={() => reset()}
-          className="font-mono text-xs px-2 py-1 border border-[var(--color-fg-3)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)] ml-auto"
+          className="ml-auto"
         >
           reset
-        </button>
+        </Button>
       </div>
     </div>
   );

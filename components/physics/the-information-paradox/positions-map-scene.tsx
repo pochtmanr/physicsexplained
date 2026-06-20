@@ -16,6 +16,7 @@ import {
   PARADOX_POSITIONS,
   type ParadoxPosition,
 } from "@/lib/physics/relativity/the-information-paradox";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.60c — Positions on the paradox.
@@ -100,25 +101,14 @@ export function PositionsMapScene() {
       />
       <div className="mt-2 flex flex-wrap gap-2 font-mono text-xs">
         {PARADOX_POSITIONS.map((p) => (
-          <button
+          <Button
             key={p.id}
-            type="button"
+            size="sm"
+            active={p.id === selected}
             onClick={() => setSelected(p.id)}
-            className="cursor-pointer border px-2 py-1"
-            style={
-              p.id === selected
-                ? {
-                    borderColor: "var(--color-cyan)",
-                    color: "var(--color-cyan)",
-                  }
-                : {
-                    borderColor: "var(--color-fg-4)",
-                    color: "var(--color-fg-3)",
-                  }
-            }
           >
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="mt-2 font-mono text-xs text-[var(--color-fg-2)]">

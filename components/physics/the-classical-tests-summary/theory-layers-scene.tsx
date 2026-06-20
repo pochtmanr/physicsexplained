@@ -14,6 +14,7 @@ import {
   classicalTests,
   type TheoryLayer,
 } from "@/lib/physics/relativity/the-classical-tests-summary";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.43c — Which layer of the theory each test probes.
@@ -99,20 +100,15 @@ export function TheoryLayersScene() {
       <div className="mt-3 flex flex-wrap gap-2 font-mono text-xs text-[var(--color-fg-3)]">
         {tests.map((t) => {
           const on = selected === t.id;
-          const cssVar = `var(--color-${TEST_COLOR[t.id]})`;
           return (
-            <button
+            <Button
               key={t.id}
-              type="button"
+              size="sm"
+              active={on}
               onClick={() => setSelected(on ? null : t.id)}
-              className="rounded-none border px-2 py-0.5"
-              style={{
-                borderColor: on ? cssVar : "var(--color-fg-4)",
-                color: on ? cssVar : "var(--color-fg-3)",
-              }}
             >
               {t.name}
-            </button>
+            </Button>
           );
         })}
       </div>

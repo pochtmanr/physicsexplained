@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * Visualizes the five Lagrange points of the Sun-Earth system in the
@@ -364,12 +365,9 @@ export function LagrangePointsScene() {
         <span className="w-10 font-mono text-sm text-[var(--color-fg-1)]">
           {zoom.toFixed(1)}x
         </span>
-        <button
-          onClick={handleReset}
-          className="rounded border border-[var(--color-fg-4)] px-2 py-0.5 text-xs text-[var(--color-fg-3)] transition-colors hover:border-[var(--color-fg-3)]"
-        >
+        <Button variant="secondary" size="sm" onClick={handleReset}>
           Reset
-        </button>
+        </Button>
         <label className="ml-auto flex items-center gap-2 text-sm text-[var(--color-fg-3)]">
           <input
             type="checkbox"

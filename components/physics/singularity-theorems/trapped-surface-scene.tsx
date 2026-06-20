@@ -18,6 +18,7 @@ import {
   isTrapped,
   outgoingExpansionSign,
 } from "@/lib/physics/relativity/singularity-theorems";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.59b — The trapped-surface explorer.
@@ -83,16 +84,16 @@ export function TrappedSurfaceScene() {
             style={{ accentColor: trapped ? "var(--color-red)" : "var(--color-cyan)" }}
           />
         </div>
-        <div className="flex flex-wrap gap-x-6 gap-y-1 text-[var(--color-fg-3)]">
-          <button type="button" className="hover:text-[var(--color-fg-1)]" onClick={() => setRHat(2.5)}>
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[var(--color-fg-3)]">
+          <Button size="sm" onClick={() => setRHat(2.5)}>
             far field
-          </button>
-          <button type="button" className="hover:text-[var(--color-fg-1)]" onClick={() => setRHat(1.0)}>
+          </Button>
+          <Button size="sm" onClick={() => setRHat(1.0)}>
             horizon
-          </button>
-          <button type="button" className="hover:text-[var(--color-fg-1)]" onClick={() => setRHat(0.5)}>
+          </Button>
+          <Button size="sm" onClick={() => setRHat(0.5)}>
             interior (trapped)
-          </button>
+          </Button>
           <span style={{ color: trapped ? "var(--color-red)" : "var(--color-mint)" }}>
             outgoing dr/dt = {outSpeed >= 0 ? "+" : ""}
             {outSpeed.toFixed(2)} c — {trapped ? "TRAPPED" : outSpeed === 0 ? "MARGINAL" : "escapes"}

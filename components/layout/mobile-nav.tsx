@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X, User, BookOpen, Search, Sun, Moon, Sparkles, Gamepad2 } from "lucide-react";
-import { useTranslations, useLocale } from "next-intl";
-import { useRouter, usePathname } from "@/i18n/navigation";
-import { locales, getDirection } from "@/i18n/config";
+import { useTranslations } from "next-intl";
 import { BRANCHES } from "@/lib/content/branches";
 import { Logo } from "./logo";
 import { WIDE_CONTAINER } from "@/lib/layout";
@@ -19,20 +17,44 @@ function getInitialTheme(): Theme {
   return attr === "light" ? "light" : "dark";
 }
 
-const LOCALE_LABELS: Record<string, { code: string; name: string }> = {
-  en: { code: "EN", name: "English" },
-  he: { code: "HE", name: "עברית" },
-};
+// Bare icon control — no keycap body, just the glyph. The burger / close
+// triggers read as plain marks that tint cyan on hover, rather than boxed
+// buttons competing with the wordmark beside them.
+const ICON_BTN =
+  "inline-flex h-9 w-9 items-center justify-center rounded-[var(--radius-control)] " +
+  "text-[var(--color-fg-1)] transition-colors duration-[var(--duration-fast)] ease-out " +
+  "hover:text-[var(--color-cyan)] active:translate-y-px " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50";
+
+// Keycap chrome for the redesigned drawer. These rows are full-width panels with
+// their own internal layout (space-between, icon + label), not centered pills, so
+// the bevel is applied directly with the shared shadow tokens rather than through
+// the centered `Button` component — same look the topic-nav panels use.
+const ROW_BASE =
+  "btn-tracer rounded-[var(--radius-control)] " +
+  "transition-[box-shadow,background-color,border-color,color,transform] " +
+  "duration-[var(--duration-fast)] ease-out active:translate-y-px " +
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50";
+const ROW_GHOST =
+  "border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] text-[var(--color-fg-0)] " +
+  "shadow-[var(--shadow-control)] hover:border-[var(--color-cyan-dim)] " +
+  "hover:text-[var(--color-cyan-dim)] hover:shadow-[var(--shadow-control-hover)]";
+const ROW_PRIMARY =
+  "border border-[var(--color-cyan)] bg-[var(--color-cyan)] !text-white " +
+  "shadow-[var(--shadow-control-primary)] hover:bg-[var(--color-cyan-dim)] " +
+  "hover:border-[var(--color-cyan-dim)] hover:shadow-[var(--shadow-control-primary-hover)]";
+// Pressed-in keycap for the selected theme — cyan surface + inset shadow, the
+// inverse of the raised resting bevel (mirrors the shared button ACTIVE token).
+const ROW_ACTIVE =
+  "border border-[var(--color-cyan)] text-[var(--color-cyan)] " +
+  "bg-[color-mix(in_srgb,var(--color-cyan)_18%,transparent)] " +
+  "shadow-[inset_0_2px_4px_-1px_color-mix(in_srgb,var(--color-cyan)_35%,transparent)]";
 
 export function MobileNav() {
   const tNav = useTranslations("common.nav");
   const tBranches = useTranslations("home.branches");
   const tSearch = useTranslations("common.search");
   const tTheme = useTranslations("common.theme");
-
-  const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<Theme>("dark");
@@ -59,8 +81,7 @@ export function MobileNav() {
 
   const close = () => setOpen(false);
 
-  const toggleTheme = () => {
-    const next: Theme = theme === "dark" ? "light" : "dark";
+  const applyTheme = (next: Theme) => {
     setTheme(next);
     document.documentElement.setAttribute("data-theme", next);
     try {
@@ -89,12 +110,10 @@ export function MobileNav() {
     { title: string; subtitle: string } | undefined
   >;
 
-  const themeLabel = mounted
-    ? theme === "dark"
-      ? tTheme("light")
-      : tTheme("dark")
-    : tTheme("initial");
-  const ThemeIcon = mounted ? (theme === "dark" ? Sun : Moon) : Sun;
+  const themes = [
+    { value: "light", label: tTheme("light"), Icon: Sun },
+    { value: "dark", label: tTheme("dark"), Icon: Moon },
+  ] as const;
 
   return (
     <>
@@ -103,12 +122,12 @@ export function MobileNav() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close menu" : "Open menu"}
         aria-expanded={open}
-        className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:hidden"
+        className={`${ICON_BTN} -me-2 min-[1201px]:hidden`}
       >
         {open ? (
-          <X aria-hidden="true" size={18} strokeWidth={1.5} />
+          <X aria-hidden="true" size={20} strokeWidth={1.5} />
         ) : (
-          <Menu aria-hidden="true" size={18} strokeWidth={1.5} />
+          <Menu aria-hidden="true" size={20} strokeWidth={1.5} />
         )}
       </button>
 
@@ -118,7 +137,7 @@ export function MobileNav() {
       <div
         aria-hidden={!open}
         hidden={!open}
-        className="fixed inset-0 z-50 md:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain"
+        className="fixed inset-0 z-50 min-[1201px]:hidden bg-[var(--color-bg-0)] overflow-y-auto overscroll-contain"
       >
         <div className="sticky top-0 z-10 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
           <div className={`${WIDE_CONTAINER} flex h-12 items-center justify-between gap-4`}>
@@ -138,9 +157,9 @@ export function MobileNav() {
               type="button"
               onClick={close}
               aria-label="Close menu"
-              className="inline-flex h-9 w-9 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+              className={`${ICON_BTN} -me-2`}
             >
-              <X aria-hidden="true" size={18} strokeWidth={1.5} />
+              <X aria-hidden="true" size={20} strokeWidth={1.5} />
             </button>
           </div>
         </div>
@@ -148,7 +167,7 @@ export function MobileNav() {
           <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             {tBranches("tag")}
           </div>
-          <ul className="grid grid-cols-1 gap-0 [&>li]:-mt-px">
+          <ul className="grid grid-cols-1 gap-2">
             {BRANCHES.map((b) => {
               const isComingSoon = b.status === "coming-soon";
               const item = items[b.slug];
@@ -158,7 +177,7 @@ export function MobileNav() {
                   <Link
                     href={`/${b.slug}`}
                     onClick={close}
-                    className="group flex items-center justify-between border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 transition-colors hover:border-[var(--color-cyan)]"
+                    className={`group flex items-center justify-between px-4 py-3 ${ROW_BASE} ${ROW_GHOST}`}
                   >
                     <div className="flex min-w-0 items-baseline gap-3">
                       <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-cyan-dim)] shrink-0">
@@ -195,12 +214,12 @@ export function MobileNav() {
           <div className="mt-8 mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
             EXPLORE
           </div>
-          <ul className="grid grid-cols-1 gap-0 [&>li]:-mt-px">
+          <ul className="grid grid-cols-1 gap-2">
             <li>
               <Link
                 href="/ask"
                 onClick={close}
-                className="flex items-center gap-3 border border-[var(--color-cyan)] bg-[var(--color-cyan)] px-4 py-3 font-mono text-xs uppercase tracking-wider !text-white transition-colors hover:bg-[var(--color-cyan-dim)] hover:border-[var(--color-cyan-dim)]"
+                className={`flex items-center gap-3 px-4 py-3 font-mono text-xs uppercase tracking-wider ${ROW_BASE} ${ROW_PRIMARY}`}
               >
                 <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} />
                 Ask
@@ -210,7 +229,7 @@ export function MobileNav() {
               <Link
                 href="/physicists"
                 onClick={close}
-                className="flex items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+                className={`flex items-center gap-3 px-4 py-3 font-mono text-xs uppercase tracking-wider ${ROW_BASE} ${ROW_GHOST}`}
               >
                 <User aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tNav("physicists")}
@@ -220,7 +239,7 @@ export function MobileNav() {
               <Link
                 href="/dictionary"
                 onClick={close}
-                className="flex items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+                className={`flex items-center gap-3 px-4 py-3 font-mono text-xs uppercase tracking-wider ${ROW_BASE} ${ROW_GHOST}`}
               >
                 <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tNav("dictionary")}
@@ -230,7 +249,7 @@ export function MobileNav() {
               <Link
                 href="/play"
                 onClick={close}
-                className="flex items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+                className={`flex items-center gap-3 px-4 py-3 font-mono text-xs uppercase tracking-wider ${ROW_BASE} ${ROW_GHOST}`}
               >
                 <Gamepad2 aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tNav("play")}
@@ -240,7 +259,7 @@ export function MobileNav() {
               <button
                 type="button"
                 onClick={openSearch}
-                className="flex w-full items-center gap-3 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+                className={`flex w-full items-center gap-3 px-4 py-3 font-mono text-xs uppercase tracking-wider ${ROW_BASE} ${ROW_GHOST}`}
               >
                 <Search aria-hidden="true" size={14} strokeWidth={1.5} />
                 {tSearch("triggerText")}
@@ -248,52 +267,27 @@ export function MobileNav() {
             </li>
           </ul>
 
-          <div className="mt-8 grid grid-cols-2 gap-0 [&>*]:-ms-px">
-            <div className="-ms-0 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)]">
-              <div className="px-4 pt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
-                LANG
-              </div>
-              <div className="grid grid-cols-2 gap-0 px-2 py-2 [&>*]:mx-1">
-                {locales.map((loc) => {
-                  const label = LOCALE_LABELS[loc];
-                  const isActive = loc === locale;
-                  return (
-                    <button
-                      key={loc}
-                      type="button"
-                      onClick={() => {
-                        if (loc !== locale) {
-                          document.documentElement.dir = getDirection(loc);
-                          document.documentElement.lang = loc;
-                          router.replace(pathname, { locale: loc });
-                        }
-                        close();
-                      }}
-                      className={`py-2 font-mono text-xs uppercase tracking-wider transition-colors ${
-                        isActive
-                          ? "text-[var(--color-cyan)]"
-                          : "text-[var(--color-fg-1)] hover:text-[var(--color-cyan)]"
-                      }`}
-                    >
-                      {label?.code ?? loc.toUpperCase()}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex flex-col items-start gap-2 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] px-4 py-3 text-start transition-colors hover:border-[var(--color-cyan)]"
-            >
-              <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
-                THEME
-              </div>
-              <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)]">
-                <ThemeIcon aria-hidden="true" size={14} strokeWidth={1.5} />
-                {themeLabel}
-              </div>
-            </button>
+          <div className="mt-8 mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
+            {tTheme("initial")}
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            {themes.map(({ value, label, Icon }) => {
+              const isActive = mounted && theme === value;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => applyTheme(value)}
+                  aria-pressed={isActive}
+                  className={`flex items-center justify-center gap-2 px-4 py-3 font-mono text-xs uppercase tracking-wider ${ROW_BASE} ${
+                    isActive ? ROW_ACTIVE : ROW_GHOST
+                  }`}
+                >
+                  <Icon aria-hidden="true" size={14} strokeWidth={1.5} />
+                  {label}
+                </button>
+              );
+            })}
           </div>
           <div className="h-12" />
         </div>

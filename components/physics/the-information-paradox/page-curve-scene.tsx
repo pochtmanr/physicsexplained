@@ -18,6 +18,7 @@ import {
   pageCurveSmooth,
   PAGE_FRACTION,
 } from "@/lib/physics/relativity/the-information-paradox";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.60a — The Page curve.
@@ -96,13 +97,9 @@ export function PageCurveScene() {
           Page S_rad: {sPage.toFixed(2)}
         </span>
         <span>missing info: {gap.toFixed(2)}</span>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setF(PAGE_FRACTION)}
-        >
+        <Button size="sm" onClick={() => setF(PAGE_FRACTION)}>
           jump to Page time
-        </button>
+        </Button>
       </div>
     </div>
   );

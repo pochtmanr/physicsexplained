@@ -8,6 +8,7 @@ import {
 } from "@/lib/physics/electromagnetism/tir";
 import type { RayTraceScene } from "@/components/physics/ray-trace-canvas";
 import { RayTraceCanvas } from "@/components/physics/ray-trace-canvas";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.45c — Evanescent wave + frustrated TIR scene.
@@ -255,13 +256,9 @@ export function EvanescentWaveScene() {
         </div>
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-3 px-2">
-        <button
-          type="button"
-          onClick={() => setFrustrated((v) => !v)}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] hover:bg-[var(--color-bg-1)]"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setFrustrated((v) => !v)}>
           {frustrated ? "MODE · frustrated TIR" : "MODE · normal TIR"}
-        </button>
+        </Button>
         {frustrated && (
           <div className="flex flex-1 items-center gap-3 min-w-[200px]">
             <label className="text-sm text-[var(--color-fg-3)]">gap (λ)</label>

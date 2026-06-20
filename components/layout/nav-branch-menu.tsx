@@ -6,6 +6,7 @@ import { GitBranch } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { BRANCHES } from "@/lib/content/branches";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { Button } from "@/components/ui/button";
 
 export function NavBranchMenu() {
   const t = useTranslations("home.branches");
@@ -60,18 +61,18 @@ export function NavBranchMenu() {
 
   return (
     <div ref={containerRef}>
-      <button
+      <Button
         ref={buttonRef}
-        type="button"
+        variant="ghost"
+        size="sm"
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className="flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8 md:px-3"
       >
         <GitBranch aria-hidden="true" size={14} strokeWidth={1.5} />
         <span className="hidden md:inline">{t("menuLabel")}</span>
         <span className="text-[10px] leading-none">{"\u25BE"}</span>
-      </button>
+      </Button>
 
       {/* Mega panel — absolutely positioned inside the <nav> (sticky) so it
           spans the full nav width regardless of where the button sits. */}

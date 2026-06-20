@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   fresnelAll,
   reflectance,
@@ -189,13 +190,9 @@ export function FresnelCurvesScene() {
         <span style={{ color: "rgb(255,180,80)" }}>
           T_s = {Ts.toFixed(3)}  ·  T_p = {Tp.toFixed(3)}
         </span>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(200,160,255)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(thetaB)}
-        >
+        <Button variant="ghost" size="sm" onClick={() => setThetaDeg(thetaB)}>
           jump to θ_B
-        </button>
+        </Button>
       </div>
     </div>
   );

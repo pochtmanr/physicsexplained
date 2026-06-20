@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.57b — The cosmic timeline, from one second to 380,000 years.
@@ -146,16 +147,14 @@ export function CosmicTimelineScene() {
       </div>
       <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
         {ERAS.map((e) => (
-          <button
+          <Button
             key={e.label}
-            type="button"
-            className={`cursor-pointer hover:text-[var(--color-fg-1)] ${
-              era.label === e.label ? "text-[var(--color-fg-0)]" : ""
-            }`}
+            size="sm"
+            active={era.label === e.label}
             onClick={() => setLogT(e.logT)}
           >
             {e.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

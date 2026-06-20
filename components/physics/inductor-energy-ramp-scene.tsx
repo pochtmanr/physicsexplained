@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   inductorEnergy,
   inductorPower,
@@ -165,13 +166,9 @@ export function InductorEnergyRampScene() {
         <span className="text-[var(--color-fg-3)]">
           ramp: I(t) = I_max (1 − e^(−t/τ))  ·  τ = L/R
         </span>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[#FF6ADE] hover:text-[#FF6ADE]"
-        >
+        <Button variant="secondary" size="sm" onClick={handleReset}>
           reset
-        </button>
+        </Button>
       </div>
     </div>
   );

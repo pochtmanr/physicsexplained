@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 type JXG = typeof import("jsxgraph");
 
@@ -170,31 +171,31 @@ export function TaylorExpansionScene() {
         style={{ width: size.width, height: size.height, backgroundColor: "transparent" }}
       />
       <div className="flex items-center gap-3">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => {
             const idx = ORDERS.findIndex((o) => o >= maxOrder);
             if (idx > 0) setMaxOrder(ORDERS[idx - 1]!);
           }}
           disabled={maxOrder <= ORDERS[0]!}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-sm text-[var(--color-fg-1)] disabled:opacity-30"
         >
           &minus; term
-        </button>
+        </Button>
         <span className="text-sm text-[var(--color-fg-3)]">
           order {displayOrder}
         </span>
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => {
             const idx = ORDERS.findIndex((o) => o >= maxOrder);
             if (idx < ORDERS.length - 1) setMaxOrder(ORDERS[idx + 1]!);
           }}
           disabled={maxOrder >= ORDERS[ORDERS.length - 1]!}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-sm text-[var(--color-fg-1)] disabled:opacity-30"
         >
           + term
-        </button>
+        </Button>
       </div>
       </div>
     </div>

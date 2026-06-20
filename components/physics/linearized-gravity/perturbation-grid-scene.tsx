@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import { planeWave } from "@/lib/physics/relativity/linearized-gravity";
 
 /**
@@ -122,28 +123,12 @@ export function PerturbationGridScene() {
             style={{ accentColor: "var(--color-cyan)" }}
           />
         </label>
-        <button
-          type="button"
-          onClick={() => setShowFlat((v) => !v)}
-          className="border px-2 py-1"
-          style={{
-            borderColor: showFlat ? "var(--color-cyan)" : "var(--color-fg-4)",
-            color: showFlat ? "var(--color-cyan)" : "var(--color-fg-3)",
-          }}
-        >
+        <Button active={showFlat} onClick={() => setShowFlat((v) => !v)}>
           background η {showFlat ? "on" : "off"}
-        </button>
-        <button
-          type="button"
-          onClick={() => setRunning((v) => !v)}
-          className="border px-2 py-1"
-          style={{
-            borderColor: running ? "var(--color-amber)" : "var(--color-fg-4)",
-            color: running ? "var(--color-amber)" : "var(--color-fg-3)",
-          }}
-        >
+        </Button>
+        <Button active={running} onClick={() => setRunning((v) => !v)}>
           {running ? "propagating" : "frozen"}
-        </button>
+        </Button>
       </div>
       <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         Amplitude exaggerated by ~10²⁰ for visibility — a real wave has |h| ≈

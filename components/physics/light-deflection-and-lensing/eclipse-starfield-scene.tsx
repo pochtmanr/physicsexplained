@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.41b — The 1919 eclipse measurement.
@@ -133,28 +134,12 @@ export function EclipseStarfieldScene() {
         />
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-2 font-mono text-xs">
-        <button
-          type="button"
-          onClick={() => setSunPresent((s) => !s)}
-          className="border px-2 py-1"
-          style={{
-            borderColor: sunPresent ? "var(--color-amber)" : "var(--color-fg-4)",
-            color: sunPresent ? "var(--color-amber)" : "var(--color-fg-3)",
-          }}
-        >
+        <Button active={sunPresent} onClick={() => setSunPresent((s) => !s)}>
           {sunPresent ? "eclipse plate (Sun present)" : "comparison plate (no Sun)"}
-        </button>
-        <button
-          type="button"
-          onClick={() => setShowArrows((s) => !s)}
-          className="border px-2 py-1"
-          style={{
-            borderColor: showArrows ? "var(--color-magenta)" : "var(--color-fg-4)",
-            color: showArrows ? "var(--color-magenta)" : "var(--color-fg-3)",
-          }}
-        >
+        </Button>
+        <Button active={showArrows} onClick={() => setShowArrows((s) => !s)}>
           {showArrows ? "displacement arrows: on" : "displacement arrows: off"}
-        </button>
+        </Button>
       </div>
     </div>
   );

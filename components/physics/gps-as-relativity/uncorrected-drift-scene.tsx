@@ -15,6 +15,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * §05.3 UNCORRECTED DRIFT
@@ -147,26 +148,26 @@ export function UncorrectedDriftScene() {
       </div>
 
       <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => {
             if (t >= T_MAX_S) setT(0);
             setPlaying((p) => !p);
           }}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:text-[var(--color-fg-1)]"
         >
           {playing ? "pause" : t >= T_MAX_S ? "replay" : "play"}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={() => {
             setPlaying(false);
             setT(0);
           }}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:text-[var(--color-fg-1)]"
         >
           reset
-        </button>
+        </Button>
       </div>
 
       <label className="flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">

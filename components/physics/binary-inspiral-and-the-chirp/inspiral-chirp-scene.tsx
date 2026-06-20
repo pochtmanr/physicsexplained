@@ -20,6 +20,7 @@ import {
   timeToCoalescence,
   M_SUN,
 } from "@/lib/physics/relativity/binary-inspiral-and-the-chirp";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.52a — Inspiral orbit + live strain trace.
@@ -174,15 +175,12 @@ export function InspiralChirpScene() {
           />
         </div>
         <div className="flex gap-4">
-          <button
-            type="button"
-            onClick={() => setPlaying((p) => !p)}
-            className="border px-3 py-1 border-[var(--color-cyan)] text-[var(--color-cyan)]"
-          >
+          <Button variant="primary" size="sm" onClick={() => setPlaying((p) => !p)}>
             {playing ? "pause" : "play"}
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => {
               tauRef.current = 8;
               orbitPhaseRef.current = 0;
@@ -190,10 +188,9 @@ export function InspiralChirpScene() {
               tElapsedRef.current = 0;
               lastTsRef.current = null;
             }}
-            className="border px-3 py-1 border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
           >
             restart inspiral
-          </button>
+          </Button>
         </div>
       </div>
     </div>

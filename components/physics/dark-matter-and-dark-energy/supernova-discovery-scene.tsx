@@ -16,6 +16,7 @@ import {
   distanceModulusResidual,
   COSMOLOGIES,
 } from "@/lib/physics/relativity/dark-matter-and-dark-energy";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.58c — The 1998 discovery plot.
@@ -92,17 +93,9 @@ export function SupernovaDiscoveryScene() {
         aria-label="Type Ia supernova distance-modulus residual versus redshift, with decelerating, coasting, and accelerating model curves and a scatter of 1998-style data points."
       />
       <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          onClick={() => setShowData((s) => !s)}
-          className="cursor-pointer rounded-sm border px-2 py-0.5"
-          style={{
-            borderColor: showData ? "var(--color-magenta)" : "var(--color-fg-4)",
-            color: showData ? "var(--color-magenta)" : "var(--color-fg-3)",
-          }}
-        >
+        <Button size="sm" active={showData} onClick={() => setShowData((s) => !s)}>
           {showData ? "hide 1998 supernovae" : "show 1998 supernovae"}
-        </button>
+        </Button>
         <span className="text-[var(--color-fg-3)]">
           higher Δμ = fainter, farther → accelerating expansion
         </span>

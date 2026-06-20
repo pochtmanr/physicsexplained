@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
@@ -14,7 +15,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="inline-block border border-[var(--color-cyan)] px-6 py-3 font-mono text-sm uppercase tracking-wider text-[var(--color-cyan)] transition-all hover:bg-[var(--color-cyan)]/10"
+        className={buttonVariants({ variant: "secondary", size: "cta", className: "nav-link" })}
       >
         Return to origin
       </Link>

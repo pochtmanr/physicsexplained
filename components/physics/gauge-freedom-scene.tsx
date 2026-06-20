@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import { gaugeShift } from "@/lib/physics/electromagnetism/vector-potential";
 import type { Vec3 } from "@/lib/physics/electromagnetism/lorentz";
 
@@ -275,19 +276,13 @@ export function GaugeFreedomScene() {
       <div className="mt-2 flex flex-wrap items-center gap-2 px-2 font-mono text-xs">
         <span className="text-[var(--color-fg-3)]">choose f:</span>
         {CHOICES.map((c, i) => (
-          <button
+          <Button
             key={c.key}
-            type="button"
+            active={i === choiceIdx}
             onClick={() => setChoiceIdx(i)}
-            className={
-              "rounded border px-2 py-1 transition " +
-              (i === choiceIdx
-                ? "border-[#FFD66B] text-[#FFD66B]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-1)] hover:border-[var(--color-fg-3)]")
-            }
           >
             {c.label}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="mt-2 px-2 font-mono text-xs text-[var(--color-fg-3)]">

@@ -12,6 +12,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.49b — The evaporation movie.
@@ -108,24 +109,20 @@ export function EvaporationMovieScene() {
         aria-label="Animation of a black hole evaporating: the horizon shrinks following M(t) = M0(1−t/τ)^(1/3), its glow brightens and whitens as the temperature rises, and it ends in a final flash before the cycle repeats."
       />
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
-          onClick={() => setPlaying((p) => !p)}
-          className="border px-3 py-1 border-[var(--color-cyan)] text-[var(--color-cyan)] cursor-pointer"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setPlaying((p) => !p)}>
           {playing ? "pause" : "play"}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={() => {
             phaseRef.current = 0;
             flashRef.current = 0;
             lastRef.current = null;
           }}
-          className="border px-3 py-1 border-[var(--color-fg-4)] text-[var(--color-fg-3)] cursor-pointer hover:text-[var(--color-fg-1)]"
         >
           restart
-        </button>
+        </Button>
         <span className="text-[var(--color-fg-3)]">
           warped lifetime clock — slow start, runaway finish
         </span>

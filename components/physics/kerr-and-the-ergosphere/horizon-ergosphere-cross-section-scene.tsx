@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import {
   outerHorizonRadius,
   innerHorizonRadius,
@@ -93,16 +94,15 @@ export function HorizonErgosphereCrossSectionScene() {
           style={{ accentColor: "var(--color-cyan)" }}
         />
       </div>
-      <div className="mt-1 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-1 flex flex-wrap gap-1 font-mono text-xs">
         {presets.map((p) => (
-          <button
+          <Button
             key={p.label}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
+            active={aStar === p.value}
             onClick={() => setAStar(p.value)}
           >
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
       <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">

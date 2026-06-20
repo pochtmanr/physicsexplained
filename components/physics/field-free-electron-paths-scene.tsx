@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.64c — A single electron path threading one side of the solenoid.
@@ -128,13 +129,9 @@ export function FieldFreeElectronPathsScene() {
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,180,80)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setAutoplay((a) => !a)}
-        >
+        <Button variant="ghost" size="sm" onClick={() => setAutoplay((a) => !a)}>
           {autoplay ? "pause" : "auto-play"}
-        </button>
+        </Button>
         <span>
           B (along the path) ={" "}
           <span style={{ color: "rgb(255,180,80)" }}>0</span>

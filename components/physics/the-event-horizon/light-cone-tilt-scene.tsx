@@ -16,6 +16,7 @@ import {
   outgoingLightConeSlope,
   metricFactor,
 } from "@/lib/physics/relativity/the-event-horizon";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.44b — Light cones tipping over.
@@ -81,13 +82,9 @@ export function LightConeTiltScene() {
           outgoing slope dt/dr = {Number.isFinite(slope) ? slope.toFixed(2) : "∞"}
         </span>
         <span>{inside ? "inside — both edges point inward" : "outside — light can still escape"}</span>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setProbe(1)}
-        >
+        <Button size="sm" onClick={() => setProbe(1)}>
           at the horizon
-        </button>
+        </Button>
       </div>
     </div>
   );

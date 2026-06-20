@@ -18,6 +18,7 @@ import {
   peakFrequency,
   planckByFrequency,
 } from "@/lib/physics/relativity/the-cmb-and-nucleosynthesis";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.57a — The most perfect blackbody ever measured.
@@ -110,26 +111,27 @@ export function FirasBlackbodyScene() {
           className="flex-1"
           style={{ accentColor: "var(--color-cyan)" }}
         />
-        <button
-          type="button"
-          className="shrink-0 cursor-pointer border border-[var(--color-fg-4)] px-2 py-0.5 text-[var(--color-fg-3)] hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+        <Button
+          variant="secondary"
+          size="sm"
+          className="shrink-0"
           onClick={() => setT(2.725)}
         >
           reset
-        </button>
+        </Button>
       </div>
       <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
         <span>peak ≈ {peakGHz.toFixed(0)} GHz</span>
         <span>error bars ×{errScale}</span>
         {[100, 400, 1000].map((s) => (
-          <button
+          <Button
             key={s}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
+            size="sm"
+            active={errScale === s}
             onClick={() => setErrScale(s)}
           >
             ×{s}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

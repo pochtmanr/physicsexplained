@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const CANVAS_W = 360;
 const CANVAS_H = 360;
@@ -195,13 +196,13 @@ export function CarouselScene() {
         </div>
       </div>
       <div className="mt-2 flex items-center gap-3 px-2">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setFrame((f) => (f === "outside" ? "rider" : "outside"))}
-          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
         >
           switch to {frame === "outside" ? "rider's view" : "outside view"}
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { G_EARTH } from "@/lib/physics/projectile";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.62;
 const MAX_HEIGHT = 440;
@@ -278,14 +279,14 @@ export function MonkeyHunterScene() {
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="sm"
             onClick={fire}
             disabled={isFiring}
-            className="rounded border border-[#6FB8C6] px-3 py-1 text-xs font-mono text-[#6FB8C6] transition hover:bg-[#6FB8C6]/10 disabled:opacity-50"
           >
             fire
-          </button>
+          </Button>
           <span className="text-xs text-[var(--color-fg-3)]">
             the cannon is always aimed straight at the monkey; change the speed
             and try again

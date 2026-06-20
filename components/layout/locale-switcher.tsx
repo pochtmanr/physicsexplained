@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "@/i18n/navigation";
 import { locales, getDirection } from "@/i18n/config";
+import { Button } from "@/components/ui/button";
 
 const LOCALE_LABELS: Record<string, { code: string; name: string }> = {
   en: { code: "EN", name: "English" },
@@ -47,13 +48,14 @@ export function LocaleSwitcher() {
 
   return (
     <div ref={containerRef} className="relative">
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
         disabled={isPending}
-        className="inline-flex h-6 cursor-pointer items-center gap-1.5 border border-[var(--color-fg-4)] px-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] disabled:opacity-60 md:h-8 md:px-2.5"
+        className="cursor-pointer"
       >
         <span>{current?.code ?? locale.toUpperCase()}</span>
         <ChevronDown
@@ -64,7 +66,7 @@ export function LocaleSwitcher() {
             open ? "rotate-180" : ""
           }`}
         />
-      </button>
+      </Button>
 
       {open && (
         <ul

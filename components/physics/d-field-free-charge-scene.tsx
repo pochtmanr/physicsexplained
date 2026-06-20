@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 type Mode = "D" | "E" | "BOTH";
 
@@ -207,18 +208,13 @@ export function DFieldFreeChargeScene() {
         <div className="flex items-center gap-3">
           <span className="text-[var(--color-fg-3)]">FIELD</span>
           {(["BOTH", "D", "E"] as Mode[]).map((m) => (
-            <button
+            <Button
               key={m}
-              type="button"
+              active={mode === m}
               onClick={() => setMode(m)}
-              className={`rounded border px-3 py-1 transition-colors ${
-                mode === m
-                  ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                  : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-              }`}
             >
               {m}
-            </button>
+            </Button>
           ))}
         </div>
         <div className="flex items-center gap-3">

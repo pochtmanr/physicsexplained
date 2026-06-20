@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   abPhaseFromFluxRatio,
   interferencePattern,
@@ -165,21 +166,13 @@ export function TwoSlitWithSolenoidScene() {
       />
 
       <div className="mt-3 flex flex-wrap items-center gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <div className="flex overflow-hidden border border-[var(--color-fg-4)]">
-          <button
-            type="button"
-            className={`px-2 py-0.5 ${solenoidOn ? "bg-[var(--color-fg-4)] text-[var(--color-fg-1)]" : "hover:text-[var(--color-fg-1)]"}`}
-            onClick={() => setSolenoidOn(true)}
-          >
+        <div className="flex gap-1">
+          <Button active={solenoidOn} onClick={() => setSolenoidOn(true)}>
             solenoid ON
-          </button>
-          <button
-            type="button"
-            className={`px-2 py-0.5 ${!solenoidOn ? "bg-[var(--color-fg-4)] text-[var(--color-fg-1)]" : "hover:text-[var(--color-fg-1)]"}`}
-            onClick={() => setSolenoidOn(false)}
-          >
+          </Button>
+          <Button active={!solenoidOn} onClick={() => setSolenoidOn(false)}>
             solenoid OFF
-          </button>
+          </Button>
         </div>
         <span>
           Φ_B / Φ_0 ={" "}

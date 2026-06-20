@@ -11,6 +11,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.01c — Three inertial frames; identical pendulum experiments.
@@ -177,13 +178,9 @@ export function InertialFramesScene() {
         className={SCENE_CANVAS_CLASS}
       />
       <div className="mt-3 flex items-center gap-3 px-3 text-xs">
-        <button
-          type="button"
-          onClick={() => setPaused((p) => !p)}
-          className="rounded border border-[var(--color-fg-3)] px-3 py-1 font-mono uppercase tracking-wider text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setPaused((p) => !p)}>
           {paused ? "▶ resume" : "❚❚ freeze"}
-        </button>
+        </Button>
         <span className="font-mono text-[10px] text-[var(--color-fg-3)]">
           Frame A = stationary (cyan). Frame B = +6 m/s (magenta). Frame C = +14 m/s (orange). Pendulum periods: identical.
         </span>

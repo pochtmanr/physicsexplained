@@ -11,6 +11,7 @@ import {
   deriveProblemTitle,
   deriveTopicTitle,
 } from "@/lib/content/problem-title";
+import { buttonVariants } from "@/components/ui/button";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
@@ -112,7 +113,7 @@ export default async function ProblemPage({ params }: PageProps) {
         </p>
         <Link
           href={`/${locale}/ask?seed=${encodeURIComponent(strings.statement)}&topic=${problem.primaryTopicSlug}`}
-          className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
+          className={buttonVariants({ variant: "secondary", size: "cta", className: "nav-link" })}
         >
           Open in Physics.Ask
           <span aria-hidden="true" className="inline-block rtl:-scale-x-100">

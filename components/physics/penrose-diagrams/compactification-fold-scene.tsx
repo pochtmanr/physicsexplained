@@ -17,6 +17,7 @@ import {
   conformalInfinities,
   type DiagramPoint,
 } from "@/lib/physics/relativity/penrose-diagrams";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.46a — Watch infinity fold in.
@@ -115,17 +116,13 @@ export function CompactificationFoldScene() {
           className="flex-1"
           style={{ accentColor: "var(--color-cyan)" }}
         />
-        <button
-          type="button"
+        <Button
+          active={playing}
           onClick={() => setPlaying((p) => !p)}
-          className="shrink-0 rounded-sm border px-3 py-1"
-          style={{
-            borderColor: playing ? "var(--color-cyan)" : "var(--color-fg-4)",
-            color: playing ? "var(--color-cyan)" : "var(--color-fg-3)",
-          }}
+          className="shrink-0"
         >
           {playing ? "pause" : "play"}
-        </button>
+        </Button>
       </div>
     </div>
   );

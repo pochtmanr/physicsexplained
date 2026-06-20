@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const PROMPTS = [
   "Explain Noether's theorem like I'm 16",
@@ -45,10 +46,11 @@ export function EmptyState({
       </h1>
       <div className="mt-10 hidden md:grid grid-cols-1 md:grid-cols-2 gap-3 text-start">
         {PROMPTS.map((p, i) => (
-          <button
+          <Button
             key={p}
+            variant="ghost"
             onClick={() => onPick(p)}
-            className="group relative flex flex-col p-4 border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] transition-[border-color,box-shadow] duration-200 hover:border-[var(--color-cyan-dim)] hover:shadow-[0_0_0_1px_color-mix(in_srgb,var(--color-cyan-dim)_28%,transparent)]"
+            className="flex flex-col items-start justify-start gap-0 h-auto p-4 normal-case tracking-normal font-sans text-start"
           >
             <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
               Example {String(i + 1).padStart(2, "0")}
@@ -56,7 +58,7 @@ export function EmptyState({
             <span className="mt-2 text-sm leading-relaxed text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)] transition-colors">
               {p}
             </span>
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import {
   localizationAreaDeg2,
 } from "@/lib/physics/relativity/ligo-and-multi-messenger";
@@ -63,21 +64,11 @@ export function SkyTriangulationScene() {
         className={SCENE_CANVAS_CLASS}
         aria-label="A patch of sky. Each detector pair constrains the gravitational-wave source to a ring. With two detectors a single broad ring is shown; with three detectors a second ring intersects it, isolating a small localization patch. A slider sets the arrival-time precision, thickening or thinning the rings."
       />
-      <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-3 flex flex-wrap items-center gap-1 font-mono text-xs">
         {([2, 3] as const).map((n) => (
-          <button
-            key={n}
-            type="button"
-            onClick={() => setNDet(n)}
-            className="cursor-pointer border px-3 py-1"
-            style={{
-              borderColor:
-                nDet === n ? "var(--color-cyan)" : "var(--color-fg-4)",
-              color: nDet === n ? "var(--color-cyan)" : "var(--color-fg-3)",
-            }}
-          >
+          <Button key={n} active={nDet === n} onClick={() => setNDet(n)}>
             {n} detectors
-          </button>
+          </Button>
         ))}
       </div>
       <div className="mt-2 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">

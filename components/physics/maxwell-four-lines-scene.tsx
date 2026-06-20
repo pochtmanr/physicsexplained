@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.56;
 const MAX_HEIGHT = 520;
@@ -203,27 +204,21 @@ export function MaxwellFourLinesScene() {
           step {step + 1}/{TOTAL} · four equations → wave equation → c
         </span>
         <div className="flex items-center gap-2">
-          <button
-            type="button"
+          <Button
+            variant="ghost"
             onClick={() => setStep((s) => (s + TOTAL - 1) % TOTAL)}
-            className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[rgb(120,220,255)] hover:text-[rgb(120,220,255)]"
           >
             ◀ prev
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="ghost"
             onClick={() => setStep((s) => (s + 1) % TOTAL)}
-            className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[rgb(120,220,255)] hover:text-[rgb(120,220,255)]"
           >
             next ▶
-          </button>
-          <button
-            type="button"
-            onClick={() => setAuto((a) => !a)}
-            className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[rgb(200,160,255)] hover:text-[rgb(200,160,255)]"
-          >
+          </Button>
+          <Button active={auto} onClick={() => setAuto((a) => !a)}>
             auto: {auto ? "ON" : "OFF"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

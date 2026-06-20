@@ -16,6 +16,7 @@ import {
   precessionArcsecPerCentury,
 } from "@/lib/physics/relativity/mercurys-perihelion";
 import { GM_SUN_SI, AU_M } from "@/lib/physics/constants";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.40c — Why Mercury and not Jupiter.
@@ -115,19 +116,17 @@ export function PrecessionVsOrbitScene() {
           → <span style={{ color: "var(--color-magenta)" }}>{cursorVal.toFixed(2)}″/cy</span>
         </span>
       </div>
-      <div className="mt-1 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-[var(--color-fg-3)]">
+      <div className="mt-1 flex flex-wrap gap-1 font-mono text-[11px]">
         {PLANETS.map((p) => (
-          <button
+          <Button
             key={p.name}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
             onClick={() => {
               setCursorA(p.a);
               setEcc(p.e);
             }}
           >
             {p.name}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.55;
 const MAX_HEIGHT = 340;
@@ -162,13 +163,9 @@ export function CapacitorChargingScene() {
         <span className="text-[var(--color-fg-3)]">
           battery → resistor → capacitor · charge ramps with τ = RC
         </span>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[#6FB8C6] hover:text-[#6FB8C6]"
-        >
+        <Button variant="secondary" size="sm" onClick={handleReset}>
           reset
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { polarizationState } from "@/lib/physics/electromagnetism/plane-waves";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.56;
 const MAX_HEIGHT = 460;
@@ -342,36 +343,33 @@ export function PolarizationMorphScene() {
         </span>
       </div>
       <div className="mt-2 flex flex-wrap gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,100,200)] hover:text-[var(--color-fg-1)]"
+        <Button
+          variant="ghost"
           onClick={() => {
             setEllipticity(0);
             setPhaseDelta(0);
           }}
         >
           linear (0, 0)
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(120,255,170)] hover:text-[var(--color-fg-1)]"
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => {
             setEllipticity(1);
             setPhaseDelta(Math.PI / 2);
           }}
         >
           circular (1, π/2)
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,180,80)] hover:text-[var(--color-fg-1)]"
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => {
             setEllipticity(1);
             setPhaseDelta(Math.PI);
           }}
         >
           linear diag (1, π)
-        </button>
+        </Button>
       </div>
     </div>
   );

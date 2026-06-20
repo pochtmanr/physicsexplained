@@ -8,6 +8,7 @@ import {
 } from "@/lib/physics/coupled-oscillator";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.75;
 const MAX_HEIGHT = 360;
@@ -168,17 +169,13 @@ export function CoupledPendulumScene() {
       />
       <div className="mt-2 flex justify-center gap-2">
         {buttons.map((btn) => (
-          <button
+          <Button
             key={btn.value}
+            active={mode === btn.value}
             onClick={() => setMode(btn.value)}
-            className={`rounded px-3 py-1 text-sm transition-colors ${
-              mode === btn.value
-                ? "border border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
-            }`}
           >
             {btn.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Worldline } from "@/lib/physics/relativity/types";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
+import { Button } from "@/components/ui/button";
 import {
   SCENE_HEIGHT_DEFAULT,
   applyDpr,
@@ -210,13 +211,9 @@ export function LightConeScene() {
             </ul>
           )}
         </div>
-        <button
-          type="button"
-          onClick={clearEvents}
-          className="shrink-0 rounded border border-[var(--color-fg-4)] px-2 py-1 font-mono text-xs text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-        >
+        <Button onClick={clearEvents} className="shrink-0">
           clear
-        </button>
+        </Button>
       </div>
       <p className="font-mono text-[10px] text-[var(--color-fg-3)]">
         amber shading · light cones (future above, past below). lightConeBoundary(t, x) = c|t| − |x|, sign tells you the quadrant.

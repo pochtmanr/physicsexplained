@@ -7,6 +7,7 @@ import {
   rcDischarge,
   rcTimeConstant,
 } from "@/lib/physics/electromagnetism/rc-circuits";
+import { Button } from "@/components/ui/button";
 
 /**
  * Symmetric twin of the charging scene. A pre-charged cap at V₀ discharges
@@ -181,13 +182,9 @@ export function RcDischargingScene() {
           <span className="font-mono text-xs text-[var(--color-fg-3)]">
             C = {Cuf} µF · V₀ = {V_SRC} V
           </span>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#FFD66B] hover:text-[#FFD66B]"
-          >
+          <Button variant="secondary" size="sm" onClick={handleReset}>
             reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

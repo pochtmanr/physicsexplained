@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.28c — Flyback spike. An RL circuit runs in steady state with
@@ -242,21 +243,21 @@ export function RlFlybackScene() {
               : "arc collapsed · current = 0 · reservoir drained through the spark"}
         </span>
         <div className="flex gap-2">
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="sm"
             onClick={handleOpen}
             disabled={phase !== "steady"}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#C8A0FF] hover:text-[#C8A0FF] disabled:opacity-40"
           >
             open switch
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={handleReset}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#FFD66B] hover:text-[#FFD66B]"
           >
             reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

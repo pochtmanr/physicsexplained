@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { boostX, gamma } from "@/lib/physics/relativity/types";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.08c — The 4×4 Lorentz boost matrix Λ as a live grid.
@@ -125,23 +126,14 @@ function RowBlock({
 }) {
   return (
     <>
-      <button
-        type="button"
+      <Button
+        active={isActive}
+        size="sm"
         onClick={onClick}
-        className="flex h-12 items-center justify-center rounded font-mono text-[11px] transition"
-        style={
-          isActive
-            ? {
-                background: "color-mix(in srgb, var(--color-magenta) 20%, transparent)",
-                color: "var(--color-fg-0)",
-              }
-            : {
-                color: "var(--color-fg-3)",
-              }
-        }
+        className="!h-12 normal-case"
       >
         {LABELS[i]}
-      </button>
+      </Button>
       {row.map((v, j) => (
         <Cell
           key={j}

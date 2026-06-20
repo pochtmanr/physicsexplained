@@ -2,6 +2,7 @@
 import clsx from "clsx";
 import Link from "next/link";
 import { useLocale } from "next-intl";
+import { Button } from "@/components/ui/button";
 import type { ProblemStep } from "@/lib/content/types";
 
 export type StepStatus = "locked" | "active" | "checking" | "correct" | "wrong" | "skipped";
@@ -95,19 +96,21 @@ export function StepRow({
               placeholder={`Enter ${step.varName} ...`}
               className="flex-1 min-w-[12rem] border border-[var(--color-fg-4)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-fg-0)] outline-none placeholder:text-[var(--color-fg-3)] focus:border-[var(--color-cyan)]"
             />
-            <button
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => onSubmit(studentExpr)}
               disabled={status === "checking" || !studentExpr.trim()}
-              className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {status === "checking" ? "Checking…" : "Check"}
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={onShowMe}
-              className="inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan)]"
             >
               Show me
-            </button>
+            </Button>
           </div>
 
           {hint && (

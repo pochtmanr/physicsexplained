@@ -4,6 +4,8 @@ import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
+import { Button } from "@/components/ui/button";
+
 export function SearchTrigger() {
   const t = useTranslations("common.search");
   const [isMac, setIsMac] = useState(true);
@@ -23,11 +25,11 @@ export function SearchTrigger() {
   };
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="sm"
       onClick={open}
       aria-label={t("triggerLabel")}
-      className="inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8 md:px-2.5"
     >
       <Search aria-hidden="true" size={14} strokeWidth={1.5} />
       <kbd
@@ -36,6 +38,6 @@ export function SearchTrigger() {
       >
         {isMac ? "⌘K" : "Ctrl+K"}
       </kbd>
-    </button>
+    </Button>
   );
 }

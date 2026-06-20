@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import { MU_0 } from "@/lib/physics/constants";
 
 /**
@@ -296,18 +297,13 @@ export function AmpereLoopWireScene() {
       <div className="mt-2 flex flex-wrap items-center gap-3 px-2">
         <div className="flex gap-1">
           {SHAPES.map((s) => (
-            <button
+            <Button
               key={s.id}
-              type="button"
+              active={shape === s.id}
               onClick={() => setShape(s.id)}
-              className={`rounded border px-2 py-1 font-mono text-xs ${
-                shape === s.id
-                  ? "border-[rgba(120,220,255,0.9)] bg-[rgba(120,220,255,0.12)] text-[var(--color-fg-0)]"
-                  : "border-[var(--color-fg-4)] text-[var(--color-fg-2)] hover:border-[var(--color-fg-3)]"
-              }`}
             >
               {s.label}
-            </button>
+            </Button>
           ))}
         </div>
         <label className="ml-auto flex items-center gap-2 font-mono text-xs text-[var(--color-fg-2)]">

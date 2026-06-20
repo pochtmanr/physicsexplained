@@ -1,5 +1,6 @@
 "use client";
 import { useState, useTransition } from "react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   open: boolean;
@@ -40,25 +41,25 @@ export function DeleteConfirm({ open, onClose, title, description, expected, act
         />
         {err && <p className="mt-2 font-mono text-xs uppercase tracking-wider text-[var(--color-magenta)]">{err}</p>}
         <div className="mt-5 flex justify-end gap-2">
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={onClose}
-            className="border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] hover:bg-[var(--color-fg-4)]/10"
           >
             Cancel
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            variant="danger-solid"
+            size="sm"
             disabled={!matches || pending}
             onClick={() => start(async () => {
               setErr(null);
               const res = (await action(input)) as { ok: boolean; error?: string } | undefined;
               if (res && res.ok === false) setErr(res.error ?? "Failed"); else onClose();
             })}
-            className="bg-[var(--color-magenta)] text-[var(--color-bg-0)] px-4 py-2 font-mono text-xs uppercase tracking-wider disabled:opacity-30 disabled:cursor-not-allowed hover:opacity-90"
           >
             {pending ? "Working…" : "Delete"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

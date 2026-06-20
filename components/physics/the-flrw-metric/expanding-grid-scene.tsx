@@ -16,6 +16,7 @@ import {
   properDistance,
   recessionVelocity,
 } from "@/lib/physics/relativity/the-flrw-metric";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.54a — The expanding grid.
@@ -94,14 +95,14 @@ export function ExpandingGridScene() {
           { label: "future (a=1.6)", v: 1.6 },
           { label: "far future (a=2.2)", v: 2.2 },
         ].map((s) => (
-          <button
+          <Button
             key={s.label}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
+            size="sm"
+            active={a === s.v}
             onClick={() => setA(s.v)}
           >
             {s.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

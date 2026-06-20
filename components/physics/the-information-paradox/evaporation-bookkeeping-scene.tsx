@@ -19,6 +19,7 @@ import {
   remainingMassFraction,
   PAGE_FRACTION,
 } from "@/lib/physics/relativity/the-information-paradox";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.60b — The bookkeeping picture.
@@ -87,13 +88,9 @@ export function EvaporationBookkeepingScene() {
         <span style={{ color: "var(--color-cyan)" }}>
           information out: {(iOut * 100).toFixed(0)}%
         </span>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setF(PAGE_FRACTION)}
-        >
+        <Button size="sm" onClick={() => setF(PAGE_FRACTION)}>
           Page time
-        </button>
+        </Button>
       </div>
     </div>
   );

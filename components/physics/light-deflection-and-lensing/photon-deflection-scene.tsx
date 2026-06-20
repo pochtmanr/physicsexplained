@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import {
   tracePhoton,
   tracedBendAngle,
@@ -109,42 +110,14 @@ export function PhotonDeflectionScene() {
         />
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-2 font-mono text-xs">
-        {(["gr", "newtonian"] as Mode[]).map((m) => {
-          const active = mode === m;
-          return (
-            <button
-              key={m}
-              type="button"
-              onClick={() => setMode(m)}
-              className="border px-2 py-1"
-              style={{
-                borderColor: active
-                  ? m === "gr"
-                    ? "var(--color-amber)"
-                    : "var(--color-cyan)"
-                  : "var(--color-fg-4)",
-                color: active
-                  ? m === "gr"
-                    ? "var(--color-amber)"
-                    : "var(--color-cyan)"
-                  : "var(--color-fg-3)",
-              }}
-            >
-              {m === "gr" ? "GR · 4GM/c²b" : "Newton · 2GM/c²b"}
-            </button>
-          );
-        })}
-        <button
-          type="button"
-          onClick={() => setShowOther((s) => !s)}
-          className="border px-2 py-1"
-          style={{
-            borderColor: showOther ? "var(--color-fg-2)" : "var(--color-fg-4)",
-            color: showOther ? "var(--color-fg-1)" : "var(--color-fg-3)",
-          }}
-        >
+        {(["gr", "newtonian"] as Mode[]).map((m) => (
+          <Button key={m} active={mode === m} onClick={() => setMode(m)}>
+            {m === "gr" ? "GR · 4GM/c²b" : "Newton · 2GM/c²b"}
+          </Button>
+        ))}
+        <Button active={showOther} onClick={() => setShowOther((s) => !s)}>
           {showOther ? "ghost: on" : "ghost: off"}
-        </button>
+        </Button>
       </div>
     </div>
   );

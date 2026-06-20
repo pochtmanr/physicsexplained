@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import { rlCurrent, rlTimeConstant } from "@/lib/physics/electromagnetism/inductance";
 
 /**
@@ -236,13 +237,9 @@ export function InductorCurrentBuildupScene() {
           <span className="font-mono text-xs text-[var(--color-fg-3)]">
             V = {V_SRC} V · R = {R_OHM} Ω
           </span>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#FFD66B] hover:text-[#FFD66B]"
-          >
+          <Button variant="secondary" size="sm" onClick={handleReset}>
             reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

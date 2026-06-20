@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.48c — The four-laws correspondence table.
@@ -114,19 +115,9 @@ export function FourLawsCorrespondenceScene() {
       <div className="mt-3 flex flex-wrap items-center gap-2 font-mono text-xs">
         <span className="text-[var(--color-fg-3)]">framing:</span>
         {(["analogy", "physics"] as Mode[]).map((m) => (
-          <button
-            key={m}
-            type="button"
-            onClick={() => setMode(m)}
-            className="cursor-pointer border px-2 py-0.5"
-            style={
-              mode === m
-                ? { borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }
-                : { borderColor: "var(--color-fg-4)", color: "var(--color-fg-3)" }
-            }
-          >
+          <Button key={m} size="sm" active={mode === m} onClick={() => setMode(m)}>
             {m === "analogy" ? "1973 analogy" : "post-1974 physics"}
-          </button>
+          </Button>
         ))}
         <span className="ml-2 text-[var(--color-fg-3)]">— click a row to expand</span>
       </div>

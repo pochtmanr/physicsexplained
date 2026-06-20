@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import { dualMaxwellEquationLabels } from "@/lib/physics/electromagnetism/monopole";
 
 /**
@@ -234,13 +235,9 @@ export function DualMaxwellSymmetryScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <button
-          type="button"
-          onClick={() => setWithMonopoles((v) => !v)}
-          className="rounded-sm border border-[var(--color-fg-4)] px-3 py-1 text-xs font-mono text-[var(--color-fg-1)] hover:border-[var(--color-fg-3)]"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setWithMonopoles((v) => !v)}>
           {withMonopoles ? "show standard Maxwell" : "show monopole-symmetric Maxwell"}
-        </button>
+        </Button>
         <span className="text-xs font-mono text-[var(--color-fg-3)]">
           mode: {withMonopoles ? "with magnetic sources" : "no magnetic sources"}
         </span>

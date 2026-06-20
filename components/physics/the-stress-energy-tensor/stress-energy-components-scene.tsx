@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.36a — THE STRESS-ENERGY TENSOR COMPONENTS
@@ -325,17 +326,14 @@ export function StressEnergyComponentsScene() {
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)]">
         <span className="shrink-0 text-[var(--color-fg-3)]">fluid type:</span>
         {FLUID_LABELS.map((label, i) => (
-          <button
+          <Button
             key={label}
+            active={i === fluidIndex}
+            size="sm"
             onClick={() => setFluidIndex(i)}
-            className={`px-3 py-1 rounded border transition-colors ${
-              i === fluidIndex
-                ? "border-[var(--color-fg-2)] text-[var(--color-fg-0)] bg-[var(--color-fg-4)]/40"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)] hover:border-[var(--color-fg-3)]"
-            }`}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
       <p className="mt-2 font-mono text-[10px] text-[var(--color-fg-3)]">

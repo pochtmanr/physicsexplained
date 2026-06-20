@@ -16,6 +16,7 @@ import {
   NEWTONIAN_PERTURBERS,
   mercuryPrecessionArcsecPerCentury,
 } from "@/lib/physics/relativity/mercurys-perihelion";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.40b — The precession budget.
@@ -67,17 +68,9 @@ export function PrecessionBudgetScene() {
         aria-label="A stacked-bar comparison of Mercury's perihelion precession budget in arcseconds per century. The model bar stacks Newtonian planetary perturbations plus the general-relativistic contribution; the observed bar shows the measured value. A toggle removes the GR slab to reveal the 43-arcsecond shortfall."
       />
       <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
-          onClick={() => setGrOn((v) => !v)}
-          className="cursor-pointer border px-2 py-1"
-          style={{
-            borderColor: grOn ? "var(--color-magenta)" : "var(--color-fg-4)",
-            color: grOn ? "var(--color-magenta)" : "var(--color-fg-3)",
-          }}
-        >
+        <Button active={grOn} onClick={() => setGrOn((v) => !v)}>
           GR (43″): {grOn ? "included" : "removed"}
-        </button>
+        </Button>
         <span className="text-[var(--color-fg-3)]">
           model {modelTotal.toFixed(1)}″ vs observed{" "}
           {budget.observed_arcsec.toFixed(1)}″ — residual{" "}
@@ -89,21 +82,17 @@ export function PrecessionBudgetScene() {
           </span>
         </span>
       </div>
-      <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-[var(--color-fg-3)]">
+      <div className="mt-2 flex flex-wrap gap-1 font-mono text-[11px]">
         {NEWTONIAN_PERTURBERS.map((p) => (
-          <button
+          <Button
             key={p.body}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
-            style={{
-              color: selected === p.body ? "var(--color-cyan)" : undefined,
-            }}
+            active={selected === p.body}
             onClick={() =>
               setSelected((s) => (s === p.body ? null : p.body))
             }
           >
             {p.body} {p.arcsec.toFixed(1)}″
-          </button>
+          </Button>
         ))}
       </div>
     </div>

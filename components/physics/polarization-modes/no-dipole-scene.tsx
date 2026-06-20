@@ -14,6 +14,7 @@ import {
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
 import { massDipole, type Vec2 } from "@/lib/physics/relativity/polarization-modes";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.51c — Why there is no dipole gravitational radiation.
@@ -77,13 +78,9 @@ export function NoDipoleScene() {
         aria-label="Two animated mass configurations comparing a forbidden oscillating mass dipole, whose centre of mass stays fixed, with an allowed oscillating mass quadrupole that does radiate."
       />
       <div className="mt-3 flex flex-wrap gap-2 font-mono text-xs">
-        <button
-          type="button"
-          onClick={() => setPaused((p) => !p)}
-          className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-        >
+        <Button onClick={() => setPaused((p) => !p)}>
           {paused ? "play" : "pause"}
-        </button>
+        </Button>
       </div>
     </div>
   );

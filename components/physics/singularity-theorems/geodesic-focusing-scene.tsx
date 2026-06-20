@@ -18,6 +18,7 @@ import {
   focalParameterBound,
   type CongruenceKind,
 } from "@/lib/physics/relativity/singularity-theorems";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.59a — Geodesic focusing (the Raychaudhuri engine).
@@ -121,17 +122,14 @@ export function GeodesicFocusingScene() {
             style={{ accentColor: "var(--color-magenta)" }}
           />
         </div>
-        <button
-          type="button"
+        <Button
+          size="sm"
+          active={energyOK}
           onClick={() => setEnergyOK((v) => !v)}
-          className="self-start rounded-none border px-2 py-1"
-          style={{
-            borderColor: energyOK ? "var(--color-mint)" : "var(--color-red)",
-            color: energyOK ? "var(--color-mint)" : "var(--color-red)",
-          }}
+          className="self-start"
         >
           energy condition: {energyOK ? "HOLDS  →  curvature focuses" : "VIOLATED  →  curvature defocuses"}
-        </button>
+        </Button>
       </div>
     </div>
   );

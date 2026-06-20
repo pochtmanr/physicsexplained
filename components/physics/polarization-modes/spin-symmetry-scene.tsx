@@ -16,6 +16,7 @@ import {
   deformedRing,
   symmetryAngle,
 } from "@/lib/physics/relativity/polarization-modes";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.51b — Spin-1 versus spin-2 polarization symmetry.
@@ -77,16 +78,11 @@ export function SpinSymmetryScene() {
           style={{ accentColor: "var(--color-cyan)" }}
         />
       </div>
-      <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-2 flex flex-wrap gap-1 font-mono text-xs">
         {[0, 90, 180, 270, 360].map((d) => (
-          <button
-            key={d}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
-            onClick={() => setPsiDeg(d)}
-          >
+          <Button key={d} onClick={() => setPsiDeg(d)}>
             {d}°
-          </button>
+          </Button>
         ))}
       </div>
     </div>

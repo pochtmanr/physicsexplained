@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { add, angleOf, mag, type Vec2 } from "@/lib/physics/projectile";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.7;
 const MAX_HEIGHT = 460;
@@ -275,13 +276,9 @@ export function VectorAdditionScene() {
         onPointerCancel={handlePointerUp}
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="rounded border border-[#6FB8C6] px-3 py-1 text-xs font-mono text-[#6FB8C6] transition hover:bg-[#6FB8C6]/10"
-        >
+        <Button variant="secondary" size="sm" onClick={handleReset}>
           reset
-        </button>
+        </Button>
         <span className="text-xs text-[var(--color-fg-3)]">
           drag the green or purple tip — the cyan resultant updates live
         </span>

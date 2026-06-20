@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { huygensSum, doubleSlitFringeSpacing } from "@/lib/physics/electromagnetism/diffraction";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.6;
 const MAX_HEIGHT = 560;
@@ -293,32 +294,28 @@ export function DoubleSlitBuildupScene() {
 
       {/* Controls row 2 — mode toggle, pause, readouts */}
       <div className="mt-3 flex flex-wrap items-center gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <div className="flex overflow-hidden border border-[var(--color-fg-4)]">
-          <button
-            type="button"
-            className={`px-2 py-0.5 ${mode === "particle" ? "bg-[var(--color-fg-4)] text-[var(--color-fg-1)]" : "hover:text-[var(--color-fg-1)]"}`}
+        <div className="flex gap-1">
+          <Button
+            active={mode === "particle"}
             onClick={() => setMode("particle")}
           >
             particle-view
-          </button>
-          <button
-            type="button"
-            className={`px-2 py-0.5 ${mode === "wave" ? "bg-[var(--color-fg-4)] text-[var(--color-fg-1)]" : "hover:text-[var(--color-fg-1)]"}`}
+          </Button>
+          <Button
+            active={mode === "wave"}
             onClick={() => setMode("wave")}
           >
             wave-view
-          </button>
+          </Button>
         </div>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(120,220,240)] hover:text-[var(--color-fg-1)]"
+        <Button
+          variant="ghost"
           onClick={() => setPaused((p) => !p)}
         >
           {paused ? "resume" : "pause"}
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,100,200)] hover:text-[var(--color-fg-1)]"
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => {
             histogramRef.current = new Uint32Array(HISTOGRAM_BINS);
             photonCountRef.current = 0;
@@ -326,7 +323,7 @@ export function DoubleSlitBuildupScene() {
           }}
         >
           reset
-        </button>
+        </Button>
         <span>
           Δy<sub>fringe</sub> = λL/d ={" "}
           <span style={{ color: "rgb(120,220,240)" }}>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.48;
 const MAX_HEIGHT = 340;
@@ -202,30 +203,18 @@ export function GroupVsPhaseScene() {
       />
       <div className="mt-3 flex flex-wrap items-center gap-3 px-2 font-mono text-xs">
         <span className="text-[var(--color-fg-3)]">medium:</span>
-        <button
-          type="button"
+        <Button
+          active={mode === "normal"}
           onClick={() => setMode("normal")}
-          className={
-            "rounded-sm border px-2 py-1 transition-colors " +
-            (mode === "normal"
-              ? "border-[var(--color-fg-1)] bg-[color-mix(in_srgb,var(--color-fg-1)_10%,transparent)] text-[var(--color-fg-0)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]")
-          }
         >
           normal
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          active={mode === "anomalous"}
           onClick={() => setMode("anomalous")}
-          className={
-            "rounded-sm border px-2 py-1 transition-colors " +
-            (mode === "anomalous"
-              ? "border-[var(--color-fg-1)] bg-[color-mix(in_srgb,var(--color-fg-1)_10%,transparent)] text-[var(--color-fg-0)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]")
-          }
         >
           anomalous
-        </button>
+        </Button>
         <span className="ml-auto text-[var(--color-fg-3)]">
           packet: Gaussian envelope × cosine carrier
         </span>

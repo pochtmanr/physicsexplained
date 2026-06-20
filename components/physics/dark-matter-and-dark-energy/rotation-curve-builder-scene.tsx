@@ -17,6 +17,7 @@ import {
   diskRotationSpeed,
   totalRotationSpeed,
 } from "@/lib/physics/relativity/dark-matter-and-dark-energy";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.58a — Galaxy rotation curve builder.
@@ -104,20 +105,15 @@ export function RotationCurveBuilderScene() {
           fit error: {fitErr.toFixed(0)} km/s
         </span>
       </div>
-      <div className="mt-1 flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-1 flex flex-wrap gap-1">
         {[
           { label: "no halo", v: 0 },
           { label: "Rubin fit", v: 0.62 },
           { label: "over-massive", v: 1 },
         ].map((p) => (
-          <button
-            key={p.label}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
-            onClick={() => setHalo(p.v)}
-          >
+          <Button key={p.label} size="sm" onClick={() => setHalo(p.v)}>
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

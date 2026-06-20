@@ -5,6 +5,7 @@ import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { nonAbelianCommutator } from "@/lib/physics/electromagnetism/gauge-theory";
 import type { FieldTensor } from "@/lib/physics/electromagnetism/relativity";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.63c — Non-Abelian gesture: [A_μ, A_ν] for U(1) vs SU(N).
@@ -213,13 +214,13 @@ export function NonAbelianGestureScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setNonAbelian((v) => !v)}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] hover:bg-[var(--color-bg-2)]"
         >
           {nonAbelian ? "→ switch to U(1) (abelian)" : "→ switch to SU(N) (non-abelian)"}
-        </button>
+        </Button>
         <span className="ml-2 text-xs font-mono text-[var(--color-fg-3)]">
           {nonAbelian ? "currently SU(N)-like" : "currently U(1)"}
         </span>

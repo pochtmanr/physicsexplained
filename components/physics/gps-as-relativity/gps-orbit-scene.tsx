@@ -17,6 +17,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * §05.3 GPS ORBIT — top-down view of Earth + GPS satellite. Bars show SR
@@ -129,13 +130,9 @@ export function GpsOrbitScene() {
       </div>
 
       <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
-          onClick={() => setPaused((p) => !p)}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:text-[var(--color-fg-1)]"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setPaused((p) => !p)}>
           {paused ? "play" : "pause"}
-        </button>
+        </Button>
         <span className="opacity-70">
           v ≈ {orbitalSpeedKmS.toFixed(2)} km/s · β ≈ {beta.toExponential(2)}
         </span>

@@ -8,6 +8,7 @@ import {
   rcChargeCurrent,
   rcTimeConstant,
 } from "@/lib/physics/electromagnetism/rc-circuits";
+import { Button } from "@/components/ui/button";
 
 /**
  * A series RC circuit: battery V₀, resistor R, capacitor C. At t = 0 the
@@ -198,13 +199,9 @@ export function RcChargingScene() {
         </div>
         <div className="flex items-center justify-end gap-2">
           <span className="font-mono text-xs text-[var(--color-fg-3)]">V₀ = {V_SRC} V</span>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#FFD66B] hover:text-[#FFD66B]"
-          >
+          <Button variant="secondary" size="sm" onClick={handleReset}>
             reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

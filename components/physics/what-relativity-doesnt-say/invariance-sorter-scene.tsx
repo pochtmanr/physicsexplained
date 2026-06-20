@@ -15,6 +15,7 @@ import {
   INVARIANCE_TABLE,
   type QuantityVerdict,
 } from "@/lib/physics/relativity/what-relativity-doesnt-say";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.61b — "What's invariant?" myth-buster.
@@ -116,13 +117,13 @@ export function InvarianceSorterScene() {
           score: {correct} / {rows.length}{" "}
           {revealedAll ? "— all revealed" : "(click a row)"}
         </span>
-        <button
-          type="button"
-          className="cursor-pointer border border-[var(--color-fg-4)] px-2 py-1 text-[var(--color-fg-3)] hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={() => setGuesses(rows.map(() => null))}
         >
           reset
-        </button>
+        </Button>
       </div>
     </div>
   );

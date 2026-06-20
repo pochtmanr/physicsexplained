@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.62;
 const MAX_HEIGHT = 360;
@@ -126,28 +127,12 @@ export function FieldLinesPointScene() {
       />
       <div className="mt-2 flex items-center gap-3 px-2 font-mono text-xs">
         <span className="text-[var(--color-fg-3)]">SIGN</span>
-        <button
-          type="button"
-          onClick={() => setSign(1)}
-          className={`rounded border px-3 py-1 transition-colors ${
-            sign === 1
-              ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-          }`}
-        >
+        <Button active={sign === 1} onClick={() => setSign(1)}>
           +
-        </button>
-        <button
-          type="button"
-          onClick={() => setSign(-1)}
-          className={`rounded border px-3 py-1 transition-colors ${
-            sign === -1
-              ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-          }`}
-        >
+        </Button>
+        <Button active={sign === -1} onClick={() => setSign(-1)}>
           −
-        </button>
+        </Button>
       </div>
     </div>
   );

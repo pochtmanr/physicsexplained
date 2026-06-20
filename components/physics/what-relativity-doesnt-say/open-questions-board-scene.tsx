@@ -11,6 +11,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.61c — The open-questions board.
@@ -105,21 +106,16 @@ export function OpenQuestionsBoardScene() {
         className={SCENE_CANVAS_CLASS}
         aria-label="The open-questions board. Six tabs name questions general relativity cannot answer; selecting one reveals the question, why GR cannot answer it, and what evidence would settle it."
       />
-      <div className="mt-3 flex flex-wrap gap-2 font-mono text-xs">
+      <div className="mt-3 flex flex-wrap gap-2">
         {QUESTIONS.map((q, i) => (
-          <button
+          <Button
             key={q.tab}
-            type="button"
-            className={
-              "cursor-pointer border px-2 py-1 " +
-              (i === active
-                ? "border-[var(--color-amber)] text-[var(--color-amber)]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]")
-            }
+            active={i === active}
+            size="sm"
             onClick={() => setActive(i)}
           >
             {q.tab}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

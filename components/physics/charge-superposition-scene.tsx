@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { superpose, type Charge } from "@/lib/physics/coulomb";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.65;
 const MAX_HEIGHT = 420;
@@ -215,35 +216,15 @@ export function ChargeSuperpositionScene() {
         onContextMenu={handleContextMenu}
       />
       <div className="mt-2 flex flex-wrap items-center gap-2 px-2">
-        <button
-          type="button"
-          onClick={() => setNextSign(1)}
-          className={`rounded px-3 py-1 text-sm font-mono ${
-            nextSign === 1
-              ? "bg-[#FF6ADE] text-[var(--color-bg-0)]"
-              : "border border-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-          }`}
-        >
+        <Button active={nextSign === 1} onClick={() => setNextSign(1)}>
           +1 µC
-        </button>
-        <button
-          type="button"
-          onClick={() => setNextSign(-1)}
-          className={`rounded px-3 py-1 text-sm font-mono ${
-            nextSign === -1
-              ? "bg-[#6FB8C6] text-[var(--color-bg-0)]"
-              : "border border-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-          }`}
-        >
+        </Button>
+        <Button active={nextSign === -1} onClick={() => setNextSign(-1)}>
           −1 µC
-        </button>
-        <button
-          type="button"
-          onClick={() => setCharges([])}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-sm font-mono text-[var(--color-fg-1)]"
-        >
+        </Button>
+        <Button variant="ghost" onClick={() => setCharges([])}>
           clear
-        </button>
+        </Button>
         <span className="ml-2 text-xs font-mono text-[var(--color-fg-3)]">
           click empty space to add · shift-click flips sign · alt-click or right-click removes
         </span>

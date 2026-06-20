@@ -11,6 +11,7 @@ import {
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
 import { classicalTests } from "@/lib/physics/relativity/the-classical-tests-summary";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.43a — The four-test dashboard.
@@ -125,18 +126,14 @@ export function FourTestDashboardScene() {
       />
       <div className="mt-3 flex flex-wrap gap-2 font-mono text-xs text-[var(--color-fg-3)]">
         {tests.map((t) => (
-          <button
+          <Button
             key={t.id}
-            type="button"
+            size="sm"
+            active={selected === t.id}
             onClick={() => setSelected(t.id)}
-            className={
-              selected === t.id
-                ? "border-b border-[var(--color-cyan)] text-[var(--color-fg-1)]"
-                : "hover:text-[var(--color-fg-1)]"
-            }
           >
             {t.name}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

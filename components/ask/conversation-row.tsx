@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MoreHorizontal, Pencil, Star, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Conv {
   id: string;
@@ -136,16 +137,17 @@ export function ConversationRow({ conv, locale, active }: Props) {
       )}
 
       {!renaming && (
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           aria-label="Conversation actions"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setMenuOpen((v) => !v); }}
-          className={`absolute end-2 top-2 p-1 rounded-sm text-[var(--color-fg-3)] hover:text-[var(--color-fg-0)] hover:bg-[var(--color-fg-4)]/30 transition-opacity ${
+          className={`absolute end-2 top-2 !h-6 !w-6 transition-opacity ${
             menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100"
           }`}
         >
           <MoreHorizontal size={14} strokeWidth={1.5} />
-        </button>
+        </Button>
       )}
 
       {menuOpen && (
@@ -194,20 +196,20 @@ export function ConversationRow({ conv, locale, active }: Props) {
               Permanently delete “{conv.title ?? "Untitled"}”? This cannot be undone.
             </p>
             <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
+              <Button
+                variant="secondary"
+                size="sm"
                 onClick={() => setConfirmDelete(false)}
-                className="border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/20"
               >
                 Cancel
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant="danger-solid"
+                size="sm"
                 onClick={remove}
-                className="bg-[var(--color-magenta)] text-[var(--color-bg-0)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider hover:opacity-90"
               >
                 Delete
-              </button>
+              </Button>
             </div>
           </div>
         </div>

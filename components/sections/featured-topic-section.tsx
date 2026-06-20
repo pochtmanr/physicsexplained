@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { PendulumScene } from "@/components/physics/pendulum-scene";
+import { buttonVariants } from "@/components/ui/button";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import frameStyles from "./section-frame.module.css";
 
@@ -35,12 +37,10 @@ export async function FeaturedTopicSection() {
               </div>
               <Link
                 href="/classical-mechanics/pendulum"
-                className="btn-tracer mt-8 inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
+                className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link mt-8" })}
               >
+                <BookOpen aria-hidden="true" size={14} strokeWidth={1.6} />
                 {t("cta")}
-                <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
-                  →
-                </span>
               </Link>
             </div>
             <div className="border border-[var(--color-fg-4)] bg-[var(--color-bg-1)] p-6 flex items-center justify-center">

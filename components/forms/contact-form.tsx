@@ -6,17 +6,14 @@ import {
   submitContactMessage,
   type ContactResult,
 } from "@/app/actions/contact";
+import { Button } from "@/components/ui/button";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="border border-[var(--color-cyan)] px-6 py-3 font-mono text-sm uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 disabled:cursor-not-allowed disabled:opacity-50"
-    >
+    <Button variant="secondary" size="sm" type="submit" disabled={pending}>
       {pending ? "Sending…" : "→ Send message"}
-    </button>
+    </Button>
   );
 }
 

@@ -15,6 +15,7 @@ import {
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
 import { heliumFractionFromBaryon } from "@/lib/physics/relativity/the-cmb-and-nucleosynthesis";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.57c — Helium versus baryon density: the BBN baryometer.
@@ -89,13 +90,9 @@ export function BbnBaryonDensityScene() {
         <span className={inData ? "text-[var(--color-mint)]" : "text-[var(--color-red)]"}>
           {inData ? "Y_p inside observed band" : "Y_p outside observed band"}
         </span>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setEta(6.1)}
-        >
+        <Button size="sm" onClick={() => setEta(6.1)}>
           Planck value (η₁₀ ≈ 6.1)
-        </button>
+        </Button>
       </div>
     </div>
   );

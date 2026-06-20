@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.5;
 const MAX_HEIGHT = 340;
@@ -222,19 +223,13 @@ export function LorenzVsCoulombGaugeScene() {
       <div className="mt-2 flex flex-wrap items-center gap-2 px-2 font-mono text-xs">
         <span className="text-[var(--color-fg-3)]">ω:</span>
         {(Object.keys(SCENARIOS) as ScenarioKey[]).map((k) => (
-          <button
+          <Button
             key={k}
-            type="button"
+            active={k === scenario}
             onClick={() => setScenario(k)}
-            className={
-              "rounded border px-2 py-1 transition " +
-              (k === scenario
-                ? "border-[#FFD66B] text-[#FFD66B]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-1)] hover:border-[var(--color-fg-3)]")
-            }
           >
             {SCENARIOS[k].label}
-          </button>
+          </Button>
         ))}
         <span className="ml-auto text-[var(--color-fg-3)]">
           magenta dashed = Coulomb · lilac = Lorenz

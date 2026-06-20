@@ -9,6 +9,7 @@ import {
 } from "@/lib/physics/waves";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.55;
 const MAX_HEIGHT = 320;
@@ -208,13 +209,9 @@ export function TravellingWaveScene({
         </span>
       </div>
       <div className="mt-2 px-2">
-        <button
-          type="button"
-          onClick={() => setFrozen((f) => !f)}
-          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-        >
+        <Button active={frozen} onClick={() => setFrozen((f) => !f)}>
           {frozen ? "▶ resume" : "❚❚ freeze"}
-        </button>
+        </Button>
       </div>
     </div>
   );

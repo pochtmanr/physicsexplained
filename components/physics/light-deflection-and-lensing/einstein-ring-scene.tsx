@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import {
   lensImagePositions,
   totalMagnification,
@@ -94,21 +95,16 @@ export function EinsteinRingScene() {
           style={{ accentColor: "var(--color-magenta)" }}
         />
       </div>
-      <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-2 flex flex-wrap gap-1 font-mono text-xs">
         {[
           { label: "aligned (ring)", u: 0 },
           { label: "near", u: 0.25 },
           { label: "two images", u: 0.9 },
           { label: "weak", u: 1.8 },
         ].map((p) => (
-          <button
-            key={p.label}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
-            onClick={() => setU(p.u)}
-          >
+          <Button key={p.label} active={u === p.u} onClick={() => setU(p.u)}>
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

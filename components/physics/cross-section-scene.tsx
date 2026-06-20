@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { skinDepthCopper } from "@/lib/physics/electromagnetism/skin-depth";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.6;
 const MAX_HEIGHT = 420;
@@ -245,28 +246,12 @@ export function CrossSectionScene() {
         </span>
       </div>
       <div className="mt-2 flex gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          onClick={() => setIsDC(false)}
-          className={`border px-2 py-0.5 ${
-            !isDC
-              ? "border-[rgb(255,180,80)] text-[var(--color-fg-1)]"
-              : "border-[var(--color-fg-4)] hover:border-[rgb(255,180,80)]"
-          }`}
-        >
+        <Button active={!isDC} onClick={() => setIsDC(false)}>
           AC
-        </button>
-        <button
-          type="button"
-          onClick={() => setIsDC(true)}
-          className={`border px-2 py-0.5 ${
-            isDC
-              ? "border-[rgb(200,160,255)] text-[var(--color-fg-1)]"
-              : "border-[var(--color-fg-4)] hover:border-[rgb(200,160,255)]"
-          }`}
-        >
+        </Button>
+        <Button active={isDC} onClick={() => setIsDC(true)}>
           DC
-        </button>
+        </Button>
       </div>
     </div>
   );

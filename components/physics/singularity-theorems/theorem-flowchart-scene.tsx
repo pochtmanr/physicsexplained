@@ -16,6 +16,7 @@ import {
   impliesIncompleteness,
   type TheoremHypotheses,
 } from "@/lib/physics/relativity/singularity-theorems";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.59c — The theorem as a flowchart.
@@ -98,18 +99,14 @@ export function TheoremFlowchartScene() {
           {HYPOS.map((h) => {
             const on = hyp[h.key];
             return (
-              <button
+              <Button
                 key={h.key}
-                type="button"
+                size="sm"
+                active={on}
                 onClick={() => setHyp((s) => ({ ...s, [h.key]: !s[h.key] }))}
-                className="rounded-none border px-2 py-1"
-                style={{
-                  borderColor: on ? "var(--color-cyan)" : "var(--color-fg-4)",
-                  color: on ? "var(--color-cyan)" : "var(--color-fg-3)",
-                }}
               >
                 {h.label}: {on ? "ON" : "OFF"}
-              </button>
+              </Button>
             );
           })}
         </div>

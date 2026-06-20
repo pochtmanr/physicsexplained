@@ -5,6 +5,7 @@ import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { energyStored } from "@/lib/physics/capacitance";
 import { inductorEnergy } from "@/lib/physics/electromagnetism/magnetic-energy";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.55;
 const MAX_HEIGHT = 360;
@@ -153,13 +154,9 @@ export function CapacitorVsInductorScene() {
         <span className="text-[var(--color-fg-3)]">
           matched τ = RC = L/R · same ramp shape · different field, different formula
         </span>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[#FF6ADE] hover:text-[#FF6ADE]"
-        >
+        <Button variant="secondary" size="sm" onClick={handleReset}>
           reset
-        </button>
+        </Button>
       </div>
     </div>
   );

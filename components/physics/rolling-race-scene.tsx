@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   inclineAcceleration,
   SHAPE_FACTOR,
@@ -173,23 +174,23 @@ export function RollingRaceScene() {
         className="mx-auto block"
       />
       <div className="mt-2 flex items-center justify-center gap-3 font-mono text-[11px]">
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="sm"
           onClick={() => {
             setResetKey((k) => k + 1);
             setRunning(true);
           }}
-          className="rounded-sm border border-[var(--color-fg-4)] px-2 py-1 text-[var(--color-fg-1)] hover:bg-[var(--color-bg-1)]"
         >
           restart
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setRunning((r) => !r)}
-          className="rounded-sm border border-[var(--color-fg-4)] px-2 py-1 text-[var(--color-fg-1)] hover:bg-[var(--color-bg-1)]"
         >
           {running ? "pause" : "resume"}
-        </button>
+        </Button>
       </div>
     </div>
   );

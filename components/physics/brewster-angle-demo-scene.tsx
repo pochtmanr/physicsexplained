@@ -10,6 +10,7 @@ import {
   fresnelAll,
   reflectance,
 } from "@/lib/physics/electromagnetism/fresnel";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.58;
 const MAX_HEIGHT = 520;
@@ -221,20 +222,12 @@ export function BrewsterAngleDemoScene() {
         </span>
       </div>
       <div className="mt-2 flex flex-wrap gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(120,220,240)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setPolAngle(0)}
-        >
+        <Button onClick={() => setPolAngle(0)}>
           vertical (block)
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,100,200)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setPolAngle(90)}
-        >
+        </Button>
+        <Button onClick={() => setPolAngle(90)}>
           horizontal (pass)
-        </button>
+        </Button>
       </div>
     </div>
   );

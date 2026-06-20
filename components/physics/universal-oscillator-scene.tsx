@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.85;
 const MAX_HEIGHT = 420;
@@ -340,20 +341,16 @@ export function UniversalOscillatorScene() {
       />
       <div className="mt-2 flex justify-center gap-2">
         {buttons.map((btn) => (
-          <button
+          <Button
             key={btn.value}
+            active={system === btn.value}
             onClick={() => {
               setSystem(btn.value);
               traceRef.current = [];
             }}
-            className={`rounded px-3 py-1 text-sm transition-colors ${
-              system === btn.value
-                ? "border border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
-            }`}
           >
             {btn.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

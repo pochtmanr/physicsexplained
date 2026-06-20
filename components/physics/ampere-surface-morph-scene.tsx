@@ -8,6 +8,7 @@ import {
   capacitorCurrentContinuity,
 } from "@/lib/physics/electromagnetism/displacement-current";
 import { EPSILON_0 } from "@/lib/physics/constants";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.52;
 const MAX_HEIGHT = 460;
@@ -168,13 +169,12 @@ export function AmpereSurfaceMorphScene() {
         <span className="text-[var(--color-fg-3)]">
           same loop · two surfaces · same answer only with Maxwell&rsquo;s term
         </span>
-        <button
-          type="button"
+        <Button
+          active={maxwellOn}
           onClick={() => setMaxwellOn((v) => !v)}
-          className="border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-1)] transition-colors hover:border-[rgb(200,160,255)] hover:text-[rgb(200,160,255)]"
         >
           Maxwell&rsquo;s correction: {maxwellOn ? "ON" : "OFF"}
-        </button>
+        </Button>
       </div>
     </div>
   );

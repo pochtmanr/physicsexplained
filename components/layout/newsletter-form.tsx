@@ -6,6 +6,7 @@ import {
   subscribeToNewsletter,
   type NewsletterResult,
 } from "@/app/actions/newsletter";
+import { Button } from "@/components/ui/button";
 
 export function NewsletterForm() {
   const [state, formAction, isPending] = useActionState<
@@ -24,23 +25,24 @@ export function NewsletterForm() {
           {state.message}
         </p>
       ) : (
-        <form action={formAction} className="flex flex-wrap gap-2">
+        <form action={formAction} className="flex flex-col gap-2 sm:flex-row">
           <input
             type="email"
             name="email"
             required
             placeholder="you@example.com"
             aria-label="Email address"
-            className="min-w-0 flex-1 basis-48 border border-[var(--color-fg-4)] bg-transparent px-3 py-2 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] outline-none transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cyan)]"
+            className="min-w-0 flex-1 h-8 rounded-[var(--radius-control)] border border-[var(--color-fg-4)] bg-[color-mix(in_srgb,var(--color-fg-4)_22%,transparent)] px-3 font-mono text-xs text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] shadow-[var(--shadow-control)] outline-none transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cyan)]"
           />
-          <button
+          <Button
+            variant="secondary"
+            size="sm"
             type="submit"
             disabled={isPending}
-            className="inline-flex items-center gap-2 border border-[var(--color-cyan)] bg-[var(--color-cyan)]/10 px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--color-cyan)]/20 disabled:opacity-50"
           >
             <Send className="h-3.5 w-3.5" />
             {isPending ? "..." : "Subscribe"}
-          </button>
+          </Button>
         </form>
       )}
 

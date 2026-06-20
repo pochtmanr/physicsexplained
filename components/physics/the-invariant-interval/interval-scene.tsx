@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
 import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.12a — THE INVARIANT INTERVAL.
@@ -100,18 +101,14 @@ export function IntervalScene() {
     <div className="flex flex-col items-center gap-3 p-4">
       <div className="flex flex-wrap gap-2 font-mono text-xs">
         {(Object.keys(PRESETS) as Preset[]).map((k) => (
-          <button
+          <Button
             key={k}
-            type="button"
+            size="sm"
+            active={preset === k}
             onClick={() => setPreset(k)}
-            className={`rounded border px-3 py-1 transition ${
-              preset === k
-                ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-            }`}
           >
             {PRESETS[k].label}
-          </button>
+          </Button>
         ))}
       </div>
 

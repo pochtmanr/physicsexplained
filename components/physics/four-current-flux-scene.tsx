@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.58c — Four-current flux through a 3-surface.
@@ -262,17 +263,8 @@ function SlicingButton({
   label: string;
 }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={
-        "rounded border px-2 py-1 font-mono text-xs transition " +
-        (active
-          ? "border-[var(--color-fg-1)] text-[var(--color-fg-0)]"
-          : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]")
-      }
-    >
+    <Button active={active} onClick={onClick}>
       {label}
-    </button>
+    </Button>
   );
 }

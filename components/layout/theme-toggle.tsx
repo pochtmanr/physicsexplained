@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Sun, Moon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { Button } from "@/components/ui/button";
+
 type Theme = "dark" | "light";
 
 const STORAGE_KEY = "physics-theme";
@@ -40,13 +42,13 @@ export function ThemeToggle() {
     theme === "dark" ? t("switchToLight") : t("switchToDark");
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="icon"
+      size="icon"
       onClick={toggle}
       aria-label={ariaLabel}
-      className="inline-flex h-6 w-6 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8 md:w-8"
     >
       <IconComponent aria-hidden="true" size={14} strokeWidth={1.5} />
-    </button>
+    </Button>
   );
 }

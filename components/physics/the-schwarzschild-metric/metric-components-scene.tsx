@@ -17,6 +17,7 @@ import {
   grr,
   timeDilationFactor,
 } from "@/lib/physics/relativity/the-schwarzschild-metric";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.39a — The metric components −g_tt and g_rr versus r.
@@ -80,17 +81,14 @@ export function MetricComponentsScene() {
           className="flex-1 min-w-[160px]"
           style={{ accentColor: "var(--color-cyan)" }}
         />
-        <button
-          type="button"
+        <Button
+          active={infalling}
+          size="sm"
           onClick={() => setInfalling((v) => !v)}
-          className="shrink-0 border px-2 py-1"
-          style={{
-            borderColor: infalling ? "var(--color-amber)" : "var(--color-fg-4)",
-            color: infalling ? "var(--color-amber)" : "var(--color-fg-3)",
-          }}
+          className="shrink-0"
         >
           {infalling ? "infalling chart ✓" : "Schwarzschild chart"}
-        </button>
+        </Button>
       </div>
       <p className="mt-2 font-mono text-[11px] leading-relaxed text-[var(--color-fg-3)]">
         The g_rr spike at r = r_s is a coordinate artifact. Toggle to a regular

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.7;
 const MAX_HEIGHT = 520;
@@ -381,24 +382,18 @@ export function JumpingRingScene() {
         className="block mx-auto"
       />
       <div className="mt-3 flex flex-wrap items-center justify-center gap-3 px-2">
-        <button
-          type="button"
+        <Button
+          active={acOn}
           onClick={() => setAcOn((v) => !v)}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] hover:border-[var(--color-fg-2)]"
-          style={{ background: acOn ? "rgba(255,214,107,0.1)" : "transparent" }}
         >
           {acOn ? "switch AC off" : "switch AC on"}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          active={cooled}
           onClick={() => setCooled((v) => !v)}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] hover:border-[var(--color-fg-2)]"
-          style={{
-            background: cooled ? "rgba(120,220,255,0.12)" : "transparent",
-          }}
         >
           {cooled ? "let ring warm up" : "cool ring (liquid N₂)"}
-        </button>
+        </Button>
       </div>
       <p className="mt-2 px-2 text-center text-xs font-mono text-[var(--color-fg-3)]">
         cooling lowers ring resistance → bigger induced current → stronger

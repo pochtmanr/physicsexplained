@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.17a — the molecular story behind M.
@@ -259,29 +260,19 @@ export function MagnetizationVectorsScene() {
             {bMag.toFixed(2)} T
           </span>
         </label>
-        <div className="inline-flex overflow-hidden rounded border border-[var(--color-fg-4)] text-xs font-mono">
-          <button
-            type="button"
+        <div className="inline-flex gap-1">
+          <Button
+            active={regime === "paramagnet"}
             onClick={() => setRegime("paramagnet")}
-            className={
-              regime === "paramagnet"
-                ? "bg-[var(--color-fg-1)] px-3 py-1 text-[var(--color-bg-0)]"
-                : "px-3 py-1 text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-            }
           >
             paramagnet
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            active={regime === "ferromagnet"}
             onClick={() => setRegime("ferromagnet")}
-            className={
-              regime === "ferromagnet"
-                ? "bg-[var(--color-fg-1)] px-3 py-1 text-[var(--color-bg-0)]"
-                : "px-3 py-1 text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-            }
           >
             ferromagnet
-          </button>
+          </Button>
         </div>
       </div>
       <p className="mt-2 px-2 text-xs font-mono text-[var(--color-fg-3)]">

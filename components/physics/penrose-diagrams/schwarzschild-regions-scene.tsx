@@ -13,6 +13,7 @@ import {
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
 import type { SchwarzschildRegion } from "@/lib/physics/relativity/penrose-diagrams";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.46c — The Schwarzschild Penrose diagram, region by region.
@@ -106,20 +107,15 @@ export function SchwarzschildRegionsScene() {
         aria-label="Penrose diagram of the maximally extended Schwarzschild black hole with four regions: two exterior universes, a black-hole interior, and a white-hole interior. Click a region to highlight it and read its causal description."
         onClick={handleClick}
       />
-      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-3 flex flex-wrap gap-1 font-mono text-xs">
         {ORDER.map((r) => (
-          <button
+          <Button
             key={r}
-            type="button"
+            active={selected === r}
             onClick={() => setSelected(r)}
-            className="rounded-sm border px-2 py-0.5"
-            style={{
-              borderColor: selected === r ? "var(--color-cyan)" : "var(--color-fg-4)",
-              color: selected === r ? "var(--color-cyan)" : "var(--color-fg-3)",
-            }}
           >
             {REGION_INFO[r].name}
-          </button>
+          </Button>
         ))}
       </div>
       <p className="mt-2 max-w-prose font-mono text-xs leading-relaxed text-[var(--color-fg-2)]">

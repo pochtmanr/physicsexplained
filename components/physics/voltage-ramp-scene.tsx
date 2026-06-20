@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   potentialAtPoint,
   potentialDifference,
@@ -275,28 +276,18 @@ export function VoltageRampScene() {
       />
       <div className="mt-2 flex flex-wrap items-center gap-3 px-2 font-mono text-xs">
         <span className="text-[var(--color-fg-3)]">path:</span>
-        <button
-          type="button"
+        <Button
+          active={route === "straight"}
           onClick={() => setRoute("straight")}
-          className={`rounded border px-2 py-1 ${
-            route === "straight"
-              ? "border-[#E4C27A] text-[#E4C27A]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-          }`}
         >
           straight
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          active={route === "zigzag"}
           onClick={() => setRoute("zigzag")}
-          className={`rounded border px-2 py-1 ${
-            route === "zigzag"
-              ? "border-[#E4C27A] text-[#E4C27A]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-          }`}
         >
           zigzag
-        </button>
+        </Button>
         <span className="ml-2 text-[var(--color-fg-3)]">
           same endpoints, same final ΔU
         </span>

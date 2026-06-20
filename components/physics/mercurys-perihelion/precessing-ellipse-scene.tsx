@@ -12,6 +12,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import { precessingEllipsePoint } from "@/lib/physics/relativity/mercurys-perihelion";
 
 /**
@@ -107,28 +108,12 @@ export function PrecessingEllipseScene() {
           className="min-w-[140px] flex-1"
           style={{ accentColor: "var(--color-cyan)" }}
         />
-        <button
-          type="button"
-          onClick={() => setGrOn((v) => !v)}
-          className="cursor-pointer border px-2 py-1"
-          style={{
-            borderColor: grOn ? "var(--color-cyan)" : "var(--color-fg-4)",
-            color: grOn ? "var(--color-cyan)" : "var(--color-fg-3)",
-          }}
-        >
+        <Button active={grOn} onClick={() => setGrOn((v) => !v)}>
           GR term: {grOn ? "ON" : "OFF"}
-        </button>
-        <button
-          type="button"
-          onClick={() => setRunning((v) => !v)}
-          className="cursor-pointer border px-2 py-1"
-          style={{
-            borderColor: "var(--color-fg-4)",
-            color: "var(--color-fg-3)",
-          }}
-        >
+        </Button>
+        <Button onClick={() => setRunning((v) => !v)}>
           {running ? "pause" : "play"}
-        </button>
+        </Button>
       </div>
       <p className="mt-2 font-mono text-[11px] text-[var(--color-fg-3)]">
         At true scale Mercury advances only ≈ {mercuryArcsecPerOrbit.toFixed(3)}

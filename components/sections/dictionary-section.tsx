@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { BookOpen } from "lucide-react";
 import { getLocale, getTranslations } from "next-intl/server";
 import { getContentEntriesByKind } from "@/lib/content/fetch";
+import { buttonVariants } from "@/components/ui/button";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
 export async function DictionarySection() {
@@ -58,12 +60,10 @@ export async function DictionarySection() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/dictionary"
-            className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
+            className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
           >
+            <BookOpen aria-hidden="true" size={14} strokeWidth={1.6} />
             {t("viewAll", { count: entries.length })}
-            <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
-              →
-            </span>
           </Link>
         </div>
       )}

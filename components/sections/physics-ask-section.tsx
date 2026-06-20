@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Sparkles, Gamepad2 } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { buttonVariants } from "@/components/ui/button";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import { PhysicsAskCard } from "./physics-ask-card";
 import { EquationDrift } from "./physics-ask-bg/equation-drift";
@@ -28,29 +29,17 @@ export async function PhysicsAskSection() {
       <div className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-10">
         <Link
           href="/ask"
-          className="nav-link btn-tracer group relative inline-flex items-center justify-center gap-2 bg-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:px-6 md:py-3 md:text-sm"
+          className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
         >
           <Sparkles aria-hidden="true" size={14} strokeWidth={1.6} />
           <span>{t("ctaAsk")}</span>
-          <span
-            aria-hidden="true"
-            className="inline-block transition-transform duration-[180ms] ease-out group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
-          >
-            →
-          </span>
         </Link>
         <Link
           href="/play"
-          className="nav-link btn-tracer group relative inline-flex items-center justify-center gap-2 border border-[var(--color-fg-4)] bg-transparent px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-[box-shadow,border-color,color] duration-[180ms] ease-out hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_45%,transparent)] md:px-6 md:py-3 md:text-sm"
+          className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
         >
           <Gamepad2 aria-hidden="true" size={14} strokeWidth={1.6} />
           <span>{t("ctaPlay")}</span>
-          <span
-            aria-hidden="true"
-            className="inline-block transition-transform duration-[180ms] ease-out group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
-          >
-            →
-          </span>
         </Link>
       </div>
 

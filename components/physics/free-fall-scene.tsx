@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.75;
 const MAX_HEIGHT = 420;
@@ -190,17 +191,9 @@ export function FreeFallScene() {
       />
       <div className="mt-2 flex items-center gap-3 px-2">
         <label className="text-sm text-[var(--color-fg-3)]">Air</label>
-        <button
-          type="button"
-          onClick={() => setAirOn((v) => !v)}
-          className={`rounded border px-3 py-1 text-xs font-mono transition ${
-            airOn
-              ? "border-[#6FB8C6] text-[#6FB8C6]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
-          }`}
-        >
+        <Button active={airOn} onClick={() => setAirOn((v) => !v)}>
           {airOn ? "on" : "off"}
-        </button>
+        </Button>
         <span className="ml-2 text-xs text-[var(--color-fg-3)]">
           {airOn
             ? "drag slows the feather"

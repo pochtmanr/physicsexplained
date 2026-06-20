@@ -16,6 +16,7 @@ import {
   cumulativePeriastronShift,
   HULSE_TAYLOR,
 } from "@/lib/physics/relativity/binary-inspiral-and-the-chirp";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.52c — Hulse–Taylor cumulative periastron shift.
@@ -94,16 +95,16 @@ export function HulseTaylorParabolaScene() {
             style={{ accentColor: "var(--color-cyan)" }}
           />
         </div>
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-[var(--color-fg-3)]">
+        <div className="flex flex-wrap gap-1">
           {[0, 1, 1.3].map((v) => (
-            <button
+            <Button
               key={v}
-              type="button"
-              className="cursor-pointer hover:text-[var(--color-fg-1)]"
+              size="sm"
+              active={pdotFactor === v}
               onClick={() => setPdotFactor(v)}
             >
               {v === 0 ? "no radiation" : v === 1 ? "general relativity" : "13% too fast"}
-            </button>
+            </Button>
           ))}
         </div>
       </div>

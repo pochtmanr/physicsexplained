@@ -5,6 +5,7 @@ import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { electricFieldAtPoint } from "@/lib/physics/electric-field";
 import { imageChargeForPlane } from "@/lib/physics/method-of-images";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.62;
 const MAX_HEIGHT = 380;
@@ -229,28 +230,18 @@ export function ImageChargePlaneScene() {
       <div className="mt-3 flex flex-col gap-3 px-2 font-mono text-xs">
         <div className="flex items-center gap-3">
           <span className="w-12 text-[var(--color-fg-3)]">VIEW</span>
-          <button
-            type="button"
+          <Button
+            active={mode === "real"}
             onClick={() => setMode("real")}
-            className={`rounded border px-3 py-1 transition-colors ${
-              mode === "real"
-                ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-            }`}
           >
             real
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            active={mode === "image"}
             onClick={() => setMode("image")}
-            className={`rounded border px-3 py-1 transition-colors ${
-              mode === "image"
-                ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-            }`}
           >
             image
-          </button>
+          </Button>
         </div>
         <div className="flex items-center gap-3">
           <label className="w-12 text-[var(--color-fg-3)]">d</label>

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { X } from "lucide-react";
 import { useAccountDrawer } from "./account-drawer-context";
 import { SignOutButton } from "@/components/auth/sign-out-button";
+import { Button } from "@/components/ui/button";
 import type { BillingSnapshot } from "@/lib/billing/snapshot";
 import { ProfileTab } from "./profile-tab";
 import { BillingTab } from "./billing-tab";
@@ -49,20 +50,16 @@ export function AccountDrawer({ user, snapshot, orders }: Props) {
       />
       <div className="relative w-full max-w-lg max-h-full flex flex-col border border-[var(--color-fg-4)] bg-[var(--color-bg-0)] shadow-2xl">
         <div className="flex items-center justify-between border-b border-[var(--color-fg-4)] px-4 py-3 shrink-0">
-          <div className="inline-flex items-stretch border border-[var(--color-fg-4)] overflow-hidden">
+          <div className="inline-flex items-stretch gap-1">
             {(["profile", "billing"] as const).map((t) => (
-              <button
+              <Button
                 key={t}
-                type="button"
+                size="sm"
+                active={tab === t}
                 onClick={() => setTab(t)}
-                className={`font-mono text-xs uppercase tracking-[0.15em] px-4 py-1.5 transition-colors ${
-                  tab === t
-                    ? "bg-[var(--color-cyan)] text-[var(--color-bg-0)]"
-                    : "bg-transparent text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/20"
-                }`}
               >
                 {t}
-              </button>
+              </Button>
             ))}
           </div>
           <button

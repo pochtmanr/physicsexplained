@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { Sparkles, GitBranch } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { EpicycleScene } from "@/components/physics/epicycle-scene";
 import { FramedCard } from "@/components/layout/framed-card";
+import { buttonVariants } from "@/components/ui/button";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import { HeroBackground } from "./hero-background";
 
@@ -17,7 +19,7 @@ export async function HeroSection() {
             <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
               {t("tag")}
             </div>
-            <h1 className="mt-6 text-3xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
+            <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
               {t("titleLead")}{" "}
               <span className="font-display italic text-[var(--color-cyan)]">
                 {t("titleHighlight")}
@@ -29,31 +31,17 @@ export async function HeroSection() {
             <div className="mt-8 flex flex-wrap gap-4 items-center md:mt-10 md:gap-6">
               <Link
                 href="/ask"
-                className="nav-link btn-tracer group relative inline-flex items-center gap-2 bg-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:px-6 md:py-3 md:text-sm"
+                className={buttonVariants({ variant: "primary", size: "sm", className: "nav-link" })}
               >
+                <Sparkles aria-hidden="true" size={14} strokeWidth={1.6} className="text-white" />
                 {t("ctaAsk")}
-                <span
-                  aria-hidden="true"
-                  className="inline-block transition-transform duration-[180ms] ease-out group-hover:translate-x-1 rtl:-scale-x-100 rtl:group-hover:-translate-x-1"
-                >
-                  →
-                </span>
-              </Link>
-              <Link
-                href="/classical-mechanics"
-                className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition md:px-6 md:py-3 md:text-sm"
-              >
-                {t("ctaPrimary")}
-                <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
-                  →
-                </span>
               </Link>
               <a
                 href="#branches"
-                className="hidden items-center gap-2 font-mono text-sm uppercase tracking-wider text-[var(--color-fg-3)] hover:text-[var(--color-cyan)] md:inline-flex"
+                className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
               >
+                <GitBranch aria-hidden="true" size={14} strokeWidth={1.6} />
                 {t("ctaSecondary")}
-                <span aria-hidden="true">↓</span>
               </a>
             </div>
           </div>

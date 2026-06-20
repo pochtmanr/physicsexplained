@@ -7,6 +7,7 @@ import {
   rlDecay,
   rlTimeConstant,
 } from "@/lib/physics/electromagnetism/rl-circuits";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.28b — RL current decay. An inductor holding steady current I0 is
@@ -251,13 +252,9 @@ export function RlDecayScene() {
           <span className="font-mono text-xs text-[var(--color-fg-3)]">
             I₀ = {I0_SRC} A · R = {R_OHM} Ω
           </span>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#FFD66B] hover:text-[#FFD66B]"
-          >
+          <Button variant="secondary" size="sm" onClick={handleReset}>
             reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

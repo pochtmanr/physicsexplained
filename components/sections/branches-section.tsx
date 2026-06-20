@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { Atom } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { BranchCard } from "@/components/layout/branch-card";
+import { buttonVariants } from "@/components/ui/button";
 import { BRANCHES } from "@/lib/content/branches";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
@@ -27,12 +29,10 @@ export async function BranchesSection() {
       <div className="mt-10 flex justify-center">
         <Link
           href="/classical-mechanics"
-          className="btn-tracer inline-flex items-center gap-2 border border-[var(--color-cyan)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)] transition hover:bg-[var(--color-cyan)]/10 md:px-6 md:py-3 md:text-sm"
+          className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
         >
+          <Atom aria-hidden="true" size={14} strokeWidth={1.6} />
           {tHero("ctaPrimary")}
-          <span aria-hidden="true" className="inline-block rtl:-scale-x-100">
-            →
-          </span>
         </Link>
       </div>
     </section>

@@ -8,6 +8,7 @@ import {
   rlTimeConstant,
   backEMF,
 } from "@/lib/physics/electromagnetism/rl-circuits";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.28a — RL current ramp. A source V0, a resistor R, an inductor L in
@@ -246,13 +247,9 @@ export function RlRampScene() {
           <span className="font-mono text-xs text-[var(--color-fg-3)]">
             V = {V_SRC} V · R = {R_OHM} Ω
           </span>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="border border-[var(--color-fg-4)] px-3 py-1 font-mono text-xs text-[var(--color-fg-1)] transition-colors hover:border-[#FFD66B] hover:text-[#FFD66B]"
-          >
+          <Button variant="secondary" size="sm" onClick={handleReset}>
             reset
-          </button>
+          </Button>
         </div>
       </div>
     </div>

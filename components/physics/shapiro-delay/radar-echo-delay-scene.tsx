@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.42a — Earth–Venus radar echo as Venus orbits toward superior conjunction.
@@ -142,28 +143,10 @@ export function RadarEchoDelayScene() {
           aria-label="Venus orbital phase toward superior conjunction"
         />
       </div>
-      <div className="mt-1 flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setPhi(PHI_MIN)}
-        >
-          before conjunction
-        </button>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setPhi(Math.PI)}
-        >
-          superior conjunction
-        </button>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setPhi(PHI_MAX)}
-        >
-          after conjunction
-        </button>
+      <div className="mt-1 flex flex-wrap gap-1 font-mono text-xs">
+        <Button onClick={() => setPhi(PHI_MIN)}>before conjunction</Button>
+        <Button onClick={() => setPhi(Math.PI)}>superior conjunction</Button>
+        <Button onClick={() => setPhi(PHI_MAX)}>after conjunction</Button>
       </div>
     </div>
   );

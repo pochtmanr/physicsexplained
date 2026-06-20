@@ -18,6 +18,7 @@ import {
   strainAmplitudes,
   type PolarizationMode,
 } from "@/lib/physics/relativity/polarization-modes";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.51a — THE classic figure: a ring of free test masses in the
@@ -79,25 +80,16 @@ export function RingOfTestMassesScene() {
         className={SCENE_CANVAS_CLASS}
         aria-label="A ring of free test masses deformed by a passing gravitational wave. Toggle plus, cross, or circular polarization; sliders set the exaggerated strain amplitude and frequency."
       />
-      <div className="mt-3 flex flex-wrap gap-2 font-mono text-xs">
-        {MODES.map((m) => {
-          const active = m.id === mode;
-          return (
-            <button
-              key={m.id}
-              type="button"
-              onClick={() => setMode(m.id)}
-              className={
-                "border px-3 py-1 " +
-                (active
-                  ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                  : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]")
-              }
-            >
-              {m.label}
-            </button>
-          );
-        })}
+      <div className="mt-3 flex flex-wrap gap-1 font-mono text-xs">
+        {MODES.map((m) => (
+          <Button
+            key={m.id}
+            active={m.id === mode}
+            onClick={() => setMode(m.id)}
+          >
+            {m.label}
+          </Button>
+        ))}
       </div>
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
         <span className="w-32 shrink-0">amplitude h</span>

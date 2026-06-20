@@ -16,6 +16,7 @@ import {
   angleSumDegrees,
   type CurvatureSign,
 } from "@/lib/physics/relativity/the-flrw-metric";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.54b — Curvature gallery.
@@ -80,20 +81,14 @@ export function CurvatureGalleryScene() {
       </div>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
         {PANELS.map((p, i) => (
-          <button
+          <Button
             key={p.label}
-            type="button"
-            className="cursor-pointer rounded-none border px-2 py-0.5"
-            style={{
-              borderColor:
-                i === active ? "var(--color-cyan)" : "var(--color-fg-4)",
-              color:
-                i === active ? "var(--color-cyan)" : "var(--color-fg-3)",
-            }}
+            size="sm"
+            active={i === active}
             onClick={() => setActive(i)}
           >
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

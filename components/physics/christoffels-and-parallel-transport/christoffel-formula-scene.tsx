@@ -17,6 +17,7 @@ import {
   useSceneTokens,
 } from "@/components/physics/_shared";
 import { christoffelSymbols, sphericalMetric } from "@/lib/physics/relativity/christoffel";
+import { Button } from "@/components/ui/button";
 
 /**
  * §07 CHRISTOFFEL FORMULA SCENE
@@ -347,17 +348,14 @@ export function ChristoffelFormulaScene() {
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)]">
         <span className="text-[var(--color-fg-3)] uppercase tracking-wider text-[11px]">metric:</span>
         {METRICS.map((m, i) => (
-          <button
+          <Button
             key={m.name}
+            size="sm"
+            active={choice === i}
             onClick={() => setChoice(i as MetricChoice)}
-            className={`rounded px-3 py-1 font-mono text-xs transition-colors ${
-              choice === i
-                ? "bg-[var(--color-fg-4)] text-[var(--color-fg-0)]"
-                : "bg-[var(--color-bg-1)] text-[var(--color-fg-3)] hover:bg-[var(--color-fg-4)] hover:text-[var(--color-fg-1)]"
-            }`}
           >
             {m.label}
-          </button>
+          </Button>
         ))}
       </div>
       <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)] text-center max-w-[600px]">

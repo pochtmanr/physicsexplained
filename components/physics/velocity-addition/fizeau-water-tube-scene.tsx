@@ -8,6 +8,7 @@ import {
   useSceneSize,
   useSceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import { SPEED_OF_LIGHT } from "@/lib/physics/constants";
 import {
   fresnelDragCoefficient,
@@ -223,23 +224,19 @@ export function FizeauWaterTubeScene() {
           <div className="mb-1">Medium</div>
           <div className="flex flex-wrap gap-2">
             {(["water", "glass", "custom"] as const).map((p) => (
-              <button
+              <Button
                 key={p}
-                type="button"
+                active={preset === p}
+                size="sm"
                 onClick={() => setPreset(p)}
-                className="rounded border px-2 py-1"
-                style={
-                  preset === p
-                    ? { borderColor: "var(--color-magenta)", color: "var(--color-magenta)" }
-                    : { borderColor: "var(--color-fg-4)", color: "var(--color-fg-3)" }
-                }
+                className="normal-case"
               >
                 {p === "water"
                   ? "water (n = 1.33)"
                   : p === "glass"
                     ? "glass (n = 1.5)"
                     : "custom"}
-              </button>
+              </Button>
             ))}
           </div>
           {preset === "custom" ? (

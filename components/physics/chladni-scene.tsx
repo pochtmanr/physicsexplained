@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { chladniSquareMode, squareMembraneOmega } from "@/lib/physics/modes";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * Chladni plate visualisation. Renders the symmetric eigenfunction
@@ -115,18 +116,13 @@ export function ChladniScene() {
       />
       <div className="mt-3 grid grid-cols-4 gap-2">
         {PRESETS.map((p, i) => (
-          <button
+          <Button
             key={p.label}
-            type="button"
+            active={i === idx}
             onClick={() => setIdx(i)}
-            className={`px-2 py-1 font-mono text-xs border ${
-              i === idx
-                ? "border-[#FFD93D] text-[#FFD93D]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
-            }`}
           >
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -18,6 +18,7 @@ import {
   ergosphereRadius,
   zamoAngularVelocity,
 } from "@/lib/physics/relativity/kerr-and-the-ergosphere";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.45b — Frame dragging.
@@ -98,17 +99,14 @@ export function FrameDraggingScene() {
           className="flex-1"
           style={{ accentColor: "var(--color-cyan)" }}
         />
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
+          className="shrink-0"
           onClick={() => setRunning((r) => !r)}
-          className="shrink-0 cursor-pointer rounded-none border px-2 py-1"
-          style={{
-            borderColor: running ? "var(--color-cyan)" : "var(--color-fg-4)",
-            color: running ? "var(--color-cyan)" : "var(--color-fg-3)",
-          }}
         >
           {running ? "pause" : "run"}
-        </button>
+        </Button>
       </div>
       <p className="mt-2 font-mono text-xs text-[var(--color-fg-3)]">
         ω(r) = 2 a r / A — particles cannot stay at rest; inside the static

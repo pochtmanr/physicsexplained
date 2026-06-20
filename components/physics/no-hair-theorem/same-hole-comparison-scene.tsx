@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.47c — Two very different stars, one identical black hole.
@@ -99,13 +100,9 @@ export function SameHoleComparisonScene() {
         aria-label="Two very different progenitor stars — one smooth blue hydrogen star, one lumpy magnetised iron star — share the same mass and angular momentum. Both collapse and converge to an identical Kerr black hole, demonstrating that the remnant keeps no memory of the star that made it."
       />
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
-          onClick={() => setPlaying((p) => !p)}
-          className="rounded-sm border border-[var(--color-fg-4)] px-3 py-1 hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
-        >
+        <Button onClick={() => setPlaying((p) => !p)}>
           {playing ? "❚❚ pause" : "▶ replay"}
-        </button>
+        </Button>
         <span className="text-[var(--color-fg-3)]">
           same M, same J — identical bald remnant
         </span>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   fresnelAll,
   reflectance,
@@ -216,27 +217,15 @@ export function BrewsterAngleScene() {
         </span>
       </div>
       <div className="mt-2 flex flex-wrap gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,100,200)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(thetaBdeg)}
-        >
+        <Button variant="ghost" onClick={() => setThetaDeg(thetaBdeg)}>
           θ_B = {thetaBdeg.toFixed(1)}°
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(200,160,255)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(30)}
-        >
+        </Button>
+        <Button variant="ghost" onClick={() => setThetaDeg(30)}>
           near-normal
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,180,80)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(80)}
-        >
+        </Button>
+        <Button variant="ghost" onClick={() => setThetaDeg(80)}>
           grazing
-        </button>
+        </Button>
       </div>
     </div>
   );

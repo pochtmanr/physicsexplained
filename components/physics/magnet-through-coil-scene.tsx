@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.21a — Faraday's 1831 bench setup.
@@ -321,18 +322,13 @@ export function MagnetThroughCoilScene() {
       <div className="mt-2 flex flex-wrap items-center gap-2 px-2">
         <div className="flex gap-1">
           {MODES.map((m) => (
-            <button
+            <Button
               key={m.id}
-              type="button"
+              active={mode === m.id}
               onClick={() => setMode(m.id)}
-              className={`rounded border px-2 py-1 font-mono text-xs ${
-                mode === m.id
-                  ? "border-[rgba(120,255,170,0.9)] bg-[rgba(120,255,170,0.12)] text-[var(--color-fg-0)]"
-                  : "border-[var(--color-fg-4)] text-[var(--color-fg-2)] hover:border-[var(--color-fg-3)]"
-              }`}
             >
               {m.label}
-            </button>
+            </Button>
           ))}
         </div>
         <div className="ml-auto font-mono text-[10px] text-[var(--color-fg-3)]">

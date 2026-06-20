@@ -10,6 +10,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, X } from "lucide-react";
 import { ProfileChip } from "@/components/auth/profile-chip";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ConversationRow } from "./conversation-row";
 
 type Ctx = { open: boolean; setOpen: (v: boolean) => void };
@@ -31,14 +32,15 @@ export function MobileChatRailProvider({ children }: { children: React.ReactNode
 export function MobileChatRailTrigger() {
   const { setOpen } = useMobileChatRail();
   return (
-    <button
-      type="button"
+    <Button
+      variant="ghost"
+      size="icon"
       onClick={() => setOpen(true)}
       aria-label="Show chat list"
-      className="md:hidden inline-flex h-9 w-9 shrink-0 items-center justify-center border border-[var(--color-cyan-dim)] bg-[var(--color-bg-1)] text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan)]/10 transition-colors"
+      className="md:hidden shrink-0 !h-9 !w-9"
     >
       <ChevronRight size={16} strokeWidth={2} aria-hidden="true" className="rtl:-scale-x-100" />
-    </button>
+    </Button>
   );
 }
 
@@ -109,19 +111,24 @@ export function MobileChatRail({
           <Link
             href={`/${locale}/ask`}
             onClick={close}
-            className="nav-link btn-tracer group relative inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 bg-[var(--color-cyan)] px-3 py-2 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[200ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)]"
+            className={buttonVariants({
+              variant: "primary",
+              size: "cta",
+              className: "nav-link min-w-0 flex-1 gap-1.5 px-3 py-2 text-xs",
+            })}
           >
             <PlusIcon size={14} />
             <span>New Chat</span>
           </Link>
-          <button
-            type="button"
+          <Button
+            variant="ghost"
+            size="icon"
             onClick={close}
             aria-label="Close chat list"
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--color-fg-4)] text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+            className="shrink-0 !h-8 !w-8"
           >
             <X size={14} strokeWidth={1.75} aria-hidden="true" />
-          </button>
+          </Button>
         </div>
 
         <ul className="flex-1 overflow-y-auto py-2">

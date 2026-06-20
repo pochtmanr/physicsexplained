@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ProfileChip } from "@/components/auth/profile-chip";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ConversationRow } from "./conversation-row";
 
 const STORAGE_KEY = "ask.railCollapsed";
@@ -61,21 +62,26 @@ export function ConversationRail({
         {!collapsed && (
           <Link
             href={`/${locale}/ask`}
-            className="nav-link btn-tracer group relative inline-flex min-w-0 flex-1 items-center justify-center gap-1.5 bg-[var(--color-cyan)] px-3 py-2 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[200ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)]"
+            className={buttonVariants({
+              variant: "primary",
+              size: "cta",
+              className: "nav-link min-w-0 flex-1 gap-1.5 px-3 py-2 text-xs",
+            })}
           >
             <PlusIcon size={14} />
             <span>New Chat</span>
           </Link>
         )}
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={toggle}
           aria-label={collapsed ? "Show chat list" : "Hide chat list"}
           title={collapsed ? "Show chat list" : "Hide chat list"}
-          className="inline-flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--color-cyan-dim)] bg-[var(--color-bg-1)] text-[var(--color-cyan-dim)] transition-colors hover:bg-[var(--color-cyan)]/10"
+          className="shrink-0 !h-8 !w-8"
         >
           {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-        </button>
+        </Button>
       </div>
 
       {collapsed && (
@@ -84,7 +90,11 @@ export function ConversationRail({
             href={`/${locale}/ask`}
             aria-label="New chat"
             title="New chat"
-            className="nav-link btn-tracer group relative inline-flex h-8 w-8 items-center justify-center bg-[var(--color-cyan)] !text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_0_24px_-4px_color-mix(in_srgb,var(--color-cyan)_60%,transparent)]"
+            className={buttonVariants({
+              variant: "primary",
+              size: "icon",
+              className: "nav-link !h-8 !w-8",
+            })}
           >
             <PlusIcon size={16} />
           </Link>

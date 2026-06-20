@@ -5,6 +5,7 @@ import { locales } from "@/i18n/config";
 import { getContentEntriesByKind, type ContentEntry } from "@/lib/content/fetch";
 import type { GlossaryCategory } from "@/lib/content/types";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Dictionary — physics",
@@ -217,7 +218,7 @@ export default async function DictionaryIndexPage({
           {currentPage > 1 ? (
             <Link
               href={buildHref(selected, currentPage - 1)}
-              className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+              className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
             >
               <span aria-hidden="true" className="rtl:-scale-x-100">
                 ←
@@ -233,7 +234,7 @@ export default async function DictionaryIndexPage({
           {currentPage < totalPages ? (
             <Link
               href={buildHref(selected, currentPage + 1)}
-              className="nav-link inline-flex items-center gap-2 border border-[var(--color-fg-4)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+              className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
             >
               <span>{t("pageNext")}</span>
               <span aria-hidden="true" className="rtl:-scale-x-100">

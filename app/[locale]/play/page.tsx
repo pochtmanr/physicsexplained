@@ -2,6 +2,7 @@ import Link from "next/link";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
 import { PLAYGROUND_SLUGS, getPlayground } from "./_components/playground-meta";
+import { buttonVariants } from "@/components/ui/button";
 import { locales } from "@/i18n/config";
 
 export function generateStaticParams() {
@@ -49,7 +50,7 @@ export default async function PlayIndex({
               <li key={slug}>
                 <Link
                   href={`/${locale}/play/${slug}`}
-                  className="group flex items-center justify-between border border-[var(--color-fg-4)]/40 px-5 py-4 transition-colors hover:border-[var(--color-cyan)] hover:bg-[var(--color-fg-4)]/10"
+                  className="nav-link group flex items-center justify-between border border-[var(--color-fg-4)]/40 px-5 py-4 rounded-[var(--radius-control)] shadow-[var(--shadow-control)] hover:shadow-[var(--shadow-control-hover)] active:translate-y-px transition-[box-shadow,border-color,transform] duration-[var(--duration-fast)] ease-out btn-tracer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50 hover:border-[var(--color-cyan)] hover:bg-[var(--color-fg-4)]/10"
                 >
                   <div>
                     <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan)]">

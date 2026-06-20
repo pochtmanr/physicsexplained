@@ -16,6 +16,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.30c — Raising and Lowering Indices.
@@ -361,26 +362,16 @@ export function RaisingLoweringScene() {
       />
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-1)]">
         <span className="shrink-0">Metric:</span>
-        <button
-          onClick={() => setMode("flat")}
-          className={`rounded px-3 py-1 font-mono text-xs transition-colors ${
-            mode === "flat"
-              ? "bg-[var(--color-cyan)]/20 text-[var(--color-cyan)] ring-1 ring-[var(--color-cyan)]/50"
-              : "text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-          }`}
-        >
+        <Button size="sm" active={mode === "flat"} onClick={() => setMode("flat")}>
           flat (η)
-        </button>
-        <button
+        </Button>
+        <Button
+          size="sm"
+          active={mode === "curved"}
           onClick={() => setMode("curved")}
-          className={`rounded px-3 py-1 font-mono text-xs transition-colors ${
-            mode === "curved"
-              ? "bg-[var(--color-amber)]/20 text-[var(--color-amber)] ring-1 ring-[var(--color-amber)]/50"
-              : "text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-          }`}
         >
           curved (spherical)
-        </button>
+        </Button>
         <span className="text-[var(--color-fg-4)]">
           {mode === "flat"
             ? "η = diag(1, −1, −1)"

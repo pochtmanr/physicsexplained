@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   D33_QUARTZ,
   directPiezoEffect,
@@ -289,28 +290,12 @@ export function PiezoCrystalScene() {
       <div className="mt-2 flex flex-wrap items-center gap-4 px-2 font-mono text-xs">
         <div className="flex items-center gap-2">
           <span className="text-[var(--color-fg-3)]">mode:</span>
-          <button
-            type="button"
-            onClick={() => setMode("direct")}
-            className={`rounded border px-2 py-1 ${
-              mode === "direct"
-                ? "border-[#FFD66B] text-[#FFD66B]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-            }`}
-          >
+          <Button active={mode === "direct"} onClick={() => setMode("direct")}>
             direct
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("inverse")}
-            className={`rounded border px-2 py-1 ${
-              mode === "inverse"
-                ? "border-[#FFD66B] text-[#FFD66B]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-            }`}
-          >
+          </Button>
+          <Button active={mode === "inverse"} onClick={() => setMode("inverse")}>
             inverse
-          </button>
+          </Button>
         </div>
         {mode === "direct" ? (
           <label className="flex items-center gap-2 text-[var(--color-fg-1)]">

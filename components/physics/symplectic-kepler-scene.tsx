@@ -10,6 +10,7 @@ import {
 } from "@/lib/physics/hamilton";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.55;
 const MAX_HEIGHT = 360;
@@ -236,13 +237,9 @@ export function SymplecticKeplerScene() {
         className="block"
       />
       <div className="mt-2 flex items-center justify-end px-2">
-        <button
-          type="button"
-          onClick={reset}
-          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)] hover:text-[var(--color-fg-0)]"
-        >
+        <Button variant="secondary" size="sm" onClick={reset}>
           Reset
-        </button>
+        </Button>
       </div>
     </div>
   );

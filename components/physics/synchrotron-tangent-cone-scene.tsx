@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { emissionConeHalfAngleRad } from "@/lib/physics/electromagnetism/synchrotron";
+import { Button } from "@/components/ui/button";
 
 const AMBER = "rgba(255, 180, 80,";
 const ORANGE = "rgba(255, 140, 80,";
@@ -253,20 +254,15 @@ export function SynchrotronTangentConeScene() {
       />
       <div className="mt-3 flex flex-wrap items-center gap-2 px-2 font-mono text-[11px]">
         <span className="text-[var(--color-fg-3)]">Lorentz factor γ</span>
-        <div className="flex overflow-hidden border border-[var(--color-fg-4)]">
+        <div className="flex gap-1">
           {GAMMAS.map((g) => (
-            <button
+            <Button
               key={g}
-              type="button"
-              className={`px-2 py-0.5 ${
-                gamma === g
-                  ? "bg-[var(--color-fg-4)] text-[var(--color-fg-1)]"
-                  : "text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-              }`}
+              active={gamma === g}
               onClick={() => setGamma(g)}
             >
               {g}
-            </button>
+            </Button>
           ))}
         </div>
         <span className="ml-2 text-[var(--color-fg-3)]">

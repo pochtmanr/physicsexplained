@@ -17,6 +17,7 @@ import {
   matterRadiationEquality,
   matterLambdaEquality,
 } from "@/lib/physics/relativity/dark-matter-and-dark-energy";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.58b — The cosmic energy budget through time.
@@ -99,7 +100,7 @@ export function CosmicBudgetScene() {
           style={{ accentColor: "var(--color-magenta)" }}
         />
       </div>
-      <div className="mt-1 flex flex-wrap gap-x-6 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
+      <div className="mt-1 flex flex-wrap gap-1">
         {[
           { label: "today (z=0)", z: 0 },
           { label: "accel. onset (z≈0.3)", z: matterLambdaEquality() },
@@ -107,14 +108,9 @@ export function CosmicBudgetScene() {
           { label: "matter–rad. eq.", z: matterRadiationEquality() },
           { label: "CMB (z=1100)", z: 1100 },
         ].map((p) => (
-          <button
-            key={p.label}
-            type="button"
-            className="cursor-pointer hover:text-[var(--color-fg-1)]"
-            onClick={() => setU(zToU(p.z))}
-          >
+          <Button key={p.label} size="sm" onClick={() => setU(zToU(p.z))}>
             {p.label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

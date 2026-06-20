@@ -18,6 +18,7 @@ import {
   M_SUN,
   MPC_M,
 } from "@/lib/physics/relativity/binary-inspiral-and-the-chirp";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.52b — Chirp-mass explorer.
@@ -127,13 +128,9 @@ export function ChirpMassExplorerScene() {
           />
         </div>
         <div className="flex flex-wrap items-center gap-4">
-          <button
-            type="button"
-            onClick={matchChirp}
-            className="border px-3 py-1 border-[var(--color-cyan)] text-[var(--color-cyan)]"
-          >
+          <Button size="sm" onClick={matchChirp}>
             match to reference chirp mass
-          </button>
+          </Button>
           <span className={matched ? "text-[var(--color-mint)]" : "text-[var(--color-fg-3)]"}>
             {matched ? "MATCHED — waveforms overlap" : "unmatched — waveforms drift"}
           </span>

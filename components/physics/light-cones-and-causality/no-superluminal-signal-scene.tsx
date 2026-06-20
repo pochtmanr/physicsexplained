@@ -10,6 +10,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.13c — The superluminal causality violation.
@@ -76,25 +77,9 @@ export function NoSuperluminalSignalScene() {
       />
 
       <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
-          onClick={() => setBoosted((b) => !b)}
-          className="rounded border px-3 py-1 transition-colors"
-          style={
-            boosted
-              ? {
-                  borderColor: "var(--color-red)",
-                  color: "var(--color-red)",
-                  background: "color-mix(in srgb, var(--color-red) 12%, transparent)",
-                }
-              : {
-                  borderColor: "var(--color-fg-4)",
-                  color: "var(--color-fg-2)",
-                }
-          }
-        >
+        <Button active={boosted} onClick={() => setBoosted((b) => !b)}>
           {boosted ? "boosted frame (β = " + beta.toFixed(2) + ")" : "lab frame"}
-        </button>
+        </Button>
 
         <label className="flex items-center gap-2">
           <span className="text-[var(--color-fg-3)]">boost β =</span>

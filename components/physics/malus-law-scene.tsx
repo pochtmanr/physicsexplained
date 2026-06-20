@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { malusLaw } from "@/lib/physics/electromagnetism/polarization-optics";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.58;
 const MAX_HEIGHT = 520;
@@ -112,27 +113,15 @@ export function MalusLawScene() {
         <span style={{ color: "rgb(255,180,80)" }}>
           I / I₀ = cos²θ = {transmitted.toFixed(3)}
         </span>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(120,220,240)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(0)}
-        >
+        <Button variant="ghost" onClick={() => setThetaDeg(0)}>
           aligned (0°)
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(200,160,255)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(45)}
-        >
+        </Button>
+        <Button variant="ghost" onClick={() => setThetaDeg(45)}>
           half (45°)
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,100,200)] hover:text-[var(--color-fg-1)]"
-          onClick={() => setThetaDeg(90)}
-        >
+        </Button>
+        <Button variant="ghost" onClick={() => setThetaDeg(90)}>
           crossed (90°)
-        </button>
+        </Button>
       </div>
     </div>
   );

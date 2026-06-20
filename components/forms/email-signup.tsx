@@ -7,6 +7,7 @@ import {
   signupForBranchUpdates,
   type SignupResult,
 } from "@/app/actions/email-signup";
+import { Button } from "@/components/ui/button";
 
 interface EmailSignupProps {
   branchSlug: string;
@@ -17,13 +18,9 @@ function SubmitButton() {
   const t = useTranslations("home.emailSignup");
   const { pending } = useFormStatus();
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="border border-[var(--color-cyan)] px-6 py-3 font-mono text-sm uppercase tracking-wider text-[var(--color-cyan)] hover:bg-[var(--color-cyan)]/10 transition disabled:opacity-50 disabled:cursor-not-allowed"
-    >
+    <Button variant="secondary" size="sm" type="submit" disabled={pending}>
       {pending ? t("submitting") : t("submit")}
-    </button>
+    </Button>
   );
 }
 

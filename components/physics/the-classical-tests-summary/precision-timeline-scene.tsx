@@ -15,6 +15,7 @@ import {
   precisionHistory,
   type PrecisionPoint,
 } from "@/lib/physics/relativity/the-classical-tests-summary";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.43b — Precision over a century, log scale.
@@ -78,14 +79,13 @@ export function PrecisionTimelineScene() {
           const on = active[t.id];
           const cssVar = `var(--color-${TEST_COLOR[t.id]})`;
           return (
-            <button
+            <Button
               key={t.id}
-              type="button"
+              size="sm"
+              active={on}
               onClick={() =>
                 setActive((a) => ({ ...a, [t.id]: !a[t.id] }))
               }
-              className="flex items-center gap-1.5"
-              style={{ color: on ? cssVar : "var(--color-fg-4)" }}
             >
               <span
                 className="inline-block h-2 w-2"
@@ -95,7 +95,7 @@ export function PrecisionTimelineScene() {
                 }}
               />
               {t.name}
-            </button>
+            </Button>
           );
         })}
       </div>

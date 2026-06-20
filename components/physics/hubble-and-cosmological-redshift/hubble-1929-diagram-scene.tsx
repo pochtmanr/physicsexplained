@@ -13,6 +13,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 import { hubbleVelocity } from "@/lib/physics/relativity/hubble-and-cosmological-redshift";
 
 /**
@@ -96,19 +97,14 @@ export function Hubble1929DiagramScene() {
             ["both", "+ modern Hubble flow"],
           ] as [Mode, string][]
         ).map(([m, label]) => (
-          <button
+          <Button
             key={m}
-            type="button"
+            size="sm"
+            active={mode === m}
             onClick={() => setMode(m)}
-            className="rounded-sm border px-2 py-1"
-            style={{
-              borderColor:
-                mode === m ? "var(--color-cyan)" : "var(--color-fg-4)",
-              color: mode === m ? "var(--color-cyan)" : "var(--color-fg-3)",
-            }}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
 import type {
   GlossaryCard,
   PhysicistCard,
@@ -118,7 +119,7 @@ function TopicOrPhysicistCardView({
   return (
     <Link
       href={href}
-      className="group block border border-[var(--color-fg-4)]/40 bg-[var(--color-fg-4)]/5 hover:bg-[var(--color-fg-4)]/15 hover:border-[var(--color-cyan-dim)]/60 transition-colors px-3.5 py-3 no-underline"
+      className="nav-link group block border border-[var(--color-fg-4)]/40 bg-[var(--color-fg-4)]/5 hover:bg-[var(--color-fg-4)]/15 hover:border-[var(--color-cyan-dim)]/60 px-3.5 py-3 no-underline rounded-[var(--radius-control)] shadow-[var(--shadow-control)] hover:shadow-[var(--shadow-control-hover)] active:translate-y-px transition-[box-shadow,border-color,transform] duration-[var(--duration-fast)] ease-out btn-tracer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50"
     >
       <div className="flex items-start justify-between gap-2 mb-1">
         <div className="font-semibold text-[14px] leading-snug text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)]">
@@ -142,7 +143,7 @@ function GlossaryCardView({ card, locale }: { card: GlossaryCard; locale: string
   return (
     <Link
       href={href}
-      className="group block border border-[var(--color-fg-4)]/40 bg-[var(--color-fg-4)]/5 hover:bg-[var(--color-fg-4)]/15 hover:border-[var(--color-cyan-dim)]/60 transition-colors px-3.5 py-3 no-underline"
+      className="nav-link group block border border-[var(--color-fg-4)]/40 bg-[var(--color-fg-4)]/5 hover:bg-[var(--color-fg-4)]/15 hover:border-[var(--color-cyan-dim)]/60 px-3.5 py-3 no-underline rounded-[var(--radius-control)] shadow-[var(--shadow-control)] hover:shadow-[var(--shadow-control-hover)] active:translate-y-px transition-[box-shadow,border-color,transform] duration-[var(--duration-fast)] ease-out btn-tracer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50"
     >
       <div className="flex items-start justify-between gap-2 mb-1">
         <div className="font-semibold text-[14px] leading-snug text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)]">

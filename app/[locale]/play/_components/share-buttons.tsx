@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { Link2, X as XIcon, Sparkles, Check } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 interface Props {
   shareTitle: string;
@@ -60,27 +61,27 @@ export function ShareButtons({ shareTitle, sceneId, aiPromptKey }: Props) {
 
   return (
     <div className="flex items-center gap-1">
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="icon"
         onClick={copyLink}
         aria-label={t("copyLink")}
-        className="inline-flex h-8 w-8 items-center justify-center text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
       >
         {copied ? <Check size={14} /> : <Link2 size={14} />}
-      </button>
+      </Button>
       <a
         href={tweetUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={t("tweet")}
-        className="inline-flex h-8 w-8 items-center justify-center text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
+        className={buttonVariants({ variant: "ghost", size: "icon", className: "nav-link" })}
       >
         <XIcon size={14} />
       </a>
       <a
         href={askUrl}
         aria-label={t("explain")}
-        className="inline-flex h-8 items-center gap-2 bg-[var(--color-cyan)] px-3 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)]"
+        className={buttonVariants({ variant: "primary", size: "sm", className: "nav-link" })}
       >
         <Sparkles size={14} className="text-white" />
         <span>{t("explain")}</span>

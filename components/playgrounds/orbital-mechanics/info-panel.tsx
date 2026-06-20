@@ -1,6 +1,7 @@
 "use client";
 import { Info, X } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 import type { PresetId } from "./presets";
 import { PRESET_IDS } from "./presets";
 
@@ -18,15 +19,16 @@ export function InfoPanel({ open, activePreset, onOpenChange }: Props) {
 
   if (!open) {
     return (
-      <button
-        type="button"
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => onOpenChange(true)}
         aria-label={tControls("info")}
-        className="absolute top-16 left-3 z-40 inline-flex h-8 items-center gap-1.5 border border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]/80 px-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] backdrop-blur-md hover:border-[var(--color-cyan)] hover:text-[var(--color-cyan)]"
+        className="absolute top-16 left-3 z-40 backdrop-blur-md"
       >
         <Info size={14} />
         <span>{tControls("info")}</span>
-      </button>
+      </Button>
     );
   }
 
@@ -38,14 +40,14 @@ export function InfoPanel({ open, activePreset, onOpenChange }: Props) {
         <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
           {t("title")}
         </span>
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => onOpenChange(false)}
           aria-label={tControls("closeInfo")}
-          className="inline-flex h-7 w-7 items-center justify-center text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
         >
           <X size={14} />
-        </button>
+        </Button>
       </header>
       <div className="flex-1 space-y-4 overflow-y-auto px-3 py-3 text-sm leading-relaxed text-[var(--color-fg-1)]">
         <p>{t("intro")}</p>

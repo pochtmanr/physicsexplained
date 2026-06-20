@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import {
   photonMomentum,
   photonMomentumFromWavelength,
@@ -247,28 +248,12 @@ export function PhotonMomentumScene() {
         className="block"
       />
       <div className="mt-2 flex flex-wrap items-center gap-3 px-2 font-mono text-xs">
-        <button
-          type="button"
-          onClick={() => setMode("absorb")}
-          className={`rounded border px-3 py-1 transition-colors ${
-            mode === "absorb"
-              ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:border-[var(--color-fg-3)]"
-          }`}
-        >
+        <Button active={mode === "absorb"} onClick={() => setMode("absorb")}>
           ABSORBER
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("reflect")}
-          className={`rounded border px-3 py-1 transition-colors ${
-            mode === "reflect"
-              ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:border-[var(--color-fg-3)]"
-          }`}
-        >
+        </Button>
+        <Button active={mode === "reflect"} onClick={() => setMode("reflect")}>
           MIRROR
-        </button>
+        </Button>
         <div className="ml-auto flex items-center gap-3">
           <label className="text-[var(--color-fg-3)]">λ</label>
           <input

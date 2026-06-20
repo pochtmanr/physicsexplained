@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import { Paperclip, X, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ModelPicker } from "./model-picker";
 
 interface ComposerProps {
@@ -81,14 +82,15 @@ export function Composer({
                 <FileText size={20} strokeWidth={1.5} className="text-[var(--color-cyan-dim)]" aria-hidden="true" />
               </div>
             )}
-            <button
-              type="button"
+            <Button
+              variant="icon"
+              size="icon"
               onClick={removeAttachment}
               aria-label="Remove attachment"
-              className="absolute -top-1.5 -right-1.5 inline-flex items-center justify-center w-4 h-4 bg-[var(--color-bg-0)] border border-[var(--color-fg-3)] text-[var(--color-fg-1)] hover:text-[var(--color-magenta)] hover:border-[var(--color-magenta)] transition-colors"
+              className="absolute -top-1.5 -right-1.5 !h-4 !w-4"
             >
               <X size={10} strokeWidth={2.5} />
-            </button>
+            </Button>
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-xs text-[var(--color-fg-1)] truncate">
@@ -114,16 +116,17 @@ export function Composer({
           autoFocus
           className="w-full bg-transparent border-0 px-4 pt-3 pb-12 text-base md:text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:outline-none resize-y min-h-[88px] max-h-[240px]"
         />
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="icon"
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled}
           title="Attach image or PDF"
           aria-label="Attach image or PDF"
-          className="absolute bottom-2 start-2 inline-flex items-center justify-center w-8 h-8 border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/40 text-[var(--color-fg-1)] hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+          className="absolute bottom-2 start-2"
         >
           <Paperclip size={14} strokeWidth={1.75} aria-hidden="true" />
-        </button>
+        </Button>
         <input
           ref={fileInputRef}
           type="file"
@@ -144,13 +147,14 @@ export function Composer({
           <span className="hidden md:inline-block font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
             Enter to send · Shift+Enter newline
           </span>
-          <button
-            type="button"
+          <Button
+            variant="primary"
+            size="icon"
             onClick={onSubmit}
             disabled={!canSend}
             aria-label={disabled ? "Sending" : "Send"}
             title={disabled ? "Sending…" : "Send"}
-            className="nav-link btn-tracer group relative inline-flex h-9 w-9 items-center justify-center bg-[var(--color-cyan)] !text-white transition-[box-shadow,background-color,opacity] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] disabled:opacity-40 disabled:cursor-not-allowed"
+            className="!h-9 !w-9"
           >
             <span
               aria-hidden="true"
@@ -158,7 +162,7 @@ export function Composer({
             >
               →
             </span>
-          </button>
+          </Button>
         </div>
       </div>
     </div>

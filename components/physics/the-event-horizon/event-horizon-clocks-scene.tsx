@@ -16,6 +16,7 @@ import {
   staticTimeDilation,
   redshiftFactor,
 } from "@/lib/physics/relativity/the-event-horizon";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.44a — Two clocks at the horizon.
@@ -106,20 +107,12 @@ export function EventHorizonClocksScene() {
         <span>
           redshift 1+z = {Number.isFinite(z) ? z.toFixed(2) : "∞"}
         </span>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setX(2.5)}
-        >
+        <Button size="sm" onClick={() => setX(2.5)}>
           reset
-        </button>
-        <button
-          type="button"
-          className="cursor-pointer hover:text-[var(--color-fg-1)]"
-          onClick={() => setX(1.001)}
-        >
+        </Button>
+        <Button size="sm" onClick={() => setX(1.001)}>
           at the horizon
-        </button>
+        </Button>
       </div>
     </div>
   );

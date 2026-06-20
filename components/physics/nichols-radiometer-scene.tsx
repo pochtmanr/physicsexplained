@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { radiationPressureReflecting } from "@/lib/physics/electromagnetism/radiation-pressure";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.58;
 const MAX_HEIGHT = 420;
@@ -237,39 +238,25 @@ export function NicholsRadiometerScene() {
         className="block"
       />
       <div className="mt-2 flex flex-wrap items-center gap-3 px-2 font-mono text-xs">
-        <button
-          type="button"
+        <Button
+          active={apparatus === "nichols"}
           onClick={() => setApparatus("nichols")}
-          className={`rounded border px-3 py-1 transition-colors ${
-            apparatus === "nichols"
-              ? "border-[var(--color-magenta)] text-[var(--color-magenta)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:border-[var(--color-fg-3)]"
-          }`}
         >
           NICHOLS 1901
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          active={apparatus === "crookes"}
           onClick={() => setApparatus("crookes")}
-          className={`rounded border px-3 py-1 transition-colors ${
-            apparatus === "crookes"
-              ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:border-[var(--color-fg-3)]"
-          }`}
         >
           CROOKES (thermal)
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          active={lightOn}
           onClick={() => setLightOn((v) => !v)}
-          className={`ml-auto rounded border px-3 py-1 transition-colors ${
-            lightOn
-              ? "border-[var(--color-amber)] text-[var(--color-amber)]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:border-[var(--color-fg-3)]"
-          }`}
+          className="ml-auto"
         >
           LIGHT {lightOn ? "ON" : "OFF"}
-        </button>
+        </Button>
       </div>
     </div>
   );

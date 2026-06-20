@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.6;
 const MAX_HEIGHT = 360;
@@ -208,13 +209,6 @@ export function ChandlerWobbleScene() {
     },
   });
 
-  const tab = (active: boolean) =>
-    `px-3 py-1 text-xs font-mono uppercase tracking-wider transition-colors ${
-      active
-        ? "bg-[var(--color-cyan)] text-[var(--color-bg-0)]"
-        : "bg-transparent text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-    }`;
-
   return (
     <div ref={containerRef} className="w-full pb-4">
       <canvas
@@ -223,20 +217,18 @@ export function ChandlerWobbleScene() {
         className="block"
       />
       <div className="mt-2 flex gap-2 px-2">
-        <button
-          type="button"
+        <Button
+          active={mode === "chandler"}
           onClick={() => setMode("chandler")}
-          className={tab(mode === "chandler")}
         >
           Chandler wobble
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          active={mode === "precession"}
           onClick={() => setMode("precession")}
-          className={tab(mode === "precession")}
         >
           axial precession
-        </button>
+        </Button>
       </div>
     </div>
   );

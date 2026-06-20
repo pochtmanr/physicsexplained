@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
+import { Button } from "@/components/ui/button";
 import {
   ManifoldCanvas,
   useSceneTokens,
@@ -251,13 +252,14 @@ export function RiemannVsFlatScene() {
 
       {/* Controls — canonical slider row */}
       <div className="mt-3 flex items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
+        <Button
+          active={showTransport}
+          size="sm"
           onClick={() => setShowTransport((v) => !v)}
-          className="shrink-0 rounded border border-[var(--color-fg-4)] px-3 py-1 text-xs transition-colors hover:border-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-          style={{ color: showTransport ? tokens.green : undefined }}
+          className="shrink-0"
         >
           {showTransport ? "hide transport path" : "show transport path"}
-        </button>
+        </Button>
         <span className="shrink-0 text-[var(--color-fg-3)]">loop size</span>
         <input
           type="range"

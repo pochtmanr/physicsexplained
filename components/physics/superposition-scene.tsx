@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gaussianPulse } from "@/lib/physics/waves";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.55;
 const MAX_HEIGHT = 340;
@@ -208,13 +209,13 @@ export function SuperpositionScene() {
         </span>
       </div>
       <div className="mt-2 px-2">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setRunning((r) => !r)}
-          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
         >
           {running ? "❚❚ pause" : "▶ play"}
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Check, Loader2, AlertTriangle } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 interface OrderPayload {
   orderId: string;
@@ -72,7 +73,7 @@ export function ThankYouClient({ orderId, locale }: { orderId: string; locale: s
         <div className="pt-2">
           <Link
             href={`/${locale}/ask`}
-            className="inline-block border border-[var(--color-cyan-dim)] bg-[var(--color-cyan-dim)]/10 px-5 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/20"
+            className={buttonVariants({ variant: "secondary", size: "sm", className: "nav-link" })}
           >
             Start asking →
           </Link>
@@ -86,7 +87,7 @@ export function ThankYouClient({ orderId, locale }: { orderId: string; locale: s
         <div className="pt-2 space-y-2">
           <Link
             href={`/${locale}/ask?drawer=billing`}
-            className="inline-block border border-[var(--color-fg-3)] px-5 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] hover:bg-[var(--color-fg-4)]/30"
+            className={buttonVariants({ variant: "secondary", size: "sm", className: "nav-link" })}
           >
             Back to billing
           </Link>
@@ -99,13 +100,13 @@ export function ThankYouClient({ orderId, locale }: { orderId: string; locale: s
             We haven&apos;t heard back from the payment processor yet. Your plan will activate
             automatically once confirmed — check back in a minute or reload this page.
           </p>
-          <button
-            type="button"
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={() => window.location.reload()}
-            className="inline-block border border-[var(--color-cyan-dim)] px-5 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/10"
           >
             Reload
-          </button>
+          </Button>
         </div>
       )}
     </div>

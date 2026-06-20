@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.65b — F^{μν} morphing into *F^{μν} via the E↔cB swap, with the
@@ -225,13 +226,9 @@ export function DualTensorAndMonopoleSourceScene() {
         className="block"
       />
       <div className="mt-2 flex items-center gap-3 px-2">
-        <button
-          type="button"
-          onClick={() => setWithMonopoleSource((v) => !v)}
-          className="rounded-sm border border-[var(--color-fg-4)] px-3 py-1 text-xs font-mono text-[var(--color-fg-1)] hover:border-[var(--color-fg-3)]"
-        >
+        <Button variant="ghost" size="sm" onClick={() => setWithMonopoleSource((v) => !v)}>
           {withMonopoleSource ? "set RHS = 0 (Maxwell)" : "set RHS = μ₀ J^ν_m (monopole)"}
-        </button>
+        </Button>
         <span className="text-xs font-mono text-[var(--color-fg-3)]">
           dual equation:{" "}
           {withMonopoleSource

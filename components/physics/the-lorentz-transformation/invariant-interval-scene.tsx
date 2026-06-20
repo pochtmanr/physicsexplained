@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
 import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import type { Worldline } from "@/lib/physics/relativity/types";
@@ -97,20 +98,16 @@ export function InvariantIntervalScene() {
 
   return (
     <div className="flex flex-col items-center gap-3 p-4">
-      <div className="flex gap-2 font-mono text-xs">
+      <div className="flex gap-2">
         {(Object.keys(PRESETS) as Preset[]).map((k) => (
-          <button
+          <Button
             key={k}
-            type="button"
+            active={preset === k}
+            size="sm"
             onClick={() => setPreset(k)}
-            className={`rounded border px-3 py-1 transition ${
-              preset === k
-                ? "border-[var(--color-cyan)] text-[var(--color-cyan)]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-            }`}
           >
             {PRESETS[k].label}
-          </button>
+          </Button>
         ))}
       </div>
 

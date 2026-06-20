@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.60a — F^{μν} as a labeled 4×4 antisymmetric grid.
@@ -271,17 +272,13 @@ export function FieldTensorGridScene() {
           ["Bz", "pure B in z"],
           ["general", "general field"],
         ] as const).map(([key, label]) => (
-          <button
+          <Button
             key={key}
+            active={preset === key}
             onClick={() => setPreset(key)}
-            className={`rounded border px-2 py-1 font-mono ${
-              preset === key
-                ? "border-[#FF6ADE] text-[var(--color-fg-1)]"
-                : "border-[var(--color-fg-3)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]"
-            }`}
           >
             {label}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="mt-1 px-2 text-xs text-[var(--color-fg-3)]">

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { DeleteConfirm } from "./delete-confirm";
+import { Button } from "@/components/ui/button";
 import { UsageMeter } from "./usage-meter";
 import type { BillingSnapshot } from "@/lib/billing/snapshot";
 import { deleteAllChats, deleteAccount } from "@/app/actions/account";
@@ -42,22 +43,24 @@ export function ProfileTab({ user, snapshot }: Props) {
           </div>
           <UsageMeter snapshot={snapshot} />
           {snapshot.plan.id === "free" && (
-            <button
-              type="button"
+            <Button
+              variant="primary"
+              size="cta"
               onClick={() => setTab("billing")}
-              className="mt-4 w-full bg-[var(--color-cyan)] text-[var(--color-bg-0)] px-4 py-2.5 font-mono text-xs uppercase tracking-[0.2em] hover:opacity-90"
+              className="mt-4 w-full"
             >
               Upgrade plan →
-            </button>
+            </Button>
           )}
           {snapshot.plan.id !== "free" && (
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="sm"
               onClick={() => setTab("billing")}
-              className="mt-4 w-full border border-[var(--color-cyan-dim)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] hover:bg-[var(--color-cyan-dim)]/10"
+              className="mt-4 w-full"
             >
               Manage subscription →
-            </button>
+            </Button>
           )}
         </section>
       )}
@@ -70,20 +73,22 @@ export function ProfileTab({ user, snapshot }: Props) {
       </section>
 
       <section className="space-y-3 pt-3 border-t border-[var(--color-fg-4)]">
-        <button
-          type="button"
+        <Button
+          variant="danger"
+          size="sm"
           onClick={() => setModal("chats")}
-          className="w-full border border-[var(--color-magenta)] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-magenta)] hover:bg-[var(--color-magenta)]/10"
+          className="w-full"
         >
           Delete all chats
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="danger-solid"
+          size="sm"
           onClick={() => setModal("account")}
-          className="w-full bg-[var(--color-magenta)] text-[var(--color-bg-0)] px-4 py-2 font-mono text-xs uppercase tracking-wider hover:opacity-90"
+          className="w-full"
         >
           Delete account
-        </button>
+        </Button>
       </section>
 
       <DeleteConfirm

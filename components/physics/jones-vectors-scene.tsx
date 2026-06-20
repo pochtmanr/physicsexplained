@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { polarizationState } from "@/lib/physics/electromagnetism/plane-waves";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.52;
 const MAX_HEIGHT = 420;
@@ -305,46 +306,42 @@ export function JonesVectorsScene() {
         className="block"
       />
       <div className="mt-3 flex flex-wrap gap-3 px-2 font-mono text-[11px] text-[var(--color-fg-3)]">
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,100,200)] hover:text-[var(--color-fg-1)]"
+        <Button
+          variant="ghost"
           onClick={() => {
             setRatio(1);
             setDelta(0);
           }}
         >
           linear 45°
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(120,255,170)] hover:text-[var(--color-fg-1)]"
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => {
             setRatio(1);
             setDelta(Math.PI / 2);
           }}
         >
           right-circular
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(120,255,170)] hover:text-[var(--color-fg-1)]"
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => {
             setRatio(1);
             setDelta(-Math.PI / 2);
           }}
         >
           left-circular
-        </button>
-        <button
-          type="button"
-          className="border border-[var(--color-fg-4)] px-2 py-0.5 hover:border-[rgb(255,180,80)] hover:text-[var(--color-fg-1)]"
+        </Button>
+        <Button
+          variant="ghost"
           onClick={() => {
             setRatio(0.5);
             setDelta(Math.PI / 2);
           }}
         >
           elliptical
-        </button>
+        </Button>
       </div>
     </div>
   );

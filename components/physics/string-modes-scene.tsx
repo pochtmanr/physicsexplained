@@ -8,6 +8,7 @@ import {
 } from "@/lib/physics/modes";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.55;
 const MAX_HEIGHT = 360;
@@ -208,28 +209,12 @@ export function StringModesScene({
       <canvas ref={canvasRef} style={{ width, height }} className="block" />
 
       <div className="mt-3 flex gap-2 text-xs font-mono">
-        <button
-          type="button"
-          onClick={() => setMode("single")}
-          className={`px-3 py-1 border ${
-            mode === "single"
-              ? "border-[#6FB8C6] text-[#6FB8C6]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
-          }`}
-        >
+        <Button active={mode === "single"} onClick={() => setMode("single")}>
           SINGLE MODE
-        </button>
-        <button
-          type="button"
-          onClick={() => setMode("fourier")}
-          className={`px-3 py-1 border ${
-            mode === "fourier"
-              ? "border-[#6FB8C6] text-[#6FB8C6]"
-              : "border-[var(--color-fg-4)] text-[var(--color-fg-3)]"
-          }`}
-        >
+        </Button>
+        <Button active={mode === "fourier"} onClick={() => setMode("fourier")}>
           PLUCK (FOURIER)
-        </button>
+        </Button>
       </div>
 
       {mode === "single" ? (

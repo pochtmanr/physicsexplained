@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 import { resistance } from "@/lib/physics/electromagnetism/superconductivity";
 
 const RATIO = 0.58;
@@ -181,19 +182,14 @@ export function CriticalTemperatureScene() {
       />
       <div className="mt-3 flex flex-wrap gap-2 px-2">
         {MATERIALS.map((m, i) => (
-          <button
+          <Button
             key={m.name}
-            type="button"
+            active={i === selected}
             onClick={() => setSelected(i)}
-            className={
-              "rounded border px-2 py-1 font-mono text-[10px] transition " +
-              (i === selected
-                ? "border-[#78FFAA] bg-[#78FFAA22] text-[var(--color-fg-0)]"
-                : "border-[var(--color-fg-4)] text-[var(--color-fg-2)] hover:text-[var(--color-fg-1)]")
-            }
+            className="text-[10px]"
           >
             {m.name}
-          </button>
+          </Button>
         ))}
       </div>
       <p className="mt-2 px-2 text-xs font-mono text-[var(--color-fg-3)]">

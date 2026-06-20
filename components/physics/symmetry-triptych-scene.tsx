@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.4;
 const MAX_HEIGHT = 280;
@@ -168,13 +169,6 @@ export function SymmetryTriptychScene({ mode: modeProp }: Props) {
     },
   });
 
-  const tabStyle = (active: boolean) =>
-    `px-3 py-1 text-xs font-mono uppercase tracking-wider transition-colors ${
-      active
-        ? "bg-[var(--color-cyan)] text-[var(--color-bg-0)]"
-        : "bg-transparent text-[var(--color-fg-3)] hover:text-[var(--color-fg-1)]"
-    }`;
-
   return (
     <div ref={containerRef} className="w-full pb-4">
       <canvas
@@ -184,27 +178,18 @@ export function SymmetryTriptychScene({ mode: modeProp }: Props) {
       />
       {tabsVisible && (
         <div className="mt-2 flex gap-2 px-2">
-          <button
-            type="button"
-            onClick={() => setMode("time")}
-            className={tabStyle(mode === "time")}
-          >
+          <Button active={mode === "time"} onClick={() => setMode("time")}>
             time → energy
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("space")}
-            className={tabStyle(mode === "space")}
-          >
+          </Button>
+          <Button active={mode === "space"} onClick={() => setMode("space")}>
             space → momentum
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
+            active={mode === "rotation"}
             onClick={() => setMode("rotation")}
-            className={tabStyle(mode === "rotation")}
           >
             rotation → angular L
-          </button>
+          </Button>
         </div>
       )}
     </div>

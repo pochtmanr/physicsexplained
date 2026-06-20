@@ -9,6 +9,7 @@ import {
   useSceneTokens,
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
+import { Button } from "@/components/ui/button";
 
 /**
  * §03.1 WORLDLINE CONSTRUCTION — interactive: click on the diagram to add
@@ -103,13 +104,9 @@ export function WorldlineConstructionScene() {
         <span>
           click to add events · {events.length} placed · 45° lines = light cone
         </span>
-        <button
-          type="button"
-          onClick={handleClear}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 text-[var(--color-fg-2)] transition hover:text-[var(--color-fg-1)]"
-        >
+        <Button size="sm" onClick={handleClear}>
           clear
-        </button>
+        </Button>
       </div>
       {segments.length > 0 ? (
         <div className="rounded-md border border-[var(--color-fg-4)] p-3 font-mono text-[11px] text-[var(--color-fg-2)]">

@@ -13,6 +13,7 @@ import {
   type SceneTokens,
 } from "@/components/physics/_shared/scene-tokens";
 import { recessionVelocity } from "@/lib/physics/relativity/the-flrw-metric";
+import { Button } from "@/components/ui/button";
 
 /**
  * FIG.54c — "Every observer is at the centre."
@@ -90,20 +91,14 @@ export function CenterEverywhereScene() {
       <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-xs text-[var(--color-fg-3)]">
         <span className="text-[var(--color-fg-4)]">viewpoint:</span>
         {GALAXIES.map((_, i) => (
-          <button
+          <Button
             key={i}
-            type="button"
-            className="cursor-pointer rounded-none border px-2 py-0.5"
-            style={{
-              borderColor:
-                i === observer ? "var(--color-cyan)" : "var(--color-fg-4)",
-              color:
-                i === observer ? "var(--color-cyan)" : "var(--color-fg-3)",
-            }}
+            size="sm"
+            active={i === observer}
             onClick={() => setObserver(i)}
           >
             {String.fromCharCode(65 + i)}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

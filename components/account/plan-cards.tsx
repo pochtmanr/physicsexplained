@@ -1,5 +1,6 @@
 "use client";
 import { PLANS, type PlanId } from "@/lib/billing/plans";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   currentPlan: PlanId;
@@ -33,14 +34,15 @@ export function PlanCards({ currentPlan, onSelect, busy, hideFree }: Props) {
                   {isCurrent ? "Current" : "—"}
                 </span>
               ) : (
-                <button
-                  type="button"
+                <Button
+                  variant="secondary"
+                  size="sm"
                   disabled={isCurrent || busy === p.id}
                   onClick={() => onSelect(p.id as "starter" | "pro")}
-                  className="w-full border border-[var(--color-cyan-dim)] px-3 py-2 font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)] transition-colors hover:bg-[var(--color-cyan-dim)]/10 disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full"
                 >
                   {isCurrent ? "Current" : busy === p.id ? "Opening…" : currentPlan === "pro" ? "Downgrade" : "Upgrade"}
-                </button>
+                </Button>
               )}
             </div>
           </div>

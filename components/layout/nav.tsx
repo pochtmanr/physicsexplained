@@ -4,12 +4,11 @@ import { getTranslations } from "next-intl/server";
 import { Logo } from "./logo";
 import { NavBranchMenu } from "./nav-branch-menu";
 import { ThemeToggle } from "./theme-toggle";
-import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
 
 import { SearchTrigger } from "@/components/search/search-trigger";
 import { SearchCommand } from "@/components/search/search-command";
-import { FULL_BLEED } from "@/lib/layout";
+import { buttonVariants } from "@/components/ui/button";
 
 export async function Nav() {
   const t = await getTranslations("common.nav");
@@ -17,7 +16,7 @@ export async function Nav() {
   return (
     <nav className="sticky top-0 z-50 border-b border-[var(--color-fg-4)]/40 bg-[var(--color-bg-0)]">
       <div
-        className={`${FULL_BLEED} flex h-12 items-center justify-between gap-4 md:h-14`}
+        className="w-full px-6 md:px-8 flex h-12 items-center justify-between gap-4 md:h-14"
       >
         <div className="flex min-w-0 items-center">
           <Link
@@ -32,35 +31,34 @@ export async function Nav() {
             </div>
           </Link>
         </div>
-        <div className="hidden items-center gap-2 md:flex md:gap-3">
+        <div className="hidden items-center gap-2 min-[1201px]:flex min-[1201px]:gap-3">
           <NavBranchMenu />
           <Link
             href="/physicists"
-            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
+            className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
           >
             <User aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("physicists")}</span>
           </Link>
           <Link
             href="/dictionary"
-            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
+            className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
           >
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("dictionary")}</span>
           </Link>
           <Link
             href="/play"
-            className="nav-link inline-flex h-6 items-center gap-2 border border-[var(--color-fg-4)] px-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-1)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)] md:h-8"
+            className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
           >
             <Gamepad2 aria-hidden="true" size={14} strokeWidth={1.5} />
             <span>{t("play")}</span>
           </Link>
           <SearchTrigger />
-          <LocaleSwitcher />
           <ThemeToggle />
           <Link
             href="/ask"
-            className="nav-link btn-tracer group relative inline-flex h-6 items-center gap-2 bg-[var(--color-cyan)] px-3 font-mono text-xs uppercase tracking-wider !text-white transition-[box-shadow,background-color] duration-[180ms] ease-out hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] hover:shadow-[0_8px_32px_-8px_color-mix(in_srgb,var(--color-cyan)_60%,transparent),0_0_48px_color-mix(in_srgb,var(--color-cyan)_25%,transparent)] md:h-8"
+            className={buttonVariants({ variant: "primary", size: "sm", className: "nav-link" })}
           >
             <Sparkles aria-hidden="true" size={14} strokeWidth={1.5} className="text-white" />
             <span>Ask</span>

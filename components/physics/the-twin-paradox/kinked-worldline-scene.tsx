@@ -5,6 +5,7 @@ import { SpacetimeDiagramCanvas } from "@/components/physics/_shared";
 import { useSceneTokens } from "@/components/physics/_shared/scene-tokens";
 import { gamma, type Worldline } from "@/lib/physics/relativity/types";
 import { travelerProperTime } from "@/lib/physics/relativity/twin-paradox";
+import { Button } from "@/components/ui/button";
 
 /**
  * §03.5 KINKED WORLDLINE — the geometric payoff of §03.
@@ -153,23 +154,23 @@ export function KinkedWorldlineScene() {
       </div>
 
       <div className="flex flex-wrap items-center gap-3 font-mono text-xs text-[var(--color-fg-2)]">
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="sm"
           onClick={() => setPlaying((p) => !p)}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:opacity-90"
         >
           {playing ? "pause" : labCT >= T_HOME ? "replay" : "play"}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={() => {
             setPlaying(false);
             setLabCT(0);
           }}
-          className="rounded border border-[var(--color-fg-4)] px-3 py-1 hover:opacity-90"
         >
           reset
-        </button>
+        </Button>
         <span className="ml-2 opacity-70">
           ct = {labCT.toFixed(2)} / {T_HOME.toFixed(2)}
         </span>

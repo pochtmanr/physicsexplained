@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { Button } from "@/components/ui/button";
 
 const RATIO = 0.7;
 const MAX_HEIGHT = 420;
@@ -313,22 +314,22 @@ export function RampRaceScene() {
         className="block"
       />
       <div className="mt-2 flex gap-2 px-2">
-        <button
-          type="button"
+        <Button
+          variant="primary"
+          size="sm"
           onClick={handleStart}
           disabled={state === "running"}
-          className="px-3 py-1 text-xs font-mono uppercase tracking-wider bg-[var(--color-cyan)] text-[var(--color-bg-0)] disabled:opacity-40"
         >
           {state === "finished" ? "start again" : "start race"}
-        </button>
-        <button
-          type="button"
+        </Button>
+        <Button
+          variant="secondary"
+          size="sm"
           onClick={handleReset}
           disabled={state === "idle"}
-          className="px-3 py-1 text-xs font-mono uppercase tracking-wider text-[var(--color-fg-3)] border border-[var(--color-fg-4)] disabled:opacity-40 hover:text-[var(--color-fg-1)]"
         >
           reset
-        </button>
+        </Button>
       </div>
     </div>
   );
