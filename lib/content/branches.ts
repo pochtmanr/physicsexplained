@@ -1040,6 +1040,58 @@ const RELATIVITY_TOPICS: readonly Topic[] = [
   { slug: "what-relativity-doesnt-say", title: "WHAT RELATIVITY DOESN'T SAY", eyebrow: "FIG.61 · FRONTIERS", subtitle: "A century of winning streak, and the wall it has not yet broken through.", readingMinutes: 11, status: "live", module: "frontiers" },
 ];
 
+const THERMODYNAMICS_MODULES: readonly Module[] = [
+  { slug: "temperature-and-heat", title: "Temperature & Heat", index: 1 },
+  { slug: "first-law", title: "The First Law", index: 2 },
+  { slug: "second-law", title: "The Second Law", index: 3 },
+  { slug: "entropy-and-time", title: "Entropy & the Arrow of Time", index: 4 },
+  { slug: "kinetic-theory", title: "Kinetic Theory of Gases", index: 5 },
+  { slug: "statistical-mechanics", title: "Statistical Mechanics", index: 6 },
+  { slug: "phase-transitions", title: "Phase Transitions", index: 7 },
+  { slug: "applications-and-the-third-law", title: "Applications & the Third Law", index: 8 },
+];
+
+const THERMODYNAMICS_TOPICS: readonly Topic[] = [
+  // Module 1 Temperature & Heat — FIG.01–04 (coming-soon)
+  { slug: "what-is-temperature", title: "WHAT IS TEMPERATURE?", eyebrow: "FIG.01 · TEMPERATURE & HEAT", subtitle: "Before thermometers, science couldn't even state the question.", readingMinutes: 9, status: "live", module: "temperature-and-heat" },
+  { slug: "heat-and-the-caloric-theory", title: "HEAT AND THE CALORIC THEORY", eyebrow: "FIG.02 · TEMPERATURE & HEAT", subtitle: "How a cannon-boring contract proved heat is motion, not fluid.", readingMinutes: 11, status: "coming-soon", module: "temperature-and-heat" },
+  { slug: "heat-capacity-and-calorimetry", title: "HEAT CAPACITY AND CALORIMETRY", eyebrow: "FIG.03 · TEMPERATURE & HEAT", subtitle: "Why a pound of water and a pound of mercury refuse to warm alike.", readingMinutes: 10, status: "coming-soon", module: "temperature-and-heat" },
+  { slug: "phase-changes-and-latent-heat", title: "PHASE CHANGES AND LATENT HEAT", eyebrow: "FIG.04 · TEMPERATURE & HEAT", subtitle: "Where the energy hides while the thermometer stands still.", readingMinutes: 11, status: "coming-soon", module: "temperature-and-heat" },
+  // Module 2 The First Law — FIG.05–07 (coming-soon)
+  { slug: "internal-energy-and-the-first-law", title: "INTERNAL ENERGY AND THE FIRST LAW", eyebrow: "FIG.05 · THE FIRST LAW", subtitle: "Energy is conserved; heat and work are two ways to spend it.", readingMinutes: 10, status: "coming-soon", module: "first-law" },
+  { slug: "work-and-pv-diagrams", title: "WORK, PV DIAGRAMS, AND REVERSIBILITY", eyebrow: "FIG.06 · THE FIRST LAW", subtitle: "When Clapeyron drew Carnot's prose, engineers could read thermodynamics.", readingMinutes: 11, status: "coming-soon", module: "first-law" },
+  { slug: "isothermal-and-adiabatic-processes", title: "ISOTHERMAL AND ADIABATIC PROCESSES", eyebrow: "FIG.07 · THE FIRST LAW", subtitle: "Why a bicycle pump scalds when fast and barely warms when slow.", readingMinutes: 12, status: "coming-soon", module: "first-law" },
+  // Module 3 The Second Law — FIG.08–10 (coming-soon)
+  { slug: "heat-engines-and-carnot", title: "HEAT ENGINES AND SADI CARNOT", eyebrow: "FIG.08 · THE SECOND LAW", subtitle: "The deepest book in thermodynamics, written by a man who died thinking he'd failed.", readingMinutes: 13, status: "coming-soon", module: "second-law" },
+  { slug: "the-second-law", title: "THE SECOND LAW", eyebrow: "FIG.09 · THE SECOND LAW", subtitle: "The energy of the universe is constant; its entropy tends to a maximum.", readingMinutes: 12, status: "coming-soon", module: "second-law" },
+  { slug: "entropy-and-the-clausius-inequality", title: "ENTROPY AS HEAT OVER TEMPERATURE", eyebrow: "FIG.10 · THE SECOND LAW", subtitle: "The quantity that holds steady on reversible trips and grows on every other one.", readingMinutes: 12, status: "coming-soon", module: "second-law" },
+  // Module 4 Entropy & the Arrow of Time — FIG.11–13 (coming-soon)
+  { slug: "microstates-and-macrostates", title: "MICROSTATES AND MACROSTATES", eyebrow: "FIG.11 · ENTROPY & TIME", subtitle: "You never see ten heads — there's only one way to do it and a hundred others not to.", readingMinutes: 10, status: "coming-soon", module: "entropy-and-time" },
+  { slug: "boltzmanns-entropy-formula", title: "BOLTZMANN'S FORMULA: S = k log W", eyebrow: "FIG.12 · ENTROPY & TIME", subtitle: "The equation they carved on his tombstone.", readingMinutes: 12, status: "coming-soon", module: "entropy-and-time" },
+  { slug: "the-arrow-of-time", title: "THE ARROW OF TIME", eyebrow: "FIG.13 · ENTROPY & TIME", subtitle: "Why a smashing glass never reassembles, though no law of motion forbids it.", readingMinutes: 14, status: "coming-soon", module: "entropy-and-time" },
+  // Module 5 Kinetic Theory of Gases — FIG.14–18 (coming-soon)
+  { slug: "the-ideal-gas-law", title: "THE IDEAL GAS LAW", eyebrow: "FIG.14 · KINETIC THEORY", subtitle: "Three centuries of laboratory arithmetic, collapsed into one line.", readingMinutes: 11, status: "coming-soon", module: "kinetic-theory" },
+  { slug: "pressure-from-molecular-collisions", title: "PRESSURE FROM MOLECULAR COLLISIONS", eyebrow: "FIG.15 · KINETIC THEORY", subtitle: "Temperature, it turns out, is just kinetic energy per molecule.", readingMinutes: 11, status: "coming-soon", module: "kinetic-theory" },
+  { slug: "the-maxwell-boltzmann-distribution", title: "THE MAXWELL-BOLTZMANN DISTRIBUTION", eyebrow: "FIG.16 · KINETIC THEORY", subtitle: "The first probability distribution in the history of physics.", readingMinutes: 12, status: "coming-soon", module: "kinetic-theory" },
+  { slug: "equipartition-and-degrees-of-freedom", title: "EQUIPARTITION AND DEGREES OF FREEDOM", eyebrow: "FIG.17 · KINETIC THEORY", subtitle: "One theorem for every heat capacity — and three cracks that let the quantum in.", readingMinutes: 12, status: "coming-soon", module: "kinetic-theory" },
+  { slug: "brownian-motion", title: "BROWNIAN MOTION", eyebrow: "FIG.18 · KINETIC THEORY", subtitle: "The jitter of pollen grains that finally made atoms undeniable.", readingMinutes: 11, status: "coming-soon", module: "kinetic-theory" },
+  // Module 6 Statistical Mechanics — FIG.19–21 (coming-soon)
+  { slug: "the-partition-function", title: "THE PARTITION FUNCTION", eyebrow: "FIG.19 · STAT MECHANICS", subtitle: "One sum from which all of thermodynamics falls out by differentiation.", readingMinutes: 13, status: "coming-soon", module: "statistical-mechanics" },
+  { slug: "free-energies-and-maxwells-demon", title: "FREE ENERGIES AND MAXWELL'S DEMON", eyebrow: "FIG.20 · STAT MECHANICS", subtitle: "The demon was never free: erasing a memory costs entropy.", readingMinutes: 12, status: "coming-soon", module: "statistical-mechanics" },
+  { slug: "fluctuations-and-dissipation", title: "FLUCTUATIONS AND DISSIPATION", eyebrow: "FIG.21 · STAT MECHANICS", subtitle: "The hiss in every amplifier is the second law made audible.", readingMinutes: 11, status: "coming-soon", module: "statistical-mechanics" },
+  // Module 7 Phase Transitions — FIG.22–24 (coming-soon)
+  { slug: "the-clausius-clapeyron-relation", title: "THE CLAUSIUS-CLAPEYRON RELATION", eyebrow: "FIG.22 · PHASE TRANSITIONS", subtitle: "Why an ice-skater glides on a film of water she makes herself.", readingMinutes: 10, status: "coming-soon", module: "phase-transitions" },
+  { slug: "critical-phenomena-and-universality", title: "CRITICAL PHENOMENA AND UNIVERSALITY", eyebrow: "FIG.23 · PHASE TRANSITIONS", subtitle: "Why magnets, fluids, and alloys all obey the same handful of numbers.", readingMinutes: 14, status: "coming-soon", module: "phase-transitions" },
+  { slug: "the-ising-model", title: "THE ISING MODEL", eyebrow: "FIG.24 · PHASE TRANSITIONS", subtitle: "The most-studied model in physics, dismissed by the man who solved it.", readingMinutes: 13, status: "coming-soon", module: "phase-transitions" },
+  // Module 8 Applications & the Third Law — FIG.25–30 (coming-soon)
+  { slug: "refrigerators-and-heat-pumps", title: "REFRIGERATORS AND HEAT PUMPS", eyebrow: "FIG.25 · APPLICATIONS", subtitle: "The second law doesn't forbid pumping heat uphill — it just sends a bill.", readingMinutes: 11, status: "coming-soon", module: "applications-and-the-third-law" },
+  { slug: "the-approach-to-absolute-zero", title: "THE APPROACH TO ABSOLUTE ZERO", eyebrow: "FIG.26 · APPLICATIONS", subtitle: "For decades, the coldest place in the universe sat on a Dutch workbench.", readingMinutes: 12, status: "coming-soon", module: "applications-and-the-third-law" },
+  { slug: "the-third-law", title: "THE THIRD LAW", eyebrow: "FIG.27 · APPLICATIONS", subtitle: "The universe has a floor, and you can never quite touch it.", readingMinutes: 10, status: "coming-soon", module: "applications-and-the-third-law" },
+  { slug: "bose-einstein-condensation", title: "BOSE-EINSTEIN CONDENSATION", eyebrow: "FIG.28 · APPLICATIONS", subtitle: "Cool atoms far enough and they all collapse into a single quantum state.", readingMinutes: 13, status: "coming-soon", module: "applications-and-the-third-law" },
+  { slug: "thermodynamics-of-the-universe", title: "THERMODYNAMICS OF THE UNIVERSE", eyebrow: "FIG.29 · APPLICATIONS", subtitle: "Stars burn out, black holes evaporate, and entropy keeps the books.", readingMinutes: 13, status: "coming-soon", module: "applications-and-the-third-law" },
+  { slug: "thermodynamics-meets-life", title: "THERMODYNAMICS MEETS LIFE", eyebrow: "FIG.30 · APPLICATIONS", subtitle: "How a living thing drinks orderliness and pays it back as heat.", readingMinutes: 11, status: "coming-soon", module: "applications-and-the-third-law" },
+];
+
 export const BRANCHES: readonly Branch[] = [
   {
     slug: "classical-mechanics",
@@ -1085,8 +1137,8 @@ export const BRANCHES: readonly Branch[] = [
     subtitle: "Heat, entropy, and why time moves forward.",
     description:
       "Energy flows one way. Entropy only grows. Out of these two facts come steam engines, refrigerators, the arrow of time, and the heat death of the universe. Thermodynamics is the part of physics that feels most like philosophy.",
-    modules: [],
-    topics: [],
+    modules: THERMODYNAMICS_MODULES,
+    topics: THERMODYNAMICS_TOPICS,
     status: "coming-soon",
   },
   {

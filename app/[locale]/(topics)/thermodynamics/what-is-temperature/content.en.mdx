@@ -1,0 +1,116 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ThermoscopeScene } from "@/components/physics/what-is-temperature/thermoscope-scene";
+import { ThermalEquilibriumScene } from "@/components/physics/what-is-temperature/thermal-equilibrium-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Galileo Galilei", href: "/physicists/galileo-galilei" },
+  { type: "physicist", label: "Daniel Fahrenheit", href: "/physicists/daniel-fahrenheit" },
+  { type: "physicist", label: "Lord Kelvin", href: "/physicists/lord-kelvin" },
+  { type: "term", label: "Temperature", href: "/dictionary/temperature" },
+  { type: "term", label: "Thermometer", href: "/dictionary/thermometer" },
+  { type: "term", label: "Thermal equilibrium", href: "/dictionary/thermal-equilibrium" },
+  { type: "term", label: "Zeroth law", href: "/dictionary/zeroth-law-of-thermodynamics" },
+  { type: "term", label: "Kelvin scale", href: "/dictionary/kelvin-scale" },
+  { type: "term", label: "Absolute zero", href: "/dictionary/absolute-zero" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.01 · TEMPERATURE & HEAT"
+  title="WHAT IS TEMPERATURE?"
+  subtitle="Before thermometers, science couldn't even state the question."
+/>
+
+<Section index={1} title="The sensation problem">
+
+Touch the steel railing on a winter morning and then the wooden bench beside it. The steel feels colder. Yet they have stood in the same air all night; they are at the same temperature. What your hand reports is not temperature but the *rate* at which heat leaves your skin — and steel, a far better conductor than wood, drains it faster. Sensation lies.
+
+This is the obstacle that stalled the science of heat for two thousand years. You cannot build a theory on a thermometer made of nerves. "Hot" and "cold" are real, ordered, and physical, but the senses cannot rank two warm things reliably, cannot say *how much* warmer, and disagree with each other depending on what the hand touched a moment before. Before there was an instrument, there was not even a well-posed question.
+
+The first instrument came from <PhysicistLink slug="galileo-galilei" />. Around 1592 he sealed a glass bulb with a long open neck and stood the neck in a dish of water. The air trapped in the bulb expanded when warmed and contracted when cooled, driving the water column down or up. For the first time a physical change — a moving water level — stood in for a sensation. It was a *thermoscope*: it showed change, but it had no scale, no numbers, and it responded to air pressure as much as to heat.
+
+</Section>
+
+<Section index={2} title="From thermoscope to thermometer">
+
+<SceneCard caption="FIG.01a — Galileo's thermoscope. Drag the ambient-temperature slider: warmer air in the sealed bulb expands and pushes the water column down the neck; cooler air lets it climb. The tri-scale readout shows what a later, calibrated instrument would report (°C / °F / K) for the same air. Galileo had the motion but none of the numbers.">
+  <ThermoscopeScene />
+</SceneCard>
+
+Turning Galileo's qualitative toy into a quantitative <Term slug="thermometer" /> took another century and two fixed points. The trick is to seal the liquid in (so air pressure no longer matters) and to anchor the scale to reproducible temperatures.
+
+<PhysicistLink slug="daniel-fahrenheit" />, a Dutch-German instrument maker, did it first in 1714. He sealed mercury — which expands smoothly and stays liquid over a wide range — into a fine glass tube and pinned his scale to a brine freezing mixture at 0 °F and (roughly) body temperature at 96 °F, which set water's freezing point at 32 °F and its boiling point at 212 °F. In 1742 the Swedish astronomer <PhysicistLink slug="anders-celsius" /> proposed a cleaner, decimal scale with 100 degrees between the freezing and boiling of water — though he set it *upside down*, with 0 for boiling and 100 for freezing; Linnaeus and others flipped it within a few years to the form we use.
+
+The two scales are related by a simple affine rule:
+
+<EquationBlock id="EQ.01">$$T_{\mathrm{F}} = \tfrac{9}{5}\, T_{\mathrm{C}} + 32$$</EquationBlock>
+
+In words: a Fahrenheit degree is five-ninths the size of a Celsius degree, and the two scales cross at −40, the one temperature that reads the same on both.
+
+</Section>
+
+<Section index={3} title="Three scales, one quantity — and a true zero">
+
+Celsius and Fahrenheit are conventions: their zeros sit at arbitrary places (a brine bath, the freezing of water). They are perfectly good for weather and cooking, but they hide the physics, because a doubling of degrees Celsius does not mean a doubling of anything real. The scale a physicist reaches for is the one <PhysicistLink slug="lord-kelvin" /> — William Thomson — introduced in 1848: an *absolute* scale whose zero is the genuine floor of thermal motion.
+
+<EquationBlock id="EQ.02">$$T_{\mathrm{K}} = T_{\mathrm{C}} + 273.15$$</EquationBlock>
+
+In words: the Kelvin scale uses the same degree size as Celsius but slides the zero down to <Term slug="absolute-zero" /> — the point, at −273.15 °C, where thermal motion is as small as quantum mechanics allows. Because its zero is physical, the <Term slug="kelvin-scale" /> is a true ratio scale: 600 K really is twice as hot as 300 K, carrying twice the mean thermal energy per particle. That statement is meaningless in °C or °F, which is why every equation in this branch — the ideal gas law, the entropy, the Boltzmann factor — is written in kelvin.
+
+</Section>
+
+<Section index={4} title="Thermal equilibrium — the real definition">
+
+If sensation cannot define temperature, what does? The answer is operational: temperature is *the quantity that equalises when two bodies touch*. Put a hot block against a cold one, wait, and they arrive at a single shared value — neither the average of sensations nor anything you can feel, but a number both bodies come to agree on.
+
+<SceneCard caption="FIG.01b — Thermal equilibrium. Set each block's starting temperature, then bring them into contact. Heat flows from hot to cold and both temperatures relax exponentially toward one shared value. Toggle insulation: ON, the shared value is the average of the two (energy is conserved between them); OFF, both instead drift to room temperature — equilibrium with the surroundings.">
+  <ThermalEquilibriumScene />
+</SceneCard>
+
+The approach to that shared value follows an exponential, the same curve a cup of coffee traces as it cools:
+
+<EquationBlock id="EQ.03">$$T(t) = T_{\mathrm{eq}} + \left(T_0 - T_{\mathrm{eq}}\right) e^{-k t}$$</EquationBlock>
+
+In words: the gap between a body's temperature and the equilibrium value shrinks by a fixed fraction in each interval of time, so the temperature glides smoothly onto $T_{\mathrm{eq}}$ and never overshoots. The rate $k$ depends on how well the two bodies are coupled — thick copper closes the gap in seconds, a vacuum flask over hours. <Term slug="thermal-equilibrium" /> is the state in which the flow has stopped because the temperatures already match.
+
+<Callout variant="intuition">
+A thermometer works *because* of equilibrium: it is a small body you let come to the same temperature as the thing you want to measure, then read its expansion. You are never measuring the object directly — only a proxy that has agreed to agree with it.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The zeroth law">
+
+Hidden inside "the quantity that equalises on contact" is an assumption so obvious it was almost never stated: equilibrium is *transitive*. If body A is in equilibrium with body B, and B with C, then A is in equilibrium with C.
+
+This is the **zeroth law of thermodynamics**, and without it the whole idea of temperature collapses. It is what lets a single thermometer (B) be used to compare two objects (A and C) that never touch each other: if the mercury reads the same against both, they are at the same temperature, guaranteed. A consistent numerical temperature *exists* only because the <Term slug="zeroth-law-of-thermodynamics" /> holds.
+
+The peculiar name is an accident of history. The first, second, and third laws had already been numbered and were household names among physicists when, in the 1930s, Ralph Fowler pointed out that this prior, more fundamental fact had been taken for granted and never given a number of its own. Calling it the *fourth* law would have buried its logical priority, so it was slotted in ahead of the others as the zeroth — numbered last, but standing first.
+
+</Section>
+
+<Section index={6} title="What a thermometer actually measures">
+
+Here is the distinction that the rest of this branch turns on: temperature is an *intensity*, not an *amount*. It measures how vigorously the particles of a body jiggle — the mean energy per degree of freedom — not how much thermal energy the body contains in total.
+
+The two come apart dramatically. A spark struck from a grinding wheel can be at 1500 °C, far hotter than a bathtub at 40 °C, yet it carries so little energy that it dies the instant it lands on your skin; the bathtub, cooler but vastly more massive, holds enough energy to scald. A single particle in interstellar gas can sit at thousands of kelvin while the gas as a whole is so thin it would freeze you solid. Intensity tells you which way heat will flow on contact — always from high temperature to low. Amount tells you how much will flow before the flow stops. <Term slug="temperature" /> is the first; heat is the second.
+
+<Callout variant="intuition">
+Temperature is like the *height* of water, not the *volume*: it decides which way water runs when you connect two tanks, but says nothing on its own about how much will move. A thimble on a high shelf is "higher" than a reservoir in a valley, and still holds almost nothing.
+</Callout>
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We now have a well-posed quantity. Temperature is defined by equilibrium, made transitive by the zeroth law, given a true zero by Kelvin, and carefully distinguished from the *amount* of thermal energy a body holds. But that distinction immediately raises the question that occupied the eighteenth and nineteenth centuries: if temperature is not heat, then what *is* heat?
+
+For a hundred years the answer was a weightless fluid called caloric. It took a cannon-boring contract and a brewer's paddle wheel to prove that heat is nothing of the sort — that it is simply energy in transit. That is the story of [heat and the caloric theory](/thermodynamics/heat-and-the-caloric-theory), and from there to [how much energy it takes to warm a thing](/thermodynamics/heat-capacity-and-calorimetry) and [where that energy hides during melting and boiling](/thermodynamics/phase-changes-and-latent-heat).
+
+</Section>
+
+</TopicPageLayout>

@@ -1627,6 +1627,14 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   OpenQuestionsBoardScene: lazyScene(() =>
     import("@/components/physics/what-relativity-doesnt-say/open-questions-board-scene").then((m) => ({ default: m.OpenQuestionsBoardScene })),
   ),
+
+  // ─── Module 1 temperature-and-heat (thermo sprint 2026-06-20) ───
+  ThermoscopeScene: lazyScene(() =>
+    import("@/components/physics/what-is-temperature/thermoscope-scene").then((m) => ({ default: m.ThermoscopeScene })),
+  ),
+  ThermalEquilibriumScene: lazyScene(() =>
+    import("@/components/physics/what-is-temperature/thermal-equilibrium-scene").then((m) => ({ default: m.ThermalEquilibriumScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

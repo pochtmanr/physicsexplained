@@ -1482,6 +1482,97 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "relativity", topicSlug: "black-hole-thermodynamics" },
     ],
   },
+
+  // ─── Module 1 temperature-and-heat (thermo sprint 2026-06-20) ───
+  {
+    slug: "daniel-fahrenheit",
+    born: "1686",
+    died: "1736",
+    nationality: "Dutch-German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+    ],
+  },
+  {
+    slug: "anders-celsius",
+    born: "1701",
+    died: "1744",
+    nationality: "Swedish",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+    ],
+  },
+  {
+    slug: "lord-kelvin",
+    born: "1824",
+    died: "1907",
+    nationality: "British",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+      { branchSlug: "thermodynamics", topicSlug: "the-third-law" },
+      { branchSlug: "thermodynamics", topicSlug: "the-approach-to-absolute-zero" },
+    ],
+  },
+  {
+    slug: "count-rumford",
+    born: "1753",
+    died: "1814",
+    nationality: "American-British",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+    ],
+  },
+  {
+    slug: "humphry-davy",
+    born: "1778",
+    died: "1829",
+    nationality: "British",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+    ],
+  },
+  {
+    slug: "joseph-black",
+    born: "1728",
+    died: "1799",
+    nationality: "Scottish",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+    ],
+  },
+  {
+    slug: "pierre-louis-dulong",
+    born: "1785",
+    died: "1838",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "alexis-petit",
+    born: "1791",
+    died: "1820",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "benoit-clapeyron",
+    born: "1799",
+    died: "1864",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+      { branchSlug: "thermodynamics", topicSlug: "the-clausius-clapeyron-relation" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

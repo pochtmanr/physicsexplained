@@ -3692,6 +3692,202 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "relativity", topicSlug: "hawking-radiation" },
     ],
   },
+
+  // ─── Module 1 temperature-and-heat (thermo sprint 2026-06-20) ───
+  {
+    slug: "temperature",
+    category: "concept",
+    relatedPhysicists: ["galileo-galilei", "lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "thermometer",
+    category: "instrument",
+    relatedPhysicists: ["galileo-galilei", "daniel-fahrenheit", "anders-celsius"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+    ],
+  },
+  {
+    slug: "thermal-equilibrium",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+    ],
+  },
+  {
+    slug: "zeroth-law-of-thermodynamics",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+    ],
+  },
+  {
+    slug: "kelvin-scale",
+    category: "concept",
+    relatedPhysicists: ["lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+      { branchSlug: "thermodynamics", topicSlug: "the-third-law" },
+    ],
+  },
+  {
+    slug: "absolute-zero",
+    category: "concept",
+    relatedPhysicists: ["lord-kelvin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "what-is-temperature" },
+      { branchSlug: "thermodynamics", topicSlug: "the-approach-to-absolute-zero" },
+      { branchSlug: "thermodynamics", topicSlug: "the-third-law" },
+    ],
+  },
+  {
+    slug: "heat",
+    category: "concept",
+    relatedPhysicists: ["james-prescott-joule", "count-rumford"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+    ],
+  },
+  {
+    slug: "caloric-theory",
+    category: "concept",
+    relatedPhysicists: ["count-rumford", "humphry-davy"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+    ],
+  },
+  {
+    slug: "mechanical-equivalent-of-heat",
+    category: "concept",
+    relatedPhysicists: ["james-prescott-joule"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+    ],
+  },
+  {
+    slug: "joule",
+    category: "unit",
+    relatedPhysicists: ["james-prescott-joule"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+    ],
+  },
+  {
+    slug: "calorie",
+    category: "unit",
+    relatedPhysicists: ["james-prescott-joule"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+    ],
+  },
+  {
+    slug: "specific-heat-capacity",
+    category: "concept",
+    relatedPhysicists: ["joseph-black"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+    ],
+  },
+  {
+    slug: "molar-heat-capacity",
+    category: "concept",
+    relatedPhysicists: ["pierre-louis-dulong", "alexis-petit"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "calorimetry",
+    category: "concept",
+    relatedPhysicists: ["joseph-black"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+    ],
+  },
+  {
+    slug: "dulong-petit-law",
+    category: "concept",
+    relatedPhysicists: ["pierre-louis-dulong", "alexis-petit"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "cv-cp",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+    ],
+  },
+  {
+    slug: "phase",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+    ],
+  },
+  {
+    slug: "phase-transition",
+    category: "phenomenon",
+    relatedPhysicists: ["joseph-black"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+      { branchSlug: "thermodynamics", topicSlug: "the-clausius-clapeyron-relation" },
+      { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
+    ],
+  },
+  {
+    slug: "latent-heat",
+    category: "concept",
+    relatedPhysicists: ["joseph-black"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+    ],
+  },
+  {
+    slug: "latent-heat-of-fusion",
+    category: "concept",
+    relatedPhysicists: ["joseph-black"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+    ],
+  },
+  {
+    slug: "latent-heat-of-vaporisation",
+    category: "concept",
+    relatedPhysicists: ["joseph-black"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+    ],
+  },
+  {
+    slug: "triple-point",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+      { branchSlug: "thermodynamics", topicSlug: "the-clausius-clapeyron-relation" },
+    ],
+  },
+  {
+    slug: "critical-point",
+    category: "concept",
+    relatedPhysicists: ["benoit-clapeyron"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "phase-changes-and-latent-heat" },
+      { branchSlug: "thermodynamics", topicSlug: "the-clausius-clapeyron-relation" },
+      { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
