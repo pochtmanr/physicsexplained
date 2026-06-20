@@ -1,0 +1,107 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { IsothermalVsAdiabaticScene } from "@/components/physics/isothermal-and-adiabatic-processes/isothermal-vs-adiabatic-scene";
+import { BicyclePumpScene } from "@/components/physics/isothermal-and-adiabatic-processes/bicycle-pump-scene";
+import { CloudFormationScene } from "@/components/physics/isothermal-and-adiabatic-processes/cloud-formation-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Siméon Denis Poisson", href: "/physicists/simeon-denis-poisson" },
+  { type: "physicist", label: "James Joule", href: "/physicists/james-prescott-joule" },
+  { type: "term", label: "Isothermal process", href: "/dictionary/isothermal-process" },
+  { type: "term", label: "Adiabatic process", href: "/dictionary/adiabatic-process" },
+  { type: "term", label: "Adiabatic exponent", href: "/dictionary/adiabatic-exponent" },
+  { type: "term", label: "Free expansion", href: "/dictionary/free-expansion" },
+  { type: "term", label: "Heat reservoir", href: "/dictionary/heat-reservoir" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.07 · THE FIRST LAW"
+  title="ISOTHERMAL AND ADIABATIC PROCESSES"
+  subtitle="Why a bicycle pump scalds when fast and barely warms when slow."
+/>
+
+<Section index={1} title="Two strokes of the same pump">
+
+Pump a bicycle tyre fast and the barrel of the pump grows hot enough to be uncomfortable. Pump it slowly and the same barrel barely warms, even though you have compressed exactly the same air to the same pressure. The air does not know how hard you are breathing; what differs is *time* — whether the heat of compression has a chance to leak away before the next stroke. That single difference is the gap between the two most important idealised processes in thermodynamics, and it is built into every tyre valve on Earth.
+
+<SceneCard caption="FIG.07b — the bicycle pump. The slider sets your stroke speed. Work it slowly and each compression's heat leaks into the barrel and the room before the next stroke: the gas stays near ambient, an isothermal process. Work it fast and the heat is trapped — an adiabatic process — and the thermometer climbs sharply. Same air, same compression, opposite outcome, decided entirely by speed.">
+  <BicyclePumpScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Isothermal — temperature pinned">
+
+An <Term slug="isothermal-process" /> is one carried out at constant temperature. To hold a gas at fixed $T$ while you compress or expand it, you must let it exchange heat freely with a large body whose temperature does not budge — a <Term slug="heat-reservoir" /> — and you must do it slowly enough that the gas keeps pace. For an ideal gas the internal energy depends only on temperature, so along an isotherm $\Delta U = 0$, and the first law collapses to $Q = W$: every joule of work the gas does is supplied as heat from the reservoir, and every joule done on it is dumped back.
+
+<EquationBlock id="EQ.01">$$W_{\text{iso}} = Q = nRT\ln\!\left(\frac{V_2}{V_1}\right)$$</EquationBlock>
+
+In words: the work done in a reversible isothermal change is the number of moles times $RT$ times the natural log of the volume ratio. Expand to twice the volume and the gas does $nRT\ln 2$ of work, all of it drawn from the reservoir as heat. The path on a PV diagram is the hyperbola $PV = nRT = \text{const}$ — Boyle's law, drawn.
+
+</Section>
+
+<Section index={3} title="Adiabatic — heat sealed out">
+
+An <Term slug="adiabatic-process" /> is the opposite extreme: no heat crosses the boundary at all, $Q = 0$, either because the walls are perfectly insulating or because the change happens too fast for heat to flow. Now the first law reads $\Delta U = -W$. The gas has no external heat to draw on, so the work of expansion must be paid for out of its own internal energy — and it cools. Compress it, and the work you do piles into its internal energy — and it heats.
+
+<EquationBlock id="EQ.02">$$\Delta U = -W \quad\Longrightarrow\quad \text{expansion cools, compression heats}$$</EquationBlock>
+
+In words: with the heat channel shut, work and internal energy trade directly. This is why the fast pump scalds: each rapid compression is nearly adiabatic, and the work of the stroke goes straight into the gas's temperature with nowhere to escape.
+
+</Section>
+
+<Section index={4} title="The adiabatic exponent and PVᵞ = const">
+
+How much does an adiabatic gas cool as it expands? The answer turns on the <Term slug="adiabatic-exponent" /> $\gamma$, the ratio of the gas's two heat capacities:
+
+<EquationBlock id="EQ.03">$$\gamma = \frac{C_p}{C_v}, \qquad PV^{\gamma} = \text{const}$$</EquationBlock>
+
+In words: $\gamma$ is the constant-pressure heat capacity divided by the constant-volume one, and along an adiabat the product $PV^{\gamma}$ stays fixed. Its value is 5/3 for a monatomic gas like helium and 7/5 for a diatomic gas like the nitrogen and oxygen of air — numbers that come from counting each molecule's ways of storing energy, a story told in full by [equipartition and degrees of freedom](/thermodynamics/equipartition-and-degrees-of-freedom). The relation $PV^{\gamma} = \text{const}$ was first derived by <PhysicistLink slug="simeon-denis-poisson" /> in 1823, which is why these are sometimes called Poisson's equations.
+
+<SceneCard caption="FIG.07a — same squeeze, two laws. Both curves start at the amber point and are compressed to the same final volume. The isotherm (red) obeys PV = const; the adiabat (cyan) obeys the steeper PVᵞ = const and ends both higher in pressure and hotter, because its trapped work has raised its temperature. Drag the slider to change how far you compress, and switch γ between monatomic and diatomic. The adiabat always finishes above the isotherm.">
+  <IsothermalVsAdiabaticScene />
+</SceneCard>
+
+<Callout variant="math">
+Because $\gamma > 1$, the adiabat $PV^{\gamma} = \text{const}$ always falls more steeply than the isotherm $PV = \text{const}$ through the same point. The temperature form $TV^{\gamma-1} = \text{const}$ says the same thing in temperature: halving the volume of air ($\gamma = 1.4$) multiplies its absolute temperature by $2^{0.4} \approx 1.32$.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Diesel engines and the birth of clouds">
+
+These are not blackboard idealisations; the adiabat runs real machines and real weather. A diesel engine has no spark plug. It compresses air to about a twentieth of its volume so quickly that the process is essentially adiabatic, and $TV^{\gamma-1} = \text{const}$ drives the temperature past 800 °C — hot enough that injected fuel ignites on contact. Rudolf Diesel's engine is an adiabatic compression turned into a controlled explosion.
+
+The same physics paints the sky. A parcel of warm, moist air that is nudged upward finds lower pressure above it and expands. Sealed from the surrounding air, it expands adiabatically and cools at about 9.8 K per kilometre. Lift it far enough and it reaches its dew point; the water vapour it carries condenses into droplets, and a cloud is born. The flat base of every fair-weather cumulus is the altitude — the lifting condensation level — where rising air first cools to saturation.
+
+<SceneCard caption="FIG.07c — a cloud from an adiabat. Drag the moist parcel upward. Pressure drops with height, so it expands and cools adiabatically at 9.8 K per kilometre. When its temperature meets the dew point — the dashed lifting condensation level — the vapour condenses into droplets and a cloud forms. That altitude is the flat bottom you see on cumulus clouds: the height at which the air first cools to saturation.">
+  <CloudFormationScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Joule's free expansion — work without a piston">
+
+There is a third case that sharpens what "adiabatic" really means. In the 1840s <PhysicistLink slug="james-prescott-joule" /> connected a flask of compressed gas to an evacuated flask and opened the valve, letting the gas rush into the vacuum — a <Term slug="free-expansion" />. The gas expanded, but it pushed against *nothing*, so it did no work: $W = 0$. The apparatus was insulated, so no heat flowed: $Q = 0$. By the first law $\Delta U = 0$, and Joule measured the temperature before and after.
+
+For an ideal gas, it did not change. No work, no heat, no temperature change — which can only be true if the internal energy depends on temperature alone, not on volume:
+
+<EquationBlock id="EQ.04">$$\text{free expansion:}\quad W = 0,\; Q = 0,\; \Delta U = 0 \;\Longrightarrow\; U = U(T)$$</EquationBlock>
+
+In words: a gas expanding into vacuum does no work and exchanges no heat, so for an ideal gas its temperature is unchanged — proof that $U$ is a function of $T$ only. This is the assumption that made every isothermal $\Delta U = 0$ in this topic legitimate. (A free expansion is adiabatic, $Q = 0$, but it is violently *irreversible* — it has no path on a PV diagram, unlike the smooth adiabat $PV^{\gamma} = \text{const}$.)
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We now have the full vocabulary of how a gas changes state: the four canonical processes from [work and PV diagrams](/thermodynamics/work-and-pv-diagrams), and the two extremes — isothermal and adiabatic — laid out here, with the exponent $\gamma$ that distinguishes them and the free expansion that pins $U$ to temperature alone.
+
+Every cycle we could draw on the PV plane is now built from these legs. So the question Sadi Carnot asked in 1824 finally has a setting: of all the engines you could assemble from isothermal and adiabatic strokes, which one extracts the most work from a given flow of heat? That is the threshold of the Second Law and of [heat engines and Sadi Carnot](/thermodynamics/heat-engines-and-carnot) — the pinnacle of classical thermodynamics.
+
+</Section>
+
+</TopicPageLayout>

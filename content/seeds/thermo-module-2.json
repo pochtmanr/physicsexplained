@@ -1,0 +1,288 @@
+{
+  "glossary": [
+    {
+      "slug": "internal-energy",
+      "title": "Internal energy",
+      "subtitle": "The total microscopic energy stored in a system — the sum of its molecules' kinetic and potential energies — and the only quantity a body genuinely 'contains'.",
+      "definition": [
+        "Internal energy, written U, is the grand total of all the microscopic energy held in a system: the kinetic energy of its molecules as they translate, rotate, and vibrate, plus the potential energy of the forces between them. It excludes the bulk kinetic energy of the system as a whole and any external potential energy — it is the energy seen from a frame riding along with the body. For an ideal gas, where intermolecular forces vanish, U depends only on temperature.",
+        "Internal energy is a state function: it depends solely on the present state of the system (its temperature, pressure, and volume) and not at all on the path by which that state was reached. This is what makes U the only legitimately 'stored' thermal quantity. Heat and work, by contrast, are not stored — they are energy in transit across the system boundary, and it is meaningless to ask how much heat or work is 'in' a body.",
+        "The change in internal energy is governed by the first law of thermodynamics, ΔU = Q − W: it rises when heat is added and falls when the system does work on its surroundings. Because U is a state function, ΔU between two states is fixed even though the heat and work that produced it are not, and over any complete cycle ΔU returns to zero."
+      ],
+      "history": "The concept crystallised with the first law in the 1840s, as Mayer, Joule, and Helmholtz established that heat and mechanical work are interconvertible forms of one conserved energy; Clausius gave U its modern role as a state function in the 1850s.",
+      "category": "concept",
+      "relatedPhysicists": ["julius-von-mayer", "hermann-von-helmholtz", "james-prescott-joule"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" }
+      ]
+    },
+    {
+      "slug": "first-law-of-thermodynamics",
+      "title": "First law of thermodynamics",
+      "subtitle": "Energy conservation for systems that exchange heat and work: ΔU = Q − W. Energy is never created or destroyed, only transferred or stored.",
+      "definition": [
+        "The first law of thermodynamics is the principle of energy conservation extended to thermal systems. It states that the change in a system's internal energy equals the heat added to it minus the work it does on its surroundings: ΔU = Q − W (physics sign convention, with Q positive flowing in and W positive done by the system). Heat and work are simply the two channels through which energy crosses a boundary; once across, it is banked indistinguishably as internal energy.",
+        "The law forbids perpetual motion of the first kind — a machine that produces work from nothing. Over a complete cycle the working substance returns to its initial state, so ΔU = 0 and the net work can never exceed the net heat absorbed: W_net = Q_net. There is no surplus to harvest, and every proposed self-powering engine must fail on this accounting alone.",
+        "It was discovered three times in a single decade by men working independently: Julius von Mayer reasoned it from physiology (1842), James Joule pinned it down by experiment (1843), and Hermann von Helmholtz proved it as a universal mathematical principle (1847). Their convergence marked energy conservation as one of the deepest unifying laws in physics."
+      ],
+      "history": "Born of the 1840s recognition that heat is a form of energy, after Joule's measurement of the mechanical equivalent of heat; named the 'first law' once Clausius and Kelvin organised thermodynamics into its numbered laws in the 1850s.",
+      "category": "concept",
+      "relatedPhysicists": ["julius-von-mayer", "james-prescott-joule", "hermann-von-helmholtz"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "state-function",
+      "title": "State function",
+      "subtitle": "A property whose value depends only on the current state of a system, not on the path taken to reach it — internal energy, temperature, pressure, entropy.",
+      "definition": [
+        "A state function is any thermodynamic property that is fixed by the present state of a system and is indifferent to its history. Internal energy, temperature, pressure, volume, and entropy are all state functions: two systems in the same state share the same values regardless of how each got there. The change in a state function between two states therefore depends only on the endpoints, and its integral around any closed cycle is exactly zero.",
+        "Heat and work are the crucial counterexamples — they are path functions, not state functions. Between the same two states, different processes transfer different amounts of heat and do different amounts of work, even though the change in internal energy is the same. This is why one cannot speak of the heat or work 'contained' in a body; only of the heat and work that crossed its boundary along a particular path.",
+        "Mathematically, a state function has an exact differential: dU is path-independent and ∮dU = 0, whereas the small heat δQ and work δW are inexact, their integrals depending on the route. This distinction is the formal backbone of the first and second laws and of the whole machinery of thermodynamic potentials."
+      ],
+      "history": "The path-independence of internal energy was implicit in the first law of the 1840s and made explicit by Clausius, whose introduction of entropy in 1865 supplied a second, subtler state function at the heart of the second law.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "work-thermodynamic",
+      "title": "Thermodynamic work",
+      "subtitle": "Energy transferred by a system pushing its boundary against a force — for a gas, W = ∫P dV, the area under its path on a PV diagram.",
+      "definition": [
+        "Thermodynamic work is the energy a system transfers to its surroundings by moving its boundary against an opposing force. For a gas expanding against a piston, a small displacement at pressure P sweeps out a volume dV and does work P dV, so the total work over a change of volume is W = ∫P dV — geometrically, the area between the process curve and the volume axis on a pressure–volume diagram. For constant pressure this reduces to W = P ΔV.",
+        "Unlike mechanical work on a point mass, thermodynamic work is a path function: the same change of state reached by different routes does different amounts of work, because the area under each path differs. In the physics sign convention, work is positive when the system does it on the surroundings (expansion) and negative when the surroundings do it on the system (compression).",
+        "Work is one of the two ways — heat being the other — that a system's internal energy can change, as set out in the first law ΔU = Q − W. Over a closed cycle the net work equals the net heat absorbed and equals the area enclosed by the loop on a PV diagram, which is the useful output of every heat engine."
+      ],
+      "history": "Made quantitative once Watt's engines forced engineers to reckon the 'duty' of an engine, and given its modern integral form by Clapeyron's 1834 pressure–volume diagram, which turned work into a measurable area.",
+      "category": "concept",
+      "relatedPhysicists": ["benoit-clapeyron"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "pv-diagram",
+      "title": "PV diagram",
+      "subtitle": "A plot of pressure against volume on which every state of a gas is a point, every quasi-static process a curve, and every cycle a closed loop whose area is the work.",
+      "definition": [
+        "A pressure–volume diagram plots a gas's pressure on the vertical axis against its volume on the horizontal. Each equilibrium state of the gas is a single point; each quasi-static process is a curve linking states; and each cyclic process is a closed loop. The diagram's great virtue is that it makes work visible: the area under a process curve is the work done, ∫P dV, and the area enclosed by a cycle is the net work per loop.",
+        "The four canonical processes have distinctive shapes. An isobaric process is a horizontal line, an isochoric process a vertical line, an isothermal process a hyperbola PV = const, and an adiabatic process a steeper hyperbola PVᵞ = const. Reading an engine off the plane becomes a matter of geometry: a clockwise loop is an engine delivering work, a counter-clockwise loop a refrigerator consuming it.",
+        "Introduced by Émile Clapeyron in 1834 to render Sadi Carnot's verbal reasoning in graphical form, the PV diagram turned thermodynamics into something engineers could draw and calculate with. It remains the standard language for analysing engines, refrigerators, and the cycles of working gases."
+      ],
+      "history": "Devised by Benoît Clapeyron in 1834, who recast Carnot's 1824 prose into pressure–volume curves; the indicator diagram James Watt had earlier used to monitor steam engines was an empirical ancestor of the same idea.",
+      "category": "concept",
+      "relatedPhysicists": ["benoit-clapeyron", "sadi-carnot"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" },
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" }
+      ]
+    },
+    {
+      "slug": "isobaric-process",
+      "title": "Isobaric process",
+      "subtitle": "A change carried out at constant pressure — a horizontal line on a PV diagram, with work simply W = P ΔV.",
+      "definition": [
+        "An isobaric process is one in which the pressure of the system is held constant while its volume and temperature change. On a pressure–volume diagram it is a horizontal line, and the work done is just the rectangle beneath it, W = P ΔV. A gas heated under a freely sliding, weighted piston expands isobarically, lifting the piston as it warms.",
+        "Because the gas does work as it expands, the heat supplied at constant pressure exceeds what would be needed at constant volume for the same temperature rise; the difference is captured by the constant-pressure heat capacity C_p, which for an ideal gas exceeds C_v by exactly R. The everyday heating of air at atmospheric pressure is very nearly isobaric.",
+        "The isobaric leg is one of the four canonical building blocks of thermodynamic cycles, appearing in the Brayton and Diesel cycles among others, where constant-pressure heat addition or rejection alternates with compression and expansion strokes."
+      ],
+      "history": "Recognised among the canonical processes once Clapeyron's PV diagram (1834) let each be drawn and analysed separately; the constant-pressure heat capacity it requires was already being measured in the early nineteenth century.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "isochoric-process",
+      "title": "Isochoric process",
+      "subtitle": "A change carried out at constant volume — a vertical line on a PV diagram, doing no work at all, so all heat goes into internal energy.",
+      "definition": [
+        "An isochoric process (also called isovolumetric or isometric) holds the volume of the system fixed while pressure and temperature change. On a pressure–volume diagram it is a vertical line. Because the boundary does not move, no work is done — W = ∫P dV = 0 — and the first law reduces to ΔU = Q: every joule of heat goes directly into internal energy.",
+        "This is why the constant-volume heat capacity C_v is the more fundamental of the two heat capacities: it measures the heat needed to raise temperature when none of it is siphoned off as expansion work. Heating a gas in a sealed rigid vessel, or the explosive pressure rise in a constant-volume combustion, are isochoric to good approximation.",
+        "The isochoric leg is a canonical building block of cycles such as the Otto cycle of the petrol engine, where constant-volume heat addition (the spark-ignited burn) drives the pressure up before the power stroke expands the gas."
+      ],
+      "history": "Distinguished as a canonical process alongside the others once the PV diagram made the four shapes explicit; its role in idealising the petrol engine was formalised in the Otto cycle of the 1870s.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "isothermal-process",
+      "title": "Isothermal process",
+      "subtitle": "A change at constant temperature, held by slow exchange with a heat reservoir; for an ideal gas ΔU = 0, so Q = W = nRT ln(V₂/V₁).",
+      "definition": [
+        "An isothermal process is carried out at constant temperature. To keep the temperature fixed while the gas expands or is compressed, it must remain in thermal contact with a large heat reservoir and change slowly enough to stay in step with it. For an ideal gas the internal energy depends only on temperature, so along an isotherm ΔU = 0 and the first law collapses to Q = W: all the work done by the gas is supplied as heat from the reservoir.",
+        "The work, and hence the heat, is W = Q = nRT ln(V₂/V₁), positive for expansion and negative for compression. On a pressure–volume diagram the path is the hyperbola PV = nRT = const, the curve of Boyle's law. Of the two limiting processes, the isothermal extracts the most heat from a reservoir per unit expansion.",
+        "Isothermal steps form two of the four legs of the ideal Carnot cycle, where heat is taken in isothermally from a hot reservoir and rejected isothermally to a cold one. Real isothermal changes are an idealisation approached only in the limit of infinitely slow, reversible operation."
+      ],
+      "history": "Central to Carnot's 1824 analysis of the ideal heat engine and drawn explicitly once Clapeyron plotted the isotherm as a hyperbola; the logarithmic work formula follows directly from Boyle's seventeenth-century law combined with the ideal gas law.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" },
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "adiabatic-process",
+      "title": "Adiabatic process",
+      "subtitle": "A change with no heat exchange, Q = 0; the gas cools as it expands and heats as it is compressed, following PVᵞ = const.",
+      "definition": [
+        "An adiabatic process is one in which no heat crosses the system boundary, Q = 0 — either because the walls are perfectly insulating or because the change happens too fast for heat to flow. The first law then reads ΔU = −W: a gas that expands must pay for the work out of its own internal energy and so cools, while a gas that is compressed has work piled into it and so heats.",
+        "For a reversible adiabatic change of an ideal gas, pressure and volume obey PVᵞ = const, equivalently TVᵞ⁻¹ = const, where γ = C_p/C_v is the adiabatic exponent. Because γ > 1, the adiabat is steeper on a PV diagram than the isotherm through the same point. The relation was first derived by Siméon Denis Poisson in 1823.",
+        "Adiabatic compression heats the air in a diesel engine enough to ignite fuel without a spark, and adiabatic expansion cools rising air parcels until their moisture condenses into cloud. A free expansion into vacuum is also adiabatic, but violently irreversible, with no smooth path on a PV diagram."
+      ],
+      "history": "The relation PVᵞ = const was obtained by Poisson in 1823; the realisation that the speed of sound in air requires adiabatic, not isothermal, compression corrected Newton's estimate and confirmed the exponent γ in the early nineteenth century.",
+      "category": "concept",
+      "relatedPhysicists": ["simeon-denis-poisson"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" },
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "reversible-process",
+      "title": "Reversible process",
+      "subtitle": "An idealised process that is quasi-static and frictionless, so it can be run backwards through the same states — the limiting ideal behind the second law.",
+      "definition": [
+        "A reversible process is one that can be reversed by an infinitesimal change in conditions, retracing the very same sequence of equilibrium states in the opposite direction and leaving no net change in either the system or its surroundings. It must be quasi-static (slow enough that the system is in equilibrium throughout) and free of dissipative effects such as friction, turbulence, or unrestrained expansion.",
+        "No real process is exactly reversible — every actual change generates some entropy and loses some capacity to do work. Reversibility is a limiting ideal, approached only as a process is made infinitely slow and frictionless. Its importance is that a reversible process delivers the maximum possible work between two states, setting the benchmark against which real processes fall short.",
+        "The second law of thermodynamics is framed in terms of reversible processes: the Carnot engine, which runs reversibly, achieves the highest efficiency any engine can have between two reservoirs, and entropy change is defined through the reversible heat ∫δQ_rev/T. The gap between reversible and irreversible work is the seed of irreversibility itself."
+      ],
+      "history": "Conceived by Sadi Carnot in 1824 as the reversible ideal engine, and made the formal cornerstone of the second law by Clausius and Kelvin in the 1850s, who tied reversibility to the existence of entropy.",
+      "category": "concept",
+      "relatedPhysicists": ["sadi-carnot"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    },
+    {
+      "slug": "quasi-static-process",
+      "title": "Quasi-static process",
+      "subtitle": "A change carried out so slowly that the system passes through a continuous succession of equilibrium states — the condition for a process to have a path on a PV diagram.",
+      "definition": [
+        "A quasi-static process is one conducted slowly enough that the system remains arbitrarily close to thermodynamic equilibrium at every instant. Only then does it possess a single, well-defined pressure and temperature throughout, and only then can it be represented as a continuous curve on a pressure–volume diagram. Squeeze a gas suddenly and it bunches and swirls with no single pressure to plot; squeeze it slowly and each intermediate state is a genuine equilibrium.",
+        "Quasi-static is a necessary condition for reversibility but not a sufficient one: a process can be quasi-static yet still irreversible if friction or other dissipation is present. Reversibility requires quasi-static change plus the absence of all dissipative effects.",
+        "The idealisation matters because the analytic work formulas of thermodynamics — W = ∫P dV along an isotherm or adiabat — assume a definite pressure at each volume, which exists only for a quasi-static path. Real processes approximate it whenever they are slow compared with the system's relaxation time."
+      ],
+      "history": "Implicit in Carnot's reversible engine and Clapeyron's smooth PV curves, the notion was sharpened in the later nineteenth century as thermodynamics distinguished the conditions for reversibility from the mere slowness of a process.",
+      "category": "concept",
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" }
+      ]
+    },
+    {
+      "slug": "adiabatic-exponent",
+      "title": "Adiabatic exponent",
+      "subtitle": "The ratio of heat capacities γ = C_p/C_v that governs adiabatic change: 5/3 for a monatomic gas, 7/5 for a diatomic one.",
+      "definition": [
+        "The adiabatic exponent, γ (gamma), is the ratio of a gas's heat capacity at constant pressure to that at constant volume, γ = C_p/C_v. It controls how steeply a gas's pressure falls when it expands without exchanging heat: along a reversible adiabat PVᵞ = const, and the temperature obeys TVᵞ⁻¹ = const. Because γ always exceeds 1, the adiabat is steeper than the isotherm through the same point.",
+        "Its value follows from how many ways a molecule can store energy — its active degrees of freedom f, through γ = (f + 2)/f. A monatomic gas (three translational degrees) has γ = 5/3; a diatomic gas at room temperature (three translational plus two rotational) has γ = 7/5. The deeper reason, the equipartition of energy among degrees of freedom, is treated separately.",
+        "The exponent shows up wherever fast or insulated compression and expansion occur: in the speed of sound (which depends on γ because sound waves compress air adiabatically), in diesel ignition, and in the cooling of rising atmospheric air. Measuring γ is one of the cleanest experimental windows on molecular structure."
+      ],
+      "history": "Entered physics through Poisson's 1823 adiabatic relations and the nineteenth-century discovery that the speed of sound requires the adiabatic exponent; its values were later explained by the equipartition theorem and, for their temperature dependence, by quantum theory.",
+      "category": "concept",
+      "relatedPhysicists": ["simeon-denis-poisson"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" },
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "free-expansion",
+      "title": "Free expansion",
+      "subtitle": "A gas rushing into a vacuum: no work done, no heat exchanged, so ΔU = 0 — and for an ideal gas, no change in temperature.",
+      "definition": [
+        "A free expansion is the irreversible rush of a gas into an evacuated space when a valve or partition is opened. Because the gas expands against nothing, it does no work (W = 0); if the container is insulated, no heat is exchanged (Q = 0); so by the first law the internal energy is unchanged, ΔU = 0. It is the cleanest example of a process that is adiabatic yet violently irreversible.",
+        "James Joule performed the experiment in the 1840s and found that, for a dilute gas, the temperature did not change. Since U was constant and the volume changed while the temperature did not, the internal energy of an ideal gas cannot depend on volume at all — it must depend on temperature alone, U = U(T). This is the assumption that makes ΔU = 0 along every isotherm legitimate.",
+        "For real gases there is a small temperature change on free expansion, because intermolecular forces store a little potential energy that shifts as the spacing changes; this is the basis of the Joule–Thomson effect used in refrigeration. The ideal-gas result is the limiting case as the gas becomes dilute. A free expansion has no path on a PV diagram, since the gas has no single pressure while it is rushing outward."
+      ],
+      "history": "Performed by Joule (and refined with Kelvin in the Joule–Thomson experiments of the 1850s) to test whether a gas's internal energy depends on its volume; the null result for dilute gases anchored the ideal-gas relation U = U(T).",
+      "category": "concept",
+      "relatedPhysicists": ["james-prescott-joule"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" }
+      ]
+    },
+    {
+      "slug": "heat-reservoir",
+      "title": "Heat reservoir",
+      "subtitle": "An idealised body so large that it can absorb or supply heat without its own temperature changing — the constant-temperature partner of an isothermal process.",
+      "definition": [
+        "A heat reservoir (or thermal reservoir) is an idealised body with so large a heat capacity that any amount of heat it gives up or takes in leaves its temperature effectively unchanged. It is the thermodynamic equivalent of an infinite bath: a system placed in contact with it can exchange heat freely while the reservoir holds a fixed temperature, the precondition for a genuinely isothermal process.",
+        "Reservoirs are the terminals of heat engines and refrigerators. An engine draws heat from a hot reservoir, converts part of it to work, and rejects the rest to a cold reservoir; a refrigerator runs the same arrangement in reverse, using work to move heat from cold to hot. The temperatures of the two reservoirs set the ceiling on an engine's efficiency through the Carnot limit.",
+        "Real reservoirs are approximations — the ocean, the atmosphere, or a large water bath act as reservoirs over short experiments. The idealisation is indispensable for defining isothermal processes and for the reservoir-to-reservoir framing in which the second law is most naturally stated."
+      ],
+      "history": "Formalised in Carnot's 1824 picture of an engine working between a hot 'source' and cold 'sink', and made central to the second law by Kelvin and Clausius, whose statements of the law are framed in terms of heat exchanged with reservoirs.",
+      "category": "concept",
+      "relatedPhysicists": ["sadi-carnot"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "isothermal-and-adiabatic-processes" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    }
+  ],
+  "physicists": [
+    {
+      "slug": "julius-von-mayer",
+      "name": "Julius Robert von Mayer",
+      "subtitle": "German physician who deduced the conservation of energy from the colour of tropical blood, stating the first law a year before Joule's experiments — and was ignored for a decade.",
+      "born": "1814",
+      "died": "1878",
+      "nationality": "German",
+      "bio": [
+        "Julius Robert von Mayer was born in Heilbronn in 1814 and trained as a physician. In 1840 he sailed as a ship's doctor on a Dutch merchant vessel to the East Indies, and it was there, bleeding feverish sailors off Java, that he made the observation that changed his life. The venous blood of the crew ran a brighter red in the tropics than he was used to in cool Germany: in the heat the body burned less fuel to keep warm, drew less oxygen from the blood, and returned it less depleted.",
+        "From this clinical accident Mayer reasoned his way, alone and without a laboratory, to a universal principle: that heat and mechanical work are interconvertible forms of one conserved quantity. In an 1842 paper he stated the conservation of energy and even produced an estimate of the mechanical equivalent of heat from the difference between the two heat capacities of a gas — a year before Joule's celebrated paddle-wheel measurements.",
+        "As an outsider to the scientific establishment, with a physician's training rather than a physicist's, Mayer was largely ignored. Priority disputes with Joule, the deaths of several of his children, and a lack of recognition drove him to a breakdown; in 1850 he attempted suicide and was for a time confined to asylums. His work was nearly forgotten.",
+        "Vindication came late. In the 1860s Clausius, Helmholtz, and especially John Tyndall championed his priority, and Mayer was at last honoured — awarded the Copley Medal of the Royal Society in 1871 and ennobled as 'von' Mayer. He is now remembered as one of the independent discoverers of the first law of thermodynamics, the one who reached it by pure reasoning from physiology."
+      ],
+      "contributions": [
+        "Stated the conservation of energy and the interconvertibility of heat and work (1842), a first formulation of the first law of thermodynamics",
+        "Gave an early numerical estimate of the mechanical equivalent of heat from the gas heat-capacity difference C_p − C_v",
+        "Applied energy conservation across physiology, chemistry, and physics, anticipating its universality"
+      ],
+      "majorWorks": [
+        "Bemerkungen über die Kräfte der unbelebten Natur (Remarks on the Forces of Inanimate Nature, 1842)",
+        "Die organische Bewegung im Zusammenhang mit dem Stoffwechsel (The Organic Motion in Connection with Metabolism, 1845)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "internal-energy-and-the-first-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-and-the-caloric-theory" }
+      ]
+    },
+    {
+      "slug": "sadi-carnot",
+      "name": "Sadi Carnot",
+      "subtitle": "French military engineer who founded thermodynamics in a single 1824 book on the motive power of fire, dying at 36 believing he had failed — his notebooks revealing he had already glimpsed the first law.",
+      "born": "1796",
+      "died": "1832",
+      "nationality": "French",
+      "bio": [
+        "Nicolas Léonard Sadi Carnot was born in Paris in 1796, the eldest son of Lazare Carnot, the mathematician and 'Organiser of Victory' who marshalled the armies of revolutionary France. Trained at the École Polytechnique as a military engineer, the younger Carnot turned his attention to a question of national importance: why were British steam engines so much more efficient than French ones, and what set the ultimate limit on the work that heat could produce?",
+        "His answer appeared in 1824 in a slim volume, Réflexions sur la puissance motrice du feu (Reflections on the Motive Power of Fire). Reasoning almost entirely in prose, with scarcely a formula, Carnot imagined an idealised, reversible engine and showed that its efficiency depends only on the temperatures between which it works, not on the working substance — the seed of the second law of thermodynamics and of the concept of absolute temperature.",
+        "The book sank almost without trace, read by few and understood by fewer. It was rescued a decade later by Émile Clapeyron, who recast Carnot's reasoning into the graphical language of the pressure–volume diagram, and only then, through Clapeyron, did Carnot's ideas reach Kelvin and Clausius, who built the second law upon them.",
+        "Carnot died in the Paris cholera epidemic of 1832, aged 36, his contribution still largely unrecognised. He went to his grave believing his work had failed. His private notebooks, published long after his death, revealed that he had by then abandoned the caloric theory and grasped that heat and work are interconvertible — anticipating the first law of thermodynamics as well as the second."
+      ],
+      "contributions": [
+        "Founded thermodynamics with the concept of an ideal reversible heat engine (the Carnot cycle)",
+        "Showed that the maximum efficiency of a heat engine depends only on the temperatures of its reservoirs — the basis of the second law and of absolute temperature",
+        "In unpublished notebooks, anticipated the first law by recognising the interconvertibility of heat and work"
+      ],
+      "majorWorks": [
+        "Réflexions sur la puissance motrice du feu (Reflections on the Motive Power of Fire, 1824)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "work-and-pv-diagrams" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-engines-and-carnot" }
+      ]
+    }
+  ]
+}

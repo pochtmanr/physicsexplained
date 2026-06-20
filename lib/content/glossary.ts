@@ -3888,6 +3888,123 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
     ],
   },
+
+  // ─── Module 2 first-law (thermo sprint 2026-06-20) ───
+  {
+    slug: "internal-energy",
+    category: "concept",
+    relatedPhysicists: ["julius-von-mayer", "hermann-von-helmholtz"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+    ],
+  },
+  {
+    slug: "first-law-of-thermodynamics",
+    category: "concept",
+    relatedPhysicists: ["julius-von-mayer", "james-prescott-joule", "hermann-von-helmholtz"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "state-function",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "work-thermodynamic",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "pv-diagram",
+    category: "concept",
+    relatedPhysicists: ["benoit-clapeyron", "sadi-carnot"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+    ],
+  },
+  {
+    slug: "isobaric-process",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "isochoric-process",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "isothermal-process",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "adiabatic-process",
+    category: "concept",
+    relatedPhysicists: ["simeon-denis-poisson"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "reversible-process",
+    category: "concept",
+    relatedPhysicists: ["sadi-carnot"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
+  {
+    slug: "quasi-static-process",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+    ],
+  },
+  {
+    slug: "adiabatic-exponent",
+    category: "concept",
+    relatedPhysicists: ["simeon-denis-poisson"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "free-expansion",
+    category: "concept",
+    relatedPhysicists: ["james-prescott-joule"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+    ],
+  },
+  {
+    slug: "heat-reservoir",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "isothermal-and-adiabatic-processes" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
