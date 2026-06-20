@@ -1635,6 +1635,12 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   ThermalEquilibriumScene: lazyScene(() =>
     import("@/components/physics/what-is-temperature/thermal-equilibrium-scene").then((m) => ({ default: m.ThermalEquilibriumScene })),
   ),
+  RumfordCannonScene: lazyScene(() =>
+    import("@/components/physics/heat-and-the-caloric-theory/rumford-cannon-scene").then((m) => ({ default: m.RumfordCannonScene })),
+  ),
+  JoulePaddleScene: lazyScene(() =>
+    import("@/components/physics/heat-and-the-caloric-theory/joule-paddle-scene").then((m) => ({ default: m.JoulePaddleScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

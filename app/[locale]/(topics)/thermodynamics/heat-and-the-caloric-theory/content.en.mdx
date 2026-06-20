@@ -1,0 +1,107 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RumfordCannonScene } from "@/components/physics/heat-and-the-caloric-theory/rumford-cannon-scene";
+import { JoulePaddleScene } from "@/components/physics/heat-and-the-caloric-theory/joule-paddle-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Count Rumford", href: "/physicists/count-rumford" },
+  { type: "physicist", label: "James Prescott Joule", href: "/physicists/james-prescott-joule" },
+  { type: "physicist", label: "Humphry Davy", href: "/physicists/humphry-davy" },
+  { type: "term", label: "Heat", href: "/dictionary/heat" },
+  { type: "term", label: "Caloric theory", href: "/dictionary/caloric-theory" },
+  { type: "term", label: "Mechanical equivalent of heat", href: "/dictionary/mechanical-equivalent-of-heat" },
+  { type: "term", label: "Joule", href: "/dictionary/joule" },
+  { type: "term", label: "Calorie", href: "/dictionary/calorie" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.02 · TEMPERATURE & HEAT"
+  title="HEAT AND THE CALORIC THEORY"
+  subtitle="How a cannon-boring contract proved heat is motion, not fluid."
+/>
+
+<Section index={1} title="A weightless fluid called caloric">
+
+For most of the eighteenth century, heat was a *substance*. The reigning <Term slug="caloric-theory" /> held that warmth was a weightless, invisible, indestructible fluid — *caloric* — that flowed from hot bodies into cold ones until they balanced. It was a good theory, in the sense that good theories are ones that explain things: caloric flowing out of a fire warmed the room; caloric squeezed out of compressed air made a fire piston glow; caloric crowding into a solid pushed its particles apart and made it expand. Even thermal equilibrium fell out naturally — two bodies in contact shared their caloric until the pressure of the fluid equalised.
+
+The theory had one quiet, fatal commitment: caloric was *conserved*. You could move it from place to place, but you could not make it or destroy it. The total amount in the universe was fixed. That is the assumption a soldier-adventurer would shatter, almost by accident, on a military contract.
+
+Benjamin Thompson — born in Massachusetts, a Loyalist who fled the American Revolution, later knighted in England and made <PhysicistLink slug="count-rumford" /> of the Holy Roman Empire — was supervising the boring of brass cannon for the Bavarian army in Munich in 1798. The work fascinated him for the wrong reason: the barrels got *astonishingly* hot, and they kept getting hotter the longer the boring went on.
+
+</Section>
+
+<Section index={2} title="Rumford's cannon and the heat with no end">
+
+<SceneCard caption="FIG.02a — Rumford's boring experiment. A blunt drill turns inside a water-jacketed brass cylinder. Set the crank speed and start cranking: the water temperature climbs in proportion to the total work done and never flattens out. A finite reservoir of caloric fluid would have to run dry — this does not. The line on the right has no ceiling.">
+  <RumfordCannonScene />
+</SceneCard>
+
+Rumford turned the boring into an experiment. He used a deliberately *blunt* tool, which cut almost nothing but rubbed enormously, and he immersed the whole cannon in water so he could measure the heat. The water warmed, then simmered, then — after about two and a half hours of horse-driven cranking — boiled, "to the great astonishment of all the bystanders," without any fire.
+
+The point was not that friction makes heat; everyone knew that. The point was the *bookkeeping*. If heat were caloric squeezed out of the metal, then a given lump of brass held a fixed supply, and once squeezed dry it should yield no more. But Rumford's tool produced heat for as long as the horses turned the crank — apparently without limit. As he put it, anything that an isolated body can furnish *without limitation* cannot possibly be a material substance. Heat tracked the *work done*, not any store of fluid:
+
+<EquationBlock id="EQ.01">$$\Delta T = \frac{W}{m\,c}$$</EquationBlock>
+
+In words: the temperature rise of the water is simply the work delivered divided by the water's heat capacity — a straight line through the origin, with no asymptote and no ceiling. Double the cranking, double the warming; crank forever, warm forever.
+
+</Section>
+
+<Section index={3} title="Davy melts ice in the cold">
+
+Rumford's argument was powerful but not airtight: a determined caloric theorist could mutter that the rubbing somehow drew fluid in from the surroundings. The Cornish chemist <PhysicistLink slug="humphry-davy" /> aimed at exactly that loophole. In an experiment reported in 1799, he arranged for two pieces of ice to be rubbed together by clockwork — and did it, by his account, in a vacuum, in a room held *below the freezing point*.
+
+The ice melted. There was no fire, no warm body in contact, no air to carry caloric, and the surroundings were colder than the ice itself, so no fluid could have flowed *in*. The only thing supplied was mechanical motion. If friction can melt ice in a freezer, the heat must have been *made* by the motion, not delivered from a reservoir. Between Rumford's cannon and Davy's ice, the conservation of caloric was finished — though, as with most paradigm shifts, the old guard took decades to concede.
+
+</Section>
+
+<Section index={4} title="Joule weighs heat in a brewery">
+
+What Rumford and Davy demolished, <PhysicistLink slug="james-prescott-joule" /> rebuilt as a number. The son of a Salford brewer, Joule never held an academic post; he ran experiments in the family brewery and at home, with thermometers he had calibrated himself to read a few thousandths of a degree. Between 1843 and 1845 he built the apparatus that made his name.
+
+<SceneCard caption="FIG.02b — Joule's paddle wheel. A falling weight turns a paddle in an insulated barrel of water. Drop the weight (try different masses and heights): the work it does, m g h, reappears as heat, raising the water temperature by m g h ⁄ (m_w c). The 'work in' and 'heat out' tallies climb together and stay equal — their ratio is the mechanical equivalent of heat.">
+  <JoulePaddleScene />
+</SceneCard>
+
+A weight on a cord, hung over a pulley, fell a measured distance and turned a paddle wheel sealed in an insulated barrel of water. The falling weight did a known amount of work, $W = m g h$; the churning paddle warmed the water by a tiny, carefully measured amount:
+
+<EquationBlock id="EQ.02">$$\Delta T = \frac{m g h}{m_w\, c}$$</EquationBlock>
+
+In words: the temperature rise of the water equals the gravitational work of the falling weight divided by the water's heat capacity — purely mechanical energy in, thermal energy out, with nothing burned and nothing added. Because the barrel was insulated, every joule the weight surrendered had nowhere to go but into the water, and Joule could compare the two ledgers directly.
+
+</Section>
+
+<Section index={5} title="The mechanical equivalent of heat">
+
+Joule's measurement gave the conversion factor between the two ways people had been measuring heat. The <Term slug="calorie" /> had been defined thermally — the heat to raise one gram of water by one degree Celsius. The <Term slug="joule" /> (named for him) is a purely mechanical unit, one newton acting through one metre. Joule's paddle wheel pinned the bridge between them, the <Term slug="mechanical-equivalent-of-heat" />:
+
+<EquationBlock id="EQ.03">$$1\ \text{cal} = 4.186\ \text{J}$$</EquationBlock>
+
+In words: it takes 4.186 joules of mechanical work to deliver one calorie of heat — and the same 4.186 turns up no matter how the energy is delivered, by paddle, by friction, or by an electric current. That universality is the whole point. Heat was not a separate substance after all; it was one more form of the single conserved quantity we now call energy, interconvertible with motion at a fixed exchange rate. Joule's number is the seed of the [first law of thermodynamics](/thermodynamics/internal-energy-and-the-first-law).
+
+<Callout variant="intuition">
+A modern echo: a 70 kg climber who ascends 100 m does about 69,000 J of work — roughly 16 food calories (the "Calorie" on labels is a kilocalorie). The arithmetic that says exercise is a poor way to lose weight is Joule's exchange rate, applied to dinner.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Heat and temperature, kept apart">
+
+With heat unmasked as energy, the distinction from the previous topic sharpens into the single most useful idea in this branch. <Term slug="heat" /> is an *amount* of energy in transit, measured in joules. Temperature is an *intensity*, measured in kelvin. They are not the same quantity, not even the same kind of quantity, and confusing them is the most common error in the subject.
+
+A lit match and a bathtub of warm water make the point. The match flame is far hotter — higher temperature — yet it carries so little energy that it cannot warm the bath measurably; the bath, cooler but vastly more massive, holds enough heat to cook you. Temperature decides the *direction* heat flows on contact (always hot to cold); the amount of heat decides *how much* flows before equilibrium stops it. Joule measured the second; the thermometer reads the first.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+Heat is energy, and Joule fixed its exchange rate with work. But his own apparatus hides the next question in plain sight: he had to *know the heat capacity of water* — the $m_w\,c$ in his formula — to turn a temperature rise into joules. Why does one gram of water need 4.186 J per degree while a gram of lead needs only about 0.13? Why do different substances bank heat so differently?
+
+That is the science of [heat capacity and calorimetry](/thermodynamics/heat-capacity-and-calorimetry), opened by Joseph Black a generation before Joule — and it leads directly to the strange business of [where energy goes when matter melts and boils](/thermodynamics/phase-changes-and-latent-heat). For the deeper definition of temperature this all rests on, see [what temperature actually is](/thermodynamics/what-is-temperature).
+
+</Section>
+
+</TopicPageLayout>

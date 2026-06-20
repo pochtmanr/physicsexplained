@@ -1054,7 +1054,7 @@ const THERMODYNAMICS_MODULES: readonly Module[] = [
 const THERMODYNAMICS_TOPICS: readonly Topic[] = [
   // Module 1 Temperature & Heat — FIG.01–04 (coming-soon)
   { slug: "what-is-temperature", title: "WHAT IS TEMPERATURE?", eyebrow: "FIG.01 · TEMPERATURE & HEAT", subtitle: "Before thermometers, science couldn't even state the question.", readingMinutes: 9, status: "live", module: "temperature-and-heat" },
-  { slug: "heat-and-the-caloric-theory", title: "HEAT AND THE CALORIC THEORY", eyebrow: "FIG.02 · TEMPERATURE & HEAT", subtitle: "How a cannon-boring contract proved heat is motion, not fluid.", readingMinutes: 11, status: "coming-soon", module: "temperature-and-heat" },
+  { slug: "heat-and-the-caloric-theory", title: "HEAT AND THE CALORIC THEORY", eyebrow: "FIG.02 · TEMPERATURE & HEAT", subtitle: "How a cannon-boring contract proved heat is motion, not fluid.", readingMinutes: 11, status: "live", module: "temperature-and-heat" },
   { slug: "heat-capacity-and-calorimetry", title: "HEAT CAPACITY AND CALORIMETRY", eyebrow: "FIG.03 · TEMPERATURE & HEAT", subtitle: "Why a pound of water and a pound of mercury refuse to warm alike.", readingMinutes: 10, status: "coming-soon", module: "temperature-and-heat" },
   { slug: "phase-changes-and-latent-heat", title: "PHASE CHANGES AND LATENT HEAT", eyebrow: "FIG.04 · TEMPERATURE & HEAT", subtitle: "Where the energy hides while the thermometer stands still.", readingMinutes: 11, status: "coming-soon", module: "temperature-and-heat" },
   // Module 2 The First Law — FIG.05–07 (coming-soon)
