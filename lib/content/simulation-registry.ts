@@ -1641,6 +1641,15 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   JoulePaddleScene: lazyScene(() =>
     import("@/components/physics/heat-and-the-caloric-theory/joule-paddle-scene").then((m) => ({ default: m.JoulePaddleScene })),
   ),
+  SpecificHeatBarScene: lazyScene(() =>
+    import("@/components/physics/heat-capacity-and-calorimetry/specific-heat-bar-scene").then((m) => ({ default: m.SpecificHeatBarScene })),
+  ),
+  CalorimeterMixtureScene: lazyScene(() =>
+    import("@/components/physics/heat-capacity-and-calorimetry/calorimeter-mixture-scene").then((m) => ({ default: m.CalorimeterMixtureScene })),
+  ),
+  CvCpPistonScene: lazyScene(() =>
+    import("@/components/physics/heat-capacity-and-calorimetry/cv-cp-piston-scene").then((m) => ({ default: m.CvCpPistonScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

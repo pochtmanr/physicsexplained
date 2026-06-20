@@ -1,0 +1,119 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { SpecificHeatBarScene } from "@/components/physics/heat-capacity-and-calorimetry/specific-heat-bar-scene";
+import { CalorimeterMixtureScene } from "@/components/physics/heat-capacity-and-calorimetry/calorimeter-mixture-scene";
+import { CvCpPistonScene } from "@/components/physics/heat-capacity-and-calorimetry/cv-cp-piston-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Joseph Black", href: "/physicists/joseph-black" },
+  { type: "physicist", label: "Pierre Louis Dulong", href: "/physicists/pierre-louis-dulong" },
+  { type: "physicist", label: "Alexis Petit", href: "/physicists/alexis-petit" },
+  { type: "term", label: "Specific heat capacity", href: "/dictionary/specific-heat-capacity" },
+  { type: "term", label: "Molar heat capacity", href: "/dictionary/molar-heat-capacity" },
+  { type: "term", label: "Calorimetry", href: "/dictionary/calorimetry" },
+  { type: "term", label: "Dulong–Petit law", href: "/dictionary/dulong-petit-law" },
+  { type: "term", label: "C_v vs C_p", href: "/dictionary/cv-cp" },
+  { type: "term", label: "Calorie", href: "/dictionary/calorie" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.03 · TEMPERATURE & HEAT"
+  title="HEAT CAPACITY AND CALORIMETRY"
+  subtitle="Why a pound of water and a pound of mercury refuse to warm alike."
+/>
+
+<Section index={1} title="A pound of water, a pound of mercury">
+
+In his Glasgow laboratory in the 1760s, <PhysicistLink slug="joseph-black" /> noticed something the caloric theory could not comfortably explain. Give a pound of water and a pound of mercury the same quantity of heat, and the mercury ends up about thirty times hotter. The same heat, the same mass, wildly different temperatures. Black concluded that substances differ in their *capacity* for heat — that warmth poured into matter is partly hidden, soaked up at different rates by different materials.
+
+The modern name for that capacity is the <Term slug="specific-heat-capacity" />: the energy needed to raise one gram of a substance by one kelvin. Water's is famously, anomalously large; metals' are small.
+
+<SceneCard caption="FIG.03a — specific heats compared, in J/(g·K). Hover any bar for its value and a real-world consequence. Water dwarfs every metal: 4.19 against copper's 0.39 and lead's 0.13. The same heat that lifts a gram of lead by a degree barely stirs a gram of water — Black's thirty-fold observation, drawn to scale.">
+  <SpecificHeatBarScene />
+</SceneCard>
+
+The relation is simple and is the workhorse of the whole subject:
+
+<EquationBlock id="EQ.01">$$Q = m\,c\,\Delta T$$</EquationBlock>
+
+In words: the heat absorbed equals the mass times the specific heat times the temperature change. Rearranged, $\Delta T = Q/(mc)$ — for a fixed heat input, a large specific heat means a small temperature change. Water's large $c$ is why the oceans warm and cool slowly enough to govern climate, and why a cast-iron skillet ($c$ thirty times smaller) screams up to frying heat in a minute.
+
+</Section>
+
+<Section index={2} title="Per mole, not per gram — the Dulong–Petit law">
+
+Specific heat *per gram* is convenient for kitchens but misleading for physics, because a gram of lead and a gram of aluminium contain very different numbers of atoms. The deeper quantity is the <Term slug="molar-heat-capacity" />: the heat to warm one *mole* — a fixed count of atoms — by one kelvin.
+
+In 1819 the French chemists <PhysicistLink slug="pierre-louis-dulong" /> and <PhysicistLink slug="alexis-petit" /> measured the molar heat capacities of a dozen solid elements and found something startling: they were all about the same. Lead, copper, iron, silver — element after element clustered near 25 J/(mol·K). This is the <Term slug="dulong-petit-law" />:
+
+<EquationBlock id="EQ.02">$$C_{\text{molar}} \approx 3R \approx 24.9\ \text{J/(mol·K)}$$</EquationBlock>
+
+In words: a mole of almost any simple solid needs roughly three times the gas constant of heat per kelvin, regardless of which element it is — light per gram for heavy atoms, heavy per gram for light ones, but the same *per atom*. The law is a hint of something profound: heat is shared out equally among the atoms' modes of vibration, three each, a foreshadowing of [equipartition](/thermodynamics/equipartition-and-degrees-of-freedom). Petit did not live to see its importance — he died of tuberculosis at 29, four months after the paper that carries his name.
+
+</Section>
+
+<Section index={3} title="Two heat capacities — C_v and C_p">
+
+For a gas, "the" heat capacity splits in two, because *how you heat it* changes the answer. Heat a gas in a sealed rigid box and all the heat goes into temperature. Heat it under a free piston — at constant pressure — and the gas expands, pushing the piston and doing work on the world, so some of the heat leaks out as mechanical work instead of warming.
+
+<SceneCard caption="FIG.03c — C_v versus C_p. Two cylinders of the same gas get the same heat Q. The sealed one (fixed volume) turns all of Q into temperature and warms more. The open one (constant pressure) spends part of Q lifting its piston, so it warms less — but its piston rises. Slide Q and switch monatomic vs diatomic; the warming gap is exactly the work done.">
+  <CvCpPistonScene />
+</SceneCard>
+
+So the same gas has a smaller <Term slug="cv-cp" /> at constant volume ($C_v$) than at constant pressure ($C_p$) — it takes *more* heat to achieve a given temperature rise when the gas is also doing work. For an ideal gas the difference is exactly the gas constant:
+
+<EquationBlock id="EQ.03">$$C_p - C_v = R$$</EquationBlock>
+
+In words: per mole, the constant-pressure heat capacity exceeds the constant-volume one by precisely $R$ — the extra heat that goes into expansion work rather than temperature. That clean result, Mayer's relation, is one of the first places the gas constant shows up as something physical you can feel: it is the price, in heat, of letting a gas push back.
+
+</Section>
+
+<Section index={4} title="Calorimetry — the method of mixtures">
+
+How were all these numbers measured, before electric heaters and digital thermometers? By <Term slug="calorimetry" />: dropping a hot object into cool water inside an insulated vessel and reading the final temperature. Energy conservation does the rest.
+
+<SceneCard caption="FIG.03b — the method of mixtures. Drop a hot metal block into an insulated cup of water; choose the metal, mass, and starting temperature. The block cools and the water warms along exponential curves that meet at the equilibrium temperature. Notice how little even a 200 °C block moves the water — water's enormous specific heat dominates the balance.">
+  <CalorimeterMixtureScene />
+</SceneCard>
+
+If no heat escapes the calorimeter, the heat lost by the hot body equals the heat gained by the water:
+
+$$m_s\, c_s\, (T_s - T_{\text{eq}}) = m_w\, c_w\, (T_{\text{eq}} - T_w)$$
+
+Everything in that equation is measurable except the specific heat of the solid, $c_s$ — so you solve for it. This is exactly how Black, and a century of careful experimenters after him, built the table of specific heats in the first scene. The insulated cup is humble, but it is the instrument that turned heat from a quality into a quantity.
+
+</Section>
+
+<Section index={5} title="Black's other discovery — latent heat">
+
+Black did not stop at specific heat. Watching ice melt, he found that heat poured into ice-water at its melting point produced *no rise in temperature at all* — the thermometer sat at 0 °C for as long as ice remained. The heat was going somewhere, but not into warmth. He called it *latent* heat — heat hidden in the act of changing state.
+
+This breaks the tidy $Q = mc\,\Delta T$ picture, because here $\Delta T = 0$ while $Q$ is enormous. The energy is spent dismantling the bonds that hold a solid together, not speeding up its molecules. It is the same idea that lets a calorimeter work in reverse — and it is important enough, and strange enough, to be the subject of its own topic: [phase changes and latent heat](/thermodynamics/phase-changes-and-latent-heat).
+
+</Section>
+
+<Section index={6} title="Why water is weird">
+
+Return to the anomaly we started with. Water's specific heat is not just large; it is one of the largest of any common liquid, several times that of most organic liquids and metals. Why?
+
+The answer is hydrogen bonding. Each water molecule links to its neighbours through a network of weak hydrogen bonds, and warming the liquid means not only speeding up the molecules but also flexing and breaking some of that network. That extra reservoir for energy — bonds to stretch as well as motion to quicken — is what makes water so reluctant to change temperature. It is not a universal feature of liquids; it is a quirk of the molecule.
+
+<Callout variant="intuition">
+That quirk runs the planet. Water's huge specific heat is why coastal climates are mild, why your body (mostly water) holds a steady temperature, why a watered garden resists frost, and why it takes so frustratingly long to boil a pot. Climate, biology, and cooking all lean on one molecular accident.
+</Callout>
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We can now say how much energy it takes to warm a thing, why different substances bank heat so differently, and why a gas has two heat capacities split by $R$. But Black's latent heat hangs unfinished: what *exactly* happens to the energy while ice melts and water boils, when the thermometer refuses to move?
+
+That is the physics of [phase changes and latent heat](/thermodynamics/phase-changes-and-latent-heat) — the energy that hides in melting and boiling, and the diagrams that map where each phase lives. It builds directly on the calorimetry here, and on the recognition, from [heat and the caloric theory](/thermodynamics/heat-and-the-caloric-theory), that heat is energy in transit.
+
+</Section>
+
+</TopicPageLayout>
