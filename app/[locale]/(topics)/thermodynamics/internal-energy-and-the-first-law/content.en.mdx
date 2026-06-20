@@ -1,0 +1,98 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FirstLawAccountingScene } from "@/components/physics/internal-energy-and-the-first-law/first-law-accounting-scene";
+import { ThreeDiscoveriesTimelineScene } from "@/components/physics/internal-energy-and-the-first-law/three-discoveries-timeline-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Julius von Mayer", href: "/physicists/julius-von-mayer" },
+  { type: "physicist", label: "James Joule", href: "/physicists/james-prescott-joule" },
+  { type: "physicist", label: "Hermann von Helmholtz", href: "/physicists/hermann-von-helmholtz" },
+  { type: "term", label: "Internal energy", href: "/dictionary/internal-energy" },
+  { type: "term", label: "First law of thermodynamics", href: "/dictionary/first-law-of-thermodynamics" },
+  { type: "term", label: "State function", href: "/dictionary/state-function" },
+  { type: "term", label: "Thermodynamic work", href: "/dictionary/work-thermodynamic" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.05 · THE FIRST LAW"
+  title="INTERNAL ENERGY AND THE FIRST LAW"
+  subtitle="Energy is conserved; heat and work are two ways to spend it."
+/>
+
+<Section index={1} title="A doctor reads it in the blood">
+
+In 1840 a young German ship's doctor, <PhysicistLink slug="julius-von-mayer" />, was bleeding feverish sailors off the coast of Java when he noticed something that should not have mattered. Their venous blood — the dark blood returning to the lungs — was far brighter red than he was used to seeing in cold Heilbronn. In the tropical heat the body needed to burn less fuel to stay warm, so it drew less oxygen from the blood, and what came back was less depleted.
+
+From this clinical accident Mayer reasoned his way, alone and without a laboratory, to one of the deepest principles in physics: that heat and mechanical work are two forms of one conserved thing, and that the body's chemical fuel, its heat, and its motion must all balance in a single ledger. He published in 1842 — a year before Joule's famous paddle-wheel experiment — and was ignored for a decade. The principle he glimpsed is the **first law of thermodynamics**.
+
+</Section>
+
+<Section index={2} title="Internal energy, the only thing that's stored">
+
+A gas, a block of iron, a cup of coffee — each holds a definite amount of energy in the motion and arrangement of its molecules: their kinetic energy as they fly and vibrate, the potential energy of the forces between them. The sum of all of it is the <Term slug="internal-energy" /> $U$.
+
+The crucial property of $U$ is that it is a <Term slug="state-function" />: it depends only on the *current* state of the system — its temperature, pressure, volume — and not at all on how the system got there. Two identical cups of coffee at the same temperature have the same internal energy whether one was heated on a stove and the other in a microwave. The history is forgotten; only the state remains.
+
+<Callout variant="intuition">
+Internal energy is like the balance in a bank account. The balance is a state: it does not record whether the money arrived as a paycheck or a gift, only how much is there now. Heat and work are like deposits and withdrawals — they are *transactions*, not balances. You can ask how much was deposited, but never how much "deposit" is sitting in the account.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The first law stated">
+
+There are exactly two ways to change a system's internal energy: add heat to it, or do work on it (equivalently, let it do work). The first law is the bookkeeping that ties them together:
+
+<EquationBlock id="EQ.01">$$\Delta U = Q - W$$</EquationBlock>
+
+In words: the change in internal energy equals the heat added to the system minus the work done *by* the system on its surroundings. Pour in heat and $U$ rises; let the gas push a piston and do work, and $U$ falls by the amount it spent. Energy is never created or destroyed — only moved across the boundary as heat or as work, and banked as internal energy.
+
+<SceneCard caption="FIG.05a — the first law as a live ledger. The box is the system; heat Q flows in from below (amber), work W is done out to the right (cyan), and the bar tracks the internal energy U. Drag the sliders and U changes by exactly ΔU = Q − W, shown in the running equation. Switch modes: an engine takes heat in and pushes work out (U barely moves); pure heating banks every joule into U; friction does work on the box with no heat, and U climbs anyway.">
+  <FirstLawAccountingScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Sign conventions — pick one and keep it">
+
+The equation hides a choice. We have written $\Delta U = Q - W$ with $Q$ positive when heat flows *in* and $W$ positive when the system does work *out* — the **physics convention**, and the one used throughout this branch. Chemists often write $\Delta U = Q + W$ instead, defining $W$ as the work done *on* the system, which flips its sign.
+
+Both are correct; they describe the same physics with opposite labels on one arrow. The only sin is to mix them mid-calculation. The mnemonic for our convention: heat *in* is a credit ($+Q$); work *out* is a debit ($-W$), because the system spent that energy on the world.
+
+</Section>
+
+<Section index={5} title="Three discoveries, no contact">
+
+What makes the first law remarkable is not just its truth but its triple birth. Within five years, three men in different countries and different disciplines arrived at energy conservation by completely different roads, none of them aware of the others.
+
+<SceneCard caption="FIG.05b — three independent discoveries in one decade. Click each pin. Mayer (1842) reasoned it from physiology — the colour of tropical blood. Joule (1843) measured it with a falling weight and a paddle wheel, fixing the mechanical equivalent of heat. Helmholtz (1847) proved it as a universal mathematical principle in Über die Erhaltung der Kraft. Three men, no collaboration, one law — energy conservation was in the air.">
+  <ThreeDiscoveriesTimelineScene />
+</SceneCard>
+
+<PhysicistLink slug="james-prescott-joule" /> brought the experimental precision, churning water with a weighted paddle and measuring the faint warming. <PhysicistLink slug="hermann-von-helmholtz" /> brought the mathematics, deriving conservation as a law spanning mechanics, heat, electricity, and life itself. That a physician, a brewer, and a polymath converged on the same equation is a sign that the idea's time had simply come.
+
+</Section>
+
+<Section index={6} title="Why you cannot build a perpetual motion machine">
+
+The first law has teeth. A machine that runs forever, producing useful work from nothing, is called a **perpetual motion machine of the first kind** — and the first law forbids it outright. Over any complete cycle the working substance returns to its starting state, so $\Delta U = 0$, and the law collapses to $Q_{\text{net}} = W_{\text{net}}$: you can only get out as much work as you put in as heat. There is no surplus to harvest.
+
+<EquationBlock id="EQ.02">$$\oint dU = 0 \quad\Longrightarrow\quad W_{\text{net}} = Q_{\text{net}}$$</EquationBlock>
+
+In words: around a closed cycle the internal energy comes back to where it began, so the net work out can never exceed the net heat in. The Académie Française stopped accepting perpetual-motion proposals as early as 1775, on hard-won engineering instinct; the first law later explained *why* every one of them must fail. Inventors still send such designs to patent offices today.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We now have the central accounting principle: internal energy is the only stored quantity, and it changes only through heat and work crossing the boundary. But the work term $W$ has so far been an abstract number on a slider. What does it actually look like for a gas? How does pushing a piston turn into joules?
+
+That is the geometry of [work and PV diagrams](/thermodynamics/work-and-pv-diagrams), where work becomes an area you can measure and the four canonical processes take shape — building toward the heat engines that drove the whole subject into existence, and that took root in the work of [heat capacity and calorimetry](/thermodynamics/heat-capacity-and-calorimetry) on which the measurement of heat depends.
+
+</Section>
+
+</TopicPageLayout>
