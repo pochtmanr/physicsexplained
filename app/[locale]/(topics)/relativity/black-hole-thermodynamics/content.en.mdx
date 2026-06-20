@@ -1,0 +1,130 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MergerAreaTheoremScene } from "@/components/physics/black-hole-thermodynamics/merger-area-theorem-scene";
+import { EntropyScaleScene } from "@/components/physics/black-hole-thermodynamics/entropy-scale-scene";
+import { FourLawsCorrespondenceScene } from "@/components/physics/black-hole-thermodynamics/four-laws-correspondence-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Jacob Bekenstein", href: "/physicists/jacob-bekenstein" },
+  { type: "physicist", label: "Stephen Hawking", href: "/physicists/stephen-hawking" },
+  { type: "physicist", label: "John Archibald Wheeler", href: "/physicists/john-archibald-wheeler" },
+  { type: "term", label: "Bekenstein–Hawking entropy", href: "/dictionary/bekenstein-hawking-entropy" },
+  { type: "term", label: "Surface gravity", href: "/dictionary/surface-gravity" },
+  { type: "term", label: "Event horizon", href: "/dictionary/event-horizon" },
+  { type: "term", label: "No-hair theorem", href: "/dictionary/no-hair-theorem" },
+  { type: "term", label: "Hawking radiation", href: "/dictionary/hawking-radiation" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.48 · BLACK HOLES"
+  title="BLACK-HOLE THERMODYNAMICS"
+  subtitle="The area theorem, Bekenstein entropy, and why a black hole is a thermal object."
+/>
+
+<Section index={1} title="A graduate student's wager">
+
+In 1972, a Princeton graduate student named <PhysicistLink slug="jacob-bekenstein" /> made a claim that his own thesis advisor thought was wrong, that most of the field thought was wrong, and that <PhysicistLink slug="stephen-hawking" /> spent two years trying to disprove before conceding it was right. The claim was this: a black hole has entropy, and that entropy is proportional to the area of its event horizon.
+
+The puzzle that drove him was a violation of the second law of thermodynamics. Drop a cup of hot tea — a high-entropy object, full of disordered molecular motion — into a black hole, and according to the <Term slug="no-hair-theorem" /> the hole afterward is described by just three numbers: mass, charge, and spin. The tea's entropy is gone from the outside universe. The total entropy of the world appears to have fallen. Bekenstein's teacher, <PhysicistLink slug="john-archibald-wheeler" />, posed the problem to him directly: "Jacob, when I drink a cup of hot tea, I feel like a criminal, because I have increased the entropy of the universe — but if I drop it down a black hole, I have concealed the crime."
+
+Bekenstein's answer was that the crime is not concealed; the entropy is stored in the horizon. He had a clue from <PhysicistLink slug="stephen-hawking" />, who in 1971 had proved a remarkable classical theorem: in any process consistent with general relativity, the total area of black-hole horizons can never decrease. That sounded exactly like the second law of thermodynamics, $dS \geq 0$. Bekenstein took the resemblance literally and proposed that horizon <Term slug="event-horizon" /> area, in units of the Planck area, *is* a measure of entropy.
+
+This section tells the story of how a formal analogy — four "laws" of black-hole mechanics that looked suspiciously like the four laws of thermodynamics — turned out to be physics, not poetry.
+
+</Section>
+
+<Section index={2} title="Hawking's area theorem">
+
+The foundation is a theorem <PhysicistLink slug="stephen-hawking" /> proved in 1971, building on the global techniques <PhysicistLink slug="roger-penrose" /> had introduced for the singularity theorems. Consider any black hole, or any collection of black holes, evolving in time. As long as the matter falling in satisfies the *null energy condition* — energy densities measured by light rays are non-negative, which all known classical matter respects — the total area of the event horizons can only stay the same or grow:
+
+<EquationBlock id="EQ.01">$$\frac{dA}{dt} \geq 0$$</EquationBlock>
+
+In words: the surface area of a black hole's horizon never decreases. Throw matter in and the horizon grows. Let two holes collide and merge and the area of the single remnant is at least as large as the sum of the two original areas — never smaller, no matter how much energy escapes as gravitational radiation. The horizon is a one-way membrane in time as well as in space.
+
+The proof is geometric. The horizon is the boundary of the region from which light cannot escape, traced out by the null geodesics that just barely fail to reach infinity. Hawking showed these generators can never converge and cross — if they did, the focusing theorem combined with the energy condition would force a caustic *outside* the horizon, contradicting the definition of the horizon as the outermost trapped boundary. Generators can be born (when new matter creates new horizon) but never destroyed. The cross-sectional area, summed over all generators, is therefore non-decreasing.
+
+For a non-rotating <Term slug="event-horizon" /> the area is set by the <Term slug="schwarzschild-radius" /> alone:
+
+<EquationBlock id="EQ.02">$$A = 4\pi r_s^2 = \frac{16\pi G^2 M^2}{c^4}$$</EquationBlock>
+
+Area grows as the square of the mass, so a merger that increases $M$ always increases $A$ generously. This is the single most important consequence: the area theorem forbids the "obvious" violations — you cannot shrink a black hole by any classical trick — and it is what licenses the thermodynamic reading.
+
+<SceneCard caption="FIG.48a — the merger area-theorem checker. Two black holes go in, one comes out; the scene draws each horizon as a disk whose area is literally proportional to the bar area below it (radius ∝ √A), and reports whether A_final ≥ A₁ + A₂. Dial the masses and spins — note that spinning a hole up at fixed mass shrinks its horizon (a* = 1 gives 8πM² versus 16πM² at rest). Then push the radiated-fraction slider: real mergers shed a few percent of their mass as gravitational waves, far inside the theorem's hard ceiling of 1 − 1/√2 ≈ 29% for two equal Schwarzschild holes. Cross that ceiling and the verdict flips red — that configuration is forbidden by general relativity, because it would destroy horizon area, hence entropy.">
+  <MergerAreaTheoremScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Bekenstein's entropy">
+
+If area behaves like entropy, what is the constant of proportionality? Bekenstein could not compute it exactly — that required quantum field theory he did not yet have — but he could fix it to within a factor of order unity by an information argument. The minimum entropy you can add to a black hole is one bit, achieved by dropping in a single particle whose position is uncertain by about its own Compton wavelength. He showed that swallowing one bit grows the horizon area by about one Planck area, $\ell_P^2 = \hbar G / c^3 \approx 2.6 \times 10^{-70}\ \mathrm{m}^2$. So entropy must be area measured in Planck units, times a dimensionless number near $\ln 2 / 4\pi$ or so.
+
+The exact coefficient came from <PhysicistLink slug="stephen-hawking" /> in 1974, as a by-product of computing the temperature (the subject of the [next topic](/relativity/hawking-radiation)). The result — the Bekenstein–Hawking entropy — is the formula now carved into Bekenstein's tombstone:
+
+<EquationBlock id="EQ.03">$$S_{\mathrm{BH}} = \frac{k_B c^3}{4 G \hbar}\, A = \frac{k_B}{4}\frac{A}{\ell_P^2}$$</EquationBlock>
+
+Read it plainly: the entropy of a black hole is one quarter of its horizon area, with the area counted in Planck-sized cells and each cell contributing one quarter of Boltzmann's constant. It is the only formula in physics that ties together gravity ($G$), quantum mechanics ($\hbar$), relativity ($c$), and thermodynamics ($k_B$) in a single expression — which is why it is treated as the most concrete clue we have about <Term slug="bekenstein-hawking-entropy" /> and quantum gravity.
+
+The numbers are staggering. A solar-mass black hole has an entropy of about $1.0 \times 10^{54}\ \mathrm{J/K}$, or roughly $10^{77}$ in units of $k_B$. The Sun *as it is now* — a ball of hot plasma — has a thermal entropy of only about $10^{58}\,k_B$. Collapsing the Sun into a black hole would raise its entropy by nearly twenty orders of magnitude. Black holes are, by a vast margin, the most entropic objects the universe permits for a given size.
+
+<SceneCard caption="FIG.48b — the entropy scale, drawn on a base-10 logarithmic axis so that twenty orders of magnitude fit on one screen. Each bar is log₁₀(S/k_B): a glass of water sits near 10²⁵, the Sun's thermal entropy near 10⁵⁸, every photon in the observable universe near 10⁸⁹ — and then the black holes tower over all of them, a stellar-mass hole at ~10⁷⁹ and M87* at ~10⁹⁸. Drag the mass slider to drive the live amber bar from an asteroid-mass hole up to a supermassive one and watch S ∝ M² climb: each factor of ten in mass adds two decades of entropy. The lesson is quantitative, not rhetorical — the entropy of the cosmos today is dominated, overwhelmingly, by its black holes.">
+  <EntropyScaleScene />
+</SceneCard>
+
+<Callout variant="intuition">
+Ordinary entropy scales with *volume* — double the gas, double the disorder. Black-hole entropy scales with *area*. A region of space can hold no more entropy than would fit on a black hole exactly filling it: $S \leq A/4\ell_P^2$. This "holographic bound" says the information content of any volume is capped by its boundary area, as if the three-dimensional world were encoded on a two-dimensional surface. It is the seed of the holographic principle.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Surface gravity is temperature">
+
+A thermodynamic system needs two things: an entropy and a temperature. The entropy is area. What plays the role of temperature? The answer is <Term slug="surface-gravity" />, written $\kappa$ — the acceleration, measured at infinity, of a static test particle held just above the horizon.
+
+In 1973, James Bardeen, Brandon Carter, and <PhysicistLink slug="stephen-hawking" /> proved three theorems that completed the parallel. First, $\kappa$ has the *same value everywhere on the horizon* of a stationary black hole — even a rapidly spinning <Term slug="event-horizon" /> with strong <Term slug="frame-dragging" />, where you might expect the surface gravity to vary from pole to equator. A constant $\kappa$ over the horizon is the exact analogue of uniform temperature throughout a body in equilibrium: the zeroth law. Second, perturbing the hole conserves energy in a form that mirrors $dE = T\,dS + \text{work}$:
+
+<EquationBlock id="EQ.04">$$dM = \frac{\kappa}{8\pi G}\, dA + \Omega_H\, dJ + \Phi_H\, dQ$$</EquationBlock>
+
+This is the first law of black-hole mechanics. The change in mass-energy splits into a "heat" term $(\kappa/8\pi G)\,dA$ plus work done by adding angular momentum (at the horizon's rotation rate $\Omega_H$) and charge (at its potential $\Phi_H$). Comparing the heat term $(\kappa/8\pi G)\,dA$ against $T\,dS$ and using $S = k_B A/4\ell_P^2$ forces the identification $T = \hbar\kappa / 2\pi k_B c$ — temperature is surface gravity, up to the same quantum constants that fixed the entropy.
+
+For a Schwarzschild hole $\kappa = c^4/4GM$, so the temperature is $T = \hbar c^3 / 8\pi G M k_B$ — inversely proportional to mass. A solar-mass hole sits at about $6 \times 10^{-8}$ K, far colder than the 2.725 K cosmic microwave background, which is why real black holes absorb rather than evaporate today. The third law follows too: you cannot reduce $\kappa$ to zero — the extremal, maximally spinning state — in any finite sequence of steps, exactly as you cannot reach absolute zero.
+
+<SceneCard caption="FIG.48c — the four-laws correspondence table (Bardeen–Carter–Hawking 1973). Click any row to expand the dictionary that translates a statement of black-hole mechanics into a statement of thermodynamics: κ constant over the horizon ↔ T uniform at equilibrium; dM = (κ/8πG)dA + work ↔ dE = TdS + work; dA ≥ 0 ↔ dS ≥ 0; κ → 0 unreachable ↔ T = 0 unreachable. The framing toggle switches between how this looked in 1973 — a formal analogy with an undetermined constant — and how it looked after 1974, once Hawking's calculation supplied the exact factors T = ℏκ/2πk_Bc and S = k_BA/4ℓ_P² and turned every ↔ in the table into an equals sign.">
+  <FourLawsCorrespondenceScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Analogy or physics?">
+
+Through 1973 the four laws were, to most physicists, a beautiful coincidence. The fatal objection seemed airtight: a classical black hole is perfectly black. It absorbs everything and emits nothing. An object at temperature $T$ must radiate as a blackbody at that temperature; a black hole radiates nothing; therefore its "temperature" is a bookkeeping device, not a real temperature, and its "entropy" is a metaphor. <PhysicistLink slug="stephen-hawking" /> held this view firmly and set out to refute Bekenstein.
+
+The refutation backfired spectacularly. When Hawking did the calculation properly — quantizing matter fields on the curved spacetime of a forming black hole — he found that the hole is *not* perfectly black. It emits a thermal spectrum at exactly the temperature the analogy demanded, $T = \hbar\kappa/2\pi k_B c$. The factor of $1/4$ in the entropy, which had been a free parameter, was pinned. The analogy was not an analogy. A black hole is a genuine thermal object, with a real temperature you could in principle measure and a real entropy that counts genuine microstates.
+
+This is the moment the subject's name changed from "black-hole mechanics" to "black-hole thermodynamics." The dictionary became literal:
+
+<EquationBlock id="EQ.05">$$\kappa \;\longleftrightarrow\; T = \frac{\hbar \kappa}{2\pi k_B c}, \qquad A \;\longleftrightarrow\; S = \frac{k_B c^3}{4 G \hbar}\, A$$</EquationBlock>
+
+Each arrow, formerly a resemblance, became an equals sign with the same set of fundamental constants on both sides. The first law $dM = (\kappa/8\pi G)dA + \dots$ became a genuine statement of energy conservation with $T\,dS$ heat flow; the second law $dA \geq 0$ was promoted to the *generalized second law*, $d(S_{\mathrm{matter}} + S_{\mathrm{BH}}) \geq 0$, which holds even when ordinary entropy disappears behind a horizon because the horizon's own entropy more than compensates.
+
+<Callout variant="math">
+The deepest puzzle is what $S_{\mathrm{BH}}$ *counts*. For an ordinary gas, $S = k_B \ln \Omega$ is the logarithm of the number of microscopic arrangements consistent with the macroscopic state. For a black hole the <Term slug="no-hair-theorem" /> says there are only three macroscopic numbers — so what are the $e^{10^{77}}$ microstates of a solar-mass hole? String theory answered for special (extremal, supersymmetric) holes in 1996, when Andrew Strominger and Cumrun Vafa counted the D-brane configurations and reproduced $A/4$ exactly. For a generic astrophysical hole the microstate question is open, and it sits at the center of the [information paradox](/relativity/the-information-paradox).
+</Callout>
+
+</Section>
+
+<Section index={6} title="Why it matters">
+
+Black-hole thermodynamics is the only place in physics where gravity, quantum mechanics, and thermodynamics are forced to speak to one another with a definite, testable equation. Three constants that belong to three different theories — $G$, $\hbar$, $k_B$ — appear together in $S = k_B c^3 A / 4G\hbar$, and any correct theory of quantum gravity must reproduce that number. It is the most quantitative constraint we have on the unknown.
+
+It also reframed every black hole as a thermal engine. The first law says a spinning hole stores extractable energy: up to 29% of an extremal Kerr hole's mass is rotational and can be mined by the [Penrose process](/relativity/kerr-and-the-ergosphere), leaving the irreducible mass — which, being fixed by horizon area, can never be reduced. The entropy bound caps how much information any region of space can hold. And the temperature is not zero, which means the analogy could not stay an analogy: a hole at finite temperature must radiate.
+
+That radiation is the subject of the next topic, [Hawking radiation](/relativity/hawking-radiation), where the $T = \hbar\kappa/2\pi k_B c$ derived here as a thermodynamic identity is computed directly from quantum fields — and where the same formula that made black holes respectable thermal objects also threatens to destroy the information that fell into them, opening the deepest unsolved problem in the subject.
+
+</Section>
+
+</TopicPageLayout>

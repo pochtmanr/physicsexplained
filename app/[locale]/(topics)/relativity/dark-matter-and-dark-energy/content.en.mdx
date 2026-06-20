@@ -1,0 +1,127 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RotationCurveBuilderScene } from "@/components/physics/dark-matter-and-dark-energy/rotation-curve-builder-scene";
+import { CosmicBudgetScene } from "@/components/physics/dark-matter-and-dark-energy/cosmic-budget-scene";
+import { SupernovaDiscoveryScene } from "@/components/physics/dark-matter-and-dark-energy/supernova-discovery-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Fritz Zwicky", href: "/physicists/fritz-zwicky" },
+  { type: "physicist", label: "Vera Rubin", href: "/physicists/vera-rubin" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Dark matter", href: "/dictionary/dark-matter" },
+  { type: "term", label: "Dark energy", href: "/dictionary/dark-energy" },
+  { type: "term", label: "Cosmological constant", href: "/dictionary/cosmological-constant" },
+  { type: "term", label: "Critical density", href: "/dictionary/critical-density" },
+  { type: "term", label: "Friedmann equations", href: "/dictionary/friedmann-equations" },
+  { type: "term", label: "Gravitational lensing", href: "/dictionary/gravitational-lensing" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.58 · COSMOLOGY"
+  title="DARK MATTER AND DARK ENERGY"
+  subtitle="What 95% of the universe's mass-energy budget is — and what we still don't know about it."
+/>
+
+<Section index={1} title="A bookkeeping error 90 years old">
+
+In 1933 <PhysicistLink slug="fritz-zwicky" /> pointed the 100-inch telescope's spectroscopy at the Coma cluster — a swarm of about a thousand galaxies 99 megaparsecs away — and did an accountant's calculation. He measured how fast the galaxies were moving relative to one another: a velocity dispersion of roughly 1000 km/s. He estimated how much luminous mass the cluster contained from how bright it was. Then he applied the virial theorem, the ironclad statement that for a stable, gravitationally bound system the kinetic energy is fixed by the potential energy.
+
+The numbers did not balance. The galaxies were moving so fast that the cluster's own gravity — from the visible mass — should not have been able to hold them. At those speeds Coma should have flown apart in a fraction of the age of the universe. To bind it, Zwicky found he needed something like a few hundred times more mass than the stars supplied. He named the missing ingredient *dunkle Materie* — dark matter. Writing in the *Helvetica Physica Acta*, he was blunt: "If this overdensity is confirmed, we would arrive at the astonishing conclusion that dark matter is present in much greater amount than luminous matter."
+
+It was not confirmed for forty years. Zwicky was a difficult, abrasive personality who called his colleagues "spherical bastards" (bastards no matter which way you looked at them), and the result was easy to dismiss as a measurement error or an over-estimate of cluster distances. The astronomical community filed it away. The bookkeeping error sat open, unreconciled, until a quieter observer reopened the ledger with a different instrument and a different system entirely.
+
+</Section>
+
+<Section index={2} title="Rubin's flat curves">
+
+That observer was <PhysicistLink slug="vera-rubin" />. In the late 1960s and through the 1970s, working with the instrument-builder Kent Ford and his exquisitely sensitive image-tube spectrograph, Rubin measured how fast stars and gas orbit the centers of spiral galaxies as a function of their distance from the center. She started with the Andromeda galaxy, M31, then worked through dozens more.
+
+Newtonian gravity makes a sharp prediction. Inside the bright stellar disk, where the enclosed mass grows with radius, orbital speed should rise. But past the visible edge, where almost no more light — and so, presumably, almost no more mass — is added, the enclosed mass becomes essentially constant. Beyond that edge the speed should fall off in the Keplerian way, exactly as the outer planets orbit the Sun more slowly than the inner ones:
+
+<EquationBlock id="EQ.01">$$v(r) = \sqrt{\frac{G\,M(<r)}{r}} \;\xrightarrow{\;M(<r)\,=\,\text{const}\;}\; v \propto \frac{1}{\sqrt{r}}$$</EquationBlock>
+
+In words: a star's orbital speed is set by the total mass enclosed inside its orbit. Once you are outside all the mass, adding more distance only weakens gravity, so the speed must drop as one over the square root of the radius.
+
+The galaxies refused. Curve after curve came back *flat*: the orbital speed climbed to a plateau and then stayed there, out as far as Rubin could find anything to measure — neutral hydrogen gas tracked by radio telescopes carried the curves even farther, and they stayed flat. A flat curve, by the equation above, means the enclosed mass must keep growing linearly with radius, $M(<r) \propto r$, long after the light has run out. Each galaxy was embedded in a vast, invisible, roughly spherical halo of dark matter, several times more massive than all its stars combined, extending far beyond the luminous disk.
+
+<SceneCard caption="FIG.58a — the rotation-curve builder. The dashed cyan curve is the visible-mass prediction: it rises through the bright disk, peaks near the edge of the starlight, then falls off as 1/√r — pure Kepler. The amber points and line are the observed curve, flat to the edge of the data, the way Rubin measured it. Drag the halo slider to add an isothermal dark-matter halo (its enclosed mass grows linearly with radius, the magenta contribution); watch the total curve lift off the falling disk prediction and lock onto the flat observed plateau. The 'Rubin fit' preset shows the halo mass needed to reproduce a real spiral. Note that the halo dominates the outer galaxy by a factor of several, while contributing almost no light.">
+  <RotationCurveBuilderScene />
+</SceneCard>
+
+By 1980 the result was unignorable. Rubin had not measured one anomalous cluster; she had measured the inside of ordinary galaxies, one after another, and they all told the same story. Dark matter was not a quirk of Coma. It was everywhere.
+
+</Section>
+
+<Section index={3} title="What dark matter is not — and the evidence that pins it">
+
+The honest first question is whether "dark matter" is real stuff or a sign that we have gravity wrong. Both ideas have been pursued seriously. Modified Newtonian dynamics (MOND), proposed by Mordehai Milgrom in 1983, can fit galaxy rotation curves with no dark matter at all by changing the force law at very low accelerations. So the rotation curves alone do not settle the question. The case for <Term slug="dark-matter" /> as a substance rests on independent lines of evidence that all point to the same mass — and that a force-law change struggles to reproduce together.
+
+<Term slug="gravitational-lensing" /> weighs mass directly through the bending of light, independent of whatever the mass is made of. Lensing maps of clusters consistently find five to six times more mass than the visible galaxies and hot gas supply. The cleanest case is the Bullet Cluster (1E 0657-56): two galaxy clusters that collided. The hot X-ray-emitting gas — most of the *ordinary* matter — was slowed by the collision and piled up in the middle, while the lensing mass passed straight through and ended up in two clumps offset from the gas. The gravitating mass and the luminous baryonic mass are physically separated on the sky. That is very hard to explain by modifying gravity, and very natural if most of the mass is collisionless dark matter that simply flew past.
+
+The decisive constraint comes from the early universe. The <Term slug="cosmic-microwave-background" /> power spectrum — the precise pattern of hot and cold spots — encodes how matter clustered before [recombination](/relativity/the-cmb-and-nucleosynthesis). Ordinary matter, coupled to photons, bounces; dark matter, feeling only gravity, does not. The relative heights of the acoustic peaks measure the two densities separately, and they say the universe holds about five times more dark matter than ordinary atoms. Independently, [big-bang nucleosynthesis](/relativity/the-cmb-and-nucleosynthesis) fixes the baryon density from the primordial helium and deuterium — and it falls far short of the total matter density. Whatever dark matter is, it is not made of protons and neutrons.
+
+<Callout variant="intuition">
+Three different scales — single galaxies (Rubin), colliding clusters (the Bullet), and the whole early universe (the CMB) — independently demand the same extra, non-luminous, non-baryonic mass. No tweak to the force law has matched all three at once. That convergence is why "dark matter" is taken as a substance, even though no laboratory has ever caught a single particle of it.
+</Callout>
+
+What it is made of remains unknown. It is non-baryonic, cold (slow-moving when galaxies formed), nearly collisionless, and electromagnetically dark. Candidates run from weakly interacting massive particles (WIMPs) to axions to primordial black holes; decades of direct-detection experiments in deep mines have returned null results, ruling out swaths of parameter space without finding the particle. This is the first of the two great unknowns in the cosmic budget.
+
+</Section>
+
+<Section index={4} title="1998 — the expansion accelerates">
+
+The second unknown announced itself in 1998, and it was a bigger shock. Two teams — the High-z Supernova Search Team led by Brian Schmidt and Adam Riess, and the Supernova Cosmology Project led by Saul Perlmutter — were using Type Ia supernovae as standard candles to measure the expansion history of the universe. A Type Ia supernova is a white dwarf that has accreted past the Chandrasekhar limit and detonated; they all reach nearly the same peak luminosity, so how faint one appears tells you how far away it is, and its redshift tells you how much the universe has expanded since the light left.
+
+Everyone expected the expansion to be *decelerating*. Gravity is attractive; the matter in the universe should be pulling the expansion to a slow-down, and the only question was whether there was enough matter to eventually reverse it. The distance to a supernova at a given redshift depends on this history. The quantity to compare is the distance modulus,
+
+<EquationBlock id="EQ.02">$$\mu = 5\log_{10}\!\left(\frac{d_L}{10\,\text{pc}}\right), \qquad d_L(z) = (1+z)\,\frac{c}{H_0}\int_0^z \frac{dz'}{\sqrt{\Omega_m(1+z')^3 + \Omega_\Lambda}}$$</EquationBlock>
+
+In words: the distance modulus is just a logarithmic measure of how far away — and therefore how faint — an object is. The luminosity distance $d_L$ that feeds it is computed by adding up the expansion all the way out to redshift $z$; a universe with more dark energy ($\Omega_\Lambda$) coasts to larger distances, so its supernovae look *fainter* than a matter-only universe predicts.
+
+The distant supernovae came back about 0.25 magnitudes too faint — roughly 10–15% farther away than even an empty, coasting universe would put them. There was no decelerating model that fit. The expansion is not slowing down; it is *speeding up*. Something with negative pressure is pushing space apart.
+
+<SceneCard caption="FIG.58c — the 1998 discovery plot, reconstructed. The y-axis is the residual distance modulus Δμ — how much brighter or fainter a supernova is than it would be in an empty, coasting universe (the amber zero line). The cyan curve is a decelerating, matter-only universe (Ω_m = 1): it dips below zero, supernovae brighter and closer than coasting. The magenta curve is the accelerating concordance model (Ω_m ≈ 0.3, Ω_Λ ≈ 0.7): it rises above zero — supernovae fainter and farther. Toggle the supernovae on: the points climb away from the decelerating curve and sit on the accelerating one. That upward trend, two or three tenths of a magnitude at z ≈ 0.5, is the entire discovery. The 2011 Nobel Prize in Physics went to Perlmutter, Schmidt, and Riess for it.">
+  <SupernovaDiscoveryScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Lambda, and the worst prediction in physics">
+
+The simplest thing that accelerates the expansion is the cosmological constant $\Lambda$, the term <PhysicistLink slug="albert-einstein" /> added to his field equations in 1917 to hold a static universe still and abandoned after Hubble found expansion. It enters the [Friedmann equations](/relativity/friedmann-equations) as a constant energy density with negative pressure $p = -\rho c^2$, an energy of the vacuum itself that does not dilute as space grows. Fit to the data, it has the value
+
+<EquationBlock id="EQ.03">$$\Lambda = \frac{3\,\Omega_\Lambda H_0^2}{c^2} \approx 1.1 \times 10^{-52}\ \text{m}^{-2}, \qquad \rho_\Lambda \approx 6 \times 10^{-10}\ \text{J/m}^3.$$</EquationBlock>
+
+In words: the cosmological constant is fixed by today's expansion rate $H_0$ and the dark-energy fraction $\Omega_\Lambda$. Its value is fantastically small — an energy density of about six tenths of a nanojoule per cubic metre, the equivalent of a few hydrogen atoms' rest energy spread across a cubic metre of empty space.
+
+That tiny number is the deepest problem in physics. Quantum field theory says the vacuum is not empty: every field contributes a zero-point energy, and summing those contributions up to the <Term slug="planck-scale" /> gives a vacuum energy density larger than the observed value by a factor of about $10^{120}$.
+
+<EquationBlock id="EQ.04">$$\frac{\rho_\text{vac}^\text{theory}}{\rho_\Lambda^\text{observed}} \sim 10^{120}.$$</EquationBlock>
+
+In words: the naïve theoretical estimate of the vacuum energy overshoots the measured dark-energy density by some 120 orders of magnitude — the largest mismatch between theory and experiment anywhere in science, often called "the worst prediction in the history of physics." Either an unknown mechanism cancels the vacuum energy to 120 decimal places and then stops, leaving a minuscule remainder, or dark energy is something other than the vacuum — a slowly evolving field ("quintessence"), or a sign that general relativity itself fails on the largest scales.
+
+<Callout variant="math">
+Whether dark energy is exactly constant is testable through its equation of state $w = p / (\rho c^2)$. A true cosmological constant has $w = -1$ exactly. Current surveys (DES, and now DESI's 2024 results) measure $w = -1.0 \pm 0.05$ or so, consistent with $\Lambda$ — though DESI has hinted, not yet decisively, at $w$ drifting with time, which would rule out a pure constant. The branch's honest position: $\Lambda$ fits everything we have, and we have no idea why it has the value it does.
+</Callout>
+
+</Section>
+
+<Section index={6} title="The 95% universe — what's next">
+
+Put the two unknowns together with the things we understand, and the modern energy budget of the universe is humbling. Ordinary baryonic matter — every star, planet, person, and atom ever catalogued — is about 5%. Dark matter is about 27%. Dark energy is about 68%. Roughly 95% of the mass-energy of the universe is of a nature we cannot name. The "concordance" model that fits all of it is called $\Lambda$CDM: a cosmological constant ($\Lambda$) plus cold dark matter (CDM), running on the [Friedmann equations](/relativity/friedmann-equations).
+
+<SceneCard caption="FIG.58b — the cosmic energy budget through time. The stacked bar is the fractional energy density of the universe — radiation (amber), matter (cyan, baryons plus dark matter), and dark energy (magenta) — at the redshift you set with the slider. Scroll from z = 1100 (the CMB, when the photograph of FIG.57 was taken) down to z = 0 (today). The bar morphs continuously, because each component dilutes differently: radiation as a⁻⁴, matter as a⁻³, dark energy not at all. The vertical markers note matter–radiation equality (a few thousand in redshift, where structure could begin to grow) and the much more recent moment, around z ≈ 0.3, when Λ overtook matter and the expansion tipped from decelerating to accelerating. Dark energy's dominance is brand new in cosmic history — and the reason the budget looks the way it does is, in part, a coincidence nobody can yet explain.">
+  <CosmicBudgetScene />
+</SceneCard>
+
+The figure also exposes a puzzle of its own — the "coincidence problem." Matter dilutes as the universe expands and dark energy does not, so their densities are equal at exactly one moment in cosmic history. We happen to live within a factor of a few of that moment, just as $\Lambda$ is taking over. Why now? It may be selection (galaxies and observers form in the matter era), or it may be telling us something we have not understood.
+
+None of this is settled, and the credibility of this whole branch rests on saying so plainly. We have a model that fits the [cosmic microwave background](/relativity/the-cmb-and-nucleosynthesis), the abundances of the light elements, the growth of cosmic structure, the supernova distances, and the lensing maps — all with the same handful of numbers. And the two largest of those numbers correspond to substances we have never identified in a laboratory and a vacuum energy we cannot derive. Dark matter searches continue in deep mines and at colliders; dark-energy surveys like DESI, Euclid, and the Rubin Observatory's LSST — named for the woman who proved galaxies are mostly dark — are measuring $w(z)$ to find out whether $\Lambda$ is truly constant. Ninety years after Zwicky's bookkeeping error, the ledger is still open.
+
+</Section>
+
+</TopicPageLayout>

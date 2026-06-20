@@ -1,0 +1,122 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RadarEchoDelayScene } from "@/components/physics/shapiro-delay/radar-echo-delay-scene";
+import { CoordinateLightSpeedScene } from "@/components/physics/shapiro-delay/coordinate-light-speed-scene";
+import { AccumulatedDelayScene } from "@/components/physics/shapiro-delay/accumulated-delay-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Irwin Shapiro", href: "/physicists/irwin-shapiro" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Karl Schwarzschild", href: "/physicists/karl-schwarzschild" },
+  { type: "term", label: "Shapiro delay", href: "/dictionary/shapiro-delay" },
+  { type: "term", label: "Schwarzschild metric", href: "/dictionary/schwarzschild-metric" },
+  { type: "term", label: "Impact parameter", href: "/dictionary/impact-parameter" },
+  { type: "term", label: "Schwarzschild radius", href: "/dictionary/schwarzschild-radius" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.42 · SCHWARZSCHILD + TESTS"
+  title="THE SHAPIRO TIME DELAY"
+  subtitle="Light slowed not by mass but by the geometry the mass produces."
+/>
+
+<Section index={1} title="A test nobody had thought to run">
+
+By 1964 general relativity had three classical tests, and all three were old. The perihelion of Mercury had been a retrodiction — the 43 arcseconds per century were already on the books when <PhysicistLink slug="albert-einstein" /> explained them in November 1915. The deflection of starlight had been measured once, dramatically, by <PhysicistLink slug="arthur-eddington" /> at the 1919 eclipse, and then argued over for decades because the error bars were embarrassing. Gravitational redshift had finally been pinned down by Pound and Rebka in a Harvard elevator shaft in 1960. Three tests, spread across half a century, none of them clean.
+
+Then a young radio astronomer at MIT's Lincoln Laboratory noticed a fourth test hiding in plain sight. <PhysicistLink slug="irwin-shapiro" /> realized that the same curved geometry that bends starlight must also *slow it down* — not the locally measured speed of light, which is always exactly $c$, but the round-trip travel time of a radar pulse as clocked by an observer far from the Sun. If you bounced radar off a planet on the far side of the Sun and timed the echo, the pulse should arrive late. He published the prediction in *Physical Review Letters* in December 1964, in a two-page paper titled "Fourth Test of General Relativity."
+
+The number was small but not hopeless: for a radar pulse to Venus or Mercury passing close to the solar limb, the extra round-trip delay should be about 200 microseconds — two ten-thousandths of a second on top of a journey lasting many minutes. Measuring it meant timing an echo from a planet 100 million kilometers away to a fraction of a percent. Lincoln Laboratory had the hardware: the Haystack and Millstone Hill radars, built for tracking and ionospheric work, could be repurposed. Between 1966 and 1967 Shapiro's group bounced radar off Mercury and Venus as the planets swung toward superior conjunction — the moment they pass behind the Sun — and watched the echo delay climb and then fall, tracing exactly the curve general relativity predicted.
+
+It was the first genuinely *new* test of the theory in a generation, and the first that Einstein had not anticipated. The geometry had a consequence nobody had bothered to compute until a radar engineer went looking.
+
+</Section>
+
+<Section index={2} title="Why a radar echo runs late">
+
+The setting is the <Term slug="schwarzschild-metric" /> — the geometry outside a spherical mass. Write it in the usual coordinates, with $r_s = 2GM/c^2$ the <Term slug="schwarzschild-radius" />:
+
+<EquationBlock id="EQ.01">$$ds^2 = -\left(1 - \frac{r_s}{r}\right)c^2\,dt^2 + \left(1 - \frac{r_s}{r}\right)^{-1} dr^2 + r^2\,d\Omega^2$$</EquationBlock>
+
+This is the metric of empty space outside the Sun: $t$ is the time read by a clock infinitely far away, $r$ is the areal radius, and $d\Omega^2$ holds the angles. The two factors of $(1 - r_s/r)$ — one shrinking the time term, one stretching the radial term — are the whole story of the Shapiro delay.
+
+Light travels on null paths, $ds^2 = 0$. For a ray moving radially the angles drop out, and setting the interval to zero gives the rate at which the coordinate $r$ advances per unit of distant-observer time $t$:
+
+<EquationBlock id="EQ.02">$$\frac{dr}{dt} = \pm c\left(1 - \frac{r_s}{r}\right)$$</EquationBlock>
+
+In words: a faraway observer, using their own clock and the Schwarzschild radial coordinate, sees a light ray near the mass advance *slower* than $c$ — by a fractional amount $r_s/r$. This is the **coordinate speed of light**, and it is the engine of the delay. It is emphatically *not* a local speed. An observer sitting beside the ray, measuring with their own ruler and clock, always finds exactly $c$; the factors of $(1 - r_s/r)$ that slow the coordinate speed are precisely cancelled by the gravitational time dilation and length contraction of that local observer. The slowdown lives entirely in the bookkeeping of the distant frame.
+
+<Callout variant="intuition">
+Nothing actually travels slower than light. The pulse never breaks the speed limit anyone could measure on the spot. What runs late is the *coordinate time* a distant clock assigns to a journey through curved geometry — the same way a great-circle route looks "longer" than a straight line on a flat map that cannot honestly show a sphere.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The delay integral">
+
+A real radar pulse does not go radially; it skirts the Sun at some closest-approach distance $b$ — the <Term slug="impact-parameter" /> — on its way from Earth to the target planet. Integrate the coordinate speed along that grazing path, keeping terms to first order in the small quantity $r_s/r$, and the extra one-way time picks up a logarithm. For a source at distance $r_1$ and a receiver at $r_2$ from the Sun, the additional propagation time over the flat-space value is:
+
+<EquationBlock id="EQ.03">$$\Delta t_{\text{one-way}} \approx \frac{2GM}{c^3}\,\ln\!\left[\frac{(r_1 + x_1)(r_2 + x_2)}{b^2}\right], \qquad x_i = \sqrt{r_i^2 - b^2}$$</EquationBlock>
+
+The prefactor $2GM/c^3$ is a pure time: for the Sun it is about 9.85 microseconds. The logarithm multiplies it up. With Earth at $r_1 = 1$ AU, Venus at $r_2 = 0.72$ AU, and the ray grazing the solar limb so that $b \approx R_\odot$, the bracket is enormous — the impact parameter $b$ is a hundred-odd solar radii smaller than the orbital distances — and the round-trip delay (twice the one-way value) lands near 200 microseconds. That is the famous figure.
+
+The logarithm is what makes the effect both sharp and forgiving. Because $b$ appears only inside a logarithm, halving the impact parameter adds a fixed increment $\tfrac{2GM}{c^3}\ln 4 \approx 14\ \mu\text{s}$ rather than doubling the delay. The delay therefore *spikes* as the line of sight closes on the Sun but never diverges — it grows like $\ln(1/b)$, gently. Plotted against the planet's orbital phase, the round-trip delay traces a tall, narrow, logarithmic peak centered exactly on superior conjunction.
+
+<SceneCard caption="FIG.42a — radar to Venus as it swings toward superior conjunction. Left: a plan view of the inner Solar System with Earth fixed and Venus sweeping around its orbit; the slider moves Venus through conjunction (the far side of the Sun). When the Earth–Venus line of sight skirts the Sun, the impact parameter b collapses toward one solar radius and the radar path glows amber. Right: the round-trip Shapiro delay traced against orbital phase — the celebrated logarithmic spike that peaks at conjunction and falls away on either side. This is exactly the curve Shapiro's group measured at Lincoln Laboratory in 1966–67 by bouncing radar off Venus and Mercury and timing the echoes to better than a microsecond.">
+  <RadarEchoDelayScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Where the time is actually lost">
+
+The coordinate slowdown $1 - r_s/r$ is tiny everywhere along the path — at the solar limb it is only about four parts per million, and it falls off as $1/r$ — so it is worth asking where the 200 microseconds actually comes from. The answer is: almost entirely from the short stretch where the ray skirts the Sun.
+
+The local rate of delay accumulation per unit path length is $d(\Delta t)/dx = (2GM/c^3)/r$ with $r = \sqrt{b^2 + x^2}$, where $x$ is measured along the path from closest approach. This integrand is sharply peaked at $x = 0$ and falls off as $1/x$ far away. Integrate it from the target to Earth and the delay is collected overwhelmingly within a few solar radii of the point of closest approach; the long flat runs through empty space far from the Sun contribute almost nothing. The pulse spends minutes in transit but acquires its lateness in the few seconds it spends near the Sun.
+
+<SceneCard caption="FIG.42b — the coordinate speed of light around the Sun. Left: a heatmap of v_coord/c = 1 − r_s/r in the plane around the mass; far away the field sits at c (bright), and a dip darkens toward the center. The dashed line is a radar line of sight at impact parameter b, which you can slide. Right: the one-dimensional profile of v_coord/c along that line — the shaded area between the curve and the v = c line is the integrand of the Shapiro delay. Because the real solar r_s is only ~3 km, the genuine dip at the limb is four parts per million; an exaggeration slider scales r_s up by up to 10⁵ so the shape becomes visible while the readout keeps the true value honest.">
+  <CoordinateLightSpeedScene />
+</SceneCard>
+
+This concentration is why the test works so well. The delay is dominated by the geometry in a small, well-understood region — the near-solar field, where the Schwarzschild metric is an excellent description and the Sun's own structure (its quadrupole moment, its corona) enters only as a small correction. It is also why the impact parameter can be read off the delay: a closer graze means a deeper, narrower spike, and the spike's height fixes $b$ through the logarithm.
+
+<SceneCard caption="FIG.42c — accumulating the delay along the path. Top: the signal path drawn straight, from Earth past the Sun to the target, with each segment glowing in proportion to its local delay contribution (2GM/c³)/r. The glow is overwhelmingly concentrated where the ray skirts the Sun — almost the entire delay is collected within a few solar radii of closest approach. Bottom: the cumulative delay Δt(x) — flat far from the Sun, climbing steeply through closest approach, then flattening, the running integral of the spiky contribution above. Drag the wavefront to read off how much delay has been collected up to any point, and shrink the impact parameter b to watch the spike grow taller and narrower.">
+  <AccumulatedDelayScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="From 5% to one part in a hundred thousand">
+
+Shapiro's first results, published in 1968, confirmed general relativity to about 20%, limited by the radars and by uncertainty in the planets' positions and the topography of their surfaces — a radar pulse reflects off mountains and valleys, and you cannot time an echo more precisely than you know the shape of the thing it bounced off. Bouncing radar off a *planet* was the bottleneck.
+
+The fix was to stop using planets as mirrors and start using spacecraft as transponders. A spacecraft carries a clock and a radio that can receive a signal and retransmit it coherently, with no fuzzy surface in the way. The Viking landers and orbiters at Mars in 1976–77 carried transponders, and the Viking Shapiro-delay measurement reached about 0.1% — a confirmation that $1 + \gamma = 2$, where $\gamma$ is the parametrized-post-Newtonian parameter that measures how much spacetime curvature a unit of mass produces.
+
+The state of the art is the Cassini measurement of 2002. On its way to Saturn, the Cassini spacecraft passed near superior conjunction, and a precisely engineered multi-frequency radio link — designed to subtract out the solar corona's dispersive delay, which would otherwise swamp the gravitational signal — measured the Shapiro delay to extraordinary precision. The result fixed the PPN parameter at
+
+<EquationBlock id="EQ.04">$$\gamma - 1 = (2.1 \pm 2.3)\times 10^{-5}$$</EquationBlock>
+
+In words: the curvature of space around the Sun matches general relativity's prediction to about one part in a hundred thousand, with no detectable deviation. This is among the most stringent confirmations of any prediction in physics, and it is the tightest single constraint on a whole class of alternative gravity theories — any theory that wants to differ from Einstein must somehow keep $\gamma$ within $10^{-5}$ of unity near the Sun.
+
+<Callout variant="math">
+The PPN parameter $\gamma$ appears in the metric as the coefficient of the spatial curvature: $g_{rr} \approx 1 + \gamma\,r_s/r$ in isotropic coordinates. Light deflection scales as $(1+\gamma)/2$ and the Shapiro delay as $(1+\gamma)/2$ as well, so both the 1919 eclipse and the radar echo measure the *same* number. General relativity sets $\gamma = 1$ exactly; Cassini confirms it to $10^{-5}$. Newtonian gravity, which curves time but not space, corresponds to $\gamma = 0$ — and gives half the deflection and half the delay.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Why it still matters">
+
+The Shapiro delay began as a clever fourth test and became a workhorse. It is no longer something you measure to *check* general relativity; it is something you correct for, routinely, because the theory is assumed true. Every time a signal from a deep-space probe passes near the Sun, mission navigators apply the Shapiro correction to get the range right. Pulsar timing arrays — networks of millisecond pulsars watched for the faint imprint of <Term slug="proper-time" /> distortions from passing gravitational waves — must model the Shapiro delay of each pulse as it grazes the masses in our own Solar System and, for binary pulsars, the companion star. In the double pulsar PSR J0737−3039, the Shapiro delay of one pulsar's signal passing the other is so cleanly measured that it weighs the companion to a fraction of a percent and provides one more test of GR in a strong field.
+
+Conceptually, the delay is the cleanest demonstration that gravity is geometry and not force. There is no force slowing the light; there is no medium; the local speed is untouched. What changes is the relationship between the distant observer's clock and the path the light must traverse — the metric itself. The same logarithmic integral that delays a radar echo is the reason the [deflection of starlight](/relativity/light-deflection-and-lensing) is what it is: deflection and delay are two faces of one curved geometry, and Cassini's $\gamma$ constrains both at once.
+
+Taken together with Mercury's precession, the 1919 eclipse, and the gravitational redshift, the Shapiro delay rounds out the classical evidence — the four tests that put general relativity beyond reasonable doubt within the Solar System. The [classical-tests summary](/relativity/the-classical-tests-summary) lays out what each one actually probes: geodesics, the metric, the curvature of space, the nonlinear structure of the field. The radar echo is the one that probes the curvature of *space* most directly — and, at one part in $10^5$, finds Einstein exactly right.
+
+</Section>
+
+</TopicPageLayout>

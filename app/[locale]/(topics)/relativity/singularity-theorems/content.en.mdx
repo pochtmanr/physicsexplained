@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GeodesicFocusingScene } from "@/components/physics/singularity-theorems/geodesic-focusing-scene";
+import { TrappedSurfaceScene } from "@/components/physics/singularity-theorems/trapped-surface-scene";
+import { TheoremFlowchartScene } from "@/components/physics/singularity-theorems/theorem-flowchart-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Roger Penrose", href: "/physicists/roger-penrose" },
+  { type: "physicist", label: "Stephen Hawking", href: "/physicists/stephen-hawking" },
+  { type: "physicist", label: "John Archibald Wheeler", href: "/physicists/john-archibald-wheeler" },
+  { type: "term", label: "Singularity", href: "/dictionary/singularity" },
+  { type: "term", label: "Trapped surface", href: "/dictionary/trapped-surface" },
+  { type: "term", label: "Energy conditions", href: "/dictionary/energy-conditions" },
+  { type: "term", label: "Cosmic censorship", href: "/dictionary/cosmic-censorship" },
+  { type: "term", label: "Event horizon", href: "/dictionary/event-horizon" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.59 · FRONTIERS"
+  title="THE PENROSE-HAWKING SINGULARITY THEOREMS"
+  subtitle="When does GR predict its own breakdown?"
+/>
+
+<Section index={1} title="The escape hatch that wasn't there">
+
+For forty-five years, almost everyone assumed the singularity was a fiction.
+
+When Karl Schwarzschild solved <PhysicistLink slug="albert-einstein" />'s field equations in December 1915, his metric blew up in two places: at the radius $r_s = 2GM/c^2$, and at the center $r = 0$. The first turned out to be a coordinate artifact — a bad choice of clocks and rulers, removable by a change of variables, as Arthur Eddington and Georges Lemaître showed in the 1930s and David Finkelstein made unmistakable in 1958. The point at $r = 0$, where the curvature itself diverges, looked physical but harmless: it sat at the dead center of a perfectly spherical, perfectly idealized star. Surely, the reasoning went, real collapse is messy and lopsided, and the slightest asymmetry would make the infalling matter miss the center, swirl past it, and bounce. The infinity was an accident of perfect symmetry. Remove the symmetry and you remove the singularity.
+
+This was not a fringe view. It was the consensus, held by Einstein himself, by Lev Landau and Evgeny Lifshitz in their canonical textbook, by John Wheeler's school. The Russian school went further: Isaak Khalatnikov and Evgeny Lifshitz published a 1963 analysis arguing that generic collapse produces *no* singularity at all — that singular solutions form a set of measure zero in the space of initial data, the way a pencil balanced exactly on its tip is infinitely unlikely.
+
+Then, in 1965, a 34-year-old British mathematician changed the question. Instead of asking "what does the collapsed geometry look like?" — a problem requiring you to solve the field equations exactly — <PhysicistLink slug="roger-penrose" /> asked: "can I prove a collapse *must* produce a singularity, using no symmetry at all?" His answer was yes, and the proof needed only three ingredients, none of them symmetry. It is the most consequential theorem in classical general relativity since 1915.
+
+</Section>
+
+<Section index={2} title="Penrose's reframing — a trapped surface, not a metric">
+
+Penrose's first move was to define a *singularity* in a way that doesn't require pointing at where the curvature is infinite. Pointing is hard: a singularity is, by definition, not part of the spacetime manifold, so you cannot include it as a point and ask what the curvature is there. Instead, he used **geodesic incompleteness**. A spacetime is singular if some freely-falling observer — a timelike or null geodesic — runs off the edge of the manifold in *finite* proper time or affine parameter, with no way to extend the path further. The observer's history simply stops. Nothing is downstream. That is what it means for spacetime to break down, stated entirely in terms of the smooth geometry that remains.
+
+His second move was the key physical object: the <Term slug="trapped-surface" />. Take an ordinary 2-sphere of light — a flash emitted from a spherical shell. Normally the outgoing wavefront grows in area and the ingoing one shrinks. A trapped surface is a closed 2-surface on which *both* the outgoing and the ingoing light fronts are converging — even the outward-aimed light has decreasing area. Once gravity is strong enough, "outward" no longer means "toward larger spheres." Inside a black-hole horizon, this is exactly the situation: there is no escaping wavefront because every future-directed null ray heads to smaller radius.
+
+<SceneCard caption="FIG.59a — the trapped-surface explorer. The horizontal axis is areal radius r/r_s; the horizon sits at r/r_s = 1. Drag the 2-sphere and read its local radial light cone, whose edges are the null rays dr/dt = ±(1 − r_s/r). Outside the horizon the outgoing edge tips rightward — light escapes, θ₊ > 0. On the horizon the outgoing edge stands vertical — frozen at fixed r, marginally trapped, θ₊ = 0. Inside, BOTH edges of the cone tip left toward r = 0: even the outgoing wavefront is shrinking, θ₊ < 0. That double-negative expansion is the entire definition of a trapped surface, and Penrose's theorem says its mere existence — no symmetry assumed — forces a singularity.">
+  <TrappedSurfaceScene />
+</SceneCard>
+
+The crucial point is that "trapped surface" is an *open condition*. It is defined by inequalities — both expansions strictly negative — so it survives small perturbations. If a perfectly symmetric collapse forms a trapped surface, then a slightly asymmetric one forms a trapped surface too. The Khalatnikov–Lifshitz escape hatch — "generic collapse avoids the special singular case" — is closed at the root, because trapped surfaces are robust, not special.
+
+</Section>
+
+<Section index={3} title="The engine — Raychaudhuri focusing">
+
+Why does a trapped surface doom the spacetime? Because of an equation Amal Kumar Raychaudhuri published in 1955, describing how a bundle of nearby geodesics — a *congruence* — expands or contracts as you follow it. Let $\theta$ be the fractional rate of change of the bundle's cross-sectional volume (the **expansion scalar**), $\sigma$ the shear (how it distorts), $\omega$ the vorticity (how it twists), and $\lambda$ the affine parameter along the rays. For a null congruence the equation reads:
+
+<EquationBlock id="EQ.01">$$\frac{d\theta}{d\lambda} = -\tfrac{1}{2}\theta^2 - \sigma_{ab}\sigma^{ab} + \omega_{ab}\omega^{ab} - R_{ab}\,k^a k^b$$</EquationBlock>
+
+In plain English: the rate at which a bundle of light rays changes its convergence is set by four competing effects. The $\theta^2$ term is pure geometry — convergence feeds on itself. The shear term and the curvature term both squeeze the bundle. Only vorticity (twisting) can fight back. For a bundle that starts hypersurface-orthogonal — like the light fronts off a real surface — the vorticity is zero, and every remaining term on the right is *negative*, provided the curvature term $R_{ab}k^a k^b$ is non-negative.
+
+The consequence is a runaway. Drop the squeeze terms and keep only the geometry: $d\theta/d\lambda \le -\tfrac{1}{2}\theta^2$. Integrating, if the bundle is initially converging ($\theta_0 < 0$), then $\theta \to -\infty$ within affine parameter $\lambda \le 2/|\theta_0|$. The rays *cross* — a caustic — in a bounded distance. They cannot do otherwise.
+
+<SceneCard caption="FIG.59b — the focusing engine. Left: a bundle of initially-parallel timelike geodesics threading a region of positive curvature; as the focusing term R_{ab}k^a k^b bites, the worldlines converge and cross at a caustic. Right: the expansion scalar θ(λ) on the same affine parameter — it only ever decreases (every term in the Raychaudhuri equation is ≤ 0 once the energy condition holds), and the θ² term drives it to −∞ in finite λ, before the closed-form bound n/|θ₀|. Flip the energy-condition toggle and the curvature term changes sign: now the bundle re-expands and never crosses. The whole theorem turns on which way that one term points.">
+  <GeodesicFocusingScene />
+</SceneCard>
+
+<Callout variant="intuition">
+A trapped surface guarantees θ starts negative. Raychaudhuri guarantees that once θ is negative, it reaches −∞ in finite affine length. A caustic — geodesics crossing — is where the geodesics, followed as far as the bundle allows, run out of room. Penrose's genius was to show that in a trapped, energy-positive, causally sane spacetime, the geometry cannot place that crossing anywhere consistent — so a geodesic must instead end. That ending is the singularity.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Energy conditions — the fuel">
+
+The focusing argument needs one inequality to be true: gravity must attract, not repel. Concretely, the focusing term $R_{ab}k^a k^b$ must be non-negative for every null vector $k^a$. Via the field equations $R_{ab} - \tfrac12 R g_{ab} = (8\pi G/c^4) T_{ab}$, this is a statement about matter — about the <Term slug="stress-energy-tensor" />. It is called the **null energy condition** (NEC), and for a perfect fluid of density $\rho$ and pressure $p$ it reads:
+
+<EquationBlock id="EQ.02">$$\rho + p \ge 0 \quad\text{(NEC)}, \qquad \rho + p \ge 0 \;\text{and}\; \rho + 3p \ge 0 \quad\text{(SEC)}.$$</EquationBlock>
+
+The null condition says energy density plus pressure is non-negative; the **strong** condition (SEC), which Hawking's timelike-geodesic version needs, additionally demands $\rho + 3p \ge 0$. Every ordinary form of matter — dust, radiation, stars, gas — obeys both, by a wide margin. The <Term slug="energy-conditions" /> are the bookkeeping that turns "matter is normal" into "geodesics focus."
+
+This is also where the loopholes hide. A cosmological constant has $p = -\rho$: it satisfies the null and weak conditions but *violates* the strong one, which is precisely why a $\Lambda$-dominated universe accelerates instead of recollapsing — it defocuses. Quantum fields can locally violate even the null condition (the Casimir vacuum has negative energy density between plates), and Hawking radiation's negative-energy flux across a horizon is the loophole that lets a black hole shrink. The theorems are classical; the conditions are their Achilles' heel, and every proposed singularity-avoidance — bouncing cosmologies, traversable wormholes, evaporating holes — works by breaking one.
+
+</Section>
+
+<Section index={5} title="The theorems — Penrose 1965, Hawking 1965–1970">
+
+Assemble the pieces and you get the theorem. Penrose's 1965 statement, in three premises and one conclusion:
+
+> *If a spacetime contains a closed trapped surface, satisfies the null energy condition, and is globally hyperbolic with a non-compact Cauchy surface, then it is null-geodesically incomplete.*
+
+Globally hyperbolic means the spacetime has a sensible initial-value formulation — no closed timelike curves, no time machines, nothing that lets the future tamper with its own past. Given those three, a future-directed light ray must terminate in finite affine parameter. There is a singularity, and no amount of asymmetry removes it.
+
+<SceneCard caption="FIG.59c — the theorem as a flowchart. Three hypothesis boxes — trapped surface, energy condition, global hyperbolicity — feed an AND gate into the conclusion: geodesic incompleteness. The point of the interaction is that the conclusion is not an extra assumption; it is forced, but only when all three premises hold simultaneously. Toggle any one OFF and watch the AND gate go dark and the named loophole appear: drop the trapped surface and you are in uncollapsed (complete) space; drop the energy condition and exotic matter lets bundles re-expand; drop global hyperbolicity and causality itself breaks before any singularity can. This is the entire logical content of Penrose 1965 on one screen.">
+  <TheoremFlowchartScene />
+</SceneCard>
+
+Stephen <PhysicistLink slug="stephen-hawking" /> immediately saw the time-reverse. Run the focusing argument backward in time on a congruence of galaxies that are *expanding* today — the observed Hubble flow — and the same Raychaudhuri runaway forces the worldlines to have converged to a caustic a finite proper time *ago*. That caustic is the Big Bang. Through 1965–1967 Hawking proved a sequence of cosmological singularity theorems, and in 1970 he and Penrose published their joint masterwork, *The singularities of gravitational collapse and cosmology*, with a single theorem covering both cases:
+
+<EquationBlock id="EQ.03">$$\theta(\lambda) \le \frac{\theta_0}{1 + \tfrac{1}{n}\theta_0\,\lambda} \;\xrightarrow{\;\theta_0<0\;}\; -\infty \;\text{ within }\; \lambda \le \frac{n}{|\theta_0|}.$$</EquationBlock>
+
+This is the focusing inequality made quantitative: with $n$ transverse dimensions ($n=2$ for null, $3$ for timelike congruences), a converging bundle reaches infinite convergence within affine length $n/|\theta_0|$. The 1970 paper showed that under physically mild premises — an energy condition, a trapped surface *or* an expanding-everywhere past, and a causality condition — every realistic gravitational collapse and the cosmos itself must be geodesically incomplete. General relativity, applied to its own most important predictions, predicts its own breakdown.
+
+</Section>
+
+<Section index={6} title="Why it matters — censorship, and the door to quantum gravity">
+
+The theorems are an existence proof, not a description: they guarantee a singularity *is there* without saying what it looks like. Two questions immediately followed, and one is still open.
+
+The first is **cosmic censorship**, which Penrose conjectured in 1969. The theorems do not promise that the singularity is hidden behind a horizon. A *naked* singularity — one visible from infinity, broadcasting its undefined physics to distant observers — would wreck predictability everywhere in its causal future. The <Term slug="cosmic-censorship" /> hypothesis asserts that nature is kind: gravitational collapse from generic, regular initial data always wraps the singularity in an <Term slug="event-horizon" />, so the breakdown stays sealed. It remains unproven — and known to fail for finely-tuned initial data (Choptuik's 1993 critical-collapse simulations found marginally naked singularities) — making it arguably the most important open problem in classical GR.
+
+The second is what the singularity *means*. The honest reading is not "infinite density exists" but "the classical theory has reached the limit of its own validity." Curvature growing without bound is general relativity announcing that a deeper theory must take over — a quantum theory of gravity, where the Planck-scale geometry near $r = 0$ is governed by physics GR cannot supply. The singularity theorems are thus the sharpest classical signpost pointing at the unfinished work of the next century: they tell you, rigorously, exactly where and why Einstein's theory must end.
+
+Penrose received the 2020 Nobel Prize in Physics "for the discovery that black hole formation is a robust prediction of the general theory of relativity" — the singular word being *robust*, the thing the 1965 theorem established and the symmetry-bounce intuition had denied. Hawking, who died in 2018, was ineligible; the prize is not awarded posthumously.
+
+From here the trail forks. The singularity hidden behind a horizon raises the question of what that horizon *radiates* and whether information survives — see [black-hole thermodynamics](/relativity/black-hole-thermodynamics) and [Hawking radiation](/relativity/hawking-radiation). And the time-reversed cosmological singularity is the initial condition of the entire universe, the subject of [the FLRW metric](/relativity/the-flrw-metric) and the standard hot Big Bang. The theorem you have just read is the hinge between the two: the same focusing argument that ends a star also begins a cosmos.
+
+</Section>
+
+</TopicPageLayout>

@@ -1419,6 +1419,214 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   WhereNewtonFailsScene: lazyScene(() =>
     import("@/components/physics/the-newtonian-limit/where-newton-fails-scene").then((m) => ({ default: m.WhereNewtonFailsScene })),
   ),
+  // ─── §09–§13 relativity sprint (2026-06-06)
+  MetricComponentsScene: lazyScene(() =>
+    import("@/components/physics/the-schwarzschild-metric/metric-components-scene").then((m) => ({ default: m.MetricComponentsScene })),
+  ),
+  OrbitExplorerScene: lazyScene(() =>
+    import("@/components/physics/the-schwarzschild-metric/orbit-explorer-scene").then((m) => ({ default: m.OrbitExplorerScene })),
+  ),
+  FlammParaboloidScene: lazyScene(() =>
+    import("@/components/physics/the-schwarzschild-metric/flamm-paraboloid-scene").then((m) => ({ default: m.FlammParaboloidScene })),
+  ),
+  PrecessingEllipseScene: lazyScene(() =>
+    import("@/components/physics/mercurys-perihelion/precessing-ellipse-scene").then((m) => ({ default: m.PrecessingEllipseScene })),
+  ),
+  PrecessionBudgetScene: lazyScene(() =>
+    import("@/components/physics/mercurys-perihelion/precession-budget-scene").then((m) => ({ default: m.PrecessionBudgetScene })),
+  ),
+  PrecessionVsOrbitScene: lazyScene(() =>
+    import("@/components/physics/mercurys-perihelion/precession-vs-orbit-scene").then((m) => ({ default: m.PrecessionVsOrbitScene })),
+  ),
+  PhotonDeflectionScene: lazyScene(() =>
+    import("@/components/physics/light-deflection-and-lensing/photon-deflection-scene").then((m) => ({ default: m.PhotonDeflectionScene })),
+  ),
+  EclipseStarfieldScene: lazyScene(() =>
+    import("@/components/physics/light-deflection-and-lensing/eclipse-starfield-scene").then((m) => ({ default: m.EclipseStarfieldScene })),
+  ),
+  EinsteinRingScene: lazyScene(() =>
+    import("@/components/physics/light-deflection-and-lensing/einstein-ring-scene").then((m) => ({ default: m.EinsteinRingScene })),
+  ),
+  RadarEchoDelayScene: lazyScene(() =>
+    import("@/components/physics/shapiro-delay/radar-echo-delay-scene").then((m) => ({ default: m.RadarEchoDelayScene })),
+  ),
+  CoordinateLightSpeedScene: lazyScene(() =>
+    import("@/components/physics/shapiro-delay/coordinate-light-speed-scene").then((m) => ({ default: m.CoordinateLightSpeedScene })),
+  ),
+  AccumulatedDelayScene: lazyScene(() =>
+    import("@/components/physics/shapiro-delay/accumulated-delay-scene").then((m) => ({ default: m.AccumulatedDelayScene })),
+  ),
+  FourTestDashboardScene: lazyScene(() =>
+    import("@/components/physics/the-classical-tests-summary/four-test-dashboard-scene").then((m) => ({ default: m.FourTestDashboardScene })),
+  ),
+  PrecisionTimelineScene: lazyScene(() =>
+    import("@/components/physics/the-classical-tests-summary/precision-timeline-scene").then((m) => ({ default: m.PrecisionTimelineScene })),
+  ),
+  TheoryLayersScene: lazyScene(() =>
+    import("@/components/physics/the-classical-tests-summary/theory-layers-scene").then((m) => ({ default: m.TheoryLayersScene })),
+  ),
+  EventHorizonClocksScene: lazyScene(() =>
+    import("@/components/physics/the-event-horizon/event-horizon-clocks-scene").then((m) => ({ default: m.EventHorizonClocksScene })),
+  ),
+  LightConeTiltScene: lazyScene(() =>
+    import("@/components/physics/the-event-horizon/light-cone-tilt-scene").then((m) => ({ default: m.LightConeTiltScene })),
+  ),
+  RiverModelScene: lazyScene(() =>
+    import("@/components/physics/the-event-horizon/river-model-scene").then((m) => ({ default: m.RiverModelScene })),
+  ),
+  HorizonErgosphereCrossSectionScene: lazyScene(() =>
+    import("@/components/physics/kerr-and-the-ergosphere/horizon-ergosphere-cross-section-scene").then((m) => ({ default: m.HorizonErgosphereCrossSectionScene })),
+  ),
+  FrameDraggingScene: lazyScene(() =>
+    import("@/components/physics/kerr-and-the-ergosphere/frame-dragging-scene").then((m) => ({ default: m.FrameDraggingScene })),
+  ),
+  PenroseProcessScene: lazyScene(() =>
+    import("@/components/physics/kerr-and-the-ergosphere/penrose-process-scene").then((m) => ({ default: m.PenroseProcessScene })),
+  ),
+  CompactificationFoldScene: lazyScene(() =>
+    import("@/components/physics/penrose-diagrams/compactification-fold-scene").then((m) => ({ default: m.CompactificationFoldScene })),
+  ),
+  MinkowskiCausalityScene: lazyScene(() =>
+    import("@/components/physics/penrose-diagrams/minkowski-causality-scene").then((m) => ({ default: m.MinkowskiCausalityScene })),
+  ),
+  SchwarzschildRegionsScene: lazyScene(() =>
+    import("@/components/physics/penrose-diagrams/schwarzschild-regions-scene").then((m) => ({ default: m.SchwarzschildRegionsScene })),
+  ),
+  CollapseRingdownScene: lazyScene(() =>
+    import("@/components/physics/no-hair-theorem/collapse-ringdown-scene").then((m) => ({ default: m.CollapseRingdownScene })),
+  ),
+  ThreeKnobBlackHoleScene: lazyScene(() =>
+    import("@/components/physics/no-hair-theorem/three-knob-black-hole-scene").then((m) => ({ default: m.ThreeKnobBlackHoleScene })),
+  ),
+  SameHoleComparisonScene: lazyScene(() =>
+    import("@/components/physics/no-hair-theorem/same-hole-comparison-scene").then((m) => ({ default: m.SameHoleComparisonScene })),
+  ),
+  MergerAreaTheoremScene: lazyScene(() =>
+    import("@/components/physics/black-hole-thermodynamics/merger-area-theorem-scene").then((m) => ({ default: m.MergerAreaTheoremScene })),
+  ),
+  EntropyScaleScene: lazyScene(() =>
+    import("@/components/physics/black-hole-thermodynamics/entropy-scale-scene").then((m) => ({ default: m.EntropyScaleScene })),
+  ),
+  FourLawsCorrespondenceScene: lazyScene(() =>
+    import("@/components/physics/black-hole-thermodynamics/four-laws-correspondence-scene").then((m) => ({ default: m.FourLawsCorrespondenceScene })),
+  ),
+  TemperatureLifetimeScene: lazyScene(() =>
+    import("@/components/physics/hawking-radiation/temperature-lifetime-scene").then((m) => ({ default: m.TemperatureLifetimeScene })),
+  ),
+  EvaporationMovieScene: lazyScene(() =>
+    import("@/components/physics/hawking-radiation/evaporation-movie-scene").then((m) => ({ default: m.EvaporationMovieScene })),
+  ),
+  BlackbodySpectrumScene: lazyScene(() =>
+    import("@/components/physics/hawking-radiation/blackbody-spectrum-scene").then((m) => ({ default: m.BlackbodySpectrumScene })),
+  ),
+  PerturbationGridScene: lazyScene(() =>
+    import("@/components/physics/linearized-gravity/perturbation-grid-scene").then((m) => ({ default: m.PerturbationGridScene })),
+  ),
+  GaugeChoiceScene: lazyScene(() =>
+    import("@/components/physics/linearized-gravity/gauge-choice-scene").then((m) => ({ default: m.GaugeChoiceScene })),
+  ),
+  EmGrAnalogyScene: lazyScene(() =>
+    import("@/components/physics/linearized-gravity/em-gr-analogy-scene").then((m) => ({ default: m.EmGrAnalogyScene })),
+  ),
+  RingOfTestMassesScene: lazyScene(() =>
+    import("@/components/physics/polarization-modes/ring-of-test-masses-scene").then((m) => ({ default: m.RingOfTestMassesScene })),
+  ),
+  SpinSymmetryScene: lazyScene(() =>
+    import("@/components/physics/polarization-modes/spin-symmetry-scene").then((m) => ({ default: m.SpinSymmetryScene })),
+  ),
+  NoDipoleScene: lazyScene(() =>
+    import("@/components/physics/polarization-modes/no-dipole-scene").then((m) => ({ default: m.NoDipoleScene })),
+  ),
+  InspiralChirpScene: lazyScene(() =>
+    import("@/components/physics/binary-inspiral-and-the-chirp/inspiral-chirp-scene").then((m) => ({ default: m.InspiralChirpScene })),
+  ),
+  ChirpMassExplorerScene: lazyScene(() =>
+    import("@/components/physics/binary-inspiral-and-the-chirp/chirp-mass-explorer-scene").then((m) => ({ default: m.ChirpMassExplorerScene })),
+  ),
+  HulseTaylorParabolaScene: lazyScene(() =>
+    import("@/components/physics/binary-inspiral-and-the-chirp/hulse-taylor-parabola-scene").then((m) => ({ default: m.HulseTaylorParabolaScene })),
+  ),
+  InterferometerResponseScene: lazyScene(() =>
+    import("@/components/physics/ligo-and-multi-messenger/interferometer-response-scene").then((m) => ({ default: m.InterferometerResponseScene })),
+  ),
+  GW150914ReplayScene: lazyScene(() =>
+    import("@/components/physics/ligo-and-multi-messenger/gw150914-replay-scene").then((m) => ({ default: m.GW150914ReplayScene })),
+  ),
+  SkyTriangulationScene: lazyScene(() =>
+    import("@/components/physics/ligo-and-multi-messenger/sky-triangulation-scene").then((m) => ({ default: m.SkyTriangulationScene })),
+  ),
+  ExpandingGridScene: lazyScene(() =>
+    import("@/components/physics/the-flrw-metric/expanding-grid-scene").then((m) => ({ default: m.ExpandingGridScene })),
+  ),
+  CurvatureGalleryScene: lazyScene(() =>
+    import("@/components/physics/the-flrw-metric/curvature-gallery-scene").then((m) => ({ default: m.CurvatureGalleryScene })),
+  ),
+  CenterEverywhereScene: lazyScene(() =>
+    import("@/components/physics/the-flrw-metric/center-everywhere-scene").then((m) => ({ default: m.CenterEverywhereScene })),
+  ),
+  UniverseMachineScene: lazyScene(() =>
+    import("@/components/physics/friedmann-equations/universe-machine-scene").then((m) => ({ default: m.UniverseMachineScene })),
+  ),
+  ComponentScalingRaceScene: lazyScene(() =>
+    import("@/components/physics/friedmann-equations/component-scaling-race-scene").then((m) => ({ default: m.ComponentScalingRaceScene })),
+  ),
+  AccelerationHandoffScene: lazyScene(() =>
+    import("@/components/physics/friedmann-equations/acceleration-handoff-scene").then((m) => ({ default: m.AccelerationHandoffScene })),
+  ),
+  Hubble1929DiagramScene: lazyScene(() =>
+    import("@/components/physics/hubble-and-cosmological-redshift/hubble-1929-diagram-scene").then((m) => ({ default: m.Hubble1929DiagramScene })),
+  ),
+  StretchingPhotonScene: lazyScene(() =>
+    import("@/components/physics/hubble-and-cosmological-redshift/stretching-photon-scene").then((m) => ({ default: m.StretchingPhotonScene })),
+  ),
+  LookbackMachineScene: lazyScene(() =>
+    import("@/components/physics/hubble-and-cosmological-redshift/lookback-machine-scene").then((m) => ({ default: m.LookbackMachineScene })),
+  ),
+  FirasBlackbodyScene: lazyScene(() =>
+    import("@/components/physics/the-cmb-and-nucleosynthesis/firas-blackbody-scene").then((m) => ({ default: m.FirasBlackbodyScene })),
+  ),
+  CosmicTimelineScene: lazyScene(() =>
+    import("@/components/physics/the-cmb-and-nucleosynthesis/cosmic-timeline-scene").then((m) => ({ default: m.CosmicTimelineScene })),
+  ),
+  BbnBaryonDensityScene: lazyScene(() =>
+    import("@/components/physics/the-cmb-and-nucleosynthesis/bbn-baryon-density-scene").then((m) => ({ default: m.BbnBaryonDensityScene })),
+  ),
+  RotationCurveBuilderScene: lazyScene(() =>
+    import("@/components/physics/dark-matter-and-dark-energy/rotation-curve-builder-scene").then((m) => ({ default: m.RotationCurveBuilderScene })),
+  ),
+  CosmicBudgetScene: lazyScene(() =>
+    import("@/components/physics/dark-matter-and-dark-energy/cosmic-budget-scene").then((m) => ({ default: m.CosmicBudgetScene })),
+  ),
+  SupernovaDiscoveryScene: lazyScene(() =>
+    import("@/components/physics/dark-matter-and-dark-energy/supernova-discovery-scene").then((m) => ({ default: m.SupernovaDiscoveryScene })),
+  ),
+  GeodesicFocusingScene: lazyScene(() =>
+    import("@/components/physics/singularity-theorems/geodesic-focusing-scene").then((m) => ({ default: m.GeodesicFocusingScene })),
+  ),
+  TrappedSurfaceScene: lazyScene(() =>
+    import("@/components/physics/singularity-theorems/trapped-surface-scene").then((m) => ({ default: m.TrappedSurfaceScene })),
+  ),
+  TheoremFlowchartScene: lazyScene(() =>
+    import("@/components/physics/singularity-theorems/theorem-flowchart-scene").then((m) => ({ default: m.TheoremFlowchartScene })),
+  ),
+  PageCurveScene: lazyScene(() =>
+    import("@/components/physics/the-information-paradox/page-curve-scene").then((m) => ({ default: m.PageCurveScene })),
+  ),
+  EvaporationBookkeepingScene: lazyScene(() =>
+    import("@/components/physics/the-information-paradox/evaporation-bookkeeping-scene").then((m) => ({ default: m.EvaporationBookkeepingScene })),
+  ),
+  PositionsMapScene: lazyScene(() =>
+    import("@/components/physics/the-information-paradox/positions-map-scene").then((m) => ({ default: m.PositionsMapScene })),
+  ),
+  DomainMapScene: lazyScene(() =>
+    import("@/components/physics/what-relativity-doesnt-say/domain-map-scene").then((m) => ({ default: m.DomainMapScene })),
+  ),
+  InvarianceSorterScene: lazyScene(() =>
+    import("@/components/physics/what-relativity-doesnt-say/invariance-sorter-scene").then((m) => ({ default: m.InvarianceSorterScene })),
+  ),
+  OpenQuestionsBoardScene: lazyScene(() =>
+    import("@/components/physics/what-relativity-doesnt-say/open-questions-board-scene").then((m) => ({ default: m.OpenQuestionsBoardScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

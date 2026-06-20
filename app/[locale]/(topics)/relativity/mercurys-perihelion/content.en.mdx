@@ -1,0 +1,116 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PrecessingEllipseScene } from "@/components/physics/mercurys-perihelion/precessing-ellipse-scene";
+import { PrecessionBudgetScene } from "@/components/physics/mercurys-perihelion/precession-budget-scene";
+import { PrecessionVsOrbitScene } from "@/components/physics/mercurys-perihelion/precession-vs-orbit-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Urbain Le Verrier", href: "/physicists/urbain-le-verrier" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Karl Schwarzschild", href: "/physicists/karl-schwarzschild" },
+  { type: "term", label: "Perihelion precession", href: "/dictionary/perihelion-precession" },
+  { type: "term", label: "Schwarzschild metric", href: "/dictionary/schwarzschild-metric" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+  { type: "term", label: "Einstein field equations", href: "/dictionary/einstein-field-equations" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.40 · SCHWARZSCHILD + TESTS"
+  title="MERCURY'S PERIHELION"
+  subtitle="A 43-arcsecond-per-century mismatch that closed seventy years of guesswork."
+/>
+
+<Section index={1} title="The planet that would not behave">
+
+In 1859 the most respected celestial mechanic alive sat down to settle a small, stubborn discrepancy and instead opened a wound in Newtonian physics that took fifty-six years to close.
+
+<PhysicistLink slug="urbain-le-verrier" /> had a reputation for finding planets with a pen. In 1846 he had predicted the position of Neptune from irregularities in the orbit of Uranus, and the planet was found within a degree of where he said it would be, on the first night anyone looked. So when he turned the same machinery on Mercury, the astronomy world paid attention. Mercury's orbit is an ellipse, and the long axis of that ellipse — the line joining its closest approach to the Sun (perihelion) and its farthest point (aphelion) — slowly rotates in the plane of the orbit. This rotation is called perihelion precession. Almost all of it is explained, correctly, by Newtonian gravity: the other planets tug on Mercury and make its ellipse swing around. Le Verrier added up every tug he could compute.
+
+He could not make the numbers match. Mercury's perihelion advances by about 574 arcseconds per century relative to the fixed stars, after the much larger coordinate effect of the precession of the equinoxes is removed. Le Verrier's Newtonian bookkeeping — Venus, Earth, Jupiter, Saturn, the rest — accounted for about 531 of those arcseconds. A residual of roughly 43 arcseconds per century remained, unexplained. Forty-three arcseconds is a tiny angle: about the width of a coin seen from three kilometers away, accumulated over a hundred years. But it was real, it was measured, and it would not go away.
+
+Le Verrier did what had worked before. He postulated a planet. He named it Vulcan, an undiscovered world orbiting closer to the Sun than Mercury, whose gravitational pull would supply the missing 43 arcseconds. For decades observers reported glimpses of Vulcan crossing the solar disk; none survived scrutiny. The anomaly was passed down from one generation of astronomers to the next as an embarrassment — a place where Newton, who had never failed, quietly did.
+
+</Section>
+
+<Section index={2} title="What 'precession' actually means">
+
+A perfect Kepler orbit — one mass circling another, nothing else in the universe — is a closed ellipse. The planet returns to exactly the same point after one revolution, and the long axis of the ellipse stays fixed forever. This closure is special. It depends on the gravitational force falling off as exactly the inverse square of distance. Change that exponent even slightly, add any small extra force, and the orbit no longer closes: each loop ends a little rotated from the last, and the perihelion creeps around the Sun.
+
+<SceneCard caption="FIG.40a — the rosette. A bound orbit that fails to close. The planet traces a Kepler ellipse whose line of apsides (the dashed magenta line to perihelion) advances a small angle every revolution, so the path fills in a slowly rotating rosette. The real per-orbit advance for Mercury is about a tenth of an arcsecond — utterly invisible — so the exaggeration slider multiplies it into view. Flip the GR term OFF and the extra force vanishes: the ellipse snaps shut and stops marching, the Newtonian two-body prediction. Flip it back ON and the apsides resume their crawl. The orbit is drawn with the Sun at the focus, the planet sweeping faster near perihelion in obedience to Kepler's law of areas.">
+  <PrecessingEllipseScene />
+</SceneCard>
+
+For Mercury, the Newtonian perturbations from the other planets are exactly this kind of small extra force, and they produce most of the precession. The puzzle was never *whether* the perihelion should advance — everyone knew it should — but *by how much*. The measured advance exceeded the best Newtonian calculation by 43 arcseconds per century, and no honest accounting of known masses could find them.
+
+<Callout variant="intuition">
+An inverse-square force is the only power law (besides the harmonic spring) that gives closed orbits. Anything that nudges the force away from a pure $1/r^2$ — another planet, or the geometry of curved spacetime — un-closes the ellipse and sets the perihelion drifting.
+</Callout>
+
+</Section>
+
+<Section index={3} title="November 18, 1915 — heart palpitations">
+
+By 1915 <PhysicistLink slug="albert-einstein" /> had spent eight years building general relativity and was within days of its final form. He did not yet have an exact solution of the field equations — <PhysicistLink slug="karl-schwarzschild" /> would supply that a month later — but he had an approximation good enough to compute the orbit of a planet in the gravitational field of the Sun. On November 18, 1915, a week before he presented the final field equations, Einstein calculated the relativistic contribution to Mercury's perihelion advance.
+
+It came out to 43 arcseconds per century.
+
+Einstein later wrote that the result gave him heart palpitations; he was, he said, beside himself with joy for days. This was not a prediction of something new and untested. It was a *retrodiction* — the theory, built from the equivalence principle and the geometry of curved spacetime with no free parameters and no knowledge of Mercury baked in, reproduced a number that had been sitting unexplained in the astronomical literature for fifty-six years. The missing 43 arcseconds were not a missing planet. They were a missing physics.
+
+The mechanism is geometric. In the <Term slug="schwarzschild-metric" /> — the spacetime outside a spherical mass — the effective potential governing orbits is not quite the Newtonian one. There is an extra attractive term that falls off as $1/r^3$, steeper than gravity's $1/r^2$. That term is the un-closer. It is largest where the orbit is smallest and the spacetime curvature strongest, which is precisely why the innermost planet shows the effect most clearly.
+
+</Section>
+
+<Section index={4} title="The formula and the budget">
+
+Working out the orbit in the Schwarzschild geometry to first post-Newtonian order gives a clean closed form for the angle by which the perihelion advances each revolution:
+
+<EquationBlock id="EQ.01">$$\Delta\varpi = \frac{6\pi G M}{c^2 \, a \, (1 - e^2)}$$</EquationBlock>
+
+In words: every orbit, the long axis of the ellipse rotates forward by $6\pi GM$ divided by $c^2$ times the orbit's semi-latus rectum $a(1-e^2)$, where $M$ is the Sun's mass, $a$ the semi-major axis, $e$ the eccentricity, $c$ the speed of light. The factor of $6\pi$ is the relativistic signature; a careless Newtonian "extra force" argument gets the wrong coefficient. The $c^2$ in the denominator is why the effect is small — it is a correction suppressed by the square of the orbital speed over the speed of light.
+
+Plug in Mercury's numbers — $a \approx 0.387$ AU, $e \approx 0.206$ — and each orbit advances by about $5.0 \times 10^{-7}$ radians, roughly 0.1 arcseconds. Mercury completes about 415 orbits per century, so the advance accumulates to **43 arcseconds per century**. The arithmetic that gave Einstein palpitations is now a one-line computation.
+
+<EquationBlock id="EQ.02">$$\Delta\varpi_{\text{cy}} = \Delta\varpi \times \frac{100 \text{ yr}}{T} \times \frac{180 \times 3600}{\pi}$$</EquationBlock>
+
+This converts the per-orbit advance (in radians) into arcseconds per century: multiply by the number of orbits in a hundred years ($100\,\text{yr} / T$, with $T$ Mercury's 88-day period) and by the radians-to-arcseconds factor $206{,}265$. The result lands on 43.
+
+<SceneCard caption="FIG.40b — the precession budget, in arcseconds per century. The MODEL column stacks the Newtonian planetary tugs from the bottom — Venus contributes the most at ~278″, Jupiter ~154″, Earth ~90″, with Saturn and Mars trailing — summing to ~531″. On top sits the glowing magenta slab: the 43″ that general relativity supplies, with no adjustable parameters. The OBSERVED column is the measured dynamical advance, ~574″. With GR included, model and observation agree to better than an arcsecond. Remove the GR slab (toggle) and a dashed red gap opens up: exactly the 43″ shortfall that sent Le Verrier hunting for Vulcan. Click any perturber to highlight its contribution.">
+  <PrecessionBudgetScene />
+</SceneCard>
+
+<Callout variant="math">
+The same $1/r^3$ term that precesses Mercury's orbit also sets the innermost stable circular orbit (ISCO) of a black hole at $r = 6GM/c^2$, and dominates the inspiral of binary pulsars. Mercury's 43″/century and the relativistic periastron advance of the Hulse–Taylor binary pulsar — a staggering 4.2 *degrees* per year — are the same physics at vastly different field strengths. The weak-field corner of a formula that, taken to strong field, describes black-hole orbits.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Why Mercury and not Jupiter">
+
+The formula explains the choice of planet. Two factors conspire to make the effect largest for the innermost world. First, the per-orbit advance scales as $1/[a(1-e^2)]$: a smaller orbit means a tighter, more strongly curved region of spacetime and a bigger advance each loop. Second, by Kepler's third law a smaller orbit means a shorter period and therefore *more orbits per century* — and the precession accumulates orbit by orbit. Both factors push the same way for close-in planets, so the century total scales roughly as $a^{-5/2}$.
+
+<SceneCard caption="FIG.40c — why Mercury. The general-relativistic precession in arcseconds per century plotted against semi-major axis on log–log axes, from 0.3 to 6 AU. The cyan curve is the prediction at the chosen eccentricity; the named planets sit on it at their true elements. Mercury (amber) towers at ~43″; Venus and Earth, despite being nearby, fall to a few arcseconds; Jupiter, eight times farther out, is essentially flat on the floor of the plot at hundredths of an arcsecond. Drag the eccentricity slider to lift the whole curve — a more eccentric orbit precesses faster at fixed size — and drag the cursor to read off any orbit. This steep falloff is why Mercury, alone among the planets, made the anomaly visible to nineteenth-century astronomy.">
+  <PrecessionVsOrbitScene />
+</SceneCard>
+
+Earth's relativistic precession is about 3.8 arcseconds per century; Venus's is similar in size; Jupiter's is a few hundredths of an arcsecond. Only Mercury, close to the Sun and on a noticeably eccentric orbit, produces an effect large enough that nineteenth-century instruments could isolate it from the much larger Newtonian background. The anomaly was a gift of orbital geometry: had the Solar System's innermost planet been on a near-circular, more distant orbit, the relativistic signal would have hidden below the measurement noise, and the first decisive test of general relativity might have waited for the 1919 eclipse instead.
+
+It is worth being precise about what Mercury tested. The deflection of starlight in 1919 tested how light moves through curved spacetime. Mercury's perihelion tested how *matter* moves — the geodesic equation in the Schwarzschild geometry — and did so against a measurement that already existed before the theory. A retrodiction with no wiggle room is, in some ways, a stronger confirmation than a prediction: there was no chance to tune the answer.
+
+</Section>
+
+<Section index={6} title="What it settled, and what came next">
+
+Mercury's perihelion was the first quantitative triumph of general relativity, and it remains one of the cleanest. There was no parameter to adjust, no fudge factor, no new body to invoke. The 43 arcseconds emerged from the same equations that govern light deflection, gravitational redshift, and the expansion of the universe — and they emerged exactly. Vulcan was never found because Vulcan never existed; the missing mass was missing geometry.
+
+The same Schwarzschild orbit machinery that precesses Mercury runs the rest of this module. Turn it on light instead of matter and you get [light deflection and gravitational lensing](/relativity/light-deflection-and-lensing) — the 1.75-arcsecond bending at the solar limb that Eddington photographed in 1919, twice the Newtonian value. Push the same metric to extreme field strength and the precessing orbit becomes the plunging orbit of [the Schwarzschild metric](/relativity/the-schwarzschild-metric) near a black hole, where the innermost stable circular orbit sits at three Schwarzschild radii. Modern measurements have refined Mercury's relativistic advance — the MESSENGER spacecraft tracked it to a fraction of a percent — and the agreement holds to every decimal anyone has measured.
+
+A century of testing has never moved the 43. It is the number that, in November 1915, told Einstein his eight years had not been wasted — and it is the number that first told the rest of physics that gravity is geometry.
+
+</Section>
+
+</TopicPageLayout>

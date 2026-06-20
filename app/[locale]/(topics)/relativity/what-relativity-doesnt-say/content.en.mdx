@@ -1,0 +1,127 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DomainMapScene } from "@/components/physics/what-relativity-doesnt-say/domain-map-scene";
+import { InvarianceSorterScene } from "@/components/physics/what-relativity-doesnt-say/invariance-sorter-scene";
+import { OpenQuestionsBoardScene } from "@/components/physics/what-relativity-doesnt-say/open-questions-board-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Roger Penrose", href: "/physicists/roger-penrose" },
+  { type: "physicist", label: "Stephen Hawking", href: "/physicists/stephen-hawking" },
+  { type: "term", label: "Planck scale", href: "/dictionary/planck-scale" },
+  { type: "term", label: "Quantum gravity", href: "/dictionary/quantum-gravity" },
+  { type: "term", label: "Singularity", href: "/dictionary/singularity" },
+  { type: "term", label: "Spacetime interval", href: "/dictionary/spacetime-interval" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+  { type: "term", label: "Unitarity", href: "/dictionary/unitarity" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.61 · FRONTIERS"
+  title="WHAT RELATIVITY DOESN'T SAY"
+  subtitle="A century of winning streak, and the wall it has not yet broken through."
+/>
+
+<Section index={1} title="The undefeated theory">
+
+For one hundred and ten years, general relativity has not lost a single bet.
+
+It is worth pausing on how strange that is. In 1915 <PhysicistLink slug="albert-einstein" /> wrote down ten coupled nonlinear equations relating the geometry of spacetime to the matter inside it, and ever since, every time the equations have been pushed into a new regime, they have been right. The 43 arcseconds per century of Mercury's [perihelion precession](/relativity/mercurys-perihelion), unexplained since <PhysicistLink slug="urbain-le-verrier" /> measured it in 1859, fell out on the first try in November 1915. <PhysicistLink slug="arthur-eddington" />'s 1919 eclipse expedition measured starlight bending by 1.75 arcseconds at the solar limb — twice the Newtonian value, exactly what relativity demanded. Pound and Rebka caught gravitational redshift in a Harvard stairwell in 1960. The [Shapiro delay](/relativity/shapiro-delay) of radar echoes off Venus, 1964. The Hulse-Taylor binary pulsar's orbit shrinking by 76 microseconds a year, 1974, matching the energy carried off by [gravitational waves](/relativity/binary-inspiral-and-the-chirp) to fourteen significant figures by the 2000s. LIGO's direct detection on September 14, 2015 — a chirp from two merging black holes 1.3 billion light-years away. The Event Horizon Telescope's photograph of M87*'s shadow in 2019.
+
+No deviation. No anomaly. No crack. The theory has been confirmed across more than forty orders of magnitude in length, from the millimetre-scale torsion-balance tests of the inverse-square law to the cosmic web.
+
+And yet every working physicist knows that general relativity is not the final theory. It cannot be. The same equations that have never been wrong contain, written into their own structure, the proof of their incompleteness. This essay is about that boundary: where the theory stops, what it never actually claimed, and the honest scoreboard of what might lie on the other side. It is the last figure in this branch, so it is worth being precise about both the triumph and the wall.
+
+</Section>
+
+<Section index={2} title="Where the equations break their own promise">
+
+The clearest statement of relativity's limits comes from relativity itself.
+
+In 1965 <PhysicistLink slug="roger-penrose" /> proved that once a [trapped surface](/relativity/singularity-theorems) forms — a closed surface from which even outgoing light is dragged inward — geodesic incompleteness is unavoidable. Worldlines simply end. There is a place where a freely falling observer's history stops after a finite [proper time](/dictionary/proper-time), and the theory has nothing to say about what happens next, because there is no "next." Run the same logic backwards in time, as <PhysicistLink slug="stephen-hawking" /> did, and the expanding universe must have begun the same way: a moment where the [scale factor](/relativity/the-flrw-metric) reaches zero and density diverges. The [singularity theorems](/relativity/singularity-theorems) are not statements that "the math gets hard." They are theorems that the math reaches infinity, and infinity is not a measurement.
+
+At a black hole's centre, the [Schwarzschild metric](/relativity/the-schwarzschild-metric) gives a curvature invariant that grows without bound:
+
+<EquationBlock id="EQ.01">$$R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma} = \frac{48\,G^2 M^2}{c^4\, r^6}$$</EquationBlock>
+
+This is the Kretschmann scalar — a coordinate-independent measure of how strongly spacetime is curved. As $r \to 0$ it diverges like $1/r^6$, so the divergence is real, not an artefact of bad coordinates (unlike the apparent singularity at the [event horizon](/dictionary/event-horizon), which a change of coordinates removes). A theory whose central prediction is "the curvature is infinite here" is announcing that some deeper description must take over before that point is reached.
+
+<Callout variant="intuition">
+A good physical theory knows where it is allowed to apply. General relativity is rare in that it tells you, from the inside, exactly where it stops being trustworthy: wherever the curvature approaches the Planck scale, the smooth spacetime the theory is built on can no longer be assumed.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The Planck wall">
+
+Where, exactly, does the theory expect to fail? Combine the two constants that govern the breakdown — the gravitational constant $G$ that sets the strength of curvature, and the quantum of action $\hbar$ that sets the graininess of measurement — together with the speed of light $c$, and there is exactly one length you can build:
+
+<EquationBlock id="EQ.02">$$\ell_P = \sqrt{\frac{\hbar G}{c^3}} \approx 1.6 \times 10^{-35}\ \text{m}, \qquad E_P = \sqrt{\frac{\hbar c^5}{G}} \approx 1.2 \times 10^{19}\ \text{GeV}$$</EquationBlock>
+
+This is the Planck length and the corresponding Planck energy. The Planck length is twenty orders of magnitude smaller than a proton; the Planck energy is fifteen orders of magnitude beyond what the Large Hadron Collider reaches. The numbers are not arbitrary trivia — they mark the scale where two different theories both insist on being in charge.
+
+Here is the collision, stated geometrically. To localize an object within a region of size $L$, quantum mechanics says you must give it a momentum of order $\hbar / L$, hence an energy that grows as $L$ shrinks — its Compton wavelength sets a floor. But concentrate too much energy into too small a region and general relativity wraps it in an [event horizon](/dictionary/event-horizon): its <Term slug="schwarzschild-radius" /> grows as you add energy. The Compton wavelength shrinks with energy; the Schwarzschild radius grows with it. At the Planck scale the two are equal — and a measurement sharp enough to probe a Planck length necessarily creates a black hole that swallows the answer. Below $\ell_P$, "position" stops being an operationally meaningful idea.
+
+<SceneCard caption="FIG.61a — the domain map. A log–log chart of mass (horizontal) against size (vertical). Two straight lines partition the plane: the Schwarzschild radius r_s = 2GM/c² (slope +1 — below it, a system is a black hole and general relativity is strong) and the reduced Compton wavelength λ_C = ħ/Mc (slope −1 — below it, quantum field theory is unavoidable). They cross at the Planck point, where the quantum-gravity wedge opens up: the corner of the plane where no current theory applies. Real objects — electron, proton, you, Earth, the Sun, Sgr A*, a galaxy — sit as labeled dots, all comfortably in the classical region. Drag the sliders or click the chart to place a probe and watch its regime change as you push it toward the Planck corner.">
+  <DomainMapScene />
+</SceneCard>
+
+So the wall has a name and an address. It is not that general relativity becomes "approximate" near the Planck scale the way Newtonian gravity becomes approximate near a neutron star — there, you simply switch to the exact GR solution. Near the Planck scale there is no known exact theory to switch to. That missing theory is [quantum gravity](/dictionary/quantum-gravity), and building it is the central unsolved problem of fundamental physics.
+
+</Section>
+
+<Section index={4} title="What relativity never claimed">
+
+The wall is real. But just as important is clearing away things relativity is wrongly accused of saying — because the myths obscure what the theory is actually about.
+
+The biggest myth is the slogan "everything is relative." It is almost exactly backwards. Special relativity began as a search for the quantities that stay the same. Yes, time intervals stretch, lengths contract, and two observers in relative motion disagree about which distant events are simultaneous — those are the famous, frame-dependent effects. But the entire mathematical content of the theory is the second list: the quantities every observer agrees on. The most important is the [spacetime interval](/dictionary/spacetime-interval):
+
+<EquationBlock id="EQ.03">$$\Delta s^2 = -c^2\,\Delta t^2 + \Delta x^2 + \Delta y^2 + \Delta z^2$$</EquationBlock>
+
+Two observers will measure different $\Delta t$ and different $\Delta x$ between the same pair of events, but they compute the identical $\Delta s^2$. Out of this fall the other invariants: the [proper time](/dictionary/proper-time) a clock actually reads, the rest mass that is the magnitude of the four-momentum, the speed of light $c$ itself, and — crucially — the causal order of any two events that could influence each other. <PhysicistLink slug="hermann-minkowski" /> made the point in 1908: the right name for the theory would have been the theory of *invariants*, not of relativity. The frame-dependence is the wallpaper; the invariants are the structure.
+
+<SceneCard caption="FIG.61b — the invariant myth-buster. Each row names a physical quantity. Before you click, decide: does it change when you switch to a moving observer (frame-dependent, left) or is it the same for everyone (absolute, right)? Click the left or right half of a row to lock in your guess, and the scene reveals the true verdict with a one-line reason. The lesson is in the final tally: the column labeled 'absolute' is not a footnote to relativity — it is what the theory is. 'Everything is relative' is the one sentence about relativity that relativity disproves.">
+  <InvarianceSorterScene />
+</SceneCard>
+
+A second myth: that relativity forbids anything faster than light, full stop. What it forbids is a precise thing — no *signal*, no carrier of energy or information, can move through spacetime faster than $c$ locally, because doing so would let an observer reorder cause and effect. It does not forbid space itself from expanding so that distant galaxies recede faster than light; the [cosmological redshift](/relativity/hubble-and-cosmological-redshift) does exactly that, and no signal overtakes light to do it. It does not forbid the instantaneous *correlations* of quantum entanglement, because no information is transmitted by them. The ban is on causal influence, not on apparent speed. Relativity is a theory about the causal structure of spacetime, and it is exactly as strict — and exactly as permissive — as that structure requires.
+
+</Section>
+
+<Section index={5} title="The honest scoreboard">
+
+So there is a wall, and there are myths cleared away. What is actually on the far side of the wall? Here the honest answer is: we do not know, and pretending otherwise is the one thing a physicist must not do at a frontier.
+
+What we can do is state the open questions sharply, say precisely why general relativity cannot answer each one, and name what evidence would settle it. That is the difference between a frontier and a fog.
+
+<SceneCard caption="FIG.61c — the open-questions board. Six tabs, each a question general relativity provably cannot answer from inside its own framework: the nature of the singularity, the structure of spacetime at the Planck scale, whether black holes destroy information, what happened at t = 0, the identity of dark matter and dark energy, and how gravity becomes quantum. Select a tab and the card states the question, then 'why GR can't answer it' — usually because the equations hit an infinity or run out of degrees of freedom — and finally 'what would settle it,' the concrete observation or calculation that would turn the question into knowledge. This is the scoreboard as it actually stands, not a list of answers.">
+  <OpenQuestionsBoardScene />
+</SceneCard>
+
+The candidate roads toward quantum gravity are real research programs, and intellectual honesty requires naming them without crowning one. **String theory** replaces point particles with extended objects and, as a bonus, contains a massless spin-2 excitation with exactly the properties of the graviton; its great difficulty is the vast landscape of possible vacua and the absence so far of a sharp falsifiable prediction at accessible energies. **Loop quantum gravity** quantizes geometry directly, predicting that area and volume come in discrete Planck-sized quanta; its difficulty is recovering smooth classical spacetime and ordinary matter in the low-energy limit. **Asymptotic safety** conjectures that gravity is quantum-mechanically consistent after all, controlled by a nontrivial fixed point of the renormalization group; its difficulty is proving the fixed point exists nonperturbatively. There are others — causal sets, causal dynamical triangulations, twistor approaches descended from <PhysicistLink slug="roger-penrose" />'s work.
+
+The point is not to pick a winner. The point is that the question "how does gravity become quantum?" is a live, well-posed problem with serious competing answers and no experimental discriminator yet, because the discriminating energy sits fifteen decades above our most powerful accelerator. That is not a comfortable situation. It is, however, an honest one — and it has been the single most productive open problem in theoretical physics for half a century.
+
+<Callout variant="math">
+One quantitative reason quantum gravity has no data: the ratio of the Planck energy to the LHC's collision energy is about $E_P / E_{\text{LHC}} \approx 10^{19}\,\text{GeV} / 10^{4}\,\text{GeV} = 10^{15}$. To probe the Planck scale by brute force would require an accelerator a quadrillion times more powerful — roughly the size of a galaxy. This is why the field leans on indirect probes: black-hole thermodynamics, the [information paradox](/relativity/the-information-paradox), early-universe cosmology, and exquisitely precise searches for tiny Lorentz violations in light that has travelled across the universe.
+</Callout>
+
+</Section>
+
+<Section index={6} title="The quiet reveal">
+
+This is the last figure in the relativity branch, so it deserves a closing thought rather than a summary.
+
+The story we have followed runs from <PhysicistLink slug="galileo-galilei" /> dropping the idea of absolute rest, through <PhysicistLink slug="isaac-newton" />'s absolute space and time, to Einstein dissolving both into a single curved spacetime, and then to the [singularity theorems](/relativity/singularity-theorems) and the [information paradox](/relativity/the-information-paradox) showing that this spacetime, too, is provisional. At each step the thing that had seemed most solid and absolute — rest, then space, then time, then spacetime itself — turned out to be a frame-dependent shadow of something deeper. The deeper thing, every time, was an invariant: the spacetime interval, the proper time along a worldline, the [Bekenstein-Hawking entropy](/dictionary/bekenstein-hawking-entropy) of a horizon counting its hidden microstates.
+
+That is the quiet reveal the whole branch has been building toward. General relativity is not undefeated because it is the final word. It is undefeated because, within its domain, it correctly identified the invariants — the quantities the universe actually keeps constant — and built everything else out of them. When the theory finally fails, at the Planck scale, it will fail in the way every great theory before it failed: not by being wrong, but by being a beautifully accurate shadow cast by a structure we have not yet seen whole. The horizon's entropy is almost certainly that structure leaving a fingerprint on the one quantity — area — that classical relativity already knew how to count.
+
+A reader who has followed this branch from the [Schwarzschild metric](/relativity/the-schwarzschild-metric) through [Hawking radiation](/relativity/hawking-radiation) to here now stands exactly where the field stands: holding the most successful theory of gravity ever written, knowing precisely where it ends, and looking at a wall fifteen orders of magnitude away with no instrument yet built to climb it. The next equation — the one that says what spacetime is when curvature meets the quantum — has not been written. Whoever writes it will have to be as right about the next set of invariants as Einstein was about this one. That equation is still out there. That is what relativity doesn't say.
+
+</Section>
+
+</TopicPageLayout>

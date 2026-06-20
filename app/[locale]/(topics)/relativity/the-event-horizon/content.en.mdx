@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { EventHorizonClocksScene } from "@/components/physics/the-event-horizon/event-horizon-clocks-scene";
+import { LightConeTiltScene } from "@/components/physics/the-event-horizon/light-cone-tilt-scene";
+import { RiverModelScene } from "@/components/physics/the-event-horizon/river-model-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Karl Schwarzschild", href: "/physicists/karl-schwarzschild" },
+  { type: "physicist", label: "John Archibald Wheeler", href: "/physicists/john-archibald-wheeler" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Event horizon", href: "/dictionary/event-horizon" },
+  { type: "term", label: "Schwarzschild radius", href: "/dictionary/schwarzschild-radius" },
+  { type: "term", label: "Schwarzschild metric", href: "/dictionary/schwarzschild-metric" },
+  { type: "term", label: "Proper time", href: "/dictionary/proper-time" },
+  { type: "term", label: "Singularity", href: "/dictionary/singularity" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.44 · BLACK HOLES"
+  title="THE EVENT HORIZON"
+  subtitle="The one-way membrane, what it looks like to the infaller, and what it doesn't."
+/>
+
+<Section index={1} title="A coordinate that blew up">
+
+In December 1915, one month after <PhysicistLink slug="albert-einstein" /> published his field equations, <PhysicistLink slug="karl-schwarzschild" /> sent him a letter from the Russian front, where he was computing artillery trajectories for the German army. It contained the first exact solution of general relativity: the geometry outside a static, spherically symmetric mass. Einstein read it to the Prussian Academy on Schwarzschild's behalf. Schwarzschild was dead within five months, of an autoimmune disease contracted in the trenches.
+
+His solution carried a blemish. Written in the natural coordinates — a clock time $t$ kept by a distant observer and a radius $r$ measured by the area of spheres — one term in the metric divided by zero at the radius $r_s = 2GM/c^2$, the [Schwarzschild radius](/relativity/the-schwarzschild-metric). For the Sun, $r_s$ is about 3 kilometers, buried deep inside the star, so nobody worried. But the question lingered: what happens to a clock, a ruler, a falling stone, at $r = r_s$?
+
+For nearly fifty years the answer was confused. Einstein himself argued in 1939 that the surface could never form. The breakthrough was coordinate, not physical. In 1958 David Finkelstein rewrote the metric in a new time coordinate — adapted to infalling light rather than distant clocks — and the singularity at $r_s$ simply vanished. The geometry was perfectly smooth there. What blew up was the *map*, not the *territory*. The surface $r = r_s$ was not a wall. It was a horizon: a boundary in causality, a place past which no signal can return. <PhysicistLink slug="john-archibald-wheeler" />, who in 1967 popularized the name "black hole," called $r_s$ the event horizon — the edge of the region of events that the outside universe can never witness.
+
+</Section>
+
+<Section index={2} title="The metric and its one bad term">
+
+The Schwarzschild line element, in the original distant-observer coordinates, is
+
+<EquationBlock id="EQ.01">$$ds^2 = -\left(1 - \frac{r_s}{r}\right)c^2\,dt^2 + \left(1 - \frac{r_s}{r}\right)^{-1} dr^2 + r^2\,d\Omega^2$$</EquationBlock>
+
+In plain words: this formula tells you the true spacetime distance $ds$ between two nearby events in terms of the bookkeeping coordinates $t$ (far-away time), $r$ (areal radius), and the angles $d\Omega$. Everything interesting is controlled by the single factor $f(r) = 1 - r_s/r$. Far away, $f \to 1$ and the geometry is flat Minkowski space. At $r = r_s$, the factor $f$ is exactly zero — and it appears once in the numerator (multiplying $dt^2$) and once in the denominator (dividing $dr^2$).
+
+That double role is the whole story. The $dt^2$ coefficient going to zero means a static clock there ticks at zero rate as seen from infinity: time freezes. The $dr^2$ coefficient blowing up means radial distances stretch without bound in these coordinates: the ruler diverges. Both are artifacts of insisting on the distant observer's clock. Compute a coordinate-independent quantity — the tidal curvature, the Kretschmann scalar $R_{\mu\nu\rho\sigma}R^{\mu\nu\rho\sigma} = 12\,r_s^2/r^6$ — and it is perfectly finite at $r = r_s$. It only diverges at $r = 0$, the genuine [singularity](/relativity/singularity-theorems).
+
+<Callout variant="math">
+A true singularity is a place where a coordinate-independent curvature scalar diverges. A coordinate singularity is a place where a *particular choice of coordinates* fails, like the way longitude lines crowd to a point at the Earth's north pole even though the pole is unremarkable ground. The Kretschmann scalar $12\,r_s^2/r^6$ is finite at $r = r_s$ and infinite only at $r = 0$: the horizon is the north pole, the center is the cliff.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Two clocks, two stories">
+
+The cleanest way to feel the horizon is to compare what two observers measure. Send Alice falling radially inward from far away; keep Bob hovering at a great distance with a telescope.
+
+Bob's story is dominated by the factor $\sqrt{f}$. The rate of Alice's clock, as Bob reckons it, is
+
+<EquationBlock id="EQ.02">$$\frac{d\tau}{dt} = \sqrt{1 - \frac{r_s}{r}}$$</EquationBlock>
+
+This says: the proper time $\tau$ that ticks on Alice's wristwatch advances ever more slowly per unit of Bob's coordinate time $t$ as she nears $r_s$, reaching zero at the horizon. Bob watches Alice's fall slow, her image redden, her clock crawl. He never sees her cross. Light she emits at radius $r$ reaches him redshifted by a factor $1+z = 1/\sqrt{1 - r_s/r}$, which diverges at the horizon — the redshift runs to infinity, so her image fades to black in a fraction of a second. To Bob, the horizon is a frozen, darkening membrane he can approach but never see anything fall through.
+
+Alice's story is utterly different and entirely dull. Her wristwatch ticks once per second the whole way down. The equivalence principle guarantees that locally she feels only free fall — weightlessness — and for a sufficiently large hole the tidal forces at the horizon are imperceptible. She crosses $r_s$ at a definite moment on her own clock and notices nothing. There is no sign, no wall, no flash. The geometry is smooth; the curvature is finite; her instruments read normal. The horizon is a global feature of the spacetime, defined by where light can and cannot escape — and that is not something a local measurement can detect.
+
+<SceneCard caption="FIG.44a — two clocks, one fall. Drag the slider to set the infaller's radius r/r_s. The LEFT clock is Alice's own wristwatch — it sweeps at a constant rate at every radius, because nothing locally special happens, even at the horizon. The RIGHT clock is the rate Bob assigns to her, dτ/dt = √(1 − r_s/r); as you push toward r_s it crawls to a halt and the infaller's image reddens and dims to black, the gravitational redshift 1+z running to infinity. The two stories are both correct: the difference is not what happens to Alice, but what Bob is able to see.">
+  <EventHorizonClocksScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Light cones tipping over">
+
+Why is the horizon one-way? The deepest answer is in the light cones. At every event, the future light cone marks the directions a signal can travel; nothing physical leaves the cone. In flat space the cone opens symmetrically at 45° on a spacetime diagram. The Schwarzschild factor tilts it.
+
+For a radially outgoing photon in these coordinates, the coordinate slope of its path is
+
+<EquationBlock id="EQ.03">$$\frac{c\,dt}{dr} = \frac{1}{1 - r_s/r}$$</EquationBlock>
+
+Read this as: how much distant-clock time $dt$ a photon spends to climb a small distance $dr$ outward. Far from the hole the slope is 1 — the familiar 45° escape line. As $r \to r_s$ the denominator goes to zero and the slope goes to infinity: the outgoing edge of the light cone tips all the way to vertical. The photon, struggling outward at the speed of light, makes no coordinate progress at all. It is stuck on the horizon. Inside, $f < 0$ flips the sign, and *both* edges of the cone lean toward smaller $r$. Every future-directed path — even one a photon traces flat-out outward — leads to smaller radius. "The future" and "toward the center" become the same direction. That is the precise sense in which the singularity is a moment in your future, not a place across the room: once inside, falling to $r = 0$ is as unavoidable as next Tuesday.
+
+<SceneCard caption="FIG.44b — the cones tip over. Each wedge is a future light cone on a (ct, r) diagram, r in units of r_s rising to the right. Far out, the cones open symmetrically at 45° and the outgoing edge points to larger r — escape is possible. Drag the magenta probe inward: its outgoing edge steepens (slope 1/(1−r_s/r)) and stands exactly vertical at the amber horizon line, where outgoing light is frozen. Push past r_s and both edges lean toward r = 0 — every future-pointing direction now leads inward. The red line on the left is the true singularity at r = 0, where the curvature, not just the coordinates, diverges.">
+  <LightConeTiltScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The river model: space falling faster than light">
+
+The light-cone picture is exact but abstract. There is a more visceral one, due to Allvar Gullstrand and Paul Painlevé in 1921 and revived by Andrew Hamilton and others: the **river model**. Adopt the time coordinate of an observer who falls from rest at infinity, and the Schwarzschild geometry rearranges into something startlingly simple. Space itself behaves like a river flowing radially inward, and everything physical is a fish swimming in that river. The fish — light, matter, anything — can swim at most at speed $c$ *relative to the local water*. The inflow speed of the water is
+
+<EquationBlock id="EQ.04">$$\frac{v_{\text{river}}(r)}{c} = \sqrt{\frac{r_s}{r}}$$</EquationBlock>
+
+This says the inward flow speed of space, in units of $c$, is the square root of $r_s/r$. Outside the horizon ($r > r_s$) the river runs slower than light, so a photon swimming outward at $c$ beats the current and escapes. At exactly $r = r_s$ the river runs at precisely $c$: a photon swimming outward at full speed exactly treads water, held forever on the horizon. Inside, $v_{\text{river}} > c$: the water carries everything inward faster than any fish can swim against it. No fish ever exceeds $c$ relative to the water — no local law of relativity is violated. Space itself just outruns light. That is the one-way membrane, with no magic and no wall: the horizon is simply the surface where the river of space first reaches the speed of light.
+
+<Callout variant="intuition">
+A fish in a river that flows faster than the fish can swim is doomed to go downstream — not because it is slow, but because the ground beneath it is moving. The black hole horizon is the line on the river where the current first reaches the fish's top speed. The fish breaks no rule of its own swimming. It is the riverbed that has gone over the edge.
+</Callout>
+
+<SceneCard caption="FIG.44c — the river model. Space flows inward toward the hole at the right; the arrows are the current, lengthening as v/c = √(r_s/r) grows. Set the launch radius and watch a photon (the bright fish) swim outward at the speed of light. Outside the amber horizon the current is sub-luminal, so the fish gains ground and escapes; right at the horizon the river runs at exactly c and the fish is pinned in place; inside, the super-luminal current sweeps it inexorably to the center. Nothing here ever moves faster than light through the water — the water itself is what crosses c.">
+  <RiverModelScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Spaghetti, size, and what's next">
+
+So is crossing a horizon harmless? It depends on the size of the hole, and the culprit is tidal force — the *difference* in gravity between your head and your feet. That differential acceleration scales as $GM/r^3$, and evaluated at the horizon, where $r = r_s \propto M$, it goes as $1/M^2$. For a ten-solar-mass stellar black hole, $r_s$ is about 30 km and the tidal stretch at the horizon is millions of g per meter of body — you are pulled into a thread, "spaghettified," long before you reach $r_s$. For the supermassive hole Sagittarius A* at the center of our galaxy, four million solar masses, the horizon sits at $1.3 \times 10^{10}$ meters and the tidal force there is gentle: a person would cross it intact, feeling nothing, with the lethal stretching deferred until far inside. The horizon's drama is entirely in the causal structure, not in any local sensation — and how violent the eventual end is depends only on the mass.
+
+This separation — a smooth, featureless horizon for the infaller, an impenetrable frozen membrane for the outsider — is the seed of nearly everything that follows in this module. That the horizon has a definite area, growing whenever matter falls in, points toward [black hole thermodynamics](/relativity/black-hole-thermodynamics) and the discovery that a horizon carries entropy. That the outside universe loses access to whatever crosses it raises the question of whether information is destroyed, the engine of [Hawking radiation](/relativity/hawking-radiation) and the information paradox. And the question of whether real collapse always hides its singularity behind a horizon — cosmic censorship — drives the [singularity theorems](/relativity/singularity-theorems) of Penrose and Hawking. The Event Horizon Telescope's 2019 image of M87* and its 2022 image of Sgr A* finally showed us the silhouette: a dark disc, ringed by light bent around a sphere where the river of space crosses the speed of light. Schwarzschild's blemish turned out to be the most important surface in the universe.
+
+</Section>
+
+</TopicPageLayout>

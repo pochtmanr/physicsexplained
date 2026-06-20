@@ -1,0 +1,116 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { RingOfTestMassesScene } from "@/components/physics/polarization-modes/ring-of-test-masses-scene";
+import { SpinSymmetryScene } from "@/components/physics/polarization-modes/spin-symmetry-scene";
+import { NoDipoleScene } from "@/components/physics/polarization-modes/no-dipole-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Rainer Weiss", href: "/physicists/rainer-weiss" },
+  { type: "physicist", label: "Kip Thorne", href: "/physicists/kip-thorne" },
+  { type: "term", label: "Gravitational wave", href: "/dictionary/gravitational-wave" },
+  { type: "term", label: "Strain", href: "/dictionary/strain" },
+  { type: "term", label: "Transverse-traceless gauge", href: "/dictionary/transverse-traceless-gauge" },
+  { type: "term", label: "Quadrupole radiation", href: "/dictionary/quadrupole-radiation" },
+  { type: "term", label: "Interferometer", href: "/dictionary/interferometer" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.51 · GRAVITATIONAL WAVES"
+  title="THE TWO POLARIZATIONS — PLUS AND CROSS"
+  subtitle="What a gravitational wave does to a ring of free-floating test masses."
+/>
+
+<Section index={1} title="A ring of beads on the front of a passing wave">
+
+In June 1916, six months after <PhysicistLink slug="albert-einstein" /> published the [field equations](/relativity/einsteins-field-equations), he sent a short paper to the Prussian Academy showing that his theory, like Maxwell's, permitted waves. Disturb the metric and the ripple runs off to infinity at the speed of light. He almost got it wrong: the 1916 paper contained an algebra error, and the corrected version came in 1918, where Einstein first wrote the quadrupole formula that governs how strongly a source radiates. Even then he doubted the waves carried energy at all — a doubt that survived, in him and others, for forty years.
+
+The argument that settled it was disarmingly physical. In 1957, at a conference in Chapel Hill, Richard Feynman and Hermann Bondi proposed the *sticky-bead* thought experiment. Thread two beads loosely on a rigid rod. A gravitational wave passing across the rod alternately stretches and squeezes the distance between the beads. If the beads can slide, friction against the rod does work, and the rod heats up. The wave deposited energy. Therefore the wave is real, and it carries energy — the question Einstein had agonized over was answered by a rod and two beads.
+
+The picture that organizes this whole topic is a ring, not a rod. Imagine a circle of free, unconnected test masses — beads floating in space, feeling no force but gravity. A wave travelling perpendicular to the ring does not push the masses around. It changes the *geometry between them*: the proper distances inside the ring breathe in a precise pattern. That pattern has exactly two independent shapes. We call them **plus** and **cross**, and everything in gravitational-wave astronomy rests on them.
+
+</Section>
+
+<Section index={2} title="The transverse-traceless gauge — honest coordinates">
+
+A weak gravitational wave is a small ripple on flat spacetime. Write the metric as $g_{\mu\nu} = \eta_{\mu\nu} + h_{\mu\nu}$, where $\eta$ is the flat Minkowski metric and $|h| \ll 1$ is the perturbation. Plugging this into the field equations and keeping only first-order terms gives a wave equation: $\Box \, \bar h_{\mu\nu} = 0$ in vacuum, with ripples travelling at $c$.
+
+But $h_{\mu\nu}$ has ten components, and most of them are coordinate artifacts — you can make them appear or vanish just by relabelling points. To see the *physics*, you fix the coordinates with the <Term slug="transverse-traceless-gauge" />. For a wave running along $z$, this strips $h_{\mu\nu}$ down to a $2\times 2$ block in the transverse $x$–$y$ plane:
+
+<EquationBlock id="EQ.01">$$h_{ij} = \begin{pmatrix} h_+ & h_\times \\ h_\times & -h_+ \end{pmatrix} \cos\!\big(\omega t - k z\big)$$</EquationBlock>
+
+This says the entire physical content of a wave travelling along $z$ is two numbers, $h_+$ and $h_\times$. The matrix is *transverse* (nothing happens along the propagation direction $z$) and *traceless* (the diagonal entries $h_+$ and $-h_+$ sum to zero, so the deformation stretches one axis exactly as much as it squeezes the other — areas are preserved to first order).
+
+<Callout variant="math">
+The traceless condition is why a gravitational wave never makes the ring simply grow or shrink: $h_{xx} = -h_{yy}$. When one transverse direction stretches by a fraction $\tfrac12 h_+$, the perpendicular one squeezes by the same fraction. A "breathing" mode that expanded the ring uniformly would require a non-zero trace — and general relativity forbids it. That single fact is a clean test that has now been confirmed: the LIGO-Virgo network sees only the two transverse-traceless modes, not the six extra polarizations that alternative theories of gravity would add.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Plus, cross, and the half that matters">
+
+Set $h_\times = 0$ and watch the ring. The $h_+$ mode stretches the masses along $x$ while squeezing along $y$; half a period later it reverses. The ring becomes a horizontal ellipse, then a circle, then a vertical ellipse, oscillating at the wave frequency. Now set $h_+ = 0$: the $h_\times$ mode does exactly the same thing, but along the diagonals at $45^\circ$. Plus and cross are the same deformation, rotated by $45^\circ$ — they are independent, and any wave is a superposition of the two.
+
+The displacement of a test mass follows directly from the geodesic-deviation equation. A mass at rest separation $L$ and polar angle $\theta$ moves to
+
+<EquationBlock id="EQ.02">$$\delta r_x = \tfrac{1}{2}\big(h_+\cos\theta + h_\times\sin\theta\big)L, \qquad \delta r_y = \tfrac{1}{2}\big(-h_+\sin\theta + h_\times\cos\theta\big)L$$</EquationBlock>
+
+The key feature is the factor of one-half: the fractional change in a proper length is $\tfrac12 h$, not $h$. The dimensionless number $h$ is the <Term slug="strain" /> — change in length over length, $\Delta L / L$. For the first detected event, GW150914, the peak strain was about $10^{-21}$: over LIGO's 4-kilometre arms, a length change of roughly $10^{-18}$ metres, a thousandth the diameter of a proton.
+
+<SceneCard caption="FIG.51a — the classic figure. A ring of sixteen free test masses (amber) sits in the transverse plane; the faint dashed circle is their rest configuration. Toggle the polarization: + stretches and squeezes along the horizontal/vertical axes, × does the identical thing rotated 45° to the diagonals, and ○ (circular — the equal-amplitude superposition h₊ = h cos φ, h× = h sin φ with a 90° phase offset) rotates the ellipse rather than pulsing in place. The amplitude slider sets the strain h (wildly exaggerated — real strains are ~10⁻²¹, a millionth of a millionth of what you see); the frequency slider sets how fast the ring breathes. Watch the readouts h₊ and h× trace out the two degrees of freedom.">
+  <RingOfTestMassesScene />
+</SceneCard>
+
+The reason there are *two* polarizations and not more, or fewer, is a statement about the spin of the field — and that is where this gets deep.
+
+</Section>
+
+<Section index={4} title="Two polarizations because gravity is spin-2">
+
+Every massless field has a definite spin, and the spin fixes how its polarization pattern behaves under a rotation about the propagation direction. The rule is sharp: a spin-$s$ massless field has polarization states that recur under a rotation of $360^\circ / s$.
+
+The photon is spin-1. Rotate a linearly polarized electromagnetic wave about its direction of travel and the polarization vector returns to itself only after a full $360^\circ$ turn. The graviton — the quantum of the gravitational field — is spin-2. Its polarization pattern returns to itself after just $180^\circ$. This is exactly what the ring shows: rotate a plus pattern by $90^\circ$ and the stretch and squeeze axes swap, but a plus rotated by $90^\circ$ is *still a plus*; rotate by $180^\circ$ and you are back precisely where you started. The two-fold symmetry of the strain ellipse is the visible signature of spin-2.
+
+<EquationBlock id="EQ.03">$$\psi_{\text{recurrence}} = \frac{360^\circ}{s} \quad\Longrightarrow\quad \text{spin-1}: 360^\circ, \quad \text{spin-2}: 180^\circ$$</EquationBlock>
+
+In plain terms: the higher the spin, the more rotational symmetry the polarization pattern has, and the more polarization states get "used up" by the symmetry. A massless spin-$s$ field has exactly two physical polarizations — the two helicities $+s$ and $-s$ — for any $s \geq 1$. For the photon those are right- and left-circular light; for the graviton they are right- and left-circular gravitational waves, which are precisely the plus-and-cross combinations seen rotating.
+
+<SceneCard caption="FIG.51b — spin-1 versus spin-2, side by side, sharing one rotation slider ψ. Left: a spin-1 photon's oscillation arrow (cyan). Drag ψ and the arrow turns at full rate — it points back the way it started only after a complete 360° turn. Right: a spin-2 gravitational wave's strain ellipse (magenta) on a test-mass ring. Drag the same ψ and the pattern recurs four times as fast: every 90° the ellipse is geometrically identical to where it began (the readout flags 'identical to start'), and a half-turn of 180° is an exact return. The contrast is the whole point — spin sets symmetry, and gravity's two-fold pattern is why it has two transverse polarizations, not more.">
+  <SpinSymmetryScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Why there is no dipole radiation — and why gravity is weak">
+
+Electromagnetism radiates most strongly through its *dipole*: shake a charge back and forth and it broadcasts at the lowest multipole order. Gravity cannot do this, and the reason is a conservation law.
+
+The would-be gravitational dipole is the mass dipole, $\mathbf{d} = \sum_i m_i \mathbf{r}_i$. But by the definition of the centre of mass, $\sum_i m_i \mathbf{r}_i = M\,\mathbf{r}_{\text{cm}}$. To radiate you need the dipole to *accelerate*, $\ddot{\mathbf{d}} = M\,\ddot{\mathbf{r}}_{\text{cm}}$ — and an isolated system's centre of mass cannot accelerate, because total momentum is conserved. There is no negative gravitational charge to play against the positive, no way to make mass slosh the way charge does. The mass dipole's second derivative is identically zero.
+
+<EquationBlock id="EQ.04">$$\ddot{\mathbf{d}} = M\,\ddot{\mathbf{r}}_{\text{cm}} = 0 \qquad (\text{momentum conservation})$$</EquationBlock>
+
+So gravity's lowest radiating multipole is the *quadrupole* — the second mass moment $Q_{ij} = \sum_i m_i\,(x_i x_j - \tfrac13 r_i^2 \delta_{ij})$. The system cannot move its centre of mass, but it can change its *shape*, and a time-varying quadrupole radiates. This is what <Term slug="quadrupole-radiation" /> means, and it is the engine behind every detected event: two masses orbiting each other are a rotating quadrupole, and the radiated power is governed by Einstein's 1918 formula, $P = \tfrac{G}{5c^5}\,\langle \dddot{Q}_{ij}\dddot{Q}_{ij}\rangle$.
+
+Starting at the quadrupole — rather than the dipole — costs an extra factor of $v/c$ in the radiated amplitude, and is a deep reason gravitational waves are so faint. The coupling $G/c^4 \approx 8 \times 10^{-45}$ in SI units is already minuscule; demanding a quadrupole on top means only the most violent, asymmetric, relativistic sources — colliding black holes, merging neutron stars — radiate detectably.
+
+<SceneCard caption="FIG.51c — why gravity has no dipole radiation. Left: an attempted mass dipole. Two equal masses (cyan) try to oscillate, but momentum conservation pins their centre of mass to the dashed line — they can only move symmetrically about it, and the readout shows the time derivative of the mass dipole stuck at zero. No dipole, no dipole radiation. Right: the allowed quadrupole. The same two masses (magenta) instead change their separation — the shape breathes in and out, the second moment Σ m x² visibly oscillates, and Q̈ ≠ 0. A changing quadrupole radiates; a changing dipole isn't available. This single distinction is why gravitational radiation begins two multipole orders higher than electromagnetic radiation, and why it is intrinsically weak.">
+  <NoDipoleScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="From two numbers to a detection">
+
+Everything a ground-based observatory measures collapses onto the two numbers $h_+$ and $h_\times$. A detector is not a passive ear; it is sensitive to a specific combination of the two, weighted by where the source sits on the sky and how the wave is polarized — its *antenna pattern*. A single L-shaped interferometer like LIGO responds to one linear combination of $h_+$ and $h_\times$, which is why a second and third detector matter: with three sites the polarization content can be disentangled and the source localized.
+
+The plus-and-cross structure is also a clean discriminant between theories of gravity. General relativity is unambiguous: a massless spin-2 field, two transverse-traceless polarizations, nothing else. Scalar-tensor and other modified theories generically predict extra modes — a breathing mode, longitudinal modes, up to six polarizations in the most general metric theory. Every detection so far is consistent with exactly the two that Einstein's geometry allows, tightening the case that gravity really is the curvature of spacetime and nothing more.
+
+From here the story moves to dynamics. When the source is a pair of compact objects, the quadrupole formula turns into an equation of motion for the orbit: energy bleeds into radiation, the orbit shrinks, and the frequency and amplitude climb together into the [binary inspiral and the chirp](/relativity/binary-inspiral-and-the-chirp). And the instrument that finally read a strain of $10^{-21}$ off a ring of mirrors — turning these two numbers into a sound the whole world heard — is [LIGO and the dawn of multi-messenger astronomy](/relativity/ligo-and-multi-messenger). Two polarizations, one ring of beads: that is the alphabet the universe writes its gravitational signals in.
+
+</Section>
+
+</TopicPageLayout>

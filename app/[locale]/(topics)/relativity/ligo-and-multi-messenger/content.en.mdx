@@ -1,0 +1,127 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { InterferometerResponseScene } from "@/components/physics/ligo-and-multi-messenger/interferometer-response-scene";
+import { GW150914ReplayScene } from "@/components/physics/ligo-and-multi-messenger/gw150914-replay-scene";
+import { SkyTriangulationScene } from "@/components/physics/ligo-and-multi-messenger/sky-triangulation-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Rainer Weiss", href: "/physicists/rainer-weiss" },
+  { type: "physicist", label: "Kip Thorne", href: "/physicists/kip-thorne" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Interferometer", href: "/dictionary/interferometer" },
+  { type: "term", label: "Strain", href: "/dictionary/strain" },
+  { type: "term", label: "Gravitational wave", href: "/dictionary/gravitational-wave" },
+  { type: "term", label: "Chirp mass", href: "/dictionary/chirp-mass" },
+  { type: "term", label: "Neutron star", href: "/dictionary/neutron-star" },
+  { type: "term", label: "Multi-messenger astronomy", href: "/dictionary/multi-messenger-astronomy" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.53 · GRAVITATIONAL WAVES"
+  title="LIGO AND MULTI-MESSENGER ASTRONOMY"
+  subtitle="GW150914, GW170817, and what it means to hear the universe instead of seeing it."
+/>
+
+<Section index={1} title="09:50:45 UTC, September 14, 2015">
+
+For a hundred years the prediction sat in the theory and almost nobody believed it could be measured.
+
+<PhysicistLink slug="albert-einstein" /> wrote down the wave equation for ripples in spacetime in 1916 and again, more carefully, in 1918. Then he spent two decades doubting his own result. In 1936 he and Nathan Rosen submitted a paper to *Physical Review* titled "Do Gravitational Waves Exist?" — and their answer was *no*. A referee (now known to be Howard Percy Robertson) caught the error; the apparent singularity was a coordinate artifact, not a physical wall. Einstein, furious at being refereed, withdrew the paper and published a corrected version elsewhere. The waves were real. They were just absurdly, almost insultingly, weak.
+
+How weak? A gravitational wave is measured by its <Term slug="strain" /> $h$, the fractional stretch and squeeze it imprints on space: $h = \Delta L / L$. The strongest astrophysical sources at Earth produce $h \sim 10^{-21}$. Over the 4-kilometer arm of a detector that is a length change of about $4 \times 10^{-18}$ meters — roughly one-thousandth the diameter of a proton. The conventional wisdom for most of the twentieth century was that no apparatus could ever resolve such a number.
+
+Then, at 09:50:45 Coordinated Universal Time on September 14, 2015 — during an engineering run, before the official observing run had even started — the two LIGO detectors in Livingston, Louisiana and Hanford, Washington recorded the same waveform, 7 milliseconds apart, sweeping up in frequency from 35 to 250 hertz in two-tenths of a second. The signal, named GW150914, was the collision of two black holes of about 36 and 29 solar masses, 1.3 billion light-years away. They had merged into a single 62-solar-mass hole, radiating the missing 3 solar masses of energy as gravitational waves in a fraction of a second — for that instant outshining, in power, every star in the observable universe combined.
+
+</Section>
+
+<Section index={2} title="The interferometer: measuring a thousandth of a proton">
+
+The instrument that did it is a Michelson <Term slug="interferometer" />, the same basic device <PhysicistLink slug="albert-einstein" />'s predecessors used in the 1887 Michelson–Morley experiment — but scaled up by a factor of a billion in sensitivity.
+
+A laser beam strikes a beam splitter and divides into two perpendicular arms, each 4 km long. Each beam bounces off a far mirror, returns, and recombines. The arms are tuned so that, with no signal, the two beams interfere destructively at the output "dark port": the photodetector sees blackness. A passing gravitational wave with "+" polarization stretches one arm while squeezing the other in antiphase. That differential change in arm length shifts the relative optical phase, and the dark port lights up by an amount that tracks the wave.
+
+<SceneCard caption="FIG.53a — the Michelson interferometer breathing under a passing wave. A laser splits at the beam splitter into two perpendicular 4 km arms; a '+' polarized gravitational wave stretches arm X while squeezing arm Y in antiphase, so the recombined light at the dark port brightens and darkens at the wave frequency. The on-screen motion is exaggerated by the slider so it is visible at all — the HUD shows the true strain (h ≈ 10⁻²¹) and the true differential arm change (ΔL ≈ 10⁻¹⁸ m, about a thousandth of a proton width) so the scale stays honest. Drag the exaggeration and frequency sliders to feel how the output port responds.">
+  <InterferometerResponseScene />
+</SceneCard>
+
+The phase shift the light accumulates is what the detector actually reads:
+
+<EquationBlock id="EQ.01">$$\Delta\phi = \frac{2\pi}{\lambda}\,2\,\mathcal{B}\,\Delta L = \frac{2\pi}{\lambda}\,2\,\mathcal{B}\,h\,L$$</EquationBlock>
+
+In plain terms: the optical phase difference between the two arms equals the round-trip path-length change ($2\,\Delta L$, doubled because light goes out and back), folded by the number of effective bounces $\mathcal{B}$ the Fabry–Pérot cavities provide (about 280 in LIGO), divided by the laser wavelength $\lambda \approx 1064$ nm and turned into radians. Folding the light hundreds of times multiplies the tiny $\Delta L$ into a measurable phase.
+
+Reaching $h \sim 10^{-21}$ took every trick in experimental physics: 40 kg fused-silica test masses hung from four-stage pendulums to isolate them from ground motion; a vacuum system among the largest ever built, so that air molecules do not jostle the beam; mirrors polished to a few atoms of flatness; and, in Advanced LIGO, *squeezed light* to push below the quantum shot-noise limit. The detector is, in effect, the most sensitive ruler humans have built — and it has to be, because the thing it measures is a thousandth of the width of a proton.
+
+</Section>
+
+<Section index={3} title="What the chirp encodes">
+
+The shape of GW150914 was not a featureless rumble. It was a *chirp*: an oscillation that swept up in both frequency and amplitude as the two black holes spiraled together, then cut off at merger. That shape is dictated by general relativity, and its single most important parameter is the <Term slug="chirp-mass" />.
+
+<EquationBlock id="EQ.02">$$\mathcal{M} = \frac{(m_1 m_2)^{3/5}}{(m_1 + m_2)^{1/5}}$$</EquationBlock>
+
+The chirp mass $\mathcal{M}$ is the particular combination of the two component masses that controls how fast the frequency sweeps. The reason it, rather than the individual masses, is the "loudest" observable is that the leading-order rate of frequency increase depends *only* on $\mathcal{M}$. Reading the slope of the chirp gives you $\mathcal{M}$ almost immediately; untangling the individual $m_1$ and $m_2$ requires the fainter, higher-order corrections to the waveform.
+
+<SceneCard caption="FIG.53b — GW150914 replay. A best-fit inspiral template (computed from the leading-order quadrupole chirp, not a cartoon sine sweep) is drawn faintly across the whole window; a noisier 'reconstructed data' trace sweeps in from the left as a playhead crosses the 0.2 seconds before merger, exactly as the real signal climbed from ~35 Hz to ~250 Hz in a fifth of a second. The live readout shows the gravitational-wave frequency climbing and the chirp mass implied by the masses you set. Slide m₁ and m₂: heavier binaries merge at lower frequency and earlier, lighter ones chirp higher before they cut off.">
+  <GW150914ReplayScene />
+</SceneCard>
+
+The frequency evolution that the scene draws is the leading-order quadrupole result. Writing $\tau = t_c - t$ for the time remaining before coalescence, the gravitational-wave frequency obeys
+
+<EquationBlock id="EQ.03">$$f_{\mathrm{gw}}(\tau) = \frac{1}{\pi}\left(\frac{5}{256}\,\frac{1}{\tau}\right)^{3/8}\left(\frac{G\mathcal{M}}{c^3}\right)^{-5/8}$$</EquationBlock>
+
+In words: as the time-to-merger $\tau$ shrinks toward zero, the frequency climbs without bound (capped in reality at the merger), and the rate of that climb is fixed entirely by the chirp mass $\mathcal{M}$. The amplitude rises in lockstep ($h \propto f^{2/3}$), so the chirp gets both higher in pitch and louder as the holes fall together. A measured chirp is therefore a direct, calibration-free readout of $\mathcal{M}$ — and, because the amplitude also encodes distance, of how far away the source is.
+
+<Callout variant="intuition">
+A gravitational-wave chirp is a *standard siren*. The waveform's frequency sweep tells you the chirp mass; the absolute amplitude then tells you the distance, with no cosmic distance ladder in between. The universe hands you the ruler and the source in the same signal.
+</Callout>
+
+</Section>
+
+<Section index={4} title="GW170817: the day astronomy gained an ear">
+
+GW150914 proved gravitational waves are real and measurable. The event of August 17, 2017 — GW170817 — proved they are *useful as astronomy*, by being heard and seen at once.
+
+At 12:41:04 UTC, LIGO and the European Virgo detector recorded a chirp lasting nearly 100 seconds, far longer than any black-hole merger. The long duration meant low masses: this was a pair of <Term slug="neutron-star">neutron stars</Term>, about 1.1 to 1.6 solar masses each, spiraling in. And 1.7 seconds after the merger time, NASA's Fermi and ESA's INTEGRAL gamma-ray satellites caught a short gamma-ray burst, GRB 170817A, from the same patch of sky.
+
+That coincidence — a gravitational-wave chirp and a gamma-ray flash, 1.7 seconds apart, from the same direction — was the founding event of <Term slug="multi-messenger-astronomy" />: the practice of observing a single cosmic event through more than one fundamental channel at once. Within 11 hours, optical telescopes had pinned the source to the galaxy NGC 4993, 130 million light-years away, and watched a *kilonova* — the radioactive glow of freshly forged heavy elements — brighten and fade over days. Roughly 70 observatories, across the gamma-ray, X-ray, ultraviolet, optical, infrared, and radio bands, pointed at one merger. Spectra of the kilonova showed the fingerprints of newly synthesized gold, platinum, and other heavy nuclei: direct evidence that neutron-star mergers are a major site where the periodic table's heaviest elements are made.
+
+GW170817 also delivered an independent measurement of the Hubble constant — the gravitational wave gave the distance (the standard-siren amplitude), the host galaxy's redshift gave the recession velocity, and the ratio is $H_0$, free of the [cosmological distance ladder](/relativity/hubble-and-cosmological-redshift). And because the gamma rays arrived only 1.7 seconds after a 130-million-year journey, the speed of gravity was confirmed equal to the speed of light to about one part in $10^{15}$, killing off a whole class of modified-gravity theories overnight.
+
+</Section>
+
+<Section index={5} title="Where in the sky? Triangulating by time">
+
+A single detector is nearly blind to direction. It records that *something* passed, and roughly how loud, but the sky position has to be reconstructed from the *differences in arrival time* across a network of detectors.
+
+A gravitational wave is a plane wavefront sweeping past Earth at $c$. It reaches a detector closer to the source earlier than one farther away. For two detectors separated by a baseline $D$, the arrival-time difference fixes the angle the source makes with that baseline:
+
+<EquationBlock id="EQ.04">$$\Delta t = \frac{D}{c}\cos\theta$$</EquationBlock>
+
+This says: the delay between two detectors equals the baseline length divided by the speed of light, times the cosine of the angle between the source direction and the line joining the detectors. A *single* measured delay does not give a point — it gives a whole *ring* of directions on the sky, all sharing the same $\theta$. Two detectors (Hanford and Livingston, $D \approx 3000$ km, $\Delta t$ up to ~10 ms) therefore localize a source only to a long, fat arc.
+
+<SceneCard caption="FIG.53c — sky triangulation by arrival-time differences. Each detector pair constrains the source to a ring on the sky — the locus of directions giving the measured delay. With two detectors you get one broad ring; toggle to three detectors and a second ring appears, crossing the first at a small patch. Drag the timing-precision slider: sharper timing (smaller σ) thins the rings and shrinks the localization area, reported live in square degrees. This is exactly why adding Virgo to the two LIGO detectors collapsed the GW170817 localization to about 28 deg² — small enough for optical telescopes to hunt down the kilonova.">
+  <SkyTriangulationScene />
+</SceneCard>
+
+Add a third detector and you get a *second* baseline, hence a second ring; the two rings intersect at a small patch, and the source must lie in the overlap. This is why Virgo mattered so much for GW170817. Virgo barely registered the signal — and that near-non-detection was itself informative, because it meant the source lay in one of Virgo's blind spots, slicing the allowed region further. The three-detector network shrank the sky area from hundreds of square degrees to about 28, small enough that survey telescopes could tile it and find the optical counterpart within hours. The localization area scales as $c\,\sigma_t / D$ in each ring's width: better timing precision $\sigma_t$ and longer baselines $D$ both sharpen the patch.
+
+</Section>
+
+<Section index={6} title="Hearing the universe — and what comes next">
+
+Calling a gravitational-wave detector an "ear" is more than metaphor. The signals lie in the audio band — tens to thousands of hertz — and when shifted into sound, GW150914 is a literal whoop rising in pitch. Electromagnetic astronomy, from Galileo's telescope onward, was always a form of *seeing*: photons scatter and absorb, so we image surfaces. Gravitational waves barely interact with anything between source and detector; they pass through the Earth almost untouched. They carry information not about surfaces but about *the bulk motion of mass itself* — the coherent dance of merging black holes and neutron stars, which emit almost no light at all. For the first time, the universe could be heard rather than only seen.
+
+The recognition was swift. The 2017 Nobel Prize in Physics went to <PhysicistLink slug="rainer-weiss" />, who conceived the laser-interferometer design and led the noise analysis that made it credible, and to <PhysicistLink slug="kip-thorne" /> and Barry Barish, who built the theoretical case and the collaboration that turned it into a working observatory. Weiss had sketched the concept in an MIT teaching note in 1972; it took 43 years and roughly a thousand scientists to reach a detection.
+
+What the chirp encodes was set up earlier in this module. The wave itself is a ripple in linearized gravity, $g_{\mu\nu} = \eta_{\mu\nu} + h_{\mu\nu}$ with $|h| \ll 1$ — see [linearized gravity](/relativity/linearized-gravity) for where the wave equation comes from and [polarization modes](/relativity/polarization-modes) for why there are exactly two polarizations and no dipole radiation. The chirp's frequency sweep and the chirp mass are derived in [binary inspiral and the chirp](/relativity/binary-inspiral-and-the-chirp), whose Hulse–Taylor binary pulsar was the indirect proof, two decades before LIGO, that orbits decay by radiating gravitational waves.
+
+The future is a widening of the band. Detectors now run as a global network — the two LIGOs, Virgo, and Japan's underground KAGRA — catching mergers routinely. India's LIGO-India will add a baseline that sharpens localization further. In space, the planned LISA mission will open the millihertz band, sensitive to the slow inspirals of supermassive black holes at galactic centers, while pulsar-timing arrays already probe the nanohertz hum of the entire cosmic population of such binaries. Each band is a different octave of the same instrument. A century after Einstein doubted the waves were real, we have begun to listen to the whole spectrum.
+
+</Section>
+
+</TopicPageLayout>

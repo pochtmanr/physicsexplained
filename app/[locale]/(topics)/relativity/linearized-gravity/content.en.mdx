@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PerturbationGridScene } from "@/components/physics/linearized-gravity/perturbation-grid-scene";
+import { GaugeChoiceScene } from "@/components/physics/linearized-gravity/gauge-choice-scene";
+import { EmGrAnalogyScene } from "@/components/physics/linearized-gravity/em-gr-analogy-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Hendrik Lorentz", href: "/physicists/hendrik-lorentz" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Gravitational wave", href: "/dictionary/gravitational-wave" },
+  { type: "term", label: "Transverse-traceless gauge", href: "/dictionary/transverse-traceless-gauge" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+  { type: "term", label: "Einstein field equations", href: "/dictionary/einstein-field-equations" },
+  { type: "term", label: "Stress-energy tensor", href: "/dictionary/stress-energy-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.50 · GRAVITATIONAL WAVES"
+  title="LINEARIZED GRAVITY"
+  subtitle="Small ripples in a flat background, governed by a wave equation."
+/>
+
+<Section index={1} title="The waves Einstein did not believe in">
+
+In June 1916, seven months after he published the field equations, <PhysicistLink slug="albert-einstein" /> sent a paper to the Prussian Academy with a striking claim: his theory of gravity predicted waves. Just as Maxwell's equations had yielded electromagnetic waves traveling at the speed of light, the field equations — properly approximated — yielded gravitational waves traveling at the same speed. Einstein worked out the radiated power to lowest order and found it depended on the third time-derivative of a mass distribution's quadrupole moment.
+
+It was a remarkable result, and Einstein half-distrusted it from the start. The waves were absurdly weak. The coupling constant $8\pi G/c^4$ in the field equations is roughly $2 \times 10^{-43}$ in SI units, so any laboratory source radiates a vanishing trickle of gravitational energy. Worse, the mathematics was treacherous. Because general relativity lets you change coordinates freely, a "wave" might be nothing more than a wobble in the coordinate grid — a mathematical artifact with no physical content. Distinguishing real ripples in spacetime from coordinate noise would occupy theorists for forty years.
+
+The doubt nearly became official. In 1936 Einstein, then at Princeton with his assistant Nathan Rosen, submitted a paper to *Physical Review* titled "Do Gravitational Waves Exist?" — and his answer was *no*. The manuscript argued that exact plane gravitational waves contained singularities and could not be physical. The journal sent it to an anonymous referee (the cosmologist Howard Percy Robertson), who found an error: the singularities were coordinate artifacts, removable by a change of variables. Einstein, unused to peer review, withdrew the paper in anger. But Robertson was right. After Leopold Infeld relayed the correction, Einstein reversed himself, and the rewritten 1937 paper — now titled "On Gravitational Waves" — concluded that cylindrical gravitational waves do exist. The episode is the cleanest illustration of the central difficulty: in general relativity, telling physics from bookkeeping is genuinely hard. This topic builds the machinery that settles it.
+
+</Section>
+
+<Section index={2} title="g = η + h: linearizing the field equations">
+
+The trick is to abandon the full nonlinear theory and study its small-amplitude limit. Suppose spacetime is *nearly* flat — the geometry of an empty room, perturbed by a faint ripple passing through. Then the <Term slug="metric-tensor" /> $g_{\mu\nu}$ can be written as the flat Minkowski metric $\eta_{\mu\nu} = \mathrm{diag}(-1, 1, 1, 1)$ plus a small correction:
+
+<EquationBlock id="EQ.01">$$g_{\mu\nu} = \eta_{\mu\nu} + h_{\mu\nu}, \qquad |h_{\mu\nu}| \ll 1$$</EquationBlock>
+
+In words: write the curved metric as the flat background $\eta$ plus a tiny perturbation $h$, and agree to keep only terms linear in $h$, throwing away everything quadratic or higher. The perturbation $h_{\mu\nu}$ is what we will call the gravitational field — it lives *on top of* flat spacetime, like a sound wave on top of still air.
+
+Substituting this into the <Term slug="einstein-field-equations" /> and discarding every term with two or more powers of $h$ turns the formidable nonlinear $G_{\mu\nu} = (8\pi G/c^4)\, T_{\mu\nu}$ into a *linear* equation. It is convenient to package $h_{\mu\nu}$ together with its trace into the "trace-reversed" perturbation $\bar h_{\mu\nu} = h_{\mu\nu} - \tfrac{1}{2}\eta_{\mu\nu} h$, where $h = \eta^{\mu\nu} h_{\mu\nu}$. In terms of $\bar h$, the linearized field equations collapse to something a sophomore would recognize:
+
+<EquationBlock id="EQ.02">$$\Box\, \bar h_{\mu\nu} = -\frac{16\pi G}{c^4}\, T_{\mu\nu}$$</EquationBlock>
+
+The symbol $\Box = -\tfrac{1}{c^2}\partial_t^2 + \nabla^2$ is the d'Alembertian — the flat-spacetime wave operator. This single line says: the gravitational field obeys a wave equation, sourced by matter, with the same operator that governs sound, light, and a vibrating string. In vacuum ($T_{\mu\nu} = 0$) it reduces to $\Box\, \bar h_{\mu\nu} = 0$, whose solutions are waves traveling at exactly the speed of light.
+
+<Callout variant="math">
+There is a hidden step here. Equation EQ.02 only takes this clean form after a *gauge condition* — the Lorenz gauge $\partial^\mu \bar h_{\mu\nu} = 0$ — is imposed. Without it the linearized Einstein tensor is a tangle of four terms; with it, three of them cancel and only $-\tfrac{1}{2}\Box \bar h_{\mu\nu}$ survives. This is the exact gravitational analogue of imposing $\partial_\mu A^\mu = 0$ in electromagnetism to turn Maxwell's equations into $\Box A^\mu = -\mu_0 J^\mu$. The parallel is not a coincidence — it is the whole strategy.
+</Callout>
+
+</Section>
+
+<Section index={3} title="A ripple on flat spacetime">
+
+<SceneCard caption="FIG.50a — the perturbation picture, g = η + h. The faint straight grid is the flat Minkowski background η; the bright cyan grid is η + h, distorted by a transverse plane wave crossing it left-to-right. Drag the amplitude slider to dial |h| up and down — but note the honest caveat printed below the canvas: a real astrophysical wave has |h| ≈ 10⁻²¹, a strain of one part in a sextillion, exaggerated here by roughly twenty orders of magnitude so you can see anything at all. The wavelength slider changes λ; the amber crest marker tracks a wavefront and always moves at the same coordinate speed, because the dispersion relation ω = c k makes the wave travel at exactly c regardless of frequency. Freeze the propagation to inspect a single snapshot, or toggle the background off to see the perturbation alone.">
+  <PerturbationGridScene />
+</SceneCard>
+
+The picture above is the entire conceptual content of linearized gravity in one image. Flat spacetime is the stage; the wave is a small, transverse undulation of distances that sweeps across it. Nothing about the stage moves — it is the *relationships between points* that ripple.
+
+Two features of the solution are worth stating precisely. First, the wave is **transverse**: for a wave propagating along the $z$-axis, the perturbation lives entirely in the $x$–$y$ plane perpendicular to the direction of travel, exactly as light's electric and magnetic fields are perpendicular to its motion. Second, the wave is **massless** and therefore **non-dispersive**: every frequency travels at $c$, so a sharp pulse stays sharp as it propagates. This is the dispersion relation built into $\Box \bar h_{\mu\nu} = 0$,
+
+<EquationBlock id="EQ.03">$$\omega = c\,|\mathbf{k}|$$</EquationBlock>
+
+which simply says the angular frequency $\omega$ equals the speed of light times the wavenumber $|\mathbf{k}|$ — the signature of any disturbance that moves at $c$ without spreading. A gravitational wave from a billion light-years away arrives with its waveform intact, which is precisely why detectors can match it against a precomputed template.
+
+</Section>
+
+<Section index={4} title="Gauge freedom: choosing honest coordinates">
+
+We have used the word *gauge* twice now without earning it. Here is the idea. In general relativity you are free to relabel the points of spacetime — an infinitesimal coordinate change $x^\mu \to x^\mu + \xi^\mu$ shifts the perturbation by
+
+<EquationBlock id="EQ.04">$$h_{\mu\nu} \to h_{\mu\nu} - \partial_\mu \xi_\nu - \partial_\nu \xi_\mu$$</EquationBlock>
+
+This says: a different choice of coordinates $\xi^\mu$ changes the *numbers* in $h_{\mu\nu}$ without changing any physical fact, exactly as adding $\partial_\mu \chi$ to the electromagnetic potential $A_\mu$ leaves the fields $\mathbf{E}$ and $\mathbf{B}$ untouched. The freedom to make this change is *gauge freedom*, and it is the source of all the confusion that nearly led Einstein to disown his own waves: some of the apparent motion in $h_{\mu\nu}$ is real tidal stretching, and some is just the coordinate grid sloshing around.
+
+The cure is to spend the gauge freedom buying simplicity. Of the ten components of the symmetric $h_{\mu\nu}$, gauge transformations let us eliminate eight, leaving exactly two physical degrees of freedom. The standard choice that does this in vacuum is the <Term slug="transverse-traceless-gauge" /> — the **TT gauge** — defined by three conditions: the perturbation is purely spatial ($h_{0\mu} = 0$), divergence-free or transverse ($\partial^i h_{ij} = 0$), and traceless ($h^i{}_i = 0$). In the TT gauge the coordinates ride along with freely-falling test masses, so every wobble that remains is genuine physics.
+
+<SceneCard caption="FIG.50b — gauge-fixing as choosing honest coordinates. All three panels show the SAME physical gravitational wave acting on one ring of free test masses, but in three different coordinate systems. Left: an arbitrary gauge, in which the whole ring appears to translate and breathe — pure coordinate artifact, since the test masses' proper separations are not actually doing this. Center: a different bad gauge, the truth buried under a node-by-node swirl ξ that makes the picture look busy and meaningless. Right: the transverse-traceless gauge, where the only motion left is the real tidal pattern — a stretch along one axis and a squeeze along the perpendicular one (amber dashed axes), rotating to the 45° diagonals as you slide the polarization from + to ×. Same wave, three coordinate choices, one physics. This panel is the visual answer to the 1936 Einstein–Rosen worry: you cannot read the physics off the raw components; you must first fix a gauge that strips the coordinate freedom away.">
+  <GaugeChoiceScene />
+</SceneCard>
+
+That the physics survives any coordinate choice is not merely reassuring — it is what makes a detection meaningful. When LIGO records a strain, it is measuring the gauge-invariant tidal effect, the relative change in distance between mirrors, which is exactly the quantity the TT gauge isolates. The sticky-bead argument of 1957 — due to Hermann Bondi and Richard Feynman, who pointed out that a passing wave would slide beads along a rod against friction and so deposit heat — finally convinced the community that gravitational waves carry real, extractable energy. They are not bookkeeping. They are physics.
+
+</Section>
+
+<Section index={5} title="The electromagnetic blueprint">
+
+Linearized gravity was not discovered by accident; it was *built* in the image of electromagnetism, step for step. The strategy is worth seeing laid out explicitly, because every move in the gravitational derivation has an electromagnetic ancestor that physicists already trusted.
+
+<SceneCard caption="FIG.50c — the EM ↔ linearized-gravity dictionary, interactive. Each row pairs an electromagnetic object with its gravitational counterpart; click a row to read where the analogy holds and where it breaks. The field variable goes from a vector potential Aμ (one index) to a symmetric tensor h̄μν (two indices). The gauge freedom Aμ → Aμ + ∂μχ becomes hμν → hμν − ∂μξν − ∂νξμ. The Lorenz gauge condition and the d'Alembertian wave equation carry over verbatim, with the source current Jμ replaced by the stress-energy tensor Tμν. The two decisive differences are flagged in amber: EM radiates from an oscillating dipole, gravity only from an oscillating quadrupole (there is no monopole or dipole gravitational radiation, because mass and momentum are conserved); and the field quantum is spin-1 for light versus spin-2 for gravity, which is why electromagnetic polarizations sit 90° apart while gravitational ones sit 45° apart — the subject of the next topic.">
+  <EmGrAnalogyScene />
+</SceneCard>
+
+The wave equation EQ.02 makes the parallel exact. Compare the electromagnetic wave equation in Lorenz gauge,
+
+<EquationBlock id="EQ.05">$$\Box\, A^\mu = -\mu_0 J^\mu \qquad \longleftrightarrow \qquad \Box\, \bar h_{\mu\nu} = -\frac{16\pi G}{c^4}\, T_{\mu\nu}$$</EquationBlock>
+
+The two equations are the same equation with a richer index structure on the right: the photon's source is the four-current $J^\mu$ (one index), while the graviton's source is the stress-energy tensor $T_{\mu\nu}$ (two indices). That extra index is the whole story. Electromagnetism's source is a vector, so its lowest radiating multipole is the dipole, and its field carries spin-1. Gravity's source is a rank-2 tensor, so the dipole term is forbidden by momentum conservation and the lowest radiating multipole is the quadrupole; correspondingly the gravitational field carries spin-2. The spin sets the polarization geometry, and the geometry is what a ring of test masses reveals.
+
+Where the analogy breaks is just as instructive. Electromagnetism is exactly linear: photons do not carry charge, so light waves pass through one another untouched. Gravity is not — the full field equations are nonlinear because gravitational energy itself gravitates, and a gravitational wave is, at second order, a source of further curvature. Linearized gravity is the regime where this self-interaction is negligible. It is a first chapter, not the whole book, but it is the chapter that turns Einstein's geometry into something a detector can hear.
+
+</Section>
+
+<Section index={6} title="What the ripple does, and where it leads">
+
+We have reduced Einstein's nonlinear theory, in its weak-field limit, to a wave equation indistinguishable in form from Maxwell's — solutions traveling at $c$, transverse, massless, carrying two polarizations and real energy. That is the foundation. Everything in gravitational-wave astronomy is built on top of it.
+
+The immediate next question is geometric: *what does the wave actually do to matter?* The two polarizations of the TT perturbation deform a ring of free test masses in two distinct patterns — the "plus" mode stretching and squeezing along the coordinate axes, the "cross" mode doing the same along the diagonals, the two related by a 45° rotation that is the unmistakable fingerprint of a spin-2 field. That is the subject of [polarization modes](/relativity/polarization-modes), where the same quadrupole structure that forbids dipole radiation also dictates the shape of the deformation. From there the story becomes astrophysical: a [binary inspiral](/relativity/binary-inspiral-and-the-chirp) is a quadrupole whose moment changes as two compact objects spiral together, radiating away orbital energy until they merge — the chirp that LIGO recorded on September 14, 2015.
+
+Linearized gravity is also the bridge back to the full theory. The energy a wave carries, computed by averaging the second-order perturbation, is precisely what drains a binary's orbit and what the [Hulse–Taylor pulsar](/relativity/binary-inspiral-and-the-chirp) confirmed to better than a fraction of a percent across three decades of timing. Einstein doubted in 1936 that the waves were real. The sticky bead, the binary pulsar, and finally a strain of $10^{-21}$ measured across four kilometers of vacuum proved otherwise. The faint ripple on flat spacetime turned out to be one of the most precisely tested predictions in all of physics.
+
+</Section>
+
+</TopicPageLayout>

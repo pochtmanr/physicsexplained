@@ -1,0 +1,128 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CompactificationFoldScene } from "@/components/physics/penrose-diagrams/compactification-fold-scene";
+import { MinkowskiCausalityScene } from "@/components/physics/penrose-diagrams/minkowski-causality-scene";
+import { SchwarzschildRegionsScene } from "@/components/physics/penrose-diagrams/schwarzschild-regions-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Roger Penrose", href: "/physicists/roger-penrose" },
+  { type: "physicist", label: "Karl Schwarzschild", href: "/physicists/karl-schwarzschild" },
+  { type: "physicist", label: "John Archibald Wheeler", href: "/physicists/john-archibald-wheeler" },
+  { type: "term", label: "Penrose diagram", href: "/dictionary/penrose-diagram" },
+  { type: "term", label: "Event horizon", href: "/dictionary/event-horizon" },
+  { type: "term", label: "Singularity", href: "/dictionary/singularity" },
+  { type: "term", label: "Schwarzschild radius", href: "/dictionary/schwarzschild-radius" },
+  { type: "term", label: "Trapped surface", href: "/dictionary/trapped-surface" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.46 · BLACK HOLES"
+  title="PENROSE DIAGRAMS AND CAUSAL STRUCTURE"
+  subtitle="Compactify infinity; learn what a black hole's interior actually looks like."
+/>
+
+<Section index={1} title="Drawing the whole universe on one page">
+
+The trouble with infinity is that you cannot fit it on a blackboard. A spacetime diagram of flat space has coordinates that run from minus infinity to plus infinity in both time and space, and the most interesting questions — *can a light ray that leaves here ever reach there? does this worldline have an endpoint, or does it run forever?* — are questions about what happens out at the edges, exactly where the diagram runs off the paper.
+
+In the late 1950s and early 1960s a small group of relativists set out to tame the edges. The decisive move came from <PhysicistLink slug="roger-penrose" />, then a young mathematician moving into physics, and independently from Brandon Carter and others: rescale the metric so that the infinite ranges of the coordinates are squeezed into a finite picture, while keeping the one feature that actually matters for causality — the 45° tilt of light rays. The rescaling is *conformal*: it changes distances but preserves angles, and in spacetime the angle that counts is the one a light ray makes. Penrose presented the technique in a 1963 paper, "Asymptotic Properties of Fields and Space-Times," and the resulting figures have been called Penrose diagrams (or Penrose–Carter diagrams) ever since.
+
+The payoff is enormous. A Penrose diagram of Minkowski space fits the entire infinite expanse of special relativity into a single triangle. The diagram of a Schwarzschild black hole reveals, on one page, that the geometry Karl Schwarzschild wrote down in December 1915 secretly contains *four* regions — two universes, a black hole, and a white hole — and that the singularity is not a point in space you could steer around but a moment in time you cannot avoid. None of that is visible in the original coordinates. The compactification makes the causal skeleton of the spacetime literally drawable.
+
+This essay builds the technique from the one gentle equation that does the squeezing, then uses it on flat space and on the Schwarzschild solution. The three figures let you fold infinity inward by hand, drag an event around the Minkowski diamond to read its causal relationships, and click through the four regions of the maximally-extended black hole.
+
+</Section>
+
+<Section index={2} title="The one gentle equation — conformal compactification">
+
+Start with flat spacetime in spherical coordinates, and look only at the radial–time plane. Light moves along the two null directions
+
+<EquationBlock id="EQ.01">$$u = t - r, \qquad v = t + r$$</EquationBlock>
+
+These are the *null coordinates*: an outgoing light ray keeps $u$ constant, an ingoing one keeps $v$ constant. In ordinary coordinates both $u$ and $v$ run over the entire real line, $(-\infty, \infty)$. To compactify, apply a function that squashes the whole real line into a finite interval. The arctangent is the canonical choice:
+
+<EquationBlock id="EQ.02">$$\tilde{u} = \arctan u, \qquad \tilde{v} = \arctan v, \qquad \tilde{u}, \tilde{v} \in \left(-\tfrac{\pi}{2}, \tfrac{\pi}{2}\right)$$</EquationBlock>
+
+In plain terms: every event in the infinite spacetime gets a new pair of coordinates that lives inside a finite box. An event at $t = 10^{6}$ and an event at $t = 10^{12}$ both land near $\tilde u = \pi/2$ — they get crowded together near the boundary, but they never reach it. Infinity becomes an *edge* of the picture rather than a place that runs off the page.
+
+The final step is cosmetic: define diagram axes $T = \tilde v + \tilde u$ (vertical, time-like) and $X = \tilde v - \tilde u$ (horizontal, space-like, with $X \ge 0$ since $r \ge 0$). The whole of Minkowski space now sits inside the triangle $X \ge 0$, $|T| + X \le \pi$.
+
+The crucial property is that this rescaling leaves light cones alone. Because $u$ and $v$ were transformed by the *same* function, a line of constant $u$ is still a line of constant $\tilde u$, and constant-$u$ is exactly a 45° line in the $(X, T)$ plane. The conformal factor stretches the grid wildly near the boundary, but every light ray, everywhere, still runs at 45°.
+
+<Callout variant="intuition">
+A Penrose diagram lies about distances and tells the truth about causality. Areas near the edge are squeezed to nothing, so you must never read lengths off the figure. But the 45° rule for light is exact — and causality is *only* about light cones, so the diagram preserves the one thing you came for.
+</Callout>
+
+<SceneCard caption="FIG.46a — watch infinity fold in. At squeeze s = 0 you see ordinary flat-space coordinates: the grid of constant-t slices and constant-r tubes, with a fan of light rays at 45°. Pull the slider toward s = 1 (or press play) and the arctangent map drags the infinite grid inward until it fits inside the finite Penrose diamond. The light rays — amber outgoing, blue ingoing — stay at exactly 45° throughout, because the conformal rescaling acts identically on u and v. As the boundary forms, the labels appear: i⁺ and i⁻ (future and past timelike infinity, where massive worldlines begin and end), i⁰ (spatial infinity, where constant-time slices terminate), and ℐ⁺ / ℐ⁻ (future and past null infinity — 'scri', where light rays end and begin). Every finite event is interior; infinity is the boundary.">
+  <CompactificationFoldScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="The Minkowski diamond and its five infinities">
+
+The compactified picture of flat space has a structure worth memorizing, because the same boundary pieces reappear in every asymptotically-flat spacetime. The triangle (a half-diamond, since we folded the $r < 0$ side onto $r \ge 0$) has five distinct kinds of boundary, and each one is the destination of a different kind of trajectory.
+
+A massive particle moving slower than light traces a time-like worldline. No matter how it accelerates, in the infinite future it ends at the single point $i^{+}$, **future timelike infinity**, at the top of the diamond; run it backward and it emerges from $i^{-}$, **past timelike infinity**, at the bottom. A light ray instead ends on $\mathscr{I}^{+}$, **future null infinity** (pronounced "scri-plus"), the slanted upper-right edge, and begins on $\mathscr{I}^{-}$, the lower-right edge. And a single instant of cosmic time — a constant-$t$ slice — stretches out to $i^{0}$, **spatial infinity**, the right-hand corner.
+
+These are not five arbitrary labels; they are forced by the causal type of the boundary. Time-like things end at points ($i^{\pm}$), null things end on null surfaces ($\mathscr{I}^{\pm}$), and space-like slices end at a point ($i^{0}$). The diagram makes a precise statement that is awkward to phrase in coordinates: *all outgoing radiation from any isolated system, gravitational or electromagnetic, eventually arrives at $\mathscr{I}^{+}$.* This is why $\mathscr{I}^{+}$ is the natural home of scattering theory in general relativity and the place where gravitational-wave energy is defined.
+
+The causal reading is immediate once the cones are drawn. Two events can exchange a signal only if one lies inside the other's light cone — and because the cones are exactly 45°, you can read the relationship off the slope of the line connecting them. Steeper than 45°: time-like, a massive signal connects them. Exactly 45°: null, only light connects them. Shallower than 45°: space-like, nothing connects them at all.
+
+<SceneCard caption="FIG.46b — the Minkowski diamond, hands-on. The fixed observer A sits at the centre; its full 45° light cone is drawn dashed, with the future cone shaded faintly. Drag event B anywhere inside the diamond. The connector and B's marker turn green when the separation is time-like and B is in A's future (A can send a rocket to B), amber when the separation is exactly null (only a light signal reaches B), and red when the separation is space-like (no signal of any kind can connect A and B — they are causally isolated, however close they look on the squeezed diagram). Notice that B can be visually near the boundary yet still reachable: the diagram's distortion is severe near the edges, but the 45° causal rule never lies. The left edge is the r = 0 axis; the amber and blue edges are ℐ⁺ and ℐ⁻.">
+  <MinkowskiCausalityScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="The Schwarzschild diagram — four regions hiding in one metric">
+
+Apply the same machinery to the Schwarzschild geometry and something startling appears. The line element <PhysicistLink slug="karl-schwarzschild" /> found in 1915 looks like it has a catastrophe at the [Schwarzschild radius](/relativity/the-schwarzschild-metric) $r_s = 2GM/c^2$: a term blows up there. For decades this was read as the edge of the world. It is not. In 1960 Martin Kruskal and George Szekeres found coordinates that pass smoothly through $r = r_s$, and the conformally-compactified version of *those* coordinates is the Schwarzschild Penrose diagram.
+
+It has four regions. Begin with the metric in Kruskal–Szekeres null coordinates $U$ and $V$; the line element takes the form
+
+<EquationBlock id="EQ.03">$$ds^2 = -\frac{32 G^3 M^3}{r}\, e^{-r/2GM}\, dU\, dV + r^2\, d\Omega^2$$</EquationBlock>
+
+where $r$ is now an implicit function of the product $UV$, and the metric coefficient is finite and nonzero everywhere except at $r = 0$. The horizon, where the original coordinates failed, sits harmlessly at $U = 0$ or $V = 0$ — the two diagonal lines that cross at the centre. The genuine catastrophe, the curvature singularity, sits at $r = 0$, which in these coordinates is the hyperbola
+
+<EquationBlock id="EQ.04">$$UV = 1$$</EquationBlock>
+
+— two branches, one in the future and one in the past. The future branch caps off the black-hole interior; the past branch floors the white-hole interior.
+
+Reading the diagram: **Region I** is our exterior universe, $r > r_s$, with its own $\mathscr{I}^{\pm}$ and $i^0$. **Region II**, above the crossing horizons, is the black-hole interior. **Region III** is a *second* asymptotically-flat exterior, a mirror universe causally disconnected from ours. **Region IV**, below, is the white hole — the time-reverse of a black hole, a region things can only leave. The two exteriors are joined at the central crossing point by a non-traversable "throat" (the Einstein–Rosen bridge); you cannot send a signal from I to III, because any attempt to cross the throat lands you in region II and on the singularity instead.
+
+</Section>
+
+<Section index={5} title="Why the singularity is a moment, not a place">
+
+The single most counterintuitive lesson of the Schwarzschild diagram is the orientation of the singularity. In the original coordinates, $r = 0$ reads like the centre of a sphere — a *place*, a location you might in principle hover above and observe from a safe distance. The Penrose diagram shows this is wrong. Inside the horizon, the singularity $r = 0$ is a **horizontal** line across the top of region II. Horizontal in a Penrose diagram means *space-like*, and a space-like surface is a surface of constant time, not constant position.
+
+Once you have crossed the horizon into region II, the singularity is in your future the way next Tuesday is in your future. Every future-directed path — every possible motion, however you fire your rockets — runs upward in the diagram, and every upward path in region II terminates on that horizontal line. You can no more avoid it than you can avoid tomorrow. This is the precise statement behind the popular claim that "inside a black hole, the singularity is everywhere you can go": it is in the future of every interior event, and the future is unavoidable.
+
+<Callout variant="math">
+The same structure underlies <PhysicistLink slug="roger-penrose" />'s 1965 singularity theorem. Once a *trapped surface* forms — a closed surface from which even outgoing light converges rather than diverges — the global causal structure, combined with reasonable energy conditions, forces a geodesic to terminate: a singularity is inevitable, independent of any symmetry. The Penrose diagram is the natural arena for this argument, because the whole proof is about the global behavior of light cones, which is exactly what the diagram preserves. The work earned Penrose a share of the 2020 Nobel Prize in Physics.
+</Callout>
+
+This is also where the diagram's honesty about causality and dishonesty about distance pay off together. Firing your engines to "escape" the singularity makes things *worse*, not better: in region II, thrust that would carry you outward in flat space instead carries your worldline closer to the 45° horizon lines, shortening the proper time remaining before $r = 0$. The maximal proper time to the singularity is achieved by free-fall — by doing nothing. The diagram displays this directly: the longest time-like path from the horizon to the singularity is the one that stays most vertical, and burning fuel only tilts you toward a cone.
+
+<SceneCard caption="FIG.46c — the Schwarzschild Penrose diagram, region by region. The two amber 45° lines crossing at the centre are the event horizons; the red squiggle across the top is the future singularity r = 0, the purple squiggle across the bottom the past singularity. Click any region — or use the buttons — to highlight it and read who can signal whom. Region I (right) is our universe; you can fall through the future horizon into the black-hole interior II, but never reach the white hole IV or the mirror universe III. Region II is capped by the singularity: every future-directed path ends there, and no signal escapes back to I or III. Region III is a second exterior, causally severed from ours — the throat between I and III is not traversable. Region IV, the white hole, is the time-reverse of II: matter can only emerge from its past singularity, never fall in. The singularities are drawn horizontal on purpose: they are spacelike surfaces, moments of time, not points in space.">
+  <SchwarzschildRegionsScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="What the diagram is good for — and what comes next">
+
+Penrose diagrams are not merely pedagogical cartoons; they are the working language in which the global structure of spacetime is stated and argued. The black-hole information question, the Hawking-radiation geometry, the structure of cosmological horizons, and the careful definitions of mass and radiation at infinity are all phrased on these compactified pictures. When a relativist asks whether a spacetime is "asymptotically flat," the operational test is whether it admits a well-behaved $\mathscr{I}^{+}$ of the Minkowski type drawn in FIG.46a.
+
+Two cautions travel with the technique. First, the four-region maximally-extended Schwarzschild diagram is a vacuum idealization. A black hole that actually *forms* from collapsing matter has no white hole and no mirror universe — regions III and IV are replaced by the infalling star, and only regions I and II survive. The eternal diagram is the exact solution; the astrophysical diagram is the relevant one. Second, rotation changes everything: the [Kerr geometry](/relativity/kerr-and-the-ergosphere) of a spinning black hole has a far richer Penrose diagram, with an inner horizon, a time-like (avoidable) singularity, and a chain of regions that, taken at face value, suggests passage to other universes — a face value no one fully trusts, because the inner horizon is unstable.
+
+From here the trail runs two ways. The structure of the horizon itself — what an infaller feels versus what a distant observer sees — is the subject of [the event horizon](/relativity/the-event-horizon). And the question the diagram raises but cannot answer — what happens to information that crosses into region II — drives the modern story of [black-hole thermodynamics](/relativity/black-hole-thermodynamics) and the [information paradox](/relativity/the-information-paradox). The diagram tells you the causal skeleton with perfect fidelity. It is silent on what the bones are made of.
+
+</Section>
+
+</TopicPageLayout>

@@ -1,0 +1,116 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { Hubble1929DiagramScene } from "@/components/physics/hubble-and-cosmological-redshift/hubble-1929-diagram-scene";
+import { StretchingPhotonScene } from "@/components/physics/hubble-and-cosmological-redshift/stretching-photon-scene";
+import { LookbackMachineScene } from "@/components/physics/hubble-and-cosmological-redshift/lookback-machine-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Edwin Hubble", href: "/physicists/edwin-hubble" },
+  { type: "physicist", label: "Henrietta Leavitt", href: "/physicists/henrietta-leavitt" },
+  { type: "physicist", label: "Georges Lemaître", href: "/physicists/georges-lemaitre" },
+  { type: "term", label: "Hubble constant", href: "/dictionary/hubble-constant" },
+  { type: "term", label: "Cosmological redshift", href: "/dictionary/cosmological-redshift" },
+  { type: "term", label: "Scale factor", href: "/dictionary/scale-factor" },
+  { type: "term", label: "Comoving coordinates", href: "/dictionary/comoving-coordinates" },
+  { type: "term", label: "FLRW metric", href: "/dictionary/flrw-metric" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.56 · COSMOLOGY"
+  title="HUBBLE AND COSMOLOGICAL REDSHIFT"
+  subtitle="Why distant galaxies' light is stretched, and what is doing the stretching."
+/>
+
+<Section index={1} title="A telescope, a ladder, and a redshift">
+
+In 1912, at the Lowell Observatory in Arizona, Vesto Slipher pointed a spectrograph at the spiral nebula in Andromeda and measured something nobody had asked for: the nebula was rushing toward us at about 300 kilometers per second. Over the next five years he measured the spectra of 25 more spirals. All but a handful were redshifted — their absorption lines slid toward longer wavelengths, the signature of recession. Some were receding at over 1000 km/s, far faster than anything in the Milky Way had any right to move. Slipher had the velocities. He did not have the distances, and without distances the velocities were just a curiosity.
+
+The distances came from an unlikely place: a stellar catalog at Harvard. <PhysicistLink slug="henrietta-leavitt" />, employed as a "computer" to measure the brightness of stars on photographic plates, was cataloging variable stars in the Magellanic Clouds. In 1908, and definitively in 1912, she noticed that a class of pulsating stars — Cepheid variables — obeyed a strict rule: the longer a Cepheid's pulsation period, the more luminous it was. Because all the Cepheids in a given Magellanic Cloud sit at essentially the same distance, their apparent brightness tracked their true brightness directly. Leavitt had found a *standard candle*. Measure a Cepheid's period, read off its true luminosity from her relation, compare to how bright it appears, and the inverse-square law hands you the distance. It was the first rung of the cosmic distance ladder, and it reached far beyond the Milky Way.
+
+The man who put the two halves together was <PhysicistLink slug="edwin-hubble" />, working with the 100-inch Hooker telescope on Mount Wilson — the largest in the world. In 1923 he found a Cepheid in the Andromeda nebula, applied Leavitt's relation, and got a distance of roughly 900,000 light-years. Andromeda was not a cloud of gas inside our galaxy; it was a galaxy in its own right, an "island universe," and the cosmos was suddenly enormous. Then Hubble did the decisive thing. He combined his Cepheid distances with Slipher's velocities. In 1929 he published a plot of 24 galaxies: velocity against distance. The points scattered, but the trend was unmistakable — the farther a galaxy, the faster it recedes.
+
+</Section>
+
+<Section index={2} title="Hubble's law, and the constant that wasn't">
+
+The relation Hubble fit to his 24 points is the simplest possible:
+
+<EquationBlock id="EQ.01">$$v = H_0 \, d$$</EquationBlock>
+
+A galaxy's recession velocity $v$ is proportional to its distance $d$, with the constant of proportionality $H_0$ — the <Term slug="hubble-constant" /> — the slope of the line. In plain terms: double the distance, double the recession speed. A galaxy twice as far away flies away twice as fast.
+
+The slope Hubble measured was about 500 km/s/Mpc — five hundred kilometers per second of recession for every megaparsec (about 3.26 million light-years) of distance. That number is badly wrong. The modern value is near 70 km/s/Mpc, a factor of seven smaller. Hubble's error was not in the law but in the ladder: his Cepheid calibration was off, his distances systematically too small, and a too-small distance for a fixed velocity inflates the slope. The *linear relationship* was right; the *calibration* took another seventy years to settle.
+
+<SceneCard caption="FIG.56a — Hubble's actual 1929 velocity–distance diagram, 24 galaxies, scatter and all. The dashed line is his fitted slope of roughly 500 km/s/Mpc. Toggle on the modern Hubble flow and the axes zoom out by almost two orders of magnitude: a far tighter cloud of galaxies extends to 160 Mpc, and the true slope of about 70 km/s/Mpc is shallower by a factor of seven. The point of the overlay is that the LAW — velocity proportional to distance — survives intact; only the calibration of the distance ladder changed. Hubble's distances were systematically too small, which steepened his line without altering its straightness.">
+  <Hubble1929DiagramScene />
+</SceneCard>
+
+There is a subtlety hiding in the name. $H_0$ is called the Hubble *constant*, but the subscript zero is doing real work: it is the value of the Hubble *parameter* $H(t) = \dot a / a$ evaluated today. $H$ is constant across space at any one instant — it is the same in every direction, the same for every observer riding the expansion — but it changes with cosmic time. In the early matter-dominated universe $H$ was far larger; in a Λ-dominated future it tends toward a constant. The "Hubble constant" is a snapshot, not an eternal number. Calling it a constant is a hundred-year-old habit, and a slightly misleading one.
+
+</Section>
+
+<Section index={3} title="Not Doppler: what is actually moving">
+
+It is tempting to read $v = H_0 d$ as ordinary Doppler shift — galaxies hurtling through space, their light reddened the way a receding siren drops in pitch. For nearby galaxies the arithmetic even works. But the deeper picture, the one general relativity insists on, is different and stranger: the galaxies are (mostly) *not moving through space at all*. Space itself is expanding, and they are being carried apart by it.
+
+The framework is the <Term slug="flrw-metric" /> from the previous topic. Each galaxy sits at a fixed set of <Term slug="comoving-coordinates" /> — a label that does not change as the universe expands, like a city's latitude and longitude staying fixed while the globe inflates. The physical distance between two galaxies is the comoving separation multiplied by the <Term slug="scale-factor" /> $a(t)$:
+
+<EquationBlock id="EQ.02">$$d_{\text{proper}}(t) = a(t)\,\chi$$</EquationBlock>
+
+where $\chi$ is the fixed comoving distance and $a(t)$ is the dimensionless scale factor, normalized to $a = 1$ today. Differentiate this and the Hubble law drops out automatically: $\dot d = \dot a \, \chi = (\dot a / a)\, d = H d$. The recession is not motion; it is the growth of the scale factor, the same factor at every point, registered as an apparent velocity proportional to distance.
+
+This distinction is not pedantry. It has a sharp observable consequence. A galaxy's *redshift* — the quantity we actually measure — is set not by any velocity but by how much space has stretched between emission and reception. The light's wavelength is dragged along with the grid it travels through, so it is stretched by exactly the factor the universe has grown:
+
+<EquationBlock id="EQ.03">$$1 + z = \frac{\lambda_{\text{obs}}}{\lambda_{\text{emit}}} = \frac{a(t_{\text{now}})}{a(t_{\text{emit}})}$$</EquationBlock>
+
+The observed wavelength divided by the emitted wavelength equals the ratio of the scale factor now to the scale factor when the light left. This is the <Term slug="cosmological-redshift" />, and it contains no velocity at all — only a ratio of two sizes of the universe. A galaxy seen at redshift $z = 1$ emitted its light when the universe was half its present size ($a = 1/2$); the light has been stretched to twice its original wavelength.
+
+<Callout variant="intuition">
+The galaxies are raisins in rising dough. They are not crawling through the dough; the dough between them swells, and every raisin sees every other one receding, the far ones fastest. The light, meanwhile, is a wave drawn on the dough's surface — as the dough rises, the wave stretches with it. That stretch is the redshift.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The stretching photon">
+
+<SceneCard caption="FIG.56b — the stretching photon, drawn on the expanding comoving grid of FIG.54. A light wave is painted onto space at emission, when the scale factor was a(emit). Drag a(now) upward and the gridlines spread apart; the wave is locked to the grid and stretches with it, its wavelength growing by exactly the ratio a(now)/a(emit). The two rows show the same wave 'then' (blue, short wavelength) and 'now' (red, stretched), with brackets marking λ_emit and λ_obs. The live readout gives 1 + z = a(now)/a(emit). Nothing in this picture has a velocity: the photon reddens because the space it lives in grew underneath it, not because its source flew away.">
+  <StretchingPhotonScene />
+</SceneCard>
+
+The cosmological-redshift formula looks like a Doppler shift in disguise, and for small $z$ the two are genuinely indistinguishable. Expand $1 + z = a_{\text{now}}/a_{\text{emit}}$ for a recent emission and you recover $z \approx H_0 d / c$, the low-redshift Hubble law with $v = cz$. This is why Slipher's and Hubble's nearby galaxies could be read as moving sources: at $z = 0.01$ the distinction does not bite.
+
+It bites hard at large $z$. The naive "redshift velocity" $cz$ is a useful shorthand only while $z \ll 1$. A galaxy at $z = 2$ would have $cz = 2c$ — twice the speed of light — which is nonsense as a velocity but perfectly sensible as a statement about the scale factor: the universe was one-third its present size when that light left. A relativistic Doppler formula would cap the redshift at infinity only as the source approached $c$; the cosmological formula has no such cap, because no source is moving at all. The wavelength can stretch by any factor the universe cares to expand by.
+
+<Callout variant="math">
+The two redshifts diverge by construction. Special-relativistic Doppler gives $1 + z = \sqrt{(1+\beta)/(1-\beta)}$ for a source receding at $\beta = v/c$ — it saturates, reaching large $z$ only as $\beta \to 1$. Cosmological redshift gives $1 + z = a_{\text{now}}/a_{\text{emit}}$ — it is unbounded for finite expansion. They agree to first order, $z \approx \beta$, which is exactly why the local Hubble law masquerades as Doppler. Treating cosmological redshift as Doppler at high $z$ produces "faster than light" galaxies that are pure artifact: the recession velocity of a comoving galaxy can and does exceed $c$ at large distance, with no violation of relativity, because it is the growth of intervening space, not motion through it.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Reading the clock: redshift as a time machine">
+
+Because $1 + z = a_{\text{now}}/a_{\text{emit}}$, a redshift is a direct readout of the scale factor at emission — and through the Friedmann dynamics of the previous topic, a readout of the *age* of the universe at emission. Each observed redshift is a timestamp. Higher $z$ means a smaller, younger, denser universe.
+
+<SceneCard caption="FIG.56c — the lookback machine. A logarithmic slider runs from z = 0 (here and now) to z = 1100 (the cosmic microwave background). For each redshift it solves the concordance ΛCDM model for four numbers: the scale factor a = 1/(1+z), how much smaller the universe was; the age of the universe at emission; the lookback time, how long the light has been travelling; and the wavelength stretch. The cosmic-timeline bar marks landmark epochs on a log-time axis, with an amber pointer at the chosen emission. Push the slider to the CMB preset and the famous factor-of-1000 numbers fall out: the universe was 1101× smaller, about 380 000 years old, and the light has been in flight for nearly 13.8 billion years.">
+  <LookbackMachineScene />
+</SceneCard>
+
+The headline numbers are worth stating plainly. The cosmic microwave background — the oldest light we can see — comes to us from $z \approx 1100$. That single number says the universe has expanded by a factor of 1101 since the CMB was released, that it was then $1/1101$ of its present size, and that the microwaves we detect at 1.9 millimeters were emitted as orange-red visible light at around 0.7 micrometers, stretched a thousandfold on the way here. The CMB was emitted when the universe was about 380,000 years old. We receive it now, 13.8 billion years later. The redshift is a measuring tape laid across nearly the entire history of the cosmos.
+
+This is also where the Hubble constant earns its keep beyond a slope on a graph. Its reciprocal, the Hubble time $1/H_0$, is about 14.5 billion years — within a few percent of the true age of the universe, a near-coincidence arising because the deceleration of the matter era and the late acceleration of the dark-energy era roughly cancel in the integral. The Hubble *length* $c/H_0 \approx 4400$ Mpc sets the rough scale of the observable universe. A single measured slope fixes the size and age of everything.
+
+</Section>
+
+<Section index={6} title="The constant we still can't agree on">
+
+A century after Hubble, the most basic number in cosmology is in dispute. Two independent ways of measuring $H_0$ give answers that do not overlap. The distance-ladder method — Cepheids calibrating Type Ia supernovae, a direct descendant of Leavitt and Hubble's own technique — yields about 73 km/s/Mpc. The early-universe method — fitting the <Term slug="cosmological-constant" /> and matter content to the CMB and extrapolating forward with the [Friedmann equations](/relativity/friedmann-equations) — yields about 67 km/s/Mpc. Each is quoted with an uncertainty of about one percent. The gap between them is five sigma. This is the *Hubble tension*, and as of the mid-2020s no one knows whether it is an unaccounted-for systematic in one of the measurements or a crack in the concordance model itself — a hint of new physics in the dark sector. The honest statement is that it is open.
+
+That a single number can be both the most-measured quantity in cosmology and still unsettled is a fair emblem of the field. The framework is secure: the universe expands, redshift tracks the scale factor, and the same $a(t)$ that stretches a photon governs the [geometry of the FLRW metric](/relativity/the-flrw-metric) and the [thermal history that produced the CMB](/relativity/the-cmb-and-nucleosynthesis). What remains contested is the bookkeeping at the percent level — and in cosmology, percent-level disagreements are where the next discoveries live. Slipher measured velocities he could not explain; Leavitt found a ruler in a star's heartbeat; Hubble drew a line through 24 scattered points. The line is still there. We are still arguing about its slope.
+
+</Section>
+
+</TopicPageLayout>

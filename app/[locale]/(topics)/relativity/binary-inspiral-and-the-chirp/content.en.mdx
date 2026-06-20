@@ -1,0 +1,110 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { InspiralChirpScene } from "@/components/physics/binary-inspiral-and-the-chirp/inspiral-chirp-scene";
+import { ChirpMassExplorerScene } from "@/components/physics/binary-inspiral-and-the-chirp/chirp-mass-explorer-scene";
+import { HulseTaylorParabolaScene } from "@/components/physics/binary-inspiral-and-the-chirp/hulse-taylor-parabola-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Russell Hulse", href: "/physicists/russell-hulse" },
+  { type: "physicist", label: "Joseph Taylor", href: "/physicists/joseph-taylor" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Chirp mass", href: "/dictionary/chirp-mass" },
+  { type: "term", label: "Gravitational wave", href: "/dictionary/gravitational-wave" },
+  { type: "term", label: "Quadrupole radiation", href: "/dictionary/quadrupole-radiation" },
+  { type: "term", label: "Neutron star", href: "/dictionary/neutron-star" },
+  { type: "term", label: "Strain", href: "/dictionary/strain" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.52 · GRAVITATIONAL WAVES"
+  title="BINARY INSPIRAL AND THE CHIRP"
+  subtitle="Two black holes spiraling in; the waveform's frequency rises like a chirp."
+/>
+
+<Section index={1} title="A pulsar that kept perfect time, and kept losing it">
+
+In the summer of 1974, a graduate student named <PhysicistLink slug="russell-hulse" /> was running a pulsar survey at the Arecibo radio telescope in Puerto Rico, working under <PhysicistLink slug="joseph-taylor" />. On July 2 the search software flagged a new pulsar, catalogued PSR B1913+16, blinking 17 times a second. Hulse went back to confirm it, and the period would not hold still. Some nights the pulses arrived early; some nights late; the drift swung back and forth on a cycle of just under eight hours.
+
+A pulsar is a magnetized <Term slug="neutron-star" /> whose beam sweeps past Earth like a lighthouse, and its spin is one of the steadiest clocks in nature. A clock that runs fast, then slow, then fast again is not a broken clock — it is a clock in motion. Hulse and Taylor realized the pulsar was in a tight binary, alternately moving toward us and away, its pulses Doppler-shifted by the orbital velocity. They had found the first binary pulsar: a neutron star and an unseen companion (another neutron star) whipping around each other every 7.75 hours at speeds up to a thousand kilometers per second.
+
+That was already a prize — a clean, clock-carrying laboratory for strong-field gravity. But the real discovery took years of patient timing. The orbit was not merely repeating. It was slowly shrinking. The orbital period was getting shorter, by about 76 millionths of a second per year. Something was draining energy from the system. <PhysicistLink slug="albert-einstein" /> had predicted exactly this in 1918: a system of accelerating masses must radiate gravitational waves, and the waves carry away energy. Hulse and Taylor had stumbled onto the first evidence that gravitational radiation is real — not by detecting a wave, but by watching its bill come due.
+
+</Section>
+
+<Section index={2} title="Why an orbit radiates — the quadrupole">
+
+An orbiting binary loses energy because its mass distribution changes shape in time, and a changing mass distribution is the source of gravitational waves. The key word is *changing shape*, not merely *moving*. A single mass moving at constant velocity radiates nothing — that would violate momentum conservation, which forbids gravitational *dipole* radiation outright. You need the next moment up: the **mass quadrupole**, the measure of how stretched-out and lopsided the source is. As two bodies swing around their common center, the quadrupole oscillates, and that oscillation is what pours energy into <Term slug="quadrupole-radiation" />.
+
+The luminosity follows the quadrupole formula Einstein derived in 1918. For a circular binary of masses $m_1$ and $m_2$ separated by $a$, the power radiated is:
+
+<EquationBlock id="EQ.01">$$P = \frac{32}{5}\,\frac{G^4}{c^5}\,\frac{(m_1 m_2)^2 (m_1 + m_2)}{a^5}$$</EquationBlock>
+
+In words: the gravitational-wave power climbs ferociously as the orbit tightens — it scales as one over the separation to the fifth power. Far apart, the binary barely whispers; halve the separation and the luminosity jumps by a factor of 32. This is why the inspiral is a runaway. As radiation shrinks the orbit, the shrinking orbit radiates harder, which shrinks it faster still. The end is not gentle.
+
+Energy lost to radiation must come out of the orbit's energy budget, $E = -G m_1 m_2 / 2a$. Setting the rate of energy loss equal to $-P$ gives the rate at which the separation collapses, and through Kepler's third law, the rate at which the orbital frequency rises. The frequency of the gravitational wave is twice the orbital frequency (the quadrupole pattern repeats every half-turn), and its evolution is governed by a single, remarkable combination of the two masses.
+
+</Section>
+
+<Section index={3} title="The chirp mass — the one number you hear first">
+
+Work through the algebra and almost everything about the leading-order inspiral collapses onto one quantity, the <Term slug="chirp-mass" />:
+
+<EquationBlock id="EQ.02">$$\mathcal{M} = \frac{(m_1 m_2)^{3/5}}{(m_1 + m_2)^{1/5}}$$</EquationBlock>
+
+This is the chirp mass. It is a specific weighted blend of the two masses, and it is the combination that controls how fast the wave's frequency rises. Two binaries with very different individual masses — a $10 + 50$ solar-mass pair and a $20 + 28$ pair — can share nearly the same chirp mass, and in the early inspiral they sound almost identical. The total mass and the mass ratio leave their fingerprints only later, in subtler post-Newtonian corrections. The chirp mass is what a detector measures first and most precisely.
+
+The frequency evolution, written in terms of the chirp mass, is clean:
+
+<EquationBlock id="EQ.03">$$\frac{df}{dt} = \frac{96}{5}\,\pi^{8/3}\left(\frac{G\mathcal{M}}{c^3}\right)^{5/3} f^{11/3}$$</EquationBlock>
+
+Read this as: the wave's frequency $f$ accelerates upward, and the rate of acceleration is set by the chirp mass alone (times a steep power of the current frequency). Integrate it and you get a closed form for the time left until the two bodies merge, $t_{\rm coal} = \tfrac{5}{256}(G\mathcal{M}/c^3)^{-5/3}(\pi f)^{-8/3}$. A pair of $1.4$-solar-mass neutron stars entering a detector's band at 10 Hz has about seventeen minutes to live; a pair of 30-solar-mass black holes crossing 30 Hz has a fraction of a second.
+
+<Callout variant="intuition">
+"Chirp" is literal. If you shift the gravitational-wave frequency of a stellar-mass merger into the audible range, the last second sounds exactly like a bird's chirp or a slide-whistle sweep — a tone that starts low, rises, and accelerates into a sharp peak the instant the holes touch. The pitch you hear is the orbital frequency; the rising pitch is the orbit tightening; the abrupt cutoff is the merger.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Watching the chirp build">
+
+<SceneCard caption="FIG.52a — the inspiral and its waveform, driven by the real physics. Top: two compact masses (sizes set by m₁, m₂) orbit their common center of mass; the separation and orbital speed are computed from the quadrupole frequency evolution f(τ), so the orbit genuinely shrinks and speeds up as merger approaches — it is not a looped animation. Bottom: the strain h(t) scrolls leftward, its frequency and amplitude rising together into the chirp. Adjust the masses and watch the time-to-merger and the steepness of the sweep change: heavier systems chirp faster and merge sooner. The 'now' edge is the moment just before the point-mass description fails and the holes plunge.">
+  <InspiralChirpScene />
+</SceneCard>
+
+The amplitude rises along with the frequency. The strain — the fractional stretch of space a wave imposes, the quantity a detector actually records — grows as the orbit tightens because the source is both more compact and oscillating faster. To leading order the <Term slug="strain" /> amplitude is:
+
+<EquationBlock id="EQ.04">$$h \sim \frac{4}{D}\left(\frac{G\mathcal{M}}{c^2}\right)^{5/3}\left(\frac{\pi f}{c}\right)^{2/3}$$</EquationBlock>
+
+In plain terms: the wave you receive is louder for heavier (larger chirp mass) and higher-frequency systems, and it fades inversely with distance $D$. Notice that the same chirp mass governs both the pitch evolution and the loudness. That is the deep convenience of the inspiral: measure how fast the frequency sweeps, and you have the chirp mass; combine it with the measured amplitude, and you have the distance — no cosmic distance ladder required. A binary inspiral is a *standard siren*, an object whose intrinsic loudness is known from its own waveform.
+
+</Section>
+
+<Section index={5} title="Same chirp mass, same song">
+
+<SceneCard caption="FIG.52b — the chirp-mass explorer. A fixed reference binary (cyan, 30 + 30 M☉) is overlaid with an adjustable binary (magenta) whose component masses you set. The two early-inspiral waveforms are plotted on the same axes. Drag the sliders and watch: when the magenta binary's chirp mass differs from the reference, its waveform drifts in pitch and phase away from the cyan trace; press 'match to reference chirp mass' (or tune by hand) and the two waveforms lock together almost perfectly — even when the individual masses are wildly different, e.g. 18 + 50 versus 30 + 30. This is the sense in which the chirp mass, not the total mass, is the leading observable of a gravitational-wave inspiral.">
+  <ChirpMassExplorerScene />
+</SceneCard>
+
+The degeneracy is not a defect — it is a gift and a warning at once. A gift, because the chirp mass falls out of the data with exquisite precision: for the first detected black-hole merger, GW150914, the chirp mass was pinned to within a few percent from the waveform's frequency sweep alone. A warning, because the *individual* masses are harder to disentangle, and early estimates of a system's mass ratio carry real uncertainty until the higher-order terms in the waveform are resolved near merger.
+
+For the Hulse–Taylor binary the masses are known to extraordinary precision — about $1.44$ and $1.39$ solar masses — because the pulsar's timing reveals not just the chirp but a whole suite of relativistic effects: the periastron advance (the same effect as [Mercury's perihelion shift](/relativity/mercurys-perihelion), but 30,000 times larger), gravitational redshift and time dilation around the companion, and the Shapiro delay of pulses grazing the companion's gravitational well. Each effect adds an equation; together they overdetermine the system and lock down both masses with no free parameters left for the orbital decay.
+
+</Section>
+
+<Section index={6} title="The parabola that won a Nobel Prize, and what came next">
+
+<SceneCard caption="FIG.52c — the most famous plot in gravitational physics. The cumulative shift in the time of periastron of PSR B1913+16 accumulates as a downward parabola, ΔT = ½(Ṗ/P₀)t², because the orbit's period keeps shrinking. The dashed curve is general relativity's prediction from the measured chirp mass — zero free parameters. The points (with error bars) are the timing measurements. Drag the slider to tilt the predicted period decay Ṗ away from its GR value: set it to zero ('no radiation') and the prediction flattens to a horizontal line that the data plainly reject; the GR parabola threads every point. By 2005 the agreement was better than 0.2%.">
+  <HulseTaylorParabolaScene />
+</SceneCard>
+
+Taylor and his collaborators measured the cumulative effect of the orbital decay by tracking when periastron — the moment of closest approach — arrived, year after year. A constant-period orbit would put periastron on a straight line. A decaying orbit puts it on a parabola, because a steadily shrinking period accumulates a quadratic phase drift. By the early 1980s the measured parabola matched the general-relativistic prediction — computed from the binary's masses and orbit with no adjustable parameters — to within a fraction of a percent. There was no other source of energy loss that could mimic it. The orbit was radiating gravitational waves at precisely the rate Einstein's quadrupole formula demanded. <PhysicistLink slug="russell-hulse" /> and <PhysicistLink slug="joseph-taylor" /> shared the 1993 Nobel Prize in Physics for it.
+
+This was indirect proof: the energy budget balanced only if gravitational waves carried away the difference, but no wave had been caught in the act. That last step waited until September 2015, when [LIGO heard two black holes merge](/relativity/ligo-and-multi-messenger) directly — the chirp of FIG.52a, recorded as a real strain in real instruments. The physics is continuous between the two: the slow inspiral the Hulse–Taylor pulsar will undergo over the next 300 million years is the same process LIGO catches in its final tenth of a second, governed by the same chirp mass, the same quadrupole formula, the same rising tone. The full machinery of how a wave becomes a measurable strain in a kilometer-scale interferometer — and how, in 2017, a neutron-star merger was seen in both gravitational waves and light — is the subject of the next topic. The waveform itself rests on the weak-field [linearized theory](/relativity/linearized-gravity) and the two [polarization modes](/relativity/polarization-modes) that a passing wave imprints on free-falling masses.
+
+</Section>
+
+</TopicPageLayout>

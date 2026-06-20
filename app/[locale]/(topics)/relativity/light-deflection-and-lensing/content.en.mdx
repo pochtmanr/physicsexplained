@@ -1,0 +1,120 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PhotonDeflectionScene } from "@/components/physics/light-deflection-and-lensing/photon-deflection-scene";
+import { EclipseStarfieldScene } from "@/components/physics/light-deflection-and-lensing/eclipse-starfield-scene";
+import { EinsteinRingScene } from "@/components/physics/light-deflection-and-lensing/einstein-ring-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Arthur Eddington", href: "/physicists/arthur-eddington" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Isaac Newton", href: "/physicists/isaac-newton" },
+  { type: "term", label: "Gravitational lensing", href: "/dictionary/gravitational-lensing" },
+  { type: "term", label: "Einstein ring", href: "/dictionary/einstein-ring" },
+  { type: "term", label: "Impact parameter", href: "/dictionary/impact-parameter" },
+  { type: "term", label: "Schwarzschild metric", href: "/dictionary/schwarzschild-metric" },
+  { type: "term", label: "Dark matter", href: "/dictionary/dark-matter" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.41 · SCHWARZSCHILD + TESTS"
+  title="LIGHT DEFLECTION AND GRAVITATIONAL LENSING"
+  subtitle="A May 1919 eclipse photograph, Einstein on the front page of every newspaper."
+/>
+
+<Section index={1} title="The expedition that made Einstein famous">
+
+On the morning of May 29, 1919, it was raining on the island of Príncipe, off the west coast of Africa. <PhysicistLink slug="arthur-eddington" /> had sailed there to photograph a total solar eclipse. The clouds did not break until minutes before totality. He exposed sixteen plates; on most of them the sky was useless. On one, a handful of stars in the Hyades cluster came through.
+
+The point of the exercise was a single number. According to <PhysicistLink slug="albert-einstein" />'s 1915 theory of general relativity, the Sun's gravity should bend a passing ray of starlight by 1.75 arcseconds at the solar limb — about half a thousandth of a degree, the angular width of a coin seen from two kilometres away. A star whose light grazed the edge of the Sun would appear shifted *outward*, away from the Sun, by that amount. During totality, with the Moon blocking the Sun's glare, the stars right next to the disk become briefly visible and the shift can be measured against a comparison photograph of the same field taken at night, months earlier.
+
+There were three numbers in play. Newtonian gravity, treating light as a stream of corpuscles falling in the Sun's field, predicted half the GR value: 0.87 arcseconds. Einstein's own first attempt in 1911, before he had the full field equations, had also given the Newtonian half-value — he had even hoped an eclipse expedition would test it, and a 1914 German expedition to Crimea was prevented from doing so only by the outbreak of war. Then in 1915 the completed theory doubled the prediction. The 1919 measurement was therefore a clean three-way decision: zero deflection (no bending at all), the Newtonian 0.87″, or the Einsteinian 1.75″.
+
+On November 6, 1919, the Royal Society and the Royal Astronomical Society met jointly in London. Eddington and Frank Dyson reported a deflection of about 1.6″ from Príncipe and 1.98″ from a second expedition to Sobral, Brazil — bracketing the Einstein value and excluding the Newtonian one. The next day *The Times* of London ran the headline "Revolution in Science — New Theory of the Universe — Newtonian Ideas Overthrown." Einstein, at forty, became the most famous scientist alive.
+
+</Section>
+
+<Section index={2} title="Twice the Newtonian value — and why">
+
+The deflection of a light ray that passes a mass $M$ with <Term slug="impact-parameter" /> $b$ — the perpendicular distance from the mass to the ray's undeflected path — is, to leading order in the weak field:
+
+<EquationBlock id="EQ.01">$$\alpha = \frac{4GM}{c^2 b}$$</EquationBlock>
+
+In words: the bend angle is four times Newton's gravitational constant times the mass, divided by the speed of light squared and the impact parameter. Plug in the Sun's mass and $b = R_\odot$, the solar radius, and you get $\alpha \approx 1.75$ arcseconds. The bend grows with mass and shrinks as $1/b$: a ray that skims closer to the Sun bends more, one that passes farther out bends less.
+
+The factor of four is the whole story. A Newtonian calculation — Henry Cavendish sketched it in the 1780s, Johann von Soldner published it in 1804 — treats the photon as a fast particle on a hyperbolic orbit and gives exactly half:
+
+<EquationBlock id="EQ.02">$$\alpha_{\text{Newton}} = \frac{2GM}{c^2 b}$$</EquationBlock>
+
+That is, the corpuscular picture predicts half the deflection: $2GM/c^2 b$, or 0.87″ at the solar limb. Where does general relativity's extra factor of two come from? The <Term slug="schwarzschild-metric" /> warps *both* time and space. The warping of time alone — equivalently, the Newtonian gravitational potential acting on the photon's energy — accounts for the first $2GM/c^2 b$. The curvature of *space* around the mass, which has no Newtonian analogue, contributes an equal second piece. Light, moving at $c$, samples the spatial curvature fully; a slow planet barely notices it, which is why Mercury's orbit is dominated by the time term while light's deflection splits evenly between the two.
+
+<Callout variant="intuition">
+The factor of two is the cleanest fingerprint of curved space in all of physics. Newton bends light with warped *time* (gravity pulling on the photon's energy); Einstein adds an exactly equal contribution from warped *space*. Light, racing at $c$, feels both halves — so it bends twice as much as Newton predicts. The eclipse measured the half nobody before 1915 knew existed.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Tracing the ray">
+
+<SceneCard caption="FIG.41a — light bending past a mass. A fan of rays travels left to right past a central mass; pull the slider to set the impact parameter b of the highlighted ray, and toggle between the GR law α = 4GM/c²b and the pre-1915 Newtonian half-value α = 2GM/c²b. The ghost path (dashed) shows the other theory's prediction for the same b, so the factor of two is visible side by side. Watch the bend sharpen as b shrinks — the deflection scales as 1/b, which is exactly why the 1919 expeditions targeted stars as close to the solar limb as the eclipse would allow.">
+  <PhotonDeflectionScene />
+</SceneCard>
+
+A photon in the Schwarzschild geometry follows a null geodesic — the straightest possible path through curved spacetime. Far from the mass, that path is a straight line; near the mass it bends. For weak fields the total bend can be computed without solving the full geodesic equation: integrate the transverse "pull" of the geometry along an essentially straight path, and the contributions sum to $4GM/c^2 b$.
+
+The deflection is genuinely tiny because the relevant length is the <Term slug="schwarzschild-radius" /> $r_s = 2GM/c^2$, which for the Sun is about 3 km — against a solar radius of 700,000 km. The ratio $r_s / b \approx 4 \times 10^{-6}$ at the limb, and the deflection in radians is essentially $2 r_s / b$. That smallness is also what makes the weak-field formula reliable: it is the first term of an expansion in $r_s/b$, and the higher-order corrections are utterly negligible for the Sun. They matter only when light passes close to a compact object — near a neutron star or a black hole, where $b$ can approach $r_s$ and the bending becomes strong enough to wrap photons most of the way around, producing the bright photon ring imaged around M87* and Sgr A*.
+
+The $1/b$ falloff has a practical consequence the 1919 teams felt keenly. The shift is 1.75″ for a star at the limb but only 0.87″ one solar radius out, and 0.18″ ten radii out. To get a measurable signal you need stars as close to the blazing edge of the Sun as possible — which is precisely the part of the plate most degraded by the corona, by atmospheric turbulence, and by the heating of the telescope through the long voyage. The Sobral plates from the better telescope gave 1.98″; the Príncipe plates gave 1.61″. The error bars were large by modern standards, but the Newtonian 0.87″ sat well outside them.
+
+</Section>
+
+<Section index={4} title="From a single ray to an image: lensing">
+
+<SceneCard caption="FIG.41b — the 1919 measurement, reconstructed. The 'comparison plate' shows the star field at its true positions, photographed months later with the Sun elsewhere in the sky. Toggle the Sun on and you get the 'eclipse plate': every star jumps radially outward, most at the limb, less farther out, exactly as 1.75″ × (R☉/b). The real shift is about one part in nineteen hundred of the solar disk — invisible to the eye — so the magnify slider exaggerates it the way Eddington's measuring engine effectively did. The displacement arrows trace each star's apparent motion away from the Sun.">
+  <EclipseStarfieldScene />
+</SceneCard>
+
+A single deflected ray is a curiosity. The deep consequence appears when many rays from one distant source pass a mass on their way to us. The mass acts as a lens — a bad lens, with no single focal point, but a lens nonetheless — and the result is <Term slug="gravitational-lensing" />.
+
+Consider a faraway point source, a foreground mass acting as the lens, and an observer. Light from the source can reach the observer along more than one path: a ray bent around the left side of the lens and a ray bent around the right side both arrive. The observer sees *two images* of a single source. The geometry is captured by the lens equation, which relates the source's true angular position to the positions of its images. Introducing the natural angular scale of the lens — the Einstein radius $\theta_E$ — the lens equation takes the compact form $u = \theta - 1/\theta$, where $u$ is the source offset and $\theta$ each image position, both measured in units of $\theta_E$. Solving it gives two images:
+
+<EquationBlock id="EQ.03">$$\theta_\pm = \frac{1}{2}\left(u \pm \sqrt{u^2 + 4}\,\right)$$</EquationBlock>
+
+This says: for a source offset $u$ from the lens, one image ($\theta_+$) sits outside the Einstein radius on the source's side, and a second, fainter, flipped image ($\theta_-$) sits inside it on the opposite side. The two are always present; as the source moves far away ($u \gg 1$), the outer image approaches the true source position and the inner image collapses onto the lens and fades.
+
+The angular scale itself is set by the masses and distances:
+
+<EquationBlock id="EQ.04">$$\theta_E = \sqrt{\frac{4GM}{c^2}\,\frac{D_{LS}}{D_L D_S}}$$</EquationBlock>
+
+Here $D_L$, $D_S$, and $D_{LS}$ are the observer–lens, observer–source, and lens–source distances. The Einstein radius is the angular size of the ring you would see if the source, lens, and observer were perfectly aligned — and it is the single number that tells you how strongly a given lens bends and brightens what lies behind it.
+
+</Section>
+
+<Section index={5} title="Einstein rings, multiple quasars, and weighing the dark">
+
+<SceneCard caption="FIG.41c — point-source lensing toy. You are looking through a point lens (the magenta mass at center) at a background point source. Drag the source-offset slider: at large u you see two distinct images — a bright one outside the Einstein ring and a faint flipped one inside it — and as u → 0 they sweep around and merge into a complete Einstein ring. The light-curve strip below plots the total magnification A(u): far from alignment the source has its ordinary brightness (A → 1), but as it slides behind the lens the brightness spikes toward infinity. This spike, traced as a foreground star drifts across a background one, is how microlensing surveys detect unseen masses.">
+  <EinsteinRingScene />
+</SceneCard>
+
+When the source, lens, and observer line up exactly, the two images are no longer points — by symmetry the source smears into a complete circle of radius $\theta_E$. This is an <Term slug="einstein-ring" />, and Einstein himself, in a 1936 note prompted by an amateur engineer named Rudi Mandl, calculated it and then dismissed it as having "no hope of observing this phenomenon directly." He was thinking of one star lensing another, where $\theta_E$ is a few milliarcseconds — far too small to resolve. He had not imagined *galaxies* lensing *galaxies*, where the Einstein radius is arcseconds across and easily resolved. The first such ring was imaged in 1988; the *Hubble* and *James Webb* telescopes have since returned dozens, glowing blue circles wrapped around foreground ellipticals.
+
+Lensing turned from curiosity to tool in 1979, when the "Twin Quasar" Q0957+561 was found: two quasars side by side with identical spectra and identical redshifts. They were not twins. They were two images of one quasar, split by a foreground galaxy — the first confirmed gravitational lens. Today lensing comes in three regimes. **Strong lensing** produces multiple images, arcs, and rings around massive galaxies and clusters. **Microlensing** produces no resolvable images but a transient brightening — the magnification spike of FIG.41c — as one star passes in front of another; it has been used to detect exoplanets and to hunt for compact dark matter. **Weak lensing** is the faint, statistical distortion of millions of background galaxy shapes by the large-scale mass between them and us.
+
+The last of these is now a cornerstone of cosmology. Because lensing responds to *all* mass — luminous or not — it weighs what telescopes cannot see. Mapping the gravitational shear across the sky produces a map of total mass, and that map is dominated by <Term slug="dark-matter" />. The 2006 image of the Bullet Cluster, where the lensing mass is visibly offset from the X-ray-emitting gas, is among the most direct evidence that dark matter exists and is not merely a misunderstanding of gravity. A measurement that began as a verdict on one number — Newton's 0.87″ versus Einstein's 1.75″ — has become an instrument for surveying the invisible scaffolding of the universe.
+
+</Section>
+
+<Section index={6} title="Why it mattered, and what it set up">
+
+The 1919 eclipse did three things at once. It confirmed a quantitative prediction of general relativity that no other theory matched. It vindicated the *curvature of space*, not just of time — the half of the deflection that has no Newtonian counterpart. And it handed the public a story it could grasp: starlight bent by gravity, photographed during an eclipse, Newton overthrown.
+
+Light deflection is one of the four classical tests of general relativity, and it is the one that probes spacetime geometry most directly. The [perihelion precession of Mercury](/relativity/mercurys-perihelion) had been a retrodiction — the anomaly was known for sixty years before Einstein explained it — so 1919 was the theory's first genuine *prediction* confirmed. The same Schwarzschild geometry that bends light also slows it: a radar pulse grazing the Sun arrives late, the effect Irwin Shapiro proposed in 1964 and which we cover in the [Shapiro time delay](/relativity/shapiro-delay). Together with gravitational redshift, these make up [the classical tests](/relativity/the-classical-tests-summary) that general relativity has passed for over a century, now confirmed to parts in a hundred thousand by the Cassini spacecraft.
+
+And the lens that began as a verdict on a single arcsecond is now everywhere in twenty-first-century astronomy: weighing galaxy clusters, mapping dark matter, magnifying the earliest galaxies into view, and — through the time delays between a lensed quasar's flickering images — even offering an independent measurement of the expansion rate of the universe.
+
+</Section>
+
+</TopicPageLayout>

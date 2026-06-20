@@ -1,0 +1,130 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FourTestDashboardScene } from "@/components/physics/the-classical-tests-summary/four-test-dashboard-scene";
+import { PrecisionTimelineScene } from "@/components/physics/the-classical-tests-summary/precision-timeline-scene";
+import { TheoryLayersScene } from "@/components/physics/the-classical-tests-summary/theory-layers-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Arthur Eddington", href: "/physicists/arthur-eddington" },
+  { type: "physicist", label: "Irwin Shapiro", href: "/physicists/irwin-shapiro" },
+  { type: "term", label: "Schwarzschild metric", href: "/dictionary/schwarzschild-metric" },
+  { type: "term", label: "Perihelion precession", href: "/dictionary/perihelion-precession" },
+  { type: "term", label: "Gravitational lensing", href: "/dictionary/gravitational-lensing" },
+  { type: "term", label: "Shapiro delay", href: "/dictionary/shapiro-delay" },
+  { type: "term", label: "Impact parameter", href: "/dictionary/impact-parameter" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.43 · SCHWARZSCHILD + TESTS"
+  title="THE CLASSICAL TESTS — A WHOLE THEORY ON TRIAL"
+  subtitle="Four independent predictions, four confirmed observations, one theory standing."
+/>
+
+<Section index={1} title="A theory with almost nothing to adjust">
+
+When <PhysicistLink slug="albert-einstein" /> finished general relativity on November 25, 1915, he handed the world a peculiar kind of object: a theory with no free knobs. Newtonian gravity has the constant $G$, fixed once by laboratory measurement; everything else follows. Einstein's theory has the same single constant and then nothing — no fudge factors, no adjustable couplings, no extra fields to tune until the numbers fit. Once you accept that gravity is the curvature of spacetime and that the curvature is sourced by mass-energy through $G_{\mu\nu} = \tfrac{8\pi G}{c^4}\,T_{\mu\nu}$, every prediction is forced.
+
+That rigidity is what makes the theory falsifiable in the strongest sense. A theory you can adjust can survive almost any measurement; a theory you cannot adjust can be killed by a single arcsecond out of place. By the early 1920s four such arcseconds-and-microseconds had been identified — four distinct, quantitative predictions, each tied to a different observable, each computable from the same metric with no further input. These became known as the classical tests of general relativity.
+
+Three of them Einstein named himself, in his 1916 popular account: the anomalous advance of Mercury's perihelion, the bending of starlight by the Sun, and the gravitational shift of spectral lines. A fourth was added half a century later by <PhysicistLink slug="irwin-shapiro" /> in 1964 — the time delay of radar signals grazing the Sun. The story of the next hundred years is the story of these four numbers being measured with ever-finer instruments, and the theory never moving. The precision has tightened from one part in ten to one part in a hundred thousand. The agreement has held the whole way down.
+
+This page is the ledger of that trial. The companion topics — [the Schwarzschild metric](/relativity/the-schwarzschild-metric), [Mercury's perihelion](/relativity/mercurys-perihelion), [light deflection and lensing](/relativity/light-deflection-and-lensing), and the [Shapiro delay](/relativity/shapiro-delay) — work each test in detail. Here we put them side by side and ask the structural question: what, exactly, is each one testing?
+
+</Section>
+
+<Section index={2} title="The four tests, side by side">
+
+<SceneCard caption="FIG.43a — the four-test dashboard. Click any card to expand the case file: the textbook general-relativistic prediction on the left, the canonical measured value on the right, and the best fractional precision reached to date underneath. The four span a century and four entirely different instruments — astrometry, eclipse photography, Mössbauer spectroscopy, and interplanetary radar — yet each interrogates the same metric. The 1919 deflection card is selected by default because it was the measurement that made Einstein a household name overnight.">
+  <FourTestDashboardScene />
+</SceneCard>
+
+The four tests, with their first decisive confirmations:
+
+**Perihelion precession (1915).** Mercury's elliptical orbit does not close; its point of closest approach to the Sun creeps forward. After subtracting the tugs of the other planets, <PhysicistLink slug="urbain-le-verrier" /> found in 1859 a residual advance of about 43 arcseconds per century that Newtonian gravity could not explain. General relativity predicts an extra <Term slug="perihelion-precession" /> of $42.98''$ per century — not fitted, but computed from the Schwarzschild orbit. This was a retrodiction: the discrepancy was already on the books when Einstein closed it on November 18, 1915, an event he said gave him heart palpitations.
+
+**Light deflection (1919).** A ray of starlight grazing the Sun's limb is bent by $1.75''$ — exactly twice the value a naive "Newtonian photon" would give. <PhysicistLink slug="arthur-eddington" /> led the 1919 eclipse expeditions to Príncipe and Sobral to measure it; the plates favored Einstein, the news circled the globe, and the deflection became the founding image of experimental relativity. Today radio interferometry measures the same bending to one part in $10^4$.
+
+**Gravitational redshift (1960).** A photon climbing out of a gravitational well loses energy: its frequency drops by $\Delta\nu/\nu = gh/c^2$. Robert Pound and Glen Rebka measured this $2.5\times10^{-15}$ shift over the 22.5-metre tower of Harvard's Jefferson Laboratory, using the then-new Mössbauer effect, to about 10%. It is the gentlest of the tests — and, as the next section shows, the one that needs the least theory.
+
+**Shapiro delay (1964).** A radar pulse bounced off Venus and passing close to the Sun on its way returns roughly 200 microseconds late, because the signal must traverse the dilated spacetime near the Sun. <PhysicistLink slug="irwin-shapiro" /> proposed and led the experiment; the 2002 Cassini spacecraft measurement at solar conjunction pinned the relevant parameter to $2.3\times10^{-5}$, the tightest of all four.
+
+</Section>
+
+<Section index={3} title="What each test actually probes">
+
+<SceneCard caption="FIG.43c — the layer diagram. Three stacked bands run from the shallowest assumption at the bottom (the equivalence principle: clocks and free fall) up through the metric (the parameter γ, encoding space curvature) to the full nonlinear field equations at the top. Click a test chip on the right to draw a connector to the layer it bites at. The lesson is hierarchy: redshift needs only the equivalence principle, deflection and Shapiro need the full metric, and only the perihelion advance reaches the higher-order, nonlinear structure of the equations themselves. A theory can pass the easy tests and still fail the hard ones — which is why all four matter.">
+  <TheoryLayersScene />
+</SceneCard>
+
+It is tempting to treat the four tests as four ways of saying the same thing. They are not. Each probes a different structural layer of the theory, and a rival theory of gravity could pass one and fail the next.
+
+**The equivalence principle alone.** The gravitational redshift is the shallowest test. You can derive $\Delta\nu/\nu = gh/c^2$ from nothing but the equivalence principle and energy conservation — Einstein did so in 1907, eight years before the field equations existed. A photon emitted at the bottom of a tower and received at the top is, by equivalence, the same as a photon received by an accelerating detector that has picked up speed during the flight; the Doppler shift gives the answer. No metric, no curvature, no field equation required. Redshift tests that gravity affects clocks at all — the universal coupling of gravity to energy — and little more.
+
+**The full metric.** Light deflection and the Shapiro delay go a layer deeper. Both are controlled by a single number, the Parametrized Post-Newtonian (PPN) parameter $\gamma$, which measures how much space curvature a unit of rest mass produces. A photon grazing the Sun responds to both the time-warping and the space-warping of the metric; the space part is what doubles the bending over the Newtonian value, and it is exactly the part that $\gamma$ controls. The Shapiro delay measures the same $\gamma$ through coordinate light-travel time rather than bending — an independent handle on the same quantity, which is why agreement between them is a non-trivial check.
+
+**The nonlinear field equations.** The perihelion precession reaches deepest of all. The first post-Newtonian correction to a planetary orbit involves the higher-order, $\sim (GM/rc^2)^2$ structure of the Schwarzschild solution — the part that cannot be captured by a linear $1/r$ potential and that depends on the full nonlinearity of $G_{\mu\nu} = \kappa T_{\mu\nu}$. A theory could reproduce the right $\gamma$ and still get the perihelion wrong if its nonlinear terms differed.
+
+<Callout variant="intuition">
+Think of it as a ladder of assumptions. Redshift only asks: does gravity touch clocks? Deflection and Shapiro ask: is the geometry of *space* curved the way Einstein says? Perihelion asks the hardest question: is the *nonlinear* structure of the field equations correct? Passing the bottom rung tells you almost nothing about the top.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The PPN framework — turning a yes/no into a number">
+
+For decades the tests were phrased as a verdict: does general relativity pass or fail? In the 1960s and 1970s Kenneth Nordtvedt and Clifford Will replaced that with something far more useful — a continuous parametrization in which general relativity is one point in a space of metric theories of gravity. This is the Parametrized Post-Newtonian, or PPN, formalism.
+
+The idea is to expand the metric around flat spacetime in powers of the small quantity $GM/rc^2$ and attach an adjustable coefficient to each term. Two coefficients carry almost all the weight of the classical tests:
+
+<EquationBlock id="EQ.01">$$g_{00} = -\left(1 - \frac{2GM}{rc^2} + 2\beta\frac{G^2M^2}{r^2c^4}\right), \qquad g_{ij} = \left(1 + \gamma\frac{2GM}{rc^2}\right)\delta_{ij}$$</EquationBlock>
+
+In words: $\gamma$ measures how much the *space* part of the metric is curved per unit mass, and $\beta$ measures how much *nonlinearity* there is in the way gravity superposes. In general relativity both equal exactly one; in Newtonian gravity both are zero (no space curvature, no nonlinearity). Every metric theory of gravity predicts some pair $(\gamma, \beta)$, and the classical tests are now read as measurements of those two numbers.
+
+The light deflection at the solar limb, written in PPN form, is:
+
+<EquationBlock id="EQ.02">$$\delta\theta = \frac{1+\gamma}{2}\cdot\frac{4GM_\odot}{c^2 R_\odot} = \frac{1+\gamma}{2}\times 1.75''$$</EquationBlock>
+
+The prefactor $(1+\gamma)/2$ is the whole story: it equals 1 in general relativity ($\gamma=1$, full $1.75''$) and $\tfrac{1}{2}$ for a hypothetical photon that feels only the Newtonian time-curvature ($\gamma=0$, half the bending). Eddington's 1919 result already favored $\gamma\approx 1$ over $\gamma\approx 0$, which is precisely why it was decisive — it discriminated between Newton and Einstein, not merely between gravity and no gravity.
+
+The Shapiro delay carries the identical $(1+\gamma)/2$ factor, so the Cassini conjunction measurement is, in modern language, a measurement of $\gamma$:
+
+<EquationBlock id="EQ.03">$$\gamma - 1 = (2.1 \pm 2.3)\times 10^{-5} \quad\text{(Cassini, 2002)}$$</EquationBlock>
+
+This is the single tightest constraint on any departure from general relativity from the classical tests: $\gamma$ equals one to better than two parts in $10^5$. The perihelion precession, meanwhile, constrains a combination of $\gamma$ and $\beta$, and the data put $\beta - 1$ within roughly $10^{-4}$ of zero as well.
+
+<Callout variant="math">
+The PPN framework is what lets "general relativity has never failed a test" be a quantitative statement rather than a slogan. The current observational box around $(\gamma, \beta)$ is a tiny rectangle centered on $(1, 1)$, with side lengths of order $10^{-5}$ and $10^{-4}$. Any modified-gravity theory — Brans-Dicke scalar-tensor gravity, for instance, which predicts $\gamma = (1+\omega)/(2+\omega) < 1$ — must reproduce that box, which forces its scalar coupling $\omega$ above about $40{,}000$. The classical tests do not merely confirm Einstein; they squeeze the alternatives.
+</Callout>
+
+</Section>
+
+<Section index={5} title="A century of tightening — and never a miss">
+
+<SceneCard caption="FIG.43b — precision over a century, on a log scale. Each descending polyline is one test; the vertical axis is the fractional agreement with the general-relativistic prediction (top = 10%, bottom = one part in 100,000), and time runs left to right from the birth of the theory in 1915 to today. Every line marches down and to the right: each test has only ever gotten tighter, never looser, and never crossed into disagreement. Toggle individual tests with the legend. The endpoints carry the instrument that set the record — radar ranging for the perihelion, VLBI astrometry for deflection, optical clocks for redshift, Cassini for Shapiro.">
+  <PrecisionTimelineScene />
+</SceneCard>
+
+Trace any one of the four lines and the pattern is the same. The perihelion advance, confirmed to about 10% in 1915, is now checked by radar ranging of the inner planets to one part in $10^3$. The deflection, $30\%$ uncertain on Eddington's 1919 plates, is measured by Very Long Baseline Interferometry — using distant quasars as the background "stars" — to one part in $10^4$. The redshift, $10\%$ in 1960, was tightened to $7\times10^{-5}$ by Gravity Probe A in 1976 (a hydrogen maser flown to 10,000 km on a rocket) and is now probed by comparing optical-lattice clocks at different heights to better than $10^{-5}$. The Shapiro delay went from the $5\%$ Venus-radar measurement of 1964 to the $2.3\times10^{-5}$ Cassini result of 2002.
+
+Two features of this chart deserve emphasis. First, the improvement is not incremental polishing of a single technique; it is a succession of completely different instruments — eclipse cameras, then radar, then atomic clocks, then spacecraft transponders, then quasar interferometry — each independently confirming the same metric. When unrelated methods agree to five decimal places, systematic error in any one of them is not a plausible explanation for the agreement. Second, no line has ever turned back upward into disagreement. In 110 years and across these four observables, general relativity has not failed a single classical test.
+
+It is worth being precise about what that does and does not mean. The classical tests are *weak-field, slow-motion* tests: they probe gravity in the gentle regime $GM/rc^2 \lesssim 10^{-6}$ around the Sun. They say nothing directly about strong fields near black-hole horizons or about gravitational radiation. Those regimes have their own, newer trials — the [Hulse-Taylor binary pulsar](/relativity/binary-inspiral-and-the-chirp), LIGO's direct detection of [gravitational waves](/relativity/ligo-and-multi-messenger), the Event Horizon Telescope's images of M87* and Sgr A* — and they too have so far agreed with Einstein. But the classical four remain the bedrock: the original, cleanest, most precise confirmations, on which everything else builds.
+
+</Section>
+
+<Section index={6} title="Why it matters — and what the agreement cannot buy">
+
+The classical tests do two jobs at once. Historically, they are why general relativity was believed: a beautiful theory with no free parameters that nonetheless reproduces a 60-year-old planetary anomaly, predicts a starlight deflection nobody had measured, and survives a century of sharpening instruments is not a theory one discards lightly. Methodologically, they are the template for how a rigid theory is tested — not by asking "does it fit?" but by computing forced predictions and checking each against an independent observable.
+
+And yet the perfect score comes with a sharp caveat, and it is the caveat that points forward. Passing every weak-field test to five decimal places tells you that the metric outside the Sun is Schwarzschild to extraordinary precision. It does **not** tell you what happens at the [event horizon](/relativity/the-event-horizon) of a black hole, where $GM/rc^2$ approaches unity and the field is no longer weak; it does not tell you whether the theory is complete at the [singularity](/relativity/singularity-theorems) it predicts at the center; and it certainly does not tell you how gravity behaves at the Planck scale, where quantum effects must take over. A theory can be exactly right in the regime you have tested and still be incomplete — even ultimately wrong — in regimes you have not.
+
+That is the honest shape of the situation in 2026. General relativity is the most precisely confirmed theory of gravity ever written, undefeated across four classical tests and a growing roster of strong-field and radiative ones. It is also a theory we know cannot be the final word, because it does not reconcile with quantum mechanics and it predicts its own breakdown at singularities. The classical tests are the foundation we build on with complete confidence — and the reminder that confidence about one regime never settles the next. The next topic, [the Schwarzschild metric](/relativity/the-schwarzschild-metric), takes the geometry that passed all four of these tests and follows it inward, to the horizon the weak-field measurements never reached.
+
+</Section>
+
+</TopicPageLayout>

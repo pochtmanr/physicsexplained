@@ -1,0 +1,117 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MetricComponentsScene } from "@/components/physics/the-schwarzschild-metric/metric-components-scene";
+import { OrbitExplorerScene } from "@/components/physics/the-schwarzschild-metric/orbit-explorer-scene";
+import { FlammParaboloidScene } from "@/components/physics/the-schwarzschild-metric/flamm-paraboloid-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Karl Schwarzschild", href: "/physicists/karl-schwarzschild" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "David Hilbert", href: "/physicists/david-hilbert" },
+  { type: "term", label: "Schwarzschild metric", href: "/dictionary/schwarzschild-metric" },
+  { type: "term", label: "Schwarzschild radius", href: "/dictionary/schwarzschild-radius" },
+  { type: "term", label: "Birkhoff's theorem", href: "/dictionary/birkhoffs-theorem" },
+  { type: "term", label: "Event horizon", href: "/dictionary/event-horizon" },
+  { type: "term", label: "Singularity", href: "/dictionary/singularity" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.39 · SCHWARZSCHILD + TESTS"
+  title="THE SCHWARZSCHILD METRIC"
+  subtitle="The first exact solution to Einstein's equations, solved in a trench in 1915."
+/>
+
+<Section index={1} title="A solution from the Russian front">
+
+Einstein published the field equations on November 25, 1915. Within weeks the first exact solution arrived — not from a university office, but from a German artillery position on the Eastern Front.
+
+<PhysicistLink slug="karl-schwarzschild" /> was forty-two, already director of the Potsdam Astrophysical Observatory, and one of the most respected astronomers in Germany. When the war broke out in 1914 he volunteered, despite being well past military age, and was posted to a unit computing artillery trajectories in Russia. There, in the winter cold, he read Einstein's new paper. He saw at once that the equations could be solved exactly in the simplest physically interesting case: the gravitational field outside a single, static, spherically symmetric mass — a star, idealized.
+
+He did it. In a letter dated December 22, 1915, he sent Einstein the solution. Einstein replied on January 9, 1916, expressing surprise that the equations admitted such a clean closed form, and presented Schwarzschild's paper to the Prussian Academy on his behalf. A second paper, on the interior solution for a fluid sphere, followed in February. Schwarzschild never came home. He had contracted pemphigus, a rare and then-incurable autoimmune blistering disease, in the trenches; he was invalided back to Germany and died on May 11, 1916, at forty-two. Einstein wrote his obituary.
+
+The geometry he found is the foundation of nearly everything in this module: the orbit of Mercury, the bending of starlight, the Shapiro radar delay, and — though Schwarzschild and Einstein both initially regarded it as a mathematical curiosity — the black hole. It is the most-used non-trivial solution in all of general relativity.
+
+</Section>
+
+<Section index={2} title="The line element, component by component">
+
+The Schwarzschild solution describes the spacetime *outside* a spherical mass $M$. In the coordinates Schwarzschild chose — a time $t$ measured by a clock at infinity, a radial coordinate $r$, and the usual angles $\theta, \phi$ — the <Term slug="metric-tensor" /> takes the form:
+
+<EquationBlock id="EQ.01">$$ds^2 = -\left(1 - \frac{r_s}{r}\right) c^2 dt^2 + \left(1 - \frac{r_s}{r}\right)^{-1} dr^2 + r^2\left(d\theta^2 + \sin^2\theta \, d\phi^2\right)$$</EquationBlock>
+
+Read it as a recipe for the squared spacetime interval $ds^2$ — the invariant "distance" between two nearby events — built from four coordinate steps. Far from the mass, $r_s/r \to 0$, every coefficient returns to its flat-space value, and the line element becomes ordinary Minkowski spacetime in spherical coordinates. The mass announces itself entirely through the factor $(1 - r_s/r)$.
+
+Each piece carries physical meaning. The time-time component, $g_{tt} = -(1 - r_s/r)$, governs <Term slug="proper-time" />: a clock held static at radius $r$ ticks at the rate $d\tau/dt = \sqrt{1 - r_s/r}$ relative to a clock at infinity. Lower the clock, and it runs slow — this is gravitational time dilation, the same effect that GPS satellites must correct for and that Pound and Rebka measured in a Harvard elevator shaft in 1960. The radial component, $g_{rr} = (1 - r_s/r)^{-1}$, stretches radial distances: the proper distance between two shells is *larger* than the difference in their $r$-coordinates would suggest. The angular part, $r^2(d\theta^2 + \sin^2\theta\,d\phi^2)$, is deceptively ordinary-looking — but note that $r$ is defined so that a sphere at coordinate $r$ has area $4\pi r^2$, *not* so that $r$ is the distance to the center. There is no "distance to the center" in any naive sense; the center is not part of the exterior solution.
+
+<Callout variant="intuition">
+The whole effect of gravity in this geometry is hidden in one factor, $1 - r_s/r$. It divides the time part and multiplies the radial part. Time slows; radial space stretches. Everything else — orbits, lensing, redshift — falls out of how that single factor bends clocks and rulers.
+</Callout>
+
+</Section>
+
+<Section index={3} title="The Schwarzschild radius and two kinds of singularity">
+
+The single length scale in the metric is the <Term slug="schwarzschild-radius" />:
+
+<EquationBlock id="EQ.02">$$r_s = \frac{2GM}{c^2}$$</EquationBlock>
+
+This is the radius at which the factor $(1 - r_s/r)$ hits zero — where, loosely, the escape velocity reaches the speed of light. Plug in numbers and it is astonishingly small. For the Sun, $r_s \approx 2.95$ km, buried 700,000 km deep inside the actual solar surface. For the Earth, $r_s \approx 8.9$ mm — the size of a marble. The exterior Schwarzschild solution only applies *outside* the mass, so for ordinary stars and planets the factor $(1 - r_s/r)$ never strays far from 1 and the corrections to Newton are tiny but measurable. Only if an object is compressed inside its own $r_s$ does the horizon become exposed.
+
+Look at the metric and two coefficients misbehave. As $r \to r_s$, the time coefficient $g_{tt} \to 0$ and the radial coefficient $g_{rr} \to \infty$. The infinity in $g_{rr}$ looks alarming — it was read for decades as a physical "Schwarzschild singularity" where space tears. It is nothing of the kind. It is a *coordinate* singularity, an artifact of a bad choice of ruler, exactly like the way longitude lines crowd to a meaningless infinity at the North Pole even though the planet's surface is perfectly smooth there. Switch to coordinates adapted to an infalling observer — Eddington–Finkelstein or Kruskal coordinates — and the metric is regular at $r = r_s$. An astronaut crossing the horizon notices nothing locally remarkable.
+
+The genuine singularity sits at $r = 0$. The way to tell the two apart is to compute a *scalar* built from the curvature — a number every observer agrees on, independent of coordinates. The Kretschmann scalar $K = R_{\alpha\beta\gamma\delta}R^{\alpha\beta\gamma\delta} = 12\,r_s^2/r^6$ is finite at the horizon (it equals $12/r_s^4$ there) but diverges as $r \to 0$. That divergence is real: tidal forces become infinite, and the classical theory breaks down. The $r=0$ <Term slug="singularity" /> is where general relativity confesses its own incompleteness.
+
+<SceneCard caption="FIG.39a — the two diagonal metric components plotted against radius (in units of r_s). The cyan curve −g_tt = 1 − r_s/r sinks smoothly to zero at the horizon — clocks freezing as seen from infinity, traced by the amber dotted time-dilation factor √(1 − r_s/r). The magenta curve g_rr = 1/(1 − r_s/r) rockets to infinity at r = r_s: the notorious 'blow-up.' Drag the r_s slider to rescale the mass, then flip to the infalling chart and watch the magenta spike collapse into a smooth, finite line straight through the horizon. The pathology was in the coordinates, never in the geometry.">
+  <MetricComponentsScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="Orbits — the effective potential and the ISCO">
+
+A test particle in Schwarzschild geometry follows a geodesic. Because the spacetime is static and spherically symmetric, two quantities are conserved along the orbit — an energy $E$ and an angular momentum $L$ — and the radial motion collapses to a single one-dimensional problem, exactly as in Newtonian central-force mechanics. The radial equation reads $(\frac{dr}{d\tau})^2 = E^2 - V_{\text{eff}}(r)$, with the relativistic effective potential
+
+<EquationBlock id="EQ.03">$$V_{\text{eff}}(r) = \left(1 - \frac{r_s}{r}\right)\left(1 + \frac{L^2}{m^2 c^2 r^2}\right)$$</EquationBlock>
+
+This is the energy landscape a particle climbs and descends as it moves in or out. The first factor is the gravitational well; the second is the centrifugal barrier from angular momentum. Multiply them out and, alongside the Newtonian terms, an extra piece appears: $-\,r_s L^2 / (m^2 c^2 r^3)$, falling off as $1/r^3$. That single GR correction is responsible for almost everything that distinguishes relativistic orbits from Kepler's.
+
+In Newtonian gravity the centrifugal barrier always wins at small $r$ — the potential rises without bound, and a particle with any angular momentum is turned away before reaching the center. In Schwarzschild geometry the $1/r^3$ term eventually overpowers the $1/r^2$ barrier, so for small enough angular momentum the barrier *disappears* and the particle plunges. Bound orbits no longer close: the ellipse precesses, its perihelion advancing each revolution — the effect that resolved [Mercury's anomaly](/relativity/mercurys-perihelion). And there is a hard limit on stable circular orbits. Solving $dV_{\text{eff}}/dr = 0$ shows that circular orbits exist only down to the **innermost stable circular orbit (ISCO)** at $r = 3\,r_s = 6GM/c^2$. Inside the ISCO there is no stable circular path at all — the physical basis for the inner edge of a black-hole accretion disk.
+
+<SceneCard caption="FIG.39b — the orbit explorer. On the left, the effective potential V_eff(r) for the angular momentum you dial in, with the Newtonian potential dashed behind it for contrast, a magenta energy line E², and markers for the stable minimum and the unstable centrifugal 'barrier' maximum. On the right, the same orbit live-integrated in the orbital plane around the central mass, with the horizon, photon sphere (1.5 r_s), and ISCO (3 r_s) drawn as reference rings. Push E² up to send the particle over the barrier and into a plunge; lower the angular momentum below ℓ = √3 and the barrier vanishes entirely. The precessing cyan rosette is Mercury, exaggerated.">
+  <OrbitExplorerScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Birkhoff's theorem — why this is the only answer">
+
+Schwarzschild assumed his mass was static — sitting still, not pulsating, not collapsing. A natural worry: what if the star *is* changing? A radially pulsating star, a collapsing one, a spherical shell that breathes in and out — surely those produce different, time-dependent exterior fields?
+
+They do not. In 1923 the American mathematician George Birkhoff proved a remarkable rigidity result, now called <Term slug="birkhoffs-theorem" />: *any* spherically symmetric solution of the vacuum field equations is necessarily static and is necessarily the Schwarzschild metric. Spherical symmetry alone forces the exterior to be Schwarzschild — the assumption of staticity was free all along.
+
+The consequences are sweeping. A spherically symmetric star can pulsate, collapse, or explode however it likes, and as long as the motion stays spherical, the gravitational field *outside* it does not change at all. There is no monopole gravitational radiation — a pulsating sphere broadcasts no gravitational waves, the exact analogue of the fact that a spherically symmetric charge distribution radiates no electromagnetic waves. It also means the field inside a spherical cavity, hollowed out at the center of a spherically symmetric mass, is perfectly flat: no gravity, the relativistic version of Newton's shell theorem. When a massive star collapses to a black hole, the outside world feels nothing new the instant the horizon forms — the field was already Schwarzschild.
+
+<Callout variant="math">
+Birkhoff's theorem is why the spacetime around the Sun can be treated as exactly Schwarzschild despite the Sun's churning convection and eleven-year magnetic cycle: those motions are very nearly spherical, and the spherical part of the field is frozen by the theorem. The classical tests of GR — perihelion, deflection, delay — all live in this Schwarzschild exterior, which is why one geometry, found in a trench in three weeks, underwrites a century of experiments.
+</Callout>
+
+</Section>
+
+<Section index={6} title="The picture, and what comes next">
+
+The "rubber sheet" picture of a heavy ball denting a trampoline is the most familiar image of curved spacetime — and the most misleading. It quietly uses gravity to make the ball roll downhill, which is circular. But there is an honest, exact version of the rubber sheet for the *spatial* part of Schwarzschild geometry: **Flamm's paraboloid**, $z(r) = 2\sqrt{r_s(r - r_s)}$, derived by Ludwig Flamm in 1916. It is the true shape of an equatorial slice of Schwarzschild *space*, embedded in flat 3-space — a funnel that becomes vertical at the horizon and flattens far away. It is geometry, not a force diagram, and it is space alone, frozen at one instant of Schwarzschild time. The curvature that actually makes apples fall lives in the time direction, not in this sheet.
+
+<SceneCard caption="FIG.39c — Flamm's paraboloid, the equatorial spatial slice of Schwarzschild geometry rendered as a wireframe funnel in oblique projection. Concentric rings mark constant radius; they sink toward a vertical throat at the horizon r = r_s, where the embedding slope goes to infinity, and flatten to the asymptotically flat plane far away. Slide the mass up and the well deepens and widens as r_s grows. This is the rubber sheet made mathematically exact — but remember it shows the geometry of space, not the spacetime curvature that produces free-fall.">
+  <FlammParaboloidScene />
+</SceneCard>
+
+Everything in the rest of this module unpacks from EQ.01. The precessing orbit of [Mercury's perihelion](/relativity/mercurys-perihelion) is the $1/r^3$ term in the effective potential. The [deflection and lensing of light](/relativity/light-deflection-and-lensing) is the same geometry applied to null geodesics, giving twice the Newtonian value. The [Shapiro delay](/relativity/shapiro-delay) is the extra coordinate time a radar pulse accumulates threading the stretched radial space near the Sun. Push the mass inside its own horizon and the same metric becomes [the event horizon](/relativity/the-event-horizon) and the gateway to black-hole physics. One solution, written by a dying man on a battlefield in three weeks, opened all of it.
+
+</Section>
+
+</TopicPageLayout>

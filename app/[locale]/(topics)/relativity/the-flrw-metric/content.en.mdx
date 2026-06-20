@@ -1,0 +1,122 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ExpandingGridScene } from "@/components/physics/the-flrw-metric/expanding-grid-scene";
+import { CurvatureGalleryScene } from "@/components/physics/the-flrw-metric/curvature-gallery-scene";
+import { CenterEverywhereScene } from "@/components/physics/the-flrw-metric/center-everywhere-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Alexander Friedmann", href: "/physicists/alexander-friedmann" },
+  { type: "physicist", label: "Georges Lemaître", href: "/physicists/georges-lemaitre" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "FLRW metric", href: "/dictionary/flrw-metric" },
+  { type: "term", label: "Scale factor", href: "/dictionary/scale-factor" },
+  { type: "term", label: "Comoving coordinates", href: "/dictionary/comoving-coordinates" },
+  { type: "term", label: "Cosmological redshift", href: "/dictionary/cosmological-redshift" },
+  { type: "term", label: "Metric tensor", href: "/dictionary/metric-tensor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.54 · COSMOLOGY"
+  title="THE FLRW METRIC"
+  subtitle="The geometry the universe picked out for itself."
+/>
+
+<Section index={1} title="The boldest assumption in physics">
+
+In 1917, two years after publishing the field equations, <PhysicistLink slug="albert-einstein" /> applied them to the whole universe. He wanted a model that was static — the prevailing picture in 1917 was a fixed, eternal cosmos — and he found that his own equations refused to give him one. Gravity is always attractive; a static universe full of matter must collapse. To hold it open he inserted a new term, the cosmological constant $\Lambda$, tuned by hand to exactly balance the pull of matter. It worked, barely, and it was unstable: the slightest nudge would set it expanding or collapsing.
+
+The man who took the equations seriously enough to let the universe move was a Russian mathematician and meteorologist, <PhysicistLink slug="alexander-friedmann" />. In 1922 and 1924, working from St. Petersburg with no astronomical motivation whatsoever, Friedmann asked a purely mathematical question: what are *all* the solutions of Einstein's equations for a universe filled uniformly with matter? He found that the generic answer is a universe whose size changes with time — expanding or contracting — and that Einstein's static case was a single knife-edge among a continuum of dynamic ones. Einstein, irritated, published a note claiming Friedmann had made an error, then retracted it when he realized the error was his own.
+
+Independently, in 1927, a Belgian priest and physicist named <PhysicistLink slug="georges-lemaitre" /> rediscovered the expanding solutions and went further: he connected them to the redshifts astronomers were already measuring in distant nebulae, and derived a linear velocity-distance relation two years before <PhysicistLink slug="edwin-hubble" /> measured it. Lemaître ran the expansion backward in time to a dense beginning he called the "primeval atom" — the first serious physical proposal for what we now call the Big Bang.
+
+The geometry underneath all of this — the line element that any homogeneous, isotropic universe must have — was put in its final, coordinate-clean form in the 1930s by the American Howard Robertson and the Englishman Arthur Walker. Their names, together with Friedmann's and Lemaître's, label the metric: <Term slug="flrw-metric" />, the Friedmann–Lemaître–Robertson–Walker line element. It is the stage on which all of modern cosmology is played.
+
+</Section>
+
+<Section index={2} title="Homogeneity and isotropy force the form">
+
+Cosmology rests on a single assumption, sometimes called the cosmological principle: on large enough scales, the universe is the same everywhere and looks the same in every direction. *Homogeneity* means no place is special — translate yourself a few hundred million light-years and the statistics of galaxies, gas, and radiation are unchanged. *Isotropy* means no direction is special — turn around and the view is statistically identical. Neither is true on small scales: the Earth is denser than interstellar space, and the night sky has a band of Milky Way across it. But average over volumes a few hundred megaparsecs across and the lumps wash out. The cosmic microwave background is isotropic to one part in $10^5$, which is the strongest direct evidence we have that the principle holds.
+
+Remarkably, those two assumptions are enough to fix the geometry almost completely. Homogeneity and isotropy demand that space can be sliced into a stack of three-dimensional surfaces, one for each value of a universal cosmic time $t$, and that each slice be *maximally symmetric* — the same at every point, in every direction. There are exactly three such spaces, distinguished by a single constant: the sign of their curvature. Space can be flat, positively curved (a 3-sphere, finite and unbounded), or negatively curved (a hyperbolic space, infinite). Nothing else is allowed.
+
+The whole dynamical content then collapses into one function of time, the <Term slug="scale-factor" /> $a(t)$, which says how big the spatial slices are at each moment. Write down the most general metric consistent with these symmetries and you get:
+
+<EquationBlock id="EQ.01">$$ds^2 = -c^2\,dt^2 + a(t)^2\left[\frac{dr^2}{1 - k r^2} + r^2\left(d\theta^2 + \sin^2\theta\, d\phi^2\right)\right]$$</EquationBlock>
+
+This says: the squared spacetime interval between two nearby events splits into a time part ($-c^2 dt^2$, identical to flat spacetime) and a space part. The space part is an ordinary spherical-coordinate distance, but multiplied by $a(t)^2$ — so the physical size of any fixed coordinate patch grows or shrinks with $a$ — and warped by the factor $1/(1 - k r^2)$, where $k \in \{-1, 0, +1\}$ sets the curvature. Pick $k = 0$ and the bracket is just flat 3-space scaled by $a(t)$; pick $k = \pm 1$ and you get the curved cases.
+
+<Callout variant="math">
+The two ingredients $a(t)$ and $k$ exhaust the freedom. $k$ is fixed once and for all — a universe born flat stays flat. $a(t)$ carries all the time evolution, and what it does is decided by the [Friedmann equations](/relativity/friedmann-equations), which feed the matter, radiation, and dark-energy content of the cosmos into Einstein's equations. The FLRW metric is the kinematics; Friedmann supplies the dynamics.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Comoving coordinates — galaxies that never move">
+
+The coordinate $r$ in the metric is a <Term slug="comoving-coordinates" /> coordinate, and it is the key to reading the whole subject correctly. A comoving coordinate is painted onto the expanding space like a label, and it never changes for an object that simply rides the expansion. A galaxy sitting at comoving radius $r = 5$ stays at $r = 5$ forever — its label is fixed — even as the *physical* distance to it grows because $a(t)$ grows. Galaxies are not flying apart through space. Space itself is getting bigger, and the galaxies are buoys anchored to it.
+
+The bridge between the two notions of distance is the scale factor. Define the comoving distance $\chi$ to an object as its fixed coordinate separation; then the proper (physical) distance you would measure with a chain of rulers laid end to end at cosmic time $t$ is
+
+<EquationBlock id="EQ.02">$$d_{\text{proper}}(t) = a(t)\,\chi$$</EquationBlock>
+
+In words: proper distance equals the scale factor times the unchanging comoving distance. Today we set $a(t_0) = 1$ by convention, so today's proper distance and comoving distance are numerically equal. In the past $a$ was smaller and everything was closer; in the future $a$ grows and everything spreads. Differentiate this and you get the Hubble law for free: $\dot{d} = \dot{a}\,\chi = (\dot{a}/a)\, d = H d$, where $H \equiv \dot{a}/a$ is the [Hubble parameter](/relativity/hubble-and-cosmological-redshift). The recession velocity is proportional to distance not because distant galaxies move faster, but because there is more expanding space between you and them.
+
+<SceneCard caption="FIG.54a — the expanding grid. Galaxies sit at fixed lattice points of a comoving grid; their coordinate labels never change. Drag the a(t) slider and the entire grid scales uniformly about the origin — the readouts show the comoving distance χ holding constant while the proper distance d = a·χ grows, and the Hubble recession v = H·d grows with it. The grid stretches; the galaxies ride it. Nothing in this picture is moving *through* space — which is exactly why two galaxies can recede from each other faster than light without anything traveling faster than light.">
+  <ExpandingGridScene />
+</SceneCard>
+
+This distinction dissolves the most common confusion in cosmology. When astronomers say galaxies recede faster than light at sufficient distance, no relativity is being violated: special relativity caps the speed of objects moving *through* space, while the FLRW metric describes space itself expanding, which carries no speed limit. The proper distance between two comoving points can grow arbitrarily fast, and routinely does for objects beyond the Hubble radius.
+
+</Section>
+
+<Section index={4} title="Three universes — the curvature k">
+
+The constant $k$ takes one of three values, and each gives a geometrically distinct universe. The cleanest way to see the difference is to draw a triangle.
+
+In a **flat** universe ($k = 0$) space obeys Euclid exactly: parallel lines stay parallel, the circumference of a circle is $2\pi r$, and the interior angles of a triangle sum to precisely $180°$. This is the geometry of everyday intuition, extended to cosmic scales. In a **closed** universe ($k = +1$) space is a three-dimensional analogue of a sphere's surface — finite in volume but with no edge and no centre. Triangles there bulge: their angles sum to *more* than $180°$, and if you travel far enough in a straight line you return to your starting point. In an **open** universe ($k = -1$) space is hyperbolic, shaped locally like a saddle; it is infinite, parallel lines diverge, and triangle angles sum to *less* than $180°$.
+
+The amount by which a triangle's angles miss $180°$ is not arbitrary — it is fixed exactly by the Gauss–Bonnet theorem:
+
+<EquationBlock id="EQ.03">$$\left(\alpha + \beta + \gamma\right) - \pi = K \cdot A, \qquad K = \frac{k}{a(t)^2}$$</EquationBlock>
+
+This says the angular excess of a geodesic triangle (its angle sum minus $\pi$) equals the Gaussian curvature $K$ of the slice times the triangle's area $A$. The curvature of an FLRW slice is $K = k/a^2$: its sign is set permanently by $k$, but its magnitude *dilutes* as the universe expands, because the same intrinsic curvature is spread over a larger $a$. A small triangle barely notices any of this — the excess scales with area — which is why local physics looks flat no matter what $k$ is.
+
+<SceneCard caption="FIG.54b — the curvature gallery. Three constant-curvature spatial slices side by side: open (k = −1, a saddle), flat (k = 0, a plane), and closed (k = +1, a sphere). One slider grows a geodesic triangle on all three at once, and the Gauss–Bonnet readout under each panel reports the interior angle sum. On the sphere it climbs above 180°; on the plane it sits at exactly 180°; on the saddle it falls below. The deviation grows with the triangle's area, vanishing for small triangles — which is why a surveyor on any of the three slices finds Euclid locally and only large-scale measurements can tell the universe's curvature apart.">
+  <CurvatureGalleryScene />
+</SceneCard>
+
+Which universe do we live in? The question is answered observationally, by measuring the apparent size of features whose true size we know — chiefly the hot and cold spots in the cosmic microwave background. A closed universe would magnify them; an open one would shrink them. The Planck satellite's 2018 results pin the curvature to $\Omega_k = 0.001 \pm 0.002$ — flat to within a fraction of a percent. As far as we can measure, $k = 0$. Why the universe should be so precisely flat is itself a deep puzzle, and the leading answer — cosmic inflation — is a story for another branch.
+
+</Section>
+
+<Section index={5} title="Stretching light and the center that is everywhere">
+
+The single most useful consequence of the FLRW metric concerns light. A photon emitted by a distant galaxy travels through expanding space, and its wavelength is carried along by the stretch. Because the wavelength is a physical length riding the grid, it grows in exact proportion to $a$. Compare the wavelength received now to the wavelength emitted then and you get the <Term slug="cosmological-redshift" />:
+
+<EquationBlock id="EQ.04">$$1 + z = \frac{a(t_{\text{now}})}{a(t_{\text{emit}})} = \frac{\lambda_{\text{observed}}}{\lambda_{\text{emitted}}}$$</EquationBlock>
+
+This says the redshift $z$ is set entirely by how much the universe has expanded since the light left, and by nothing else. It is *not* a Doppler shift — no velocity appears in the formula; only the ratio of scale factors does. A photon observed at $z = 1$ was emitted when the universe was half its present size; the cosmic microwave background, at $z \approx 1100$, was emitted when space was about $1100$ times smaller than today. Redshift is a direct, calibrated readout of the scale factor at the moment of emission — which makes it a cosmic clock and tape measure rolled into one.
+
+The expanding picture forces a conceptual point that trips up almost everyone. If everything is receding from us, are we at the center of the expansion? No — and the FLRW metric makes the reason precise. Homogeneity means *every* comoving observer sees exactly the same thing: everything receding, the farther the faster, by the same Hubble law. There is no special galaxy, no point from which the expansion began. The popular images — raisins in rising bread, dots on an inflating balloon — capture this if used honestly: pick any raisin, and all the others move away from it; pick any dot on the balloon, and it sees itself at the apparent center. The Big Bang was not an explosion *at a place* in a pre-existing space. It happened everywhere at once, because there was no "outside" for it to happen in.
+
+<SceneCard caption="FIG.54c — every observer is at the center. A fixed comoving cluster of galaxies, labeled A through J; the a(t) slider scales all their separations uniformly. The crucial control is the viewpoint toggle: choose any galaxy as 'you', and the scene re-centers on it and draws the recession arrows the rest of the cluster shows from that vantage. Switch from A to F to J — the pattern is identical every time: everything recedes, velocity grows with distance (v ∝ d), and the chosen galaxy sits at the apparent center. There is no privileged galaxy and no edge. This is the raisin-bread analogy done without cheating: the 'center' is an artifact of your own location, not a feature of the universe.">
+  <CenterEverywhereScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Why it matters — the stage for everything after">
+
+The FLRW metric is the foundation that the rest of cosmology is built on, and almost every later result is a corollary of equation EQ.01. It is the most successful single application of general relativity to the largest possible system — the cosmos as a whole — and it works astonishingly well: the same metric, with one function $a(t)$ and a single curvature constant, accounts for the redshifts of millions of galaxies, the expansion history, the existence and spectrum of the microwave background, and the abundances of the light elements.
+
+What comes next is supplying the dynamics. The metric tells you *how* an expanding universe is shaped; it does not tell you *what* $a(t)$ does. Plug EQ.01 into Einstein's field equations and out drop the [Friedmann equations](/relativity/friedmann-equations) — two ordinary differential equations that turn the universe's matter, radiation, and dark-energy budget into a definite expansion history. From there, the scale factor becomes a clock: tracking $1+z = 1/a$ backward leads to [Hubble's law and the cosmological redshift](/relativity/hubble-and-cosmological-redshift) as a present-day measurement, and further back to the hot, dense early universe where the microwave background and the light elements were forged.
+
+Everything cosmology has measured in the last century — the age of the universe, its composition, its fate — lives inside this one line element and the function $a(t)$ that runs through it. Homogeneity and isotropy, two assumptions a meteorologist wrote down in 1922 for the fun of solving an equation, turned out to be the shape the universe actually chose.
+
+</Section>
+
+</TopicPageLayout>

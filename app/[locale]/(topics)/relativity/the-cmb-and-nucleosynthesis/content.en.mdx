@@ -1,0 +1,128 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FirasBlackbodyScene } from "@/components/physics/the-cmb-and-nucleosynthesis/firas-blackbody-scene";
+import { CosmicTimelineScene } from "@/components/physics/the-cmb-and-nucleosynthesis/cosmic-timeline-scene";
+import { BbnBaryonDensityScene } from "@/components/physics/the-cmb-and-nucleosynthesis/bbn-baryon-density-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Arno Penzias", href: "/physicists/arno-penzias" },
+  { type: "physicist", label: "Georges Lemaître", href: "/physicists/georges-lemaitre" },
+  { type: "physicist", label: "Alexander Friedmann", href: "/physicists/alexander-friedmann" },
+  { type: "term", label: "Cosmic microwave background", href: "/dictionary/cosmic-microwave-background" },
+  { type: "term", label: "Big Bang nucleosynthesis", href: "/dictionary/big-bang-nucleosynthesis" },
+  { type: "term", label: "Recombination", href: "/dictionary/recombination" },
+  { type: "term", label: "Cosmological redshift", href: "/dictionary/cosmological-redshift" },
+  { type: "term", label: "Scale factor", href: "/dictionary/scale-factor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.57 · COSMOLOGY"
+  title="THE CMB AND BIG BANG NUCLEOSYNTHESIS"
+  subtitle="The leftover heat and the first three minutes' worth of helium."
+/>
+
+<Section index={1} title="A hiss that would not go away">
+
+In 1964 two radio astronomers at Bell Telephone Laboratories in Holmdel, New Jersey, were trying to do something mundane. <PhysicistLink slug="arno-penzias" /> and Robert Wilson had inherited a 20-foot horn-reflector antenna, built to bounce signals off the Echo balloon satellites, and they wanted to turn it into a precision radio telescope. To do that they had to account for every source of noise in the system. They found one they could not get rid of: a faint, steady hiss, the same in every direction of the sky, the same by day and by night, the same across the seasons. It corresponded to an excess antenna temperature of about 3.5 kelvin that no amount of engineering could remove.
+
+They checked everything. They cooled their reference load with liquid helium. They evicted a pair of pigeons that had nested in the throat of the horn and scrubbed out what Penzias diplomatically called "a white dielectric material." The hiss remained. It was isotropic — identical in all directions — which ruled out any source on Earth, in the Galaxy, or in the solar system. A localized source would have brightened and faded as the antenna swept past it. This did not.
+
+Forty miles away at Princeton, Robert Dicke, Jim Peebles, and their group were preparing to *look* for exactly such a signal. They had reasoned that if the universe began hot and dense, as <PhysicistLink slug="georges-lemaitre" />'s "primeval atom" and the expanding-universe models of <PhysicistLink slug="alexander-friedmann" /> suggested, then the early fireball should have left behind a bath of radiation, now cooled by the expansion to a few degrees above absolute zero. When Dicke took the phone call from Penzias, he hung up and told his team: "Boys, we've been scooped." The two groups published back-to-back in 1965 — Penzias and Wilson reporting the measurement in barely six hundred words, Dicke's group supplying the cosmological interpretation. Penzias and Wilson shared the 1978 Nobel Prize.
+
+What they had stumbled onto was the <Term slug="cosmic-microwave-background" /> — the oldest light in the universe, released when the cosmos was 380,000 years old, redshifted across 13.8 billion years into the microwave band. It is the single most important observational pillar of hot Big Bang cosmology, and it had been sitting in their data as an annoyance they could not explain.
+
+</Section>
+
+<Section index={2} title="The most perfect blackbody ever measured">
+
+The radiation Penzias and Wilson found is not just isotropic; it has a spectrum, and the spectrum is the signature of thermal equilibrium. In the hot early universe, photons scattered off free electrons so often that matter and radiation shared a single temperature. Radiation in equilibrium with matter has a unique spectrum — the Planck blackbody curve — fixed entirely by one number, the temperature:
+
+<EquationBlock id="EQ.01">$$B_\nu(T) = \frac{2 h \nu^3}{c^2} \, \frac{1}{e^{h\nu / k_B T} - 1}$$</EquationBlock>
+
+This is the Planck law: it gives the intensity $B_\nu$ of blackbody radiation at frequency $\nu$ and temperature $T$, with $h$ Planck's constant, $k_B$ Boltzmann's constant, and $c$ the speed of light. The shape is fixed; only the temperature can change, and the temperature sets where the curve peaks. The CMB peaks near 160 GHz, a wavelength of about one millimeter — squarely in the microwave.
+
+In 1990 the COBE satellite's FIRAS instrument measured this spectrum and produced what may be the most famous plot in cosmology. When John Mather presented it to the American Astronomical Society, the data points fell so exactly on the theoretical Planck curve that the error bars were smaller than the width of the line drawn through them, and the audience gave a standing ovation. The measured temperature is
+
+<EquationBlock id="EQ.02">$$T_0 = 2.72548 \pm 0.00057 \ \text{K}.$$</EquationBlock>
+
+This says the present-day CMB is a blackbody at 2.725 kelvin, known to better than a thousandth of a degree. No laboratory blackbody has ever matched a theoretical Planck spectrum this precisely. The deviations are below 50 parts per million across the whole band — the universe is a more perfect blackbody than anything we can build.
+
+<SceneCard caption="FIG.57a — the most perfect blackbody ever measured. The cyan curve is the Planck spectrum B_ν(T) for a temperature you control; the amber points are the COBE/FIRAS measurements, fixed forever at 2.725 K. To make the data legible at all, the error bars are magnified by a few hundredfold — at true scale they are thinner than the curve's own stroke. Drag the temperature slider even a few percent off 2.725 K and watch the model curve march away from data that will not move. The lesson is the tightness of the fit: the early universe really was in thermal equilibrium, and we have measured its leftover temperature to four significant figures.">
+  <FirasBlackbodyScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Why the spectrum proves a hot beginning">
+
+A blackbody spectrum is hard to fake. Starlight reprocessed by dust, light from distant galaxies, synchrotron emission from the Galaxy — none of these produce a Planck curve. A perfect blackbody requires radiation that has been in thermal equilibrium with matter, scattering enough times to forget where it came from. In the universe today, space is far too empty for that. The only epoch dense and hot enough to thermalize radiation across the whole sky was the early, compressed cosmos. The blackbody spectrum is therefore a fossil of an era when the entire universe was an opaque, glowing plasma.
+
+The expansion preserves the blackbody character. As space stretches by the <Term slug="scale-factor" /> $a$, every photon wavelength stretches with it, and the whole Planck spectrum is shifted coherently to lower frequencies — which is mathematically identical to cooling a blackbody. The temperature falls in inverse proportion to the scale factor, and in terms of <Term slug="cosmological-redshift" /> $z$ (where $1 + z = 1/a$):
+
+<EquationBlock id="EQ.03">$$T(z) = T_0 \, (1 + z).$$</EquationBlock>
+
+This says the CMB was hotter in the past by exactly the factor $(1+z)$ that measures how much the universe has expanded since. At the redshift of last scattering, $z \approx 1100$, the temperature was about 3000 K — and at that point the photons we now see were emitted. A direct test of this relation comes from molecular clouds in distant galaxies: the CMB at their redshift excites their molecules to a higher temperature, and the measured excitation temperatures track $T_0(1+z)$ across billions of years. The hot Big Bang is not an assumption; it is something the data confirm at every redshift we can reach.
+
+</Section>
+
+<Section index={4} title="Recombination and the surface of last scattering">
+
+Run the clock backward and the universe gets hotter. Above about 3000 K, photons carry enough energy to knock electrons off any hydrogen atom the moment one forms. The universe is a plasma of free protons, free electrons, and photons, and free electrons are superb at scattering light. A photon could travel only a short distance before being deflected; the universe was opaque, a glowing fog, like the interior of the Sun.
+
+As the universe expanded and cooled past roughly 3000 K — at a cosmic age near 380,000 years — the photons finally lacked the energy to keep hydrogen ionized. Electrons and protons combined into neutral atoms, a process cosmologists call <Term slug="recombination" /> (a slight misnomer, since they were never combined before). With the free electrons swept up into atoms, there was nothing left to scatter the light. The fog cleared in a cosmological instant. The photons streamed off in straight lines and have been traveling, essentially undisturbed, ever since.
+
+<SceneCard caption="FIG.57b — the cosmic timeline, from one second to 380,000 years. Drag the logarithmic time slider through the radiation era. The magenta curve is the falling photon temperature; the strip above it is the universe's opacity. For the whole journey it stays amber — OPAQUE, photons trapped and rescattered in the ionized plasma — until the slider crosses recombination at about 380,000 years, where the strip turns cyan and TRANSPARENT. The readout names what exists at each instant: the frozen neutron-to-proton ratio at one second, the forging of helium at three minutes, and finally the release of the light we now see as the CMB. Everything to the left of that cyan line is hidden from us; the CMB is the wall.">
+  <CosmicTimelineScene />
+</SceneCard>
+
+This is why the CMB is described as coming from a *surface of last scattering*. It is not a surface in space but in time — the moment, the same everywhere, when each photon scattered for the last time. When we look at the CMB we are looking back to that instant, in every direction, at a glowing shell 13.8 billion light-years away. It is the most distant thing we can ever see with light: before recombination the universe was opaque, so no photon can carry information from earlier than this. The CMB is a literal horizon on our optical view of the past.
+
+<Callout variant="intuition">
+The CMB is a baby photograph of the universe taken at 380,000 years of age — and because the speed of light is finite, we are still receiving it. The fog of the plasma era is the reason we cannot see any earlier with light. To see behind that wall we need neutrinos or gravitational waves, which decoupled far earlier.
+</Callout>
+
+The photograph is not perfectly uniform. After COBE confirmed the 2.725 K blackbody, it also detected ripples: temperature variations of about one part in 100,000 — $\Delta T / T \sim 10^{-5}$ — across the sky. WMAP and the Planck satellite later mapped these anisotropies in exquisite detail. Those tiny ripples are the seeds of all structure: the slightly denser patches were the gravitational wells into which gas later fell to form galaxies and clusters. The CMB encodes both the smoothness of the early universe and the imperfections that grew into everything.
+
+</Section>
+
+<Section index={5} title="The first three minutes: forging helium">
+
+The CMB tells us the universe was once hot. Push earlier — to the first few minutes, when the temperature was billions of kelvin — and that heat does nuclear work. This is <Term slug="big-bang-nucleosynthesis" /> (BBN), the period when the universe forged the light elements, and its central prediction is starkly simple: about one quarter of all ordinary matter, by mass, should be helium-4.
+
+The reasoning is a chain of clocks. At one second, when the temperature was about 0.7 MeV (some $10^{10}$ K), the weak interactions that interconvert neutrons and protons could no longer keep up with the expansion. The neutron-to-proton ratio froze. In equilibrium that ratio is set by the neutron-proton mass difference $Q = (m_n - m_p)c^2 = 1.293$ MeV through a Boltzmann factor:
+
+<EquationBlock id="EQ.04">$$\frac{n_n}{n_p} = e^{-Q / k_B T_f} \approx \frac{1}{6} \quad \text{at} \quad T_f \approx 0.7 \ \text{MeV}.$$</EquationBlock>
+
+This says that because neutrons are slightly heavier than protons, equilibrium slightly disfavors them, and at freeze-out there is roughly one neutron for every six protons. The ratio then drifted: free neutrons decay with a lifetime of about 879 seconds, and during the few-minute wait before fusion could begin, enough decayed to lower the ratio to roughly one in seven.
+
+The wait existed because of a bottleneck. The first step toward helium is forming deuterium, $p + n \to {}^2\text{H} + \gamma$, but the early universe was so flooded with energetic photons — about $10^9$ of them for every baryon — that any deuterium nucleus was photo-dissociated the instant it formed. Only when the temperature dropped below about 0.1 MeV, near three minutes, did the photons soften enough for deuterium to survive. Then fusion ran almost to completion in minutes: essentially every available neutron was swept into a helium-4 nucleus, the most tightly bound light nucleus. With one neutron per seven protons, the bookkeeping gives a helium mass fraction
+
+<EquationBlock id="EQ.05">$$Y_p = \frac{2(n_n/n_p)}{1 + n_n/n_p} \approx \frac{2 \cdot (1/7)}{1 + 1/7} = 0.25.$$</EquationBlock>
+
+This says that pairing each neutron with a proton inside helium-4, and counting two of helium's four nucleons as neutrons, fixes the helium fraction at about a quarter of all ordinary matter by mass — using nothing but the frozen-out neutron ratio. The observed primordial helium abundance is $Y_p \approx 0.247$. That a calculation resting on nuclear and weak-interaction physics, applied to the first three minutes, predicts the helium content of the universe to within a percent is one of the great quantitative triumphs of twentieth-century physics.
+
+<Callout variant="math">
+BBN also produces trace amounts of deuterium, helium-3, and lithium-7, but essentially no carbon or anything heavier: there are no stable nuclei of mass 5 or 8, so the chain stalls at helium and the universe runs out of density before it can leap the gap. Every heavier element — the carbon in your cells, the oxygen you breathe, the iron in your blood — was made later, in stars and supernovae. The Big Bang made the hydrogen and helium; stars made the rest.
+</Callout>
+
+</Section>
+
+<Section index={6} title="The baryometer, and what comes next">
+
+The helium prediction has a second, subtler power. The exact yields of BBN depend on the density of ordinary matter — specifically on the baryon-to-photon ratio $\eta$, the number of baryons per photon. More baryons mean deuterium forms a little earlier, leaving slightly more helium; but the dependence of helium on $\eta$ is famously *weak*, only logarithmic. The light elements that depend sharply on $\eta$ are deuterium and lithium, which makes the measured deuterium abundance an exquisite **baryometer** — a way to weigh all the ordinary matter in the universe from the first three minutes alone.
+
+<SceneCard caption="FIG.57c — the BBN baryometer. The cyan curve is the predicted primordial helium fraction Y_p as a function of the baryon-to-photon ratio η₁₀ = η × 10¹⁰, on a logarithmic axis. Notice how nearly flat it is: a factor-of-ten change in the baryon density moves the helium fraction by barely a percent. The amber horizontal band is the observed helium abundance; the magenta vertical band is the baryon density the Planck satellite measured from the CMB anisotropies, decades later and by completely independent physics. They cross. Drag η and watch the prediction track the data. That two utterly different measurements — the chemistry of the first three minutes and the ripples in 380,000-year-old light — agree on the same baryon count is the concordance that anchors hot Big Bang cosmology.">
+  <BbnBaryonDensityScene />
+</SceneCard>
+
+The triumph is the agreement. BBN, applied to the deuterium and helium abundances measured in the most pristine gas clouds we can find, pins the baryon density of the universe to $\eta_{10} \approx 6$. The CMB anisotropy spectrum — the relative heights of the acoustic peaks in those one-part-in-100,000 ripples — independently measures the same quantity, and gets the same answer. Two probes separated by 380,000 years of cosmic history, governed by different physics, converge on one number. That concordance is what turned the hot Big Bang from a hypothesis into a measured, quantitative framework. It also delivers a hard verdict: ordinary baryonic matter makes up only about 5% of the universe's energy budget. The rest is something else.
+
+Both pillars trace back to the same source. The CMB temperature scaling $T \propto (1+z)$ and the very existence of a hot, dense early era are consequences of the expanding solutions to Einstein's equations — the [Friedmann equations](/relativity/friedmann-equations) applied to a radiation-filled universe, with the [FLRW metric](/relativity/the-flrw-metric) supplying the geometry that stretches the photons and cools the bath. And the unfinished business — that baryons account for only a twentieth of the budget, with the rest hidden as something that neither shines nor scatters — is the doorway to [dark matter and dark energy](/relativity/dark-matter-and-dark-energy), where the story of what the universe is actually made of becomes far stranger.
+
+</Section>
+
+</TopicPageLayout>
