@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CoinMultiplicityScene } from "@/components/physics/microstates-and-macrostates/coin-multiplicity-scene";
+import { TwoBoxGasScene } from "@/components/physics/microstates-and-macrostates/two-box-gas-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Ludwig Boltzmann", href: "/physicists/ludwig-boltzmann" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Microstate", href: "/dictionary/microstate" },
+  { type: "term", label: "Macrostate", href: "/dictionary/macrostate" },
+  { type: "term", label: "Multiplicity", href: "/dictionary/multiplicity" },
+  { type: "term", label: "Fundamental postulate", href: "/dictionary/fundamental-postulate-of-statistical-mechanics" },
+  { type: "term", label: "Ensemble", href: "/dictionary/ensemble" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.11 · ENTROPY & TIME"
+  title="MICROSTATES AND MACROSTATES"
+  subtitle="You never see ten heads — there's only one way to do it and a hundred others not to."
+/>
+
+<Section index={1} title="Ten coins on the table">
+
+Toss ten coins. Count the heads. You will almost always get four, five, or six; you will almost never get ten. Nothing in the laws of physics forbids ten heads — each coin is fair, each sequence HHHHHHHHHH and HTHTHHTHTH is exactly as likely as any other. The asymmetry is not about the *sequences*. It is about how many sequences belong to each *count*.
+
+The exact arrangement of all ten coins — this one heads, that one tails, in order — is a <Term slug="microstate" />. The thing you actually bothered to record, "five heads," is a <Term slug="macrostate" />. A single macrostate is a label for an entire family of microstates that look the same from the outside. And those families are wildly unequal in size:
+
+<EquationBlock id="EQ.01">$$\Omega(N,k) = \binom{N}{k} = \frac{N!}{k!\,(N-k)!}$$</EquationBlock>
+
+The number of microstates in a macrostate is its <Term slug="multiplicity" /> $\Omega$. For ten coins, "ten heads" has $\Omega = \binom{10}{10} = 1$, while "five heads" has $\Omega = \binom{10}{5} = 252$. You see five-ish heads not because the universe prefers it, but because there are two hundred and fifty-two ways to be five and only one way to be ten. Thermodynamics is this single idea, scaled up to $10^{23}$ coins.
+
+</Section>
+
+<Section index={2} title="A microstate for a real gas">
+
+Replace coins with molecules. A microstate of a gas is a complete specification of every molecule's position and velocity — all six numbers, $(x, y, z, v_x, v_y, v_z)$, for each of the $\sim 10^{24}$ molecules in a mole. It is a single point in a phase space of $6 \times 10^{24}$ dimensions, and it is utterly inaccessible: no instrument can read it, and it changes completely on the timescale of a molecular collision, $\sim 10^{-13}$ seconds.
+
+A macrostate, by contrast, is what a laboratory can measure: the pressure $P$, the volume $V$, the temperature $T$, the number of particles $N$. Four numbers, give or take, standing in for $10^{24}$. The entire project of statistical mechanics is to connect the two — to explain the handful of macroscopic numbers as the overwhelmingly probable consequence of counting the microscopic ones.
+
+The leap of faith that makes the bridge stable is deferred to [Ludwig Boltzmann](/physicists/ludwig-boltzmann)'s formula in the [next topic](/thermodynamics/boltzmanns-entropy-formula). Here we only need to learn to count.
+
+</Section>
+
+<Section index={3} title="The multiplicity Ω">
+
+Multiplicity is the engine of the whole subject, so it is worth being concrete about what it counts. For the two-state problem — heads/tails, spin up/down, left-half/right-half — a macrostate is fixed by saying how many of the $N$ objects are in the first state. The count of microstates is then the binomial coefficient $\binom{N}{k}$, the number of ways to choose *which* $k$ of the $N$ objects are in that state.
+
+Multiplicities grow with terrifying speed. Twenty coins: "ten heads" has $\binom{20}{10} = 184{,}756$ microstates; "twenty heads" still has exactly one. A hundred coins: the central macrostate has $\binom{100}{50} \approx 1.01 \times 10^{29}$. The factorials in $\Omega$ outrun every other quantity in physics — which is precisely why entropy, their logarithm, is so well-behaved.
+
+<Callout variant="intuition">
+A macrostate is a *description*; a microstate is a *configuration*. The number of configurations matching a description is its multiplicity — and macrostates with more configurations are not preferred, only more numerous.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The fundamental postulate">
+
+What licenses us to count microstates as though each were equally likely? A single assumption, the load-bearing wall of statistical mechanics:
+
+> **The <Term slug="fundamental-postulate-of-statistical-mechanics" />:** all microstates of an isolated system in equilibrium are equally probable.
+
+It looks innocent, almost like a definition of ignorance, and in a sense it is — it says we have no reason to favour one accessible microstate over another, so we favour none. But its consequences are not innocent at all. If every microstate is equally probable, then the probability of a macrostate is just its share of the total microstate count:
+
+<EquationBlock id="EQ.02">$$P(\text{macrostate}) = \frac{\Omega(\text{macrostate})}{\Omega_{\text{total}}}, \qquad P(N,k) = \frac{1}{2^N}\binom{N}{k}$$</EquationBlock>
+
+The probability of finding $k$ of $N$ molecules on the left is the multiplicity of that split divided by $2^N$, the total over all splits. Everything thermodynamic — why heat flows from hot to cold, why gases fill their containers, why the entropy of an isolated system can only grow — is this equation, read for systems too large to ever fluctuate appreciably.
+
+</Section>
+
+<Section index={5} title="Why we always see large Ω">
+
+Suppose one macrostate has $\Omega = 10^{20}$ microstates and a competitor has $\Omega = 10$. With every microstate equally likely, the system spends a fraction $10/(10^{20}+10) \approx 10^{-19}$ of its time in the second. Not zero — just so close to zero that you would wait many ages of the universe to catch it there. The low-multiplicity macrostate is not forbidden. It is *overwhelmed*.
+
+The coin histogram below makes the overwhelming visible. Toss $N$ fair coins thousands of times and tally the heads count; the bars pile up into a bell. Slide $N$ upward and watch the peak sharpen — and notice the crucial subtlety: the bell does not get narrower in absolute terms. Its width grows. What collapses is the width *relative* to the mean.
+
+<SceneCard caption="FIG.11a — Toss N fair coins, over and over, and histogram the heads count (cyan bars). The amber curve is the Gaussian limit √(2/πN)·exp(−2(k−N/2)²/N) that the binomial collapses onto. Drag N from 10 to 1000: the absolute width √N/2 grows, but the relative width 1/√N shrinks, so the distribution tightens around N/2. Reset clears the tally.">
+  <CoinMultiplicityScene />
+</SceneCard>
+
+The bell is no accident. For large $N$ the binomial $\binom{N}{k}/2^N$ converges — this is the de Moivre–Laplace theorem, the oldest instance of the central limit theorem — to a Gaussian centred at $N/2$ with standard deviation
+
+<EquationBlock id="EQ.03">$$\sigma = \sqrt{N/4} = \frac{\sqrt{N}}{2}, \qquad \frac{\sigma}{\langle k\rangle} = \frac{1}{\sqrt{N}}.$$</EquationBlock>
+
+The mean number of heads is $N/2$; the typical fluctuation about it is $\sqrt{N}/2$. The ratio of the two — the size of a *relative* deviation you should expect to see — falls off as $1/\sqrt{N}$.
+
+</Section>
+
+<Section index={6} title="The two-box gas">
+
+Now drop the coins and let molecules bounce. The box below is a single container, notionally split down the middle, with nothing physical stopping a molecule from crossing. The live histogram records how many molecules sit in the left half, frame after frame. The macrostate "$k$ on the left" again has multiplicity $\binom{N}{k}$, peaked at $k = N/2$.
+
+<SceneCard caption="FIG.11b — N molecules bounce freely in a box split at the centre line; the histogram on the right tallies the left-half occupancy over time. For N = 10 the fraction swings wildly between 0.2 and 0.8 — small numbers fluctuate. Slide N to 500 and the histogram welds itself to ½, because the relative spread is 1/(2√N). No wall enforces the even split; it simply has overwhelmingly the most microstates.">
+  <TwoBoxGasScene />
+</SceneCard>
+
+Watch the small-$N$ gas and you will see the second law *fail*, briefly and constantly: now sixty per cent on the left, now thirty, a visible breeze of fluctuation. This is not a flaw in the simulation; it is real physics. A box of ten molecules genuinely does un-mix itself every few seconds. The reason we never see a roomful of air rush into one corner is purely a matter of size. For $N = 10^{23}$, the relative fluctuation $1/(2\sqrt{N})$ is about $10^{-12}$ — a deviation of one part in $10^{11}$ would already be a once-in-the-history-of-the-cosmos event. The arrow of the second law is sharp not because the underlying rule is strict, but because the numbers are large.
+
+</Section>
+
+<Section index={7} title="What's next — from counting to entropy">
+
+We now have a microscopic quantity, the multiplicity $\Omega$, that grows when a system spreads into more configurations and that pins large systems to their most probable macrostate. It behaves exactly as entropy behaves: it increases, it is maximal at equilibrium, it is a property of the macrostate rather than the microstate. The resemblance is not a coincidence.
+
+In 1877 [Ludwig Boltzmann](/physicists/ludwig-boltzmann) wrote down the bridge in a single line — $S = k \log W$ — and turned the entropy of [heat-over-temperature](/thermodynamics/entropy-and-the-clausius-inequality) into a [count of arrangements](/thermodynamics/boltzmanns-entropy-formula). From there it is a short step to the deepest statement of all: that the [arrow of time](/thermodynamics/the-arrow-of-time) itself is just multiplicity, increasing.
+
+</Section>
+
+</TopicPageLayout>
