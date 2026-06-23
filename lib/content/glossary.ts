@@ -3888,6 +3888,113 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
     ],
   },
+  // ─── Module 4 Entropy & the Arrow of Time (thermo sprint 2026-06-20)
+  {
+    slug: "microstate",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "microstates-and-macrostates" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "macrostate",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "microstates-and-macrostates" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "multiplicity",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "microstates-and-macrostates" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "fundamental-postulate-of-statistical-mechanics",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "microstates-and-macrostates" },
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+    ],
+  },
+  {
+    slug: "ensemble",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "microstates-and-macrostates" },
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+    ],
+  },
+  {
+    slug: "boltzmann-constant",
+    category: "unit",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "boltzmann-entropy-formula",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+      { branchSlug: "thermodynamics", topicSlug: "microstates-and-macrostates" },
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "extensive-quantity",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "intensive-quantity",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "arrow-of-time",
+    category: "concept",
+    relatedPhysicists: ["arthur-eddington"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "loschmidt-paradox",
+    category: "concept",
+    relatedPhysicists: ["josef-loschmidt"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "past-hypothesis",
+    category: "concept",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "maxwells-demon",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

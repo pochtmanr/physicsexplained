@@ -1659,6 +1659,28 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SupercoolingScene: lazyScene(() =>
     import("@/components/physics/phase-changes-and-latent-heat/supercooling-scene").then((m) => ({ default: m.SupercoolingScene })),
   ),
+  // ─── Module 4 Entropy & the Arrow of Time (thermo sprint 2026-06-20)
+  CoinMultiplicityScene: lazyScene(() =>
+    import("@/components/physics/microstates-and-macrostates/coin-multiplicity-scene").then((m) => ({ default: m.CoinMultiplicityScene })),
+  ),
+  TwoBoxGasScene: lazyScene(() =>
+    import("@/components/physics/microstates-and-macrostates/two-box-gas-scene").then((m) => ({ default: m.TwoBoxGasScene })),
+  ),
+  BoltzmannTombstoneScene: lazyScene(() =>
+    import("@/components/physics/boltzmanns-entropy-formula/boltzmann-tombstone-scene").then((m) => ({ default: m.BoltzmannTombstoneScene })),
+  ),
+  MultiplicityToEntropyScene: lazyScene(() =>
+    import("@/components/physics/boltzmanns-entropy-formula/multiplicity-to-entropy-scene").then((m) => ({ default: m.MultiplicityToEntropyScene })),
+  ),
+  ReversibleMoviesScene: lazyScene(() =>
+    import("@/components/physics/the-arrow-of-time/reversible-movies-scene").then((m) => ({ default: m.ReversibleMoviesScene })),
+  ),
+  LoschmidtReversalScene: lazyScene(() =>
+    import("@/components/physics/the-arrow-of-time/loschmidt-reversal-scene").then((m) => ({ default: m.LoschmidtReversalScene })),
+  ),
+  MaxwellsDemonScene: lazyScene(() =>
+    import("@/components/physics/the-arrow-of-time/maxwells-demon-scene").then((m) => ({ default: m.MaxwellsDemonScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

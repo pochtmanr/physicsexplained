@@ -1,0 +1,114 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { ReversibleMoviesScene } from "@/components/physics/the-arrow-of-time/reversible-movies-scene";
+import { LoschmidtReversalScene } from "@/components/physics/the-arrow-of-time/loschmidt-reversal-scene";
+import { MaxwellsDemonScene } from "@/components/physics/the-arrow-of-time/maxwells-demon-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Arthur Eddington", href: "/physicists/arthur-eddington" },
+  { type: "physicist", label: "Josef Loschmidt", href: "/physicists/josef-loschmidt" },
+  { type: "physicist", label: "Ernst Zermelo", href: "/physicists/ernst-zermelo" },
+  { type: "term", label: "Arrow of time", href: "/dictionary/arrow-of-time" },
+  { type: "term", label: "Loschmidt's paradox", href: "/dictionary/loschmidt-paradox" },
+  { type: "term", label: "Poincaré recurrence", href: "/dictionary/poincare-recurrence" },
+  { type: "term", label: "Past hypothesis", href: "/dictionary/past-hypothesis" },
+  { type: "term", label: "Maxwell's demon", href: "/dictionary/maxwells-demon" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.13 · ENTROPY & TIME"
+  title="THE ARROW OF TIME"
+  subtitle="Why a smashing glass never reassembles, though no law of motion forbids it."
+/>
+
+<Section index={1} title="A movie you can run backward — and one you can't">
+
+Film a few billiard balls colliding and play the reel backward. Nothing looks wrong: every collision in reverse is still an elastic collision, every trajectory still obeys Newton. Now film a wine glass falling off a table and shattering, and play *that* backward. Shards leap off the floor, gather themselves into a vessel, and hop up onto the table. Everyone in the room laughs, because everyone knows it never happens. Yet the second movie is made of nothing but the first — atoms colliding — and not one of those collisions is illegal in reverse.
+
+<SceneCard caption="FIG.13a — Two movies. Left: elastic billiard collisions. Press ⇄ and the reel runs backward; it is just as lawful, because elastic collisions are time-symmetric. Right: a wine glass shatters. Forward, it is ordinary; backward, the shards leap up and reassemble — absurd. Same microscopic laws, opposite verdicts. The difference is entropy: shattering multiplies the number of microstates astronomically, and the reverse path is one configuration in unthinkably many.">
+  <ReversibleMoviesScene />
+</SceneCard>
+
+This is the deepest puzzle in thermodynamics. The fundamental laws — Newton's, <PhysicistLink slug="james-clerk-maxwell" />'s electromagnetism, Schrödinger's equation — are all invariant under time reversal $t \to -t$. Newton's second law,
+
+<EquationBlock id="EQ.01">$$\mathbf{F} = m\,\frac{\mathrm{d}^2 \mathbf{x}}{\mathrm{d}t^2},$$</EquationBlock>
+
+contains $t$ only squared, so replacing $t$ with $-t$ leaves it untouched: any solution run backward is also a solution. The microscopic world has no preferred direction. And yet the macroscopic world is drenched in direction — we remember the past and not the future, we age, eggs scramble and never unscramble. The English astrophysicist <PhysicistLink slug="arthur-eddington" /> gave the puzzle its name in 1927: the "<Term slug="arrow-of-time" />," which he said is "a property of entropy alone."
+
+</Section>
+
+<Section index={2} title="The arrow is statistical, not dynamical">
+
+The resolution begins with a distinction that the [microstate picture](/thermodynamics/microstates-and-macrostates) makes precise. The laws of motion are reversible, but the *behaviour of large collections* is not — not because any new law intervenes, but because of overwhelming numbers. A shattered glass corresponds to vastly more microstates than an intact one; a scrambled egg to vastly more than a whole one. Entropy, $S = k_{\mathrm B}\ln\Omega$, is just the [logarithm of that count](/thermodynamics/boltzmanns-entropy-formula), and it climbs because the system is swept toward the macrostates with the most microstates.
+
+So the arrow is *statistical*. The reverse process is not forbidden; it is merely so improbable that "never" is an excellent approximation. The probability that the molecules of a broken glass happen to have exactly the velocities needed to reassemble it is not zero — it is roughly one in $10^{(10^{24})}$, a number with more zeros than there are atoms in the observable universe. The second law is not a law in the sense that conservation of energy is a law. It is a statement about what is overwhelmingly likely, made certain only by the size of Avogadro's number.
+
+<Callout variant="intuition">
+Reversibility lives in the equations of motion; irreversibility lives in the counting. Nothing forbids the glass reassembling — there is simply, for all practical purposes, only one way to do it and astronomically many ways not to.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Loschmidt's paradox">
+
+If the microscopic laws are reversible, how can a one-way macroscopic law be *derived* from them at all? You cannot get an arrow out of arrowless equations by pure logic. This was the objection pressed on [Ludwig Boltzmann](/physicists/ludwig-boltzmann) in 1876 by his friend and colleague <PhysicistLink slug="josef-loschmidt" /> — the same Loschmidt who had first estimated the size of air molecules. It is <Term slug="loschmidt-paradox">Loschmidt's paradox</Term>, and it is sharp: take any gas evolving toward equilibrium with its entropy rising, and at some instant reverse every molecular velocity. The gas must now retrace its path exactly, entropy *falling*, un-mixing itself back to where it began. Every reversed trajectory is a legal solution of the equations. So the equations cannot, by themselves, forbid entropy from decreasing.
+
+The scene below stages exactly Loschmidt's reversal. A gas starts clustered and diffuses; press "Reverse velocities" and, with perfect arithmetic, it retraces and un-mixes. Boltzmann's answer is built into what happens next.
+
+<SceneCard caption="FIG.13b — Loschmidt's reversal. The gas starts in the left third (low entropy) and spreads, its coarse-grained entropy rising toward S_max. Press ⇄ and every velocity flips. With round-off ε = 0 the reversal is perfect: the gas un-mixes and the entropy dips all the way back down. Raise ε and the reversal degrades — the tiny velocity error compounds and the gas re-mixes, the entropy climbing again. Reversibility is real, but it is infinitely fragile; the forward direction is the one robust against perturbation.">
+  <LoschmidtReversalScene />
+</SceneCard>
+
+Boltzmann's reply was not to deny the paradox but to relocate the asymmetry. The equations are reversible; the *initial conditions* are not. Entropy increases toward the future because the system started in an exceptionally low-entropy state, and there is nowhere to go but up. A reversed, entropy-decreasing trajectory exists — but to realise it you would have to prepare the molecular velocities with impossible precision, and the slightest error (the round-off slider) sends entropy climbing again. The arrow is not in the dynamics. It is in the boundary condition.
+
+</Section>
+
+<Section index={4} title="Zermelo's recurrence paradox">
+
+A second objection arrived in 1896, from the mathematician <PhysicistLink slug="ernst-zermelo" /> — later famous for the axioms of set theory. He wielded a theorem of Poincaré: any bounded mechanical system, left alone, will eventually return arbitrarily close to its initial state. This is <Term slug="poincare-recurrence">Poincaré recurrence</Term>. If a gas must eventually come back to its starting configuration, then its entropy must eventually come back down too — so how can entropy increase *monotonically* and forever?
+
+Boltzmann's answer was a single devastating estimate: yes, the gas recurs — but the recurrence time is unthinkable. For a system of $N$ particles the time to return scales like
+
+<EquationBlock id="EQ.02">$$t_{\text{rec}} \sim \tau_0\,\mathrm{e}^{S/k_{\mathrm B}} \sim \tau_0\,\mathrm{e}^{\,\Omega},$$</EquationBlock>
+
+exponential in the number of accessible microstates. For a mole of gas the exponent is of order $10^{23}$, so the recurrence time, in any units you like — seconds, or ages of the universe — is $10$ raised to a power of $10^{23}$. The present age of the cosmos is a rounding error against it. Recurrence is real and changes nothing: on every timescale a human or a galaxy will ever experience, entropy rises and does not come back.
+
+</Section>
+
+<Section index={5} title="The past hypothesis">
+
+Boltzmann's resolution of Loschmidt only pushes the question back one step: *why* did the universe start in a low-entropy state? Nothing in the dynamics requires it. A high-entropy beginning is overwhelmingly more probable; a low-entropy one is fantastically fine-tuned. Yet the low-entropy beginning is precisely what we observe — it is the reason the past looks different from the future at all.
+
+Modern cosmology turns this into an explicit premise, the <Term slug="past-hypothesis" />: the observable universe began, at the Big Bang, in a state of extraordinarily low entropy, and everything since has been the long relaxation toward equilibrium. Every familiar arrow — that we remember the past, that causes precede effects, that stars shine, that life metabolises — is downstream of that one boundary condition. Roger Penrose has quantified the fine-tuning: the initial state was special to about one part in $10^{10^{123}}$, an estimate that makes the recurrence numbers look modest. The arrow of time, on this view, is not a law of physics but a fact of cosmic history — a statement about how the universe was switched on, not about how it runs.
+
+</Section>
+
+<Section index={6} title="Maxwell's demon">
+
+There is one last way the arrow seems to fail, and it is the most instructive. In 1867 <PhysicistLink slug="james-clerk-maxwell" /> imagined "a being whose faculties are so sharpened that he can follow every molecule in its course." Station this <Term slug="maxwells-demon">demon</Term> at a tiny trap-door in a wall dividing a gas, and let it open the door only for fast molecules heading right and slow molecules heading left. With no expenditure of work, one side grows hot and the other cold — a temperature difference built from nothing, entropy falling, the second law apparently broken by a clever doorman.
+
+<SceneCard caption="FIG.13c — Maxwell's demon. The demon at the central door passes fast (red) molecules right and slow (blue) molecules left; the right chamber heats, the left cools, and the gas's entropy falls. Toggle 'account for memory': every decision the demon makes writes one bit into its memory, and when that memory is erased each bit dumps k ln 2 of entropy into the surroundings (the amber ledger). Turn the accounting off and you get the naked paradox — entropy falling for free. Turn it on and the books balance.">
+  <MaxwellsDemonScene />
+</SceneCard>
+
+It took a century to find the flaw, and the answer reshaped physics. The demon must *measure* each molecule and *record* the result — and its memory is finite. Leó Szilárd (1929) reduced the demon to a one-molecule engine and saw that information was the currency; Rolf Landauer (1961) proved that erasing one bit of memory must dissipate at least
+
+<EquationBlock id="EQ.03">$$\Delta S \geq k_{\mathrm B}\ln 2 \qquad (\text{equivalently } W \geq k_{\mathrm B} T \ln 2)$$</EquationBlock>
+
+of entropy; and Charles Bennett (1982) closed the case by showing that measurement itself can be done reversibly, so it is the *erasure* — resetting the memory to take the next reading — that pays the second law's bill. The entropy the demon removes from the gas is exactly recovered, with interest, when it clears its notebook. The demon is not a loophole; it is a lesson that information is physical. We unpack the full resolution, with the free energies it rests on, in [FIG.20](/thermodynamics/free-energies-and-maxwells-demon).
+
+</Section>
+
+<Section index={7} title="What's next — from disorder to distributions">
+
+The arrow of time is the conceptual summit of this branch: the second law is statistical, its monotonic climb a fact about low-entropy initial conditions rather than a feature of the reversible laws beneath. Loschmidt and Zermelo were right that the dynamics permit decrease; Boltzmann was right that decrease is, on any human scale, impossibly improbable; and Maxwell's demon teaches that even an intelligent agent cannot escape the ledger.
+
+From here the subject turns concrete. If temperature is the average kinetic energy of molecules, what is the full distribution of their speeds? <PhysicistLink slug="james-clerk-maxwell" /> answered that in 1860 with the first probability distribution in physics — the [Maxwell–Boltzmann distribution](/thermodynamics/the-maxwell-boltzmann-distribution). And the jitter that finally proved atoms real, vindicating Boltzmann a year too late, is the random walk of [Brownian motion](/thermodynamics/brownian-motion).
+
+</Section>
+
+</TopicPageLayout>
