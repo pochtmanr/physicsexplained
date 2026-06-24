@@ -1,0 +1,582 @@
+{
+  "glossary": [
+    {
+      "slug": "ideal-gas-law",
+      "title": "Ideal gas law",
+      "subtitle": "PV = nRT — the single equation onto which Boyle, Charles and Avogadro collapse, valid for any gas dilute enough that its molecules barely notice one another.",
+      "definition": [
+        "The ideal gas law states that the pressure P, volume V and absolute temperature T of a gas are tied together by PV = nRT, where n is the amount of gas in moles and R is the universal gas constant. Written per molecule it reads PV = Nk_BT, with N the number of molecules and k_B the Boltzmann constant. It is the equation of state of an idealised gas whose molecules are treated as point particles with no mutual forces except instantaneous elastic collisions.",
+        "The law unifies three empirical results discovered over a century and a half: Boyle's law (PV constant at fixed T), Charles's law (V proportional to T at fixed P), and Avogadro's hypothesis (V proportional to n at fixed P and T). Their common proportionality constant R = 8.314 J/(mol·K) is the same for every gas, which is the deepest content of the law: at low density the chemical identity of the gas drops out entirely.",
+        "The ideal gas law is an excellent approximation for real gases at ordinary temperatures and pressures, and it becomes exact in the limit of vanishing density. It breaks down where intermolecular forces or molecular volume can no longer be ignored — at high pressure, near condensation, or at very low temperature — deviations captured by the compressibility factor and the van der Waals equation."
+      ],
+      "history": "Assembled in stages: Boyle (1662), Charles (c. 1787) and Gay-Lussac (1802), and Avogadro (1811); combined into the modern PV = nRT form through the nineteenth century, and given its molecular meaning by the kinetic theory of Clausius and Maxwell.",
+      "category": "concept",
+      "relatedPhysicists": ["robert-boyle", "jacques-charles", "amedeo-avogadro"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "pressure-from-molecular-collisions" }
+      ]
+    },
+    {
+      "slug": "boyles-law",
+      "title": "Boyle's law",
+      "subtitle": "At fixed temperature the pressure and volume of a gas are inversely proportional: PV is constant.",
+      "definition": [
+        "Boyle's law states that, for a fixed quantity of gas held at constant temperature, the pressure P and volume V satisfy PV = constant. Halve the volume and the pressure doubles; plotted as P against 1/V the relationship is a straight line through the origin. It is the isothermal special case of the ideal gas law.",
+        "Robert Boyle established the law in 1662 using a J-shaped glass tube partly filled with mercury, with help from his assistant Robert Hooke. By adding mercury to the open arm he compressed the air trapped in the sealed arm and recorded how its volume shrank as the pressure rose. Boyle described the trapped air as behaving like a coiled spring — the 'spring of the air' — that pushed back ever harder as it was squeezed.",
+        "Microscopically the law follows because pressure is the rate of molecular momentum delivered to the walls per unit area; compress the gas into half the space at the same temperature and molecules strike the walls twice as often, doubling the pressure. Boyle's law holds for real gases only approximately, deviating where attraction or finite molecular size matter."
+      ],
+      "history": "Published by Robert Boyle in 1662 in an appendix to New Experiments Physico-Mechanical; known on the European continent as Mariotte's law after Edme Mariotte, who stated it independently in 1679 and added the constant-temperature condition explicitly.",
+      "category": "concept",
+      "relatedPhysicists": ["robert-boyle"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "charles-law",
+      "title": "Charles's law",
+      "subtitle": "At fixed pressure the volume of a gas is proportional to its absolute temperature — the line that, extended, points at absolute zero.",
+      "definition": [
+        "Charles's law states that, at constant pressure, the volume of a fixed quantity of gas is directly proportional to its absolute (Kelvin) temperature: V/T = constant. Equivalently, a gas expands by a fixed fraction of its volume for each degree of warming. Plotted as V against temperature it is a straight line.",
+        "The law's most profound feature appears when the straight line is extrapolated backward to V = 0. Every gas, regardless of identity, reaches zero volume at the same temperature, −273.15 °C. Since a volume cannot be negative, this marks a natural floor — the first quantitative hint of absolute zero, decades before thermodynamics gave it a deeper meaning.",
+        "Jacques Charles found the proportionality around 1787 but never published; Joseph Louis Gay-Lussac rediscovered it and published in 1802, which is why the relation is sometimes called Gay-Lussac's law. Like Boyle's law it is exact only for an ideal gas and breaks down as a real gas approaches condensation."
+      ],
+      "history": "Discovered unpublished by Jacques Charles around 1787 and published by Joseph Louis Gay-Lussac in 1802; the extrapolation to absolute zero was later sharpened by William Thomson (Lord Kelvin) into the thermodynamic temperature scale.",
+      "category": "concept",
+      "relatedPhysicists": ["jacques-charles", "joseph-louis-gay-lussac"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "avogadro-number",
+      "title": "Avogadro's number",
+      "subtitle": "The count of molecules in one mole, 6.022 × 10²³ — the bridge between the gram-and-litre world and the molecule-by-molecule world.",
+      "definition": [
+        "Avogadro's number, N_A = 6.02214076 × 10²³ per mole, is the number of elementary entities (atoms, molecules, ions) in one mole of a substance. Since the 2019 revision of the SI it is a defined exact constant, and the mole is defined as exactly that many entities. It converts macroscopic amounts measured on a balance into microscopic counts of particles.",
+        "The number is named for Amedeo Avogadro, whose 1811 hypothesis — that equal volumes of gases at the same temperature and pressure contain equal numbers of molecules — implied that such a universal count must exist, though Avogadro never determined its value. It links the gas constant and the Boltzmann constant through R = N_A k_B.",
+        "The first reliable measurements came a century later. Jean Perrin's 1908 study of Brownian motion yielded N_A independently of any chemical method, and his agreement with values from electrolysis, blackbody radiation and other routes was decisive evidence that atoms are real and countable. Perrin proposed naming the constant after Avogadro."
+      ],
+      "history": "Implicit in Avogadro's 1811 hypothesis; first measured by Perrin (1908) from Brownian motion, and by Millikan's oil-drop experiment; fixed as an exact defining constant of the SI in 2019.",
+      "category": "concept",
+      "relatedPhysicists": ["amedeo-avogadro", "jean-baptiste-perrin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" },
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "gas-constant",
+      "title": "Gas constant",
+      "subtitle": "R = 8.314 J/(mol·K) — the single proportionality constant that makes PV = nRT the same equation for every gas.",
+      "definition": [
+        "The universal (molar) gas constant R = 8.314462618 J/(mol·K) is the constant of proportionality in the ideal gas law PV = nRT. Its value is the same for every gas in the dilute limit, which is precisely what makes the ideal gas law universal rather than substance-specific.",
+        "R is the macroscopic counterpart of the Boltzmann constant: R = N_A k_B, the energy per mole per kelvin against k_B's energy per molecule per kelvin. It appears far beyond gases — in the van 't Hoff equation for osmotic pressure, the Nernst equation in electrochemistry, the Arrhenius rate law, and anywhere a thermal energy scale per mole is needed.",
+        "Since the 2019 SI redefinition R is exact, derived from the exact defined values of the Boltzmann and Avogadro constants. Numerically it can be remembered as roughly 8.31 J/(mol·K), or about 0.0821 L·atm/(mol·K) in the units chemists often use."
+      ],
+      "history": "Emerged as gas measurements were combined into PV = nRT during the nineteenth century; tied to the Boltzmann constant once the molecular interpretation of temperature was established, and fixed exactly in the 2019 SI.",
+      "category": "concept",
+      "relatedPhysicists": ["amedeo-avogadro"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "compressibility-factor",
+      "title": "Compressibility factor",
+      "subtitle": "Z = PV/nRT — the dimensionless number that reads 1 for an ideal gas and measures how far a real gas departs from it.",
+      "definition": [
+        "The compressibility factor Z = PV/(nRT) is the ratio of a real gas's PV product to the value the ideal gas law would predict. By construction Z = 1 for an ideal gas at every pressure and temperature, so any deviation of Z from 1 is a direct, dimensionless measure of non-ideal behaviour.",
+        "Real gases trace a characteristic curve. At moderate pressure intermolecular attraction helps the molecules draw together, so the gas compresses more than ideal and Z dips below 1. At high pressure the finite size of the molecules dominates — they resist being packed — and Z rises above 1. The pressure at which Z returns to 1, and the temperature at which the low-pressure slope vanishes (the Boyle temperature), are useful fingerprints of a gas.",
+        "The factor is the practical link between the ideal gas law and equations of state such as van der Waals or the virial expansion, which express Z as a series in density. It is widely used in chemical and petroleum engineering, where accurate gas densities at high pressure matter."
+      ],
+      "history": "Grew out of nineteenth-century studies of real-gas deviations by Regnault and Andrews; formalised through the van der Waals equation (1873) and the virial expansion of Kamerlingh Onnes (1901).",
+      "category": "concept",
+      "relatedPhysicists": ["heike-kamerlingh-onnes"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "kinetic-theory",
+      "title": "Kinetic theory of gases",
+      "subtitle": "The picture of a gas as countless tiny molecules in ceaseless motion, from which pressure and temperature emerge as statistical averages.",
+      "definition": [
+        "The kinetic theory of gases explains the macroscopic properties of a gas — pressure, temperature, the gas laws — as statistical consequences of the motion of its molecules. A gas is modelled as a large number of small particles moving in straight lines between brief elastic collisions, filling their container uniformly and exerting pressure by drumming on its walls.",
+        "Two results are central. Pressure is the average rate at which molecular momentum is delivered to the walls per unit area, which yields PV = (1/3)Nm⟨v²⟩. Matching this to the ideal gas law identifies absolute temperature with mean molecular kinetic energy: (1/2)m⟨v²⟩ = (3/2)k_BT. Temperature, in this view, simply measures how fast the molecules move on average.",
+        "First sketched by Daniel Bernoulli in 1738 and ignored for over a century, the theory was revived by Krönig (1856) and Clausius (1857), extended by Maxwell's distribution of speeds (1859) and Boltzmann's statistical mechanics, and finally placed beyond doubt by Einstein and Perrin's work on Brownian motion."
+      ],
+      "history": "Anticipated by Daniel Bernoulli (1738); re-derived by August Krönig (1856) and Rudolf Clausius (1857); developed into a statistical theory by Maxwell and Boltzmann; vindicated experimentally by Perrin (1908).",
+      "category": "concept",
+      "relatedPhysicists": ["daniel-bernoulli", "august-kronig", "james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "pressure-from-molecular-collisions" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "rms-speed",
+      "title": "Root-mean-square speed",
+      "subtitle": "v_rms = √(3k_BT/m) — the speed whose square equals the mean square molecular speed, and the one tied directly to temperature.",
+      "definition": [
+        "The root-mean-square speed of gas molecules is v_rms = √(⟨v²⟩) = √(3k_BT/m), where m is the molecular mass. It is the square root of the average of the squared speeds, and it is the speed that appears naturally in kinetic theory because mean kinetic energy depends on ⟨v²⟩, not on ⟨v⟩. It is slightly larger than the mean speed and the most-probable speed.",
+        "Because v_rms scales as 1/√m, light molecules move faster at the same temperature. Nitrogen at room temperature has v_rms ≈ 510 m/s, while hydrogen reaches ≈ 1900 m/s. This mass dependence explains why Earth's gravity retains nitrogen and oxygen but slowly leaks hydrogen and helium to space, and why the Moon, with weaker gravity, retains almost no atmosphere at all.",
+        "The rms speed sits inside the broader Maxwell–Boltzmann distribution of speeds; it is one of three characteristic speeds (most-probable < mean < rms) that mark the distribution. Its direct proportionality to √T makes it a convenient quantitative handle on the meaning of temperature."
+      ],
+      "history": "Emerged from Clausius's and Maxwell's kinetic-theory derivations of pressure in the 1850s–1860s, and was confirmed experimentally by molecular-beam measurements such as Stern's in the 1920s.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "pressure-from-molecular-collisions" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "mean-free-path",
+      "title": "Mean free path",
+      "subtitle": "The average distance a molecule travels between collisions — short enough that a gas molecule is hit billions of times a second.",
+      "definition": [
+        "The mean free path λ is the average distance a molecule travels between successive collisions with other molecules. For a gas of number density n and molecules of effective diameter d it is λ = 1/(√2 π d² n), inversely proportional to density and to the collision cross-section. In air at room temperature and pressure it is about 70 nanometres — a few hundred molecular diameters — so each molecule suffers billions of collisions per second.",
+        "The mean free path governs transport properties: thermal conductivity, viscosity and diffusion all depend on how far molecules carry momentum and energy between collisions. As pressure falls the mean free path grows, and when it exceeds the size of the container the gas enters the free-molecular regime, the operating principle of high-vacuum systems and the reason a thermos flask's vacuum gap insulates so well.",
+        "Clausius introduced the concept in 1858 partly to answer a criticism of kinetic theory: if molecules move at hundreds of metres per second, why do gases mix and diffuse so slowly? The answer is that frequent collisions force each molecule onto a tortuous, much-delayed path."
+      ],
+      "history": "Introduced by Rudolf Clausius in 1858 and developed by Maxwell, who used it to predict — surprisingly — that gas viscosity is independent of pressure, a result he and his wife Katherine confirmed experimentally.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "pressure-from-molecular-collisions" }
+      ]
+    },
+    {
+      "slug": "maxwell-boltzmann-distribution",
+      "title": "Maxwell–Boltzmann distribution",
+      "subtitle": "The probability distribution of molecular speeds in a gas at thermal equilibrium — the first statistical law in the history of physics.",
+      "definition": [
+        "The Maxwell–Boltzmann distribution gives the probability density of molecular speeds in a classical gas at temperature T: f(v) = 4π (m/2πk_BT)^(3/2) v² exp(−mv²/2k_BT). It is the product of two competing factors — a v² term from the growing volume of velocity space available at higher speed, and a Gaussian exp(−mv²/2k_BT) that suppresses very fast molecules. The result is a skewed bell shape that rises from zero, peaks, and trails off in a long high-speed tail.",
+        "The distribution is fixed by three characteristic speeds, always in the order v_mp < ⟨v⟩ < v_rms: the most-probable speed √(2k_BT/m) at the peak, the mean speed √(8k_BT/πm), and the root-mean-square speed √(3k_BT/m). Raising the temperature or lowering the molecular mass shifts the whole curve to higher speeds and flattens it.",
+        "Maxwell derived it in 1859 from a symmetry argument — that the three velocity components are independent and identically distributed — making it the first probability distribution introduced into physics. Boltzmann generalised it in 1871 to the distribution of energies, exp(−E/k_BT), the foundation of statistical mechanics."
+      ],
+      "history": "Derived by James Clerk Maxwell in 1859 and generalised by Ludwig Boltzmann in 1871; verified directly by molecular-beam experiments, notably Otto Stern's rotating-disc method in the 1920s and Zartman and Ko in 1930–31.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell", "otto-stern"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "boltzmann-factor",
+      "title": "Boltzmann factor",
+      "subtitle": "exp(−E/k_BT) — the exponential weight that sets how likely a state of energy E is at temperature T, and the engine of statistical mechanics.",
+      "definition": [
+        "The Boltzmann factor exp(−E/k_BT) gives the relative probability that a system in thermal contact with a reservoir at temperature T occupies a microstate of energy E. States of higher energy are exponentially less likely; the thermal energy scale k_BT sets how steeply the probability falls. Ratios of Boltzmann factors give the relative populations of two energy levels without needing the overall normalisation.",
+        "It is the single most reused expression in statistical physics. Summing Boltzmann factors over all states defines the partition function, from which every thermodynamic quantity can be derived. The factor governs the population of excited states, the rate of thermally activated processes, the barometric fall-off of atmospheric density with height, and the saturation of magnetic moments.",
+        "The Boltzmann factor is the energy-space generalisation of the Maxwell–Boltzmann speed distribution: where Maxwell weighted molecular speeds, Boltzmann weighted arbitrary microstate energies. It underlies the Arrhenius law of reaction rates and the exponential tail that makes chemistry, evaporation and escape from a gravitational well possible at all."
+      ],
+      "history": "Introduced by Ludwig Boltzmann in the 1870s as the generalisation of Maxwell's speed distribution; central to the statistical mechanics developed by Boltzmann and later by Gibbs.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "most-probable-speed",
+      "title": "Most-probable speed",
+      "subtitle": "v_mp = √(2k_BT/m) — the speed at the peak of the Maxwell–Boltzmann distribution, the slowest of its three characteristic speeds.",
+      "definition": [
+        "The most-probable speed is the speed at which the Maxwell–Boltzmann distribution f(v) reaches its maximum, found by setting df/dv = 0: v_mp = √(2k_BT/m). It is the single speed most molecules are travelling near, and it is the smallest of the three characteristic speeds, below the mean and the root-mean-square: v_mp < ⟨v⟩ < v_rms, in the fixed ratio √2 : √(8/π) : √3.",
+        "The three speeds differ because the distribution is asymmetric, with a long high-speed tail that pulls the average above the peak. The most-probable speed is the natural width parameter of the distribution; the Gaussian factor can be written purely in terms of v/v_mp, so v_mp sets the scale on which the whole curve lives.",
+        "Like the other characteristic speeds it scales as √(T/m), so heating a gas or using lighter molecules pushes the peak to higher speed. It is the convenient reference speed for laboratory work, including the interpretation of molecular-beam and Doppler-broadening measurements."
+      ],
+      "history": "Identified as part of Maxwell's 1859 analysis of the speed distribution, alongside the mean and rms speeds.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "arrhenius-equation",
+      "title": "Arrhenius equation",
+      "subtitle": "k = A exp(−E_a/k_BT) — the law that ties a reaction's rate to temperature through the Boltzmann tail of molecules energetic enough to react.",
+      "definition": [
+        "The Arrhenius equation expresses the rate constant of a chemical reaction as k = A exp(−E_a/RT), with E_a the activation energy, A a pre-exponential frequency factor, and RT (or k_BT per molecule) the thermal energy. The exponential is a Boltzmann factor: it is the fraction of molecular collisions energetic enough to clear the activation barrier. A modest rise in temperature can multiply the reacting fraction many times over, which is why reaction rates are so sharply temperature-sensitive.",
+        "The form is the direct fingerprint of the Maxwell–Boltzmann tail. Only molecules in the high-energy tail of the distribution carry enough energy to react, and that tail grows exponentially with temperature. A common rule of thumb — that many reactions roughly double in rate for every 10 °C — is just the Arrhenius factor evaluated for typical activation energies.",
+        "Plotting ln k against 1/T gives a straight line whose slope is −E_a/R, the standard experimental route to measuring activation energies. The same exponential governs diffusion in solids, viscous flow, and the temperature dependence of biological processes."
+      ],
+      "history": "Proposed by Svante Arrhenius in 1889, building on earlier work by van 't Hoff; later given a microscopic basis by collision theory and transition-state theory, both resting on the Boltzmann factor.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "equipartition-theorem",
+      "title": "Equipartition theorem",
+      "subtitle": "Every quadratic degree of freedom carries an average energy of ½k_BT — the theorem that fixes heat capacities, and whose failures opened the door to quantum mechanics.",
+      "definition": [
+        "The equipartition theorem states that, in classical thermal equilibrium, each independent quadratic term in a system's energy — each squared velocity or squared displacement coordinate — carries an average energy of exactly (1/2)k_BT. A system with f such quadratic degrees of freedom therefore has mean energy ⟨E⟩ = (f/2)Nk_BT, and a molar heat capacity C_v = (f/2)R.",
+        "The theorem accounts for a sweep of heat capacities at a stroke: (3/2)R for a monatomic gas (three translational terms), (5/2)R for a diatomic gas at room temperature (adding two rotational terms), and 3R for a simple solid (three kinetic plus three potential terms — the Dulong–Petit value). It also yields the adiabatic exponent γ = (f+2)/f.",
+        "Its failures were historically decisive. Diatomic gases lose their rotational and vibrational contributions at low temperature; solids fall below the Dulong–Petit value beneath the Debye temperature; and applied to the electromagnetic field equipartition predicts the ultraviolet catastrophe. Each failure pointed to energy quantisation, and together they helped force the birth of quantum mechanics."
+      ],
+      "history": "Stated in general form by James Clerk Maxwell (1860) and Ludwig Boltzmann; its breakdowns drove Einstein's 1907 quantum theory of solids, Debye's 1912 refinement, and ultimately Planck's quantum hypothesis of 1900.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell", "peter-debye", "albert-einstein"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "degrees-of-freedom",
+      "title": "Degrees of freedom",
+      "subtitle": "The independent ways a molecule can store energy — translation, rotation, vibration — each counted toward its heat capacity.",
+      "definition": [
+        "A degree of freedom is an independent coordinate in which a system can store energy. For a gas molecule these fall into translational (motion of the centre of mass, always three), rotational (tumbling about axes with appreciable moment of inertia), and vibrational (stretching and bending of bonds, each contributing two quadratic terms, one kinetic and one potential). The count f of energy-bearing quadratic degrees of freedom sets the molecule's heat capacity through equipartition.",
+        "A monatomic gas such as helium has three (translational only). A diatomic gas such as nitrogen has five at room temperature — three translational plus two rotational — rising toward seven when vibration becomes active at high temperature. A monatomic solid has six per atom: three kinetic and three potential. The adiabatic exponent γ = (f+2)/f reads the count directly off a gas's behaviour.",
+        "Crucially, degrees of freedom switch on and off with temperature. Quantum mechanics requires a minimum energy ħω to excite rotation or vibration; below the corresponding temperature that mode is 'frozen out' and contributes nothing to the heat capacity. This temperature-dependent counting is what produces the stepped heat-capacity curve of hydrogen."
+      ],
+      "history": "Formalised through the equipartition theorem of Maxwell and Boltzmann; the puzzle of why certain degrees of freedom are inactive at low temperature was resolved only by quantum theory.",
+      "category": "concept",
+      "relatedPhysicists": ["james-clerk-maxwell"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "debye-temperature",
+      "title": "Debye temperature",
+      "subtitle": "The characteristic temperature above which a solid behaves classically and below which its heat capacity collapses toward zero.",
+      "definition": [
+        "The Debye temperature Θ_D is the characteristic temperature of a solid's lattice vibrations, set by the maximum phonon frequency: k_BΘ_D = ħω_max. Above Θ_D the vibrational modes are fully excited and the solid obeys the classical Dulong–Petit law, with molar heat capacity near 3R. Below Θ_D the high-frequency modes freeze out, and the heat capacity falls — toward zero as T → 0, following Debye's celebrated T³ law at the lowest temperatures.",
+        "The Debye temperature ranges widely: about 105 K for soft, heavy lead, around 343 K for copper, and over 2000 K for stiff, light diamond, whose strong bonds make it behave 'cold' even at room temperature. A high Θ_D signals stiff bonds and light atoms; it correlates with hardness, melting point, and the speed of sound in the material.",
+        "Introduced by Peter Debye in 1912, the concept improved on Einstein's 1907 model by treating the lattice vibrations as a spectrum of sound-like waves rather than a single frequency, correctly reproducing the low-temperature behaviour of real solids."
+      ],
+      "history": "Introduced by Peter Debye in 1912, refining Einstein's 1907 quantum model of specific heats; both were responses to the failure of classical equipartition at low temperature.",
+      "category": "concept",
+      "relatedPhysicists": ["peter-debye", "albert-einstein"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "phonon",
+      "title": "Phonon",
+      "subtitle": "A quantum of lattice vibration — the particle-like packet of sound and heat that carries thermal energy through a solid.",
+      "definition": [
+        "A phonon is a quantum of collective vibrational energy in a crystal lattice, the vibrational analogue of the photon. Just as light comes in quanta of energy ħω, the vibrations of a solid's atoms come in discrete packets ħω of definite frequency and wavevector. Treating lattice vibrations as a gas of phonons turns the messy many-atom problem of a vibrating solid into the tractable statistics of weakly interacting quasiparticles.",
+        "Phonons carry both sound and heat. Their number is not conserved — heating a solid simply creates more of them — and they obey Bose–Einstein statistics. The temperature dependence of how many phonon modes are excited explains why the heat capacity of a solid falls below the classical Dulong–Petit value beneath the Debye temperature, vanishing as T³ near absolute zero.",
+        "Phonons are central to condensed-matter physics well beyond heat capacity: they scatter electrons to produce electrical resistance, mediate the attractive interaction behind conventional superconductivity, and limit thermal conductivity. The full theory belongs to the condensed-matter branch; here the phonon is the quantum that rescues the heat capacity of solids."
+      ],
+      "history": "The concept grew from the quantised lattice models of Einstein (1907) and Debye (1912); the name 'phonon' was coined by Yakov Frenkel in the 1930s, by analogy with the photon.",
+      "category": "concept",
+      "relatedPhysicists": ["peter-debye", "albert-einstein"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" }
+      ]
+    },
+    {
+      "slug": "brownian-motion",
+      "title": "Brownian motion",
+      "subtitle": "The incessant random jitter of a small particle suspended in a fluid, driven by molecular collisions — the visible proof that atoms are real.",
+      "definition": [
+        "Brownian motion is the perpetual, irregular motion of a microscopic particle suspended in a liquid or gas, caused by the imbalanced bombardment of the particle by the surrounding molecules. At any instant slightly more molecules strike one side than the other, and the resulting random kicks, millions per second, drive the particle on an erratic random walk that never settles.",
+        "Its defining quantitative signature is that the mean-square displacement grows linearly with time, ⟨x²⟩ = 2Dt along one axis, rather than as t² as for steady motion. The diffusion coefficient D is given by the Einstein relation D = k_BT/(6πηr) for a sphere of radius r in a fluid of viscosity η. Measuring the spreading therefore yields k_B, and through R = N_A k_B, Avogadro's number.",
+        "Robert Brown observed the motion in 1827 in pollen grains and showed it was not biological. Einstein explained it quantitatively in 1905, and Jean Perrin's measurements in 1908 confirmed Einstein's predictions and ended serious doubt about the existence of atoms."
+      ],
+      "history": "Observed by the botanist Robert Brown in 1827; explained quantitatively by Albert Einstein in 1905 (and independently by Smoluchowski in 1906); measured by Jean Perrin in 1908, earning him the 1926 Nobel Prize.",
+      "category": "phenomenon",
+      "relatedPhysicists": ["robert-brown", "albert-einstein", "jean-baptiste-perrin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "diffusion",
+      "title": "Diffusion",
+      "subtitle": "The net spreading of particles from crowded to sparse regions, the macroscopic face of countless random molecular walks.",
+      "definition": [
+        "Diffusion is the net transport of particles from regions of high concentration to regions of low concentration, arising not from any directed force but from the random thermal motion of the particles themselves. Although each molecule wanders aimlessly, more start where they are crowded, so on average the crowd disperses. Fick's law states that the particle flux is proportional to the concentration gradient, with the diffusion coefficient D as the constant of proportionality.",
+        "The hallmark of a diffusive process is the square-root law: a diffusing front, or the typical displacement of a tagged particle, grows as √(Dt) rather than linearly in time. This is why diffusion is fast over micrometres but agonisingly slow over centimetres, and why stirring — which adds bulk flow — is so much more effective than waiting for sugar to sweeten a cup of tea on its own.",
+        "Diffusion and Brownian motion are two views of the same physics: Brownian motion is the random walk of one particle, diffusion the collective spreading of many. Einstein's 1905 analysis derived the diffusion coefficient from molecular collisions, linking the macroscopic transport coefficient to k_BT."
+      ],
+      "history": "Described phenomenologically by Adolf Fick in 1855; given its molecular foundation by Einstein and Smoluchowski (1905–06), who connected the diffusion coefficient to thermal energy and molecular size.",
+      "category": "phenomenon",
+      "relatedPhysicists": ["albert-einstein"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "einstein-relation",
+      "title": "Einstein relation",
+      "subtitle": "D = k_BT/(6πηr) and its kin — the bridge tying random diffusion to viscous drag, the first fluctuation-dissipation theorem.",
+      "definition": [
+        "The Einstein relation connects the diffusion coefficient of a particle to the drag it feels when pushed: D = k_BT/γ, where γ is the drag coefficient. For a spherical particle of radius r in a fluid of viscosity η, Stokes's law gives γ = 6πηr, yielding the Einstein–Stokes form D = k_BT/(6πηr). It states that the same molecular collisions that randomly kick a particle also resist its steady motion.",
+        "The relation is the original fluctuation-dissipation theorem: the strength of thermal fluctuations (diffusion) and the strength of dissipation (drag) are not independent but are locked together by the temperature. One cannot have random thermal jiggling without the accompanying friction, because both arise from the very same impacts of surrounding molecules.",
+        "Practically, the Einstein relation turned Brownian motion into a measuring instrument. By observing D and knowing η, r and T, Perrin extracted k_B and hence Avogadro's number. The same relation governs the mobility of ions in solution and charge carriers in semiconductors, where it links diffusion to electrical mobility."
+      ],
+      "history": "Derived by Albert Einstein in his 1905 paper on Brownian motion, combining the diffusion equation with Stokes's law of viscous drag; generalised by Nyquist, Onsager and Kubo into the modern fluctuation-dissipation theorem.",
+      "category": "concept",
+      "relatedPhysicists": ["albert-einstein", "jean-baptiste-perrin"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "random-walk",
+      "title": "Random walk",
+      "subtitle": "A path built from independent random steps — the mathematical skeleton of diffusion, in which distance grows as the square root of time.",
+      "definition": [
+        "A random walk is a path made of successive steps each taken in a random direction, independent of the steps before it. It is the mathematical idealisation underlying Brownian motion and diffusion. Its defining property is that, although the walker's average position stays put, its typical distance from the start grows: after N steps of rms length ℓ the root-mean-square displacement is ℓ√N, not Nℓ.",
+        "This square-root growth is the deep reason diffusion is slow. Because displacement scales as √N rather than N, covering twice the distance takes four times as many steps and four times as long. Translated into time, ⟨x²⟩ ∝ t, the linear-in-time mean-square displacement that is the experimental signature of a diffusive process.",
+        "Random walks reach far beyond physics. They model the conformations of polymer chains, the spread of disease, search algorithms, and — as geometric Brownian motion — the fluctuation of asset prices in the Black–Scholes theory of options. They are among the most widely applied ideas to emerge from kinetic theory."
+      ],
+      "history": "The term was coined by Karl Pearson in 1905; the same year Einstein and Smoluchowski connected the random walk to physical diffusion, and Louis Bachelier had already applied it to financial markets in 1900.",
+      "category": "concept",
+      "relatedPhysicists": ["albert-einstein"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    }
+  ],
+  "physicists": [
+    {
+      "slug": "robert-boyle",
+      "name": "Robert Boyle",
+      "subtitle": "Anglo-Irish natural philosopher who turned alchemy into chemistry and gave the first quantitative law of gases.",
+      "born": "1627",
+      "died": "1691",
+      "nationality": "Anglo-Irish",
+      "bio": [
+        "Robert Boyle was born in 1627 at Lismore Castle in County Waterford, Ireland, the fourteenth child of the immensely wealthy Earl of Cork. Privately educated and widely travelled — he was in Florence studying Galileo's work the year Galileo died — Boyle settled at Oxford in the 1650s, where he assembled a laboratory and hired the young Robert Hooke as his assistant. He was a devout Christian who saw the study of nature as a religious duty, and he wrote as prolifically on theology as on science.",
+        "Boyle's lasting fame rests on the air pump he and Hooke built around 1659 and the experiments it made possible. By evacuating a sealed glass vessel he showed that sound does not travel through a vacuum, that flames and small animals need air to survive, and that air has weight and a 'spring.' In 1662, responding to a critic, he published the pressure–volume relation now called Boyle's law: at fixed temperature, the volume of a gas varies inversely with its pressure.",
+        "In The Sceptical Chymist (1661) Boyle attacked the alchemists' four elements and the three principles of the Paracelsians, arguing instead that matter is composed of 'corpuscles' — tiny particles whose arrangements explain chemical change. This corpuscular philosophy helped separate chemistry from alchemy and pointed toward the modern atom. A founding member of the Royal Society, Boyle declined its presidency and a peerage, preferring his laboratory and his books.",
+        "Boyle never married and devoted his fortune to research and to charitable and religious causes, including funding translations of the Bible. He died in London in 1691, a week after his sister Katherine, in whose house he had lived for decades and who was herself a noted intellectual."
+      ],
+      "contributions": [
+        "Boyle's law: at fixed temperature, pressure and volume of a gas are inversely proportional (1662)",
+        "Air-pump experiments demonstrating the properties of vacuum and the role of air in combustion and respiration",
+        "Corpuscular theory of matter, helping found modern chemistry",
+        "A founder of the Royal Society and of the experimental method in chemistry"
+      ],
+      "majorWorks": [
+        "New Experiments Physico-Mechanical, Touching the Spring of the Air (1660)",
+        "The Sceptical Chymist (1661)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "jacques-charles",
+      "name": "Jacques Charles",
+      "subtitle": "French physicist and balloon pioneer whose unpublished law tied a gas's volume to its temperature.",
+      "born": "1746",
+      "died": "1823",
+      "nationality": "French",
+      "bio": [
+        "Jacques Alexandre César Charles was born in 1746 at Beaugency in the Loiret. He began as a clerk in the finance ministry and came to science largely self-taught, drawn in by the popular lecture-demonstrations of the day, which he later gave himself with great flair at the Conservatoire des Arts et Métiers in Paris.",
+        "Inspired by the Montgolfier brothers' hot-air ascents, Charles realised that the newly isolated 'inflammable air' — hydrogen — would lift far more for its weight. In August 1783 he launched the first unmanned hydrogen balloon, and that December he and Nicolas-Louis Robert made a manned ascent from the Tuileries before a crowd of hundreds of thousands, rising to some 3,000 metres. The hydrogen balloon was for a century afterward called a charlière in his honour.",
+        "Around 1787, working with gases, Charles found that at constant pressure different gases all expand by the same fraction of their volume for a given rise in temperature — the proportionality of volume to temperature now called Charles's law. He never published it. The result became widely known only when Joseph Louis Gay-Lussac, crediting Charles's unpublished work, established and printed it in 1802.",
+        "Charles was elected to the Académie des Sciences in 1795 and became a professor of physics, remembered as much for his showmanship and instrument-making as for his research. He died in Paris in 1823."
+      ],
+      "contributions": [
+        "Charles's law: at constant pressure, gas volume is proportional to absolute temperature (c. 1787, unpublished)",
+        "First hydrogen-filled balloon flight, unmanned (1783) and manned (1783)",
+        "Improvements to scientific instruments and popular physics demonstrations"
+      ],
+      "majorWorks": [
+        "Work communicated through Gay-Lussac's 1802 paper on the expansion of gases"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "amedeo-avogadro",
+      "name": "Amedeo Avogadro",
+      "subtitle": "Italian physicist whose hypothesis that equal volumes hold equal numbers of molecules waited fifty years for acceptance.",
+      "born": "1776",
+      "died": "1856",
+      "nationality": "Italian",
+      "bio": [
+        "Lorenzo Romano Amedeo Carlo Avogadro was born in Turin in 1776 into a family of distinguished lawyers, and he trained in law himself, earning a doctorate in ecclesiastical law at twenty. Drawn to mathematics and physics, he abandoned his legal career for science and in 1820 became the first professor of mathematical physics at the University of Turin.",
+        "In a paper of 1811 Avogadro put forward the hypothesis that bears his name: equal volumes of all gases, at the same temperature and pressure, contain equal numbers of molecules. To make it work he drew a careful distinction — radical for its time — between atoms and molecules, proposing that the elementary particles of common gases such as hydrogen and oxygen are themselves pairs of atoms. This neatly explained Gay-Lussac's law of combining volumes.",
+        "The hypothesis was almost entirely ignored for half a century. Avogadro worked in relative isolation in Turin, publishing in Italian journals of limited reach, and the leading chemists of the age were reluctant to accept his atom–molecule distinction. Only in 1860, at the Karlsruhe Congress — four years after Avogadro's death — did his compatriot Stanislao Cannizzaro show that Avogadro's idea resolved the era's confusion over atomic and molecular weights.",
+        "Avogadro lived quietly, holding various public offices in Piedmont and raising a large family. He never knew the scale of his vindication; the constant counting molecules in a mole was named for him only later, and first measured by Perrin in the twentieth century. He died in Turin in 1856."
+      ],
+      "contributions": [
+        "Avogadro's hypothesis: equal gas volumes at equal T and P contain equal numbers of molecules (1811)",
+        "The atom–molecule distinction, explaining Gay-Lussac's law of combining volumes",
+        "Early work toward a consistent system of atomic and molecular weights"
+      ],
+      "majorWorks": [
+        "Essay on a Manner of Determining the Relative Masses of the Elementary Molecules of Bodies (1811)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "joseph-louis-gay-lussac",
+      "name": "Joseph Louis Gay-Lussac",
+      "subtitle": "French physicist-chemist who quantified how gases expand and combine — and made daring balloon ascents to test the air.",
+      "born": "1778",
+      "died": "1850",
+      "nationality": "French",
+      "bio": [
+        "Joseph Louis Gay-Lussac was born in 1778 at Saint-Léonard-de-Noblat in the Limousin. Educated at the École Polytechnique in its first years, he became an assistant to the chemist Claude Louis Berthollet and rose to professorships at the Polytechnique and the Sorbonne, becoming one of the most accomplished experimentalists in France.",
+        "In 1802 Gay-Lussac published the law that at constant pressure all gases expand by the same fraction per degree of temperature, generously crediting the unpublished work of Jacques Charles. In 1804 he made two balloon ascents — one reaching about 7,000 metres, a height record that stood for decades — to sample the air and measure the magnetic field at altitude, finding the atmosphere's composition unchanged. In 1808 he announced his law of combining volumes: gases react in simple whole-number ratios of volume, the very regularity Avogadro's hypothesis would explain.",
+        "Gay-Lussac's chemical work was prodigious. With Louis Thénard he isolated boron and studied the alkali metals; he developed precise methods of volumetric analysis still used in titration, characterised cyanogen and the cyanides, and contributed to industrial chemistry as an adviser on gunpowder and assaying. He served in the Chamber of Deputies and later as a peer of France.",
+        "Honoured across Europe and elected to the Académie des Sciences, Gay-Lussac died in Paris in 1850, his name attached both to the gas-expansion law and to the law of combining volumes."
+      ],
+      "contributions": [
+        "Published the law of gas expansion at constant pressure, crediting Charles (1802)",
+        "Law of combining volumes: gases react in simple whole-number volume ratios (1808)",
+        "High-altitude balloon ascents to study the atmosphere (1804)",
+        "Precise methods of volumetric chemical analysis (titration)"
+      ],
+      "majorWorks": [
+        "Recherches sur la dilatation des gaz et des vapeurs (1802)",
+        "Memoir on the combination of gaseous substances with one another (1808)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-ideal-gas-law" }
+      ]
+    },
+    {
+      "slug": "august-kronig",
+      "name": "August Krönig",
+      "subtitle": "German chemist whose short 1856 paper on molecular collisions helped revive the kinetic theory of gases.",
+      "born": "1822",
+      "died": "1879",
+      "nationality": "German",
+      "bio": [
+        "August Karl Krönig was born in 1822 in Schildesche, near Bielefeld. He trained in the natural sciences and worked as a chemist and teacher, becoming a professor at a Realschule in Berlin and an active member of the city's scientific circles. He also edited a journal of physics and chemistry, which kept him close to the research of his day.",
+        "In 1856 Krönig published a brief paper, Grundzüge einer Theorie der Gase, that treated a gas as a swarm of molecules moving in straight lines and bouncing off the container walls, deriving the pressure from their impacts. His model was deliberately simplified — he imagined molecules moving only along the three coordinate axes — but it captured the essential mechanism and put the kinetic picture back before a sceptical scientific public, more than a century after Daniel Bernoulli's neglected version.",
+        "Krönig's short paper is widely credited with prompting Rudolf Clausius to publish, in 1857, the far fuller and more rigorous kinetic theory he had been developing. Clausius's work, and Maxwell's soon after, eclipsed Krönig's, but the timing mattered: Krönig helped break the long silence and make molecular motion a respectable subject again.",
+        "Krönig's later years were marked by illness, and his scientific output was limited. He died in Berlin in 1879, remembered chiefly for the well-timed paper that helped launch the modern kinetic theory of gases."
+      ],
+      "contributions": [
+        "1856 paper deriving gas pressure from molecular collisions with the walls",
+        "Helped revive the kinetic theory of gases and prompted Clausius's fuller 1857 treatment"
+      ],
+      "majorWorks": [
+        "Grundzüge einer Theorie der Gase (1856)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "pressure-from-molecular-collisions" }
+      ]
+    },
+    {
+      "slug": "otto-stern",
+      "name": "Otto Stern",
+      "subtitle": "German-American physicist who turned molecular beams into precision instruments and measured molecular speeds directly.",
+      "born": "1888",
+      "died": "1969",
+      "nationality": "German-American",
+      "bio": [
+        "Otto Stern was born in 1888 in Sohrau, Upper Silesia (now Żory, Poland), into a prosperous Jewish family, and took his doctorate in physical chemistry at Breslau in 1912. He spent a formative period as Einstein's first assistant in Prague and Zurich before turning to experimental physics, where his gift lay in coaxing fundamental answers out of beams of atoms and molecules travelling through vacuum.",
+        "In the early 1920s Stern developed the molecular-beam method into a precision tool. Using a rotating apparatus he measured the distribution of molecular speeds in a gas directly, confirming Maxwell's predicted distribution. With Walther Gerlach he performed the celebrated Stern–Gerlach experiment of 1922, showing that a beam of silver atoms splits into two discrete deflections in a magnetic field — direct evidence of space quantisation and, later understood, of electron spin.",
+        "Stern continued to refine molecular beams in Hamburg through the 1920s and early 1930s, measuring the magnetic moment of the proton and finding it anomalously large, a surprise that later proved important for understanding nuclear structure. When the Nazis came to power in 1933 Stern, as a Jew, was forced from his post; he emigrated to the United States and joined the Carnegie Institute of Technology in Pittsburgh.",
+        "Stern received the Nobel Prize in Physics for 1943 for the molecular-beam method and the discovery of the proton's magnetic moment. He retired to Berkeley, California, and died there in 1969."
+      ],
+      "contributions": [
+        "Developed the molecular-beam method into a precision experimental technique",
+        "Direct measurement of the Maxwell distribution of molecular speeds (1920s)",
+        "Stern–Gerlach experiment demonstrating space quantisation (1922, with Gerlach)",
+        "Measured the anomalous magnetic moment of the proton"
+      ],
+      "majorWorks": [
+        "Stern–Gerlach experiment papers (1922)",
+        "Molecular-beam measurements of molecular speeds and magnetic moments (1920s–1930s)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "peter-debye",
+      "name": "Peter Debye",
+      "subtitle": "Dutch-American physical chemist whose model of lattice vibrations rescued the heat capacity of solids at low temperature.",
+      "born": "1884",
+      "died": "1966",
+      "nationality": "Dutch-American",
+      "bio": [
+        "Peter Joseph William Debye was born Petrus Debije in Maastricht in 1884. He studied at Aachen and then Munich, taking his doctorate under Arnold Sommerfeld, who called Debye his most important discovery. Over a long career he held chairs at Zurich, Utrecht, Göttingen, Leipzig and Berlin before emigrating to the United States in 1940 and settling at Cornell University.",
+        "In 1912 Debye produced the model of specific heats that bears his name. Where Einstein's 1907 quantum theory of solids assumed every atom vibrated at a single frequency, Debye treated the lattice vibrations as a whole spectrum of elastic waves up to a maximum frequency. His model correctly reproduced the experimental fact that the heat capacity of a solid falls toward zero as the cube of the temperature near absolute zero, and it introduced the Debye temperature as the characteristic scale of a solid's vibrations.",
+        "Debye's range was extraordinary. He explained the temperature dependence of dielectric constants through molecular dipole moments (the debye unit of dipole moment is named for him), developed with Erich Hückel the theory of strong electrolytes, and pioneered the use of X-ray and electron diffraction from powders to determine molecular structure. He was awarded the Nobel Prize in Chemistry in 1936 for these contributions to the study of molecular structure.",
+        "Debye left Germany in 1940 rather than take German citizenship as demanded, and spent the rest of his career at Cornell, where he turned to light-scattering studies of polymers. He became a US citizen and died in Ithaca, New York, in 1966."
+      ],
+      "contributions": [
+        "Debye model of specific heat, with the T³ law and the Debye temperature (1912)",
+        "Theory of dipole moments and dielectric behaviour (the debye unit)",
+        "Debye–Hückel theory of strong electrolytes (with Hückel)",
+        "Debye–Scherrer powder X-ray diffraction method"
+      ],
+      "majorWorks": [
+        "On the theory of specific heats (1912)",
+        "Polar Molecules (1929)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "equipartition-and-degrees-of-freedom" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" }
+      ]
+    },
+    {
+      "slug": "robert-brown",
+      "name": "Robert Brown",
+      "subtitle": "Scottish botanist who saw pollen grains jitter under his microscope and named the motion that would prove atoms real.",
+      "born": "1773",
+      "died": "1858",
+      "nationality": "Scottish",
+      "bio": [
+        "Robert Brown was born in 1773 in Montrose, Scotland, the son of an episcopalian minister. He studied medicine at Edinburgh but his passion was botany, and in 1801 he sailed as naturalist aboard the Investigator on Matthew Flinders's survey of the Australian coast. He returned with some 3,400 plant species, most new to science, and spent years classifying them, establishing himself as the foremost botanist of his age.",
+        "Brown made lasting contributions to botany proper: he was among the first to recognise the fundamental distinction between gymnosperms and angiosperms, and in 1831, while examining orchid cells, he identified and named the cell nucleus, a structure now central to all of biology.",
+        "In 1827, peering through his microscope at pollen grains of the plant Clarkia suspended in water, Brown noticed that tiny particles ejected from the grains danced about ceaselessly and irregularly. Suspecting he might be seeing some life force, he tested the idea rigorously — and found that pollen from plants dead for a century jittered just as much, as did fine particles of ground glass and even rock. The motion, he concluded, was physical, not biological, though he could not say what caused it.",
+        "Brown never explained the motion that bears his name; that fell to Einstein and Perrin three generations later. He served as keeper of the botanical collections of the British Museum and as president of the Linnean Society, and died in London in 1858."
+      ],
+      "contributions": [
+        "Observed and rigorously characterised Brownian motion, showing it was physical rather than biological (1827)",
+        "Identified and named the cell nucleus (1831)",
+        "Pioneering classification of Australian flora and of plant taxonomy"
+      ],
+      "majorWorks": [
+        "A Brief Account of Microscopical Observations on the Particles Contained in the Pollen of Plants (1828)",
+        "Prodromus Florae Novae Hollandiae (1810)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "jean-baptiste-perrin",
+      "name": "Jean Baptiste Perrin",
+      "subtitle": "French physicist whose painstaking measurements of Brownian motion ended the debate over whether atoms exist.",
+      "born": "1870",
+      "died": "1942",
+      "nationality": "French",
+      "bio": [
+        "Jean Baptiste Perrin was born in 1870 in Lille. He studied at the École Normale Supérieure in Paris and took his doctorate in 1897, having already shown that cathode rays are streams of negatively charged particles — an early piece of evidence for the electron and for the corpuscular nature of matter that would become his life's theme. He spent most of his career as professor of physical chemistry at the Sorbonne.",
+        "Between 1908 and 1911 Perrin carried out the experiments for which he is remembered. Using carefully prepared, uniform emulsions of resin particles, he tested Einstein's 1905 predictions for Brownian motion from several independent angles — the distribution of particles with height under gravity, the mean-square displacement over time, and their rotational diffusion. Each route yielded a consistent value for Avogadro's number, and the agreement with values obtained by entirely different methods left no reasonable room to doubt that matter is made of discrete molecules.",
+        "Perrin gathered his results and their wider significance in the influential 1913 book Les Atomes, which persuaded the last serious sceptics — among them the chemists who had long resisted atomism — that atoms are real, countable objects. He was awarded the Nobel Prize in Physics in 1926 for this work on the discontinuous structure of matter.",
+        "A committed republican and organiser of French science, Perrin helped found the Palais de la Découverte and the CNRS. When France fell in 1940 he fled the German occupation, emigrating to the United States, and died in New York in 1942; his remains were later returned to the Panthéon in Paris."
+      ],
+      "contributions": [
+        "Experimental confirmation of Einstein's theory of Brownian motion (1908–1911)",
+        "Independent determination of Avogadro's number, settling the reality of atoms",
+        "Early demonstration that cathode rays are negatively charged particles (1895)",
+        "Founder of French scientific institutions including the Palais de la Découverte"
+      ],
+      "majorWorks": [
+        "Les Atomes (1913)",
+        "Brownian Movement and Molecular Reality (1909)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    }
+  ]
+}

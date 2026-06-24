@@ -1659,6 +1659,41 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SupercoolingScene: lazyScene(() =>
     import("@/components/physics/phase-changes-and-latent-heat/supercooling-scene").then((m) => ({ default: m.SupercoolingScene })),
   ),
+
+  // ─── Module 5 kinetic-theory (thermo sprint 2026-06-20) ───
+  GasLawsTripleScene: lazyScene(() =>
+    import("@/components/physics/the-ideal-gas-law/gas-laws-triple-scene").then((m) => ({ default: m.GasLawsTripleScene })),
+  ),
+  IdealVsRealGasScene: lazyScene(() =>
+    import("@/components/physics/the-ideal-gas-law/ideal-vs-real-gas-scene").then((m) => ({ default: m.IdealVsRealGasScene })),
+  ),
+  MolecularPressureScene: lazyScene(() =>
+    import("@/components/physics/pressure-from-molecular-collisions/molecular-pressure-scene").then((m) => ({ default: m.MolecularPressureScene })),
+  ),
+  RmsSpeedScene: lazyScene(() =>
+    import("@/components/physics/pressure-from-molecular-collisions/rms-speed-scene").then((m) => ({ default: m.RmsSpeedScene })),
+  ),
+  MaxwellBoltzmannScene: lazyScene(() =>
+    import("@/components/physics/the-maxwell-boltzmann-distribution/maxwell-boltzmann-scene").then((m) => ({ default: m.MaxwellBoltzmannScene })),
+  ),
+  BoltzmannFactorScene: lazyScene(() =>
+    import("@/components/physics/the-maxwell-boltzmann-distribution/boltzmann-factor-scene").then((m) => ({ default: m.BoltzmannFactorScene })),
+  ),
+  SternExperimentScene: lazyScene(() =>
+    import("@/components/physics/the-maxwell-boltzmann-distribution/stern-experiment-scene").then((m) => ({ default: m.SternExperimentScene })),
+  ),
+  DegreesOfFreedomScene: lazyScene(() =>
+    import("@/components/physics/equipartition-and-degrees-of-freedom/degrees-of-freedom-scene").then((m) => ({ default: m.DegreesOfFreedomScene })),
+  ),
+  EquipartitionFailureScene: lazyScene(() =>
+    import("@/components/physics/equipartition-and-degrees-of-freedom/equipartition-failure-scene").then((m) => ({ default: m.EquipartitionFailureScene })),
+  ),
+  BrownianWalkScene: lazyScene(() =>
+    import("@/components/physics/brownian-motion/brownian-walk-scene").then((m) => ({ default: m.BrownianWalkScene })),
+  ),
+  PerrinCountingScene: lazyScene(() =>
+    import("@/components/physics/brownian-motion/perrin-counting-scene").then((m) => ({ default: m.PerrinCountingScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

@@ -3888,6 +3888,197 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
     ],
   },
+
+  // ─── Module 5 kinetic-theory (thermo sprint 2026-06-20) ───
+  {
+    slug: "ideal-gas-law",
+    category: "concept",
+    visualization: "GasLawsTripleScene",
+    relatedPhysicists: ["robert-boyle", "jacques-charles", "amedeo-avogadro"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+      { branchSlug: "thermodynamics", topicSlug: "pressure-from-molecular-collisions" },
+    ],
+  },
+  {
+    slug: "boyles-law",
+    category: "concept",
+    visualization: "GasLawsTripleScene",
+    relatedPhysicists: ["robert-boyle"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "charles-law",
+    category: "concept",
+    visualization: "GasLawsTripleScene",
+    relatedPhysicists: ["jacques-charles", "joseph-louis-gay-lussac"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "avogadro-number",
+    category: "concept",
+    relatedPhysicists: ["amedeo-avogadro", "jean-baptiste-perrin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "gas-constant",
+    category: "concept",
+    relatedPhysicists: ["amedeo-avogadro"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "compressibility-factor",
+    category: "concept",
+    visualization: "IdealVsRealGasScene",
+    relatedPhysicists: ["heike-kamerlingh-onnes"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "kinetic-theory",
+    category: "concept",
+    visualization: "MolecularPressureScene",
+    relatedPhysicists: ["daniel-bernoulli", "august-kronig", "james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "pressure-from-molecular-collisions" },
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "rms-speed",
+    category: "concept",
+    visualization: "RmsSpeedScene",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "pressure-from-molecular-collisions" },
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "mean-free-path",
+    category: "concept",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "pressure-from-molecular-collisions" },
+    ],
+  },
+  {
+    slug: "maxwell-boltzmann-distribution",
+    category: "concept",
+    visualization: "MaxwellBoltzmannScene",
+    relatedPhysicists: ["james-clerk-maxwell", "otto-stern"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "boltzmann-factor",
+    category: "concept",
+    visualization: "BoltzmannFactorScene",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "most-probable-speed",
+    category: "concept",
+    visualization: "MaxwellBoltzmannScene",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "arrhenius-equation",
+    category: "concept",
+    visualization: "BoltzmannFactorScene",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "equipartition-theorem",
+    category: "concept",
+    visualization: "DegreesOfFreedomScene",
+    relatedPhysicists: ["james-clerk-maxwell", "peter-debye", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "degrees-of-freedom",
+    category: "concept",
+    visualization: "DegreesOfFreedomScene",
+    relatedPhysicists: ["james-clerk-maxwell"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "debye-temperature",
+    category: "concept",
+    visualization: "EquipartitionFailureScene",
+    relatedPhysicists: ["peter-debye", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "phonon",
+    category: "concept",
+    relatedPhysicists: ["peter-debye", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+    ],
+  },
+  {
+    slug: "brownian-motion",
+    category: "phenomenon",
+    visualization: "BrownianWalkScene",
+    relatedPhysicists: ["robert-brown", "albert-einstein", "jean-baptiste-perrin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "diffusion",
+    category: "phenomenon",
+    visualization: "BrownianWalkScene",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "einstein-relation",
+    category: "concept",
+    visualization: "PerrinCountingScene",
+    relatedPhysicists: ["albert-einstein", "jean-baptiste-perrin"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "random-walk",
+    category: "concept",
+    visualization: "BrownianWalkScene",
+    relatedPhysicists: ["albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
