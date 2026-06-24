@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MaxwellBoltzmannScene } from "@/components/physics/the-maxwell-boltzmann-distribution/maxwell-boltzmann-scene";
+import { BoltzmannFactorScene } from "@/components/physics/the-maxwell-boltzmann-distribution/boltzmann-factor-scene";
+import { SternExperimentScene } from "@/components/physics/the-maxwell-boltzmann-distribution/stern-experiment-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Otto Stern", href: "/physicists/otto-stern" },
+  { type: "term", label: "Maxwell–Boltzmann distribution", href: "/dictionary/maxwell-boltzmann-distribution" },
+  { type: "term", label: "Most probable speed", href: "/dictionary/most-probable-speed" },
+  { type: "term", label: "Boltzmann factor", href: "/dictionary/boltzmann-factor" },
+  { type: "term", label: "Arrhenius equation", href: "/dictionary/arrhenius-equation" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.16 · KINETIC THEORY"
+  title="THE MAXWELL-BOLTZMANN DISTRIBUTION"
+  subtitle="The first probability distribution in the history of physics."
+/>
+
+<Section index={1} title="Maxwell's symmetry argument">
+
+Aberdeen, 1859. <PhysicistLink slug="james-clerk-maxwell" /> is twenty-eight, a year from his work on the rings of Saturn and a decade from the equations of electromagnetism. He sets himself a question no one had posed quantitatively: in a gas at equilibrium, the molecules cannot all share one speed — collisions constantly reshuffle them — so what *fraction* of them moves at each speed?
+
+His argument is almost pure geometry. Resolve a molecule's velocity into components $v_x, v_y, v_z$. Space has no preferred direction, so the distribution of $v_x$ cannot depend on $v_y$ or $v_z$ — the three components are statistically independent. Maxwell showed that the only distribution that is both independent in each component *and* isotropic (depending only on the total speed) is the Gaussian. Each component is therefore normally distributed about zero, with a spread set by temperature. The speed $v = \sqrt{v_x^2 + v_y^2 + v_z^2}$ is then the length of a three-dimensional Gaussian vector — and that length has a distribution all its own. It was the first time a probability distribution was derived from physical principles, the birth of statistical physics.
+
+</Section>
+
+<Section index={2} title="The formula and its three speeds">
+
+Combining three Gaussian components and accounting for all the directions a given speed can point gives the <Term slug="maxwell-boltzmann-distribution" />:
+
+<EquationBlock id="EQ.01">$$f(v) = 4\pi \left(\frac{m}{2\pi k_B T}\right)^{3/2} v^2 \, e^{-mv^2 / 2k_B T}$$</EquationBlock>
+
+In words: the probability of finding a molecule near speed $v$ rises as $v^2$ at low speed, then is cut down by the exponential at high speed; the peak sits where the two effects balance. The curve has a long high-speed tail and a hard floor at $v = 0$.
+
+Three characteristic speeds drop out, and they always appear in the same order. The <Term slug="most-probable-speed" /> sits at the peak; the mean is a little higher; the root-mean-square — the speed that sets the kinetic energy — is higher still:
+
+<EquationBlock id="EQ.02">$$v_{\text{mp}} = \sqrt{\tfrac{2k_B T}{m}} \;<\; \langle v\rangle = \sqrt{\tfrac{8k_B T}{\pi m}} \;<\; v_{\text{rms}} = \sqrt{\tfrac{3k_B T}{m}}$$</EquationBlock>
+
+In words: the most probable, mean, and rms speeds stand in the fixed ratio $1 : 1.128 : 1.225$, no matter the gas or the temperature. Heat the gas and all three slide right together; pick a heavier molecule and they all shrink.
+
+<SceneCard caption="FIG.16a — the Maxwell–Boltzmann speed distribution. Choose a gas and a temperature: heating shifts the whole curve to higher speed and flattens it, while a heavier molecule pulls it back. The three dashed markers keep their fixed order v_mp < ⟨v⟩ < v_rms. Drag the threshold to shade the high-speed tail and read off the 'fast fraction'.">
+  <MaxwellBoltzmannScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Why the v-squared factor">
+
+Why does $f(v)$ vanish at $v = 0$ when the exponential there is largest? Because speed is a magnitude, not a coordinate. There is exactly one way to have zero speed — stand still — but an enormous number of ways to have a large speed, since the velocity can point anywhere on a sphere of radius $v$. The surface area of that sphere grows as $v^2$, and that is the $v^2$ in the formula: the *phase-space volume* of states with a given speed.
+
+So $f(v)$ is a tug-of-war. The geometric factor $v^2$ pulls the curve up at higher speeds; the Boltzmann exponential $e^{-mv^2/2k_B T}$ — the cost of kinetic energy — pulls it down. Their product peaks at the most probable speed and decays into the tail beyond it.
+
+<Callout variant="intuition">
+Slow speeds are rare not because they are energetically costly — they are cheap — but because there is almost no *room* for them. A molecule at rest occupies a single point in velocity space; a fast molecule has an entire sphere of directions to choose from.
+</Callout>
+
+</Section>
+
+<Section index={4} title="The tail does the work">
+
+Most of physics that depends on this distribution depends on its *tail* — the rare, fast molecules far to the right of the peak. Whether a molecule can escape a planet's gravity, evaporate from a liquid surface, or carry enough energy to react chemically is decided not by the average molecule but by the fraction above some threshold.
+
+That fraction is governed by the Boltzmann exponential, and when the threshold is an activation energy $E_a$ it gives the <Term slug="arrhenius-equation" /> that chemists had found empirically decades earlier:
+
+<EquationBlock id="EQ.03">$$k_{\text{rate}} = A \, e^{-E_a / k_B T}$$</EquationBlock>
+
+In words: a reaction's rate is set by the small fraction of collisions energetic enough to clear the barrier $E_a$, and that fraction grows explosively with temperature. This is why a ten-degree rise can roughly double a reaction rate, and why food keeps longer in a refrigerator: you are not stopping the fast molecules, only making them rarer.
+
+</Section>
+
+<Section index={5} title="Boltzmann's generalisation">
+
+In 1871 Ludwig Boltzmann lifted Maxwell's result out of the special case of molecular speeds and made it universal. For *any* system in thermal contact with a reservoir at temperature $T$, the probability of finding it in a microstate of energy $E$ is proportional to the <Term slug="boltzmann-factor" />:
+
+<EquationBlock id="EQ.04">$$P(E) \propto e^{-E / k_B T}$$</EquationBlock>
+
+In words: high-energy states are exponentially less likely than low-energy ones, and the temperature sets how steep that penalty is. It does not matter whether the energy is the kinetic energy of a gas molecule, the height of a colloidal particle in gravity, or the alignment of a magnetic spin — the same exponential governs them all. This single factor is the engine of statistical mechanics; the partition function and the free energies of the next module are built entirely on top of it.
+
+<SceneCard caption="FIG.16b — the Boltzmann factor exp(−E/kT) on a logarithmic axis, so each temperature is a straight line. Slide the activation energy E_a: the fraction of molecules above it (the per-temperature readout) plummets as the gas cools and climbs steeply as it heats. The whole of chemical kinetics lives in the spread between these lines.">
+  <BoltzmannFactorScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Stern weighs the molecules">
+
+A distribution is only physics if it can be measured. In the 1920s <PhysicistLink slug="otto-stern" />, master of the molecular beam, did exactly that. Molecules streamed from a hot oven through a slit and toward a rapidly spinning disc with a narrow slot. A molecule slipped through only if its flight time matched the rotation; faster molecules arrived sooner and were deposited at a different angle than slower ones. The film behind the chopper recorded a smear whose density, read off against position, was the speed distribution itself.
+
+The measured profile matched Maxwell's $f(v)$ — derived sixty years earlier from nothing but symmetry — and it has been confirmed countless times since. Stern's molecular-beam methods earned him the 1943 Nobel Prize.
+
+<SceneCard caption="FIG.16c — Stern's rotating-disc experiment. Molecules leave the hot oven, pass the slit, and reach the chopper; only those whose flight time matches the disc's rotation slip through the slot to the detector, where they pile up by speed. Watch the deposition histogram climb over a few seconds to match Maxwell's predicted curve. Raise the oven temperature and the whole profile shifts to higher speeds.">
+  <SternExperimentScene />
+</SceneCard>
+
+</Section>
+
+<Section index={7} title="From the crowd to the single particle">
+
+Maxwell's distribution describes the *crowd* — the statistical spread of an unimaginable number of molecules we never see individually. The natural next question is whether that invisible crowd leaves any visible trace. It does. A single particle large enough to watch under a microscope, suspended in a fluid, is ceaselessly battered by the molecules around it, and its resulting jitter — [Brownian motion](/thermodynamics/brownian-motion) — turns the statistics of the unseen into something you can measure with a ruler and a stopwatch.
+
+That same battering is what we treated, in bulk, as [pressure on the container walls](/thermodynamics/pressure-from-molecular-collisions): the distribution of speeds we have just drawn is the distribution of those impacts. Maxwell gave us the shape of the crowd; Einstein and Perrin, a generation later, used a single jittering grain to count its members.
+
+</Section>
+
+</TopicPageLayout>
