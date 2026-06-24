@@ -1,0 +1,102 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { MolecularPressureScene } from "@/components/physics/pressure-from-molecular-collisions/molecular-pressure-scene";
+import { RmsSpeedScene } from "@/components/physics/pressure-from-molecular-collisions/rms-speed-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Daniel Bernoulli", href: "/physicists/daniel-bernoulli" },
+  { type: "physicist", label: "August Krönig", href: "/physicists/august-kronig" },
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "term", label: "Kinetic theory", href: "/dictionary/kinetic-theory" },
+  { type: "term", label: "RMS speed", href: "/dictionary/rms-speed" },
+  { type: "term", label: "Mean free path", href: "/dictionary/mean-free-path" },
+  { type: "term", label: "Pressure", href: "/dictionary/pressure" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.15 · KINETIC THEORY"
+  title="PRESSURE FROM MOLECULAR COLLISIONS"
+  subtitle="Temperature, it turns out, is just kinetic energy per molecule."
+/>
+
+<Section index={1} title="A picture a century too early">
+
+In 1738, deep in his *Hydrodynamica*, <PhysicistLink slug="daniel-bernoulli" /> drew a picture no one was ready for. A gas, he wrote, is not a continuous fluid but a crowd of minute particles flying in all directions, and the pressure it exerts on the walls of its container is simply the accumulated patter of those particles striking the wall and bouncing back. Compress the gas into half the space and the particles strike twice as often — there is Boyle's law, falling out of mechanics rather than measurement.
+
+The idea was 120 years ahead of its time. Chemists went on treating gases as continuous media, and Bernoulli's collision picture lay dormant until <Term slug="kinetic-theory" /> was reborn in the 1850s — first in a terse 1856 paper by <PhysicistLink slug="august-kronig" />, then in Rudolf Clausius's fuller 1857 treatment, and finally in the hands of <PhysicistLink slug="james-clerk-maxwell" />. What Bernoulli had glimpsed, they made exact.
+
+</Section>
+
+<Section index={2} title="From one molecule to the whole wall">
+
+Follow a single molecule of mass $m$ in a cubic box of side $L$, moving toward the right-hand wall with $x$-velocity $v_x$. It strikes, rebounds elastically, and reverses its $x$-momentum. The wall therefore receives
+
+<EquationBlock id="EQ.01">$$\Delta p = 2 m v_x$$</EquationBlock>
+
+In words: each bounce hands the wall twice the molecule's $x$-momentum, because the molecule arrives with $+mv_x$ and leaves with $-mv_x$. Between hits the molecule crosses the box and back, a round trip of $2L$, so it strikes that wall $v_x/2L$ times per second. The force from one molecule is $\Delta p$ times that rate, $m v_x^2 / L$; summing over all $N$ molecules and dividing by the wall area $L^2$ gives the pressure. Averaging the three directions ($\langle v_x^2\rangle = \tfrac13\langle v^2\rangle$) yields the central result of kinetic theory:
+
+<EquationBlock id="EQ.02">$$P V = \tfrac{1}{3} N m \langle v^2 \rangle$$</EquationBlock>
+
+In words: the pressure times the volume equals one-third of the total molecular mass times the average squared speed. No chemistry enters — only mass, count, and motion.
+
+<SceneCard caption="FIG.15a — pressure as bookkeeping over collisions. Point molecules bounce off the walls; the scene sums the impulse 2m·|v⊥| delivered at every bounce and divides by the wall length to get a measured pressure, shown beside the kinetic-theory prediction Nm⟨v²⟩/2A. Raise the molecule count or the temperature and the two readouts climb together — direct evidence that pressure is nothing but collisions.">
+  <MolecularPressureScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="What temperature really is">
+
+Set the kinetic result beside the empirical ideal gas law from the [previous topic](/thermodynamics/the-ideal-gas-law), $PV = N k_B T$. The left sides are identical, so the right sides must be too:
+
+<EquationBlock id="EQ.03">$$\tfrac{1}{2} m \langle v^2 \rangle = \tfrac{3}{2} k_B T$$</EquationBlock>
+
+In words: the average translational kinetic energy of a molecule is exactly $\tfrac{3}{2} k_B T$ — three halves of Boltzmann's constant times the absolute temperature, and nothing else. This is one of the deepest sentences in physics. Temperature is not a substance, not a fluid, not "caloric." It *is* the mean kinetic energy of molecular motion, measured in the currency of $k_B$. A hotter gas is a faster gas; that is all "hot" means at the molecular level.
+
+<Callout variant="intuition">
+Two gases at the same temperature — hydrogen and xenon, say — have the *same* average kinetic energy per molecule, not the same speed. Since the energy is $\tfrac12 m v^2$, the light molecule must move much faster to carry the same energy. Temperature equalises energy, not velocity.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Root-mean-square speed">
+
+Solving the energy relation for the speed gives the root-mean-square velocity, the natural "typical" speed of the distribution:
+
+<EquationBlock id="EQ.04">$$v_{\text{rms}} = \sqrt{\langle v^2 \rangle} = \sqrt{\frac{3 k_B T}{m}}$$</EquationBlock>
+
+In words: the typical molecular speed grows with the square root of temperature and falls with the square root of mass. Put numbers in. Nitrogen at room temperature moves at about $510$ m/s — faster than a rifle bullet. Hydrogen, fourteen times lighter, races at about $1900$ m/s. That mass dependence has a planetary consequence: a molecule can escape Earth's gravity if a meaningful fraction of the distribution exceeds the escape speed of $11.2$ km/s. For light, fast hydrogen and helium the high-speed tail leaks away over geological time, which is why Earth's atmosphere is almost devoid of them; heavy, sluggish nitrogen and oxygen stay bound. The <Term slug="rms-speed" /> is the bridge between a laboratory thermometer and the composition of a planet's air.
+
+<SceneCard caption="FIG.15b — the spread of speeds at a given temperature. Six thousand molecules sampled from the gas, histogrammed by speed, with the most-probable, mean, and root-mean-square speeds marked (they always fall in that order). Switch the species: lighter gases shift right, heavier gases left. Raise the temperature and the whole distribution slides toward higher speeds and flattens — the high-speed tail that lets hydrogen escape.">
+  <RmsSpeedScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="Hotter means faster">
+
+It is worth dwelling on how much this picture overturned. For Galileo, heat was a quality; for the eighteenth century, an invisible fluid called caloric that flowed from hot to cold. Bernoulli glimpsed the truth, but it was Clausius and Maxwell who made it quantitative: the "hotness" of a body is the disordered kinetic energy of its molecules, and temperature is that energy per molecule per degree of freedom.
+
+The qualifier "translational" matters. The $\tfrac{3}{2} k_B T$ counts only the energy of a molecule moving through space — its three directions of travel. A molecule that can also spin or vibrate stores energy in those motions too, and the bookkeeping of how energy spreads across every available mode is the subject of [equipartition](/thermodynamics/equipartition-and-degrees-of-freedom). For a single atom with nowhere to put energy but motion, though, the translational energy is the whole story, and temperature and speed are one and the same.
+
+</Section>
+
+<Section index={6} title="And in a liquid?">
+
+If pressure in a gas is molecular bombardment, what is pressure in a liquid? The same mechanism, but obscured. In a liquid the molecules are packed shoulder to shoulder and pull on one another with strong cohesive forces; the outward pressure they exert by their thermal motion is opposed by that inward attraction. The net pressure you measure is the small difference between two large quantities — the kinetic "bombardment" pushing out and the cohesion pulling in. It is why a liquid is nearly incompressible and why its pressure rises so steeply with depth. The full treatment belongs to the fluids branch; here it is enough to note that the collision picture does not stop at the edge of the gas phase — it merely gets harder to see.
+
+</Section>
+
+<Section index={7} title="Not all the same speed">
+
+The scene above already gives the game away: the molecules do not all move at $v_{\text{rms}}$. They spread across a whole range of speeds, from nearly still to several times the average, and the *shape* of that spread is not arbitrary. It is fixed by the same symmetry and statistics that govern any large collection of independent random motions.
+
+Pinning down that shape — deriving the precise probability of finding a molecule at any given speed — was Maxwell's achievement of 1859, and it produced the [first probability distribution in the history of physics](/thermodynamics/the-maxwell-boltzmann-distribution). With the average speed in hand from this topic, the next asks the harder question: how are the speeds distributed about it, and why does the answer look the way it does?
+
+</Section>
+
+</TopicPageLayout>
