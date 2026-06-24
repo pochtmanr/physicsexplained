@@ -1,0 +1,102 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BrownianWalkScene } from "@/components/physics/brownian-motion/brownian-walk-scene";
+import { PerrinCountingScene } from "@/components/physics/brownian-motion/perrin-counting-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Robert Brown", href: "/physicists/robert-brown" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "physicist", label: "Jean Perrin", href: "/physicists/jean-baptiste-perrin" },
+  { type: "term", label: "Brownian motion", href: "/dictionary/brownian-motion" },
+  { type: "term", label: "Diffusion", href: "/dictionary/diffusion" },
+  { type: "term", label: "Einstein relation", href: "/dictionary/einstein-relation" },
+  { type: "term", label: "Random walk", href: "/dictionary/random-walk" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.18 · KINETIC THEORY"
+  title="BROWNIAN MOTION"
+  subtitle="The jitter of pollen grains that finally made atoms undeniable."
+/>
+
+<Section index={1} title="The jitter that would not stop">
+
+In the summer of 1827 the Scottish botanist <PhysicistLink slug="robert-brown" /> set a microscope on pollen grains of the wildflower *Clarkia pulchella* suspended in water. Inside the grains were still smaller particles, and those particles would not hold still. They jiggled, ceaselessly and erratically, with no current to push them and no pattern to follow. Brown's first thought was that he was watching life — pollen, after all, is the male gamete of a plant. So he tried pollen from plants dead for a century. It jittered too. He tried ground glass, powdered coal, even a fragment chipped from the Sphinx. Everything small enough jittered. Whatever caused <Term slug="brownian-motion" />, it was not alive.
+
+For seventy-eight years no one could say what it was. The motion was too persistent to be convection, too universal to be chemistry, too fine to be vibration of the bench. It sat in the literature as a curiosity — an itch physics could not scratch.
+
+</Section>
+
+<Section index={2} title="Einstein's reluctant atoms">
+
+The answer came in 1905, from a 26-year-old patent clerk who was not even trying to explain Brown. <PhysicistLink slug="albert-einstein" /> was after bigger game: a way to prove that atoms exist. In one of his *annus mirabilis* papers — *Über die von der molekularkinetischen Theorie der Wärme geforderte Bewegung von in ruhenden Flüssigkeiten suspendierten Teilchen* ("On the motion of small particles suspended in a stationary liquid, as required by the molecular-kinetic theory of heat") — he argued that a visible grain immersed in water is ceaselessly bombarded by the water's molecules. At any instant the kicks from one side slightly outnumber those from the other, and the grain lurches. A moment later the imbalance points elsewhere. The grain executes a <Term slug="random-walk" />.
+
+Einstein's triumph was to make this quantitative. He showed that the average of the *squared* displacement of the grain grows in direct proportion to time:
+
+<EquationBlock id="EQ.01">$$\langle x^2 \rangle = 2 D t$$</EquationBlock>
+
+In words: track the grain's wandering along one axis, square how far it has drifted, average over many grains, and that average rises as a straight line in time — with a slope set by the <Term slug="diffusion" /> coefficient $D$. Not the displacement but its *square* is the well-behaved quantity, because the wandering is as likely to go left as right and the raw displacement averages to nothing.
+
+<SceneCard caption="FIG.18a — one grain on its random walk, kicked anew every frame. The trail fades behind it; beside the box the running mean-square displacement ⟨r²⟩ climbs in a straight line — the diffusion law ⟨r²⟩ = 4Dt in two dimensions. Crank the kick magnitude: the line steepens (D grows) but the path stays a wander, never a drift.">
+  <BrownianWalkScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Why the square root">
+
+The random walk hides a counter-intuitive arithmetic. Take $N$ steps, each of root-mean-square length $\ell$, in independent random directions. You do *not* travel a distance $N\ell$ — that would require every step to point the same way. Because the directions are random, the displacements partly cancel, and the typical distance from the start grows only as the square root of the number of steps:
+
+<EquationBlock id="EQ.02">$$\sqrt{\langle r^2 \rangle} \sim \ell \sqrt{N}$$</EquationBlock>
+
+In words: a drunkard taking a hundred random steps ends up only about ten step-lengths from the lamppost, not a hundred. Quadruple the time and you only double the distance. This square-root law is the fingerprint of diffusion everywhere it appears — heat spreading through metal, perfume crossing a room, a pollutant dispersing in groundwater. It is why a still room takes minutes, not seconds, to carry a scent across it, even though the molecules themselves move at hundreds of metres per second.
+
+<Callout variant="intuition">
+Ballistic motion covers distance ∝ time. Diffusion covers distance ∝ √time. The difference is the whole reason mixing by diffusion alone is so slow — and why life invented stirring, blood flow, and lungs to beat it.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Einstein–Stokes: the bridge to atoms">
+
+Einstein went further and pinned down $D$ itself. A grain being kicked is also being dragged: the same water that jostles it resists its motion with viscous friction. Balancing the two — the thermal energy driving the walk against the Stokes drag opposing it — gives the <Term slug="einstein-relation" />:
+
+<EquationBlock id="EQ.03">$$D = \frac{k_B T}{6\pi \eta r}$$</EquationBlock>
+
+In words: the diffusion coefficient equals the thermal energy $k_B T$ divided by the drag a sphere of radius $r$ feels in a fluid of viscosity $\eta$. Every quantity on the right except $k_B$ was measurable in 1905. So a measurement of $D$ — obtained simply by watching grains wander and timing them — would yield Boltzmann's constant, and through $N_A = R/k_B$, the number of molecules in a mole. Einstein had turned a microscope into a scale for atoms.
+
+</Section>
+
+<Section index={5} title="Perrin counts the atoms">
+
+The measurement fell to <PhysicistLink slug="jean-baptiste-perrin" /> in Paris, 1908–1909. He prepared emulsions of gamboge and mastic resin, fractioning them by centrifuge until his spheres were uniform to a known radius. Then he tracked them under the microscope, marking each bead's position at fixed intervals and tallying the displacements. The histogram of displacements was a Gaussian whose width widened as the square root of time, exactly as Einstein required. From its spread he extracted $D$, inverted the Einstein–Stokes relation, and got Avogadro's number: about $6 \times 10^{23}$ per mole — in agreement with values from utterly unrelated methods.
+
+<SceneCard caption="FIG.18b — Perrin's experiment in miniature. A field of suspended spheres jitters; each observation records how far a bead has wandered after a fixed time t. Thousands of those displacements pile into a histogram, and a Gaussian emerges whose width σ = √(2Dt) grows as √t — drag the time and watch it widen. The readout runs the inversion with laboratory η, r and T: measured spread → D → Boltzmann's constant → Avogadro's number.">
+  <PerrinCountingScene />
+</SceneCard>
+
+That agreement was decisive. For decades Ernst Mach and Wilhelm Ostwald had insisted atoms were a convenient fiction, never to be seen. Perrin's beads were visible, and what moved them could be counted. He collected the 1926 Nobel Prize "for his work on the discontinuous structure of matter," and the atomic hypothesis stopped being a hypothesis.
+
+</Section>
+
+<Section index={6} title="The deeper symmetry — and the modern reach">
+
+Buried in Einstein's analysis is a profound idea. The very molecular collisions that *kick* the grain into motion are the same collisions that *damp* it through viscous drag. Fluctuation and dissipation are two faces of one mechanism: you cannot have a force that randomly drives a particle without also having one that randomly resists it, because they are the same force averaged two different ways. Einstein already sensed this in 1905; it was made into a general theorem — the fluctuation-dissipation theorem — by Nyquist, Callen, Welton and Kubo decades later, and we return to it as the capstone of statistical mechanics.
+
+Brownian motion long ago outgrew physics. The same mathematics — a random walk with a square-root spreading law — describes a diffusing protein finding its target on DNA, a foraging bacterium, the path of a stock price (Bachelier wrote down the equations for the Paris Bourse in 1900, five years *before* Einstein), and the Black–Scholes model that prices the options traded on it. A thermodynamic idea about pollen grains became a universal language for randomness.
+
+</Section>
+
+<Section index={7} title="The debate closed">
+
+With Perrin's count, the long argument that ran through this whole module reached its end. The [Maxwell–Boltzmann distribution](/thermodynamics/the-maxwell-boltzmann-distribution) had given molecules a spread of speeds; [equipartition](/thermodynamics/equipartition-and-degrees-of-freedom) had given them a share of energy; now Brownian motion let you *watch* their handiwork and *count* them. Ludwig Boltzmann, who had staked his career on the reality of atoms and died in 1906 amid fierce opposition, did not live to see the verdict — but the verdict was his.
+
+The molecular picture was secure. What remained was to build its machinery in full: to count microstates, define a partition function, and derive thermodynamics from probability. That is statistical mechanics proper, and it is where the thermodynamics story turns next.
+
+</Section>
+
+</TopicPageLayout>
