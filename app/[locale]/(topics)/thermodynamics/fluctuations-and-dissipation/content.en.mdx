@@ -1,0 +1,105 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FluctuationScalingScene } from "@/components/physics/fluctuations-and-dissipation/fluctuation-scaling-scene";
+import { JohnsonNyquistScene } from "@/components/physics/fluctuations-and-dissipation/johnson-nyquist-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "John B. Johnson", href: "/physicists/john-b-johnson" },
+  { type: "physicist", label: "Harry Nyquist", href: "/physicists/harry-nyquist" },
+  { type: "physicist", label: "Ryogo Kubo", href: "/physicists/ryogo-kubo" },
+  { type: "term", label: "Johnson noise", href: "/dictionary/johnson-noise" },
+  { type: "term", label: "Fluctuation", href: "/dictionary/fluctuation" },
+  { type: "term", label: "Fluctuation–dissipation theorem", href: "/dictionary/fluctuation-dissipation-theorem" },
+  { type: "term", label: "Critical opalescence", href: "/dictionary/critical-opalescence" },
+  { type: "term", label: "Critical exponent", href: "/dictionary/critical-exponent" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.21 · STAT MECHANICS"
+  title="FLUCTUATIONS AND DISSIPATION"
+  subtitle="The hiss in every amplifier is the second law made audible."
+/>
+
+<Section index={1} title="An unsilenceable hiss">
+
+At Bell Telephone Laboratories in 1927, <PhysicistLink slug="john-b-johnson" /> was chasing a problem that would not go away. Every amplifier he built, every circuit he measured, carried a faint random voltage he could not eliminate. He cooled the components, used the purest materials, removed every external source of interference — and still the hiss remained. Worse, it got louder when he warmed the resistor and louder still when he raised its resistance, in a way that had nothing to do with the current flowing through it. This was not a flaw in his apparatus. It was the thermal motion of the electrons themselves, jostling at temperature $T$, made audible.
+
+Johnson took the puzzle to his theorist colleague <PhysicistLink slug="harry-nyquist" />, and within a year, in 1928, Nyquist had explained it — not with a model of electrons, but from pure thermodynamics. The noise, he showed, was the electrical signature of the same molecular agitation that <PhysicistLink slug="albert-einstein" /> had used to explain Brownian motion two decades earlier. The jiggle that moved Brown's pollen grains and the hiss in Johnson's resistor are *the same randomness*, seen in two different instruments. This topic is about that randomness: how big it is, why it is usually invisible, and the deep theorem that ties it to friction.
+
+</Section>
+
+<Section index={2} title="Fluctuations are real, and they have a size">
+
+In the canonical ensemble, a system in contact with a heat bath does not hold a fixed energy — energy flows back and forth, and the system's energy fluctuates around its mean. Far from being a vague qualitative idea, the size of that fluctuation is fixed exactly by a derivative we already know, the heat capacity:
+
+<EquationBlock id="EQ.01">$$\langle (\Delta E)^2 \rangle = k_B T^2 C_v$$</EquationBlock>
+
+The mean-square energy fluctuation equals $k_B T^2$ times the heat capacity. This is a startling statement on its own: the *spontaneous* wobble of a system at equilibrium (the left side) is set by how strongly it *responds* to being heated (the right side). A system that soaks up a lot of heat for a small temperature rise is also one that fluctuates wildly on its own. That linkage — fluctuation tied to response — is the seed of everything that follows.
+
+<SceneCard caption="FIG.21a — fluctuations and the law of large numbers. A canonical system of N molecules trades energy with a bath; its instantaneous E(t) jitters around the mean ⟨E⟩, with a shaded ±σ band. Slide N: the relative wobble σ/⟨E⟩ = √(2/3N) shrinks as 1/√N. At N = 100 the trace is wild; crank N toward Avogadro and it flattens onto its mean — why bulk thermodynamics can pretend the energy is fixed.">
+  <FluctuationScalingScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Why you never notice — the 1/√N law">
+
+If fluctuations are always present, why does thermodynamics get away with treating energy, pressure and volume as sharp, definite numbers? The answer is the most important number in statistical mechanics. The *relative* size of a fluctuation — its standard deviation divided by the mean — scales as
+
+<EquationBlock id="EQ.02">$$\frac{\sigma_E}{\langle E\rangle} = \sqrt{\frac{2}{3N}} \;\propto\; \frac{1}{\sqrt{N}}$$</EquationBlock>
+
+the inverse square root of the number of particles. For a macroscopic sample with $N \approx 10^{23}$, this is about one part in $10^{12}$ — a wobble so small that no instrument could ever resolve it, which is exactly why the gas laws look exact. But the law cuts both ways. Shrink the system and the fluctuations grow: for a protein, a quantum dot, or a hundred-atom nanostructure, $N$ is small enough that the relative fluctuations reach percent levels and dominate the behavior. The same $1/\sqrt{N}$ that makes a litre of gas perfectly predictable makes a nanomachine fundamentally noisy.
+
+<Callout variant="intuition">
+A fluctuation is not a measurement error — it is the system genuinely being different from one instant to the next. Thermodynamics is the physics of the limit $N \to \infty$, where the differences average away. Step back from that limit and the averages start to shimmer.
+</Callout>
+
+</Section>
+
+<Section index={4} title="Johnson–Nyquist noise">
+
+Nyquist's 1928 result put a precise number on Johnson's hiss. The mean-square open-circuit voltage across a resistor $R$ at temperature $T$, measured over a frequency bandwidth $\Delta f$, is
+
+<EquationBlock id="EQ.03">$$\langle V^2 \rangle = 4 k_B T R \, \Delta f$$</EquationBlock>
+
+Read it term by term: the noise power rises linearly with temperature (hotter electrons jiggle harder), linearly with resistance, and linearly with the bandwidth you listen over. What is *absent* is as telling as what is present — there is no dependence on the resistor's material, shape, or how it was made. Carbon, metal film, a column of salt water: at the same $R$ and $T$ they hiss identically. That universality is the fingerprint of a thermodynamic result, and it is why Nyquist could derive it without ever modelling an electron.
+
+<SceneCard caption="FIG.21b — Johnson–Nyquist noise on an oscilloscope. The trace is the random voltage across a resistor; its RMS amplitude is V = √(4k_BTRΔf). Slide T and R: the trace and its shaded ±V_rms band grow as √T and √R. The full-scale is fixed, so cooling the resistor or lowering its resistance visibly flattens the hiss toward silence — the noise floor of every amplifier ever built.">
+  <JohnsonNyquistScene />
+</SceneCard>
+
+This noise sets a hard floor on every measurement. No amplifier can be quieter than the thermal hiss of its own input resistor, which is why sensitive detectors — radio telescopes, gravitational-wave interferometers, the front end of an MRI — are cooled to cryogenic temperatures: lowering $T$ is the only way to lower the floor.
+
+</Section>
+
+<Section index={5} title="The fluctuation–dissipation theorem">
+
+By 1951, Herbert Callen and Theodore Welton had recognized that Einstein's relation and Nyquist's formula were two instances of one law, and in 1957 <PhysicistLink slug="ryogo-kubo" /> gave it its general and final form: the **fluctuation–dissipation theorem**. Its content is that the two things engineers usually keep in separate columns — the random fluctuations a system shows on its own, and the dissipation (friction, resistance, drag) it exhibits when you push on it — are not independent. They are rigidly proportional, with $k_B T$ as the constant of proportionality.
+
+It could not be otherwise. The very same molecular collisions that knock a particle around at random are the ones that resist its motion when it is dragged through the medium. The kicks (fluctuation) and the drag (dissipation) come from one mechanism, so their magnitudes are locked together. A resistor that dissipates electrical energy *must* generate Johnson noise; a viscous fluid that damps a particle *must* also jiggle it. You cannot have dissipation without fluctuation, or fluctuation without dissipation — they are two readings of a single underlying agitation.
+
+</Section>
+
+<Section index={6} title="Einstein got there first">
+
+The theorem's first instance was already complete in 1905. In his Brownian-motion paper, <PhysicistLink slug="albert-einstein" /> connected the **diffusion** of a suspended particle — a pure fluctuation — to its **mobility** under an applied force — a pure dissipation — through the relation
+
+<EquationBlock id="EQ.04">$$D = \mu \, k_B T$$</EquationBlock>
+
+where $D$ is the diffusion constant and $\mu$ the mobility (velocity per unit force). The left side measures how vigorously the particle wanders on its own; the right side measures how easily a force pushes it through the fluid's friction. That a single $k_B T$ joins them is the fluctuation–dissipation theorem half a century before it had a name. Around the same time <PhysicistLink slug="marian-smoluchowski" /> reached the same result by a different route, and the two together turned Brownian motion from a curiosity into the most direct evidence that atoms are real — the thread we followed in [Brownian motion](/thermodynamics/brownian-motion).
+
+</Section>
+
+<Section index={7} title="Forward — when fluctuations take over">
+
+Usually fluctuations are the small print of thermodynamics, suppressed by $1/\sqrt{N}$. But there is a place where they escape that suppression and seize control: a **critical point**. As a fluid approaches the critical temperature where the distinction between liquid and gas vanishes, its compressibility — its response to pressure — diverges, and by EQ.01's logic the density fluctuations diverge with it. Smoluchowski and Einstein showed that these runaway fluctuations grow until they reach the wavelength of light and scatter it, turning a clear fluid milky-white. This is **critical opalescence**, and it is fluctuation made directly visible to the eye.
+
+Critical opalescence is the doorway to [critical phenomena and universality](/thermodynamics/critical-phenomena-and-universality), where the way these fluctuations diverge is captured by a handful of <Term slug="critical-exponent" /> numbers that, astonishingly, are the same for fluids, magnets, and alloys alike. The randomness that began as Johnson's unwanted hiss becomes, at the critical point, the entire story — and connects back to [the partition function](/thermodynamics/the-partition-function), whose second derivative it was all along.
+
+</Section>
+
+</TopicPageLayout>

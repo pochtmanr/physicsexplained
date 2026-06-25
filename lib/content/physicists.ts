@@ -1697,6 +1697,43 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
     ],
   },
+  {
+    slug: "john-b-johnson",
+    born: "1887",
+    died: "1970",
+    nationality: "Swedish-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "harry-nyquist",
+    born: "1889",
+    died: "1976",
+    nationality: "Swedish-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "ryogo-kubo",
+    born: "1920",
+    died: "1995",
+    nationality: "Japanese",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "marian-smoluchowski",
+    born: "1872",
+    died: "1917",
+    nationality: "Polish",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

@@ -1708,6 +1708,12 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   SzilardEngineScene: lazyScene(() =>
     import("@/components/physics/free-energies-and-maxwells-demon/szilard-engine-scene").then((m) => ({ default: m.SzilardEngineScene })),
   ),
+  FluctuationScalingScene: lazyScene(() =>
+    import("@/components/physics/fluctuations-and-dissipation/fluctuation-scaling-scene").then((m) => ({ default: m.FluctuationScalingScene })),
+  ),
+  JohnsonNyquistScene: lazyScene(() =>
+    import("@/components/physics/fluctuations-and-dissipation/johnson-nyquist-scene").then((m) => ({ default: m.JohnsonNyquistScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

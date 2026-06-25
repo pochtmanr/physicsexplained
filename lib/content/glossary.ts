@@ -4186,6 +4186,43 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
     ],
   },
+  {
+    slug: "fluctuation",
+    category: "phenomenon",
+    visualization: "FluctuationScalingScene",
+    relatedPhysicists: ["albert-einstein", "marian-smoluchowski"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "fluctuation-dissipation-theorem",
+    category: "concept",
+    relatedPhysicists: ["ryogo-kubo", "albert-einstein", "harry-nyquist"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "johnson-noise",
+    category: "phenomenon",
+    visualization: "JohnsonNyquistScene",
+    relatedPhysicists: ["john-b-johnson", "harry-nyquist"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "critical-opalescence",
+    category: "phenomenon",
+    relatedPhysicists: ["marian-smoluchowski", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {
