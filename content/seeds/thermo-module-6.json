@@ -1,0 +1,468 @@
+{
+  "glossary": [
+    {
+      "slug": "partition-function",
+      "title": "Partition function",
+      "subtitle": "Z = Σ exp(−E_i/k_BT), the sum over states from which every thermodynamic quantity is obtained by differentiation.",
+      "definition": [
+        "The partition function Z is the central object of statistical mechanics: the sum of the Boltzmann factors exp(−E_i/k_BT) over every microstate i accessible to a system in thermal contact with a reservoir at temperature T. The name is a translation of the German Zustandssumme, 'sum over states,' which is why it is universally denoted Z. It serves first as the normalising constant that turns the Boltzmann weights into genuine probabilities p_i = exp(−E_i/k_BT)/Z.",
+        "Its deeper role is as a generating function. Because the temperature sits inside every exponent, differentiating ln Z recovers the thermodynamic observables one by one: the Helmholtz free energy is F = −k_BT ln Z, the mean energy is ⟨E⟩ = −∂ln Z/∂β, the entropy and pressure are temperature- and volume-derivatives of F, and the heat capacity is a further derivative. Knowing Z as a function of temperature, volume and particle number is therefore equivalent to knowing the system's entire equilibrium thermodynamics.",
+        "Z behaves simply in the two limits. As T → 0 only the ground-state term survives and Z → 1 (or the ground-state degeneracy); as T → ∞ every Boltzmann factor approaches one and Z counts the accessible states outright. Computing the sum is usually the only hard step in a statistical-mechanics problem; once it is done, thermodynamics follows by calculus."
+      ],
+      "history": "Introduced by J. Willard Gibbs in his 1902 Elementary Principles in Statistical Mechanics, building on the ensemble ideas of Boltzmann and Maxwell. The German name Zustandssumme, and the symbol Z, were established by Planck and the early quantum theorists, for whom the discrete energy spectrum made the sum over states indispensable.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" },
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" },
+        { "branchSlug": "thermodynamics", "topicSlug": "boltzmanns-entropy-formula" }
+      ]
+    },
+    {
+      "slug": "boltzmann-distribution",
+      "title": "Boltzmann distribution",
+      "subtitle": "p_i ∝ exp(−E_i/k_BT): the probability of a microstate falls off exponentially with its energy.",
+      "definition": [
+        "The Boltzmann distribution gives the probability that a system in thermal equilibrium at temperature T occupies a particular microstate of energy E_i: p_i = exp(−E_i/k_BT)/Z. Equivalently, the ratio of probabilities of two states depends only on their energy difference, p_i/p_j = exp(−(E_i − E_j)/k_BT). A state costing one k_BT more in energy is a factor e ≈ 2.7 less likely; one ten k_BT higher is rarer by some twenty-two thousand.",
+        "The distribution follows from a single assumption — that a large isolated system explores all its microstates with equal probability — applied to a small subsystem in contact with a much larger reservoir. Expanding the reservoir's entropy to first order in the subsystem's energy produces the exponential weight, with the inverse temperature β = 1/k_BT appearing as the expansion coefficient.",
+        "It is the foundation on which the partition function, the Maxwell–Boltzmann speed distribution, the Arrhenius law of reaction rates, and the barometric formula all rest. Wherever a system can be modelled as a set of energy levels in contact with a heat bath, their populations follow the Boltzmann distribution."
+      ],
+      "history": "Developed by Ludwig Boltzmann in the 1860s–1870s and given its general statistical-mechanical setting by Gibbs in 1902. It generalises Maxwell's 1860 velocity distribution from kinetic energies to arbitrary microstate energies.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-maxwell-boltzmann-distribution" }
+      ]
+    },
+    {
+      "slug": "canonical-ensemble",
+      "title": "Canonical ensemble",
+      "subtitle": "A system at fixed temperature, volume and particle number, free to exchange energy with a heat bath.",
+      "definition": [
+        "The canonical ensemble describes a system held at constant temperature T, volume V and particle number N by thermal contact with a large reservoir. Energy is not conserved by the system alone — it flows freely across the contact and fluctuates — but the temperature is fixed. The probability of each microstate is the Boltzmann weight exp(−E_i/k_BT)/Z, and the natural thermodynamic potential is the Helmholtz free energy F = −k_BT ln Z.",
+        "It is the ensemble of everyday laboratory thermodynamics, because most experiments are done at a controlled temperature rather than at a controlled energy. Energy fluctuations in the canonical ensemble are real but small: their relative size scales as 1/√N, so for macroscopic samples the energy is sharp to one part in 10¹² and the canonical and microcanonical descriptions coincide.",
+        "Gibbs introduced the canonical ensemble alongside the microcanonical and grand canonical ensembles as one of three standard ways to specify what is held fixed and what is left free, choosing whichever makes the partition function easiest to evaluate."
+      ],
+      "history": "Named and formalised by J. Willard Gibbs in 1902, generalising Boltzmann's earlier work on the distribution of energy among molecules.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" }
+      ]
+    },
+    {
+      "slug": "microcanonical-ensemble",
+      "title": "Microcanonical ensemble",
+      "subtitle": "An isolated system at fixed energy, volume and particle number, with every accessible microstate equally likely.",
+      "definition": [
+        "The microcanonical ensemble describes a completely isolated system whose energy E, volume V and particle number N are all fixed. Its founding postulate is that every microstate consistent with these constraints is equally probable. The entropy is then Boltzmann's S = k_B ln Ω, where Ω is the number of accessible microstates, and temperature, pressure and chemical potential emerge as derivatives of S.",
+        "It is the most fundamental of the three Gibbs ensembles, since it rests only on equal a priori probabilities and the conservation of energy, with no reservoir invoked. The canonical and grand canonical ensembles are derived from it by coupling a small subsystem to a large microcanonical reservoir.",
+        "In practice the microcanonical ensemble is often harder to compute with than the canonical one, because counting states at exactly one energy is more awkward than summing Boltzmann factors over all energies. For macroscopic systems the two give identical thermodynamics, so the choice is one of convenience."
+      ],
+      "history": "Introduced by Boltzmann as the basis of his entropy formula and named by Gibbs in 1902, who placed it first among the ensembles as the logical foundation of the others.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" },
+        { "branchSlug": "thermodynamics", "topicSlug": "boltzmanns-entropy-formula" }
+      ]
+    },
+    {
+      "slug": "grand-canonical-ensemble",
+      "title": "Grand canonical ensemble",
+      "subtitle": "A system free to exchange both energy and particles with a reservoir, at fixed temperature and chemical potential.",
+      "definition": [
+        "The grand canonical ensemble describes a system that can exchange both energy and particles with a reservoir, so that temperature T and chemical potential μ are fixed while energy and particle number both fluctuate. The microstate weights carry an extra factor exp(μN/k_BT), and the relevant sum is the grand partition function Ξ = Σ exp(−(E_i − μN_i)/k_BT). The corresponding potential is the grand potential Φ = −k_BT ln Ξ.",
+        "It is the natural framework wherever particle number is not conserved or not controlled: quantum gases of bosons and fermions, adsorption of molecules onto a surface, electrons in a semiconductor, and chemical equilibrium. The Bose–Einstein and Fermi–Dirac distributions are most cleanly derived in this ensemble.",
+        "Like the canonical ensemble, it agrees with the microcanonical description for macroscopic systems, because the relative fluctuations in particle number also vanish as 1/√N. The chemical potential μ measures the free-energy cost of adding one particle and is the variable conjugate to N, just as temperature is conjugate to entropy."
+      ],
+      "history": "Formalised by Gibbs in 1902, it became indispensable after 1924–1926 when Bose, Einstein, Fermi and Dirac used it to derive the quantum statistics of indistinguishable particles.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" },
+        { "branchSlug": "thermodynamics", "topicSlug": "bose-einstein-condensation" }
+      ]
+    },
+    {
+      "slug": "enthalpy",
+      "title": "Enthalpy",
+      "subtitle": "H = U + PV, the energy bookkeeping appropriate to processes at constant pressure.",
+      "definition": [
+        "Enthalpy H = U + PV is the internal energy of a system plus the work PV needed to make room for it against the surrounding pressure. At constant pressure the heat absorbed or released by a process equals the change in enthalpy, ΔH, which is why reaction enthalpies and latent heats are tabulated as enthalpy changes: most chemistry and metallurgy happens open to the atmosphere at fixed pressure.",
+        "Formally, enthalpy is the Legendre transform of the internal energy that swaps volume for pressure as the natural variable: from dU = T dS − P dV one obtains dH = T dS + V dP. Enthalpy is therefore the potential whose natural variables are entropy and pressure, and it is minimised at equilibrium when those are the quantities held fixed.",
+        "Differences in enthalpy, not absolute values, carry physical meaning. A negative ΔH marks an exothermic process that releases heat; a positive ΔH marks an endothermic one that absorbs it."
+      ],
+      "history": "The concept dates to the nineteenth-century study of heat at constant pressure; the name 'enthalpy', from the Greek for 'to warm within', was popularised by Heike Kamerlingh Onnes around 1909, though the underlying function H = U + PV was used earlier by Gibbs and others.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" },
+        { "branchSlug": "thermodynamics", "topicSlug": "heat-capacity-and-calorimetry" }
+      ]
+    },
+    {
+      "slug": "helmholtz-free-energy",
+      "title": "Helmholtz free energy",
+      "subtitle": "F = U − TS, the work obtainable from a system held at constant temperature and volume.",
+      "definition": [
+        "The Helmholtz free energy F = U − TS is the portion of a system's internal energy available to do work at constant temperature, once the entropy term TS — the energy the environment supplies or demands for free — is subtracted. For a process at fixed temperature and volume, the maximum extractable work equals the decrease in F, and equilibrium is the state of minimum F.",
+        "Statistical mechanics gives F its sharpest meaning through the partition function: F = −k_BT ln Z. Every other thermodynamic quantity follows by differentiation — the entropy is S = −∂F/∂T, the pressure P = −∂F/∂V — so F is the bridge between the microscopic sum over states and macroscopic thermodynamics.",
+        "F is the Legendre transform of the internal energy that exchanges entropy for temperature: dF = −S dT − P dV, with natural variables T and V. It is the appropriate potential for a system in a rigid container held at constant temperature."
+      ],
+      "history": "Introduced by Hermann von Helmholtz in 1882 in his work on the thermodynamics of chemical processes, distinguishing the 'free' energy available for work from the 'bound' energy TS tied up in entropy.",
+      "category": "concept",
+      "relatedPhysicists": ["hermann-von-helmholtz", "josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" }
+      ]
+    },
+    {
+      "slug": "gibbs-free-energy",
+      "title": "Gibbs free energy",
+      "subtitle": "G = U − TS + PV, whose decrease decides whether a process runs spontaneously at constant temperature and pressure.",
+      "definition": [
+        "The Gibbs free energy G = U − TS + PV = H − TS combines the enthalpy and entropy bookkeeping into the single potential appropriate to processes at constant temperature and pressure — the conditions of almost all laboratory chemistry and biology. A process is spontaneous if and only if it lowers G: ΔG = ΔH − TΔS < 0. Equilibrium is the state of minimum G.",
+        "The criterion is a contest between energy and entropy refereed by temperature. A reaction proceeds if it releases energy (ΔH < 0) or increases disorder (ΔS > 0); when the two conflict, temperature decides, with the crossover at T = ΔH/ΔS. Ice melts above 0 °C because there the entropy gain finally outweighs the energy cost of breaking the crystal.",
+        "G is the Legendre transform of the internal energy in both volume and entropy, with natural variables temperature and pressure: dG = −S dT + V dP. Its derivative with respect to particle number is the chemical potential, making G the foundation of chemical thermodynamics and phase equilibrium."
+      ],
+      "history": "Introduced by J. Willard Gibbs in his monumental 1875–1878 memoir On the Equilibrium of Heterogeneous Substances, which founded chemical thermodynamics and introduced the chemical potential and the phase rule.",
+      "category": "concept",
+      "relatedPhysicists": ["josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-clausius-clapeyron-relation" }
+      ]
+    },
+    {
+      "slug": "legendre-transform",
+      "title": "Legendre transform",
+      "subtitle": "The operation that swaps a variable for its conjugate slope, relating the four thermodynamic potentials.",
+      "definition": [
+        "A Legendre transform is a mathematical operation that re-expresses a function in terms of the slope of one of its variables rather than the variable itself, without losing information. In thermodynamics it is the operation that relates the four potentials: starting from the internal energy U(S, V) with dU = T dS − P dV, subtracting TS swaps the entropy S for its conjugate temperature T (giving the Helmholtz energy), and adding PV swaps the volume V for its conjugate pressure P (giving the enthalpy). Doing both yields the Gibbs energy.",
+        "The point of the transform is practical control. Entropy and volume are awkward to fix in a laboratory; their conjugates, temperature and pressure, are easy. The Legendre transform lets one trade an inconvenient natural variable for a convenient one while preserving all the thermodynamic content, so each potential is tailored to the variables a particular apparatus holds fixed.",
+        "The same operation connects the Lagrangian and Hamiltonian formulations of mechanics, where it swaps velocity for momentum. Its recurrence reflects a deep structural unity between thermodynamics and mechanics."
+      ],
+      "history": "Named for the French mathematician Adrien-Marie Legendre, who introduced the transform in the eighteenth century; its central role in organising the thermodynamic potentials was made explicit by Gibbs and later by the geometric thermodynamics of Carathéodory and others.",
+      "category": "concept",
+      "relatedPhysicists": ["adrien-marie-legendre", "josiah-willard-gibbs"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" }
+      ]
+    },
+    {
+      "slug": "szilard-engine",
+      "title": "Szilard engine",
+      "subtitle": "A one-molecule thought experiment that extracts k_BT ln 2 of work per measurement, exposing the cost of information.",
+      "definition": [
+        "The Szilard engine is a thought experiment that reduces Maxwell's demon to its simplest form: a single molecule in a box at temperature T. A demon measures which half the molecule occupies, inserts a partition, and lets the molecule push the partition outward as a piston. The resulting isothermal expansion from half the box to the whole box extracts exactly W = k_BT ln 2 of work from the surrounding heat bath.",
+        "Repeating the cycle appears to convert heat into work indefinitely, in violation of the second law. Szilard's insight was that the engine runs only because the demon acquired one bit of information — which side the molecule was on — and that this information must eventually be accounted for thermodynamically. The paradox is not resolved by the measurement itself but by what must later be done with the record.",
+        "The resolution, completed by Landauer and Bennett, is that erasing the demon's one-bit memory to begin a fresh cycle dissipates at least k_BT ln 2 of heat — exactly the work extracted. The net work over a full cycle is zero, and the second law is preserved. The Szilard engine is thus the founding example linking information to entropy."
+      ],
+      "history": "Proposed by Leó Szilárd in his 1929 paper 'On the Decrease of Entropy in a Thermodynamic System by the Intervention of Intelligent Beings', the first work to quantify the entropy associated with a measurement and a milestone in the prehistory of information theory.",
+      "category": "concept",
+      "relatedPhysicists": ["leo-szilard"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" },
+        { "branchSlug": "thermodynamics", "topicSlug": "the-arrow-of-time" }
+      ]
+    },
+    {
+      "slug": "landauer-principle",
+      "title": "Landauer's principle",
+      "subtitle": "Erasing one bit of information dissipates at least k_BT ln 2 of heat.",
+      "definition": [
+        "Landauer's principle states that erasing one bit of information in a physical system must dissipate at least k_BT ln 2 of energy as heat into the environment — about 3 × 10⁻²¹ joules at room temperature. Erasure is logically irreversible: it maps two distinct states (0 and 1) onto a single standard state, merging two regions of phase space into one, and that loss of one bit of phase-space volume must be compensated by an entropy increase of at least k_B ln 2 somewhere outside the system.",
+        "The principle draws a sharp line between reversible and irreversible computation. Operations that preserve information can in principle be performed with arbitrarily little energy; only the destruction of information carries an unavoidable thermodynamic cost. Its slogan — 'information is physical' — captures the recognition that a bit is not an abstraction but a physical degree of freedom subject to thermodynamics.",
+        "Landauer's principle resolves Maxwell's demon: the demon's memory is finite and must be erased to continue operating, and that erasure pays back exactly the work the demon extracted. It also sets the ultimate energy floor for computation, a limit measured directly in single-particle experiments since 2012."
+      ],
+      "history": "Formulated by Rolf Landauer at IBM in 1961, and used by Charles Bennett in 1982 to give the definitive resolution of the Maxwell's-demon paradox by locating the entropy cost in memory erasure rather than in measurement.",
+      "category": "concept",
+      "relatedPhysicists": ["rolf-landauer", "charles-bennett"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" }
+      ]
+    },
+    {
+      "slug": "fluctuation",
+      "title": "Fluctuation",
+      "subtitle": "The spontaneous deviation of a quantity from its mean in a system at thermal equilibrium.",
+      "definition": [
+        "A fluctuation is a spontaneous, temporary departure of a physical quantity — energy, density, magnetisation, voltage — from its average value in a system at thermal equilibrium. Fluctuations are not measurement errors: the system genuinely differs from one instant to the next as it exchanges energy and particles with its surroundings. In the canonical ensemble the mean-square energy fluctuation is fixed by the heat capacity, ⟨(ΔE)²⟩ = k_BT²C_v.",
+        "Their defining feature is how they scale with system size. The relative size of a fluctuation falls off as 1/√N with the number of particles, so for a macroscopic sample of 10²³ molecules it is around one part in 10¹² — invisible, which is why bulk thermodynamics can treat its variables as sharp. For small systems — nanostructures, single molecules, biological motors — N is small and fluctuations become a dominant feature of the behaviour.",
+        "Fluctuations are intimately tied to a system's response to external forces through the fluctuation–dissipation theorem, and they grow without bound near a critical point, where they can become large enough to scatter light."
+      ],
+      "history": "The statistical theory of fluctuations was developed by Einstein and Smoluchowski in the first decade of the twentieth century, in their work on Brownian motion and on critical opalescence, providing some of the strongest early evidence for the molecular constitution of matter.",
+      "category": "phenomenon",
+      "relatedPhysicists": ["albert-einstein", "marian-smoluchowski"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "fluctuation-dissipation-theorem",
+      "title": "Fluctuation–dissipation theorem",
+      "subtitle": "A system's spontaneous fluctuations and its dissipative response to a force are rigidly proportional, with k_BT the constant.",
+      "definition": [
+        "The fluctuation–dissipation theorem states that the random fluctuations a system shows spontaneously at equilibrium and the dissipation it exhibits when driven by an external force are not independent properties but are locked together, with the thermal energy k_BT as the constant of proportionality. The same microscopic agitation that makes a quantity fluctuate on its own is what resists an applied force, so a system cannot dissipate without fluctuating, nor fluctuate without dissipating.",
+        "Concrete instances include Einstein's relation D = μk_BT between the diffusion constant (a fluctuation) and the mobility (a dissipation) of a Brownian particle, and the Johnson–Nyquist formula V² = 4k_BTRΔf linking a resistor's voltage noise to its resistance. In each case a quantity measuring spontaneous wandering is fixed by a quantity measuring frictional response.",
+        "The theorem is a cornerstone of non-equilibrium statistical mechanics and of linear-response theory: it allows transport coefficients such as conductivity, viscosity and diffusion to be computed from equilibrium correlation functions of the corresponding fluctuations."
+      ],
+      "history": "Anticipated by Einstein (1905) and Nyquist (1928) in special cases, proved in general by Herbert Callen and Theodore Welton in 1951, and cast in its definitive linear-response form by Ryogo Kubo in 1957.",
+      "category": "concept",
+      "relatedPhysicists": ["ryogo-kubo", "albert-einstein", "harry-nyquist"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    },
+    {
+      "slug": "johnson-noise",
+      "title": "Johnson noise",
+      "subtitle": "The thermal voltage noise of any resistor, V² = 4k_BTRΔf, independent of the resistor's material.",
+      "definition": [
+        "Johnson noise (also Johnson–Nyquist or thermal noise) is the random electrical voltage that appears across any resistor in thermal equilibrium, caused by the thermal agitation of its charge carriers. Its mean-square open-circuit value over a bandwidth Δf is V² = 4k_BTRΔf, rising linearly with temperature, resistance and bandwidth. The noise is white over a wide range of frequencies and is present whether or not any current flows.",
+        "Its most striking feature is universality: the noise depends only on resistance, temperature and bandwidth, never on the resistor's material, geometry or construction. This material-independence is the signature of a thermodynamic result and is what allowed Nyquist to derive the formula from equilibrium thermodynamics alone, without any model of the electrons.",
+        "Johnson noise sets the fundamental sensitivity limit of electronic measurement: no amplifier can be quieter than the thermal hiss of its own input resistance. It is the reason sensitive detectors — from radio telescopes to gravitational-wave interferometers — cool their front ends to cryogenic temperatures, since lowering T is the only way to lower the floor."
+      ],
+      "history": "Discovered experimentally by John B. Johnson at Bell Labs in 1927 and explained thermodynamically by his colleague Harry Nyquist in 1928, making it one of the first quantitative confirmations of the connection between thermal fluctuations and dissipation.",
+      "category": "phenomenon",
+      "relatedPhysicists": ["john-b-johnson", "harry-nyquist"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" }
+      ]
+    },
+    {
+      "slug": "critical-opalescence",
+      "title": "Critical opalescence",
+      "subtitle": "The milky scattering of light by density fluctuations that grow to the wavelength of light near a critical point.",
+      "definition": [
+        "Critical opalescence is the dramatic scattering of light that turns a normally transparent fluid milky and white as it approaches its critical point — the temperature and pressure where the distinction between liquid and gas vanishes. The effect was the first direct visual evidence that thermal fluctuations can become macroscopically large.",
+        "Its cause is the divergence of the fluid's compressibility at the critical point. Since the magnitude of density fluctuations is governed by the compressibility, the fluctuations grow without bound, developing correlated regions of varying density that swell until they reach the wavelength of visible light. Such regions scatter light strongly and over all directions, producing the characteristic cloudy glow.",
+        "Critical opalescence is the everyday face of critical phenomena. The way the correlation length and other quantities diverge near the critical point is described by critical exponents that are remarkably universal — the same for fluids, magnets and alloys — a universality explained only decades later by the renormalisation group."
+      ],
+      "history": "Observed in the nineteenth century and explained by Marian Smoluchowski (1908) and Albert Einstein (1910) in terms of diverging density fluctuations, providing further strong evidence for the molecular theory of matter and foreshadowing the modern study of critical phenomena.",
+      "category": "phenomenon",
+      "relatedPhysicists": ["marian-smoluchowski", "albert-einstein"],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "critical-phenomena-and-universality" }
+      ]
+    }
+  ],
+  "physicists": [
+    {
+      "slug": "josiah-willard-gibbs",
+      "name": "J. Willard Gibbs",
+      "subtitle": "Reclusive Yale professor who founded chemical thermodynamics and gave statistical mechanics its name and its central tool, the partition function.",
+      "born": "1839",
+      "died": "1903",
+      "nationality": "American",
+      "bio": [
+        "Josiah Willard Gibbs was born in 1839 in New Haven, Connecticut, the son of a Yale professor of sacred literature. He earned one of the first PhDs in engineering granted in the United States from Yale in 1863, then spent three years studying in Paris, Berlin and Heidelberg, absorbing the latest European mathematics and physics. He returned to Yale and in 1871 was appointed professor of mathematical physics — a position he held, at first without salary, for the rest of his life.",
+        "Between 1875 and 1878 Gibbs published On the Equilibrium of Heterogeneous Substances, a long and densely mathematical memoir that single-handedly founded chemical thermodynamics. In it he introduced the chemical potential, the Gibbs free energy, and the phase rule, and showed how to predict the equilibrium of multi-component, multi-phase systems. Published in the obscure Transactions of the Connecticut Academy, the work was at first read by almost no one, though Maxwell in England recognised its importance and built a plaster model of Gibbs's thermodynamic surface.",
+        "In 1902 Gibbs published Elementary Principles in Statistical Mechanics, the book that gave the field its name. Abstracting away from the molecular models of Boltzmann and Maxwell, he organised the subject around statistical ensembles and the partition function, providing the framework — microcanonical, canonical and grand canonical ensembles — in which all of equilibrium statistical mechanics is still taught.",
+        "Gibbs was famously modest and retiring, never marrying and rarely leaving New Haven. He also developed modern vector analysis for his teaching. He died in 1903, the year after his statistical-mechanics book appeared, not living to see quantum mechanics make his abstract sum over discrete states not merely convenient but unavoidable."
+      ],
+      "contributions": [
+        "Founded chemical thermodynamics: the Gibbs free energy, chemical potential, and the phase rule (1875–1878)",
+        "Coined the term 'statistical mechanics' and organised the field around ensembles and the partition function (1902)",
+        "Defined the canonical, microcanonical and grand canonical ensembles still used today",
+        "Developed modern vector analysis"
+      ],
+      "majorWorks": [
+        "On the Equilibrium of Heterogeneous Substances (1875–1878)",
+        "Elementary Principles in Statistical Mechanics (1902)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "the-partition-function" },
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" },
+        { "branchSlug": "thermodynamics", "topicSlug": "boltzmanns-entropy-formula" }
+      ]
+    },
+    {
+      "slug": "leo-szilard",
+      "name": "Leó Szilárd",
+      "subtitle": "Hungarian-American physicist who tied information to entropy with his one-molecule engine and later conceived the nuclear chain reaction.",
+      "born": "1898",
+      "died": "1964",
+      "nationality": "Hungarian-American",
+      "bio": [
+        "Leó Szilárd was born in Budapest in 1898 and studied in Berlin in the 1920s, where his teachers and colleagues included Einstein, von Laue and Planck. His 1929 paper on the entropy cost of measurement — built around what is now called the Szilard engine, a single molecule in a box — was the first work to connect information to thermodynamic entropy, decades before information theory existed.",
+        "Restlessly inventive, Szilárd conceived the idea of a nuclear chain reaction in 1933 while waiting at a London traffic light, and patented it the following year. Alarmed by the prospect of a German atomic bomb, he drafted the 1939 letter to President Roosevelt that Einstein signed, helping to launch the Manhattan Project, on which he then worked with Fermi to design the first nuclear reactor.",
+        "After the war Szilárd turned against the weapon he had helped create, campaigning for arms control and the civilian control of atomic energy. He also reinvented himself as a molecular biologist, making contributions to the understanding of enzyme regulation and bacterial growth.",
+        "Szilárd held, with Einstein, a patent on a novel refrigerator with no moving parts. A man of constant ideas and few institutional ties, he lived much of his life out of suitcases in hotels, and died in California in 1964."
+      ],
+      "contributions": [
+        "The Szilard engine and the first quantitative link between information and entropy (1929)",
+        "Conceived and patented the nuclear chain reaction (1933–1934)",
+        "Drafted the Einstein–Szilárd letter to Roosevelt (1939); co-designed the first nuclear reactor with Fermi",
+        "Later contributions to molecular biology and to the arms-control movement"
+      ],
+      "majorWorks": [
+        "On the Decrease of Entropy in a Thermodynamic System by the Intervention of Intelligent Beings (1929)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" }
+      ]
+    },
+    {
+      "slug": "rolf-landauer",
+      "name": "Rolf Landauer",
+      "subtitle": "IBM physicist who proved that erasing a bit costs k_BT ln 2 and insisted that 'information is physical'.",
+      "born": "1927",
+      "died": "1999",
+      "nationality": "German-American",
+      "bio": [
+        "Rolf Landauer was born in Stuttgart in 1927 and fled Nazi Germany with his family in 1938, settling in the United States. He earned his PhD from Harvard and in 1952 joined IBM, where he spent his career and became one of the foundational figures in the physics of computation.",
+        "In 1961 Landauer established the principle that bears his name: that erasing one bit of information must dissipate at least k_BT ln 2 of energy as heat, because erasure is the one logically irreversible operation. This identified the unavoidable thermodynamic cost of computation and located it precisely in the destruction, not the processing, of information.",
+        "Landauer's broader message, captured in his slogan 'information is physical', was that information is never abstract but always tied to a physical carrier subject to the laws of thermodynamics. The insight reshaped how physicists think about computation and underlies the modern fields of reversible and quantum computing.",
+        "He also made fundamental contributions to mesoscopic physics, including the Landauer formula relating electrical conductance to quantum transmission probabilities. He remained scientifically active at IBM until shortly before his death in 1999."
+      ],
+      "contributions": [
+        "Landauer's principle: erasing one bit dissipates at least k_BT ln 2 of heat (1961)",
+        "The dictum 'information is physical', founding the thermodynamics of computation",
+        "The Landauer formula for conductance in mesoscopic conductors"
+      ],
+      "majorWorks": [
+        "Irreversibility and Heat Generation in the Computing Process (1961)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" }
+      ]
+    },
+    {
+      "slug": "charles-bennett",
+      "name": "Charles Bennett",
+      "subtitle": "IBM physicist who resolved Maxwell's demon through erasure and co-founded quantum information theory.",
+      "born": "1943",
+      "died": "—",
+      "nationality": "American",
+      "bio": [
+        "Charles H. Bennett, born in 1943, is an American physicist and information theorist who has spent much of his career at IBM Research. In 1973 he showed that computation can in principle be made logically reversible, and therefore performed with arbitrarily little energy dissipation — a result that sharpened Landauer's principle by isolating erasure as the sole source of unavoidable cost.",
+        "In 1982 Bennett used this insight to give the definitive resolution of the Maxwell's-demon paradox. He argued that the demon's memory is finite and must eventually be erased to continue operating, and that this erasure dissipates exactly the energy the demon appears to gain. The entropy the demon seemed to destroy is paid back in full when it forgets.",
+        "Bennett went on to become one of the founders of quantum information science. With Gilles Brassard he invented quantum cryptography in 1984 (the BB84 protocol), and in 1993 he led the team that discovered quantum teleportation. These results made him one of the most influential figures in the modern understanding of information as a physical resource.",
+        "His work threads together thermodynamics, computation and quantum mechanics, showing repeatedly that the abstract notion of information is governed by physical law."
+      ],
+      "contributions": [
+        "Logical reversibility of computation (1973)",
+        "Resolution of Maxwell's demon via the thermodynamics of memory erasure (1982)",
+        "Co-invented quantum cryptography (BB84, 1984) and quantum teleportation (1993)"
+      ],
+      "majorWorks": [
+        "Logical Reversibility of Computation (1973)",
+        "The Thermodynamics of Computation — a Review (1982)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "free-energies-and-maxwells-demon" }
+      ]
+    },
+    {
+      "slug": "john-b-johnson",
+      "name": "John B. Johnson",
+      "subtitle": "Bell Labs physicist who discovered the thermal voltage noise present in every resistor.",
+      "born": "1887",
+      "died": "1970",
+      "nationality": "Swedish-American",
+      "bio": [
+        "John Bertrand Johnson was born in Sweden in 1887 and emigrated to the United States, where he earned his doctorate and joined the research staff of Bell Telephone Laboratories. There, in 1927, he made the careful measurements that revealed an irreducible random voltage present across every resistor — a noise that could not be eliminated by improving the apparatus.",
+        "Johnson found that this noise grew with temperature and with resistance, but was independent of the resistor's material or the current through it, marking it as a fundamental thermal effect rather than an artefact. The phenomenon is now called Johnson noise, or Johnson–Nyquist noise in recognition of the theoretical explanation supplied by his colleague.",
+        "Beyond the discovery of thermal noise, Johnson worked on thermionic emission and on the development of improved cathode-ray and oscilloscope tubes, contributing to the instrumentation that made precise electronic measurement possible.",
+        "His discovery established a fundamental limit on the sensitivity of all electronic measurement and remains a daily concern for the designers of low-noise amplifiers and detectors. He died in 1970."
+      ],
+      "contributions": [
+        "Experimental discovery of thermal (Johnson) noise in resistors (1927)",
+        "Established that the noise is independent of material — a fundamental thermal effect",
+        "Work on thermionic emission and cathode-ray tube design"
+      ],
+      "majorWorks": [
+        "Thermal Agitation of Electricity in Conductors (1928)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" }
+      ]
+    },
+    {
+      "slug": "harry-nyquist",
+      "name": "Harry Nyquist",
+      "subtitle": "Bell Labs theorist who derived thermal noise from thermodynamics and laid foundations for control theory and sampling.",
+      "born": "1889",
+      "died": "1976",
+      "nationality": "Swedish-American",
+      "bio": [
+        "Harry Nyquist was born in Nilsby, Sweden, in 1889 and emigrated to the United States in 1907. He earned his PhD in physics from Yale in 1917 and spent his career at AT&T and Bell Telephone Laboratories, where he became one of the most influential engineers and theorists of the twentieth century.",
+        "In 1928 Nyquist explained his colleague Johnson's noise measurements from first principles, deriving the formula V² = 4k_BTRΔf by a thermodynamic argument that made no reference to the microscopic behaviour of electrons. The derivation was an early and elegant instance of what would later be recognised as the fluctuation–dissipation theorem, connecting a resistor's noise to its dissipative resistance.",
+        "The same year, in 'Certain Topics in Telegraph Transmission Theory', Nyquist established results on the maximum signalling rate of a channel that became foundational for the sampling theorem later completed by Shannon. His 1932 work on feedback amplifiers produced the Nyquist stability criterion, a cornerstone of control theory.",
+        "Nyquist's name is attached to ideas across communications, control and statistical physics — a rare breadth. He retired from Bell Labs in 1954 and died in 1976."
+      ],
+      "contributions": [
+        "Thermodynamic derivation of Johnson noise, V² = 4k_BTRΔf (1928)",
+        "Foundations of the sampling theorem (the Nyquist rate)",
+        "The Nyquist stability criterion in control theory (1932)"
+      ],
+      "majorWorks": [
+        "Thermal Agitation of Electric Charge in Conductors (1928)",
+        "Certain Topics in Telegraph Transmission Theory (1928)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" }
+      ]
+    },
+    {
+      "slug": "ryogo-kubo",
+      "name": "Ryogo Kubo",
+      "subtitle": "Japanese physicist who gave the fluctuation–dissipation theorem its general form through linear-response theory.",
+      "born": "1920",
+      "died": "1995",
+      "nationality": "Japanese",
+      "bio": [
+        "Ryogo Kubo was born in Tokyo in 1920 and became one of the leading figures of twentieth-century statistical physics. Working in the post-war Japanese physics community, he developed the systematic theory of how systems near equilibrium respond to small external forces.",
+        "In 1957 Kubo formulated linear-response theory and proved the fluctuation–dissipation theorem in full generality, expressing transport coefficients such as electrical conductivity in terms of equilibrium time-correlation functions of the corresponding fluctuations. The Kubo formula made precise the idea that a system's spontaneous fluctuations and its dissipative response are two aspects of the same underlying dynamics, with k_BT the link between them.",
+        "Kubo was also a celebrated teacher and author. His textbooks on thermodynamics and statistical mechanics, with their extensive worked problems, educated generations of physicists around the world.",
+        "He received many honours, including the Boltzmann Medal in 1977, and remained a central figure in statistical physics until his death in 1995."
+      ],
+      "contributions": [
+        "Linear-response theory and the Kubo formula (1957)",
+        "General proof of the fluctuation–dissipation theorem",
+        "Influential textbooks on thermodynamics and statistical mechanics"
+      ],
+      "majorWorks": [
+        "Statistical-Mechanical Theory of Irreversible Processes (1957)",
+        "Statistical Mechanics (textbook, 1965)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" }
+      ]
+    },
+    {
+      "slug": "marian-smoluchowski",
+      "name": "Marian Smoluchowski",
+      "subtitle": "Polish physicist who built the theory of Brownian motion and explained critical opalescence through density fluctuations.",
+      "born": "1872",
+      "died": "1917",
+      "nationality": "Polish",
+      "bio": [
+        "Marian Smoluchowski was born in 1872 near Vienna and became one of the founders of the modern theory of stochastic processes. Working at the universities of Lwów and Kraków, he developed, independently of Einstein and by a more directly physical method, a quantitative theory of Brownian motion in 1906.",
+        "Smoluchowski's central conviction was that thermal fluctuations are real and observable, and he pursued their consequences across many phenomena. He worked out the kinetics of coagulation in colloids and formulated the Smoluchowski equation describing the evolution of probability under combined drift and diffusion.",
+        "In 1908 he explained critical opalescence — the milky scattering of light by a fluid near its critical point — as the optical signature of density fluctuations grown large enough to scatter light, a result Einstein refined in 1910. Together with his Brownian-motion work, this provided some of the most compelling evidence of the era for the molecular constitution of matter.",
+        "Smoluchowski's career was cut short when he died of dysentery in 1917 at the age of forty-five, at the height of his powers."
+      ],
+      "contributions": [
+        "Independent theory of Brownian motion (1906)",
+        "Theory of critical opalescence from density fluctuations (1908)",
+        "The Smoluchowski equation and the theory of colloidal coagulation"
+      ],
+      "majorWorks": [
+        "Zur kinetischen Theorie der Brownschen Molekularbewegung und der Suspensionen (1906)",
+        "Work on critical opalescence and density fluctuations (1908)"
+      ],
+      "relatedTopics": [
+        { "branchSlug": "thermodynamics", "topicSlug": "fluctuations-and-dissipation" },
+        { "branchSlug": "thermodynamics", "topicSlug": "brownian-motion" }
+      ]
+    }
+  ]
+}
