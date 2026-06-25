@@ -1702,6 +1702,12 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PartitionToThermoScene: lazyScene(() =>
     import("@/components/physics/the-partition-function/partition-to-thermo-scene").then((m) => ({ default: m.PartitionToThermoScene })),
   ),
+  FourFreeEnergiesScene: lazyScene(() =>
+    import("@/components/physics/free-energies-and-maxwells-demon/four-free-energies-scene").then((m) => ({ default: m.FourFreeEnergiesScene })),
+  ),
+  SzilardEngineScene: lazyScene(() =>
+    import("@/components/physics/free-energies-and-maxwells-demon/szilard-engine-scene").then((m) => ({ default: m.SzilardEngineScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

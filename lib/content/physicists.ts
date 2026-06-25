@@ -1670,6 +1670,33 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
     ],
   },
+  {
+    slug: "leo-szilard",
+    born: "1898",
+    died: "1964",
+    nationality: "Hungarian-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "rolf-landauer",
+    born: "1927",
+    died: "1999",
+    nationality: "German-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "charles-bennett",
+    born: "1943",
+    died: "—",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

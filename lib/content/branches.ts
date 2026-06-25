@@ -1077,7 +1077,7 @@ const THERMODYNAMICS_TOPICS: readonly Topic[] = [
   { slug: "brownian-motion", title: "BROWNIAN MOTION", eyebrow: "FIG.18 · KINETIC THEORY", subtitle: "The jitter of pollen grains that finally made atoms undeniable.", readingMinutes: 11, status: "live", module: "kinetic-theory" },
   // Module 6 Statistical Mechanics — FIG.19–21 (coming-soon)
   { slug: "the-partition-function", title: "THE PARTITION FUNCTION", eyebrow: "FIG.19 · STAT MECHANICS", subtitle: "One sum from which all of thermodynamics falls out by differentiation.", readingMinutes: 13, status: "live", module: "statistical-mechanics" },
-  { slug: "free-energies-and-maxwells-demon", title: "FREE ENERGIES AND MAXWELL'S DEMON", eyebrow: "FIG.20 · STAT MECHANICS", subtitle: "The demon was never free: erasing a memory costs entropy.", readingMinutes: 12, status: "coming-soon", module: "statistical-mechanics" },
+  { slug: "free-energies-and-maxwells-demon", title: "FREE ENERGIES AND MAXWELL'S DEMON", eyebrow: "FIG.20 · STAT MECHANICS", subtitle: "The demon was never free: erasing a memory costs entropy.", readingMinutes: 12, status: "live", module: "statistical-mechanics" },
   { slug: "fluctuations-and-dissipation", title: "FLUCTUATIONS AND DISSIPATION", eyebrow: "FIG.21 · STAT MECHANICS", subtitle: "The hiss in every amplifier is the second law made audible.", readingMinutes: 11, status: "coming-soon", module: "statistical-mechanics" },
   // Module 7 Phase Transitions — FIG.22–24 (coming-soon)
   { slug: "the-clausius-clapeyron-relation", title: "THE CLAUSIUS-CLAPEYRON RELATION", eyebrow: "FIG.22 · PHASE TRANSITIONS", subtitle: "Why an ice-skater glides on a film of water she makes herself.", readingMinutes: 10, status: "coming-soon", module: "phase-transitions" },

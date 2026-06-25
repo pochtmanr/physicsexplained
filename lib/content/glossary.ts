@@ -4128,6 +4128,64 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "bose-einstein-condensation" },
     ],
   },
+  {
+    slug: "enthalpy",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+    ],
+  },
+  {
+    slug: "helmholtz-free-energy",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["hermann-von-helmholtz", "josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+    ],
+  },
+  {
+    slug: "gibbs-free-energy",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "the-clausius-clapeyron-relation" },
+    ],
+  },
+  {
+    slug: "legendre-transform",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["adrien-marie-legendre", "josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "szilard-engine",
+    category: "concept",
+    visualization: "SzilardEngineScene",
+    relatedPhysicists: ["leo-szilard"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "landauer-principle",
+    category: "concept",
+    visualization: "SzilardEngineScene",
+    relatedPhysicists: ["rolf-landauer", "charles-bennett"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

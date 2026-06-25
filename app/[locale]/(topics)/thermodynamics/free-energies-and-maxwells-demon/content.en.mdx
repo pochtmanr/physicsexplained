@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { FourFreeEnergiesScene } from "@/components/physics/free-energies-and-maxwells-demon/four-free-energies-scene";
+import { SzilardEngineScene } from "@/components/physics/free-energies-and-maxwells-demon/szilard-engine-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Leó Szilárd", href: "/physicists/leo-szilard" },
+  { type: "physicist", label: "Rolf Landauer", href: "/physicists/rolf-landauer" },
+  { type: "term", label: "Maxwell's demon", href: "/dictionary/maxwells-demon" },
+  { type: "term", label: "Gibbs free energy", href: "/dictionary/gibbs-free-energy" },
+  { type: "term", label: "Helmholtz free energy", href: "/dictionary/helmholtz-free-energy" },
+  { type: "term", label: "Legendre transform", href: "/dictionary/legendre-transform" },
+  { type: "term", label: "Szilard engine", href: "/dictionary/szilard-engine" },
+  { type: "term", label: "Landauer's principle", href: "/dictionary/landauer-principle" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.20 · STAT MECHANICS"
+  title="FREE ENERGIES AND MAXWELL'S DEMON"
+  subtitle="The demon was never free: erasing a memory costs entropy."
+/>
+
+<Section index={1} title="A demon at the door">
+
+In 1867, in a letter to his friend Peter Guthrie Tait, <PhysicistLink slug="james-clerk-maxwell" /> imagined a creature that would haunt physics for a century. Picture a gas-filled box divided in two by a wall with a tiny trapdoor. A "very observant and neat-fingered being" sits at the door. When a fast molecule approaches from the right, it opens the door and lets it through to the left; when a slow one approaches from the left, it lets it through to the right. Doing no work — the door is frictionless, the molecules do the moving — the being sorts fast from slow, hot from cold. One side warms, the other cools. A temperature difference appears from nothing, and the second law of thermodynamics, which forbids exactly this, seems to fail.
+
+This is <Term slug="maxwells-demon" /> (the name is William Thomson's; Maxwell only ever called it "a finite being"). Maxwell's own point was modest — he meant to show that the second law is statistical, true for bulk matter but not enforced molecule by molecule. But the demon refused to die. For sixty years it stood as an unanswered challenge: if information about individual molecules could be had for free, the second law was in trouble. The resolution, when it came, did not patch a leak in the box. It revealed that **information itself has a thermodynamic cost** — and to see why, we first need the bookkeeping of free energy.
+
+</Section>
+
+<Section index={2} title="Four potentials, one shape">
+
+Energy alone does not tell you which way a process will go. What governs spontaneity is *free* energy — the portion of a system's energy actually available to do work once the unavoidable entropy tax is paid. There are four such bookkeeping quantities, and they are not four separate ideas but one idea wearing four hats, each cut for a different pair of held-fixed variables:
+
+<EquationBlock id="EQ.01">$$H = U + PV, \qquad F = U - TS, \qquad G = U - TS + PV$$</EquationBlock>
+
+Internal energy $U$ is the raw total. Enthalpy $H$ adds the work $PV$ needed to make room for the system — the right ledger when pressure is fixed. The <Term slug="helmholtz-free-energy" /> $F$ subtracts the heat $TS$ the environment supplies for free — the right ledger at fixed temperature and volume. The <Term slug="gibbs-free-energy" /> $G$ does both, and rules the world of constant temperature and pressure where chemistry happens.
+
+<SceneCard caption="FIG.20a — the four potentials, one square. U sits at the origin; each Legendre transform trades an awkward natural variable for its easy conjugate — add PV to swap volume for pressure (U→H, F→G), subtract TS to swap entropy for temperature (U→F, H→G). Click any corner to read its definition, its natural variables, and when it is the right potential to minimize. The square closes on G.">
+  <FourFreeEnergiesScene />
+</SceneCard>
+
+<Callout variant="intuition">
+Each potential is minimized at equilibrium precisely when *its* natural variables are the ones you hold fixed. Hold $T$ and $P$ constant and the system slides downhill in $G$; hold $T$ and $V$ and it slides downhill in $F$. Pick the potential that matches your laboratory, and equilibrium is wherever it bottoms out.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Gibbs free energy and the direction of chemistry">
+
+The Gibbs free energy earns its central place because almost everything — a reaction in a beaker, water freezing, a protein folding — happens at the fixed temperature and pressure of the open air. For such a process, the second law reduces to a single inequality:
+
+<EquationBlock id="EQ.02">$$\Delta G = \Delta H - T\,\Delta S < 0 \quad \text{(spontaneous at fixed } T, P)$$</EquationBlock>
+
+Read it as a contest. $\Delta H$ is the heat released or absorbed; $\Delta S$ is the change in disorder; $T$ is the referee that decides how much the entropy term matters. A reaction proceeds if it lowers $G$ — either by releasing energy ($\Delta H < 0$) or by increasing entropy ($\Delta S > 0$), or both. When the two compete, temperature breaks the tie: ice melts above $0\,^\circ$C because there the entropy gain $T\Delta S$ finally outweighs the energy cost $\Delta H$ of breaking the crystal. The crossover temperature is exactly $T = \Delta H / \Delta S$.
+
+This is the quantity a chemist actually tabulates. A negative $\Delta G$ means "go"; the magnitude sets how much work the reaction could in principle deliver. Free energy is the currency in which thermodynamics pays out.
+
+</Section>
+
+<Section index={4} title="The operation behind the four: Legendre transforms">
+
+Why exactly these four combinations, and not some other? The answer is a single mathematical operation, the <Term slug="legendre-transform" />. It is the same trick that turns the Lagrangian into the Hamiltonian in mechanics: a controlled way to swap a variable for its conjugate slope without losing any information.
+
+The fundamental relation for internal energy is $dU = T\,dS - P\,dV$, which says $U$ is most naturally a function of entropy $S$ and volume $V$. But $S$ is hard to control in a lab — you cannot dial an entropy. Temperature $T$, its conjugate, you can. The Legendre transform $F = U - TS$ performs the swap: differentiating gives $dF = -S\,dT - P\,dV$, so $F$ is now a function of the *controllable* $T$ and $V$. Add $PV$ instead and you swap volume for pressure ($U \to H$); do both and you reach $G(T, P)$. The four potentials are simply $U$ and its three Legendre transforms — one geometric operation, applied to whichever variables your apparatus holds fixed.
+
+</Section>
+
+<Section index={5} title="Szilard's engine — information enters the ledger">
+
+In 1929, the Hungarian physicist <PhysicistLink slug="leo-szilard" /> stripped Maxwell's demon to its bones. Forget thousands of molecules; use just **one**. A single molecule rattles around a box at temperature $T$. The demon measures which half it is in, then slides a partition into the middle. Now it knows the gas is on, say, the left — so it lets the molecule push the partition rightward as a piston, an isothermal expansion from half the box to the whole box. The work delivered is exactly
+
+<EquationBlock id="EQ.03">$$W = k_B T \ln 2 \approx 2.9 \times 10^{-21}\ \text{J at }300\,\text{K}$$</EquationBlock>
+
+a tidy packet of energy drawn from the thermal bath, one molecule at a time. Repeat the cycle and you appear to convert heat into work indefinitely — a perpetual-motion machine of the second kind. Szilard's decisive move was to notice *where the entropy went*. The engine works only because the demon **measured** which side the molecule was on, and that one bit of information — left or right — is the loose end the whole paradox hangs on.
+
+<SceneCard caption="FIG.20b — the Szilard engine on a loop. MEASURE: the demon sees the molecule's side and drops a partition. EXTRACT: the partition becomes a piston the molecule pushes out, yielding W = k_BT ln 2. ERASE: resetting the demon's one-bit memory dissipates k_BT ln 2 — Landauer's price. The ledger keeps score; the net work is zero, and the second law walks away intact.">
+  <SzilardEngineScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Landauer's principle closes the loop">
+
+For decades the cost was wrongly pinned on the act of *measurement*. The true answer came in 1961 from <PhysicistLink slug="rolf-landauer" /> at IBM, who asked a sharper question: which logical operations are physically irreversible? His answer — **Landauer's principle** — is that computation can in principle be done for free, with one exception. **Erasing** a bit is irreversible: it maps two distinct states (0 and 1) onto one, and that loss of one bit of information *must* dump at least
+
+$$Q_{\text{erase}} \ge k_B T \ln 2$$
+
+of heat into the environment. The merging of two possibilities into one is the merging of two phase-space cells into one, and entropy must rise somewhere to compensate.
+
+In 1982 <PhysicistLink slug="charles-bennett" /> drove the point home for the demon. A demon running many cycles must store each measurement somewhere; its memory is finite; to keep going it must eventually **erase** old records — and *that* erasure pays back, exactly, the $k_B T \ln 2$ the engine extracted. The demon's memory is the cold reservoir in disguise. The <Term slug="landauer-principle" /> turns the demon from a threat into a bookkeeping lesson: the work you gain by knowing is repaid in full when you forget.
+
+<Callout variant="math">
+The symmetry is exact. The engine extracts $k_B T \ln 2$ per cycle; erasing the one-bit record costs $k_B T \ln 2$; the net work is identically zero. There is no leak in the box and never was — the missing entropy was hiding in the demon's notebook all along.
+</Callout>
+
+</Section>
+
+<Section index={7} title="Forward — the thermodynamics of computation">
+
+Landauer's resolution did more than save the second law; it founded a field. If erasing a bit costs $k_B T \ln 2$, then every irreversible logic gate in every processor pays a thermodynamic toll, and the $k_B T \ln 2$ floor — about $3 \times 10^{-21}$ joules at room temperature — is the ultimate limit on the energy efficiency of computing. Real transistors today dissipate millions of times more, but the limit is real and has been measured directly in single-particle experiments since 2012. It also opened the door to **reversible computing**, which sidesteps the cost by never erasing, and underlies the energetics of quantum information.
+
+The demon also closes a loop back through this module. Its appetite was for [the partition function](/thermodynamics/the-partition-function)'s free energy $F = -k_B T \ln Z$; its defeat rests on the same entropy accounting that governs [the arrow of time](/thermodynamics/the-arrow-of-time). And the $k_B T \ln 2$ packets it traded are themselves thermal fluctuations — the irreducible jitter we turn to next, in [fluctuations and dissipation](/thermodynamics/fluctuations-and-dissipation), where that randomness stops being a nuisance and becomes a signal.
+
+</Section>
+
+</TopicPageLayout>
