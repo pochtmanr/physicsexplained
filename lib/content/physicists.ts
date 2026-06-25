@@ -1657,6 +1657,19 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
     ],
   },
+
+  // ─── Module 6 statistical-mechanics (thermo sprint 2026-06-20) ───
+  {
+    slug: "josiah-willard-gibbs",
+    born: "1839",
+    died: "1903",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

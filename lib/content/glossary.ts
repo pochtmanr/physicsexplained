@@ -4079,6 +4079,55 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
     ],
   },
+
+  // ─── Module 6 statistical-mechanics (thermo sprint 2026-06-20) ───
+  {
+    slug: "partition-function",
+    category: "concept",
+    visualization: "PartitionToThermoScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "boltzmann-distribution",
+    category: "concept",
+    visualization: "TwoLevelSystemScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "canonical-ensemble",
+    category: "concept",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+    ],
+  },
+  {
+    slug: "microcanonical-ensemble",
+    category: "concept",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "grand-canonical-ensemble",
+    category: "concept",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "bose-einstein-condensation" },
+    ],
+  },
 ];
 
 export function getTerm(slug: string): GlossaryTerm | undefined {

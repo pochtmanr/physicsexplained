@@ -1694,6 +1694,14 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PerrinCountingScene: lazyScene(() =>
     import("@/components/physics/brownian-motion/perrin-counting-scene").then((m) => ({ default: m.PerrinCountingScene })),
   ),
+
+  // ─── Module 6 statistical-mechanics (thermo sprint 2026-06-20) ───
+  TwoLevelSystemScene: lazyScene(() =>
+    import("@/components/physics/the-partition-function/two-level-system-scene").then((m) => ({ default: m.TwoLevelSystemScene })),
+  ),
+  PartitionToThermoScene: lazyScene(() =>
+    import("@/components/physics/the-partition-function/partition-to-thermo-scene").then((m) => ({ default: m.PartitionToThermoScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
