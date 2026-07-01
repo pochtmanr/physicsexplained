@@ -57,8 +57,19 @@ beforeAll(() => {
     (globalThis as unknown as Record<string, unknown>).ResizeObserver = ResizeObserverStub;
   }
   if (typeof globalThis.IntersectionObserver === "undefined") {
+    // Auto-fires "intersecting" on observe, as if the element were already in
+    // the jsdom viewport — so viewport-gated figures mount in tests by default.
     class IntersectionObserverStub {
-      observe() {}
+      #callback: IntersectionObserverCallback;
+      constructor(callback: IntersectionObserverCallback) {
+        this.#callback = callback;
+      }
+      observe() {
+        this.#callback(
+          [{ isIntersecting: true } as IntersectionObserverEntry],
+          this as unknown as IntersectionObserver,
+        );
+      }
       unobserve() {}
       disconnect() {}
       takeRecords() { return []; }
@@ -121,6 +132,37 @@ describe("<ContentBlocks>", () => {
     await waitFor(() => {
       expect(document.querySelector("canvas")).toBeTruthy();
     });
+  });
+
+  it("defers simulation mounting until the figure nears the viewport", async () => {
+    // Inert observer: never reports intersection, so a viewport-gated figure
+    // must keep showing the skeleton and never fetch/mount the scene.
+    const realIO = globalThis.IntersectionObserver;
+    class InertIO {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+      takeRecords() { return []; }
+      root = null;
+      rootMargin = "";
+      thresholds = [];
+    }
+    (globalThis as unknown as Record<string, unknown>).IntersectionObserver = InertIO;
+    try {
+      const blocks: Block[] = [
+        {
+          type: "figure",
+          content: { kind: "simulation", component: "PendulumScene", props: { theta0: 0.3 } },
+        },
+      ];
+      render(<ContentBlocks blocks={blocks} />);
+      expect(screen.getByText(/loading simulation/i)).toBeInTheDocument();
+      // Give any (wrongly) eager dynamic import time to resolve.
+      await new Promise((r) => setTimeout(r, 50));
+      expect(document.querySelector("canvas")).toBeNull();
+    } finally {
+      (globalThis as unknown as Record<string, unknown>).IntersectionObserver = realIO;
+    }
   });
 
   it("throws on an unknown simulation name", () => {

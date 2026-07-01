@@ -8,7 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 const navLinkClass = buttonVariants({
   variant: "ghost",
-  size: "sm",
+  size: "cta-row",
   className: "nav-link",
 });
 
@@ -85,7 +85,7 @@ export async function Footer() {
         {/* Nav + Newsletter row */}
         <div className="mt-8 flex flex-col gap-8 md:flex-row md:items-start md:justify-between md:gap-10">
           {/* Navigation links */}
-          <nav className="flex flex-wrap gap-3" aria-label="Footer navigation">
+          <nav className="flex flex-col gap-3 md:flex-row md:flex-wrap" aria-label="Footer navigation">
             {NAV_LINKS.map(({ href, label, icon: Icon }) => (
               <Link key={href} href={href} className={navLinkClass}>
                 <Icon className="h-3.5 w-3.5" />

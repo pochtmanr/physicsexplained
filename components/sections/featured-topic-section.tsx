@@ -37,7 +37,7 @@ export async function FeaturedTopicSection() {
               </div>
               <Link
                 href="/classical-mechanics/pendulum"
-                className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link mt-8" })}
+                className={buttonVariants({ variant: "ghost", size: "cta-row", className: "nav-link mt-8" })}
               >
                 <BookOpen aria-hidden="true" size={14} strokeWidth={1.6} />
                 {t("cta")}

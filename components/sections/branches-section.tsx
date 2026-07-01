@@ -29,7 +29,7 @@ export async function BranchesSection() {
       <div className="mt-10 flex justify-center">
         <Link
           href="/classical-mechanics"
-          className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
+          className={buttonVariants({ variant: "ghost", size: "cta-row", className: "nav-link" })}
         >
           <Atom aria-hidden="true" size={14} strokeWidth={1.6} />
           {tHero("ctaPrimary")}

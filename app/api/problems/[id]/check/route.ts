@@ -10,6 +10,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { verifyStep } from "@/lib/problems/verify";
 import { getCheckRouteDeps } from "./deps";
+import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,6 +26,22 @@ const FREE_DIAGNOSES_PER_DAY = 5;
 export async function POST(req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id: problemId } = await ctx.params;
   const deps = getCheckRouteDeps();
+
+  // Per-IP throttle. The anonymous verify path has no per-user gate, so this is
+  // the only limit standing between a bot and unbounded enumeration. Generous
+  // enough not to affect a real student working through a problem set.
+  const ipLimit = await enforceIpRateLimit({
+    routeKey: "problems:check",
+    max: 120,
+    windowMs: 60 * 60 * 1000,
+    ip: getClientIp(req.headers),
+  });
+  if (!ipLimit.ok) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED" },
+      { status: 429, headers: { "retry-after": String(ipLimit.retryAfterSeconds) } },
+    );
+  }
 
   let body: z.infer<typeof BodySchema>;
   try { body = BodySchema.parse(await req.json()); }

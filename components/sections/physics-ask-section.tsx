@@ -16,27 +16,27 @@ export async function PhysicsAskSection() {
       id="physics-ask"
       className={`${WIDE_CONTAINER} mt-32 md:mt-48`}
     >
-      <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
+      <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
         {t("tag")}
       </div>
-      <h2 className="mt-6 text-3xl uppercase tracking-tight text-[var(--color-fg-0)] md:text-4xl">
+      <h2 className="mt-4 text-3xl uppercase tracking-tight text-[var(--color-fg-0)] md:text-4xl">
         {t("title")}
       </h2>
-      <p className="mt-6 max-w-[58ch] text-sm text-[var(--color-fg-1)] md:mt-8 md:text-xl">
+      <p className="mt-6 max-w-[58ch] text-sm text-[var(--color-fg-1)] md:text-xl">
         {t("subtitle")}
       </p>
 
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row md:mt-10">
+      <div className="mt-8 flex flex-col gap-3 md:mt-10 md:flex-row">
         <Link
           href="/ask"
-          className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
+          className={buttonVariants({ variant: "ghost", size: "cta-row", className: "nav-link" })}
         >
           <Sparkles aria-hidden="true" size={14} strokeWidth={1.6} />
           <span>{t("ctaAsk")}</span>
         </Link>
         <Link
           href="/play"
-          className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
+          className={buttonVariants({ variant: "ghost", size: "cta-row", className: "nav-link" })}
         >
           <Gamepad2 aria-hidden="true" size={14} strokeWidth={1.6} />
           <span>{t("ctaPlay")}</span>

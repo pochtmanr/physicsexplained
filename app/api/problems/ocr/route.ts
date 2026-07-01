@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import type { OcrResult } from "@/lib/problems/ocr";
 import { getOcrRouteDeps } from "./deps";
+import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +21,21 @@ export async function POST(req: Request) {
   const deps = getOcrRouteDeps();
   const user = await deps.getUser();
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
+
+  // Per-IP cap on top of the per-user daily quota: blunts a farm of accounts
+  // behind one IP from multiplying expensive vision-API calls.
+  const ipLimit = await enforceIpRateLimit({
+    routeKey: "problems:ocr",
+    max: 10,
+    windowMs: 60 * 60 * 1000,
+    ip: getClientIp(req.headers),
+  });
+  if (!ipLimit.ok) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED" },
+      { status: 429, headers: { "retry-after": String(ipLimit.retryAfterSeconds) } },
+    );
+  }
 
   let form: FormData;
   try { form = await req.formData(); }

@@ -19,7 +19,7 @@ export async function HeroSection() {
             <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
               {t("tag")}
             </div>
-            <h1 className="mt-6 text-4xl md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
+            <h1 className="mt-6 text-[2.5rem] md:text-5xl lg:text-6xl tracking-tight leading-[1.1] text-[var(--color-fg-0)]">
               {t("titleLead")}{" "}
               <span className="font-display italic text-[var(--color-cyan)]">
                 {t("titleHighlight")}
@@ -28,17 +28,17 @@ export async function HeroSection() {
             <p className="mt-6 text-sm md:mt-8 md:text-xl text-[var(--color-fg-1)] max-w-[48ch]">
               {t("subtitle")}
             </p>
-            <div className="mt-8 flex flex-wrap gap-4 items-center md:mt-10 md:gap-6">
+            <div className="mt-8 flex flex-col gap-3 md:mt-10 md:flex-row md:flex-wrap md:items-center md:gap-6">
               <Link
                 href="/ask"
-                className={buttonVariants({ variant: "primary", size: "sm", className: "nav-link" })}
+                className={buttonVariants({ variant: "primary", size: "hero", className: "nav-link" })}
               >
                 <Sparkles aria-hidden="true" size={14} strokeWidth={1.6} className="text-white" />
                 {t("ctaAsk")}
               </Link>
               <a
                 href="#branches"
-                className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
+                className={buttonVariants({ variant: "ghost", size: "hero", className: "nav-link" })}
               >
                 <GitBranch aria-hidden="true" size={14} strokeWidth={1.6} />
                 {t("ctaSecondary")}

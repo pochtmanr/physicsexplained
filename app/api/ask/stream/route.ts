@@ -9,6 +9,7 @@ import { runPipeline } from "@/lib/ask/pipeline";
 import { assembleHistory } from "@/lib/ask/context";
 import { buildCandidateRefs } from "@/lib/ask/candidate-refs";
 import { checkRateLimit, makeRateLimitDepsForUser } from "@/lib/ask/rate-limit";
+import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 import { sseEncode } from "@/lib/ask/sse";
 import { DEFAULT_MODEL_ID, findModel } from "@/lib/ask/types";
 import type { NeutralMessage } from "@/lib/ask/provider";
@@ -48,6 +49,22 @@ export async function POST(req: Request) {
   const { data: { user } } = await ssr.auth.getUser();
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   mark("auth-ok");
+
+  // Per-IP throttle on the most expensive endpoint (LLM + web search). Sits on
+  // top of the per-user billing quota / daily token bucket to cap a farm of
+  // accounts behind one IP. Generous vs. a real user's question cadence.
+  const ipLimit = await enforceIpRateLimit({
+    routeKey: "ask:stream",
+    max: 30,
+    windowMs: 60 * 60 * 1000,
+    ip: getClientIp(req.headers),
+  });
+  if (!ipLimit.ok) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED", reason: "Too many requests from your network. Try again later." },
+      { status: 429, headers: { "retry-after": String(ipLimit.retryAfterSeconds) } },
+    );
+  }
 
   let body: z.infer<typeof BodySchema>;
   try { body = BodySchema.parse(await req.json()); }

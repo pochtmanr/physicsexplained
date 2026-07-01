@@ -60,7 +60,7 @@ export async function DictionarySection() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/dictionary"
-            className={buttonVariants({ variant: "ghost", size: "sm", className: "nav-link" })}
+            className={buttonVariants({ variant: "ghost", size: "cta-row", className: "nav-link" })}
           >
             <BookOpen aria-hidden="true" size={14} strokeWidth={1.6} />
             {t("viewAll", { count: entries.length })}
