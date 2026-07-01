@@ -4,7 +4,7 @@ import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import type { Body } from "@/lib/physics/n-body";
-import { advanceSimulation } from "@/lib/physics/advance";
+import { advanceSimulation, SIM_DT } from "@/lib/physics/advance";
 import { attachGestures, type GestureCallbacks } from "./gestures";
 import { normalizeWheelDelta } from "./wheel";
 import {
@@ -25,6 +25,7 @@ import {
 import {
   drawBackground,
   drawBodies,
+  drawDebugHud,
   drawDragArrow,
   drawHoverGhost,
   drawPredictiveTraces,
@@ -96,6 +97,22 @@ export function NBodyCanvas({
   const placeMassRef = useRef(placeMass);
   const onBodiesChangeRef = useRef(onBodiesChange);
   const accumulatorRef = useRef(0);
+
+  // ?debug=1 HUD. Read once on mount: usePlaygroundState's router.replace()
+  // rewrites the query string with only the ?s= blob, so live URL reads would
+  // lose the flag after the first state write.
+  const debugRef = useRef(false);
+  useEffect(() => {
+    debugRef.current =
+      new URLSearchParams(window.location.search).get("debug") === "1";
+  }, []);
+  const hudRef = useRef({
+    windowStart: 0,
+    frames: 0,
+    simSeconds: 0,
+    fps: 0,
+    simRate: 0,
+  });
 
   // ── Ref ←→ prop sync ──
   // Only re-pull `bodies` into the live ref when the *id set* changes (place,
@@ -328,7 +345,7 @@ export function NBodyCanvas({
   // ── rAF render + simulation loop ──
   useAnimationFrame({
     elementRef: containerRef,
-    onFrame: (_t, dt) => {
+    onFrame: (t, dt) => {
       const ctx = prepareCanvas(canvasRef.current);
       if (!ctx) return;
       const cv = canvasRef.current!;
@@ -338,7 +355,6 @@ export function NBodyCanvas({
       // Step physics + resolve collisions (hybrid bounce/absorb) in fixed
       // SIM_DT steps — identical trajectories on every machine by construction.
       let stepsThisFrame = 0;
-      void stepsThisFrame; // consumed by the debug HUD
       if (isPlaying && !reducedMotion) {
         const startLen = bodiesRef.current.length;
         const r = advanceSimulation(
@@ -390,6 +406,28 @@ export function NBodyCanvas({
         if (hover && hit(hover.x, hover.y) === -1 && !dragRef.current) {
           drawHoverGhost(d, hover, placeMass);
         }
+      }
+
+      if (debugRef.current) {
+        const hud = hudRef.current;
+        hud.frames++;
+        hud.simSeconds += stepsThisFrame * SIM_DT;
+        const w = t - hud.windowStart;
+        if (w >= 0.5) {
+          hud.fps = hud.frames / w;
+          hud.simRate = hud.simSeconds / w;
+          hud.frames = 0;
+          hud.simSeconds = 0;
+          hud.windowStart = t;
+        }
+        drawDebugHud(d, {
+          fps: hud.fps,
+          dtMs: dt * 1000,
+          dpr: window.devicePixelRatio || 1, // raw, uncapped — the diagnostic
+          simRate: hud.simRate,
+          bodyCount: bodiesRef.current.length,
+          accumulator: accumulatorRef.current,
+        });
       }
     },
   });

@@ -283,3 +283,36 @@ export function drawHoverGhost(
   ctx.setLineDash([]);
   ctx.globalAlpha = 1;
 }
+
+export interface DebugStats {
+  fps: number;
+  dtMs: number;
+  dpr: number;
+  /** Sim-seconds advanced per wall-second — should equal `speed` exactly. */
+  simRate: number;
+  bodyCount: number;
+  accumulator: number;
+}
+
+/** Tiny corner overlay rendered only when the URL carries ?debug=1. */
+export function drawDebugHud(d: DrawContext, s: DebugStats): void {
+  const { ctx, colors } = d;
+  const lines = [
+    `fps ${s.fps.toFixed(0)}`,
+    `dt ${s.dtMs.toFixed(1)}ms`,
+    `dpr ${s.dpr.toFixed(2)}`,
+    `sim ${s.simRate.toFixed(2)}x`,
+    `bodies ${s.bodyCount}`,
+    `acc ${(s.accumulator * 1000).toFixed(2)}ms`,
+  ];
+  ctx.save();
+  ctx.font = "10px ui-monospace, SFMono-Regular, monospace";
+  ctx.textBaseline = "top";
+  ctx.fillStyle = colors.bg0 || "#1A1D24";
+  ctx.globalAlpha = 0.7;
+  ctx.fillRect(4, 4, 88, lines.length * 12 + 8);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = colors.fg2 || "#7D8DA6";
+  lines.forEach((l, i) => ctx.fillText(l, 8, 8 + i * 12));
+  ctx.restore();
+}
