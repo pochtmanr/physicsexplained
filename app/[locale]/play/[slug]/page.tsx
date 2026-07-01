@@ -4,6 +4,7 @@ import { PLAYGROUND_SLUGS, getPlayground } from "../_components/playground-meta"
 import { PlaygroundShell } from "../_components/playground-shell";
 import { PlaygroundLoader } from "./playground-loader";
 import { locales } from "@/i18n/config";
+import { SITE } from "@/lib/seo/config";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -27,6 +28,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale });
   return {
     title: t(meta.titleKey),
+    alternates: { canonical: `${SITE.baseUrl}/play/${slug}` },
   };
 }
 

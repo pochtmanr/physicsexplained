@@ -1,10 +1,23 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { EQUATIONS } from "@/lib/content/equations";
 import { getEquationStringsForLocale } from "@/lib/problems/equation-strings";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import { TopicHeader } from "@/components/layout/topic-header";
+import { SITE } from "@/lib/seo/config";
+import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 
 export const dynamic = "force-static";
+
+const DESCRIPTION =
+  "Every equation on the site — what it solves, when to use it, and the mistakes to avoid.";
+
+export const metadata: Metadata = {
+  title: "Equations",
+  description: DESCRIPTION,
+  alternates: { canonical: `${SITE.baseUrl}/equations` },
+};
 
 interface PageProps { params: Promise<{ locale: string }>; }
 
@@ -17,6 +30,17 @@ export default async function EquationsIndex({ params }: PageProps) {
 
   return (
     <TopicPageLayout aside={[]}>
+      <JsonLd
+        data={buildCollectionPageJsonLd({
+          url: SITE.localizedUrl("/equations", locale),
+          name: "Equations",
+          description: DESCRIPTION,
+          items: items.map((e) => ({
+            name: e.name,
+            url: SITE.buildUrl(`/equations/${e.slug}`),
+          })),
+        })}
+      />
       <TopicHeader eyebrow="REFERENCE" title="EQUATIONS" subtitle="Every equation, what it solves, when to use it." />
       <div className="grid gap-3 mt-6">
         {items.map((e) => (

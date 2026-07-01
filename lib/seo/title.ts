@@ -1,5 +1,7 @@
+import { SITE } from "@/lib/seo/config";
+
 export const MAX_TITLE_LENGTH = 60;
-const SUFFIX = "physics";
+const SUFFIX = SITE.name;
 
 interface TitleEntry {
   title: string;
@@ -10,7 +12,7 @@ interface BranchLike {
   title: string;
 }
 
-function toTitleCase(s: string): string {
+export function toTitleCase(s: string): string {
   // Source titles like "THE SIMPLE PENDULUM" → "The Simple Pendulum"
   if (s !== s.toUpperCase()) return s;
   return s

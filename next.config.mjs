@@ -40,6 +40,16 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
+  async rewrites() {
+    return [
+      // Markdown mirrors for AI crawlers: /{page-path}.md → app/md/[...path].
+      // Covers /{branch}/{topic}.md, /dictionary/{slug}.md, /physicists/{slug}.md.
+      {
+        source: "/:head/:tail\\.md",
+        destination: "/md/:head/:tail",
+      },
+    ];
+  },
   async redirects() {
     return [
       {

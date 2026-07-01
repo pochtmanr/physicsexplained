@@ -173,7 +173,7 @@ async function main() {
   for (const row of rows) {
     const { data: existing, error: selectErr } = await client
       .from("content_entries")
-      .select("source_hash")
+      .select("source_hash, meta")
       .eq("kind", row.kind).eq("slug", row.slug).eq("locale", row.locale)
       .maybeSingle();
     if (selectErr) throw selectErr;
@@ -184,9 +184,17 @@ async function main() {
       continue;
     }
 
+    // Merge into the existing meta so keys owned by other pipelines
+    // (sameAs backfill, seoTitle/seoDescription, createdAt, …) survive
+    // republish; seed-owned keys win on conflict.
+    const meta = {
+      ...((existing?.meta as Record<string, unknown> | null) ?? {}),
+      ...row.meta,
+    };
+
     const { error: upsertErr } = await client
       .from("content_entries")
-      .upsert({ ...row, updated_at: new Date().toISOString() });
+      .upsert({ ...row, meta, updated_at: new Date().toISOString() });
     if (upsertErr) throw upsertErr;
 
     if (existing) { stats.updated++; console.log(`  updated   ${row.kind} ${row.slug}`); }

@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { PLAYGROUND_SLUGS, getPlayground } from "./_components/playground-meta";
 import { buttonVariants } from "@/components/ui/button";
 import { locales } from "@/i18n/config";
+import { SITE } from "@/lib/seo/config";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -16,7 +17,11 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale });
-  return { title: t("play.indexTitle") };
+  return {
+    title: t("play.indexTitle"),
+    description: t("play.indexSubtitle"),
+    alternates: { canonical: `${SITE.baseUrl}/play` },
+  };
 }
 
 export default async function PlayIndex({

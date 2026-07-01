@@ -6,6 +6,9 @@ import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
 import { EquationBlock } from "@/components/math/equation-block";
+import { SITE } from "@/lib/seo/config";
+import { buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -25,8 +28,9 @@ export async function generateMetadata({ params }: PageProps) {
   const strings = await getEquationStringsForLocale(slug, locale);
   if (!strings) return {};
   return {
-    title: `${strings.name} — Physics.explained`,
+    title: strings.name,
     description: strings.whatItSolves.slice(0, 155),
+    alternates: { canonical: `${SITE.baseUrl}/equations/${slug}` },
   };
 }
 
@@ -39,8 +43,26 @@ export default async function EquationPage({ params }: PageProps) {
 
   const problems = await getProblemsForEquationFromDb(slug, locale);
 
+  const url = SITE.localizedUrl(`/equations/${slug}`, locale);
+
   return (
     <TopicPageLayout aside={[]}>
+      <JsonLd
+        data={buildArticleJsonLd({
+          url,
+          headline: strings.name,
+          description: strings.whatItSolves.slice(0, 155),
+          locale,
+          about: eq.relatedTopicSlugs.map((t) => t.replace(/-/g, " ")),
+        })}
+      />
+      <JsonLd
+        data={buildBreadcrumbJsonLd([
+          { name: SITE.name, url: SITE.baseUrl },
+          { name: "Equations", url: SITE.localizedUrl("/equations", locale) },
+          { name: strings.name },
+        ])}
+      />
       <TopicHeader eyebrow="EQUATION" title={strings.name} subtitle={strings.whatItSolves.split(".")[0]} />
 
       <Section index={1} title="The equation">
