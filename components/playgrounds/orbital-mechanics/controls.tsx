@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import type { OrbitalState } from "./schema";
 import type { PlaceMass } from "./schema";
+import { LogSlider } from "./log-slider";
 import { PRESET_IDS, type PresetId } from "./presets";
 
 interface Props {
@@ -11,7 +12,7 @@ interface Props {
   isPlaying: boolean;
   bodyCount: number;
   onTogglePlay: () => void;
-  onChangeSpeed: (s: 0.25 | 1 | 4) => void;
+  onChangeSpeed: (s: number) => void;
   onChangeTrails: (b: boolean) => void;
   onChangePreset: (p: PresetId) => void;
   onChangePlaceMass: (m: PlaceMass) => void;
@@ -72,16 +73,18 @@ export function Controls({
       </div>
 
       <div className="flex items-center gap-1 border-l border-[var(--color-fg-4)]/40 pl-2">
-        <span className="opacity-60">{t("speed")}</span>
-        {([0.25, 1, 4] as const).map((s) => (
-          <Button
-            key={s}
-            active={state.speed === s}
-            onClick={() => onChangeSpeed(s)}
-          >
-            {s}×
-          </Button>
-        ))}
+        <LogSlider
+          label={t("speed")}
+          ariaLabel={t("speed")}
+          value={state.speed}
+          min={0.1}
+          max={10}
+          detents={[0.25, 0.5, 1, 2, 4]}
+          format={(v) => `${v}×`}
+          onChange={onChangeSpeed}
+          resetTo={1}
+          resetAriaLabel={t("speedReset")}
+        />
       </div>
 
       <label className="flex items-center gap-1 border-l border-[var(--color-fg-4)]/40 pl-2">

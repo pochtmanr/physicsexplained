@@ -18,6 +18,7 @@
     "removeHint": "Long-press / right-click a body to remove",
     "mass": "Mass",
     "speed": "Speed",
+    "speedReset": "Reset speed to 1×",
     "trails": "Trails",
     "preset": "Scenario",
     "bodies": "Bodies",

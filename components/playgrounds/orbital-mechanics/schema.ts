@@ -18,7 +18,7 @@ export const orbitalSchema = z.object({
     .default("figure-8"),
   bodies: z.array(bodySchema).default([]),
   trails: z.boolean().default(true),
-  speed: z.union([z.literal(0.25), z.literal(1), z.literal(4)]).default(1),
+  speed: z.number().min(0.1).max(10).default(1),
   placeMass: placeMassSchema.default(1),
 });
 

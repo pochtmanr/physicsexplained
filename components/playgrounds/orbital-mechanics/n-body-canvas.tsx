@@ -47,7 +47,7 @@ interface Props {
    */
   onBodiesChange: (b: Body[]) => void;
   trails: boolean;
-  speed: 0.25 | 1 | 4;
+  speed: number;
   isPlaying: boolean;
   /** Mass used when the user adds a new body via tap */
   placeMass: number;
