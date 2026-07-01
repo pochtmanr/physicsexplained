@@ -25,3 +25,19 @@ describe("orbitalSchema migration", () => {
     expect(orbitalSchema.parse({}).speed).toBe(1);
   });
 });
+
+describe("placeMass migration", () => {
+  it("accepts old discrete values (0.5 / 1 / 5 / 20)", () => {
+    for (const placeMass of [0.5, 1, 5, 20]) {
+      const r = orbitalSchema.safeParse({ placeMass });
+      expect(r.success).toBe(true);
+      if (r.success) expect(r.data.placeMass).toBe(placeMass);
+    }
+  });
+
+  it("accepts the new continuous range 0.1–50 and rejects outside it", () => {
+    expect(orbitalSchema.safeParse({ placeMass: 37.5 }).success).toBe(true);
+    expect(orbitalSchema.safeParse({ placeMass: 100 }).success).toBe(false);
+    expect(orbitalSchema.safeParse({ placeMass: 0 }).success).toBe(false);
+  });
+});

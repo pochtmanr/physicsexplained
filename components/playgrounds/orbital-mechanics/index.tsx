@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { usePlaygroundState } from "@/app/[locale]/play/_components/use-playground-state";
 import { encodeState } from "@/app/[locale]/play/_components/encode-state";
-import { orbitalSchema, type OrbitalState, type PlaceMass } from "./schema";
+import { orbitalSchema, type OrbitalState } from "./schema";
 import { getPreset, type PresetId } from "./presets";
 import { NBodyCanvas } from "./n-body-canvas";
 import { Controls } from "./controls";
@@ -81,7 +81,7 @@ export function OrbitalMechanicsPlayground() {
           setState({ ...state, preset: p, bodies: [] });
           setResetKey((k) => k + 1);
         }}
-        onChangePlaceMass={(m: PlaceMass) => setState({ ...state, placeMass: m })}
+        onChangePlaceMass={(m: number) => setState({ ...state, placeMass: m })}
         onReset={() => {
           // Full reset: wipe URL state (back to default figure-8 preset, default
           // mass / speed / trails) and force the canvas to drop trails, frozen

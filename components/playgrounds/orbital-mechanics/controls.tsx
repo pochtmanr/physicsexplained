@@ -3,7 +3,6 @@ import { Play, Pause, RotateCcw } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import type { OrbitalState } from "./schema";
-import type { PlaceMass } from "./schema";
 import { LogSlider } from "./log-slider";
 import { PRESET_IDS, type PresetId } from "./presets";
 
@@ -15,16 +14,9 @@ interface Props {
   onChangeSpeed: (s: number) => void;
   onChangeTrails: (b: boolean) => void;
   onChangePreset: (p: PresetId) => void;
-  onChangePlaceMass: (m: PlaceMass) => void;
+  onChangePlaceMass: (m: number) => void;
   onReset: () => void;
 }
-
-const MASS_OPTIONS: ReadonlyArray<{ value: PlaceMass; label: string }> = [
-  { value: 0.5, label: "S" },
-  { value: 1, label: "M" },
-  { value: 5, label: "L" },
-  { value: 20, label: "XL" },
-];
 
 export function Controls({
   state,
@@ -60,16 +52,15 @@ export function Controls({
       </Button>
 
       <div className="flex items-center gap-1 border-l border-[var(--color-fg-4)]/40 pl-2">
-        <span className="opacity-60">{t("mass")}</span>
-        {MASS_OPTIONS.map((opt) => (
-          <Button
-            key={opt.value}
-            active={state.placeMass === opt.value}
-            onClick={() => onChangePlaceMass(opt.value)}
-          >
-            {opt.label}
-          </Button>
-        ))}
+        <LogSlider
+          label={t("mass")}
+          ariaLabel={t("mass")}
+          value={state.placeMass}
+          min={0.1}
+          max={50}
+          detents={[0.5, 1, 5, 20]}
+          onChange={onChangePlaceMass}
+        />
       </div>
 
       <div className="flex items-center gap-1 border-l border-[var(--color-fg-4)]/40 pl-2">
