@@ -28,6 +28,7 @@ import {
   drawDebugHud,
   drawDragArrow,
   drawHoverGhost,
+  drawLabels,
   drawPredictiveTraces,
   drawSlingshot,
   drawTrails,
@@ -53,6 +54,10 @@ interface Props {
   placeMass: number;
   /** Bumped by the parent to force a full trails rewind / camera recenter. */
   resetKey: number;
+  /** Initial px-per-world-unit; applied on mount and every resetKey bump. */
+  initialScale?: number;
+  /** Per-body-id label/color overrides, already translated by the parent. */
+  bodyMeta?: Record<string, { label?: string; color?: string }>;
 }
 
 const BODY_CAP = 16;
@@ -81,6 +86,8 @@ export function NBodyCanvas({
   isPlaying,
   placeMass,
   resetKey,
+  initialScale,
+  bodyMeta,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -152,6 +159,7 @@ export function NBodyCanvas({
   useEffect(() => {
     clearTrails(trailsRef.current);
     camRef.current = defaultCamera();
+    if (initialScale) camRef.current.scale = clampScale(initialScale);
     bodiesRef.current = bodies.map((b) => ({ ...b }));
     accumulatorRef.current = 0;
     dragRef.current = null;
@@ -447,7 +455,15 @@ export function NBodyCanvas({
       }
 
       const palette = colorPalette(colors);
-      const d = { ctx, width, height, cam: camRef.current, colors, palette };
+      const d = {
+        ctx,
+        width,
+        height,
+        cam: camRef.current,
+        colors,
+        palette,
+        bodyMeta,
+      };
 
       drawBackground(d);
 
@@ -461,6 +477,7 @@ export function NBodyCanvas({
       }
 
       drawBodies(d, bodiesRef.current);
+      drawLabels(d, bodiesRef.current);
 
       if (dragRef.current) drawDragArrow(d, bodiesRef.current, dragRef.current);
 

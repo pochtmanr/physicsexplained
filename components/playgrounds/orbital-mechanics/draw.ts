@@ -13,6 +13,17 @@ export interface DrawContext {
   cam: Camera;
   colors: ThemeColors;
   palette: string[];
+  /** Per-body-id display overrides (real-life presets): label text + color. */
+  bodyMeta?: Record<string, { label?: string; color?: string }>;
+}
+
+/** Preset color override → palette-by-id → theme fallback. */
+function bodyColor(d: DrawContext, id: string): string {
+  return (
+    d.bodyMeta?.[id]?.color ??
+    d.palette[colorIndexForId(id, d.palette.length)] ??
+    d.colors.cyan
+  );
 }
 
 export interface DragArrow {
@@ -75,14 +86,13 @@ export function drawTrails(
   trails: TrailBuffers,
   maxAge: number = TRAIL_MAX_AGE_S,
 ): void {
-  const { ctx, width, height, cam, palette } = d;
+  const { ctx, width, height, cam } = d;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   ctx.lineWidth = 1.5;
   for (const [id, buf] of trails.entries()) {
     if (buf.length < 2) continue;
-    const color = palette[colorIndexForId(id, palette.length)] ?? d.colors.cyan;
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = bodyColor(d, id);
     for (let i = 1; i < buf.length; i++) {
       const a = buf[i - 1]!;
       const b = buf[i]!;
@@ -102,11 +112,11 @@ export function drawTrails(
 }
 
 export function drawBodies(d: DrawContext, bodies: Body[]): void {
-  const { ctx, width, height, cam, palette, colors } = d;
+  const { ctx, width, height, cam } = d;
   for (const b of bodies) {
     const p = worldToScreen(cam, width, height, b.x, b.y);
     const r = visibleRadiusPx(b.mass, cam.scale);
-    const color = palette[colorIndexForId(b.id, palette.length)] ?? colors.cyan;
+    const color = bodyColor(d, b.id);
     // shadowBlur is the most expensive op on this canvas; skip it for tiny
     // bodies (deep zoom-out) where the glow is invisible anyway.
     if (r >= 6) {
@@ -119,6 +129,26 @@ export function drawBodies(d: DrawContext, bodies: Body[]): void {
     ctx.fill();
     ctx.shadowBlur = 0;
   }
+}
+
+/** Small name tags next to bodies that carry preset metadata (sun, earth…). */
+export function drawLabels(d: DrawContext, bodies: Body[]): void {
+  const meta = d.bodyMeta;
+  if (!meta) return;
+  const { ctx, width, height, cam } = d;
+  ctx.save();
+  ctx.font = "10px ui-monospace, SFMono-Regular, monospace";
+  ctx.textBaseline = "bottom";
+  ctx.fillStyle = d.colors.fg2 || "#7D8DA6";
+  ctx.globalAlpha = 0.85;
+  for (const b of bodies) {
+    const label = meta[b.id]?.label;
+    if (!label) continue;
+    const p = worldToScreen(cam, width, height, b.x, b.y);
+    const r = visibleRadiusPx(b.mass, cam.scale);
+    ctx.fillText(label, p.x + r + 4, p.y - r - 2);
+  }
+  ctx.restore();
 }
 
 /**
@@ -137,7 +167,7 @@ export function drawPredictiveTraces(
   subDt = 0.01,
 ): void {
   if (bodies.length === 0 || seconds <= 0) return;
-  const { ctx, width, height, cam, palette, colors } = d;
+  const { ctx, width, height, cam } = d;
   const steps = Math.ceil(seconds / subDt);
   const samples: Array<Array<{ x: number; y: number }>> = bodies.map((b) => [
     { x: b.x, y: b.y },
@@ -165,9 +195,7 @@ export function drawPredictiveTraces(
   for (let i = 0; i < samples.length; i++) {
     const series = samples[i]!;
     if (series.length < 2) continue;
-    const id = bodies[i]!.id;
-    const color = palette[colorIndexForId(id, palette.length)] ?? colors.cyan;
-    ctx.strokeStyle = color;
+    ctx.strokeStyle = bodyColor(d, bodies[i]!.id);
     ctx.globalAlpha = 0.4;
     ctx.beginPath();
     for (let k = 0; k < series.length; k++) {
@@ -185,12 +213,11 @@ export function drawDragArrow(
   bodies: Body[],
   drag: DragArrow,
 ): void {
-  const { ctx, width, height, cam, palette, colors } = d;
+  const { ctx, width, height, cam } = d;
   const b = bodies[drag.index];
   if (!b) return;
   const p = worldToScreen(cam, width, height, b.x, b.y);
-  const color = palette[colorIndexForId(b.id, palette.length)] ?? colors.cyan;
-  ctx.strokeStyle = color;
+  ctx.strokeStyle = bodyColor(d, b.id);
   ctx.globalAlpha = 0.9;
   ctx.lineWidth = 2;
   ctx.beginPath();

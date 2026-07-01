@@ -53,15 +53,44 @@ function makeRandomCluster(): Body[] {
   return bodies;
 }
 
-export const PRESETS: Record<PresetId, Body[]> = {
-  "figure-8": FIGURE_8,
-  "solar-mini": SOLAR_MINI,
-  "pythagorean": PYTHAGOREAN,
-  "random-cluster": makeRandomCluster(),
+export interface BodyMeta {
+  /** Key under play.orbital-mechanics.bodies.* for the on-canvas label. */
+  labelKey: string;
+  /** Overrides the palette-by-id default color. */
+  color?: string;
+}
+
+export interface PresetDef {
+  bodies: Body[];
+  /** Initial px-per-world-unit override applied on preset switch / load. */
+  camera?: { scale: number };
+  /** Per-body-id display metadata. */
+  bodyMeta?: Record<string, BodyMeta>;
+}
+
+export const PRESETS: Record<PresetId, PresetDef> = {
+  "figure-8": { bodies: FIGURE_8 },
+  "solar-mini": { bodies: SOLAR_MINI },
+  "pythagorean": { bodies: PYTHAGOREAN },
+  "random-cluster": { bodies: makeRandomCluster() },
 };
 
 export function getPreset(id: PresetId): Body[] {
-  return PRESETS[id].map((b) => ({ ...b }));
+  return PRESETS[id].bodies.map((b) => ({ ...b }));
 }
+
+export function getPresetDef(id: PresetId): PresetDef {
+  return PRESETS[id];
+}
+
+/**
+ * id → display meta across every preset. Body ids are stable and mean the
+ * same thing wherever they appear ("sun" is the sun in every preset), so a
+ * flat merge is safe — and labels survive promotion to "custom".
+ */
+export const BODY_META: Record<string, BodyMeta> = Object.assign(
+  {},
+  ...Object.values(PRESETS).map((p) => p.bodyMeta ?? {}),
+);
 
 export const PRESET_IDS: PresetId[] = ["figure-8", "solar-mini", "pythagorean", "random-cluster"];

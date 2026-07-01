@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { usePlaygroundState } from "@/app/[locale]/play/_components/use-playground-state";
 import { encodeState } from "@/app/[locale]/play/_components/encode-state";
 import { orbitalSchema, type OrbitalState } from "./schema";
-import { getPreset, type PresetId } from "./presets";
+import { BODY_META, getPreset, getPresetDef, type PresetId } from "./presets";
 import { NBodyCanvas } from "./n-body-canvas";
 import { Controls } from "./controls";
 import { InfoPanel } from "./info-panel";
@@ -41,6 +41,22 @@ export function OrbitalMechanicsPlayground() {
 
   const bodies = useMemo(() => bodiesFor(state), [state]);
 
+  const tBodies = useTranslations("play.orbital-mechanics.bodies");
+  // Translate label keys once; ids are globally unique so this works for
+  // "custom" states too (a nudged Earth is still Earth).
+  const bodyMeta = useMemo(() => {
+    const out: Record<string, { label: string; color?: string }> = {};
+    for (const [id, m] of Object.entries(BODY_META)) {
+      out[id] = { label: tBodies(m.labelKey), color: m.color };
+    }
+    return out;
+  }, [tBodies]);
+
+  const initialScale =
+    state.preset !== "custom"
+      ? getPresetDef(state.preset as PresetId).camera?.scale
+      : undefined;
+
   function setBodies(next: Body[]) {
     // setBodies is the SINGLE source of truth for user-driven body changes.
     // It atomically promotes any preset to "custom" so we never get a second
@@ -59,6 +75,8 @@ export function OrbitalMechanicsPlayground() {
         isPlaying={isPlaying}
         placeMass={state.placeMass}
         resetKey={resetKey}
+        initialScale={initialScale}
+        bodyMeta={bodyMeta}
       />
       <InfoPanel
         open={infoOpen}
