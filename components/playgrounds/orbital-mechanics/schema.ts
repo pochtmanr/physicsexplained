@@ -11,8 +11,17 @@ export const bodySchema = z.object({
 });
 
 export const orbitalSchema = z.object({
-  preset: z.enum(["figure-8", "solar-mini", "pythagorean", "random-cluster", "custom"])
-    .default("figure-8"),
+  preset: z.enum([
+    "figure-8",
+    "solar-mini",
+    "pythagorean",
+    "random-cluster",
+    "sun-earth-moon",
+    "inner-solar-system",
+    "earth-moon",
+    "binary-star",
+    "custom",
+  ]).default("figure-8"),
   bodies: z.array(bodySchema).default([]),
   trails: z.boolean().default(true),
   speed: z.number().min(0.1).max(10).default(1),

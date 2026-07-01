@@ -13,7 +13,7 @@ export interface NBodyOptions {
 }
 
 const DEFAULT_G = 1;
-const DEFAULT_SOFTENING = 0.05;
+export const DEFAULT_SOFTENING = 0.05;
 
 /**
  * Physical body radius in **world units**, derived from mass. Independent of

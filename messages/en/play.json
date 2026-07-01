@@ -47,13 +47,32 @@
       "figure-8": "Figure-8",
       "solar-mini": "Mini solar system",
       "pythagorean": "Pythagorean (chaos)",
-      "random-cluster": "Random cluster"
+      "random-cluster": "Random cluster",
+      "sun-earth-moon": "Sun · Earth · Moon",
+      "inner-solar-system": "Inner solar system",
+      "earth-moon": "Earth & Moon",
+      "binary-star": "Binary star"
     },
     "presetsInfo": {
       "figure-8": "Three equal masses chase each other along a single ∞-shaped track. A choreographic solution discovered by Chenciner and Montgomery (2000). Zero total momentum, zero angular momentum.",
       "solar-mini": "A Sun-like body with three small orbiting planets. Stable Keplerian orbits — each planet sweeps equal areas in equal times.",
       "pythagorean": "Burrau's 1913 problem: masses 3, 4, 5 placed at rest on a 3-4-5 right triangle. Notoriously chaotic — bodies eject and rejoin unpredictably.",
-      "random-cluster": "Five random masses with random velocities. Every reload is the same seed, but every preset switch in your session looks different physical."
+      "random-cluster": "Five random masses with random velocities. Every reload is the same seed, but every preset switch in your session looks different physical.",
+      "sun-earth-moon": "A hierarchy of orbits: the Moon circles the Earth while both circle the Sun. Watch the Moon's path — it orbits the Sun too, with a gentle wobble. Masses are compressed for visibility; velocities are computed for genuinely circular orbits.",
+      "inner-solar-system": "The Sun with Mercury, Venus, Earth and Mars. Kepler's third law at a glance: the farther the planet, the slower its orbit — Mars takes about five times longer than Mercury.",
+      "earth-moon": "Two bodies orbiting their common center of mass — the barycenter. The heavy body wobbles too; that same wobble is how we detect exoplanets around distant stars.",
+      "binary-star": "Two equal stars orbit each other while a planet circles them both — a circumbinary 'Tatooine' orbit, stable only because the planet keeps its distance."
+    },
+    "bodies": {
+      "sun": "Sun",
+      "mercury": "Mercury",
+      "venus": "Venus",
+      "earth": "Earth",
+      "moon": "Moon",
+      "mars": "Mars",
+      "star-a": "Star A",
+      "star-b": "Star B",
+      "planet": "Planet"
     }
   }
 }
