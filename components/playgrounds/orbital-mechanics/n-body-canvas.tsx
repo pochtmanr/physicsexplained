@@ -3,7 +3,8 @@ import { useEffect, useRef } from "react";
 import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
 import { useThemeColors } from "@/lib/hooks/use-theme-colors";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
-import { resolveCollisions, step, type Body } from "@/lib/physics/n-body";
+import type { Body } from "@/lib/physics/n-body";
+import { advanceSimulation } from "@/lib/physics/advance";
 import { attachGestures, type GestureCallbacks } from "./gestures";
 import {
   clampScale,
@@ -52,7 +53,6 @@ interface Props {
   resetKey: number;
 }
 
-const SIM_DT = 0.005;
 const BODY_CAP = 8;
 /**
  * Slingshot amplification on the empty-canvas drag-to-launch gesture. The
@@ -94,6 +94,7 @@ export function NBodyCanvas({
   const placeAimRef = useRef<PlaceAim | null>(null);
   const placeMassRef = useRef(placeMass);
   const onBodiesChangeRef = useRef(onBodiesChange);
+  const accumulatorRef = useRef(0);
 
   // ── Ref ←→ prop sync ──
   // Only re-pull `bodies` into the live ref when the *id set* changes (place,
@@ -134,6 +135,7 @@ export function NBodyCanvas({
     clearTrails(trailsRef.current);
     camRef.current = defaultCamera();
     bodiesRef.current = bodies.map((b) => ({ ...b }));
+    accumulatorRef.current = 0;
     dragRef.current = null;
     placeAimRef.current = null;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -331,22 +333,25 @@ export function NBodyCanvas({
       const width = cv.clientWidth;
       const height = cv.clientHeight;
 
-      // Step physics + resolve collisions (hybrid bounce/absorb).
+      // Step physics + resolve collisions (hybrid bounce/absorb) in fixed
+      // SIM_DT steps — identical trajectories on every machine by construction.
+      let stepsThisFrame = 0;
+      void stepsThisFrame; // consumed by the debug HUD
       if (isPlaying && !reducedMotion) {
-        const totalDt = dt * speed;
-        const subSteps = Math.max(1, Math.ceil(totalDt / SIM_DT));
-        const subDt = totalDt / subSteps;
         const startLen = bodiesRef.current.length;
-        let bs = bodiesRef.current;
-        for (let s = 0; s < subSteps; s++) {
-          bs = step(bs, subDt);
-          bs = resolveCollisions(bs);
-        }
-        bodiesRef.current = bs;
+        const r = advanceSimulation(
+          bodiesRef.current,
+          accumulatorRef.current,
+          dt,
+          speed,
+        );
+        bodiesRef.current = r.bodies;
+        accumulatorRef.current = r.accumulator;
+        stepsThisFrame = r.steps;
         // If any bodies merged this frame, surface the new list to React so
         // URL state, the body counter, and trail pruning all stay in sync.
-        if (bs.length < startLen) {
-          onBodiesChangeRef.current(bs);
+        if (r.bodies.length < startLen) {
+          onBodiesChangeRef.current(r.bodies);
         }
       }
 
