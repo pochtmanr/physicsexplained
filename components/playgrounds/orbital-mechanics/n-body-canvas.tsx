@@ -6,6 +6,7 @@ import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import type { Body } from "@/lib/physics/n-body";
 import { advanceSimulation } from "@/lib/physics/advance";
 import { attachGestures, type GestureCallbacks } from "./gestures";
+import { normalizeWheelDelta } from "./wheel";
 import {
   clampScale,
   defaultCamera,
@@ -185,7 +186,8 @@ export function NBodyCanvas({
       const cy = e.clientY - r.top;
       const vp = viewport();
       if (!vp) return;
-      const factor = Math.exp(-e.deltaY * 0.0015);
+      const px = normalizeWheelDelta(e.deltaY, e.deltaMode, vp.h);
+      const factor = Math.exp(-px * 0.0015);
       zoomTowardScreenPoint(camRef.current, vp.w, vp.h, cx, cy, factor);
     }
 
