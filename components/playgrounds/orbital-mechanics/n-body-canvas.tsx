@@ -55,7 +55,7 @@ interface Props {
   resetKey: number;
 }
 
-const BODY_CAP = 8;
+const BODY_CAP = 16;
 /**
  * Slingshot amplification on the empty-canvas drag-to-launch gesture. The
  * gestures module emits a small px→px/s scaling (`0.02`) tuned for nudging
