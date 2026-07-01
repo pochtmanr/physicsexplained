@@ -44,7 +44,10 @@ export function prepareCanvas(
   if (!cv) return null;
   const ctx = cv.getContext("2d");
   if (!ctx) return null;
-  const dpr = window.devicePixelRatio || 1;
+  // Cap at 2×: above that the extra resolution is invisible for this content
+  // but quadruples fill cost on exactly the fractional-scaled Windows 4K
+  // machines that are already struggling.
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const w = cv.clientWidth;
   const h = cv.clientHeight;
   if (cv.width !== w * dpr || cv.height !== h * dpr) {
