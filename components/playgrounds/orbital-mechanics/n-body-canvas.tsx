@@ -216,15 +216,81 @@ export function NBodyCanvas({
       hoverRef.current = null;
     }
 
+    // ── Desktop pan: middle-button drag, or hold Space + left-drag ──
+    let spaceHeld = false;
+    let panning = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.code !== "Space" || e.repeat) return;
+      const target = e.target as HTMLElement | null;
+      // Don't hijack Space from form controls (play button, preset select…).
+      if (target && /^(INPUT|SELECT|TEXTAREA|BUTTON)$/.test(target.tagName))
+        return;
+      spaceHeld = true;
+      el!.style.cursor = "grab";
+      e.preventDefault(); // stop page scroll
+    }
+    function onKeyUp(e: KeyboardEvent) {
+      if (e.code !== "Space") return;
+      spaceHeld = false;
+      if (!panning) el!.style.cursor = "";
+    }
+
+    function onPanMove(e: PointerEvent) {
+      const cam = camRef.current;
+      cam.panX -= (e.clientX - lastX) / cam.scale;
+      cam.panY -= (e.clientY - lastY) / cam.scale;
+      lastX = e.clientX;
+      lastY = e.clientY;
+    }
+    function onPanEnd() {
+      panning = false;
+      el!.style.cursor = spaceHeld ? "grab" : "";
+      window.removeEventListener("pointermove", onPanMove);
+      window.removeEventListener("pointerup", onPanEnd);
+    }
+    // Capture phase: runs before attachGestures' bubble listeners, so
+    // stopPropagation() keeps pan drags out of the slingshot/tap machinery.
+    function onPointerDownCapture(e: PointerEvent) {
+      const isPan = e.button === 1 || (e.button === 0 && spaceHeld);
+      if (!isPan) return;
+      e.preventDefault();
+      e.stopPropagation();
+      panning = true;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      el!.style.cursor = "grabbing";
+      window.addEventListener("pointermove", onPanMove);
+      window.addEventListener("pointerup", onPanEnd);
+    }
+    // Windows middle-click autoscroll fires on mousedown — suppress it too.
+    function onMouseDown(e: MouseEvent) {
+      if (e.button === 1) e.preventDefault();
+    }
+
     el.addEventListener("contextmenu", onContextMenu);
     el.addEventListener("wheel", onWheel, { passive: false });
     el.addEventListener("mousemove", onMouseMove);
     el.addEventListener("mouseleave", onMouseLeave);
+    el.addEventListener("pointerdown", onPointerDownCapture, { capture: true });
+    el.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keyup", onKeyUp);
     return () => {
       el.removeEventListener("contextmenu", onContextMenu);
       el.removeEventListener("wheel", onWheel);
       el.removeEventListener("mousemove", onMouseMove);
       el.removeEventListener("mouseleave", onMouseLeave);
+      el.removeEventListener("pointerdown", onPointerDownCapture, {
+        capture: true,
+      });
+      el.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("pointermove", onPanMove);
+      window.removeEventListener("pointerup", onPanEnd);
     };
     // Mount-once on purpose — handlers read state via refs.
     // eslint-disable-next-line react-hooks/exhaustive-deps
