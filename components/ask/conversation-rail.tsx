@@ -64,11 +64,11 @@ export function ConversationRail({
             href={`/${locale}/ask`}
             className={buttonVariants({
               variant: "primary",
-              size: "cta",
-              className: "nav-link min-w-0 flex-1 gap-1.5 px-3 py-2 text-xs",
+              size: "sm",
+              className: "nav-link min-w-0 flex-1 gap-1.5 !h-8 px-3",
             })}
           >
-            <PlusIcon size={14} />
+            <PlusIcon size={13} />
             <span>New Chat</span>
           </Link>
         )}

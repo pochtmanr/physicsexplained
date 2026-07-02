@@ -45,19 +45,14 @@ export function EmptyState({
         , what do you want to learn today?
       </h1>
       <div className="mt-10 hidden md:grid grid-cols-1 md:grid-cols-2 gap-3 text-start">
-        {PROMPTS.map((p, i) => (
+        {PROMPTS.map((p) => (
           <Button
             key={p}
             variant="ghost"
             onClick={() => onPick(p)}
-            className="flex flex-col items-start justify-start gap-0 h-auto p-4 normal-case tracking-normal font-sans text-start"
+            className="!h-auto min-h-11 justify-start px-4 py-3 normal-case tracking-normal font-sans text-start opacity-45 hover:opacity-100 focus-visible:opacity-100 transition-[opacity,box-shadow,background-color,border-color,color,transform] duration-200"
           >
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-cyan-dim)]">
-              Example {String(i + 1).padStart(2, "0")}
-            </span>
-            <span className="mt-2 text-sm leading-relaxed text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)] transition-colors">
-              {p}
-            </span>
+            <span className="text-sm leading-relaxed">{p}</span>
           </Button>
         ))}
       </div>

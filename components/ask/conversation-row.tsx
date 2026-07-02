@@ -101,7 +101,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
       }`}
     >
       {renaming ? (
-        <div className="px-4 py-2.5">
+        <div className="ps-9 pe-3 py-2">
           <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
             {formatRelative(conv.updated_at)}
           </div>
@@ -122,12 +122,12 @@ export function ConversationRow({ conv, locale, active }: Props) {
       ) : (
         <Link
           href={`/${locale}/ask/${conv.id}`}
-          className="block px-4 py-2.5 pe-9"
+          className="block ps-9 pe-3 py-2"
         >
           <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
             {formatRelative(conv.updated_at)}
           </div>
-          <div className={`mt-1 flex items-center gap-1.5 text-sm truncate ${active ? "text-[var(--color-fg-0)]" : "text-[var(--color-fg-1)]"}`}>
+          <div className={`mt-0.5 flex items-center gap-1.5 text-[13px] truncate ${active ? "text-[var(--color-fg-0)]" : "text-[var(--color-fg-1)]"}`}>
             {conv.starred && (
               <Star size={11} strokeWidth={1.5} className="shrink-0 fill-[var(--color-cyan)] text-[var(--color-cyan)]" />
             )}
@@ -142,7 +142,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
           size="icon"
           aria-label="Conversation actions"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setMenuOpen((v) => !v); }}
-          className={`absolute end-2 top-2 !h-6 !w-6 transition-opacity ${
+          className={`absolute start-2 top-[11px] !h-6 !w-6 transition-opacity ${
             menuOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100 focus:opacity-100"
           }`}
         >
@@ -153,7 +153,7 @@ export function ConversationRow({ conv, locale, active }: Props) {
       {menuOpen && (
         <div
           role="menu"
-          className="absolute end-2 top-8 z-20 w-40 border border-[var(--color-fg-4)] bg-[var(--color-bg-0)] shadow-lg py-1 font-mono text-xs uppercase tracking-wider"
+          className="absolute start-2 top-8 z-20 w-40 border border-[var(--color-fg-4)] bg-[var(--color-bg-0)] shadow-lg py-1 font-mono text-xs uppercase tracking-wider"
         >
           <button
             type="button"
