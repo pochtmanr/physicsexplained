@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
 import { getProviderForModel } from "@/lib/ask/provider";
-import { buildToc } from "@/lib/ask/toc";
 import { makeToolset } from "@/lib/ask/toolset";
 import { braveSearch, fetchAllowlistedUrl } from "@/lib/ask/web-search";
 import { runPipeline } from "@/lib/ask/pipeline";
@@ -140,7 +139,7 @@ export async function POST(req: Request) {
   // this request); we still await it before returning to make sure Supabase
   // RLS errors don't slip through silently, but it runs alongside the reads.
   const tHist = Date.now();
-  const [historyResult, summaryResult, toc, candidateRefs] = await Promise.all([
+  const [historyResult, summaryResult, candidateRefs] = await Promise.all([
     db.from("ask_messages")
       .select("role,content,created_at")
       .eq("conversation_id", conversationId)
@@ -149,20 +148,21 @@ export async function POST(req: Request) {
       .select("summary")
       .eq("id", conversationId)
       .maybeSingle(),
-    buildToc(body.locale),
-    // Pre-retrieval for citation grounding. One round-trip (3 parallel FTS
-    // queries) instead of forcing the model to tool-hop for slugs, and it
-    // provides curated candidates so the model never invents a slug. Safe to
-    // fire concurrently — the body.message is already validated above.
+    // Pre-retrieval for citation + scene grounding. One round-trip (parallel
+    // FTS queries + a scene topic-join) instead of forcing the model to
+    // tool-hop for slugs/ids, and it provides curated candidates so the model
+    // never invents a slug. Safe to fire concurrently — the body.message is
+    // already validated above.
     buildCandidateRefs(db, body.locale, body.message).catch(() => ({
       block: "",
-      refs: { topics: [], physicists: [], glossary: [] },
+      refs: { topics: [], physicists: [], glossary: [], scenes: [] },
     })),
   ]);
   mark(
     `ctx-loaded (${Date.now() - tHist}ms) hist=${historyResult.data?.length ?? 0} ` +
-    `scenes=${toc.scenes.length} refs=t${candidateRefs.refs.topics.length}/` +
-    `p${candidateRefs.refs.physicists.length}/g${candidateRefs.refs.glossary.length}`,
+    `refs=t${candidateRefs.refs.topics.length}/` +
+    `p${candidateRefs.refs.physicists.length}/g${candidateRefs.refs.glossary.length}/` +
+    `s${candidateRefs.refs.scenes.length}`,
   );
 
   const assembled = assembleHistory(
@@ -267,7 +267,7 @@ export async function POST(req: Request) {
             provider,
             classifierModel: model.classifier,
             answererModel: model.id,
-            toc, toolset,
+            toolset,
             history: pipelineHistory,
             systemTail,
             signal: upstreamAbort.signal,

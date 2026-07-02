@@ -1,7 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { RotateCcw, X } from "lucide-react";
 import { MessageBubble } from "./message-bubble";
 import { ProgressTree, ThinkingChip, type ProgressStep } from "./progress-tree";
+
+interface StreamError {
+  message: string;
+  code?: string;
+  status?: number;
+}
 
 interface Props {
   conversationId: string | null;
@@ -10,18 +17,37 @@ interface Props {
   modelId: string;
   onSettled: (convId: string) => void;
   onQuotaExhausted?: (reason: "free_quota_exhausted" | "tokens_exhausted" | "past_due") => void;
+  /** Conversation id resolved server-side (meta event) — lets the parent reuse it on retry. */
+  onConversationResolved?: (convId: string) => void;
+  /** Remount this component (new key) to re-send the same message. */
+  onRetry?: () => void;
 }
 
-export function StreamingMessage({ conversationId, message, locale, modelId, onSettled, onQuotaExhausted }: Props) {
+export function StreamingMessage({
+  conversationId, message, locale, modelId,
+  onSettled, onQuotaExhausted, onConversationResolved, onRetry,
+}: Props) {
   const [text, setText] = useState("");
   const [tools, setTools] = useState<ProgressStep[]>([]);
-  const [err, setErr] = useState<string | null>(null);
+  const [err, setErr] = useState<StreamError | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const startedAtRef = useRef<number>(Date.now());
+  const resolvedIdRef = useRef<string>(conversationId ?? "");
+  // The SSE loop is a closure — it needs the live error state to decide
+  // whether "done" may settle (unmount) this component.
+  const errRef = useRef<StreamError | null>(null);
+  const settledRef = useRef(false);
   const onSettledRef = useRef(onSettled);
   const onQuotaExhaustedRef = useRef(onQuotaExhausted);
+  const onConversationResolvedRef = useRef(onConversationResolved);
   onSettledRef.current = onSettled;
   onQuotaExhaustedRef.current = onQuotaExhausted;
+  onConversationResolvedRef.current = onConversationResolved;
+
+  const fail = (e: StreamError) => {
+    errRef.current = e;
+    setErr(e);
+  };
 
   // Do NOT guard with a "firedRef" — React strict mode in dev mounts → cleans
   // up → remounts, and a firedRef guard would let the cleanup abort the first
@@ -47,14 +73,20 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
           return;
         }
         if (!res.ok || !res.body) {
-          const body = await res.text().catch(() => "");
-          setErr(`Error ${res.status}: ${body.slice(0, 200)}`);
+          const raw = await res.text().catch(() => "");
+          let detail = raw.slice(0, 300);
+          let code: string | undefined;
+          try {
+            const parsed = JSON.parse(raw) as { error?: string; message?: string };
+            code = parsed.error;
+            detail = parsed.message ?? parsed.error ?? detail;
+          } catch { /* not JSON — keep raw excerpt */ }
+          fail({ message: detail || "The request failed with no error body.", code, status: res.status });
           return;
         }
         const reader = res.body.getReader();
         const decoder = new TextDecoder();
         let buf = "";
-        let resolvedId = conversationId ?? "";
         while (true) {
           const { value, done } = await reader.read();
           if (done) break;
@@ -69,8 +101,11 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
             let data: unknown = {};
             try { data = JSON.parse(raw); } catch { data = {}; }
             const d = data as Record<string, unknown>;
-            if (name === "meta") resolvedId = (d.conversationId as string) || resolvedId;
-            else if (name === "text") setText((t) => t + String(d.delta ?? ""));
+            if (name === "meta") {
+              const id = (d.conversationId as string) || resolvedIdRef.current;
+              resolvedIdRef.current = id;
+              if (id) onConversationResolvedRef.current?.(id);
+            } else if (name === "text") setText((t) => t + String(d.delta ?? ""));
             else if (name === "tool-start") {
               const id = String(d.id ?? ""); const n = String(d.name ?? "");
               const args = (d.args as Record<string, unknown> | undefined) ?? undefined;
@@ -86,25 +121,42 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
               const now = Date.now();
               setTools((ts) => ts.map((t) => t.id === id ? { ...t, status: ok ? "ok" : "error", preview, endedAt: now } : t));
             } else if (name === "done") {
-              onSettledRef.current(resolvedId);
+              // The route always emits "done" — even right after "error" — so
+              // it must NOT settle (unmount → navigation/refresh) when a hard
+              // error is showing, or the error flashes for a second and
+              // vanishes. The user leaves via Retry or Dismiss instead.
+              if (!errRef.current) {
+                settledRef.current = true;
+                onSettledRef.current(resolvedIdRef.current);
+              }
             } else if (name === "flag") {
-              // Model ran out of output budget or refused. If no text has
-              // streamed, turn it into a visible error so the user isn't
-              // staring at an empty bubble. If some text did stream, append
-              // a truncation note below it.
+              // Soft model-side notes (output budget, refusal heuristics).
+              // These runs still complete and persist, so they only annotate
+              // the text — they don't block settling like hard errors do.
               const reason = String(d.reason ?? "");
               const msg = reason.includes("max")
                 ? "The model hit its output budget before finishing. Try a shorter question, or switch model (e.g. Claude Sonnet or GPT-5 mini)."
-                : `Model flagged: ${reason}`;
-              setText((t) => t ? `${t}\n\n_${msg}_` : "");
-              setErr((prev) => prev ?? msg);
+                : reason === "empty-completion"
+                  ? ""
+                  : `Model flagged: ${reason}`;
+              if (msg) setText((t) => t ? `${t}\n\n_${msg}_` : msg);
             } else if (name === "error") {
-              setErr(String(d.message ?? "unknown"));
+              fail({
+                message: String(d.message ?? "Unknown streaming error."),
+                code: typeof d.code === "string" ? d.code : undefined,
+              });
             }
           }
         }
+        // Stream closed without a done event (e.g. connection dropped
+        // mid-answer). Surface it — otherwise the spinner sits forever.
+        if (!errRef.current && !settledRef.current) {
+          fail({ message: "The connection closed before the answer finished.", code: "STREAM_CLOSED" });
+        }
       } catch (e) {
-        if ((e as Error).name !== "AbortError") setErr((e as Error).message);
+        if ((e as Error).name !== "AbortError") {
+          fail({ message: (e as Error).message, code: "NETWORK" });
+        }
       }
     })();
     return () => ac.abort();
@@ -117,18 +169,64 @@ export function StreamingMessage({ conversationId, message, locale, modelId, onS
   const chipLabel = lastRunning ? "Working" : tools.length > 0 ? "Finishing" : "Thinking";
 
   return (
-    <div className="mr-auto max-w-2xl">
+    <div className="mr-auto w-full">
       {tools.length > 0 && <ProgressTree steps={tools} />}
-      {(text || err) && (
-        <MessageBubble
-          role="assistant"
-          text={err ? `${text}\n\nError: ${err}` : text}
-          locale={locale}
+      {text && <MessageBubble role="assistant" text={text} locale={locale} />}
+      {err && (
+        <ErrorCard
+          error={err}
+          hasPartialText={text.length > 0}
+          onRetry={onRetry}
+          onDismiss={() => onSettledRef.current(resolvedIdRef.current)}
         />
       )}
       {!text && !err && (
         <ThinkingChip startedAt={startedAtRef.current} label={chipLabel} />
       )}
+    </div>
+  );
+}
+
+function ErrorCard({
+  error, hasPartialText, onRetry, onDismiss,
+}: {
+  error: StreamError;
+  hasPartialText: boolean;
+  onRetry?: () => void;
+  onDismiss: () => void;
+}) {
+  const label = [error.status && `HTTP ${error.status}`, error.code].filter(Boolean).join(" · ");
+  return (
+    <div className="my-4 max-w-2xl border-l-2 border-red-500/70 bg-red-500/10 px-4 py-3">
+      <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-red-400">
+        Something went wrong{label ? ` — ${label}` : ""}
+      </div>
+      <p className="mt-1.5 whitespace-pre-wrap break-words text-sm leading-relaxed text-[var(--color-fg-0)]">
+        {error.message}
+      </p>
+      {hasPartialText && (
+        <p className="mt-1 text-xs text-[var(--color-fg-3)]">
+          The partial answer above was not saved to this conversation.
+        </p>
+      )}
+      <div className="mt-3 flex gap-2">
+        {onRetry && (
+          <button
+            type="button"
+            onClick={onRetry}
+            className="inline-flex items-center gap-1.5 border border-[var(--color-fg-4)] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-0)] transition-colors hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-cyan-dim)]"
+          >
+            <RotateCcw size={12} strokeWidth={1.5} /> Retry
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-fg-0)]"
+        >
+          <X size={12} strokeWidth={1.5} /> Dismiss
+        </button>
+      </div>
     </div>
   );
 }

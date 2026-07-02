@@ -43,7 +43,6 @@ describe("runPipeline event ordering", () => {
       provider,
       classifierModel: "test",
       answererModel: "test",
-      toc: { scenes: [] },
       toolset,
       history: [],
       systemTail: "",
@@ -95,7 +94,7 @@ describe("runPipeline event ordering", () => {
     const consumed: Array<{ type: string }> = [];
     for await (const chunk of runPipeline({
       provider, classifierModel: "t", answererModel: "t",
-      toc: { scenes: [] }, toolset, history: [], systemTail: "",
+      toolset, history: [], systemTail: "",
     }, "go")) {
       consumed.push(chunk);
       // Only consume the first hop; after both tool results go back, the

@@ -75,8 +75,9 @@ export function MathPlot({ args }: { args: Args | Record<string, unknown> }) {
   }, [key]);
 
   return (
-    <SceneCard caption={buildCaption(a)} className="my-4">
-      <div ref={ref} className="w-full h-72 jxgbox" />
+    // my-4! — SceneCard's essay default is my-16; too airy for chat replies.
+    <SceneCard caption={buildCaption(a)} className="my-4! w-full">
+      <div ref={ref} className="w-full aspect-[16/9] min-h-72 max-h-[440px] jxgbox" />
     </SceneCard>
   );
 }
