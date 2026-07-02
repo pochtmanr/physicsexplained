@@ -8,7 +8,16 @@ const PUBLISHER = {
     "@type": "ImageObject" as const,
     url: `${SITE.baseUrl}/icon-512.png`,
   },
+  ...(SITE.sameAs.length > 0 ? { sameAs: [...SITE.sameAs] } : {}),
 };
+
+export function buildOrganizationJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    ...PUBLISHER,
+    description: SITE.tagline,
+  };
+}
 
 export interface ArticleParams {
   url: string;
@@ -103,8 +112,42 @@ export function buildDefinedTermJsonLd(p: DefinedTermParams) {
     termCode: p.slug,
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
-      name: "physics dictionary",
+      name: `${SITE.name} dictionary`,
       url: `${SITE.baseUrl}/dictionary`,
+    },
+  };
+}
+
+export interface CollectionPageParams {
+  url: string;
+  name: string;
+  description: string;
+  /** Omit for very large collections; pass numberOfItems instead. */
+  items?: { name: string; url: string }[];
+  numberOfItems?: number;
+}
+
+export function buildCollectionPageJsonLd(p: CollectionPageParams) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    url: p.url,
+    name: p.name,
+    description: p.description,
+    isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.baseUrl },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: p.numberOfItems ?? p.items?.length ?? 0,
+      ...(p.items
+        ? {
+            itemListElement: p.items.map((item, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: item.name,
+              url: item.url,
+            })),
+          }
+        : {}),
     },
   };
 }

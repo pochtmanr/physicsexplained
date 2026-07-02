@@ -13,12 +13,12 @@ const MathPlot = lazy(() => import("./math-plot").then((m) => ({ default: m.Math
 
 function ScenePlaceholder() {
   return (
-    <div className="my-3 border rounded p-2 h-[220px] animate-pulse bg-[var(--color-fg-4)]/10" aria-label="Loading scene…" />
+    <div className="my-4 w-full border rounded p-2 h-[320px] animate-pulse bg-[var(--color-fg-4)]/10" aria-label="Loading scene…" />
   );
 }
 function PlotPlaceholder() {
   return (
-    <div className="my-4 border rounded p-2 h-72 animate-pulse bg-[var(--color-fg-4)]/10" aria-label="Loading plot…" />
+    <div className="my-4 w-full border rounded p-2 aspect-[16/9] min-h-72 max-h-[440px] animate-pulse bg-[var(--color-fg-4)]/10" aria-label="Loading plot…" />
   );
 }
 
@@ -31,7 +31,7 @@ export function MessageBubble({
   if (isUser) {
     return (
       <div className="my-3 ml-auto max-w-xl bg-[var(--color-fg-4)]/35 border-l-2 border-[var(--color-cyan-dim)]/60 px-4 py-3">
-        {parts.map((p, i) => renderPart(p, i))}
+        {parts.map((p, i) => renderPart(p, i, locale))}
       </div>
     );
   }
@@ -44,21 +44,25 @@ export function MessageBubble({
   const glossarySlugs = dedupe(cites.filter((c) => c.targetKind === "glossary").map((c) => c.slug));
   const hasSources = topicSlugs.length + physicistSlugs.length + glossarySlugs.length > 0;
 
+  // Full-width wrapper: prose is capped to a readable measure per-part below,
+  // while scenes/plots stretch to the whole chat column.
   return (
-    <div className="my-4 mr-auto max-w-2xl">
+    <div className="my-4 mr-auto w-full">
       <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-1.5">
         Physics.AI
       </div>
       <div className="text-[var(--color-fg-0)]">
-        {parts.map((p, i) => renderPart(p, i))}
+        {parts.map((p, i) => renderPart(p, i, locale))}
       </div>
       {hasSources && (
-        <FurtherReading
-          topicSlugs={topicSlugs}
-          physicistSlugs={physicistSlugs}
-          glossarySlugs={glossarySlugs}
-          locale={locale}
-        />
+        <div className="max-w-2xl">
+          <FurtherReading
+            topicSlugs={topicSlugs}
+            physicistSlugs={physicistSlugs}
+            glossarySlugs={glossarySlugs}
+            locale={locale}
+          />
+        </div>
       )}
     </div>
   );
@@ -68,12 +72,12 @@ function dedupe(items: string[]): string[] {
   return Array.from(new Set(items));
 }
 
-function renderPart(p: FencePart, key: number): JSX.Element {
+function renderPart(p: FencePart, key: number, locale: string): JSX.Element {
   if (p.kind === "text") return <Prose key={key} text={p.text} />;
   if (p.kind === "scene") {
     return (
       <Suspense key={key} fallback={<ScenePlaceholder />}>
-        <InlineScene id={p.id} params={p.params} />
+        <InlineScene id={p.id} params={p.params} locale={locale} />
       </Suspense>
     );
   }
@@ -107,7 +111,7 @@ function Prose({ text }: { text: string }) {
   }
   if (last < text.length) nodes.push(<span key={`t${i++}`}>{text.slice(last)}</span>);
   return (
-    <div className="whitespace-pre-wrap leading-relaxed text-[var(--color-fg-0)] text-[15px]">
+    <div className="max-w-2xl whitespace-pre-wrap leading-relaxed text-[var(--color-fg-0)] text-[15px]">
       {nodes}
     </div>
   );

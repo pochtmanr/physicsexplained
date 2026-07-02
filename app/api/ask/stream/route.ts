@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
 import { getProviderForModel } from "@/lib/ask/provider";
-import { buildToc } from "@/lib/ask/toc";
 import { makeToolset } from "@/lib/ask/toolset";
 import { braveSearch, fetchAllowlistedUrl } from "@/lib/ask/web-search";
 import { runPipeline } from "@/lib/ask/pipeline";
 import { assembleHistory } from "@/lib/ask/context";
 import { buildCandidateRefs } from "@/lib/ask/candidate-refs";
 import { checkRateLimit, makeRateLimitDepsForUser } from "@/lib/ask/rate-limit";
+import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 import { sseEncode } from "@/lib/ask/sse";
 import { DEFAULT_MODEL_ID, findModel } from "@/lib/ask/types";
 import type { NeutralMessage } from "@/lib/ask/provider";
@@ -49,6 +49,22 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   mark("auth-ok");
 
+  // Per-IP throttle on the most expensive endpoint (LLM + web search). Sits on
+  // top of the per-user billing quota / daily token bucket to cap a farm of
+  // accounts behind one IP. Generous vs. a real user's question cadence.
+  const ipLimit = await enforceIpRateLimit({
+    routeKey: "ask:stream",
+    max: 30,
+    windowMs: 60 * 60 * 1000,
+    ip: getClientIp(req.headers),
+  });
+  if (!ipLimit.ok) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED", reason: "Too many requests from your network. Try again later." },
+      { status: 429, headers: { "retry-after": String(ipLimit.retryAfterSeconds) } },
+    );
+  }
+
   let body: z.infer<typeof BodySchema>;
   try { body = BodySchema.parse(await req.json()); }
   catch (e) { return NextResponse.json({ error: "BAD_REQUEST", message: (e as Error).message }, { status: 400 }); }
@@ -71,7 +87,28 @@ export async function POST(req: Request) {
   if (billingErr || !billingRow) {
     return NextResponse.json({ error: "DB_ERR", message: billingErr?.message ?? "missing billing row" }, { status: 500 });
   }
-  const quota = checkQuota(billingRow as BillingRow);
+  // Free-plan monthly reset, done lazily: if the cycle lapsed, roll it before
+  // the quota gate so free_questions_used starts a fresh month. The .lte guard
+  // makes concurrent requests idempotent (only the first one matches). The
+  // billing-renew cron also sweeps lapsed free rows daily; this covers the gap.
+  const row = billingRow as BillingRow;
+  if (row.plan === "free" && new Date(row.cycle_end).getTime() <= Date.now()) {
+    const cycleStart = new Date();
+    const cycleEnd = new Date(cycleStart);
+    cycleEnd.setMonth(cycleEnd.getMonth() + 1);
+    await db.from("user_billing")
+      .update({
+        free_questions_used: 0,
+        cycle_start: cycleStart.toISOString(),
+        cycle_end: cycleEnd.toISOString(),
+      })
+      .eq("user_id", user.id)
+      .eq("plan", "free")
+      .lte("cycle_end", cycleStart.toISOString());
+    row.free_questions_used = 0;
+    row.cycle_end = cycleEnd.toISOString();
+  }
+  const quota = checkQuota(row);
   if (!quota.ok) {
     return NextResponse.json({ error: "QUOTA_EXHAUSTED", reason: quota.reason }, { status: 402 });
   }
@@ -123,7 +160,7 @@ export async function POST(req: Request) {
   // this request); we still await it before returning to make sure Supabase
   // RLS errors don't slip through silently, but it runs alongside the reads.
   const tHist = Date.now();
-  const [historyResult, summaryResult, toc, candidateRefs] = await Promise.all([
+  const [historyResult, summaryResult, candidateRefs] = await Promise.all([
     db.from("ask_messages")
       .select("role,content,created_at")
       .eq("conversation_id", conversationId)
@@ -132,20 +169,21 @@ export async function POST(req: Request) {
       .select("summary")
       .eq("id", conversationId)
       .maybeSingle(),
-    buildToc(body.locale),
-    // Pre-retrieval for citation grounding. One round-trip (3 parallel FTS
-    // queries) instead of forcing the model to tool-hop for slugs, and it
-    // provides curated candidates so the model never invents a slug. Safe to
-    // fire concurrently — the body.message is already validated above.
+    // Pre-retrieval for citation + scene grounding. One round-trip (parallel
+    // FTS queries + a scene topic-join) instead of forcing the model to
+    // tool-hop for slugs/ids, and it provides curated candidates so the model
+    // never invents a slug. Safe to fire concurrently — the body.message is
+    // already validated above.
     buildCandidateRefs(db, body.locale, body.message).catch(() => ({
       block: "",
-      refs: { topics: [], physicists: [], glossary: [] },
+      refs: { topics: [], physicists: [], glossary: [], scenes: [] },
     })),
   ]);
   mark(
     `ctx-loaded (${Date.now() - tHist}ms) hist=${historyResult.data?.length ?? 0} ` +
-    `scenes=${toc.scenes.length} refs=t${candidateRefs.refs.topics.length}/` +
-    `p${candidateRefs.refs.physicists.length}/g${candidateRefs.refs.glossary.length}`,
+    `refs=t${candidateRefs.refs.topics.length}/` +
+    `p${candidateRefs.refs.physicists.length}/g${candidateRefs.refs.glossary.length}/` +
+    `s${candidateRefs.refs.scenes.length}`,
   );
 
   const assembled = assembleHistory(
@@ -250,7 +288,7 @@ export async function POST(req: Request) {
             provider,
             classifierModel: model.classifier,
             answererModel: model.id,
-            toc, toolset,
+            toolset,
             history: pipelineHistory,
             systemTail,
             signal: upstreamAbort.signal,

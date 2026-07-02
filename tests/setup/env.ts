@@ -9,3 +9,7 @@ import { config } from "dotenv";
 
 config();
 config({ path: ".env.local" });
+
+// SEO tests assert canonical production URLs; pin the base URL so a local
+// NEXT_PUBLIC_SITE_URL override (e.g. http://localhost:3000) can't leak in.
+process.env.NEXT_PUBLIC_SITE_URL = "https://physics.it.com";

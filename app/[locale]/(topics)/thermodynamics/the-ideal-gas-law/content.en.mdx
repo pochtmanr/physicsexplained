@@ -1,0 +1,110 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { GasLawsTripleScene } from "@/components/physics/the-ideal-gas-law/gas-laws-triple-scene";
+import { IdealVsRealGasScene } from "@/components/physics/the-ideal-gas-law/ideal-vs-real-gas-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Robert Boyle", href: "/physicists/robert-boyle" },
+  { type: "physicist", label: "Jacques Charles", href: "/physicists/jacques-charles" },
+  { type: "physicist", label: "Amedeo Avogadro", href: "/physicists/amedeo-avogadro" },
+  { type: "term", label: "Ideal gas law", href: "/dictionary/ideal-gas-law" },
+  { type: "term", label: "Boyle's law", href: "/dictionary/boyles-law" },
+  { type: "term", label: "Charles's law", href: "/dictionary/charles-law" },
+  { type: "term", label: "Avogadro's number", href: "/dictionary/avogadro-number" },
+  { type: "term", label: "Gas constant", href: "/dictionary/gas-constant" },
+  { type: "term", label: "Compressibility factor", href: "/dictionary/compressibility-factor" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.14 · KINETIC THEORY"
+  title="THE IDEAL GAS LAW"
+  subtitle="Three centuries of laboratory arithmetic, collapsed into one line."
+/>
+
+<Section index={1} title="A spring in the air">
+
+In 1662 <PhysicistLink slug="robert-boyle" />, working at Oxford with his young assistant Robert Hooke, bent a glass tube into the shape of a J, sealed the short arm, and poured mercury into the long one. The trapped air in the short arm was squeezed as he added mercury; he measured how its length shrank as the weight of mercury above it grew. The numbers were clean: double the pressure, halve the volume. Boyle called the trapped air a "spring," and the relation he found — that pressure and volume trade off in exact inverse proportion at fixed temperature — was the first quantitative law of a gas.
+
+<EquationBlock id="EQ.01">$$P V = \text{constant} \qquad (T \text{ fixed})$$</EquationBlock>
+
+In words: at a fixed temperature, squeezing a gas into half the volume exactly doubles its pressure. This is <Term slug="boyles-law" />. Plot pressure against $1/V$ and you get a straight line through the origin — the cleanest possible signature of an inverse law, and the left-hand panel of the scene below.
+
+</Section>
+
+<Section index={2} title="The line that points at absolute zero">
+
+A century and a quarter later the second variable came loose. <PhysicistLink slug="jacques-charles" />, a French physicist and pioneering balloonist, noticed around 1787 that at fixed pressure a gas expands in direct proportion to its temperature. He never published; <PhysicistLink slug="joseph-louis-gay-lussac" /> rediscovered and printed the result in 1802, and it is sometimes called Gay-Lussac's law for that reason.
+
+<EquationBlock id="EQ.02">$$\frac{V}{T} = \text{constant} \qquad (P \text{ fixed})$$</EquationBlock>
+
+In words: warm a gas at constant pressure and its volume grows in lockstep with its absolute temperature. The hidden gift in <Term slug="charles-law" /> is what happens when you run the straight line of $V$ versus temperature *backward*. Every gas, extrapolated, reaches zero volume at the same place: $-273\ ^\circ\text{C}$. A volume cannot go negative, so this is a floor — the first hint, decades before the laws of thermodynamics, that temperature has an absolute bottom. The middle panel of the scene shows that extrapolation striking $V = 0$ at $-273\ ^\circ\text{C}$.
+
+<SceneCard caption="FIG.14a — the three classical gas laws sharing one temperature knob. Left (Boyle): P versus 1/V is a straight line whose slope steepens as you raise T. Middle (Charles): V versus temperature is a straight line that, extended, hits zero volume at −273 °C — absolute zero, sighted from a balloon. Right (the collapse): PV/nR versus T is the single line onto which helium, nitrogen and carbon dioxide all fall at low density. Drag the temperature and watch all three respond together.">
+  <GasLawsTripleScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Equal volumes, equal counts">
+
+The third idea was the hardest to swallow. In 1811 <PhysicistLink slug="amedeo-avogadro" /> proposed that equal volumes of *any* gas, at the same temperature and pressure, contain equal numbers of molecules — regardless of what the gas is. It was pure theory, with no way to count molecules, and the chemistry establishment ignored it for half a century. Only at the 1860 Karlsruhe Congress, four years after Avogadro's death, did Stanislao Cannizzaro show that his hypothesis untangled the era's confusion over atomic weights.
+
+The number of molecules in one mole — a sample whose mass in grams equals its molecular weight — is now fixed by definition:
+
+<EquationBlock id="EQ.03">$$N_A = 6.022 \times 10^{23} \ \text{mol}^{-1}$$</EquationBlock>
+
+In words: one mole of any substance contains just over six hundred thousand billion billion molecules — <Term slug="avogadro-number" />. It is the conversion factor between the human scale of grams and litres and the molecular scale of individual collisions, and it is the bridge the rest of this module is built on.
+
+</Section>
+
+<Section index={4} title="One line for all three">
+
+Boyle ($P \propto 1/V$), Charles ($V \propto T$), and Avogadro ($V \propto n$) are three faces of a single relation. Multiply them together and the proportionality constant turns out to be universal — the same number for every gas, dilute enough:
+
+<EquationBlock id="EQ.04">$$PV = nRT, \qquad R = 8.314 \ \text{J}/(\text{mol·K})$$</EquationBlock>
+
+In words: the pressure of a gas times its volume equals the amount of gas (in moles) times its absolute temperature times one fixed constant of nature. That constant, the <Term slug="gas-constant" /> $R$, does not care whether the gas is hydrogen or carbon dioxide. The right-hand panel of the scene above makes the universality visible: plot $PV/nR$ against $T$ and every gas falls onto the *same* line. Three centuries of separate laboratory arithmetic collapse into one equation.
+
+</Section>
+
+<Section index={5} title="Counting molecules instead of moles">
+
+Chemists count in moles; the kinetic theory that follows counts individual molecules. Swapping $n R = (N/N_A) R = N k_B$ rewrites the same law in the form statistical mechanics prefers:
+
+<EquationBlock id="EQ.05">$$PV = N k_B T, \qquad k_B = 1.381 \times 10^{-23} \ \text{J/K}$$</EquationBlock>
+
+In words: pressure times volume equals the *number of molecules* times Boltzmann's constant times temperature. The Boltzmann constant $k_B = R/N_A$ is simply the gas constant rationed out one molecule at a time. This form carries no chemistry in it at all — just a count of particles and a temperature — which is exactly why the [next topic](/thermodynamics/pressure-from-molecular-collisions) can *derive* it from nothing but molecules bouncing off a wall.
+
+<Callout variant="intuition">
+$R$ and $k_B$ are the same constant at two scales. $R$ is the bookkeeping you do with a balance and a measuring cylinder; $k_B$ is the bookkeeping nature does, molecule by molecule. They differ only by Avogadro's number — the size of a mole.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Where ideal breaks">
+
+The word *ideal* hides an assumption: that molecules are dimensionless points exerting no force on one another except at the instant of collision. Real molecules have size, and they attract. So real gases deviate, and the cleanest way to measure the deviation is the <Term slug="compressibility-factor" />:
+
+<EquationBlock id="EQ.06">$$Z = \frac{PV}{nRT}$$</EquationBlock>
+
+In words: $Z$ is the ratio of a real gas's $PV$ to what the ideal gas law predicts. For a perfect gas $Z = 1$ exactly, at every pressure. A real gas tells a two-part story. At moderate pressure the molecules' mutual *attraction* helps them crowd together, so the gas compresses more than ideal and $Z$ dips below 1. Squeeze harder and the molecules' own *volume* starts to resist — they cannot overlap — so $Z$ climbs back through 1 and above it. The van der Waals equation, $\left(P + a n^2/V^2\right)(V - nb) = nRT$, captures both effects: $a$ for the pull, $b$ for the bulk.
+
+<SceneCard caption="FIG.14b — the compressibility factor Z = PV/nRT. The dashed line at Z = 1 is the ideal gas. Choose a gas and a temperature: the real-gas curve first dips below 1 (attraction lets it over-compress) then rises above 1 (the finite molecular size pushes back). Cool the gas toward its critical region and the dip deepens — the prelude to condensation.">
+  <IdealVsRealGasScene />
+</SceneCard>
+
+</Section>
+
+<Section index={7} title="Why does it work at all?">
+
+The remarkable thing is not that the ideal gas law fails near condensation — it is that it works so well everywhere else. A single line, $PV = N k_B T$, predicts the behaviour of every dilute gas across enormous ranges of pressure and temperature, and does it without any reference to what the gas is made of or how its molecules interact.
+
+That universality is a clue. It tells us the law cannot depend on the chemical details; it must come from something every gas shares. The next topic supplies the answer: pressure is nothing but the [drumbeat of molecular collisions](/thermodynamics/pressure-from-molecular-collisions) on the container walls, and temperature is nothing but the average kinetic energy of those molecules. Derive $PV = N k_B T$ from that picture and the ideal gas law stops being an empirical summary of three centuries of measurement and becomes a theorem. From there the road runs to the [distribution of molecular speeds](/thermodynamics/the-maxwell-boltzmann-distribution) and the [equipartition of energy](/thermodynamics/equipartition-and-degrees-of-freedom).
+
+</Section>
+
+</TopicPageLayout>

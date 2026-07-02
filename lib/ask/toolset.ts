@@ -2,6 +2,7 @@ import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parse as parseMath, compile as compileMath } from "mathjs";
 import { getSceneEntry } from "./scene-catalog";
+import { GENERATED_SCENE_META } from "./scene-meta.generated";
 
 export interface ToolsetDeps {
   db: SupabaseClient;
@@ -155,24 +156,54 @@ export function makeToolset(deps: ToolsetDeps) {
       const limit = Math.min(args.limit ?? 5, 10);
       const { data, error } = await db
         .from("scene_catalog")
-        .select("id,label,description,params_schema")
+        .select("id,label,description,fig_label,curated,params_schema")
         .textSearch("search_doc", q, { type: "websearch", config: "simple" })
         .limit(limit);
       if (error) throw error;
       return (data ?? []).map((r) => ({
-        id: r.id, label: r.label, description: r.description, paramsSchema: r.params_schema,
+        id: r.id,
+        label: r.label,
+        description: r.description,
+        figLabel: r.fig_label ?? null,
+        // Only curated scenes accept params; advertising an empty schema for
+        // the rest just tempts the model into inventing props.
+        ...(r.curated ? { paramsSchema: r.params_schema } : {}),
       }));
     },
 
     async showScene(args: { sceneId: string; params?: Record<string, unknown> }) {
       const parsed = z.object({ sceneId: z.string(), params: z.record(z.string(), z.unknown()).optional() }).safeParse(args);
       if (!parsed.success) return { ok: false as const, error: { message: parsed.error.message, retryable: true } };
-      const entry = getSceneEntry(parsed.data.sceneId);
-      if (!entry) return { ok: false as const, error: { message: `Unknown sceneId. Call searchScenes first.`, retryable: true } };
-      const p = entry.paramsSchema.safeParse(parsed.data.params ?? {});
-      if (!p.success) return { ok: false as const, error: { message: `Invalid params: ${p.error.message}`, retryable: true } };
-      const fence = buildSceneFence(parsed.data.sceneId, p.data as Record<string, unknown>);
-      return { ok: true as const, sceneId: parsed.data.sceneId, params: p.data, fence };
+      const { sceneId } = parsed.data;
+
+      // Curated scenes: model-supplied params, zod-validated.
+      const entry = getSceneEntry(sceneId);
+      if (entry) {
+        const p = entry.paramsSchema.safeParse(parsed.data.params ?? {});
+        if (!p.success) return { ok: false as const, error: { message: `Invalid params: ${p.error.message}`, retryable: true } };
+        const fence = buildSceneFence(sceneId, p.data as Record<string, unknown>);
+        return { ok: true as const, sceneId, params: p.data, fence };
+      }
+
+      // Everything else in the generated full catalog: render with the essay's
+      // own default props; model params are ignored rather than rejected so a
+      // well-meaning params guess doesn't burn a retry hop.
+      const meta = GENERATED_SCENE_META[sceneId];
+      if (meta) {
+        const defaults = meta.defaultProps ?? {};
+        const fence = buildSceneFence(sceneId, defaults);
+        return {
+          ok: true as const,
+          sceneId,
+          params: defaults,
+          fence,
+          ...(parsed.data.params && Object.keys(parsed.data.params).length > 0
+            ? { note: "This scene does not accept params; rendered with its defaults." }
+            : {}),
+        };
+      }
+
+      return { ok: false as const, error: { message: `Unknown sceneId. Call searchScenes first.`, retryable: true } };
     },
 
     async plotFunction(args: {

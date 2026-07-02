@@ -1,6 +1,8 @@
 "use client";
 import type { FigureContent } from "@/lib/content/blocks";
 import { getSimulation } from "@/lib/content/simulation-registry";
+import { LazyMount } from "@/components/layout/lazy-mount";
+import { SceneSkeleton } from "@/components/layout/scene-skeleton";
 import { storageUrl } from "@/lib/supabase";
 
 export function FigureInner({ content }: { content: FigureContent }) {
@@ -9,5 +11,11 @@ export function FigureInner({ content }: { content: FigureContent }) {
     return <img src={storageUrl(content.src)} alt={content.alt} />;
   }
   const Component = getSimulation(content.component);
-  return <Component {...(content.props ?? {})} />;
+  // Gate mounting on viewport proximity: otherwise every scene chunk on the
+  // essay (plus jsxgraph) downloads and initializes at hydration.
+  return (
+    <LazyMount fallback={<SceneSkeleton />}>
+      <Component {...(content.props ?? {})} />
+    </LazyMount>
+  );
 }

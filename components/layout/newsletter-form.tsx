@@ -25,18 +25,18 @@ export function NewsletterForm() {
           {state.message}
         </p>
       ) : (
-        <form action={formAction} className="flex flex-col gap-2 sm:flex-row">
+        <form action={formAction} className="flex flex-col gap-2 md:flex-row">
           <input
             type="email"
             name="email"
             required
             placeholder="you@example.com"
             aria-label="Email address"
-            className="min-w-0 flex-1 h-8 rounded-[var(--radius-control)] border border-[var(--color-fg-4)] bg-[color-mix(in_srgb,var(--color-fg-4)_22%,transparent)] px-3 font-mono text-xs text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] shadow-[var(--shadow-control)] outline-none transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cyan)]"
+            className="min-w-0 flex-1 py-3 md:py-0 md:h-8 rounded-[var(--radius-control)] border border-[var(--color-fg-4)] bg-[color-mix(in_srgb,var(--color-fg-4)_22%,transparent)] px-3 font-mono text-xs text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] shadow-[var(--shadow-control)] outline-none transition-colors duration-[var(--duration-fast)] focus:border-[var(--color-cyan)]"
           />
           <Button
             variant="secondary"
-            size="sm"
+            size="cta-row"
             type="submit"
             disabled={isPending}
           >

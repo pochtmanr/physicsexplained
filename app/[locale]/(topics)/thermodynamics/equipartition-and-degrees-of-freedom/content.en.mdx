@@ -1,0 +1,102 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { DegreesOfFreedomScene } from "@/components/physics/equipartition-and-degrees-of-freedom/degrees-of-freedom-scene";
+import { EquipartitionFailureScene } from "@/components/physics/equipartition-and-degrees-of-freedom/equipartition-failure-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "James Clerk Maxwell", href: "/physicists/james-clerk-maxwell" },
+  { type: "physicist", label: "Peter Debye", href: "/physicists/peter-debye" },
+  { type: "physicist", label: "Albert Einstein", href: "/physicists/albert-einstein" },
+  { type: "term", label: "Equipartition theorem", href: "/dictionary/equipartition-theorem" },
+  { type: "term", label: "Degrees of freedom", href: "/dictionary/degrees-of-freedom" },
+  { type: "term", label: "Debye temperature", href: "/dictionary/debye-temperature" },
+  { type: "term", label: "Phonon", href: "/dictionary/phonon" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.17 · KINETIC THEORY"
+  title="EQUIPARTITION AND DEGREES OF FREEDOM"
+  subtitle="One theorem for every heat capacity — and three cracks that let the quantum in."
+/>
+
+<Section index={1} title="The democracy of energy">
+
+By 1860 <PhysicistLink slug="james-clerk-maxwell" /> had the distribution of molecular speeds; now he asked how energy shares itself out among the *ways* a molecule can move. His answer, sharpened by Boltzmann over the next decade, is one of the most powerful counting arguments in physics. In thermal equilibrium energy distributes itself with perfect democracy: every independent quadratic term in the energy — every <Term slug="degrees-of-freedom">degree of freedom</Term> that enters as a square — carries, on average, exactly the same amount, $\tfrac{1}{2}k_B T$.
+
+A monatomic atom can only fly through space, so it has three quadratic terms, one for each component of velocity: $\tfrac{1}{2}mv_x^2 + \tfrac{1}{2}mv_y^2 + \tfrac{1}{2}mv_z^2$. A diatomic molecule can also tumble end over end, adding two rotational terms. A bound atom in a crystal can store energy in the stretch of its bonds as well as in its motion. Count the squares and equipartition hands you the energy.
+
+</Section>
+
+<Section index={2} title="The theorem">
+
+If a molecule's energy contains $f$ quadratic degrees of freedom, the <Term slug="equipartition-theorem" /> says its average energy is $f$ helpings of $\tfrac{1}{2}k_B T$:
+
+<EquationBlock id="EQ.01">$$\langle E \rangle = \frac{f}{2}\,N k_B T$$</EquationBlock>
+
+In words: the internal energy of $N$ molecules is just the number of quadratic degrees of freedom, times $\tfrac{1}{2}k_B T$, times the number of molecules. Nothing about the chemistry survives — only the *count* $f$ matters. Helium with $f = 3$, nitrogen with $f = 5$, a crystal atom with $f = 6$: each is a different value of one small integer.
+
+<SceneCard caption="FIG.17a — the degrees of freedom made visible. Helium (f = 3) can only translate; a nitrogen dumbbell (f = 5) also rotates, and once hot (f = 7) its bond vibrates; a crystal atom (f = 6) jitters on six springs of kinetic and potential energy. Toggle the cases — the heat-capacity readout is simply (f/2)R, the live motions counted up.">
+  <DegreesOfFreedomScene />
+</SceneCard>
+
+</Section>
+
+<Section index={3} title="Heat capacities, predicted">
+
+Differentiate the energy with respect to temperature and you have the heat capacity — the energy it takes to warm the substance by one degree:
+
+<EquationBlock id="EQ.02">$$C_v = \frac{f}{2} N k_B \quad\Longrightarrow\quad C_v^{\text{molar}} = \frac{f}{2} R$$</EquationBlock>
+
+In words: each degree of freedom contributes $\tfrac{1}{2}R$ — about $4.16$ J/(mol·K) — to the molar heat capacity. Monatomic gases should sit at $\tfrac{3}{2}R \approx 12.5$, diatomic gases at $\tfrac{5}{2}R \approx 20.8$, and simple solids at $3R \approx 24.9$. That last number is the Dulong–Petit law, measured forty years before anyone could explain it — and here it falls out of pure counting, $f = 6$ for an atom held by springs in three directions. A single theorem reproduces a table of heat capacities that took a century of calorimetry to assemble.
+
+</Section>
+
+<Section index={4} title="The adiabatic exponent, recovered">
+
+Equipartition also delivers a number promised earlier in the branch. The ratio of heat capacities at constant pressure and constant volume,
+
+<EquationBlock id="EQ.03">$$\gamma = \frac{C_p}{C_v} = \frac{f+2}{f}$$</EquationBlock>
+
+In words: $\gamma$ is fixed entirely by the degrees of freedom, because heating at constant pressure always costs one extra $R$ of expansion work. For a monatomic gas $f = 3$ gives $\gamma = \tfrac{5}{3}$; for a diatomic gas at room temperature $f = 5$ gives $\gamma = \tfrac{7}{5}$. Those are exactly the values that set the speed of sound in air and the steepness of an adiabat — the empirical exponents from the study of isothermal and adiabatic processes, now explained rather than measured.
+
+<Callout variant="math">
+The extra $+2$ in $\gamma = (f+2)/f$ is the two halves of $R$ that a gas at constant pressure must spend doing work against its surroundings as it expands — one $R$ on top of the $C_v$ it would have needed at constant volume.
+</Callout>
+
+</Section>
+
+<Section index={5} title="Crack one: rotation freezes out">
+
+The theorem is too good. If every degree of freedom always carried $\tfrac{1}{2}k_B T$, heat capacities would be constants of nature. They are not. Cool hydrogen gas below about $100$ K and its heat capacity slides from $\tfrac{5}{2}R$ down to $\tfrac{3}{2}R$ — the molecule stops rotating, behaving like a monatomic atom. Classically this is impossible: a dumbbell can always be set spinning, however gently.
+
+<SceneCard caption="FIG.17b — the heat capacity of H₂ across the temperature decades. The classical prediction is a flat (7/2)R; reality is a staircase. Rotation thaws near 100 K (lifting C_v to (5/2)R) and vibration only above ~1000 K (to (7/2)R). The steps sit at the rotational and vibrational characteristic temperatures — quantisation, written on a heat-capacity curve. Drag the temperature to read off each plateau.">
+  <EquipartitionFailureScene />
+</SceneCard>
+
+The resolution is quantum. Rotational energy comes in discrete steps of size $\sim\hbar^2/I$, and when $k_B T$ falls below that gap there is simply not enough thermal energy to excite even the first rotation. The mode goes silent — it *freezes out*. Equipartition assumed energy was continuous; it is not.
+
+</Section>
+
+<Section index={6} title="Crack two: solids fall silent">
+
+The same failure strikes solids from the other direction. Dulong–Petit holds at room temperature, but cool a crystal and its heat capacity collapses toward zero — far below the classical $3R$. <PhysicistLink slug="albert-einstein" /> took the first quantum shot at it in 1907, treating every atom as an identical oscillator with quantised energy; the curve bent the right way but fell too fast. In 1912 <PhysicistLink slug="peter-debye" /> did it properly, treating the vibrations as collective sound-like waves of the whole lattice — quantised, and now called <Term slug="phonon">phonons</Term>.
+
+The temperature scale of the collapse is the <Term slug="debye-temperature" />: above it a solid behaves classically and obeys Dulong–Petit; below it the high-frequency lattice modes freeze out one by one and $C_v$ falls as $T^3$. Diamond's Debye temperature is over $2000$ K, which is why diamond's heat capacity is anomalously low at room temperature — most of its vibrational modes are still frozen. A second warning bell that classical physics was incomplete.
+
+</Section>
+
+<Section index={7} title="Crack three: the catastrophe">
+
+The third failure was fatal. Apply equipartition to the electromagnetic field in a hot cavity and you must give $\tfrac{1}{2}k_B T$ to *each* of its standing-wave modes — and there are infinitely many of them, packed ever more densely toward short wavelengths. The predicted energy diverges: every warm object should blaze with infinite ultraviolet light. This is the ultraviolet catastrophe, and it is equipartition pushed to the point of absurdity.
+
+In 1900 Max Planck stopped it the only way it could be stopped — by declaring that the modes could not take energy continuously, only in quanta $E = h\nu$. High-frequency modes need a quantum too large for the available $k_B T$, so they stay dark, and the energy is finite. Planck thought he was patching thermodynamics; he had started quantum mechanics. Equipartition, the triumph of the classical kinetic theory, turned out to be the precise place where that theory broke — three cracks, each opening onto the quantum world told in full in the QM branch.
+
+Behind all three cracks stands the same molecular picture that gives the [Maxwell–Boltzmann distribution](/thermodynamics/the-maxwell-boltzmann-distribution) its shape and makes [Brownian motion](/thermodynamics/brownian-motion) visible — a picture that, by 1910, no one could any longer deny.
+
+</Section>
+
+</TopicPageLayout>

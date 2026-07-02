@@ -19,7 +19,7 @@ export type ButtonVariant =
   | "icon"
   | "danger"
   | "danger-solid";
-export type ButtonSize = "sm" | "icon" | "icon-lg" | "cta" | "mobile";
+export type ButtonSize = "sm" | "icon" | "icon-lg" | "cta" | "cta-row" | "hero";
 
 const BASE =
   "btn-tracer group relative inline-flex items-center justify-center gap-2 " +
@@ -30,9 +30,10 @@ const BASE =
   "disabled:opacity-60 disabled:pointer-events-none";
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  // Filled cyan with a resting phosphor glow — the primary CTA.
+  // Filled cyan with a resting phosphor glow — the primary CTA. The transparent
+  // border keeps padding-sized buttons the same height as bordered variants.
   primary:
-    "bg-[var(--color-cyan)] !text-white shadow-[var(--shadow-control-primary)] " +
+    "border border-transparent bg-[var(--color-cyan)] !text-white shadow-[var(--shadow-control-primary)] " +
     "hover:bg-[color-mix(in_srgb,var(--color-cyan)_92%,white)] " +
     "hover:shadow-[var(--shadow-control-primary-hover)]",
   // Cyan outline over a faint cyan surface fill — secondary actions.
@@ -63,7 +64,7 @@ const VARIANTS: Record<ButtonVariant, string> = {
   // Filled magenta with a resting glow — the confirm step of a destructive action.
   // Mirrors `primary` with the warning hue.
   "danger-solid":
-    "bg-[var(--color-magenta)] !text-white shadow-[var(--shadow-control-danger)] " +
+    "border border-transparent bg-[var(--color-magenta)] !text-white shadow-[var(--shadow-control-danger)] " +
     "hover:bg-[color-mix(in_srgb,var(--color-magenta)_92%,white)] " +
     "hover:shadow-[var(--shadow-control-danger-hover)]",
 };
@@ -81,7 +82,13 @@ const SIZES: Record<ButtonSize, string> = {
   icon: "h-6 w-6 md:h-8 md:w-8",
   "icon-lg": "h-9 w-9",
   cta: "px-4 py-2 text-xs md:px-6 md:py-3 md:text-sm",
-  mobile: "w-full px-4 py-3 text-xs",
+  // Landing-section CTA — a full-width keycap row on mobile (same px-4/py-3
+  // metrics as the mobile-nav drawer rows), collapsing to the compact `sm`
+  // chrome from md up.
+  "cta-row": "w-full px-4 py-3 text-xs md:w-auto md:h-8 md:px-3 md:py-0",
+  // Hero CTA — `cta-row` on mobile, but keeps the prominent `cta` metrics
+  // from md up so it outweighs the nav chrome instead of matching it.
+  hero: "w-full px-4 py-3 text-xs md:w-auto md:px-6 md:text-sm",
 };
 
 export interface ButtonVariantsOptions {

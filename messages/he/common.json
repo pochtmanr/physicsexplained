@@ -28,7 +28,12 @@
   "aside": {
     "physicists": "פיזיקאים",
     "topics": "נושאים",
-    "terms": "מונחים"
+    "terms": "מונחים",
+    "fromOurTeam": "מהצוות שלנו",
+    "products": {
+      "doppler": "VPN · dopplervpn.org",
+      "smsActivate": "אפליקציית iOS"
+    }
   },
   "backLinks": {
     "dictionary": "מילון →",

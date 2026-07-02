@@ -3,6 +3,9 @@ import { BRANCHES } from "@/lib/content/branches";
 import { supabase } from "@/lib/supabase";
 import { locales, defaultLocale } from "@/i18n/config";
 import { SITE } from "@/lib/seo/config";
+import { isPublished } from "@/lib/seo/published";
+import { EQUATIONS } from "@/lib/content/equations";
+import { PLAYGROUND_SLUGS } from "@/app/[locale]/play/_components/playground-meta";
 
 type ChangeFreq = NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
 
@@ -52,6 +55,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ["/about", "monthly", 0.6],
     ["/physicists", "monthly", 0.7],
     ["/dictionary", "monthly", 0.7],
+    ["/equations", "monthly", 0.7],
+    ["/play", "monthly", 0.5],
+    ...EQUATIONS.map((e): [string, ChangeFreq, number] => [
+      `/equations/${e.slug}`,
+      "monthly",
+      0.6,
+    ]),
+    ...PLAYGROUND_SLUGS.map((slug): [string, ChangeFreq, number] => [
+      `/play/${slug}`,
+      "monthly",
+      0.5,
+    ]),
     ["/privacy", "yearly", 0.3],
     ["/terms", "yearly", 0.3],
     ["/cookies", "yearly", 0.3],
@@ -79,9 +94,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .in("kind", ["topic", "glossary", "physicist"]);
   if (error) throw error;
 
+  // Drop rows whose registry entry isn't live — the DB can hold drafts ahead
+  // of launch, and those must not leak into the sitemap.
+  const rows: RealEntry[] = ((data ?? []) as RealEntry[]).filter((r) =>
+    isPublished(r.kind, r.slug),
+  );
+
   // Group locales per (kind, slug) so we can emit hreflang alternates correctly.
   const realLocalesBySlug = new Map<string, Set<string>>();
-  const rows: RealEntry[] = (data ?? []) as RealEntry[];
   for (const r of rows) {
     const key = `${r.kind}::${r.slug}`;
     if (!realLocalesBySlug.has(key)) realLocalesBySlug.set(key, new Set());

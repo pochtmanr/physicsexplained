@@ -47,7 +47,8 @@ export const TOOL_SCHEMAS: JsonToolDef[] = [
   },
   {
     name: "searchScenes",
-    description: "Search the curated scene catalog. Returns id, label, description, paramsSchema.",
+    description:
+      "Full-text search over all ~500 site figures/animations. Returns id, label, description, figLabel; paramsSchema is present only for the few scenes that accept params.",
     parameters: {
       type: "object",
       properties: { q: { type: "string" }, limit: { type: "integer", minimum: 1, maximum: 10 } },
@@ -57,7 +58,7 @@ export const TOOL_SCHEMAS: JsonToolDef[] = [
   {
     name: "showScene",
     description:
-      "Render an existing scene inline. Call searchScenes first to discover id + params. Returns a `fence` string — include it verbatim in your final answer.",
+      "Render an existing site figure/animation inline. Use an id from the \"Scenes you may embed\" block directly, or call searchScenes to discover one. Pass params only if the scene's paramsSchema was provided; other scenes render with their defaults. Returns a `fence` string — include it verbatim in your final answer.",
     parameters: {
       type: "object",
       properties: { sceneId: { type: "string" }, params: { type: "object" } },

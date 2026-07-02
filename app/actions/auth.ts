@@ -6,13 +6,19 @@ import { getSsrClient } from "@/lib/supabase-server";
 export async function signInWithEmail(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const next = String(formData.get("next") ?? "/");
+  // Cloudflare Turnstile token. Supabase Auth verifies it server-side when
+  // CAPTCHA is enabled in the dashboard; harmless (ignored) until then.
+  const captchaToken = String(formData.get("cf-turnstile-response") ?? "") || undefined;
   if (!email) return { error: "Email required" };
 
   const db = await getSsrClient();
   const origin = (await headers()).get("origin") ?? process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const { error } = await db.auth.signInWithOtp({
     email,
-    options: { emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}` },
+    options: {
+      emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(next)}`,
+      captchaToken,
+    },
   });
   if (error) return { error: error.message };
   return { ok: true };

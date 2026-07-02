@@ -7,8 +7,9 @@ import { PhysicistsSection } from "@/components/sections/physicists-section";
 import { FeaturedTopicSection } from "@/components/sections/featured-topic-section";
 import { DictionarySection } from "@/components/sections/dictionary-section";
 import { PhilosophySection } from "@/components/sections/philosophy-section";
+import { SupportSection } from "@/components/sections/support-section";
 import { JsonLd } from "@/components/seo/jsonld";
-import { buildWebSiteJsonLd } from "@/lib/seo/jsonld";
+import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/seo/jsonld";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -41,6 +42,7 @@ export default async function HomePage({
   return (
     <main className="pb-16 md:pb-32">
       <JsonLd data={buildWebSiteJsonLd()} />
+      <JsonLd data={buildOrganizationJsonLd()} />
       <HeroSection />
       <BranchesSection />
       <PhysicsAskSection />
@@ -48,6 +50,7 @@ export default async function HomePage({
       <FeaturedTopicSection />
       <DictionarySection />
       <PhilosophySection />
+      <SupportSection />
     </main>
   );
 }

@@ -18,6 +18,10 @@ export function checkQuota(
   if (row.status === "past_due") return { ok: false, reason: "past_due" };
 
   if (row.plan === "free") {
+    // Monthly reset: once cycle_end passes, last month's usage no longer
+    // counts. The row itself is reset lazily (stream route) and by the daily
+    // billing-renew sweep; don't block on the stale counter in between.
+    if (new Date(row.cycle_end).getTime() <= now.getTime()) return { ok: true };
     if (row.free_questions_used >= 3) return { ok: false, reason: "free_quota_exhausted" };
     return { ok: true };
   }

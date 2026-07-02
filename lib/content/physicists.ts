@@ -1573,6 +1573,90 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
     ],
   },
+
+  // ─── Module 5 kinetic-theory (thermo sprint 2026-06-20) ───
+  {
+    slug: "robert-boyle",
+    born: "1627",
+    died: "1691",
+    nationality: "Anglo-Irish",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "jacques-charles",
+    born: "1746",
+    died: "1823",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "amedeo-avogadro",
+    born: "1776",
+    died: "1856",
+    nationality: "Italian",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "joseph-louis-gay-lussac",
+    born: "1778",
+    died: "1850",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-ideal-gas-law" },
+    ],
+  },
+  {
+    slug: "august-kronig",
+    born: "1822",
+    died: "1879",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "pressure-from-molecular-collisions" },
+    ],
+  },
+  {
+    slug: "otto-stern",
+    born: "1888",
+    died: "1969",
+    nationality: "German-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "peter-debye",
+    born: "1884",
+    died: "1966",
+    nationality: "Dutch-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "equipartition-and-degrees-of-freedom" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+    ],
+  },
+  {
+    slug: "robert-brown",
+    born: "1773",
+    died: "1858",
+    nationality: "Scottish",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "jean-baptiste-perrin",
+    born: "1870",
+    died: "1942",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

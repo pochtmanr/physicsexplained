@@ -7,6 +7,7 @@ import {
   type ContactResult,
 } from "@/app/actions/contact";
 import { Button } from "@/components/ui/button";
+import { TurnstileWidget } from "@/components/forms/turnstile-widget";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -25,6 +26,15 @@ export function ContactForm({ className }: { className?: string }) {
 
   return (
     <form action={formAction} className={`flex flex-col gap-4 ${className ?? ""}`}>
+      {/* Honeypot: hidden from real users; bots that fill every field trip it. */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="flex flex-col gap-2">
           <span className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-fg-3)]">
@@ -65,6 +75,7 @@ export function ContactForm({ className }: { className?: string }) {
           className="bg-[var(--color-bg-1)] border border-[var(--color-fg-4)] px-4 py-3 font-mono text-sm text-[var(--color-fg-0)] placeholder:text-[var(--color-fg-3)] focus:border-[var(--color-cyan)] focus:outline-none focus:ring-2 focus:ring-[var(--color-cyan)]/30"
         />
       </label>
+      <TurnstileWidget />
       <div className="flex items-center justify-between gap-4">
         <SubmitButton />
         {state && (

@@ -6,11 +6,16 @@ import { getContentEntriesByKind, type ContentEntry } from "@/lib/content/fetch"
 import type { GlossaryCategory } from "@/lib/content/types";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import { buttonVariants } from "@/components/ui/button";
+import { GLOSSARY } from "@/lib/content/glossary";
+import { SITE } from "@/lib/seo/config";
+import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 
 export const metadata: Metadata = {
-  title: "Dictionary — physics",
+  title: "Dictionary",
   description:
     "Instruments, concepts, and phenomena referenced across the site.",
+  alternates: { canonical: `${SITE.baseUrl}/dictionary` },
 };
 
 type CategoryFilter = GlossaryCategory | "all";
@@ -119,6 +124,15 @@ export default async function DictionaryIndexPage({
 
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
+      <JsonLd
+        data={buildCollectionPageJsonLd({
+          url: SITE.localizedUrl("/dictionary", locale),
+          name: "Dictionary",
+          description:
+            "Instruments, concepts, and phenomena referenced across the site.",
+          numberOfItems: GLOSSARY.length,
+        })}
+      />
       <div>
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}

@@ -1,8 +1,7 @@
 import type { LLMProvider, NeutralMessage } from "./provider";
 import type { AnswerStreamChunk, ClassifierLabel, UsageRow } from "./types";
 import { TOOL_SCHEMAS, type JsonToolDef } from "./tool-schemas";
-import { SYSTEM_PROMPT_BASE, OFF_TOPIC_REFUSAL, INJECTION_RE } from "./prompts";
-import { renderToc, type TocData } from "./toc";
+import { SITE_OVERVIEW, SYSTEM_PROMPT_BASE, OFF_TOPIC_REFUSAL, INJECTION_RE } from "./prompts";
 import { computeCostMicros } from "./cost";
 import { selectInitialTools } from "./router";
 
@@ -32,7 +31,7 @@ const TOOLS_BY_LABEL: Record<Exclude<ClassifierLabel, "off-topic">, readonly str
   "glossary-lookup": [],
   "article-pointer": ["searchSiteContent", "getContentEntry"],
   "conceptual-explain": ["searchScenes", "showScene", "plotFunction", "plotParametric"],
-  "calculation": ["plotFunction", "plotParametric"],
+  "calculation": ["searchScenes", "showScene", "plotFunction", "plotParametric"],
   "viz-request": ["searchScenes", "showScene", "plotFunction", "plotParametric"],
 };
 
@@ -56,7 +55,6 @@ export interface PipelineDeps {
   provider: LLMProvider;
   classifierModel: string;      // e.g., "claude-haiku-4-5" or "gpt-5-mini"
   answererModel: string;        // e.g., "claude-sonnet-4-6" or "gpt-5"
-  toc: TocData;
   toolset: Record<string, (args: unknown) => Promise<unknown>>;
   history: NeutralMessage[];
   systemTail?: string;
@@ -94,7 +92,7 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     return;
   }
 
-  const systemFull = renderToc(deps.toc) + "\n\n" + SYSTEM_PROMPT_BASE;
+  const systemFull = SITE_OVERVIEW + "\n\n" + SYSTEM_PROMPT_BASE;
   const systemDynamic = [deps.systemTail ?? "", `Route: ${label}`].filter(Boolean).join("\n\n");
   const scopedTools = pickTools(label);
 

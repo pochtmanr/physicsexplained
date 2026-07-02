@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "NODE_OPTIONS=--max-http-header-size=65536 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,8 +12,9 @@
     "content:publish": "tsx --conditions=react-server scripts/content/publish.ts",
     "content:publish-problems": "tsx --conditions=react-server scripts/content/publish-problems.ts",
     "content:publish-seeds": "tsx --conditions=react-server scripts/content/publish-seeds.ts",
+    "content:backfill-sameas": "tsx --conditions=react-server scripts/content/backfill-sameas.ts",
     "content:translate": "tsx --conditions=react-server scripts/content/translate.ts",
-    "ask:sync-scenes": "tsx --conditions=react-server scripts/ask/sync-scene-catalog.ts",
+    "ask:sync-scenes": "tsx --conditions=react-server scripts/ask/generate-scene-catalog.ts",
     "seo:codemod": "tsx scripts/seo/apply-codemod.ts",
     "seo:check": "tsx scripts/seo/check-uniqueness.ts",
     "seo:indexnow": "tsx scripts/seo/indexnow.ts"

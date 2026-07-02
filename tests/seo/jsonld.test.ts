@@ -5,6 +5,8 @@ import {
   buildPersonJsonLd,
   buildDefinedTermJsonLd,
   buildWebSiteJsonLd,
+  buildOrganizationJsonLd,
+  buildCollectionPageJsonLd,
 } from "@/lib/seo/jsonld";
 
 describe("buildArticleJsonLd", () => {
@@ -94,5 +96,54 @@ describe("buildWebSiteJsonLd", () => {
     expect(out["@type"]).toBe("WebSite");
     expect(out.url).toBe("https://physics.it.com");
     expect((out.potentialAction as { "@type": string })["@type"]).toBe("SearchAction");
+  });
+});
+
+describe("buildOrganizationJsonLd", () => {
+  it("emits the publisher Organization with name and logo", () => {
+    const out = buildOrganizationJsonLd();
+    expect(out["@context"]).toBe("https://schema.org");
+    expect(out["@type"]).toBe("Organization");
+    expect(out.name).toBe("Physics.explained");
+    expect(out.url).toBe("https://physics.it.com");
+    expect((out.logo as { url: string }).url).toContain("icon-512");
+  });
+});
+
+describe("buildCollectionPageJsonLd", () => {
+  it("emits a CollectionPage with a positioned ItemList", () => {
+    const out = buildCollectionPageJsonLd({
+      url: "https://physics.it.com/classical-mechanics",
+      name: "Classical Mechanics",
+      description: "Motion, forces, energy.",
+      items: [
+        { name: "Kepler", url: "https://physics.it.com/classical-mechanics/kepler" },
+        { name: "The Simple Pendulum", url: "https://physics.it.com/classical-mechanics/the-simple-pendulum" },
+      ],
+    });
+    expect(out["@type"]).toBe("CollectionPage");
+    const list = out.mainEntity as {
+      "@type": string;
+      numberOfItems: number;
+      itemListElement: { position: number; name: string }[];
+    };
+    expect(list["@type"]).toBe("ItemList");
+    expect(list.numberOfItems).toBe(2);
+    expect(list.itemListElement[1]).toMatchObject({
+      position: 2,
+      name: "The Simple Pendulum",
+    });
+  });
+
+  it("supports numberOfItems without an item list for large collections", () => {
+    const out = buildCollectionPageJsonLd({
+      url: "https://physics.it.com/dictionary",
+      name: "Dictionary",
+      description: "Physics terms.",
+      numberOfItems: 479,
+    });
+    const list = out.mainEntity as { numberOfItems: number; itemListElement?: unknown };
+    expect(list.numberOfItems).toBe(479);
+    expect(list.itemListElement).toBeUndefined();
   });
 });

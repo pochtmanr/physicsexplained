@@ -42,7 +42,7 @@ export async function TopicPageSeo({ kind, slug }: Props) {
   });
 
   const breadcrumb: { name: string; url?: string }[] = [
-    { name: "physics", url: SITE.baseUrl },
+    { name: SITE.name, url: SITE.baseUrl },
   ];
 
   let primary: unknown;
@@ -66,7 +66,10 @@ export async function TopicPageSeo({ kind, slug }: Props) {
       headline: entry.title,
       description,
       datePublished: typeof entry.meta.createdAt === "string" ? entry.meta.createdAt : undefined,
-      dateModified: typeof entry.meta.updatedAt === "string" ? entry.meta.updatedAt : undefined,
+      dateModified:
+        typeof entry.meta.updatedAt === "string"
+          ? entry.meta.updatedAt
+          : (entry.updatedAt ?? undefined),
       locale,
       image: ogImage,
       about: about.length > 0 ? about : undefined,

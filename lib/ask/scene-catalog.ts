@@ -1,5 +1,10 @@
-// Curated subset of SIMULATION_REGISTRY scenes exposed to the AI.
-// To add a scene: append an entry here, then run `pnpm ask:sync-scenes`.
+// Curated OVERRIDES for the generated full-arsenal scene catalog.
+// The complete catalog (~500 scenes) is generated from MDX figures by
+// scripts/ask/generate-scene-catalog.ts (`pnpm ask:sync-scenes`), which merges
+// these entries on top — an entry here wins label/description/tags/topicSlugs
+// and, crucially, is the ONLY way a scene accepts model-supplied params
+// (validated by paramsSchema). Scenes not listed here render with the default
+// props from their essay usage.
 // The scene id MUST exist in components/physics/simulation-registry.ts —
 // validated by tests/ask/scene-catalog-contract.test.ts (not here, to keep
 // this file safe to import from CLI scripts without pulling React/Next).

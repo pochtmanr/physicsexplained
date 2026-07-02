@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getServiceClient } from "@/lib/supabase-server";
+import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 import type {
   GlossaryCard,
   PhysicistCard,
@@ -29,6 +30,20 @@ const BodySchema = z
   );
 
 export async function POST(req: Request) {
+  // Unauthenticated endpoint — throttle per IP to blunt scraping/enumeration.
+  const limit = await enforceIpRateLimit({
+    routeKey: "glossary-batch",
+    max: 60,
+    windowMs: 60 * 60 * 1000,
+    ip: getClientIp(req.headers),
+  });
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED" },
+      { status: 429, headers: { "retry-after": String(limit.retryAfterSeconds) } },
+    );
+  }
+
   let body: z.infer<typeof BodySchema>;
   try { body = BodySchema.parse(await req.json()); }
   catch { return NextResponse.json({ error: "BAD_REQUEST" }, { status: 400 }); }

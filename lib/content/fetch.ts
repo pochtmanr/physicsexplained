@@ -15,6 +15,7 @@ export interface ContentEntry {
   asideBlocks: Block[];
   meta: Record<string, unknown>;
   sourceHash: string | null;
+  updatedAt: string | null;
   localeFallback: boolean;
 }
 
@@ -44,6 +45,7 @@ async function fetchOne(
     asideBlocks: (data.aside_blocks ?? []) as Block[],
     meta: (data.meta ?? {}) as Record<string, unknown>,
     sourceHash: data.source_hash,
+    updatedAt: data.updated_at ?? null,
   };
 }
 
@@ -71,7 +73,7 @@ async function fetchMany(
 ): Promise<Omit<ContentEntry, "localeFallback">[]> {
   const columns = includeBlocks
     ? "*"
-    : "kind, slug, locale, title, subtitle, meta, source_hash";
+    : "kind, slug, locale, title, subtitle, meta, source_hash, updated_at";
   const { data, error } = await supabase
     .from("content_entries")
     .select(columns)
@@ -91,6 +93,7 @@ async function fetchMany(
     asideBlocks: (includeBlocks ? (row.aside_blocks ?? []) : []) as Block[],
     meta: (row.meta ?? {}) as Record<string, unknown>,
     sourceHash: (row.source_hash as string | null) ?? null,
+    updatedAt: (row.updated_at as string | null) ?? null,
   }));
 }
 

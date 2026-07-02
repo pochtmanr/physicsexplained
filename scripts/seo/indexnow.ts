@@ -2,7 +2,9 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 config({ path: ".env" });
 
-const SITE_URL = "https://physics.it.com";
+import { SITE } from "@/lib/seo/config";
+
+const SITE_URL = SITE.baseUrl;
 const KEY = process.env.INDEXNOW_KEY;
 if (!KEY) {
   console.error("Missing INDEXNOW_KEY in .env — generate at https://www.bing.com/indexnow + add to env");

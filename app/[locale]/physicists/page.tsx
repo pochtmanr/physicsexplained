@@ -6,11 +6,16 @@ import { getContentEntriesByKind } from "@/lib/content/fetch";
 import type { ContentEntry } from "@/lib/content/fetch";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import { CenturyChips } from "@/components/layout/century-chips";
+import { PHYSICISTS } from "@/lib/content/physicists";
+import { SITE } from "@/lib/seo/config";
+import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 
 export const metadata: Metadata = {
-  title: "Physicists — physics",
+  title: "Physicists",
   description:
     "The people behind the laws — brief profiles of the physicists referenced across the site.",
+  alternates: { canonical: `${SITE.baseUrl}/physicists` },
 };
 
 function getCentury(born: string): number {
@@ -94,6 +99,15 @@ export default async function PhysicistsIndexPage({
 
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
+      <JsonLd
+        data={buildCollectionPageJsonLd({
+          url: SITE.localizedUrl("/physicists", locale),
+          name: "Physicists",
+          description:
+            "The people behind the laws — brief profiles of the physicists referenced across the site.",
+          numberOfItems: PHYSICISTS.length,
+        })}
+      />
       <div>
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           {t("eyebrow")}

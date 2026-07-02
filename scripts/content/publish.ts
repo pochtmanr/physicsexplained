@@ -94,7 +94,7 @@ async function main() {
 
     const { data: existing, error: selectErr } = await client!
       .from("content_entries")
-      .select("source_hash")
+      .select("source_hash, meta")
       .eq("kind", job.kind).eq("slug", job.slug).eq("locale", job.locale)
       .maybeSingle();
     if (selectErr) throw selectErr;
@@ -105,7 +105,14 @@ async function main() {
       continue;
     }
 
-    const meta: Record<string, unknown> = {};
+    // Merge into the existing meta so keys owned by other pipelines
+    // (sameAs backfill, seoTitle/seoDescription, createdAt, …) survive
+    // republish. Only the keys this script owns are rebuilt from source.
+    const meta: Record<string, unknown> = {
+      ...((existing?.meta as Record<string, unknown> | null) ?? {}),
+    };
+    delete meta.eyebrow;
+    delete meta.aside;
     if (parsed.eyebrow) meta.eyebrow = parsed.eyebrow;
     if (parsed.aside)   meta.aside   = parsed.aside;
 

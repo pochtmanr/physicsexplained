@@ -2,14 +2,11 @@
 import { useRef, useState } from "react";
 import { Paperclip, X, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ModelPicker } from "./model-picker";
 
 interface ComposerProps {
   value: string;
   onChange: (v: string) => void;
   onSubmit: () => void;
-  modelId: string;
-  onModelChange: (id: string) => void;
   disabled?: boolean;
 }
 
@@ -29,7 +26,7 @@ function detectKind(f: File): AttachKind | null {
 }
 
 export function Composer({
-  value, onChange, onSubmit, modelId, onModelChange, disabled = false,
+  value, onChange, onSubmit, disabled = false,
 }: ComposerProps) {
   const [attachment, setAttachment] = useState<Attachment | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -137,16 +134,11 @@ export function Composer({
       </div>
 
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-t border-[var(--color-fg-4)]">
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="min-w-0 max-w-[8.5rem] sm:max-w-[14rem] md:max-w-none">
-            <ModelPicker value={modelId} onChange={onModelChange} disabled={disabled} />
-          </div>
-        </div>
+        <span className="hidden md:inline-block font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
+          Enter to send · Shift+Enter newline
+        </span>
 
-        <div className="flex shrink-0 items-center gap-3">
-          <span className="hidden md:inline-block font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-3)]">
-            Enter to send · Shift+Enter newline
-          </span>
+        <div className="ms-auto flex shrink-0 items-center gap-3">
           <Button
             variant="primary"
             size="icon"

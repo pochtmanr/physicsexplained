@@ -7,7 +7,7 @@ describe("SITE config", () => {
   });
 
   it("exposes site name and tagline", () => {
-    expect(SITE.name).toBe("physics");
+    expect(SITE.name).toBe("Physics.explained");
     expect(SITE.tagline).toBeTruthy();
   });
 

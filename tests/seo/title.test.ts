@@ -10,12 +10,12 @@ describe("buildTitle", () => {
     expect(t).toBe("Hand-tuned title");
   });
 
-  it("formats title — branch — physics when under 60 chars", () => {
+  it("formats title — branch — brand when under 60 chars", () => {
     const t = buildTitle(
-      { title: "The Simple Pendulum", meta: {} },
+      { title: "Kepler", meta: {} },
       { title: "Classical Mechanics" },
     );
-    expect(t).toBe("The Simple Pendulum — Classical Mechanics — physics");
+    expect(t).toBe("Kepler — Classical Mechanics — Physics.explained");
     expect(t.length).toBeLessThanOrEqual(MAX_TITLE_LENGTH);
   });
 
@@ -26,7 +26,7 @@ describe("buildTitle", () => {
     );
     expect(t).not.toContain("Classical Mechanics");
     expect(t).toContain("Tides and the Three-Body Problem");
-    expect(t).toContain("physics");
+    expect(t).toContain("Physics.explained");
   });
 
   it("uses bare title when even title — physics exceeds 60 chars", () => {
@@ -39,7 +39,7 @@ describe("buildTitle", () => {
 
   it("renders branch as null gracefully (glossary, physicists, etc.)", () => {
     const t = buildTitle({ title: "Angular Momentum", meta: {} }, null);
-    expect(t).toBe("Angular Momentum — physics");
+    expect(t).toBe("Angular Momentum — Physics.explained");
   });
 
   it("normalizes ALL CAPS source titles to title-case-ish", () => {

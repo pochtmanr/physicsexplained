@@ -22,7 +22,7 @@ export function TopicNav() {
 
   const linkClass = buttonVariants({
     variant: "ghost",
-    size: "sm",
+    size: "cta-row",
     className: "nav-link",
   });
 

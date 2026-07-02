@@ -25,10 +25,13 @@ export interface RawBilling {
   canceled_at: string | null;
 }
 
-export function composeSnapshot(raw: RawBilling): BillingSnapshot {
+export function composeSnapshot(raw: RawBilling, now: Date = new Date()): BillingSnapshot {
   const plan = PLANS[raw.plan];
   if (raw.plan === "free") {
-    const used = raw.free_questions_used;
+    // Lapsed cycle → the counter is stale (reset happens lazily / via cron).
+    // Show the renewed allowance instead of last month's usage.
+    const lapsed = new Date(raw.cycle_end).getTime() <= now.getTime();
+    const used = lapsed ? 0 : raw.free_questions_used;
     const total = plan.freeQuestions;
     return {
       plan, status: raw.status,

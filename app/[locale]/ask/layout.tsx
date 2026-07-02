@@ -10,6 +10,12 @@ import { AccountDrawerProvider } from "@/components/account/account-drawer-conte
 import { AccountDrawer } from "@/components/account/account-drawer";
 import { OpenDrawerFromQuery } from "@/components/account/open-drawer-from-query";
 import { loadBillingSnapshot } from "@/app/actions/account";
+import type { Metadata } from "next";
+
+// Auth-gated chat — keep crawlers out even though robots.txt allows /ask.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function AskLayout({
   children, params,

@@ -8,6 +8,10 @@ import { ModuleChips } from "@/components/layout/module-chips";
 import { TopicCard } from "@/components/layout/topic-card";
 import { EmailSignup } from "@/components/forms/email-signup";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { SITE } from "@/lib/seo/config";
+import { toTitleCase } from "@/lib/seo/title";
+import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -45,6 +49,18 @@ export default async function BranchPage({
     );
   }
 
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    url: SITE.localizedUrl(`/${branch.slug}`, locale),
+    name: toTitleCase(branch.title),
+    description: branch.description,
+    items: branch.topics
+      .filter((t) => t.status === "live")
+      .map((t) => ({
+        name: toTitleCase(t.title),
+        url: SITE.buildUrl(`/${branch.slug}/${t.slug}`),
+      })),
+  });
+
   const tMeta = await getTranslations("home.topics.meta");
   const tTopics = await getTranslations("home.topics");
   const moduleItems = tTopics.raw("modules") as Record<string, string>;
@@ -63,6 +79,7 @@ export default async function BranchPage({
   if (populatedModules.length === 0) {
     return (
       <main className={`${WIDE_CONTAINER} py-20`}>
+        <JsonLd data={collectionJsonLd} />
         <BranchHero branch={branch} />
         <div className="mt-16 grid grid-cols-1 gap-0 md:grid-cols-2 [&>*]:-mt-px [&>*]:-ms-px">
           {branch.topics.map((t, i) => (
@@ -87,6 +104,7 @@ export default async function BranchPage({
 
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
+      <JsonLd data={collectionJsonLd} />
       <BranchHero branch={branch} />
       <ModuleChips modules={chipModules} />
       {populatedModules.map(({ mod, topics: moduleTops }) => {

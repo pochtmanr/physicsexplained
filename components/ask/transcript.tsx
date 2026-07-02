@@ -20,7 +20,7 @@ export async function Transcript({
         const role = m.role as "user" | "assistant";
         const tools = extractTools(m.meta);
         return (
-          <div key={m.id} className={role === "assistant" ? "mr-auto max-w-2xl" : undefined}>
+          <div key={m.id} className={role === "assistant" ? "mr-auto w-full" : undefined}>
             {tools.length > 0 && <ProgressTree steps={tools} />}
             <MessageBubble role={role} text={text} locale={locale} />
           </div>
