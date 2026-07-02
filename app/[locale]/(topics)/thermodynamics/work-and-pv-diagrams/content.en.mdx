@@ -1,0 +1,112 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { PvDiagramScene } from "@/components/physics/work-and-pv-diagrams/pv-diagram-scene";
+import { CycleWorkScene } from "@/components/physics/work-and-pv-diagrams/cycle-work-scene";
+import { ReversibleVsIrreversibleScene } from "@/components/physics/work-and-pv-diagrams/reversible-vs-irreversible-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Benoît Clapeyron", href: "/physicists/benoit-clapeyron" },
+  { type: "physicist", label: "Sadi Carnot", href: "/physicists/sadi-carnot" },
+  { type: "term", label: "PV diagram", href: "/dictionary/pv-diagram" },
+  { type: "term", label: "Thermodynamic work", href: "/dictionary/work-thermodynamic" },
+  { type: "term", label: "Reversible process", href: "/dictionary/reversible-process" },
+  { type: "term", label: "Quasi-static process", href: "/dictionary/quasi-static-process" },
+  { type: "term", label: "Isothermal process", href: "/dictionary/isothermal-process" },
+  { type: "term", label: "Adiabatic process", href: "/dictionary/adiabatic-process" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.06 · THE FIRST LAW"
+  title="WORK, PV DIAGRAMS, AND REVERSIBILITY"
+  subtitle="When Clapeyron drew Carnot's prose, engineers could read thermodynamics."
+/>
+
+<Section index={1} title="Carnot in prose, Clapeyron in pictures">
+
+In 1824 a young French engineer named <PhysicistLink slug="sadi-carnot" /> published *Réflexions sur la puissance motrice du feu* — Reflections on the Motive Power of Fire — the founding work of thermodynamics. It was almost entirely prose. Carnot reasoned about heat and engines in words and analogies, with scarcely a formula, and the book sank without trace.
+
+Ten years later <PhysicistLink slug="benoit-clapeyron" /> picked it up and did one decisive thing: he drew it. He put pressure on the vertical axis and volume on the horizontal, and suddenly every state of a gas was a *point* on a plane, every process a *curve*, and every engine cycle a *closed loop*. The abstract became visible. Engineers who would never follow Carnot's verbal reasoning could now read a heat engine off a chart. That chart is the <Term slug="pv-diagram" />, and it is still how physicists think about gases two centuries later.
+
+<SceneCard caption="FIG.06a — the pressure–volume plane. A gas starts at the amber point. Pick a process and drag the end point to set the final volume: the path draws itself, and the shaded region beneath it is the work W = ∫P dV. Expand and the area is positive (the gas does work, shaded cyan); compress and it flips negative (work is done on the gas, shaded red). The isochore is the exception — a vertical line encloses no area, so a constant-volume process does no work at all.">
+  <PvDiagramScene />
+</SceneCard>
+
+</Section>
+
+<Section index={2} title="Work is the area under the curve">
+
+When a gas pushes a piston outward by a small volume $dV$, it does work against the pressure holding the piston in: a force $P\,A$ over a distance $dx$, and since $A\,dx = dV$, the work is $P\,dV$. Add up the increments along the whole expansion and you get the <Term slug="work-thermodynamic" />:
+
+<EquationBlock id="EQ.01">$$W = \int_{V_1}^{V_2} P\,dV$$</EquationBlock>
+
+In words: the work done *by* a gas is the integral of its pressure over the change in its volume — geometrically, the area between the process curve and the volume axis. For the special case of constant pressure this collapses to the rectangle $W = P\,\Delta V$. The sign follows the physics convention from [the first law](/thermodynamics/internal-energy-and-the-first-law): expansion ($\Delta V > 0$) is positive work out, compression is negative.
+
+This is why the PV diagram is not just a bookkeeping device but a calculating one. You do not need calculus to read off the work — you measure an area.
+
+</Section>
+
+<Section index={3} title="The four canonical processes">
+
+Four idealised paths recur so often that they have names, and each is a distinctive shape on the plane.
+
+An **isobaric** process holds pressure constant: a horizontal line, work $P\,\Delta V$. An **isochoric** process holds volume constant: a vertical line, zero work — the gas cannot push what does not move. An **isothermal** process holds temperature constant, so by the ideal gas law $PV = nRT$ is fixed and the path is a hyperbola $P = nRT/V$. An **adiabatic** process exchanges no heat at all; its curve $PV^{\gamma} = \text{const}$ is a *steeper* hyperbola than the isotherm, because an expanding gas with no heat coming in must cool, losing pressure faster.
+
+<Callout variant="math">
+The two hyperbolae are easy to tell apart. The isotherm obeys $PV = \text{const}$ (exponent 1); the adiabat obeys $PV^{\gamma} = \text{const}$ with $\gamma > 1$ (5/3 for a monatomic gas, 7/5 for a diatomic one). Same starting point, but the adiabat always falls away more sharply — heat starvation makes the pressure drop faster than temperature-pinned expansion would. The full story of $\gamma$ and these two processes is [isothermal and adiabatic processes](/thermodynamics/isothermal-and-adiabatic-processes).
+</Callout>
+
+</Section>
+
+<Section index={4} title="Reversibility — the physicist's fiction">
+
+Every curve drawn so far assumes something subtle: that the gas has a single, well-defined pressure at each instant. Squeeze a gas suddenly and it does not — it bunches up near the piston, swirls, and has no one pressure to plot. A path on the PV plane only exists if the process is **quasi-static**: carried out so slowly that the gas is in equilibrium at every step.
+
+A <Term slug="quasi-static-process" /> that is also frictionless can be run backwards through the very same states — that is a <Term slug="reversible-process" />. No real process is reversible; it is a limiting ideal, like a frictionless plane. But it is an indispensable one, because the maximum work a process can deliver, and the entire Second Law, are stated in terms of reversible paths.
+
+<SceneCard caption="FIG.06c — two routes from the same start to the same finish. On the left the gas expands quasi-statically, staying in step with a slowly lowered pressure; it traces the full isotherm and does the maximum work W_rev = nRT·ln(V₂/V₁). On the right the restraint is pulled away and the gas expands suddenly against the low final pressure, doing only W_irr = P₂·ΔV. Same ΔV, same endpoints — but the slow path extracts more work, and only it can be reversed step for step. Press release to compare.">
+  <ReversibleVsIrreversibleScene />
+</SceneCard>
+
+The work gap between the slow and sudden expansions is not a rounding error. It is energy that became disordered and can never be fully recovered — the first hint of why the [the second law](/thermodynamics/heat-engines-and-carnot) forbids perfect engines.
+
+</Section>
+
+<Section index={5} title="Work and heat depend on the path; energy does not">
+
+Here is the deepest lesson the diagram teaches. Take a gas from state A to state B by two different routes — say, expand first then drop the pressure, versus drop the pressure first then expand. The two paths enclose different areas, so they do *different amounts of work*. By the first law $\Delta U = Q - W$, and since the internal energy $U$ is a state function that depends only on the endpoints, $\Delta U$ is the same for both routes. Therefore the heat $Q$ must also differ between them, by exactly as much as the work does.
+
+<EquationBlock id="EQ.02">$$\Delta U = U_B - U_A \quad\text{(same for every path)}, \qquad W, Q \quad\text{(path-dependent)}$$</EquationBlock>
+
+In words: where you end up fixes the change in internal energy, but *how you travel* fixes how much of that change was paid in work and how much in heat. This is why you cannot speak of the "work in" or "heat in" a gas — only of work and heat that crossed its boundary along a particular path.
+
+</Section>
+
+<Section index={6} title="Cycles and net work">
+
+Close the path into a loop — return the gas to exactly the state it started in — and something clean happens. Over one full cycle the internal energy comes back to its initial value, so $\Delta U = 0$, and the first law reduces to
+
+<EquationBlock id="EQ.03">$$\oint dU = 0 \quad\Longrightarrow\quad Q_{\text{net}} = W_{\text{net}} = \text{area enclosed by the loop}$$</EquationBlock>
+
+In words: over a cycle, the net heat absorbed equals the net work done, and both equal the area inside the loop on the PV diagram. The direction matters. A **clockwise** loop encloses positive work — it takes in heat and delivers net work, a heat engine. Run the same loop **counter-clockwise** and the work flips sign: now net work goes *in* and heat is pumped from cold to hot — a refrigerator.
+
+<SceneCard caption="FIG.06b — a four-corner cycle (two isobaric legs, two isochoric legs). Press run and the marker walks the loop; over one lap the gas returns to its exact starting state, so ΔU = 0 and the net work is just the enclosed area, ∮P dV, printed at the centre. Clockwise the area counts positive — a heat engine delivering work. Hit reverse and the identical loop runs counter-clockwise: the area turns negative and the device becomes a refrigerator, consuming work to move heat.">
+  <CycleWorkScene />
+</SceneCard>
+
+Every real engine — steam, petrol, diesel, the Stirling cycle, the refrigerator in your kitchen — is some loop on a PV diagram, and its useful output is an area. Clapeyron's picture turned the design of engines into the geometry of curves.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We can now read work straight off a chart, distinguish the four canonical processes by their shapes, and see why a cycle's output is the area it encloses. Two of those processes deserve a closer look, because they sit at opposite extremes of how a gas trades heat for work: the isothermal path, pinned to a temperature by a slow exchange with its surroundings, and the adiabatic path, sealed off from heat entirely.
+
+That is the subject of [isothermal and adiabatic processes](/thermodynamics/isothermal-and-adiabatic-processes) — why a bicycle pump scalds when you work it fast and barely warms when you work it slow, and where the steep adiabatic curve comes from. From there, the loops on this plane become real engines, and the question that consumed Carnot returns: of all the cycles you could draw, which one does the most work?
+
+</Section>
+
+</TopicPageLayout>

@@ -1694,6 +1694,32 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   PerrinCountingScene: lazyScene(() =>
     import("@/components/physics/brownian-motion/perrin-counting-scene").then((m) => ({ default: m.PerrinCountingScene })),
   ),
+
+  // ─── Module 2 first-law (thermo sprint 2026-06-20) ───
+  PvDiagramScene: lazyScene(() =>
+    import("@/components/physics/work-and-pv-diagrams/pv-diagram-scene").then((m) => ({ default: m.PvDiagramScene })),
+  ),
+  CycleWorkScene: lazyScene(() =>
+    import("@/components/physics/work-and-pv-diagrams/cycle-work-scene").then((m) => ({ default: m.CycleWorkScene })),
+  ),
+  ReversibleVsIrreversibleScene: lazyScene(() =>
+    import("@/components/physics/work-and-pv-diagrams/reversible-vs-irreversible-scene").then((m) => ({ default: m.ReversibleVsIrreversibleScene })),
+  ),
+  FirstLawAccountingScene: lazyScene(() =>
+    import("@/components/physics/internal-energy-and-the-first-law/first-law-accounting-scene").then((m) => ({ default: m.FirstLawAccountingScene })),
+  ),
+  ThreeDiscoveriesTimelineScene: lazyScene(() =>
+    import("@/components/physics/internal-energy-and-the-first-law/three-discoveries-timeline-scene").then((m) => ({ default: m.ThreeDiscoveriesTimelineScene })),
+  ),
+  IsothermalVsAdiabaticScene: lazyScene(() =>
+    import("@/components/physics/isothermal-and-adiabatic-processes/isothermal-vs-adiabatic-scene").then((m) => ({ default: m.IsothermalVsAdiabaticScene })),
+  ),
+  BicyclePumpScene: lazyScene(() =>
+    import("@/components/physics/isothermal-and-adiabatic-processes/bicycle-pump-scene").then((m) => ({ default: m.BicyclePumpScene })),
+  ),
+  CloudFormationScene: lazyScene(() =>
+    import("@/components/physics/isothermal-and-adiabatic-processes/cloud-formation-scene").then((m) => ({ default: m.CloudFormationScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;

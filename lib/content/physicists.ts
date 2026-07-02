@@ -1657,6 +1657,27 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
     ],
   },
+  // ─── Module 2 first-law (thermo sprint 2026-06-20) ───
+  {
+    slug: "julius-von-mayer",
+    born: "1814",
+    died: "1878",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "internal-energy-and-the-first-law" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-and-the-caloric-theory" },
+    ],
+  },
+  {
+    slug: "sadi-carnot",
+    born: "1796",
+    died: "1832",
+    nationality: "French",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "work-and-pv-diagrams" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-engines-and-carnot" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {
