@@ -1,0 +1,118 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TsDiagramReduxScene } from "@/components/physics/entropy-and-the-clausius-inequality/ts-diagram-redux-scene";
+import { EntropyMixingScene } from "@/components/physics/entropy-and-the-clausius-inequality/entropy-mixing-scene";
+import { ReversibleVsIrreversibleDsScene } from "@/components/physics/entropy-and-the-clausius-inequality/reversible-vs-irreversible-ds-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Rudolf Clausius", href: "/physicists/rudolf-clausius" },
+  { type: "physicist", label: "Ludwig Boltzmann", href: "/physicists/ludwig-boltzmann" },
+  { type: "physicist", label: "Lord Kelvin", href: "/physicists/lord-kelvin" },
+  { type: "term", label: "Entropy", href: "/dictionary/entropy" },
+  { type: "term", label: "Clausius inequality", href: "/dictionary/clausius-inequality" },
+  { type: "term", label: "Isentropic process", href: "/dictionary/isentropic-process" },
+  { type: "term", label: "Entropy of mixing", href: "/dictionary/entropy-of-mixing" },
+  { type: "term", label: "Heat death", href: "/dictionary/heat-death" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.10 · THE SECOND LAW"
+  title="ENTROPY AS HEAT OVER TEMPERATURE"
+  subtitle="The quantity that holds steady on reversible trips and grows on every other one."
+/>
+
+<Section index={1} title="The quantity that comes back">
+
+In 1854, eleven years before he would give it a name, <PhysicistLink slug="rudolf-clausius" /> noticed something quietly decisive. Take any *reversible* cycle and add up the heat exchanged at each step, each parcel divided by the temperature at which it crossed the boundary. The total always comes out to exactly zero:
+
+<EquationBlock id="EQ.01">$$\oint \frac{dQ_{\text{rev}}}{T} = 0$$</EquationBlock>
+
+— go all the way around a reversible loop and the heat-over-temperature ledger returns precisely to where it started. That is the signature of a *state function*. A quantity whose change around every closed path is zero cannot depend on the path; it depends only on the state. Just as a conservative force has a potential energy, this reversible heat-over-temperature has an underlying function of state. Clausius would call it <Term slug="entropy" />, $S$, and drop it into physics with the confidence of a man who knows he has found a pivot of the universe.
+
+</Section>
+
+<Section index={2} title="The definition">
+
+The differential definition follows immediately. Along any reversible path, the change in entropy is the heat added divided by the temperature at which it is added:
+
+<EquationBlock id="EQ.02">$$dS = \frac{dQ_{\text{rev}}}{T}$$</EquationBlock>
+
+— a small slug of reversible heat at temperature $T$ raises the entropy by that heat divided by $T$. Because $S$ is a state function, the entropy *difference* between two states is found by integrating $dQ_{\text{rev}}/T$ along *any* reversible path that connects them — even one the system never actually took. This is the trick that makes entropy computable: to find $\Delta S$ for a messy irreversible process, invent a tidy reversible route between the same endpoints and integrate along that instead. The answer is guaranteed to be the same, because the endpoints are the same.
+
+Entropy joins internal energy $U$ as a property an equilibrium state simply *has*, like its pressure or volume — not something that depends on its history.
+
+</Section>
+
+<Section index={3} title="Entropy of an ideal gas, and isentropic adiabats">
+
+For an ideal gas the integrals are clean. Expand it isothermally and reversibly from $V_1$ to $V_2$ and the entropy rises by $\Delta S = nR\ln(V_2/V_1)$ — bigger volume, more entropy. Heat it at constant volume and $\Delta S = nC_v\ln(T_2/T_1)$; at constant pressure, the same with $C_p$.
+
+The most revealing case is the reversible *adiabat*. No heat crosses the boundary, so $dQ_{\text{rev}} = 0$ and therefore $dS = 0$: the entropy does not change at all. A reversible adiabatic process is an <Term slug="isentropic-process" />, and adiabats are also called isentropes. This is exactly why the Carnot cycle was a rectangle in the temperature–entropy plane — its two adiabatic legs are vertical lines of constant entropy.
+
+<SceneCard caption="FIG.10c — cycles as shapes in the T–S plane. With entropy as an axis, every reversible cycle becomes a closed loop whose enclosed area, ∮ T dS, is the net work. Carnot is the clean rectangle (flat isotherms, vertical adiabats); the Otto cycle closes top and bottom with constant-volume curves; the Diesel cycle adds heat along a gentler constant-pressure curve. Switch between the three and read the enclosed area.">
+  <TsDiagramReduxScene />
+</SceneCard>
+
+</Section>
+
+<Section index={4} title="The entropy of mixing">
+
+Here is where entropy stops being mere heat-bookkeeping and starts to look like something deeper. Put a red gas on one side of a partition and a blue gas on the other, at the same temperature and pressure. Pull the partition out. The gases interdiffuse until each fills the whole box. No heat was added. No work was done. The temperature never changed. And yet the entropy rose.
+
+<SceneCard caption="FIG.10a — the entropy of mixing. Red and blue gases sit either side of a partition; remove it and they interdiffuse. The live curve tracks ΔS climbing to its saturation value (n_A + n_B)·R·ln 2 for equal amounts, then flattening — even though not one joule of heat was added. Entropy here is plainly about available configurations, not about heat at all.">
+  <EntropyMixingScene />
+</SceneCard>
+
+For two ideal gases the increase is
+
+<EquationBlock id="EQ.03">$$\Delta S_{\text{mix}} = -R\,(n_A \ln x_A + n_B \ln x_B)$$</EquationBlock>
+
+— with $x_A, x_B$ the mole fractions, this is always positive, and for equal amounts it reduces to $(n_A + n_B)R\ln 2$. Notice what the formula contains: only how the molecules can be *arranged*, never any heat or temperature. The entropy of mixing is the first clear hint that entropy is really counting configurations — the number of microscopic ways a macroscopic state can be realised — a picture that <PhysicistLink slug="ludwig-boltzmann" /> will make exact in [Boltzmann's formula](/thermodynamics/boltzmanns-entropy-formula).
+
+<Callout variant="intuition">
+Heat-over-temperature and counting-arrangements sound like two different quantities. They are the same quantity. The genius of the next chapter of thermodynamics is showing that $\oint dQ/T$ and "how many ways can this happen" measure one and the same thing.
+</Callout>
+
+</Section>
+
+<Section index={5} title="The entropy of the universe">
+
+Now the payoff. Tally the entropy change of a system *and* of its surroundings over any process at all. The Second Law, in its sharpest and most general form, says the total can never decrease:
+
+<EquationBlock id="EQ.04">$$\Delta S_{\text{system}} + \Delta S_{\text{surroundings}} \ge 0$$</EquationBlock>
+
+— the entropy of the universe holds steady for a reversible process and strictly increases for every real, irreversible one. Equality is the unreachable ideal; inequality is the world we live in. This single line contains the Clausius statement, the Kelvin–Planck statement, and the impossibility of perpetual motion of the second kind, all at once.
+
+<SceneCard caption="FIG.10b — the same heat, two ways. Move heat Q from hot to cold by direct conduction and the universe's entropy jumps by Q(1/T_c − 1/T_h) > 0. Route the identical Q through a reversible Carnot engine and ΔS_universe = 0 — and the difference reappears as recoverable work. Drag the temperatures: the entropy the direct path generates is exactly the work it squanders.">
+  <ReversibleVsIrreversibleDsScene />
+</SceneCard>
+
+</Section>
+
+<Section index={6} title="Two worked examples — and a cosmic one">
+
+**Heat flowing downhill.** Let heat $Q$ pass directly from a hot reservoir at $T_h$ to a cold one at $T_c$. The hot side loses $Q/T_h$ of entropy; the cold side gains $Q/T_c$. Since $T_c < T_h$, the gain beats the loss:
+
+<EquationBlock id="EQ.05">$$\Delta S_{\text{universe}} = Q\!\left(\frac{1}{T_c} - \frac{1}{T_h}\right) > 0$$</EquationBlock>
+
+— the same joule of heat buys more entropy at the colder temperature, so the universe comes out ahead. This is the arrow of time written in one inequality: heat flows hot-to-cold because that is the direction in which entropy grows.
+
+**Free expansion.** Let a gas rush into an evacuated chamber, doubling its volume with no piston to push and no heat to absorb. The first law says $\Delta U = 0$; nothing obvious happened. Yet by integrating along a reversible isothermal path between the same endpoints, $\Delta S = nR\ln(V_2/V_1) > 0$. The entropy rose even though, energetically, nothing did.
+
+**Heat death.** Clausius drew the cosmic conclusion himself, in the same 1865 lecture that named entropy. If the entropy of the universe always climbs, it must eventually reach a maximum — a final state of uniform temperature, with no gradients left to drive any engine, any current, any life. He called it the *Wärmetod*, the <Term slug="heat-death" /> of the universe. It is the Second Law extrapolated to the end of time, and it returns, with all its modern caveats, in the [arrow of time](/thermodynamics/the-arrow-of-time).
+
+</Section>
+
+<Section index={7} title="What's next">
+
+We have entropy as a state function, $dS = dQ_{\text{rev}}/T$; we can compute it for gases, mixtures, and heat flows; and we have watched $\Delta S_{\text{universe}} \ge 0$ absorb every earlier form of the Second Law. But one question hangs over all of it. The entropy of mixing depended on nothing but *arrangements* — so what *is* entropy, underneath the thermodynamics?
+
+The answer waited for <PhysicistLink slug="ludwig-boltzmann" />, who counted the microscopic states behind each macroscopic one and tied entropy to sheer probability — the content of [microstates and macrostates](/thermodynamics/microstates-and-macrostates) and the formula $S = k\log W$ carved on his tombstone. From [heat engines](/thermodynamics/heat-engines-and-carnot) to [the Second Law](/thermodynamics/the-second-law) to entropy, classical thermodynamics has brought us to the edge of the statistical world. That is where it gets explained.
+
+</Section>
+
+</TopicPageLayout>

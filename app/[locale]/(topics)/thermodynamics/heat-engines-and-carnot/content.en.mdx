@@ -1,0 +1,119 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { CarnotCycleScene } from "@/components/physics/heat-engines-and-carnot/carnot-cycle-scene";
+import { TsDiagramScene } from "@/components/physics/heat-engines-and-carnot/ts-diagram-scene";
+import { EngineEfficiencyBarsScene } from "@/components/physics/heat-engines-and-carnot/engine-efficiency-bars-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Sadi Carnot", href: "/physicists/sadi-carnot" },
+  { type: "physicist", label: "Lazare Carnot", href: "/physicists/lazare-carnot" },
+  { type: "physicist", label: "Lord Kelvin", href: "/physicists/lord-kelvin" },
+  { type: "term", label: "Heat engine", href: "/dictionary/heat-engine" },
+  { type: "term", label: "Carnot cycle", href: "/dictionary/carnot-cycle" },
+  { type: "term", label: "Carnot efficiency", href: "/dictionary/carnot-efficiency" },
+  { type: "term", label: "Efficiency", href: "/dictionary/efficiency" },
+  { type: "term", label: "Working substance", href: "/dictionary/working-substance" },
+  { type: "term", label: "Heat reservoir", href: "/dictionary/heat-reservoir" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.08 · THE SECOND LAW"
+  title="HEAT ENGINES AND SADI CARNOT"
+  subtitle="The deepest book in thermodynamics, written by a man who died thinking he'd failed."
+/>
+
+<Section index={1} title="A book nobody read">
+
+In 1824 a twenty-eight-year-old French military engineer published a slim volume titled *Réflexions sur la puissance motrice du feu* — "Reflections on the Motive Power of Fire." It sold poorly. Almost no one read it. Its author, <PhysicistLink slug="sadi-carnot" />, was the son of <PhysicistLink slug="lazare-carnot" />, the mathematician and revolutionary known as the "Organiser of Victory" for the armies of the French Republic. Eight years after the book appeared, Sadi caught cholera and died at thirty-six. His papers were burned to stop the contagion. He went to his grave believing he had failed.
+
+He had written the most important book in the history of thermodynamics. A decade later <PhysicistLink slug="benoit-clapeyron" /> rescued its argument into the language of calculus and pressure–volume diagrams; twenty years after that, <PhysicistLink slug="rudolf-clausius" /> and <PhysicistLink slug="lord-kelvin" /> built the entire Second Law on its foundation. Carnot had asked a question no one had thought to ask — and answered it almost completely — working before the first law of thermodynamics was even known, still half-believing in the caloric fluid his result would help to kill.
+
+His question was practical, born of the steam age: given a fire, how much work can you possibly get out of it? Not how much does *this* engine give, but how much could the *best conceivable* engine give? Is there a ceiling, and if so, what sets it?
+
+</Section>
+
+<Section index={2} title="What a heat engine is">
+
+Strip away the boilers and pistons and a <Term slug="heat-engine" /> is a strikingly simple thing. It is any cyclic device that takes in heat $Q_h$ from a hot <Term slug="heat-reservoir" />, converts part of it into useful work $W$, and dumps the remainder $Q_c$ into a cold reservoir. The matter that actually expands and contracts to do the pushing — steam, air, a gas — is the engine's <Term slug="working-substance" />, and Carnot's deepest insight was that, at the limit, it does not matter what you choose.
+
+Because the engine returns to its starting state every cycle, its internal energy is unchanged over a full loop. The first law then reduces to a bookkeeping identity: every joule of heat that comes in must leave either as work or as rejected heat.
+
+<EquationBlock id="EQ.01">$$W = Q_h - Q_c$$</EquationBlock>
+
+In words: the work you get is the heat you paid for minus the heat you threw away. The cold reservoir is not a flaw to be engineered out — it is the price of admission. An engine with no cold side, that turned all of $Q_h$ into work, would be a different and forbidden kind of machine, and disposing of that possibility is the business of the [next topic](/thermodynamics/the-second-law).
+
+</Section>
+
+<Section index={3} title="Efficiency, and Carnot's question">
+
+The figure of merit is <Term slug="efficiency" />: the fraction of the heat you paid for that comes back as work.
+
+<EquationBlock id="EQ.02">$$\eta = \frac{W}{Q_h} = 1 - \frac{Q_c}{Q_h}$$</EquationBlock>
+
+This says efficiency is one minus the fraction of heat you waste; a perfect engine ($Q_c = 0$) would have $\eta = 1$, and a useless one that turns all its heat to waste would have $\eta = 0$. Real engines sit well below the top: an early steam engine managed a few percent, a good modern one perhaps forty.
+
+Carnot's genius was to refuse the engineer's habit of tinkering with valves and to ask the physicist's question instead. Forget any particular machine. Is there a maximum efficiency that *no* engine, however cleverly built, can exceed — a ceiling fixed by physics alone? The answer is yes, and it depends on nothing but the two temperatures between which the engine runs.
+
+</Section>
+
+<Section index={4} title="The Carnot cycle">
+
+To find the ceiling, Carnot imagined the most wasteless engine possible: one in which every step is *reversible*, run so gently that it could be driven backward through the same states with no loss. His idealised cycle has four legs, two at constant temperature and two with no heat exchange at all.
+
+<SceneCard caption="FIG.08a — the Carnot cycle in the pressure–volume plane. Starting at corner 1, the gas expands along the hot isotherm at T_h, drinking in Q_h; expands adiabatically until it cools to T_c; is compressed along the cold isotherm, expelling Q_c; and is compressed adiabatically back to the start. Press 'run cycle' to walk the gas around the loop, and drag the two temperatures — the measured efficiency W/Q_h tracks the bound 1 − T_c/T_h to the last digit.">
+  <CarnotCycleScene />
+</SceneCard>
+
+The four legs are: **isothermal expansion** at $T_h$, during which the gas absorbs $Q_h$ from the hot reservoir while pushing the piston out; **adiabatic expansion**, during which it keeps pushing but, sealed from any reservoir, cools until it reaches $T_c$; **isothermal compression** at $T_c$, during which it is squeezed back down and sheds $Q_c$ into the cold reservoir; and **adiabatic compression**, which warms it back to $T_h$ and closes the loop. Only the two isothermal legs exchange heat, and for an ideal gas the heat absorbed on the hot leg is
+
+<EquationBlock id="EQ.03">$$Q_h = n R \, T_h \ln\!\frac{V_2}{V_1}$$</EquationBlock>
+
+— the heat in is proportional to the temperature of the hot reservoir and to the logarithm of how far the gas expands. The rejected heat $Q_c$ has the identical form with $T_c$ in place of $T_h$, and because the two adiabatic legs force the expansion ratios to match, the two logarithms are equal and cancel cleanly when you take the ratio.
+
+</Section>
+
+<Section index={5} title="η = 1 − T_c/T_h">
+
+That cancellation is the whole result. Dividing $Q_c$ by $Q_h$, the logarithms vanish and only the temperatures survive, giving the maximum efficiency any engine running between $T_h$ and $T_c$ can have:
+
+<EquationBlock id="EQ.04">$$\eta_{\text{Carnot}} = 1 - \frac{T_c}{T_h}$$</EquationBlock>
+
+Read it slowly: the best possible efficiency depends *only* on the two absolute temperatures — not on the gas, not on the design, not on the pressure. A <Term slug="carnot-efficiency" /> of 60% between 600 K and 240 K is the same whether your working substance is steam, helium, or air. This independence is so surprising that it is easiest to believe by drawing the cycle in a different plane.
+
+<SceneCard caption="FIG.08c — the same cycle plotted as temperature against entropy. Here it stops being a lens and becomes a clean rectangle: the isotherms are flat lines at T_h and T_c, the reversible adiabats are vertical (constant entropy), and the enclosed area ΔS·(T_h − T_c) is exactly the net work. Drag the temperatures and the entropy span; the area, the heat in T_h·ΔS, and the efficiency all move together. This is the picture that makes entropy feel like an axis.">
+  <TsDiagramScene />
+</SceneCard>
+
+<Callout variant="intuition">
+The cold reservoir is not waste you can design away — it is built into the ceiling. To reach $\eta = 1$ you would need $T_c = 0$, a cold reservoir at absolute zero. There isn't one. Every real engine pays the temperature ratio as a tax, and the only way to pay less is to run hotter or dump colder.
+</Callout>
+
+</Section>
+
+<Section index={6} title="Carnot's theorem, proven by contradiction">
+
+Why can no engine beat this? Carnot's theorem says none can, and the proof is a *reductio ad absurdum* that needs only one assumption: that heat does not flow uphill on its own.
+
+Suppose someone hands you a "super-Carnot" engine, more efficient than the reversible one between the same two reservoirs. Run your reversible Carnot engine *backward* as a refrigerator, using the super-engine's work to drive it. The super-engine produces more work per unit of $Q_h$, so it needs to draw less heat from the hot reservoir than the refrigerator returns to it. Wire them together and the pair, taking in no net work, would carry heat from the cold reservoir to the hot one all by itself — a flow uphill with nothing else changing. That is impossible. The only assumption that fails is the one we made: no engine can be more efficient than the reversible Carnot engine.
+
+<SceneCard caption="FIG.08b — real engines against their Carnot ceilings. Each faint dashed bar marks the limit 1 − T_c/T_h; each solid bar is the measured efficiency. The coal plant reaches about two-thirds of its limit, the car engine far less. Muscle is the deliberate exception — it overshoots the tiny limit that body-versus-air temperatures would set, because it is not a heat engine at all but a direct chemical converter. Hover any pair for the story.">
+  <EngineEfficiencyBarsScene />
+</SceneCard>
+
+The theorem has teeth. It means the efficiency of every power plant on Earth is capped not by the cleverness of its engineers but by the temperature of its flame and the temperature of its river. It also hands physics a thermometer: because $\eta_{\text{Carnot}}$ depends only on the temperatures, the ratio of rejected to absorbed heat *defines* an absolute temperature scale — the one <PhysicistLink slug="lord-kelvin" /> would name after himself, independent of any working fluid.
+
+</Section>
+
+<Section index={7} title="What's next">
+
+Carnot's result is prophetic, but notice what it does *not* explain. It tells us the ceiling exists and where it sits, yet the whole argument leaned on a quiet assumption — that heat will not flow from cold to hot, that the super-engine is impossible — which we simply asserted. *Why* is it impossible? Why does nature have a preferred direction at all, when the first law would happily allow a cup of coffee to reheat itself from the kitchen air?
+
+Answering that turns Carnot's engineering insight into a law of the universe. That is [the Second Law of thermodynamics](/thermodynamics/the-second-law), stated by Clausius and Kelvin in the 1850s. And the cancellation of logarithms that gave us $\eta = 1 - T_c/T_h$ was no accident: the quantity $Q/T$ that survived is the seed of [entropy](/thermodynamics/entropy-and-the-clausius-inequality), the bookkeeping device that makes the arrow of time exact.
+
+</Section>
+
+</TopicPageLayout>

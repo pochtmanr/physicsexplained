@@ -1720,6 +1720,32 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   CloudFormationScene: lazyScene(() =>
     import("@/components/physics/isothermal-and-adiabatic-processes/cloud-formation-scene").then((m) => ({ default: m.CloudFormationScene })),
   ),
+
+  // ─── Module 3 second-law (thermo sprint 2026-06-20) ───
+  CarnotCycleScene: lazyScene(() =>
+    import("@/components/physics/heat-engines-and-carnot/carnot-cycle-scene").then((m) => ({ default: m.CarnotCycleScene })),
+  ),
+  EngineEfficiencyBarsScene: lazyScene(() =>
+    import("@/components/physics/heat-engines-and-carnot/engine-efficiency-bars-scene").then((m) => ({ default: m.EngineEfficiencyBarsScene })),
+  ),
+  TsDiagramScene: lazyScene(() =>
+    import("@/components/physics/heat-engines-and-carnot/ts-diagram-scene").then((m) => ({ default: m.TsDiagramScene })),
+  ),
+  ClausiusVsKelvinScene: lazyScene(() =>
+    import("@/components/physics/the-second-law/clausius-vs-kelvin-scene").then((m) => ({ default: m.ClausiusVsKelvinScene })),
+  ),
+  PerpetualMotionScene: lazyScene(() =>
+    import("@/components/physics/the-second-law/perpetual-motion-scene").then((m) => ({ default: m.PerpetualMotionScene })),
+  ),
+  EntropyMixingScene: lazyScene(() =>
+    import("@/components/physics/entropy-and-the-clausius-inequality/entropy-mixing-scene").then((m) => ({ default: m.EntropyMixingScene })),
+  ),
+  ReversibleVsIrreversibleDsScene: lazyScene(() =>
+    import("@/components/physics/entropy-and-the-clausius-inequality/reversible-vs-irreversible-ds-scene").then((m) => ({ default: m.ReversibleVsIrreversibleDsScene })),
+  ),
+  TsDiagramReduxScene: lazyScene(() =>
+    import("@/components/physics/entropy-and-the-clausius-inequality/ts-diagram-redux-scene").then((m) => ({ default: m.TsDiagramReduxScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
