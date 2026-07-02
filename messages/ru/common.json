@@ -23,7 +23,12 @@
   "aside": {
     "physicists": "Physicists",
     "topics": "Topics",
-    "terms": "Terms"
+    "terms": "Terms",
+    "fromOurTeam": "От нашей команды",
+    "products": {
+      "doppler": "VPN · dopplervpn.org",
+      "smsActivate": "Приложение для iOS"
+    }
   },
   "backLinks": {
     "dictionary": "← Dictionary",

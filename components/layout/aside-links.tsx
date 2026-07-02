@@ -20,7 +20,13 @@ const SECTION_ICONS: Record<AsideLinkType, LucideIcon> = {
 
 const TYPE_ORDER: AsideLinkType[] = ["physicist", "topic", "term"];
 
-export async function AsideLinks({ links }: { links: AsideLink[] }) {
+export async function AsideLinks({
+  links,
+  footer,
+}: {
+  links: AsideLink[];
+  footer?: React.ReactNode;
+}) {
   const t = await getTranslations("common.aside");
   const sectionTitles: Record<AsideLinkType, string> = {
     physicist: t("physicists"),
@@ -33,7 +39,7 @@ export async function AsideLinks({ links }: { links: AsideLink[] }) {
     items: links.filter((l) => l.type === type),
   })).filter((g) => g.items.length > 0);
 
-  if (grouped.length === 0) return null;
+  if (grouped.length === 0 && !footer) return null;
 
   return (
     <nav className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
@@ -66,6 +72,7 @@ export async function AsideLinks({ links }: { links: AsideLink[] }) {
           </div>
         ))}
       </div>
+      {footer}
     </nav>
   );
 }

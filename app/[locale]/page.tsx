@@ -7,6 +7,7 @@ import { PhysicistsSection } from "@/components/sections/physicists-section";
 import { FeaturedTopicSection } from "@/components/sections/featured-topic-section";
 import { DictionarySection } from "@/components/sections/dictionary-section";
 import { PhilosophySection } from "@/components/sections/philosophy-section";
+import { SupportSection } from "@/components/sections/support-section";
 import { JsonLd } from "@/components/seo/jsonld";
 import { buildWebSiteJsonLd, buildOrganizationJsonLd } from "@/lib/seo/jsonld";
 
@@ -49,6 +50,7 @@ export default async function HomePage({
       <FeaturedTopicSection />
       <DictionarySection />
       <PhilosophySection />
+      <SupportSection />
     </main>
   );
 }

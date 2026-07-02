@@ -320,5 +320,20 @@
   },
   "sources": {
     "heading": "Sources & references"
+  },
+  "support": {
+    "tag": "§ FROM OUR TEAM",
+    "title": "Support what we build.",
+    "body": "Physics.explained is free and has no ads. It's supported by the other products our small team builds — if they're useful to you, that's what keeps this site running.",
+    "products": {
+      "doppler": {
+        "description": "Fast, private VPN by the team behind this site.",
+        "cta": "dopplervpn.org"
+      },
+      "smsActivate": {
+        "description": "Virtual numbers & eSIM for online sign-ups.",
+        "cta": "On the App Store"
+      }
+    }
   }
 }
