@@ -17,6 +17,12 @@ describe("checkQuota", () => {
       ok: false, reason: "free_quota_exhausted",
     });
   });
+  it("allows exhausted free plan again once cycle_end has passed (monthly reset)", () => {
+    expect(checkQuota({
+      ...base, free_questions_used: 3,
+      cycle_end: new Date(Date.now() - 60_000).toISOString(),
+    })).toEqual({ ok: true });
+  });
   it("allows starter plan with tokens remaining", () => {
     expect(checkQuota({ ...base, plan: "starter", tokens_allowance: 1_500_000, tokens_used: 1_000_000 }))
       .toEqual({ ok: true });

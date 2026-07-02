@@ -9,11 +9,23 @@ describe("composeSnapshot", () => {
       free_questions_used: 2,
       cycle_end: "2026-05-23T00:00:00Z",
       next_charge_at: null, canceled_at: null,
-    });
+    }, new Date("2026-05-01T00:00:00Z"));
     expect(out.plan.id).toBe("free");
     expect(out.tokensRemaining).toBe(0);
     expect(out.questionsRemaining).toBe(1);
     expect(out.percentUsed).toBe(Math.round((2/3) * 100));
+  });
+
+  it("shows the renewed free allowance once cycle_end has lapsed", () => {
+    const out = composeSnapshot({
+      plan: "free", status: "active",
+      tokens_allowance: 0, tokens_used: 0,
+      free_questions_used: 3,
+      cycle_end: "2026-05-23T00:00:00Z",
+      next_charge_at: null, canceled_at: null,
+    }, new Date("2026-06-01T00:00:00Z"));
+    expect(out.questionsRemaining).toBe(3);
+    expect(out.percentUsed).toBe(0);
   });
 
   it("composes a starter snapshot with percent used", () => {

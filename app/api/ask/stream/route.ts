@@ -87,7 +87,28 @@ export async function POST(req: Request) {
   if (billingErr || !billingRow) {
     return NextResponse.json({ error: "DB_ERR", message: billingErr?.message ?? "missing billing row" }, { status: 500 });
   }
-  const quota = checkQuota(billingRow as BillingRow);
+  // Free-plan monthly reset, done lazily: if the cycle lapsed, roll it before
+  // the quota gate so free_questions_used starts a fresh month. The .lte guard
+  // makes concurrent requests idempotent (only the first one matches). The
+  // billing-renew cron also sweeps lapsed free rows daily; this covers the gap.
+  const row = billingRow as BillingRow;
+  if (row.plan === "free" && new Date(row.cycle_end).getTime() <= Date.now()) {
+    const cycleStart = new Date();
+    const cycleEnd = new Date(cycleStart);
+    cycleEnd.setMonth(cycleEnd.getMonth() + 1);
+    await db.from("user_billing")
+      .update({
+        free_questions_used: 0,
+        cycle_start: cycleStart.toISOString(),
+        cycle_end: cycleEnd.toISOString(),
+      })
+      .eq("user_id", user.id)
+      .eq("plan", "free")
+      .lte("cycle_end", cycleStart.toISOString());
+    row.free_questions_used = 0;
+    row.cycle_end = cycleEnd.toISOString();
+  }
+  const quota = checkQuota(row);
   if (!quota.ok) {
     return NextResponse.json({ error: "QUOTA_EXHAUSTED", reason: quota.reason }, { status: 402 });
   }

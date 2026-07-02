@@ -61,6 +61,13 @@ Deno.serve(async () => {
     status: "active", revolut_token: null, next_charge_at: null,
   }).eq("status", "canceled").lte("cycle_end", nowIso);
 
+  // A2: Roll lapsed free-plan cycles — the 3-question allowance renews monthly.
+  // (The stream route also does this lazily on the next question; the sweep
+  // keeps usage meters fresh for users who don't ask.)
+  await db.from("user_billing").update({
+    free_questions_used: 0, cycle_start: nowIso, cycle_end: addOneMonthIso(nowIso),
+  }).eq("plan", "free").lte("cycle_end", nowIso);
+
   // H1: Load plan prices from the DB (single source of truth shared with
   // the Next.js app). lib/billing/plans.ts carries a comment that ties
   // priceCents values to this table's seed rows.
