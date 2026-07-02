@@ -1,32 +1,36 @@
 /**
- * Shared pseudo-random helpers for the kinetic-theory scenes — a small,
- * deterministic toolkit reused by the bouncing-gas, Maxwell–Boltzmann sampling,
- * and Brownian-walk simulations (FIG.15, FIG.16, FIG.18).
+ * Seeded pseudo-random helpers shared by the thermodynamics scenes — the
+ * kinetic-theory gas simulations (bouncing gas, Maxwell–Boltzmann sampling,
+ * Brownian walks) and the statistical-mechanics scenes (coin tosses, two-box
+ * gases, Maxwell's demon).
  *
- * Why a seeded generator rather than `Math.random()`? Two reasons. First, the
- * physics tests need reproducible draws so a mean or variance can be asserted
- * against a tolerance. Second, scenes that rebuild their initial state on a
- * control change (e.g. resampling N molecules) look calmer when the layout is
- * stable rather than reshuffled on every render. `Math.random()` is also banned
- * inside the workflow/runtime layer; a explicit PRNG keeps this module portable.
+ * Why a seeded generator rather than `Math.random()`? Reproducibility: the
+ * physics tests need deterministic draws so a mean or variance can be asserted
+ * against a tolerance, and scenes that rebuild state on a control change (or a
+ * "reverse all velocities" button) must land on an identical state rather than
+ * reshuffling on every render. `Math.random()` is also banned inside the
+ * workflow/runtime layer; an explicit PRNG keeps this module portable.
  *
- * `mulberry32` is a well-known 32-bit generator: tiny, fast, and statistically
- * good enough for visualisation and for the law-of-large-numbers tests here. It
- * is NOT cryptographic.
+ * The generator is mulberry32: a tiny, fast, well-distributed 32-bit PRNG with
+ * a full 2³² period. It is NOT cryptographically secure; it is exactly what a
+ * physics visualisation wants — deterministic, uniform, and cheap.
  *
  * React-free, typed, no side effects beyond the generator's own internal state.
  */
 
-/** A function returning the next uniform variate in [0, 1). */
+/** A pseudo-random stream: each call returns a fresh float in [0, 1). */
 export type Rng = () => number;
 
 /**
- * mulberry32 — a 32-bit seeded PRNG. Returns a closure that yields successive
- * uniform variates in [0, 1). Same seed ⇒ same stream.
+ * Construct a deterministic RNG from an integer seed (mulberry32).
+ *
+ * Two streams created with the same seed produce identical sequences; streams
+ * with different seeds are effectively independent.
  */
-export function mulberry32(seed: number): Rng {
+export function createRng(seed: number): Rng {
+  // Coerce to a 32-bit unsigned integer so any finite number is a valid seed.
   let a = seed >>> 0;
-  return () => {
+  return function next(): number {
     a |= 0;
     a = (a + 0x6d2b79f5) | 0;
     let t = Math.imul(a ^ (a >>> 15), 1 | a);
@@ -35,26 +39,40 @@ export function mulberry32(seed: number): Rng {
   };
 }
 
-/** Uniform variate in [min, max). */
+/** Alias for {@link createRng} — the kinetic-theory scenes use this name. */
+export const mulberry32 = createRng;
+
+/** A uniformly random integer in [0, maxExclusive). */
+export function randomInt(rng: Rng, maxExclusive: number): number {
+  return Math.floor(rng() * maxExclusive);
+}
+
+/** A uniformly random float in [min, max). */
+export function randomRange(rng: Rng, min: number, max: number): number {
+  return min + rng() * (max - min);
+}
+
+/** Alias for {@link randomRange} — the kinetic-theory scenes use this name. */
 export function uniform(rng: Rng, min: number, max: number): number {
-  return min + (max - min) * rng();
+  return randomRange(rng, min, max);
 }
 
 /**
- * Standard normal variate (mean 0, variance 1) via the Box–Muller transform.
- * Each call consumes two uniforms and returns one normal; the paired value is
- * discarded for simplicity (the streams are cheap).
+ * A normal sample via the Box–Muller transform (mean 0, unit variance by
+ * default). Two uniforms in, one Gaussian out; the paired value is discarded
+ * for simplicity (the streams are cheap).
  */
-export function gaussian(rng: Rng): number {
-  // Guard u1 away from 0 so log() stays finite.
+export function gaussian(rng: Rng, mean = 0, stdDev = 1): number {
+  // Guard the log against u1 === 0.
   const u1 = Math.max(rng(), 1e-12);
   const u2 = rng();
-  return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+  const mag = Math.sqrt(-2 * Math.log(u1));
+  return mean + stdDev * mag * Math.cos(2 * Math.PI * u2);
 }
 
 /** Normal variate with given mean and standard deviation. */
 export function gaussianWith(rng: Rng, mean: number, std: number): number {
-  return mean + std * gaussian(rng);
+  return gaussian(rng, mean, std);
 }
 
 /** A 2D unit vector with uniformly random direction. */
@@ -71,4 +89,20 @@ export function randomUnitVector2D(rng: Rng): { x: number; y: number } {
  */
 export function maxwellVelocity2D(rng: Rng, sigma: number): { x: number; y: number } {
   return { x: gaussian(rng) * sigma, y: gaussian(rng) * sigma };
+}
+
+/**
+ * Fisher–Yates shuffle. Returns a new array; the input is left untouched.
+ * Deterministic for a given RNG state — the demon scene uses it to assign
+ * molecules to chambers reproducibly.
+ */
+export function shuffled<T>(rng: Rng, items: readonly T[]): T[] {
+  const out = items.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = randomInt(rng, i + 1);
+    const tmp = out[i];
+    out[i] = out[j];
+    out[j] = tmp;
+  }
+  return out;
 }

@@ -1716,6 +1716,34 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "entropy-and-the-clausius-inequality" },
     ],
   },
+  // ─── Module 4 Entropy & the Arrow of Time (thermo sprint 2026-06-20)
+  {
+    slug: "wilhelm-ostwald",
+    born: "1853",
+    died: "1932",
+    nationality: "Baltic-German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "josef-loschmidt",
+    born: "1821",
+    died: "1895",
+    nationality: "Austrian",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "ernst-zermelo",
+    born: "1871",
+    died: "1953",
+    nationality: "German",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
 ];
 
 export function getPhysicist(slug: string): Physicist | undefined {

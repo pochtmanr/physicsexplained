@@ -1,0 +1,117 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { BoltzmannTombstoneScene } from "@/components/physics/boltzmanns-entropy-formula/boltzmann-tombstone-scene";
+import { MultiplicityToEntropyScene } from "@/components/physics/boltzmanns-entropy-formula/multiplicity-to-entropy-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "Ludwig Boltzmann", href: "/physicists/ludwig-boltzmann" },
+  { type: "physicist", label: "Ernst Mach", href: "/physicists/ernst-mach" },
+  { type: "physicist", label: "Wilhelm Ostwald", href: "/physicists/wilhelm-ostwald" },
+  { type: "term", label: "Boltzmann entropy formula", href: "/dictionary/boltzmann-entropy-formula" },
+  { type: "term", label: "Boltzmann constant", href: "/dictionary/boltzmann-constant" },
+  { type: "term", label: "Extensive quantity", href: "/dictionary/extensive-quantity" },
+  { type: "term", label: "Intensive quantity", href: "/dictionary/intensive-quantity" },
+  { type: "term", label: "Entropy", href: "/dictionary/entropy" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.12 · ENTROPY & TIME"
+  title="BOLTZMANN'S FORMULA: S = k log W"
+  subtitle="The equation they carved on his tombstone."
+/>
+
+<Section index={1} title="One line on a headstone">
+
+In the Zentralfriedhof in Vienna, above a marble bust of a bearded man who looks tired, there is a single equation carved into the stone:
+
+$$S = k \log W$$
+
+[Ludwig Boltzmann](/physicists/ludwig-boltzmann) did not put it there — he was dead by the time the monument went up — but it is the truest possible epitaph, because it is the sentence in which the macroscopic world of [entropy](/dictionary/entropy) and temperature was first reduced to the microscopic act of counting. He arrived at it in 1877, in the middle of a decades-long argument about whether atoms were real. The formula assumes they are, and from that assumption rebuilds all of thermodynamics.
+
+<SceneCard caption="FIG.12a — The Zentralfriedhof headstone. Hover any symbol — S, k, log, W — to read its meaning; the W is Boltzmann's W for Wahrscheinlichkeit, 'probability', and is this branch's multiplicity Ω. Press Derive to step through the logic that forces the formula: count the microstates, take a logarithm because entropy adds while multiplicity multiplies, and bridge to joules-per-kelvin with k.">
+  <BoltzmannTombstoneScene />
+</SceneCard>
+
+The formula in modern notation is:
+
+<EquationBlock id="EQ.01">$$S = k_{\mathrm B}\,\ln \Omega$$</EquationBlock>
+
+The entropy of a macrostate is Boltzmann's constant times the natural logarithm of $\Omega$, the [number of microstates](/thermodynamics/microstates-and-macrostates) that realise it. Three symbols carry the whole of statistical mechanics; the rest of this page is an unpacking of why each one has to be there.
+
+</Section>
+
+<Section index={2} title="Why a logarithm">
+
+Take two independent systems — two boxes of gas, say — with multiplicities $\Omega_1$ and $\Omega_2$. The combined system can be in any pairing of a microstate of the first with a microstate of the second, so its multiplicity is the *product* $\Omega_1 \Omega_2$. Multiplicities multiply.
+
+But entropy is <Term slug="extensive-quantity">extensive</Term>: put two equal systems together and you expect twice the entropy, not its square. Mass adds, energy adds, entropy adds. Temperature and pressure, by contrast, are <Term slug="intensive-quantity">intensive</Term> — they don't change when you double the system. Entropy belongs firmly in the additive camp, and that single requirement fixes the form of the formula:
+
+<EquationBlock id="EQ.02">$$S = k\,\ln(\Omega_1 \Omega_2) = k\,\ln\Omega_1 + k\,\ln\Omega_2 = S_1 + S_2.$$</EquationBlock>
+
+Only the logarithm turns a product into a sum. No other function reconciles an additive entropy with a multiplicative count. The $\log$ on the headstone is not a convenience; it is forced.
+
+<Callout variant="intuition">
+Multiplicity multiplies; entropy adds. The logarithm is the unique bridge between the two — which is why $S = k \ln \Omega$ and not $S = k\,\Omega$ or anything else.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Why Boltzmann's constant">
+
+The count $\Omega$ is a pure number, so $\ln \Omega$ is dimensionless. Yet entropy, as Clausius defined it through $\mathrm{d}S = \mathrm{d}Q/T$, carries units of joules per kelvin. Something has to supply those units, and that something is the <Term slug="boltzmann-constant" />:
+
+$$k_{\mathrm B} = 1.380649 \times 10^{-23}\ \mathrm{J/K}.$$
+
+It is best understood not as a fundamental dial of the universe but as a *conversion factor* between two units that history happened to define separately — the kelvin, invented for thermometers, and the joule, invented for mechanics. Boltzmann's constant is the exchange rate. The product $k_{\mathrm B} T$ is the natural energy scale of thermal agitation: about $4 \times 10^{-21}$ joules at room temperature, the typical kinetic jiggle of a single molecule. Whenever temperature appears in physics as an energy — in the [Maxwell–Boltzmann distribution](/thermodynamics/the-maxwell-boltzmann-distribution), in chemical reaction rates, in semiconductor physics — it appears multiplied by $k_{\mathrm B}$.
+
+Had physicists measured temperature in energy units from the start, $k_{\mathrm B}$ would equal one and vanish from the formula, leaving $S = \ln \Omega$. Its presence is a fossil of nineteenth-century unit conventions, frozen into the most famous equation in statistical mechanics.
+
+</Section>
+
+<Section index={4} title="Recovering thermodynamics">
+
+A formula that merely *defines* a new entropy would be bookkeeping. Boltzmann's does more: counting microstates regenerates the entire edifice of classical thermodynamics. Feed in the microstate count of a monatomic ideal gas — the number of ways $N$ molecules can be arranged in volume $V$ with total energy $U$, computed as a volume in phase space — and out comes the Sackur–Tetrode equation:
+
+<EquationBlock id="EQ.03">$$S = N k_{\mathrm B}\!\left[\ln\!\left(\frac{V}{N}\left(\frac{4\pi m U}{3 N h^2}\right)^{3/2}\right) + \frac{5}{2}\right].$$</EquationBlock>
+
+This is the absolute entropy of an ideal gas, in joules per kelvin, derived from nothing but counting and a factor of Planck's constant $h$ to fix the size of a microstate. Differentiate it and the [ideal gas law](/thermodynamics/the-ideal-gas-law) $PV = N k_{\mathrm B} T$ falls straight out, along with the heat capacities and every reversible process of the [first](/thermodynamics/the-second-law) and second laws. Thermodynamics, painstakingly assembled over a century of steam engines and calorimeters, turns out to be a theorem about combinatorics.
+
+The cleanest demonstration is the entropy of mixing. Two gases, each of $N$ molecules, separated by a partition; remove it and each gas doubles the volume it can explore, multiplying its spatial multiplicity by $2^N$. The entropy change is therefore $k_{\mathrm B}\ln(2^N \cdot 2^N) = 2N k_{\mathrm B}\ln 2$ — precisely the [thermodynamic entropy of mixing](/thermodynamics/entropy-and-the-clausius-inequality) computed from $\int \mathrm{d}Q/T$, with no heat added at all.
+
+<SceneCard caption="FIG.12b — Two gases of N molecules each, red and blue, on either side of a partition. Model each half as M cells, so each gas has Ω = Mᴺ spatial microstates and S/k = N ln M. Remove the partition and every molecule doubles its cells, M → 2M; each gas gains N ln 2, for a total ΔS = 2N k ln 2. The absolute S/k depends on the arbitrary cell size M — but ΔS does not, and it equals the FIG.10 entropy of mixing exactly. That cancellation is the bridge made visible.">
+  <MultiplicityToEntropyScene />
+</SceneCard>
+
+</Section>
+
+<Section index={5} title="The second law as a counting truth">
+
+With $S = k_{\mathrm B}\ln\Omega$ in hand, the second law stops being a mysterious imposition and becomes arithmetic. An isolated system left alone wanders among its accessible microstates, each equally probable. It is overwhelmingly likely to be found in whichever macrostate commands the most microstates — and as it evolves toward equilibrium, $\Omega$ climbs, so $S = k_{\mathrm B}\ln\Omega$ climbs with it.
+
+Entropy increases not because a law commands it but because high-entropy macrostates are simply more numerous, by factors like $10^{(10^{23})}$. The "tendency toward disorder" is nothing but the system being swept into the largest bin by sheer weight of numbers. There is no force pushing it there; there is only counting. This is the deepest thing the formula says, and it is why the next topic can locate the entire [arrow of time](/thermodynamics/the-arrow-of-time) inside it.
+
+</Section>
+
+<Section index={6} title="Boltzmann's tragedy">
+
+The formula cost its author dearly. In the 1890s the reality of atoms was still genuinely contested, and Boltzmann's statistical mechanics — which assumed atoms not merely as a calculational convenience but as the literal furniture of the world — drew fierce opposition. <PhysicistLink slug="ernst-mach" />, the great positivist physicist-philosopher, held that science should speak only of what can be observed, and atoms could not be seen; he is said to have needled Boltzmann in seminars with "Have you ever seen one?" The chemist <PhysicistLink slug="wilhelm-ostwald" /> led a rival school, "energetics," that tried to build physics from energy alone, with no atoms at all.
+
+Boltzmann fought back in print and in person for two decades, increasingly isolated, suffering from what we would now recognise as bipolar depression. On a family holiday at Duino, near Trieste, on 5 September 1906, he hanged himself while his wife and daughter were swimming. He was 62.
+
+The cruelty of the timing is hard to overstate. The year before, in 1905, an unknown patent clerk named <PhysicistLink slug="albert-einstein" /> had published a quantitative theory of [Brownian motion](/thermodynamics/brownian-motion) — the jitter of pollen grains under molecular bombardment — that made atoms measurable and, within a few years, undeniable. Jean Perrin's experiments confirmed it; Ostwald himself conceded the existence of atoms in 1909. Boltzmann's vindication had already begun. He did not live to see it settle.
+
+</Section>
+
+<Section index={7} title="What's next — the direction of time">
+
+$S = k_{\mathrm B}\ln\Omega$ is the hinge of this entire branch. It converts the abstract, thermodynamic entropy of Clausius into a count you can in principle enumerate, and it explains the second law as the overwhelming numerical advantage of large macrostates.
+
+But it raises a sharper question than it answers. If entropy increases simply because high-$\Omega$ macrostates are more numerous, and if the microscopic laws of motion are perfectly reversible, then *why* does the count only ever go up? Run the molecules backward and every collision is still legal. The [arrow of time](/thermodynamics/the-arrow-of-time) — the reason a smashed glass never reassembles though no law of motion forbids it — lives in exactly this gap between reversible microphysics and the one-way climb of $\Omega$.
+
+</Section>
+
+</TopicPageLayout>
