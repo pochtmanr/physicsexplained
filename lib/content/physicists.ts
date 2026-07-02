@@ -1726,6 +1726,19 @@ export const PHYSICISTS: readonly Physicist[] = [
       { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
     ],
   },
+
+  // ─── Module 6 statistical-mechanics (thermo sprint 2026-06-20) ───
+  {
+    slug: "josiah-willard-gibbs",
+    born: "1839",
+    died: "1903",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
   {
     slug: "josef-loschmidt",
     born: "1821",
@@ -1742,6 +1755,70 @@ export const PHYSICISTS: readonly Physicist[] = [
     nationality: "German",
     relatedTopics: [
       { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "leo-szilard",
+    born: "1898",
+    died: "1964",
+    nationality: "Hungarian-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "rolf-landauer",
+    born: "1927",
+    died: "1999",
+    nationality: "German-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "charles-bennett",
+    born: "1943",
+    died: "—",
+    nationality: "American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "john-b-johnson",
+    born: "1887",
+    died: "1970",
+    nationality: "Swedish-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "harry-nyquist",
+    born: "1889",
+    died: "1976",
+    nationality: "Swedish-American",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "ryogo-kubo",
+    born: "1920",
+    died: "1995",
+    nationality: "Japanese",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "marian-smoluchowski",
+    born: "1872",
+    died: "1917",
+    nationality: "Polish",
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
     ],
   },
 ];

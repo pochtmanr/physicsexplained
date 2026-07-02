@@ -1,0 +1,117 @@
+import { TopicHeader } from "@/components/layout/topic-header";
+import { Section } from "@/components/layout/section";
+import { SceneCard } from "@/components/layout/scene-card";
+import { EquationBlock } from "@/components/math/equation-block";
+import { Callout } from "@/components/layout/callout";
+import { TopicPageLayout } from "@/components/layout/topic-page-layout";
+import { TwoLevelSystemScene } from "@/components/physics/the-partition-function/two-level-system-scene";
+import { PartitionToThermoScene } from "@/components/physics/the-partition-function/partition-to-thermo-scene";
+
+<TopicPageLayout aside={[
+  { type: "physicist", label: "J. Willard Gibbs", href: "/physicists/josiah-willard-gibbs" },
+  { type: "physicist", label: "Ludwig Boltzmann", href: "/physicists/ludwig-boltzmann" },
+  { type: "term", label: "Partition function", href: "/dictionary/partition-function" },
+  { type: "term", label: "Boltzmann distribution", href: "/dictionary/boltzmann-distribution" },
+  { type: "term", label: "Canonical ensemble", href: "/dictionary/canonical-ensemble" },
+  { type: "term", label: "Microcanonical ensemble", href: "/dictionary/microcanonical-ensemble" },
+  { type: "term", label: "Grand canonical ensemble", href: "/dictionary/grand-canonical-ensemble" },
+  { type: "term", label: "Ensemble", href: "/dictionary/ensemble" },
+]}>
+
+<TopicHeader
+  eyebrow="FIG.19 · STAT MECHANICS"
+  title="THE PARTITION FUNCTION"
+  subtitle="One sum from which all of thermodynamics falls out by differentiation."
+/>
+
+<Section index={1} title="Gibbs names a science">
+
+In 1902, a sixty-three-year-old professor at Yale published a thin, forbidding book titled *Elementary Principles in Statistical Mechanics*. The adjective "elementary" was a courtesy; almost no one could read it. But the title carried a phrase that had never appeared on a book before: **statistical mechanics**. <PhysicistLink slug="josiah-willard-gibbs" /> had coined the name for the discipline he was, in the same volume, bringing to completion.
+
+Gibbs was an unlikely revolutionary. He spent nearly his entire life in New Haven, taught for a decade without salary, published in the obscure *Transactions of the Connecticut Academy*, and was better known in Europe than at home. Yet where <PhysicistLink slug="ludwig-boltzmann" /> and <PhysicistLink slug="james-clerk-maxwell" /> had reasoned about gases as swarms of colliding molecules, Gibbs abstracted away the molecules entirely. He asked instead: given a system in contact with a heat bath at temperature $T$, what is the probability of finding it in each of its possible microscopic states? The answer reorganized all of thermodynamics around a single mathematical object — a sum over states he wrote as $Z$, the **partition function**. Every thermodynamic quantity you have met — energy, entropy, pressure, free energy, heat capacity — turns out to be a derivative of $\ln Z$.
+
+</Section>
+
+<Section index={2} title="The canonical ensemble">
+
+Gibbs's central picture is the <Term slug="canonical-ensemble" />: a system of fixed volume and fixed particle number, held in thermal contact with a vast reservoir at temperature $T$. Energy flows freely back and forth across the contact, so the system's energy is *not* fixed — it fluctuates. What is fixed is the temperature.
+
+The question is then statistical. If the combined system-plus-reservoir is isolated and every joint microstate is equally likely, what is the probability $p_i$ that the small system sits in its particular microstate $i$ with energy $E_i$? Counting the reservoir's states and expanding its entropy to first order in the small system's energy gives a result of startling simplicity — the **Boltzmann distribution**:
+
+<EquationBlock id="EQ.01">$$p_i = \frac{e^{-\beta E_i}}{Z}, \qquad \beta \equiv \frac{1}{k_B T}$$</EquationBlock>
+
+In words: the probability of a microstate falls off exponentially with its energy, measured in units of the thermal energy $k_B T$. A state costing one $k_B T$ more than another is $e \approx 2.7$ times less likely; a state ten $k_B T$ higher is rarer by a factor of twenty-two thousand. The quantity $\beta = 1/k_B T$ — "coldness" — is the natural variable: large when cold, small when hot.
+
+<Callout variant="intuition">
+The reservoir is so much larger than the system that handing over a quantum of energy barely changes its temperature. All it can do is make some of the system's states a little less probable than others — exponentially so, with energy as the exchange rate.
+</Callout>
+
+</Section>
+
+<Section index={3} title="Z — the sum over states">
+
+The denominator $Z$ is fixed by the demand that the probabilities add to one. Summing EQ.01 over all microstates gives $\sum_i p_i = 1$ only if
+
+<EquationBlock id="EQ.02">$$Z = \sum_i e^{-\beta E_i}$$</EquationBlock>
+
+This is the <Term slug="partition-function" /> — from the German *Zustandssumme*, literally "sum over states," which is why it is universally called $Z$. At first glance it is a mere normalizing constant. Its true role is grander: $Z$ is a **generating function**. It packages the entire energy spectrum of the system into one quantity, and because each term carries the temperature inside its exponent, differentiating $Z$ with respect to $\beta$ or $T$ pulls the physical observables back out one by one.
+
+The name *partition* is apt. $Z$ measures how the system's probability is partitioned among its accessible states. When $T \to 0$, every exponential but the ground state's collapses to zero and $Z \to 1$: the system is frozen into its lowest level. When $T \to \infty$, every exponential approaches one and $Z$ counts the available states outright: thermal energy is so abundant that the system explores everything equally.
+
+</Section>
+
+<Section index={4} title="Everything by differentiation">
+
+Here is the payoff that made Gibbs's formulation the permanent language of the subject. Once you know $Z(T, V, N)$, you do not need to return to the microscopic model for anything. The bridge to thermodynamics is a single equation — the **Helmholtz free energy**:
+
+<EquationBlock id="EQ.03">$$F = -k_B T \ln Z, \qquad \langle E\rangle = -\frac{\partial \ln Z}{\partial \beta}, \qquad S = -\frac{\partial F}{\partial T}, \qquad P = -\frac{\partial F}{\partial V}$$</EquationBlock>
+
+Read left to right: the free energy is minus $k_B T$ times the logarithm of the partition function; the mean energy is the derivative of $\ln Z$ with respect to coldness; the entropy and the pressure are the temperature- and volume-slopes of $F$; and the heat capacity $C_v = \partial \langle E\rangle/\partial T$ is one more derivative. The whole apparatus of thermodynamics becomes calculus applied to one sum.
+
+<SceneCard caption="FIG.19b — Z as the generator. Choose a model and one partition function Z(T) drives all four panels at once: the free energy F = −k_BT ln Z, the mean energy ⟨E⟩, the entropy S, and the heat capacity C_v are each a derivative of the same sum. Slide the temperature and watch one curve in Z move four observables together — each panel auto-scaled, because the lesson is the shape, not the units.">
+  <PartitionToThermoScene />
+</SceneCard>
+
+This is why physicists, handed a new system, reach first for $Z$. Compute the sum over states — often the only hard step — and thermodynamics is downhill all the way.
+
+</Section>
+
+<Section index={5} title="Three worked examples">
+
+The power of the method shows in how different the systems can be while the recipe stays identical.
+
+**The two-level system.** Take a single degree of freedom with just two energies, $0$ and $\varepsilon$ — a spin in a magnetic field, an impurity with two configurations. Then $Z = 1 + e^{-\beta\varepsilon}$, and the heat capacity that drops out has a distinctive shape: it rises from zero, peaks near $k_B T \approx 0.42\,\varepsilon$, and falls back to zero. This hump is the **Schottky anomaly**. Its logic is universal: a system can only soak up heat where it has somewhere to put it. When it is too cold, no state above the ground level is reachable; when it is too hot, both levels are already equally full and adding energy changes nothing.
+
+<SceneCard caption="FIG.19a — the two-level system. Slide the reduced temperature k_BT/ε: the Boltzmann factors set the populations of the ground (0) and excited (ε) rungs, drawn as bars that begin all-ground when cold and saturate toward 50/50 when hot. Below, the heat capacity C_v(T) traces the Schottky anomaly — the hump that appears for any system with a finite energy gap.">
+  <TwoLevelSystemScene />
+</SceneCard>
+
+**The harmonic oscillator.** Equally spaced levels $E_n = n\hbar\omega$ give a geometric series, $Z = 1/(1 - e^{-\beta\hbar\omega})$, and a heat capacity that freezes out exponentially when $k_B T \ll \hbar\omega$ and recovers the classical value $k_B$ when $k_B T \gg \hbar\omega$. That single result, applied to the vibrations of a crystal lattice, resolves why solids violate the classical Dulong–Petit law at low temperature — the thread we pick up at [heat capacity and the third law](/thermodynamics/the-third-law).
+
+**The ideal gas.** Summing over the translational states of $N$ free particles in a box, dividing by $N!$ to count identical particles correctly, yields the first *absolute* entropy ever written for a gas — the **Sackur–Tetrode equation**:
+
+<EquationBlock id="EQ.04">$$S = N k_B\!\left[\ln\!\left(\frac{V}{N\lambda^3}\right) + \frac{5}{2}\right], \qquad \lambda = \frac{h}{\sqrt{2\pi m k_B T}}$$</EquationBlock>
+
+The thermal de Broglie wavelength $\lambda$ is the only length scale, and $V/N\lambda^3$ counts how many quantum cells each molecule has to roam in. When that number drops toward one, the gas is no longer classical — the doorway to [Bose–Einstein condensation](/thermodynamics/bose-einstein-condensation).
+
+</Section>
+
+<Section index={6} title="Three ensembles, one idea">
+
+Gibbs did not stop at the canonical ensemble. He recognized three standard ways to hold a system, each suited to what is fixed and what is free.
+
+The <Term slug="microcanonical-ensemble" /> describes an isolated system: energy, volume, and particle number all fixed. Every accessible microstate is equally likely, and the entropy is Boltzmann's $S = k_B \ln \Omega$ — a count of microstates. The <Term slug="canonical-ensemble" /> lets energy flow by fixing temperature instead, and its weight is the Boltzmann factor we have been using. The <Term slug="grand-canonical-ensemble" /> opens one more door, letting particles flow too: it fixes temperature and chemical potential, and is the natural setting for quantum gases, chemical equilibrium, and surfaces in contact with a vapor.
+
+The deep result, which Gibbs proved and which underwrites the whole edifice, is that for a macroscopic system **the three ensembles agree**. Because energy and particle-number fluctuations scale away as $1/\sqrt{N}$, it makes no measurable difference whether you hold the energy fixed or merely its average. Which <Term slug="ensemble" /> you choose is a matter of convenience, not physics — you pick whichever makes $Z$ easiest to sum.
+
+</Section>
+
+<Section index={7} title="Why the keystone">
+
+The partition function is the hinge on which the rest of statistical mechanics turns. Every later topic in this branch is, at bottom, a statement about $Z$. The [free energies and Maxwell's demon](/thermodynamics/free-energies-and-maxwells-demon) are the Legendre transforms of $F = -k_B T \ln Z$, each tuned to a different set of held-fixed variables. The [fluctuations](/thermodynamics/fluctuations-and-dissipation) that we just dismissed as negligible — the $1/\sqrt{N}$ wobble in the energy — are themselves a *second* derivative of $\ln Z$, and far from negligible in a nanostructure or near a critical point.
+
+Gibbs died in 1903, the year after the book appeared, never knowing that quantum mechanics would arrive two decades later and make his abstraction not just convenient but mandatory: real systems have discrete spectra, and the sum over states is the only way to handle them. The molecules he had so deliberately abstracted away turned out to be exactly the discrete levels his formalism was built to count. One sum, and all of thermodynamics falls out by differentiation.
+
+</Section>
+
+</TopicPageLayout>

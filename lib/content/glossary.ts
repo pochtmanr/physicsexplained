@@ -4376,10 +4376,50 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
       { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
     ],
   },
+
+  // ─── Module 6 statistical-mechanics (thermo sprint 2026-06-20) ───
+  {
+    slug: "partition-function",
+    category: "concept",
+    visualization: "PartitionToThermoScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
   {
     slug: "intensive-quantity",
     category: "concept",
     relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
+    ],
+  },
+  {
+    slug: "boltzmann-distribution",
+    category: "concept",
+    visualization: "TwoLevelSystemScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "the-maxwell-boltzmann-distribution" },
+    ],
+  },
+  {
+    slug: "canonical-ensemble",
+    category: "concept",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+    ],
+  },
+  {
+    slug: "microcanonical-ensemble",
+    category: "concept",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
       { branchSlug: "thermodynamics", topicSlug: "boltzmanns-entropy-formula" },
     ],
   },
@@ -4414,6 +4454,110 @@ export const GLOSSARY: readonly GlossaryTerm[] = [
     relatedTopics: [
       { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
       { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "grand-canonical-ensemble",
+    category: "concept",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+      { branchSlug: "thermodynamics", topicSlug: "bose-einstein-condensation" },
+    ],
+  },
+  {
+    slug: "enthalpy",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "heat-capacity-and-calorimetry" },
+    ],
+  },
+  {
+    slug: "helmholtz-free-energy",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["hermann-von-helmholtz", "josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "the-partition-function" },
+    ],
+  },
+  {
+    slug: "gibbs-free-energy",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "the-clausius-clapeyron-relation" },
+    ],
+  },
+  {
+    slug: "legendre-transform",
+    category: "concept",
+    visualization: "FourFreeEnergiesScene",
+    relatedPhysicists: ["adrien-marie-legendre", "josiah-willard-gibbs"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "szilard-engine",
+    category: "concept",
+    visualization: "SzilardEngineScene",
+    relatedPhysicists: ["leo-szilard"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+      { branchSlug: "thermodynamics", topicSlug: "the-arrow-of-time" },
+    ],
+  },
+  {
+    slug: "landauer-principle",
+    category: "concept",
+    visualization: "SzilardEngineScene",
+    relatedPhysicists: ["rolf-landauer", "charles-bennett"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "free-energies-and-maxwells-demon" },
+    ],
+  },
+  {
+    slug: "fluctuation",
+    category: "phenomenon",
+    visualization: "FluctuationScalingScene",
+    relatedPhysicists: ["albert-einstein", "marian-smoluchowski"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "fluctuation-dissipation-theorem",
+    category: "concept",
+    relatedPhysicists: ["ryogo-kubo", "albert-einstein", "harry-nyquist"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "brownian-motion" },
+    ],
+  },
+  {
+    slug: "johnson-noise",
+    category: "phenomenon",
+    visualization: "JohnsonNyquistScene",
+    relatedPhysicists: ["john-b-johnson", "harry-nyquist"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+    ],
+  },
+  {
+    slug: "critical-opalescence",
+    category: "phenomenon",
+    relatedPhysicists: ["marian-smoluchowski", "albert-einstein"],
+    relatedTopics: [
+      { branchSlug: "thermodynamics", topicSlug: "fluctuations-and-dissipation" },
+      { branchSlug: "thermodynamics", topicSlug: "critical-phenomena-and-universality" },
     ],
   },
 ];

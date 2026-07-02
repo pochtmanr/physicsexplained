@@ -1769,6 +1769,26 @@ export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {
   MaxwellsDemonScene: lazyScene(() =>
     import("@/components/physics/the-arrow-of-time/maxwells-demon-scene").then((m) => ({ default: m.MaxwellsDemonScene })),
   ),
+
+  // ─── Module 6 statistical-mechanics (thermo sprint 2026-06-20) ───
+  TwoLevelSystemScene: lazyScene(() =>
+    import("@/components/physics/the-partition-function/two-level-system-scene").then((m) => ({ default: m.TwoLevelSystemScene })),
+  ),
+  PartitionToThermoScene: lazyScene(() =>
+    import("@/components/physics/the-partition-function/partition-to-thermo-scene").then((m) => ({ default: m.PartitionToThermoScene })),
+  ),
+  FourFreeEnergiesScene: lazyScene(() =>
+    import("@/components/physics/free-energies-and-maxwells-demon/four-free-energies-scene").then((m) => ({ default: m.FourFreeEnergiesScene })),
+  ),
+  SzilardEngineScene: lazyScene(() =>
+    import("@/components/physics/free-energies-and-maxwells-demon/szilard-engine-scene").then((m) => ({ default: m.SzilardEngineScene })),
+  ),
+  FluctuationScalingScene: lazyScene(() =>
+    import("@/components/physics/fluctuations-and-dissipation/fluctuation-scaling-scene").then((m) => ({ default: m.FluctuationScalingScene })),
+  ),
+  JohnsonNyquistScene: lazyScene(() =>
+    import("@/components/physics/fluctuations-and-dissipation/johnson-nyquist-scene").then((m) => ({ default: m.JohnsonNyquistScene })),
+  ),
 };
 
 export type SimulationName = keyof typeof SIMULATION_REGISTRY;
