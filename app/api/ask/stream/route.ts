@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
+import { getRequestClient, getServiceClient } from "@/lib/supabase-server";
 import { getProviderForModel } from "@/lib/ask/provider";
 import { makeToolset } from "@/lib/ask/toolset";
 import { braveSearch, fetchAllowlistedUrl } from "@/lib/ask/web-search";
@@ -44,8 +44,7 @@ export async function POST(req: Request) {
 
   mark("req-in");
 
-  const ssr = await getSsrClient();
-  const { data: { user } } = await ssr.auth.getUser();
+  const { user } = await getRequestClient(req);
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   mark("auth-ok");
 

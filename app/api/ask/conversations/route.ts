@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { getSsrClient } from "@/lib/supabase-server";
+import { getRequestClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const db = await getSsrClient();
-  const { data: { user } } = await db.auth.getUser();
+export async function GET(req: Request) {
+  const { db, user } = await getRequestClient(req);
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   const { data, error } = await db
     .from("ask_conversations")
