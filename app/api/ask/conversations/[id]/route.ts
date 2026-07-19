@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { getSsrClient } from "@/lib/supabase-server";
+import { getRequestClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,8 +14,7 @@ const PatchSchema = z.object({
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const db = await getSsrClient();
-  const { data: { user } } = await db.auth.getUser();
+  const { db, user } = await getRequestClient(req);
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
 
   let body: z.infer<typeof PatchSchema>;
@@ -31,10 +30,9 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   return NextResponse.json({ ok: true });
 }
 
-export async function DELETE(_req: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const db = await getSsrClient();
-  const { data: { user } } = await db.auth.getUser();
+  const { db, user } = await getRequestClient(req);
   if (!user) return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
   const { error } = await db.from("ask_conversations").delete().eq("id", id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

@@ -14,13 +14,24 @@ function hasSupabaseCookie(req: NextRequest): boolean {
   return req.cookies.getAll().some((c) => /^sb-.+-auth-token(\.|$)/.test(c.name));
 }
 
+// Native clients (iOS) authenticate with `Authorization: Bearer <supabase JWT>`
+// instead of cookies. Like the cookie check this is only a presence hint —
+// the routes still validate the token via getRequestClient() and 401 on a bad
+// one, so a forged header buys nothing.
+function hasAuthHint(req: NextRequest): boolean {
+  return (
+    hasSupabaseCookie(req) ||
+    (req.headers.get("authorization")?.startsWith("Bearer ") ?? false)
+  );
+}
+
 export default async function middleware(req: NextRequest) {
   const p = req.nextUrl.pathname;
 
   // Pass through auth callback + API routes untouched — next-intl must not
   // rewrite these. API-route auth is enforced by the protected block below.
   if (p.startsWith("/auth/") || p.startsWith("/api/")) {
-    if (PROTECTED.test(p) && !hasSupabaseCookie(req)) {
+    if (PROTECTED.test(p) && !hasAuthHint(req)) {
       return NextResponse.json({ error: "UNAUTHENTICATED" }, { status: 401 });
     }
     return NextResponse.next();

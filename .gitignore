@@ -50,3 +50,14 @@ coverage
 # local scratch / tooling
 .claude/
 reddit.md
+
+# supabase cli scratch (project link state, local stack)
+supabase/.temp/
+supabase/.branches/
+
+# The iOS app is its own repository (pochtmanr/physicsios), checked out here so
+# it sits beside the web app and the docs/prompts it is built from. It is NOT a
+# submodule — this repo simply ignores it.
+# Leading slash matters: a bare `ios/` would also swallow `scripts/ios/`, which
+# belongs to THIS repo (the scene-snapshot pipeline).
+/ios/

@@ -12,6 +12,7 @@
     "content:publish": "tsx --conditions=react-server scripts/content/publish.ts",
     "content:publish-problems": "tsx --conditions=react-server scripts/content/publish-problems.ts",
     "content:publish-seeds": "tsx --conditions=react-server scripts/content/publish-seeds.ts",
+    "content:publish-taxonomy": "tsx --conditions=react-server scripts/content/publish-taxonomy.ts",
     "content:backfill-sameas": "tsx --conditions=react-server scripts/content/backfill-sameas.ts",
     "content:translate": "tsx --conditions=react-server scripts/content/translate.ts",
     "ask:sync-scenes": "tsx --conditions=react-server scripts/ask/generate-scene-catalog.ts",
