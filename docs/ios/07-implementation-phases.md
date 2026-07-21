@@ -84,13 +84,35 @@ Acceptance: preset orbits qualitatively match web (screen-recording comparison);
 
 Deliverables: iPad `NavigationSplitView` layouts (browse/reader split, wider measure, Ask sidebar), Liquid Glass refinement pass, performance pass (formula cache hit rate, scroll hitches via Instruments), **account deletion** end-to-end, privacy manifest + nutrition labels, App Review notes (AI content: model disclosure, report mechanism per Risk R15), TestFlight build.
 
-Prompts: `P8-1-ipad-layouts.md`, `P8-2-performance-glass.md`, `P8-3-account-deletion-privacy.md`, `P8-4-store-prep.md`.
+Prompts: `P8-1-ipad-layouts.md`, `P8-2-performance-glass.md`, `P8-3-account-deletion-privacy.md`, `P8-4-store-prep.md`, `P8-5-settings-tab.md`.
 
 Acceptance: no layout regressions iPhone; iPad screenshots reviewed; Instruments trace shows no >100ms hangs in reader scroll; account deletion round-trip verified against Supabase; archive + TestFlight upload succeeds.
 
+## P9 — Navigation shell rework — Opus, 3 sessions
+
+Motivated by two tabs that *are* their own content: Play renders one playground directly (no index, no room for a second, no beta signal), and Ask renders the transcript with the Liquid Glass tab bar sitting under a floating composer. Signed-out Ask additionally shows a full-screen `AuthGate` wall, which contradicts PRD §3.6's "sign-in is prompted contextually on first Ask use".
+
+Deliverables: a Play index list (beta badge + notice, playground descriptor/registry) with the playground opening chrome-free; Ask at compact width restructured to a conversation-list root with the transcript opening chrome-free; sign-in moved from the `AuthGate` wall to a bottom sheet raised at **send**, preserving the draft; playground state sharing (blob encoding interoperable with the web), Explain → Ask, and on-device saved setups. Also fixes a live bug: `AskWall.signInRequired` is never cleared after a successful sign-in, stranding the user with no composer.
+
+Prompts: `P9-1-navigation-shell.md`, `P9-2-gate-at-send.md`, `P9-3-playground-state.md`.
+
+Key decisions: the tab-bar-hiding mechanism — `.toolbarVisibility(.hidden, for: .tabBar)` on a push vs `fullScreenCover` — is **decided by a spike in P9-1 §0**, not on paper. The push keeps the transcript in the same `UINavigationController` (so composer keyboard behaviour is unchanged) and gives back-swipe for free, but its behaviour under `.tabViewStyle(.sidebarAdaptable)` at regular width is unmeasured; the cover is known-good at both widths but rebuilds the presentation context the composer's layout depends on. Ask changes at **compact width only** — P8-1's split view is untouched. Saved setups are **on-device only**, keeping the playground account-free per PRD §3.6.
+
+Acceptance: no tab bar over the playground canvas or the Ask composer; keyboard raises the composer cleanly inside the cover; a signed-out question survives sign-in and sends itself; iPad layouts pixel-identical to P8-1; share links round-trip between iOS and web.
+
+## P10 — Monetization: dual-provider subscriptions — Opus (+ user for ASC/RevenueCat), 3–4 sessions
+
+The deliberate post-MVP pivot into commerce. The web already sells subscriptions via Revolut (`free/starter/pro`, token quotas, reconciling into `public.user_billing`); Apple requires in-app digital subscriptions go through Apple IAP. P10 adds **Apple IAP on iOS via RevenueCat** and makes both providers write the **same `user_billing` row** (new `provider` column), so a plan bought on either platform is honored on both. Setup is user-executed from `10-revenuecat-setup.md`; all app/backend code is specified in the prompts.
+
+Prompts: `P10-1-billing-provider-and-revenuecat-webhook.md` (web: migration + RevenueCat webhook + cron guard + web billing UI), `P10-2-ios-revenuecat-paywall.md` (iOS: SDK, `Purchases.logIn(uid)`, offerings, `PaywallView`, purchase/restore), `P10-3-ios-account-profile.md` (iOS: Account tab mirrors the web profile, Inter font, Sign out moved last under Delete account), `P10-4-store-config-and-review.md` (`[USER]` ASC/RevenueCat + the R7 doc reversal + App Review prep).
+
+This phase **supersedes Risk R7's "no commerce" stance for iOS IAP** (reversed in the docs by P10-4). The ban on *external/web payment links inside the app* stays in force; the system manage-subscriptions sheet is allowed. Key join key: the RevenueCat app-user-id **is** the Supabase uuid, so the webhook's `app_user_id` maps 1:1 to a `user_billing` row.
+
+Acceptance: buy `pro` in iOS Sandbox → RevenueCat webhook fills `user_billing` (`provider='apple'`) → the same account's web profile shows `pro` with the "Managed via Apple" note; Restore Purchases works; the Revolut cron never touches Apple rows; the Account tab shows profile parity with the web (avatar, name, email, usage meter, User ID/Provider/Joined) in Inter, with Sign out as the final section under Delete account.
+
 ## Post-MVP backlog (documented, not built)
 
-Hebrew + RTL (content exists in `content_entries` locale `he`), scene waves 2…N to full ~500 coverage, JSXGraph-scene reimplementations (11), DOM-table scenes (~20), StoreKit IAP + plan reconciliation, playground state sharing, problems/equations surfaces, widgets/App Intents, **learning app** (lessons + exams — new PRD).
+Hebrew + RTL (content exists in `content_entries` locale `he`), scene waves 2…N to full ~500 coverage, JSXGraph-scene reimplementations (11), DOM-table scenes (~20), unifying web billing onto RevenueCat Web Billing (P10 keeps Revolut on web), playground state sharing, problems/equations surfaces, widgets/App Intents, **learning app** (lessons + exams — new PRD).
 
 ## Total estimate
 

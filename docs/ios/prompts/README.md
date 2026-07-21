@@ -15,6 +15,9 @@ One prompt = one focused session. Run them **in order**; every prompt assumes th
 | P6 scene waves | `scene-waves/wave-*.md` | Opus 4.8 |
 | P7 playground | `P7-1` … `P7-3` | Opus 4.8 |
 | P8 polish + store | `P8-1` … `P8-4` | Opus 4.8 (+ user for signing) |
+| P10 monetization (dual-provider subs) | `P10-1` … `P10-4` | Opus 4.8 (+ user for ASC/RevenueCat) |
+
+> P10 adds Apple IAP on iOS via RevenueCat, reconciled into the same `user_billing` row the web (Revolut) billing writes — see `../10-revenuecat-setup.md`. It reverses the R7 "no commerce" stance for iOS IAP (external payment links stay banned). Run P10 only once the app is otherwise store-ready.
 
 ## Standing rules (apply to every session; full list in `../01-architecture.md` §8)
 
@@ -33,4 +36,4 @@ One prompt = one focused session. Run them **in order**; every prompt assumes th
 
 ## Document map
 
-`../00-prd.md` product scope · `../01-architecture.md` engineering constitution · `../02-api-contracts.md` wire contracts · `../03-design-system.md` visual identity · `../04-block-rendering-spec.md` reader spec · `../05-scene-porting-playbook.md` scene cookbook · `../06-backend-changes.md` P0 backend specs · `../07-implementation-phases.md` phase plan · `../08-risk-register.md` risks.
+`../00-prd.md` product scope · `../01-architecture.md` engineering constitution · `../02-api-contracts.md` wire contracts · `../03-design-system.md` visual identity · `../04-block-rendering-spec.md` reader spec · `../05-scene-porting-playbook.md` scene cookbook · `../06-backend-changes.md` P0 backend specs · `../07-implementation-phases.md` phase plan · `../08-risk-register.md` risks · `../10-revenuecat-setup.md` RevenueCat + App Store subscriptions runbook (P10).

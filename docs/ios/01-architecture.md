@@ -55,7 +55,7 @@ PXFoundation ──▶ (nothing internal)
 | **PXDesign** | Design tokens (color ladder, accents, spacing, radii), bundled fonts (Inter, JetBrains Mono, Archivo Narrow) + `PXTextStyle`s, SceneCard chrome (corner brackets, FIG eyebrow, fullscreen presentation), glass chrome helpers, shared components (badges, callout container, HUD text). Per `03-design-system.md`. | — |
 | **PXAPI** | `SupabaseService` (supabase-swift client: auth session, PostgREST reads, storage URLs), `ContentRepository` (cache-then-network over GRDB: taxonomy, entries, scene catalog), `AskClient` (SSE actor over `URLSession.bytes`, bearer auth), `ConversationsAPI`, `GlossaryBatchAPI`, `ImageURLResolver`, Nuke pipeline config. | supabase-swift, GRDB, Nuke |
 | **PXScenes** | The scene runtime: `SceneTokens` (theme-aware palette), `GraphicsContext` draw helpers (`drawArrow`, `drawHudReadout`, …), `PXScene` protocol + `SceneRegistry`, `SceneTicker` (TimelineView wrapper), `SpacetimeDiagramCanvas`, `ManifoldCanvas`, and every ported scene under `Scenes/<branch>/`. Also `SnapshotFigureView` fallback. Per `05-scene-porting-playbook.md`. | — |
-| **PXBlocks** | `Block[]` → SwiftUI renderer (`BlockListView`), `FormulaView` (SwiftMath + image cache), `FigureView` (registry → native scene \| snapshot), callout/table/list views, term/physicist sheets. Per `04-block-rendering-spec.md`. | SwiftMath |
+| **PXBlocks** | `Block[]` → SwiftUI renderer (`BlockListView`), `FormulaView` (SwiftMath + image cache), `FigureView` (registry → native scene \| snapshot), callout/table/list views, term/physicist sheets. Per `04-block-rendering-spec.md`. | SwiftMath, Nuke (`LazyImage` for figure images and scene snapshots; the pipeline itself is still configured once in PXAPI) |
 | **PXAsk** | Chat feature: `AskViewModel` (stream consumption, message assembly), fence renderer (segments → text/formula/scene/plot/cite views), `PlotView` (native plotter on Canvas + PXMath evaluator), sources cards, conversation list, quota/cooldown walls, progress tree. | — |
 
 ## 3. External dependencies (pinned — do not add others)
@@ -67,8 +67,18 @@ PXFoundation ──▶ (nothing internal)
 | `Nuke` | latest 12.x | Image loading/disk cache for snapshots, figures, physicist photos. `LazyImage` in SwiftUI. |
 | `SwiftMath` | latest | Native MathML-quality LaTeX typesetting (iosMath lineage); no WebView per formula (streaming perf, offline). |
 | `swift-math-parser` (bradhowes) | latest | Runtime evaluation of `:::plot` expressions (mathjs subset) behind `ExpressionEvaluating` — swappable for a hand-rolled Pratt parser if coverage gaps appear (Risk R5). |
+| `purchases-ios-spm` (RevenueCat) | latest 5.x | Apple StoreKit 2 wrapper for the iOS paywall; entitlements + purchase/restore. |
 
 Adding a dependency requires editing this table first (the prompts forbid it otherwise).
+
+> **R7 ("no commerce") is superseded by phase P10 for iOS IAP.** Apple In-App
+> Purchase subscriptions (brokered by RevenueCat, `purchases-ios-spm`) are the
+> sanctioned iOS checkout — a native paywall inside the binary, which App Review
+> requires when IAP is present. What R7 still bans is unchanged: **external
+> payment links out** of the app. Only legal links (Terms/Privacy) may leave the
+> paywall; no web-checkout or payment page is ever linked from inside the app.
+> RevenueCat lives in **PXAPI only** (the network layer) — PXScenes/PXBlocks must
+> not gain it (§2).
 
 ## 4. Concurrency & state conventions
 

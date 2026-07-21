@@ -9,7 +9,7 @@ export async function loadBillingSnapshot(): Promise<BillingSnapshot | null> {
   if (!user) return null;
   const { data } = await db
     .from("user_billing")
-    .select("plan,status,tokens_allowance,tokens_used,free_questions_used,cycle_end,next_charge_at,canceled_at")
+    .select("plan,status,provider,tokens_allowance,tokens_used,free_questions_used,cycle_end,next_charge_at,canceled_at,apple_expires_at")
     .eq("user_id", user.id)
     .maybeSingle();
   if (!data) return null;

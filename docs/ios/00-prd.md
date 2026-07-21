@@ -69,7 +69,7 @@ Acceptance: presets match web behavior qualitatively (stable orbits stay stable)
 ### 3.6 Auth & account
 - Sign-in methods: **Sign in with Apple, Google, email OTP (6-digit code)** — all via supabase-swift against the existing Supabase Auth. (Apple is mandatory under App Review 4.8 once Google is offered.)
 - The knowledge base and playground require **no account**; only Ask is gated. Sign-in is prompted contextually on first Ask use.
-- Settings: appearance (dark/light/system), account info + plan display (read-only from `user_billing`), sign out, **account deletion** (App Review 5.1.1(v) — hard launch blocker; server support per `06-backend-changes.md`).
+- Settings: account info + plan display (read-only from `user_billing`), sign out, **account deletion** (App Review 5.1.1(v) — hard launch blocker; server support per `06-backend-changes.md`). No appearance control — the app follows the system light/dark setting; reader text size lives in the topic screen's actions menu.
 
 ### 3.7 Quota wall (402) — no commerce
 When the API returns `402 QUOTA_EXHAUSTED`, show a neutral, well-designed "You've used your included questions" state. **No purchase button, no external link, no pricing, no mention of the website's plans.** Users who upgraded on the web get their quota automatically (same Supabase account). StoreKit IAP is explicitly post-MVP.

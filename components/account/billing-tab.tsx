@@ -60,6 +60,9 @@ export function BillingTab({ snapshot, orders }: Props) {
   });
 
   const status = snapshot.status;
+  // Apple/RevenueCat subscriptions are managed on-device — the web can only
+  // display them read-only (no checkout, no cancel, no Revolut order history).
+  const isApple = snapshot.provider === "apple";
   return (
     <div className="space-y-6">
       <section className="border border-[var(--color-fg-4)] p-4 space-y-3">
@@ -85,28 +88,36 @@ export function BillingTab({ snapshot, orders }: Props) {
         )}
       </section>
 
-      <section>
-        <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-3">Change plan</div>
-        <PlanCards currentPlan={snapshot.plan.id as PlanId} onSelect={checkout} busy={busy} />
-      </section>
+      {isApple ? (
+        <div className="font-mono text-xs uppercase tracking-wider leading-relaxed text-[var(--color-fg-3)]">
+          Managed via Apple — manage this subscription on your iPhone (Settings → your name → Subscriptions).
+        </div>
+      ) : (
+        <>
+          <section>
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-3">Change plan</div>
+            <PlanCards currentPlan={snapshot.plan.id as PlanId} onSelect={checkout} busy={busy} />
+          </section>
 
-      {snapshot.plan.id !== "free" && status === "active" && (
-        <button
-          type="button"
-          onClick={cancel}
-          disabled={cancelling}
-          className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] underline hover:text-[var(--color-magenta)]"
-        >
-          {cancelling ? "Cancelling…" : "Cancel subscription"}
-        </button>
+          {snapshot.plan.id !== "free" && status === "active" && (
+            <button
+              type="button"
+              onClick={cancel}
+              disabled={cancelling}
+              className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)] underline hover:text-[var(--color-magenta)]"
+            >
+              {cancelling ? "Cancelling…" : "Cancel subscription"}
+            </button>
+          )}
+
+          {err && <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-magenta)]">{err}</div>}
+
+          <section>
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-3">Payments</div>
+            <OrderHistory orders={orders} />
+          </section>
+        </>
       )}
-
-      {err && <div className="font-mono text-xs uppercase tracking-wider text-[var(--color-magenta)]">{err}</div>}
-
-      <section>
-        <div className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)] mb-3">Payments</div>
-        <OrderHistory orders={orders} />
-      </section>
     </div>
   );
 }

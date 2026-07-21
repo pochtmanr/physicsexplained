@@ -8,7 +8,7 @@ Visual identity spec for the iOS/iPadOS app (iOS 26+, Liquid Glass). Implemented
 - `/Users/roman/Developer/physics/lib/hooks/use-theme-colors.ts` (scene palette contract)
 - `/Users/roman/Developer/physics/components/physics/_shared/scene-tokens.ts` (HUD fonts)
 
-Identity in one sentence: **dark-first near-black instrument panel; depth from hairline borders and corner accents (never tonal layers or heavy shadows); mono uppercase labels everywhere; one restrained accent family.**
+Identity in one sentence: **dark-first near-black instrument panel; depth from hairline borders, corner accents on article furniture and one barely-there shadow on cards (never tonal layers); mono uppercase labels everywhere; one restrained accent family.**
 
 ---
 
@@ -133,19 +133,31 @@ RTL note (post-MVP Hebrew): Inter/Archivo lack Hebrew glyphs — web falls back 
 
 ## 3. SceneCard chrome (the universal figure frame)
 
-Source: `components/layout/scene-card.tsx`, `corner-frame.module.css`. **Every figure — native scene, snapshot image, or plot — renders inside this chrome. Scenes NEVER draw their own outer border.**
+Origin: `components/layout/scene-card.tsx`, `corner-frame.module.css`. **Every figure — native scene, snapshot image, or plot — renders inside this chrome. Scenes NEVER draw their own outer border.**
+
+> **The rule that governs every radius in the app: chrome you tap through rounds; content you read
+> does not.** Through P8 the figure card was a literal transcription of the web frame — a 0-radius
+> rectangle with four corner squares — and on device that reads as a website in a web view rather
+> than an iOS app. P9 generalised the fix: every surface a reader *navigates* (Browse's hub cards,
+> the branch cards, the playground cards, and the figure card) now shares one treatment,
+> `PXCardSurface`. Callouts and equation blocks keep the transcribed instrument frame below, corner
+> squares and all, which is why `PXRadius.frame` is still `0`.
+>
+> Do not "restore consistency" in either direction — not by squaring the cards again, and not by
+> rounding the callouts. The split is the design, not an inconsistency awaiting cleanup.
 
 Anatomy (top to bottom):
-1. **Caption** (optional, above the frame): `.figCaption` style — mono 12pt uppercase tracking-wider, fg3. Format `FIG.01 — THE PENDULUM`. 12pt gap below (web `mb-3`).
-2. **Frame**: 1px hairline border `fg4`, background `bg` (web uses `--color-bg-1` = same value). NO corner radius on the frame (crisp instrument look; the 6pt `radiusControl` is for buttons only).
-3. **Four corner squares**: 5×5pt filled `fg3`, positioned at each corner offset **−3pt** outside the border (square sits 3pt outside, 2pt inside — overlapping the 1px hairline). Render with `.overlay` + `offset`, `allowsHitTesting(false)`.
-4. **Expand button**: top-right inside frame, 8pt inset; `arrow.up.left.and.arrow.down.right` (≈ Maximize2) 16pt, 1.5 stroke weight, fg3 → fg0 on press. Opens fullscreen cover with the same caption; the inline slot empties while expanded (don't render the scene twice — web comment: scenes can't exist in two places).
-5. **Content slot**: horizontally scrollable if content is wider than the frame (`ScrollView(.horizontal)`); content centered.
-6. **HUD slot** (optional): overlay bottom-right, 12pt inset, hit-testing disabled.
+1. **Surface** (`PXCardSurface`): `PXRadius.card` **continuous** corner radius — `RoundedRectangle(style: .continuous)`, never `.circular`, which is the giveaway of a CSS `border-radius` port. 1px hairline `fg4` stroke, inset by half the line width so it does not straddle the clip edge, over a `bg` fill. Content is clipped to the same shape, which is what masks a grid wash or a watermark numeral to the corners.
+2. **No corner squares.** They cannot survive rounding — a 5pt square offset −3pt from a rounded corner floats free of the border — and they are the strongest web-transcription signal on the card. They remain on callouts and equation blocks, so the mark is still present in the reader.
+3. **Elevation**: a very soft, low-opacity shadow, scoped to `PXCardSurface`. This is the one sanctioned exception to the §5 depth rule; a rounded card carrying only a hairline reads as an empty outline on iOS. Keep it barely perceptible — it seats the card, it does not lift it. The tint is drawn from `fg4`, never black: under a near-white light-scheme card a black shadow goes grey and dirty.
+4. **Header row** (`caption != nil || expandable`), *inside* the card, closed by a 1px `fg4` divider: `.figCaption` leading — mono 12pt uppercase tracking-wider, fg3, format `FIG.01 — THE PENDULUM` — and the expand button trailing, on one row at `PXControlMetrics.minTouch` height. **Both moved here from the web layout**, where the caption floated above the frame and the expand glyph sat on the canvas. A bare glyph over a live `Canvas` competes with whatever the scene draws, vanishes against a bright frame, and steals a corner of the drawing; a header row fixes that structurally instead of by tinting, and is what lets the caption and the affordance actually line up. A card that is both captionless and non-expandable (`InlinePlotView`) draws no header and no divider rather than an empty band.
+5. **Expand button**: `arrow.up.left.and.arrow.down.right`, 15pt medium, `fg2`, in a full **44×44pt tap target** (HIG). No glass — it sits on a stable surface now and does not need it; glass stays for affordances that genuinely float over content, like the fullscreen close button. Opens a fullscreen presentation with the same caption, via a `.zoom` transition from `matchedTransitionSource`.
+6. **Content slot**: horizontally scrollable if content is wider than the frame (`ScrollView(.horizontal)`); content centered. While expanded the slot empties — don't render the scene twice, scenes hold fixed identity and can't exist in two places — but it **holds its last measured height**. Collapsing it to `height: 1` (as it did through P8) reflowed the article behind the cover, so the reader returned to a different scroll position, and left the zoom transition no geometry to collapse back into.
+7. **HUD slot** (optional): overlay bottom-trailing, 12pt inset, hit-testing disabled.
 
 Vertical rhythm: 64pt above/below the whole figure in article flow (web `my-16`).
 
-The same corner-bracket frame is reused by **callouts** and **equation blocks**:
+The corner-bracket frame (`CornerFrame`, `PXRadius.frame = 0`) is **still** what **callouts** and **equation blocks** wear — and, since P9 moved every card to `PXCardSurface`, they are now its only consumers. `CornerFrame` takes no `showsCorners` flag: a caller that wants a frame without the mark wants a card, and should use `PXCardSurface`.
 - **Callout** (`callout.tsx`): frame + corners as above, 2px left rail + mono 12pt uppercase label in variant color, body fg1, padding 24×20pt, 24pt vertical margins. Variants: intuition → amber "INTUITION"; math → cyan "MATH"; warning → magenta "CAUTION"; info → cyanDim "INFO"; note → fg3 "NOTE".
 - **EquationBlock** (`equation-block.tsx`): frame + corners, 2px **cyan** left rail, mono 12pt uppercase fg3 ID label ("EQ.01") above, equation fg0, padding 24×20pt (12×16pt compact), 32pt vertical margins, horizontal scroll for wide math.
 
@@ -191,7 +203,11 @@ Respect `accessibilityReduceMotion` (web honors `prefers-reduced-motion`): skip 
 - **Reading width**: max ~680pt (38em at 18pt) for article text, centered. iPad: content column + aside column (see `04-block-rendering-spec.md` §aside).
 - **Tables**: mono 14.4pt; header 11.7pt uppercase +0.1em fg3; cells fg1; row separators 1px fg4 bottom only (none under last row); cell padding 7×13.5pt; no vertical rules; horizontal scroll when wide.
 - **Grid wash**: large panels (hero cards, playground background) may draw a square grid in `.gridWash` — the signature backdrop texture. Spacing ~24pt, 1px lines.
-- **Depth rule**: no tonal surface stacking (bg-0/1/2 are identical on web). Elevation = hairline border + corner accents (+ glass for system chrome only).
+- **Scene control grid** (`PXControlMetrics`, `SceneControlRow` / `SceneSlider`): every control under a scene canvas sits on ONE shared grid — a fixed label column, a fixed readout column, the slider taking the remainder, and a 44pt minimum row height. **A scene must never hardcode a label or readout width.** The pre-P9 code did exactly that and accumulated twelve different label widths (20/40/44/48/56/64/72/76/84/88/96/104pt), so no two figures in an article lined up; the shared columns are the fix and the reason `SceneSlider` is not optional. Type is `.sceneControl` (Dynamic Type via `UIFontMetrics`, like every other `PXTypography` style) with `.monospacedDigit()` on readouts so numbers don't jitter as they change. At large Dynamic Type sizes on compact width the row wraps rather than crushing the slider.
+- **Depth rule**: no tonal surface stacking (bg-0/1/2 are identical on web). Elevation = hairline border + corner accents (+ glass for system chrome only). **One scoped exception**: `PXCardSurface`'s soft shadow (§3) — it is deliberate, not drift.
+- **Badges / chips** (`PXBadge`): a true `Capsule`, not a rounded rectangle — at this size the end cap is what makes the thing read as a chip rather than as a very small card, and it is the shape iOS uses for metadata that is not tappable. `.meta` type (mono 11pt uppercase +0.12em), padding 12×4pt. The horizontal padding is wider than the old 6pt rect needed: at a ~19pt height the cap's arc has a ~9.5pt radius and at 8pt of padding it cuts into the first and last glyph. **The vertical metrics are load-bearing** — `BrowseHomeView` renders a hidden blank badge to reserve height so its two index cards stay equal, so growing `.vertical` silently resizes those cards. Styles: `.outline` (fg3 on fg4 hairline), `.accent(c)`, `.filled(c)` (10% fill). `PXInlineCode` is *not* a chip and keeps `PXRadius.control`.
+- **Icon tiles** (`PXIconTile`): the leading mark on a navigable card — an SF Symbol at half the tile's side, on a `PXRadius.tile` continuous rounded square filled with the card's accent at **12%**. At 0% the glyph floats with nothing anchoring it to the corner; past ~20% the tile competes with the title for first read. Fill and glyph are always the *same* accent, so a tile never introduces a colour its card does not already own. 36pt at default type, `@ScaledMetric` to a 56pt cap — past that it stops being a mark and becomes a second card. Always `.accessibilityHidden(true)`: the card's title already names the destination.
+- **Branch accents** (`App/Browse/BranchAppearance.swift`): each taxonomy branch owns one glyph + accent (mechanics → cyan, electromagnetism → amber, relativity → purple, thermodynamics → orange), applied to its tile, its count badge and its watermark numeral so the card reads as one decision. Branches are database-driven, so the map is a decoration over an **open set** with a total fallback (`atom` in cyanDim) — an unknown slug must render deliberately, never blank. `accentMint` (success) and `accentMagenta` (caution) are deliberately excluded: they mean something specific elsewhere, and a branch is not a state.
 
 ---
 

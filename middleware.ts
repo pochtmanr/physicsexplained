@@ -7,7 +7,7 @@ const intl = createIntlMiddleware(routing);
 // Paths that require auth. Real session validation runs in the route handler /
 // Server Component via getSsrClient(); middleware only does a lightweight
 // presence-check on any Supabase auth cookie so we can redirect unauth'd users.
-const PROTECTED = /^\/(?:[a-z]{2}\/)?(?:ask|account)(?:\/|$)|^\/api\/ask(?:\/|$)/;
+const PROTECTED = /^\/(?:[a-z]{2}\/)?(?:ask|account)(?:\/|$)|^\/api\/(?:ask|account)(?:\/|$)/;
 
 function hasSupabaseCookie(req: NextRequest): boolean {
   // @supabase/ssr stores tokens in cookies named like `sb-<project-ref>-auth-token`.
@@ -53,5 +53,6 @@ export const config = {
   matcher: [
     "/((?!_next|favicon\\.ico|icon-.*\\.png|apple-icon\\.png|images|fonts|.*\\..*).*)",
     "/api/ask/:path*",
+    "/api/account/:path*",
   ],
 };

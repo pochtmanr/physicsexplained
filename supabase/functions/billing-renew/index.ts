@@ -55,11 +55,13 @@ Deno.serve(async () => {
   const db = createClient(mustEnv("SUPABASE_URL"), mustEnv("SUPABASE_SERVICE_ROLE_KEY"));
 
   // A: Sweep canceled subscriptions past their cycle_end → downgrade to free.
+  // provider='revolut' only: Apple rows are owned by the RevenueCat webhook,
+  // which downgrades them on EXPIRATION — the Revolut cron must never touch them.
   const nowIso = new Date().toISOString();
   await db.from("user_billing").update({
     plan: "free", tokens_allowance: 0, tokens_used: 0, free_questions_used: 0,
     status: "active", revolut_token: null, next_charge_at: null,
-  }).eq("status", "canceled").lte("cycle_end", nowIso);
+  }).eq("status", "canceled").eq("provider", "revolut").lte("cycle_end", nowIso);
 
   // A2: Roll lapsed free-plan cycles — the 3-question allowance renews monthly.
   // (The stream route also does this lazily on the next question; the sweep
@@ -84,11 +86,14 @@ Deno.serve(async () => {
   for (const row of planRows) priceByPlan[row.plan as string] = row.amount_cents as number;
 
   // B: Renew active paid subs whose next_charge_at has passed.
+  // provider='revolut' only: an Apple sub must never be sent to Revolut /orders
+  // — Apple auto-renews it and RevenueCat reports the outcome via the webhook.
   const { data: due } = await db
     .from("user_billing")
     .select("user_id,plan,revolut_token")
     .eq("status", "active")
     .neq("plan", "free")
+    .eq("provider", "revolut")
     .lte("next_charge_at", nowIso);
 
   const results: Array<{ userId: string; ok: boolean; error?: string }> = [];
@@ -137,7 +142,11 @@ Deno.serve(async () => {
 
       results.push({ userId: row.user_id, ok: true });
     } catch (e) {
-      await db.from("user_billing").update({ status: "past_due" }).eq("user_id", row.user_id);
+      // Belt-and-suspenders: query B already filtered to provider='revolut', but
+      // keep the guard here so an Apple row can never be flipped to past_due by
+      // the Revolut cron.
+      await db.from("user_billing").update({ status: "past_due" })
+        .eq("user_id", row.user_id).eq("provider", "revolut");
       results.push({ userId: row.user_id, ok: false, error: (e as Error).message });
     }
   }
