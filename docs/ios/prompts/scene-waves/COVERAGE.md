@@ -2,7 +2,7 @@
 
 Running total of web Canvas scenes with a native SwiftUI port. Updated at the end of every P6 session.
 
-**Native: 49 / 503 registered web scenes.**
+**Native: 62 / 503 registered web scenes.**
 
 The denominator is `lib/content/simulation-registry.ts`. It includes the playbook §10 JSXGraph scenes, which are not ctx translations and wait on the native `PlotView` — they will never be ported by this process, so the ceiling is below 503.
 
@@ -13,6 +13,7 @@ The denominator is `lib/content/simulation-registry.ts`. It includes the playboo
 | scene wave 01 | 22 | 15 | 2026-07-19 | Entries 1–15, the SpacetimeDiagram wrappers. `SceneRegistry+SceneWave01.swift`. |
 | scene wave 01b | 7 | 7 | 2026-07-21 | **Wave 01 complete.** Entries 16–18 (Sphere/Tangent/Geodesic) + 19–22 (the curvature scenes: `SphericalTriangleHolonomyScene`, `MetricEllipsesScene`, `RiemannVsFlatScene`, `RicciScalarHeatmapScene`). `SceneRegistry+SceneWave01b.swift`; new math `PXMath/Geometry/{Sphere,Christoffel,Metric}.swift`. All screenshotted on-device. |
 | scene wave 02 | 18 | 18 | 2026-07-21 | **Complete.** P6-2 ported the 11 classical-mechanics scenes not already shipping; the other 7 were already done (4 kinematics + 3 curated-catalog). `SceneRegistry+SceneWave02.swift`; new math `PXMath/ClassicalMechanics/{CircularMotion,Friction}.swift`. Registry 38→49. On-device visual pass handed off. |
+| scene wave 03 (ch.1) | 190 | 13 | 2026-07-22 | **Chunk 1 (Electrostatics) of 12.** The 13 unported `electrostatics`-module scenes (the other 5 ship from P4-4). `SceneRegistry+SceneWave03Electrostatics.swift`; new math `PXMath/Constants.swift`, `PXMath/Electromagnetism/MethodOfImages.swift`, `Electrostatics.{energyDensity,potentialDifference}`. Registry 49→62. On-device visual pass handed off (no simulator on this machine). |
 | (not a wave) P7-2 | 1 | 1 | 2026-07-19 | `OrbitalMechanicsPlayground` — the Play tab, registered so the catalog id resolves. `SceneRegistry+Playground.swift`. |
 | (not a wave) kinematics | 4 | 4 | 2026-07-21 | Module-1 essay figures FIG.01a–d (`InclinedPlane`, `TangentZoom`, `FreeFall`, `KinematicsGraph`) — authored in `motion-in-a-straight-line` MDX, not the curated catalog. `SceneRegistry+Kinematics.swift`. |
 
@@ -22,9 +23,9 @@ P4's waves are **catalog batches** — the curated `lib/ask/scene-catalog.ts` en
 
 ## Verification
 
-`SceneRegistry.registeredIds.count` is 52 in a Debug build and 49 in Release. The three extra are harnesses, not figures, and all carry a `__` id prefix: `__demo`, plus the two shared-canvas demos `__spacetime_demo` and `__manifold_demo`. `SceneWave01RegistrationTests.shippingCoverage` asserts the 49 by filtering that prefix, so this file and the registry cannot drift apart silently.
+`SceneRegistry.registeredIds.count` is 65 in a Debug build and 62 in Release. The three extra are harnesses, not figures, and all carry a `__` id prefix: `__demo`, plus the two shared-canvas demos `__spacetime_demo` and `__manifold_demo`. `SceneWave01RegistrationTests.shippingCoverage` asserts the 62 by filtering that prefix, so this file and the registry cannot drift apart silently.
 
-Note that the assertion is registry-wide but lives in a wave suite, so a registration from outside the wave process moves it — P7-2's playground took 26 to 27, `registerKinematics()` (the four module-1 essay figures) took 27 to 31, `registerSceneWave01b()` took 31 to 34 (the first three Manifold wrappers) and then 34 to 38 (its four curvature scenes, completing wave 01b). The guard is overdue to move to its own file, out of the wave suite.
+Note that the assertion is registry-wide but lives in a wave suite, so a registration from outside the wave process moves it — P7-2's playground took 26 to 27, `registerKinematics()` (the four module-1 essay figures) took 27 to 31, `registerSceneWave01b()` took 31 to 34 (the first three Manifold wrappers) and then 34 to 38 (its four curvature scenes, completing wave 01b), and `registerSceneWave03Electrostatics()` took 49 to 62. The guard is overdue to move to its own file, out of the wave suite.
 
 P6-1 found that `registerSharedCanvasDemos()` was written in P4-2 but never called, leaving both shared canvases unreachable from the Gallery despite the deep links in their doc comments. It is now called from `registerAll()`.
 

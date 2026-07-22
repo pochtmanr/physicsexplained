@@ -89,11 +89,12 @@ will not sign without it.
 
 ### 1.3 `[YOU]` — Accept the agreements
 
-App Store Connect → **Business** → **Agreements, Tax, and Banking**. The *Paid Applications*
-agreement is not needed (the app is free and, per risk R7, sells nothing), but the **free
-apps agreement must show Active** or your build can never be submitted. Accept any pending
-agreement now; a stale agreement is the single most common reason a finished build sits
-un-submittable.
+App Store Connect → **Business** → **Agreements, Tax, and Banking**. Since P10 the app ships
+Apple In-App Purchase subscriptions (R7 reframed — commerce now exists), so the **Paid
+Applications agreement must show Active** and **banking + tax must be complete** — otherwise no
+product loads and every `getOfferings` returns empty (details in `10-revenuecat-setup.md`
+§1.1). The **free-apps agreement** must also show Active. Accept any pending agreement now; a
+stale agreement is the single most common reason a finished build sits un-submittable.
 
 ---
 
@@ -345,9 +346,12 @@ Do this before archiving; the upload needs somewhere to land.
 
 - Price: **Free**.
 - Availability: all territories (or restrict as you like).
-- **Do not** configure in-app purchases. Per risk R7 this app sells nothing in-app, and the
-  quota wall must not link to web payment. Adding an IAP product here contradicts the review
-  notes and invites scrutiny.
+- **Configure the two auto-renewable subscriptions** (Starter / Pro) in a single subscription
+  group, per `10-revenuecat-setup.md` §1.2 — since P10 IAP is required to function (R7
+  reframed), and a **subscription review screenshot** (of the in-app paywall) is required per
+  product. What stays banned: the app must **never link out to web checkout or an external
+  payment page** — purchasing goes through Apple IAP, and the Apple system
+  manage-subscriptions sheet is the only "manage" affordance.
 
 ### 6.3 App Privacy (nutrition labels)
 
@@ -525,7 +529,10 @@ xcrun altool --upload-app -f /tmp/pe-export/*.ipa -t ios \
      This is the highest-risk item on the page; get it right.
    - **Notes**: paste from `docs/ios/store/review-notes.md`. Cover:
      - Answers in Ask are AI-generated; each message has a report action (risk R15).
-     - The app contains **no purchases**; quota limits sell nothing and link nowhere (R7).
+     - The app offers **two auto-renewable subscriptions** (Starter / Pro) via Apple IAP
+       (RevenueCat); **Restore Purchases** works; there is **no external payment link** — the
+       quota wall's upgrade CTA opens the in-app Apple paywall only (R7 reframed in P10). Web
+       (Revolut) and iOS (Apple) plans reconcile server-side into one account.
      - Account deletion lives in Settings → Delete Account (guideline 5.1.1(v)).
      - Sign in with Apple is offered alongside Google (guideline 4.8).
      - Age rating 4+ rationale: educational physics.
@@ -547,7 +554,7 @@ Typically 24–48 hours.
 | **5.1.1(v)** Account deletion | Deletion must be *in-app* and actually delete | `DeleteAccountSection.swift` + `/api/account/delete` calling `auth.admin.deleteUser` ✅ — **but the endpoint must be committed and deployed** (§5 item 2) |
 | **5.1.2** Data use | Privacy policy contradicts nutrition labels | §5 item 3 — the policy currently omits accounts and chat content ⚠️ |
 | **2.1** App completeness | Reviewer cannot get past the sign-in wall | §9 step 3 demo account ⚠️ |
-| **3.1.1** In-app purchase | Any link to external payment from a quota wall | Never link out from the 402 wall (R7) |
+| **3.1.1** In-app purchase | External/web payment link for digital goods, or a broken Restore | IAP via Apple/RevenueCat is the only purchase path; **Restore Purchases** implemented; the 402 wall's upgrade CTA opens the in-app paywall — **never** a web-checkout link (R7 reframed in P10; links-out still banned) |
 | **1.2 / 4.7** AI content | Generated content with no reporting mechanism | In-app AI disclosure + per-message report action (R15) |
 | **2.3.x** Accurate metadata | Screenshots not from the shipping build | Capture from the Release build (§6.5) |
 | **5.1.1** Data minimisation | — | No analytics SDK ships; don't add one |

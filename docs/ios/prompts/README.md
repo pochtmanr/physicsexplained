@@ -15,7 +15,7 @@ One prompt = one focused session. Run them **in order**; every prompt assumes th
 | P6 scene waves | `scene-waves/wave-*.md` | Opus 4.8 |
 | P7 playground | `P7-1` … `P7-3` | Opus 4.8 |
 | P8 polish + store | `P8-1` … `P8-4` | Opus 4.8 (+ user for signing) |
-| P10 monetization (dual-provider subs) | `P10-1` … `P10-4` | Opus 4.8 (+ user for ASC/RevenueCat) |
+| P10 monetization (dual-provider subs) | `P10-1` … `P10-4`, `P10-5` (paywall/account polish) | Opus 4.8 (+ user for ASC/RevenueCat) |
 
 > P10 adds Apple IAP on iOS via RevenueCat, reconciled into the same `user_billing` row the web (Revolut) billing writes — see `../10-revenuecat-setup.md`. It reverses the R7 "no commerce" stance for iOS IAP (external payment links stay banned). Run P10 only once the app is otherwise store-ready.
 

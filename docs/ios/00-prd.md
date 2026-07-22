@@ -69,17 +69,17 @@ Acceptance: presets match web behavior qualitatively (stable orbits stay stable)
 ### 3.6 Auth & account
 - Sign-in methods: **Sign in with Apple, Google, email OTP (6-digit code)** — all via supabase-swift against the existing Supabase Auth. (Apple is mandatory under App Review 4.8 once Google is offered.)
 - The knowledge base and playground require **no account**; only Ask is gated. Sign-in is prompted contextually on first Ask use.
-- Settings: account info + plan display (read-only from `user_billing`), sign out, **account deletion** (App Review 5.1.1(v) — hard launch blocker; server support per `06-backend-changes.md`). No appearance control — the app follows the system light/dark setting; reader text size lives in the topic screen's actions menu.
+- Settings → Account mirrors the web profile (avatar, name, email, usage meter, plan) and — since P10 — carries a plan control: **Upgrade** (opens the in-app Apple IAP paywall) when free, **Manage subscription** (Apple system sheet) for an Apple subscriber, and a read-only "Managed on the web" line for a Revolut subscriber (no external link). Plus account info rows (User ID / Provider / Joined), **account deletion** (App Review 5.1.1(v) — hard launch blocker; server support per `06-backend-changes.md`), and **Sign out** as the final row. No appearance control — the app follows the system light/dark setting; reader text size lives in the topic screen's actions menu.
 
-### 3.7 Quota wall (402) — no commerce
-When the API returns `402 QUOTA_EXHAUSTED`, show a neutral, well-designed "You've used your included questions" state. **No purchase button, no external link, no pricing, no mention of the website's plans.** Users who upgraded on the web get their quota automatically (same Supabase account). StoreKit IAP is explicitly post-MVP.
+### 3.7 Quota wall (402) — in-app upgrade path
+When the API returns `402 QUOTA_EXHAUSTED`, show a neutral, well-designed "You've used your included questions" state. Since P10 the quota case offers a **"See plans"** CTA that opens the **in-app Apple IAP paywall** (subscriptions brokered by RevenueCat). **No external payment link and no link to the website's checkout ever appears** — purchasing happens through Apple IAP inside the app, and users who upgraded on the web get their quota automatically on the same Supabase account (reconciled server-side, see `10-revenuecat-setup.md`). The `past_due` case still reads "there's a billing issue — manage it on the web" without a link.
 
 ## 4. Non-goals (MVP)
 
 | Out | Why / when |
 |---|---|
 | Learning app (lessons, progression, exams) | Next product phase, built on this codebase; PRD to follow |
-| In-app purchases / any commerce | Post-MVP; avoids IAP entitlement risk (Risk R7) |
+| ~~In-app purchases~~ → **shipped in P10** | Now present on iOS: Apple IAP subscriptions (Starter/Pro) via RevenueCat, reconciled into `user_billing` alongside web Revolut billing (R7 reframed). External/web payment links remain banned. |
 | Hebrew / RTL / Russian | Post-MVP; `locale` plumbing kept throughout, hardcoded `"en"` |
 | Problems & equations surfaces | Web-only for now (tables exist; no iOS UI) |
 | Offline-first guarantees | Cache-then-network only; no sync engine, no downloads UI |
@@ -103,7 +103,7 @@ When the API returns `402 QUOTA_EXHAUSTED`, show a neutral, well-designed "You'v
 | A2 | iOS 26+ only, Liquid Glass | User Q&A |
 | A3 | English only at MVP; locale plumbing retained | User Q&A |
 | A4 | Auth = Apple + Google + OTP | User Q&A |
-| A5 | 402 = graceful wall, no selling | User Q&A |
+| A5 | 402 = graceful wall; in P10 it gained an in-app upgrade CTA (Apple IAP), external payment links still banned | User Q&A; revised P10 |
 | A6 | Executor = Claude Code + Opus 4.8 on user's Mac; P0/P1 by Fable | User Q&A |
 | A7 | Offline cache is a nicety, not a requirement | User Q&A (offline not selected) |
 | A8 | Supabase Auth CAPTCHA is OFF (must verify in P0 before P5) | **Unverified — P0 checklist** |

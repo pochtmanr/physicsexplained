@@ -345,22 +345,22 @@ Per chunk; check off as ported + registered. `(P4-4)` = already shipping.
 ### Chunk 1 — Electrostatics
 - [x] FieldLinesPointScene — (P4-4)
 - [x] FieldLinesDipoleScene — (P4-4)
-- [ ] FieldLinesParallelPlatesScene
+- [x] FieldLinesParallelPlatesScene
 - [x] GaussianSurfacesScene — (P4-4)
-- [ ] GaussSymmetryScene
-- [ ] FluxThroughSurfaceScene
-- [ ] PotentialSurfaceScene
+- [x] GaussSymmetryScene
+- [x] FluxThroughSurfaceScene
+- [x] PotentialSurfaceScene
 - [x] EquipotentialLinesScene — (P4-4)
-- [ ] VoltageRampScene
+- [x] VoltageRampScene
 - [x] ParallelPlateCapacitorScene — (P4-4)
-- [ ] CapacitorChargingScene
-- [ ] EnergyDensityScene
-- [ ] FaradayCageScene
-- [ ] ConductorChargeDistributionScene
-- [ ] LightningShelterScene
-- [ ] ImageChargePlaneScene
-- [ ] ImageChargeSphereScene
-- [ ] InducedChargeScene
+- [x] CapacitorChargingScene
+- [x] EnergyDensityScene
+- [x] FaradayCageScene
+- [x] ConductorChargeDistributionScene
+- [x] LightningShelterScene
+- [x] ImageChargePlaneScene
+- [x] ImageChargeSphereScene
+- [x] InducedChargeScene
 
 ### Chunk 2 — Fields in matter
 - [ ] DipoleAlignmentScene
@@ -563,3 +563,62 @@ Per chunk; check off as ported + registered. `(P4-4)` = already shipping.
 
 ## Notes
 (append per-chunk divergence notes here)
+
+### Chunk 1 — Electrostatics (ported 2026-07-22, Opus 4.8)
+
+Registry 49 → 62. `swift test` green (565 tests), `xcodebuild` iOS BUILD SUCCEEDED.
+Ports written by six parallel agents (one per topic cluster), integrated + built
+centrally. Registration file `SceneRegistry+SceneWave03Electrostatics.swift`,
+entry `registerSceneWave03Electrostatics()`; guard `shippingCoverage` 49 → 62;
+new suite `Wave03ElectrostaticsRegistrationTests`.
+
+**Math (PXMath):**
+- New `Constants.swift` (full SI set from `constants.ts`) as the shared EM
+  foundation for later chunks; `Electrostatics.epsilon0/kCoulomb` now re-export
+  from it (single source of truth). Goldens in `ConstantsTests`.
+- `Electrostatics.energyDensity(field:kappa:)` (from `capacitance.ts`) and
+  `Electrostatics.potentialDifference(sources:a:b:)` (from `electric-potential.ts`)
+  added, with goldens in `ElectrostaticsTests`.
+- New `MethodOfImages.swift` (`imageForPlane`, `imageForSphere`,
+  `forceOnRealCharge`) + `MethodOfImagesTests` goldens.
+- Note: `potentialDifference` is currently unused by any chunk-1 scene — the
+  web `voltage-ramp-scene` assigns it but never reads it (dead code); the port
+  is kept (correct + golden-tested) for later chunks.
+
+**Per-scene divergences** (all also in each file's doc-comment header):
+- Universal: `clearRect` / DPR scaling / opaque full-canvas `bg` fill removed
+  (§2.4/§3); all hardcoded hex mapped to `SceneTokens` (`#6FB8C6`/rgba→cyan,
+  `#FF6ADE`/`#FF4FD8`→magenta, `#F2C570`/`#E4C27A`→amber, `#7AB6FF`→blue,
+  `fg0/1/2/3`→textBright/Dim/Mute/Faint); `shadowBlur`→`radius` halved.
+  `useSceneSize` floors absent → `minHeight: 0`. Reduce Motion freezes ambient
+  motion (the web rAF hook does not honor it — playbook rule + exemplar).
+- `PotentialSurfaceScene`: heatmap+iso sampling hoisted to a process-once
+  `static let` (was ~15k evals/frame). Heatmap now a fixed domain grid (96×120)
+  instead of pixel-derived cells (what makes it hoistable). `potentialColor`
+  colormap expressed as accent-over-surface opacity (token-only, theme-adaptive)
+  rather than an opaque dark→accent RGB lerp — near-zero V shows the card
+  surface, consistent with §3.
+- `VoltageRampScene`: straight/zigzag `<Button>` pair → segmented `Picker`;
+  route sweep derived from ticker phase (switching route no longer resets the
+  charge to A). Omitted the web's dead `potentialDifference` call.
+- `CapacitorChargingScene`: reset via `.id(run)` re-identify (SceneTicker has no
+  mid-stream reset) — reset now also snaps the current dots to start; Reduce
+  Motion renders one settled frame (t = 5·RC). Resistor mask `#1A1D24` → `bg1`
+  (theme-aware surface; verify in light mode).
+- `GaussSymmetryScene` / `FluxThroughSurfaceScene`: self-contained (no math dep,
+  formulas inlined). FluxThroughSurface's canvas pointer-drag → native
+  `DragGesture(minimumDistance: 0)` reading size via `.onGeometryChange`.
+- `ImageCharge*` / `InducedCharge`: plain `Canvas` (no ticker — nothing
+  animates; SwiftUI redraws only on state/size change, honoring §5). Scene B
+  sphere fill `rgba(86,104,127,…)` (stray slate) → nearest token
+  `textMute.opacity(…)`. `toExponential(2)`→`%.2e` (two-digit exponent), cosmetic.
+- `LightningShelterScene`: two distinct blue literals collapse onto `tokens.blue`;
+  bolt zigzag is index-derived (deterministic), top wobble `sin(t·13.1)` verbatim.
+- `ConductorChargeDistributionScene`: control hint moved to a second
+  `SceneControlRow` (a full sentence is a poor fit for `SceneSlider`'s readout
+  column); blob outline precomputed once.
+
+**Not verified by me** (per project constraint — no simulator on this machine):
+the §9.2 on-device DoD (Gallery deep-link screenshot, web-snapshot side-by-side,
+light+dark eyes-on). Handed off to the user. Deep links:
+`physicsexplained://gallery/scene/<SceneId>` for each of the 13 ids above.
