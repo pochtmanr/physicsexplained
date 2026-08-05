@@ -1,6 +1,8 @@
 {
   "hero": {
     "tag": "physics.it.com · V0.5",
+    "appBadge": "Новое",
+    "appAnnounce": "Приложение для iPhone и iPad уже в App Store",
     "titleLead": "Если я видел дальше других, то лишь потому, что стоял",
     "titleHighlight": "на плечах гигантов.",
     "subtitle": "From pendulums to planets — real physics, real simulations, no videos.",
