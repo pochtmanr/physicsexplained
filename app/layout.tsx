@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/next";
 import { getLocale } from "next-intl/server";
 import { getDirection } from "@/i18n/config";
 import { SITE } from "@/lib/seo/config";
@@ -89,7 +88,6 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col font-sans antialiased">
         {children}
-        <Analytics />
       </body>
     </html>
   );

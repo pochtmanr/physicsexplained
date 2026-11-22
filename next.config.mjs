@@ -6,16 +6,16 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
 
 // Content-Security-Policy. Shipped Report-Only first so we can observe
-// violations on KaTeX / jsxgraph / Turnstile / Supabase / Vercel Analytics
+// violations on KaTeX / jsxgraph / Turnstile / Supabase
 // before promoting to an enforcing `Content-Security-Policy` header.
 const csp = [
   "default-src 'self'",
   // Next.js inlines a small runtime script; unsafe-eval is needed in dev.
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com https://*.vercel-scripts.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://challenges.cloudflare.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com https://vitals.vercel-insights.com https://*.vercel-scripts.com",
+  "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://challenges.cloudflare.com",
   "frame-src https://challenges.cloudflare.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",

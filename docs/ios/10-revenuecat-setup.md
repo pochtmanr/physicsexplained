@@ -147,8 +147,8 @@ Place these **secrets** yourself (never share them with the assistant):
 
 | Secret | Where |
 |---|---|
-| `REVENUECAT_WEBHOOK_AUTH` (webhook Authorization token from §2.7) | web env: `.env.local` + Vercel |
-| `REVENUECAT_SECRET_KEY` (`sk_…`, only if using server reconcile fallback) | web env: `.env.local` + Vercel |
+| `REVENUECAT_WEBHOOK_AUTH` (webhook Authorization token from §2.7) | web env: `.env.local` + `.env.production` on `core-apps` |
+| `REVENUECAT_SECRET_KEY` (`sk_…`, only if using server reconcile fallback) | web env: `.env.local` + `.env.production` on `core-apps` |
 | RevenueCat Apple public SDK key | also add to `App/PhysicsConfig.plist` as `RevenueCatPublicKey` (gitignored; the example plist documents it) |
 
 ---

@@ -46,7 +46,7 @@ pnpm test:watch    # watch mode
 
 ## Deploy
 
-Vercel — auto-deploy on push to `main`.
+Self-hosted on Azure (`core-apps`): `next build` + `next start` under pm2 behind nginx. Deploys are manual: build the new commit in a `-next` directory on the server, then swap it in. Pages are built from the database, so a deploy is also needed after `pnpm content:publish`.
 
 ## Project structure
 

@@ -29,7 +29,7 @@ Return to the main session and say "integrate". It will:
    (`content:publish-seeds`) to Supabase.
 3. Run gates: `tsc --noEmit`, `pnpm test` (includes `validateContentRefs`),
    `pnpm build`, dev-server spot checks.
-4. Push `main` and deploy to Vercel production.
+4. Push `main` and deploy to production (build and swap on `core-apps`).
 5. Verify `/en/relativity` shows all 13 modules live, then clean up worktrees.
 
 ## Conflict-avoidance contract (enforced by SHARED.md)

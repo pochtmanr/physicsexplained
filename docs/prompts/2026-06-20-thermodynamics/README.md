@@ -55,7 +55,7 @@ references.
 3. Run the gates: `npx tsc --noEmit`, `pnpm test` (validateContentRefs + ref
    tests), `pnpm build`, and dev-server spot checks of a few `/en/thermodynamics/<slug>`
    pages in both themes.
-4. Push `main` and deploy to Vercel production.
+4. Push `main` and deploy to production (build and swap on `core-apps`).
 5. Verify `/en/thermodynamics` shows all 8 modules and 30 live topics, then clean
    up the worktrees (`git worktree remove …`).
 6. **Optional polish (integration-time):** enrich the 12 already-existing
