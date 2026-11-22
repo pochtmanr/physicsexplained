@@ -64,7 +64,7 @@ export default async function OGImage({
         }}
       >
         <div style={{ fontSize: 36, color: "#6FB8C6", textTransform: "uppercase", letterSpacing: 4 }}>
-          /play/{params.slug}
+          {`/play/${params.slug}`}
         </div>
         <div style={{ fontSize: 96, fontWeight: 700, marginTop: 24 }}>
           {meta.slug.replace(/-/g, " ")}
