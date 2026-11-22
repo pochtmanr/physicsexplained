@@ -51,7 +51,10 @@ export default async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next|favicon\\.ico|icon-.*\\.png|apple-icon\\.png|images|fonts|.*\\..*).*)",
+    // Generated OG images are addressed with their real `/{locale}/…` segment;
+    // letting next-intl see them would 307 the `/en/…` ones, which link-preview
+    // scrapers do not reliably follow.
+    "/((?!_next|favicon\\.ico|icon-.*\\.png|apple-icon\\.png|images|fonts|.*opengraph-image.*|.*\\..*).*)",
     "/api/ask/:path*",
     "/api/account/:path*",
   ],

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 import { getPlayground } from "../_components/playground-meta";
+import { SITE } from "@/lib/seo/config";
 
 export const runtime = "edge";
 export const alt = "Physics playground";
@@ -13,12 +14,14 @@ interface Params {
 }
 
 export default async function OGImage({
-  params,
-  searchParams,
+  params: paramsPromise,
+  searchParams: searchParamsMaybe,
 }: {
-  params: Params;
-  searchParams: Record<string, string>;
+  params: Promise<Params>;
+  searchParams?: Record<string, string>;
 }) {
+  const params = await paramsPromise;
+  const searchParams = searchParamsMaybe ?? {};
   const meta = getPlayground(params.slug);
   if (!meta) {
     return new ImageResponse(
@@ -28,7 +31,7 @@ export default async function OGImage({
   }
 
   // Best-effort decode of state for subtitle text.
-  let subtitle = "Physics.is";
+  let subtitle: string = SITE.name;
   if (searchParams.s) {
     try {
       const padded = (searchParams.s + "===").slice(0, searchParams.s.length + ((4 - (searchParams.s.length % 4)) % 4));
@@ -70,7 +73,7 @@ export default async function OGImage({
           {subtitle}
         </div>
         <div style={{ fontSize: 28, color: "#56687F", marginTop: "auto", display: "flex", justifyContent: "flex-end" }}>
-          physics.is
+          {new URL(SITE.baseUrl).host}
         </div>
       </div>
     ),

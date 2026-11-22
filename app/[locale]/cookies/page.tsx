@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { locales } from "@/i18n/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
 import Link from "next/link";
 import { WIDE_CONTAINER } from "@/lib/layout";
 
@@ -13,8 +14,13 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "legal.cookies.meta" });
-  return { title: t("title"), description: t("description") };
+  const t = await getTranslations({ locale, namespace: "legal.cookies" });
+  return buildPageMetadata({
+    path: "/cookies",
+    locale,
+    title: t("title"),
+    description: t("meta.description"),
+  });
 }
 
 export default async function CookiesPage({

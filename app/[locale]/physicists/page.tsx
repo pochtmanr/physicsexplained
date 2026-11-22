@@ -8,15 +8,27 @@ import { WIDE_CONTAINER } from "@/lib/layout";
 import { CenturyChips } from "@/components/layout/century-chips";
 import { PHYSICISTS } from "@/lib/content/physicists";
 import { SITE } from "@/lib/seo/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
 import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/jsonld";
 
-export const metadata: Metadata = {
-  title: "Physicists",
-  description:
-    "The people behind the laws — brief profiles of the physicists referenced across the site.",
-  alternates: { canonical: `${SITE.baseUrl}/physicists` },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const [tNav, tPage] = await Promise.all([
+    getTranslations({ locale, namespace: "common.footer" }),
+    getTranslations({ locale, namespace: "common.pages.physicists" }),
+  ]);
+  return buildPageMetadata({
+    path: "/physicists",
+    locale,
+    title: tNav("physicists"),
+    description: tPage("subtitle"),
+  });
+}
 
 function getCentury(born: string): number {
   const match = born.match(/\d+/);

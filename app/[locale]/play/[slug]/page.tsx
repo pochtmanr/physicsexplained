@@ -5,6 +5,7 @@ import { PlaygroundShell } from "../_components/playground-shell";
 import { PlaygroundLoader } from "./playground-loader";
 import { locales } from "@/i18n/config";
 import { SITE } from "@/lib/seo/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
 
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
@@ -26,10 +27,14 @@ export async function generateMetadata({
   const meta = getPlayground(slug);
   if (!meta) return {};
   const t = await getTranslations({ locale });
-  return {
+  return buildPageMetadata({
+    path: `/play/${slug}`,
+    locale,
     title: t(meta.titleKey),
-    alternates: { canonical: `${SITE.baseUrl}/play/${slug}` },
-  };
+    description: t("play.indexSubtitle"),
+    // The colocated opengraph-image.tsx supplies the image.
+    defaultImage: false,
+  });
 }
 
 export default async function PlaygroundPage({

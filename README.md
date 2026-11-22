@@ -24,7 +24,7 @@ Classical mechanics is live. Quantum, relativity, thermodynamics, electromagneti
 
 ## Stack
 
-Next.js 15 &middot; React 19 &middot; TypeScript &middot; Tailwind v4 &middot; MDX &middot; KaTeX &middot; Motion &middot; JSXGraph &middot; Supabase &middot; Vercel Analytics
+Next.js 15 &middot; React 19 &middot; TypeScript &middot; Tailwind v4 &middot; MDX &middot; KaTeX &middot; Motion &middot; JSXGraph &middot; Supabase
 
 **i18n**: English + Russian via `next-intl`
 

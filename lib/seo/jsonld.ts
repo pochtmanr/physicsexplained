@@ -11,11 +11,48 @@ const PUBLISHER = {
   ...(SITE.sameAs.length > 0 ? { sameAs: [...SITE.sameAs] } : {}),
 };
 
+/** The company that owns and operates the site. */
+const COMPANY = {
+  "@type": "Organization" as const,
+  name: SITE.company.name,
+  url: SITE.company.url,
+  sameAs: [...SITE.company.sameAs],
+};
+
 export function buildOrganizationJsonLd() {
   return {
     "@context": "https://schema.org",
     ...PUBLISHER,
     description: SITE.tagline,
+    email: SITE.company.email,
+    parentOrganization: COMPANY,
+  };
+}
+
+/** The native iPhone / iPad app, a free download on the App Store. */
+export function buildIosAppJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: SITE.iosApp.name,
+    description: SITE.tagline,
+    applicationCategory: "EducationalApplication",
+    operatingSystem: "iOS, iPadOS",
+    url: SITE.iosApp.url,
+    installUrl: SITE.iosApp.url,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: COMPANY,
+  };
+}
+
+export function buildAboutPageJsonLd(url: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    url,
+    name: `About ${SITE.name}`,
+    isPartOf: { "@type": "WebSite", name: SITE.name, url: SITE.baseUrl },
+    mainEntity: { ...PUBLISHER, parentOrganization: COMPANY },
   };
 }
 

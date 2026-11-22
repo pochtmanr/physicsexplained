@@ -14,6 +14,11 @@
     "termsOfService": "Terms of Service",
     "cookiePolicy": "Cookie Policy",
     "copyright": "© 2026 Simnetiq Ltd",
+    "moreFrom": "More from {company}:",
+    "products": {
+      "doppler": "private VPN",
+      "smsCode": "virtual numbers for SMS codes"
+    },
     "starOnGithub": "Star on GitHub",
     "newsletterHeading": "Stay in the loop",
     "newsletterPlaceholder": "you@example.com",
@@ -31,9 +36,17 @@
     "terms": "Terms",
     "fromOurTeam": "From our team",
     "products": {
-      "doppler": "VPN · dopplervpn.org",
-      "smsActivate": "iOS app"
+      "doppler": "Fast, private VPN",
+      "smsCode": "Numbers for SMS codes"
     }
+  },
+  "stores": {
+    "ios": "{name} on the App Store",
+    "android": "{name} on Google Play",
+    "iosShort": "App Store",
+    "androidShort": "Google Play",
+    "iosCta": "Get it on the App Store",
+    "androidCta": "Get it on Google Play"
   },
   "backLinks": {
     "dictionary": "← Dictionary",

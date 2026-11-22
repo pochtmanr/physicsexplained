@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
-import { locales } from "@/i18n/config";
+import { locales, defaultLocale } from "@/i18n/config";
+import { SITE } from "@/lib/seo/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
+import { buildAboutPageJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 import { ContactForm } from "@/components/forms/contact-form";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  title: "About · physics",
+// The About page is written in English only, so other locales canonicalise here.
+export const metadata: Metadata = buildPageMetadata({
+  path: "/about",
+  locale: defaultLocale,
+  title: "About",
   description:
-    "About Physics.explained — a visual-first reader's guide to the classical and modern worlds.",
-};
+    "Physics.explained is a visual-first reader's guide to physics with live, accurate simulations, made by Simnetiq Ltd, an independent software studio.",
+  realLocales: [defaultLocale],
+});
 
 export default async function AboutPage({
   params,
@@ -23,6 +31,7 @@ export default async function AboutPage({
 
   return (
     <main className="mx-auto max-w-[720px] px-6 pb-32">
+      <JsonLd data={buildAboutPageJsonLd(SITE.buildUrl("/about"))} />
       <header className="mt-16 mb-24">
         <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-cyan-dim)]">
           § 00 · ABOUT
@@ -74,11 +83,11 @@ export default async function AboutPage({
           <p>
             Physics.explained is made by{" "}
             <a
-              href="https://www.simnetiq.store/"
+              href={`${SITE.company.url}/`}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
             >
-              Simnetiq Ltd
+              {SITE.company.name}
             </a>
             , a small independent studio working on tools and writing at the
             edge of science, design, and code.
@@ -111,10 +120,10 @@ export default async function AboutPage({
               DIRECT
             </div>
             <a
-              href="mailto:hello@simnetiq.store"
+              href={`mailto:${SITE.company.email}`}
               className="mt-2 block font-mono text-sm text-[var(--color-fg-1)] hover:text-[var(--color-cyan)]"
             >
-              hello@simnetiq.store
+              {SITE.company.email}
             </a>
           </div>
           <div>
@@ -124,7 +133,7 @@ export default async function AboutPage({
             <a
               href="https://x.com/simnetiq"
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
               className="mt-2 block font-mono text-sm text-[var(--color-fg-1)] hover:text-[var(--color-cyan)]"
             >
               @simnetiq on X

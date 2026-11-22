@@ -14,6 +14,11 @@
     "termsOfService": "תנאי שימוש",
     "cookiePolicy": "מדיניות עוגיות",
     "copyright": "© 2026 Simnetiq Ltd",
+    "moreFrom": "עוד מבית {company}:",
+    "products": {
+      "doppler": "‏VPN פרטי",
+      "smsCode": "מספרים וירטואליים לקודי SMS"
+    },
     "starOnGithub": "לכוכב בגיטהאב",
     "newsletterHeading": "הישארו מעודכנים",
     "newsletterPlaceholder": "you@example.com",
@@ -31,9 +36,17 @@
     "terms": "מונחים",
     "fromOurTeam": "מהצוות שלנו",
     "products": {
-      "doppler": "VPN · dopplervpn.org",
-      "smsActivate": "אפליקציית iOS"
+      "doppler": "‏VPN מהיר ופרטי",
+      "smsCode": "מספרים לקודי SMS"
     }
+  },
+  "stores": {
+    "ios": "{name} ב‑App Store",
+    "android": "{name} ב‑Google Play",
+    "iosShort": "App Store",
+    "androidShort": "Google Play",
+    "iosCta": "להורדה ב‑App Store",
+    "androidCta": "להורדה ב‑Google Play"
   },
   "backLinks": {
     "dictionary": "מילון →",

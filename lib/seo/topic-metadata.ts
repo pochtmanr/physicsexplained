@@ -2,11 +2,13 @@ import "server-only";
 import type { Metadata } from "next";
 import { getContentEntry, type ContentKind } from "@/lib/content/fetch";
 import { getBranch } from "@/lib/content/branches";
-import { locales, defaultLocale, isRtlLocale } from "@/i18n/config";
+import { defaultLocale, isRtlLocale } from "@/i18n/config";
 import { SITE } from "./config";
 import { buildTitle } from "./title";
 import { extractDescription } from "./description";
 import { getRealLocaleSet } from "./locale-alternates";
+import { buildAlternates } from "./alternates";
+import { ogLocale } from "./page-metadata";
 
 function pathFor(kind: ContentKind, slug: string): string {
   if (kind === "topic") return `/${slug}`;
@@ -14,13 +16,6 @@ function pathFor(kind: ContentKind, slug: string): string {
   return `/physicists/${slug}`;
 }
 
-function ogLocale(locale: string): string {
-  // Map next-intl locales to OG locale codes
-  if (locale === "en") return "en_US";
-  if (locale === "he") return "he_IL";
-  if (locale === "ar") return "ar_SA";
-  return locale;
-}
 
 export function makeTopicMetadata(kind: ContentKind, slug: string) {
   return async function generateMetadata({
@@ -33,9 +28,7 @@ export function makeTopicMetadata(kind: ContentKind, slug: string) {
     if (!entry) return {};
 
     const path = pathFor(kind, slug);
-    const enUrl = SITE.localizedUrl(path, defaultLocale);
     const localeUrl = SITE.localizedUrl(path, locale);
-    const canonicalUrl = entry.localeFallback ? enUrl : localeUrl;
 
     const branchTitle =
       kind === "topic"
@@ -56,14 +49,11 @@ export function makeTopicMetadata(kind: ContentKind, slug: string) {
       meta: entry.meta,
     });
 
-    const realLocales = await getRealLocaleSet(kind, slug);
-    const languages: Record<string, string> = {};
-    for (const l of locales) {
-      if (l === locale) continue;
-      if (realLocales.has(l)) {
-        languages[l] = SITE.localizedUrl(path, l);
-      }
-    }
+    // Self-referencing hreflang set + x-default. A page served as an English
+    // fallback is not in the real-locale set, so it canonicalises to English.
+    const realLocales = new Set(await getRealLocaleSet(kind, slug));
+    if (entry.localeFallback) realLocales.delete(locale);
+    const alternates = buildAlternates(path, locale, realLocales);
 
     // Next.js auto-discovers og:image from the colocated `opengraph-image.tsx`
     // file in each segment and emits the (hash-suffixed) URL itself. Setting
@@ -76,8 +66,11 @@ export function makeTopicMetadata(kind: ContentKind, slug: string) {
       title: { absolute: title },
       description,
       alternates: {
-        canonical: canonicalUrl,
-        ...(Object.keys(languages).length > 0 ? { languages } : {}),
+        ...alternates,
+        // English pages have a plain-Markdown mirror for AI agents.
+        ...(locale === defaultLocale
+          ? { types: { "text/markdown": `${localeUrl}.md` } }
+          : {}),
       },
       openGraph: {
         type: isProfile ? "profile" : "article",
@@ -115,7 +108,6 @@ export function makeBranchMetadata(branchSlug: string) {
 
     const path = `/${branchSlug}`;
     const localeUrl = SITE.localizedUrl(path, locale);
-    const enUrl = SITE.localizedUrl(path, defaultLocale);
     const title = buildTitle({ title: branch.title, meta: {} }, null);
     const description = branch.subtitle;
 
@@ -127,7 +119,11 @@ export function makeBranchMetadata(branchSlug: string) {
       metadataBase: new URL(SITE.baseUrl),
       title: { absolute: title },
       description,
-      alternates: { canonical: locale === defaultLocale ? localeUrl : enUrl },
+      alternates: buildAlternates(path, locale),
+      // Coming-soon branches are a signup placeholder, not content.
+      ...(branch.status !== "live"
+        ? { robots: { index: false, follow: true } }
+        : {}),
       openGraph: {
         type: "website",
         url: localeUrl,

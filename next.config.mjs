@@ -36,6 +36,11 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Always render <title>, description, canonical and Open Graph tags inside
+  // <head>. By default Next streams metadata into <body> for every user agent
+  // it does not recognise as a bot, which hides it from AI fetchers and
+  // link-preview scrapers that are not on its built-in list.
+  htmlLimitedBots: /.*/,
   pageExtensions: ["ts", "tsx", "mdx"],
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

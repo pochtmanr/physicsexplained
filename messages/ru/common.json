@@ -13,7 +13,12 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "cookiePolicy": "Cookie Policy",
-    "copyright": "© 2026 Simnetiq Ltd"
+    "copyright": "© 2026 Simnetiq Ltd",
+    "moreFrom": "Ещё от {company}:",
+    "products": {
+      "doppler": "приватный VPN",
+      "smsCode": "виртуальные номера для SMS-кодов"
+    }
   },
   "cookieBanner": {
     "message": "This site uses localStorage for your theme preference. No tracking cookies.",
@@ -26,9 +31,17 @@
     "terms": "Terms",
     "fromOurTeam": "От нашей команды",
     "products": {
-      "doppler": "VPN · dopplervpn.org",
-      "smsActivate": "Приложение для iOS"
+      "doppler": "Быстрый приватный VPN",
+      "smsCode": "Номера для SMS-кодов"
     }
+  },
+  "stores": {
+    "ios": "{name} в App Store",
+    "android": "{name} в Google Play",
+    "iosShort": "App Store",
+    "androidShort": "Google Play",
+    "iosCta": "Загрузить в App Store",
+    "androidCta": "Загрузить в Google Play"
   },
   "backLinks": {
     "dictionary": "← Dictionary",

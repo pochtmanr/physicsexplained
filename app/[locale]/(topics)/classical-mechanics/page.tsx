@@ -6,6 +6,10 @@ import { ModuleChips } from "@/components/layout/module-chips";
 import { TopicCard } from "@/components/layout/topic-card";
 import { WIDE_CONTAINER } from "@/lib/layout";
 import { makeBranchMetadata } from "@/lib/seo/topic-metadata";
+import { SITE } from "@/lib/seo/config";
+import { toTitleCase } from "@/lib/seo/title";
+import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
+import { JsonLd } from "@/components/seo/jsonld";
 
 export const generateMetadata = makeBranchMetadata("classical-mechanics");
 
@@ -40,8 +44,21 @@ export default async function ClassicalMechanicsPage({
     title: moduleItems[mod.slug] ?? mod.title.toUpperCase(),
   }));
 
+  const collectionJsonLd = buildCollectionPageJsonLd({
+    url: SITE.localizedUrl(`/${branch.slug}`, locale),
+    name: toTitleCase(branch.title),
+    description: branch.description,
+    items: branch.topics
+      .filter((t) => t.status === "live")
+      .map((t) => ({
+        name: toTitleCase(t.title),
+        url: SITE.buildUrl(`/${branch.slug}/${t.slug}`),
+      })),
+  });
+
   return (
     <main className={`${WIDE_CONTAINER} py-20`}>
+      <JsonLd data={collectionJsonLd} />
       <BranchHero branch={branch} />
       <ModuleChips modules={chipModules} />
       {populatedModules.map(({ mod, topics: moduleTops }) => {

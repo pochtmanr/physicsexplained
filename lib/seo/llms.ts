@@ -8,6 +8,17 @@ import { PHYSICISTS } from "@/lib/content/physicists";
 import { EQUATIONS } from "@/lib/content/equations";
 import { SITE } from "@/lib/seo/config";
 import { toTitleCase } from "@/lib/seo/title";
+import {
+  SUPPORT_PRODUCTS,
+  type SupportProduct,
+} from "@/components/support/products";
+
+const PRODUCT_SUMMARIES: Record<SupportProduct["key"], string> = {
+  doppler:
+    "fast, private VPN for the web, iPhone, iPad and Android, by the same team",
+  smsCode:
+    "private virtual phone numbers for receiving SMS verification codes, on the web and iOS",
+};
 
 export function buildLlmsTxt(): string {
   const lines: string[] = [
@@ -46,6 +57,18 @@ export function buildLlmsTxt(): string {
     `- [Physicists](${SITE.buildUrl("/physicists")}): ${PHYSICISTS.length} biographies with timelines and major works at /physicists/{name}`,
     `- [Equations](${SITE.buildUrl("/equations")}): ${EQUATIONS.length} canonical equations — what each solves, when to use it, common mistakes`,
     `- [Playground](${SITE.buildUrl("/play")}): standalone interactive physics simulations`,
+    "",
+    "## About",
+    "",
+    `- [About ${SITE.name}](${SITE.buildUrl("/about")}): who makes the site and how to get in touch (${SITE.company.email})`,
+    `- [${SITE.company.name}](${SITE.company.url}/): the independent software studio that builds and operates ${SITE.name}`,
+    `- [${SITE.iosApp.name} for iPhone and iPad](${SITE.iosApp.url}): the free native app`,
+    "",
+    `## More from ${SITE.company.name}`,
+    "",
+    ...SUPPORT_PRODUCTS.map(
+      (p) => `- [${p.name}](${p.links.web}): ${PRODUCT_SUMMARIES[p.key]}`,
+    ),
     "",
     "## Optional",
     "",

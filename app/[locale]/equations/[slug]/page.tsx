@@ -7,6 +7,9 @@ import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
 import { EquationBlock } from "@/components/math/equation-block";
 import { SITE } from "@/lib/seo/config";
+import { defaultLocale } from "@/i18n/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
+import { truncateDescription } from "@/lib/seo/description";
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/jsonld";
 
@@ -27,11 +30,15 @@ export async function generateMetadata({ params }: PageProps) {
   if (!eq) return {};
   const strings = await getEquationStringsForLocale(slug, locale);
   if (!strings) return {};
-  return {
+  // The equation reference is English-only, so other locales canonicalise here.
+  return buildPageMetadata({
+    path: `/equations/${slug}`,
+    locale: defaultLocale,
     title: strings.name,
-    description: strings.whatItSolves.slice(0, 155),
-    alternates: { canonical: `${SITE.baseUrl}/equations/${slug}` },
-  };
+    description: truncateDescription(strings.whatItSolves),
+    realLocales: [defaultLocale],
+    ogType: "article",
+  });
 }
 
 export default async function EquationPage({ params }: PageProps) {
@@ -51,7 +58,7 @@ export default async function EquationPage({ params }: PageProps) {
         data={buildArticleJsonLd({
           url,
           headline: strings.name,
-          description: strings.whatItSolves.slice(0, 155),
+          description: truncateDescription(strings.whatItSolves),
           locale,
           about: eq.relatedTopicSlugs.map((t) => t.replace(/-/g, " ")),
         })}

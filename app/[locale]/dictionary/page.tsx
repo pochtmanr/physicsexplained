@@ -8,15 +8,27 @@ import { WIDE_CONTAINER } from "@/lib/layout";
 import { buttonVariants } from "@/components/ui/button";
 import { GLOSSARY } from "@/lib/content/glossary";
 import { SITE } from "@/lib/seo/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
 import { buildCollectionPageJsonLd } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/jsonld";
 
-export const metadata: Metadata = {
-  title: "Dictionary",
-  description:
-    "Instruments, concepts, and phenomena referenced across the site.",
-  alternates: { canonical: `${SITE.baseUrl}/dictionary` },
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const [tNav, tPage] = await Promise.all([
+    getTranslations({ locale, namespace: "common.footer" }),
+    getTranslations({ locale, namespace: "common.pages.dictionary" }),
+  ]);
+  return buildPageMetadata({
+    path: "/dictionary",
+    locale,
+    title: tNav("dictionary"),
+    description: tPage("subtitle"),
+  });
+}
 
 type CategoryFilter = GlossaryCategory | "all";
 

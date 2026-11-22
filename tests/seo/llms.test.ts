@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { buildLlmsTxt } from "@/lib/seo/llms";
 import { BRANCHES } from "@/lib/content/branches";
 import { SITE } from "@/lib/seo/config";
+import { SUPPORT_PRODUCTS } from "@/components/support/products";
 
 describe("llms.txt builder", () => {
   const txt = buildLlmsTxt();
@@ -36,12 +37,25 @@ describe("llms.txt builder", () => {
     }
   });
 
-  it("only emits absolute URLs on the canonical origin", () => {
+  it("only emits absolute URLs on the canonical origin, plus the company's own properties", () => {
     const hrefs = [...txt.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1]);
     expect(hrefs.length).toBeGreaterThan(50);
-    for (const href of hrefs) {
-      expect(href.startsWith(SITE.baseUrl)).toBe(true);
-    }
+    const external = hrefs.filter((href) => !href.startsWith(SITE.baseUrl));
+    expect(external.sort()).toEqual(
+      [
+        `${SITE.company.url}/`,
+        SITE.iosApp.url,
+        ...SUPPORT_PRODUCTS.map((p) => p.links.web),
+      ].sort(),
+    );
+  });
+
+  it("names the company and its sibling products", () => {
+    expect(txt).toContain("Simnetiq Ltd");
+    expect(txt).toContain("https://simnetiq.com/");
+    expect(txt).toContain("[Doppler VPN](https://www.dopplervpn.org/en)");
+    expect(txt).toContain("[SMS Code](https://simnetiq.xyz/)");
+    expect(txt).not.toMatch(/simnetiq\.store|SMS-Activate/i);
   });
 
   it("points at the full-corpus file and sitemap", () => {

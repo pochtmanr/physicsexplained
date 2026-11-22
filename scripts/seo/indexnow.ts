@@ -11,6 +11,15 @@ if (!KEY) {
   process.exit(1);
 }
 
+// .env.local points NEXT_PUBLIC_SITE_URL at localhost; never submit that.
+const host = new URL(SITE_URL).hostname;
+if (host === "localhost" || host === "127.0.0.1") {
+  console.error(
+    `Refusing to submit ${SITE_URL} to IndexNow. Run with NEXT_PUBLIC_SITE_URL=https://physics.it.com`,
+  );
+  process.exit(1);
+}
+
 async function fetchSitemapUrls(): Promise<string[]> {
   const res = await fetch(`${SITE_URL}/sitemap.xml`);
   const xml = await res.text();
@@ -24,7 +33,7 @@ async function main() {
   const body = {
     host: new URL(SITE_URL).host,
     key: KEY,
-    keyLocation: `${SITE_URL}/${KEY}.txt`,
+    keyLocation: `${SITE_URL}/indexnow-key.txt`,
     urlList: urls,
   };
 

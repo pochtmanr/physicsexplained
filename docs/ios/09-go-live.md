@@ -190,7 +190,7 @@ works, skip to §3.5.
 2. **APIs & Services** → **OAuth consent screen**.
 3. User type **External**. Fill:
    - App name: `Physics.explained`
-   - User support email: `hello@simnetiq.store`
+   - User support email: `support@simnetiq.com`
    - App logo (optional, triggers brand verification if set — skip for launch)
    - Application home page: `https://physics.it.com`
    - Privacy policy: `https://physics.it.com/en/privacy`
@@ -367,7 +367,7 @@ copy — reviewers do cross-check all three. Expect roughly:
 ### 6.4 Version metadata
 
 - **Description**, **Keywords**, **Promotional text**, **What's New** (`1.0.0` → "Initial release").
-- **Support URL**: `https://physics.it.com/en/about` (has a `mailto:hello@simnetiq.store`).
+- **Support URL**: `https://physics.it.com/en/about` (has a `mailto:support@simnetiq.com`).
 - **Marketing URL**: `https://physics.it.com` (optional).
 - Include a plain sentence in the description that answers are AI-generated. The in-app
   disclosure is required by risk R15; saying it in the listing too costs nothing and

@@ -14,7 +14,7 @@
     "whatWeCollect": {
       "title": "What we collect",
       "themePreference": "Theme preference — stored in your browser's localStorage as physics-theme. Never sent to any server.",
-      "analytics": "Anonymous page-view analytics — provided by Vercel Analytics. This service collects anonymous, aggregated page-view data. It does not use cookies, does not track individuals, and is GDPR-compliant by design.",
+      "analytics": "Analytics — we do not use any third-party analytics service. Our own web server keeps standard access logs (such as IP address and requested page) for security and troubleshooting.",
       "contactForm": "Contact form submissions — if you use the contact form, your name, email address, and message are stored in our Supabase database so we can respond to your inquiry.",
       "newsletter": "Newsletter subscriptions — if you sign up for our newsletter, your email address is stored in our Supabase database to send you updates about new content."
     },
@@ -106,7 +106,7 @@
     },
     "analytics": {
       "title": "Analytics",
-      "body": "We use Vercel Analytics, which collects anonymous, aggregated page-view data. Vercel Analytics does not use cookies, does not store personal identifiers, and is privacy-friendly by design. No consent is required for this type of analytics under GDPR/PECR because no personal data is processed."
+      "body": "We do not use any analytics service and set no analytics cookies. Our web server keeps standard access logs for security and troubleshooting; they are not used to track individuals."
     },
     "thirdPartyCookies": {
       "title": "Third-party cookies",

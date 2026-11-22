@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Physics, explained visually",
+    "description": "Visual-first physics explainers with live, accurate simulations — classical mechanics, electromagnetism, relativity and thermodynamics."
+  },
   "hero": {
     "tag": "physics.it.com · V0.5",
     "appBadge": "New",
@@ -330,11 +334,11 @@
     "products": {
       "doppler": {
         "description": "Fast, private VPN by the team behind this site.",
-        "cta": "dopplervpn.org"
+        "cta": { "web": "dopplervpn.org" }
       },
-      "smsActivate": {
-        "description": "Virtual numbers & eSIM for online sign-ups.",
-        "cta": "On the App Store"
+      "smsCode": {
+        "description": "Private virtual numbers in 100+ countries for receiving SMS verification codes.",
+        "cta": { "web": "simnetiq.xyz" }
       }
     }
   }

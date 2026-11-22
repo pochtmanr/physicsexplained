@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "פיזיקה, בהסבר חזותי",
+    "description": "הסברי פיזיקה חזותיים עם סימולציות חיות ומדויקות — מכניקה קלאסית, אלקטרומגנטיות, תורת היחסות ותרמודינמיקה."
+  },
   "hero": {
     "tag": "physics.it.com · גרסה 0.5",
     "appBadge": "חדש",
@@ -330,11 +334,11 @@
     "products": {
       "doppler": {
         "description": "‏VPN מהיר ופרטי מהצוות שמאחורי האתר הזה.",
-        "cta": "dopplervpn.org"
+        "cta": { "web": "dopplervpn.org" }
       },
-      "smsActivate": {
-        "description": "מספרים וירטואליים ו‑eSIM להרשמות באינטרנט.",
-        "cta": "ב-App Store"
+      "smsCode": {
+        "description": "מספרים וירטואליים פרטיים ביותר מ‑100 מדינות לקבלת קודי אימות ב‑SMS.",
+        "cta": { "web": "simnetiq.xyz" }
       }
     }
   }

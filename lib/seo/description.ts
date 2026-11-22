@@ -18,7 +18,10 @@ function stripMarkdown(s: string): string {
     .trim();
 }
 
-function truncate(s: string, max: number): string {
+export function truncateDescription(
+  s: string,
+  max: number = MAX_DESCRIPTION_LENGTH,
+): string {
   if (s.length <= max) return s;
   const sliced = s.slice(0, max - 1);
   const lastSpace = sliced.lastIndexOf(" ");
@@ -40,7 +43,7 @@ export function extractDescription(entry: DescriptionEntry): string {
     if (typeof first !== "string") continue;
     const cleaned = stripMarkdown(first);
     if (cleaned.length === 0) continue;
-    return truncate(cleaned, MAX_DESCRIPTION_LENGTH);
+    return truncateDescription(cleaned);
   }
   return "";
 }

@@ -5,6 +5,8 @@ import { Logo } from "./logo";
 import { FULL_BLEED } from "@/lib/layout";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { buttonVariants } from "@/components/ui/button";
+import { SUPPORT_PRODUCTS } from "@/components/support/products";
+import { SITE } from "@/lib/seo/config";
 
 const navLinkClass = buttonVariants({
   variant: "ghost",
@@ -98,8 +100,24 @@ export async function Footer() {
           <NewsletterForm />
         </div>
 
+        {/* Sibling products by the same studio */}
+        <div className="border-t border-[var(--color-fg-4)]/40 mt-8 pt-6 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs text-[var(--color-fg-3)] md:mt-12 md:pt-8">
+          <span>{t("moreFrom", { company: "Simnetiq" })}</span>
+          {SUPPORT_PRODUCTS.map((product) => (
+            <a
+              key={product.key}
+              href={product.links.web}
+              target="_blank"
+              rel="noopener"
+              className="text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-cyan)]"
+            >
+              {product.name} — {t(`products.${product.key}`)}
+            </a>
+          ))}
+        </div>
+
         {/* Bottom bar */}
-        <div className="border-t border-[var(--color-fg-4)]/40 mt-8 pt-6 flex flex-col gap-3 md:mt-12 md:pt-8 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="border-t border-[var(--color-fg-4)]/40 mt-6 pt-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
           {/* Legal links */}
           <nav className="flex flex-wrap gap-4" aria-label="Legal">
             {LEGAL_LINKS.map(({ href, label }) => (
@@ -111,18 +129,25 @@ export async function Footer() {
                 {label}
               </Link>
             ))}
+            {/* Plain-text index for AI agents (llmstxt.org). */}
+            <a
+              href="/llms.txt"
+              className="font-mono text-xs text-[var(--color-fg-3)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--color-fg-1)]"
+            >
+              llms.txt
+            </a>
           </nav>
 
           {/* Copyright */}
           <div className="font-mono text-xs text-[var(--color-fg-3)]">
             &copy; 2026{" "}
             <a
-              href="https://www.simnetiq.store/"
+              href={`${SITE.company.url}/`}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener"
               className="transition-colors hover:text-[var(--color-cyan)]"
             >
-              Simnetiq Ltd
+              {SITE.company.name}
             </a>
           </div>
         </div>

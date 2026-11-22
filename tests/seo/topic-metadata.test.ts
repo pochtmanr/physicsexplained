@@ -54,6 +54,8 @@ describe("makeTopicMetadata", () => {
     expect(meta.alternates?.canonical).toBe(
       "https://physics.it.com/classical-mechanics/the-simple-pendulum",
     );
+    // An untranslated fallback must not claim a Hebrew version exists.
+    expect(meta.alternates?.languages).not.toHaveProperty("he");
   });
 
   it("includes hreflang alternates only for sibling locales with real rows", async () => {
@@ -69,8 +71,47 @@ describe("makeTopicMetadata", () => {
     const fn = makeTopicMetadata("topic", "classical-mechanics/foo");
     const meta = await fn({ params: Promise.resolve({ locale: "en" }) });
 
-    expect(meta.alternates?.languages).toMatchObject({
+    expect(meta.alternates?.languages).toEqual({
+      en: "https://physics.it.com/classical-mechanics/foo",
       he: "https://physics.it.com/he/classical-mechanics/foo",
+      "x-default": "https://physics.it.com/classical-mechanics/foo",
+    });
+  });
+
+  it("a translated page is self-canonical and keeps the full hreflang set", async () => {
+    (getContentEntry as ReturnType<typeof vi.fn>).mockResolvedValue({
+      title: "Foo",
+      subtitle: "Bar",
+      blocks: [],
+      meta: {},
+      localeFallback: false,
+    });
+    (getRealLocaleSet as ReturnType<typeof vi.fn>).mockResolvedValue(new Set(["en", "he"]));
+
+    const fn = makeTopicMetadata("topic", "classical-mechanics/foo");
+    const meta = await fn({ params: Promise.resolve({ locale: "he" }) });
+
+    expect(meta.alternates?.canonical).toBe("https://physics.it.com/he/classical-mechanics/foo");
+    expect(Object.keys(meta.alternates?.languages ?? {}).sort()).toEqual(["en", "he", "x-default"]);
+    // The Markdown mirror is English-only.
+    expect(meta.alternates?.types).toBeUndefined();
+  });
+
+  it("advertises the Markdown mirror on English pages", async () => {
+    (getContentEntry as ReturnType<typeof vi.fn>).mockResolvedValue({
+      title: "Foo",
+      subtitle: "Bar",
+      blocks: [],
+      meta: {},
+      localeFallback: false,
+    });
+    (getRealLocaleSet as ReturnType<typeof vi.fn>).mockResolvedValue(new Set(["en"]));
+
+    const fn = makeTopicMetadata("topic", "classical-mechanics/foo");
+    const meta = await fn({ params: Promise.resolve({ locale: "en" }) });
+
+    expect(meta.alternates?.types).toEqual({
+      "text/markdown": "https://physics.it.com/classical-mechanics/foo.md",
     });
   });
 

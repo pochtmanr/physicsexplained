@@ -12,6 +12,9 @@ import {
   deriveTopicTitle,
 } from "@/lib/content/problem-title";
 import { buttonVariants } from "@/components/ui/button";
+import { defaultLocale } from "@/i18n/config";
+import { buildPageMetadata } from "@/lib/seo/page-metadata";
+import { truncateDescription } from "@/lib/seo/description";
 import { TopicPageLayout } from "@/components/layout/topic-page-layout";
 import { TopicHeader } from "@/components/layout/topic-header";
 import { Section } from "@/components/layout/section";
@@ -47,10 +50,15 @@ export async function generateMetadata({ params }: PageProps) {
   const strings = await getProblemStringsForLocale(problemId, locale);
   const title = deriveProblemTitle(problemId, topic, problem.difficulty);
   const topicTitle = deriveTopicTitle(topic);
-  return {
-    title: `${title} — ${topicTitle} Problem — Physics.explained`,
-    description: strings?.statement?.slice(0, 155) ?? "",
-  };
+  // Problem sets are English-only, so other locales canonicalise here.
+  return buildPageMetadata({
+    path: `/classical-mechanics/${topic}/problems/${problemId}`,
+    locale: defaultLocale,
+    title: `${title} — ${topicTitle} Problem`,
+    description: truncateDescription(strings?.statement ?? ""),
+    realLocales: [defaultLocale],
+    ogType: "article",
+  });
 }
 
 export default async function ProblemPage({ params }: PageProps) {
