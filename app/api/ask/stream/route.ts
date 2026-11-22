@@ -7,6 +7,7 @@ import { braveSearch, fetchAllowlistedUrl } from "@/lib/ask/web-search";
 import { runPipeline } from "@/lib/ask/pipeline";
 import { assembleHistory } from "@/lib/ask/context";
 import { buildCandidateRefs } from "@/lib/ask/candidate-refs";
+import { userOwnsConversation } from "@/lib/ask/conversation-access";
 import { checkRateLimit, makeRateLimitDepsForUser } from "@/lib/ask/rate-limit";
 import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 import { sseEncode } from "@/lib/ask/sse";
@@ -70,6 +71,13 @@ export async function POST(req: Request) {
 
   const model = findModel(body.modelId);
   const db = getServiceClient();
+
+  // `db` is the service-role client (no RLS), so a client-supplied id must be
+  // checked against the caller before anything is read or written with it.
+  // 404 rather than 403: do not reveal that the id exists.
+  if (body.conversationId && !(await userOwnsConversation(db, body.conversationId, user.id))) {
+    return NextResponse.json({ error: "NOT_FOUND" }, { status: 404 });
+  }
 
   // Billing quota gate and the legacy daily rate-limit gate are independent.
   // Run them in parallel — both must pass, so we gain the max(latency) instead
