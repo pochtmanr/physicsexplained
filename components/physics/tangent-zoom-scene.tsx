@@ -1,73 +1,68 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useTranslations } from "next-intl";
+import {
+  SCENE_CANVAS_CLASS,
+  SceneControlGroup,
+  SceneReadout,
+  SceneSlider,
+  drawLabel,
+  syncCanvas,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
 
-const RATIO = 0.6;
-const MAX_HEIGHT = 340;
+const T_MIN = 0;
+const T_MAX = 3;
 
-// x(t) = 0.5 t^2 + 0.3 t  →  x'(t) = t + 0.3
+// x(t) = 0.5 t² + 0.3 t  →  x'(t) = t + 0.3
 function x(t: number) {
   return 0.5 * t * t + 0.3 * t;
 }
 
 export function TangentZoomScene() {
+  const t = useTranslations("scenes.tangentZoom");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.6,
+    maxHeight: 340,
+    minHeight: 220,
+    initialWidth: 640,
+    fullView: "ratio",
+  });
   const [t0, setT0] = useState(1.4);
   const [dt, setDt] = useState(1.0);
-  const [size, setSize] = useState({ width: 640, height: 340 });
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(container);
-    return () => ro.disconnect();
-  }, []);
+  // Second point, kept inside the plotted range.
+  const tA = t0;
+  const tB = Math.min(T_MAX - 0.02, t0 + dt);
+  const secantSlope = (x(tB) - x(tA)) / (tB - tA);
+  const tangentSlope = tA + 0.3;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = syncCanvas(canvas, width, height);
     if (!ctx) return;
-    const { width, height } = size;
-    const dpr = window.devicePixelRatio || 1;
-    if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx.scale(dpr, dpr);
-    }
+    const bounds = { width, height };
 
-    ctx.clearRect(0, 0, width, height);
-
-    const padL = 44;
+    const padL = 30;
     const padR = 16;
-    const padT = 20;
-    const padB = 34;
+    const padT = 16;
+    const padB = 26;
     const plotW = width - padL - padR;
     const plotH = height - padT - padB;
-
-    const tMin = 0;
-    const tMax = 3;
-    const xMin = 0;
-    const xMax = x(tMax) + 0.3;
-
+    const xMax = x(T_MAX) + 0.3;
     const toPx = (tt: number, xx: number) => ({
-      px: padL + ((tt - tMin) / (tMax - tMin)) * plotW,
-      py: padT + plotH - ((xx - xMin) / (xMax - xMin)) * plotH,
+      px: padL + ((tt - T_MIN) / (T_MAX - T_MIN)) * plotW,
+      py: padT + plotH - (xx / xMax) * plotH,
     });
 
     // Axes
-    ctx.strokeStyle = colors.fg3;
+    ctx.strokeStyle = tokens.gridHeavy;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(padL, padT);
@@ -75,59 +70,42 @@ export function TangentZoomScene() {
     ctx.lineTo(padL + plotW, padT + plotH);
     ctx.stroke();
 
-    // Axis labels
-    ctx.fillStyle = colors.fg2;
-    ctx.font = "11px monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("t", padL + plotW, padT + plotH + 22);
-    ctx.textAlign = "right";
-    ctx.fillText("x", padL - 6, padT + 10);
+    // Everything below is clipped to the plot, so the extended secant cannot
+    // run into the axis labels.
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(padL, padT, plotW, plotH);
+    ctx.clip();
 
-    // The curve x(t)
-    ctx.strokeStyle = colors.fg1;
+    // Curve x(t)
+    ctx.strokeStyle = tokens.textDim;
     ctx.lineWidth = 2;
     ctx.beginPath();
-    const steps = 200;
-    for (let i = 0; i <= steps; i++) {
-      const tt = tMin + (i / steps) * (tMax - tMin);
+    for (let i = 0; i <= 200; i++) {
+      const tt = T_MIN + (i / 200) * (T_MAX - T_MIN);
       const { px, py } = toPx(tt, x(tt));
       if (i === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
     }
     ctx.stroke();
 
-    // Two points: (t0, x(t0)) and (t0+dt, x(t0+dt))
-    const tA = t0;
-    const tB = Math.min(tMax - 0.02, t0 + dt);
+    // Secant, extended across the plot
     const xA = x(tA);
-    const xB = x(tB);
-    const slope = (xB - xA) / (tB - tA);
-
-    // Secant extended across the plot
-    ctx.strokeStyle = "#6FB8C6";
+    ctx.strokeStyle = tokens.cyan;
     ctx.lineWidth = 1.5;
     ctx.setLineDash([5, 4]);
-    const secLeft = toPx(tMin, xA + slope * (tMin - tA));
-    const secRight = toPx(tMax, xA + slope * (tMax - tA));
+    const left = toPx(T_MIN, xA + secantSlope * (T_MIN - tA));
+    const right = toPx(T_MAX, xA + secantSlope * (T_MAX - tA));
     ctx.beginPath();
-    ctx.moveTo(secLeft.px, secLeft.py);
-    ctx.lineTo(secRight.px, secRight.py);
+    ctx.moveTo(left.px, left.py);
+    ctx.lineTo(right.px, right.py);
     ctx.stroke();
-    ctx.setLineDash([]);
 
-    // Two endpoint dots
+    // Rise / run triangle
     const pA = toPx(tA, xA);
-    const pB = toPx(tB, xB);
-    ctx.fillStyle = "#6FB8C6";
-    ctx.beginPath();
-    ctx.arc(pA.px, pA.py, 5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.arc(pB.px, pB.py, 5, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Rise/run rectangle
-    ctx.strokeStyle = colors.fg3;
+    const pB = toPx(tB, x(tB));
+    ctx.strokeStyle = tokens.axes;
+    ctx.lineWidth = 1;
     ctx.setLineDash([2, 3]);
     ctx.beginPath();
     ctx.moveTo(pA.px, pA.py);
@@ -136,62 +114,71 @@ export function TangentZoomScene() {
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // Slope readout
-    const trueSlope = tA + 0.3;
-    ctx.fillStyle = colors.fg1;
-    ctx.font = "12px monospace";
-    ctx.textAlign = "left";
-    ctx.fillText(
-      `slope (secant) = Δx/Δt = ${slope.toFixed(3)}`,
-      padL + 6,
-      padT + 16,
-    );
-    ctx.fillStyle = colors.fg2;
-    ctx.fillText(
-      `true tangent slope at t = ${tA.toFixed(2)}:  ${trueSlope.toFixed(3)}`,
-      padL + 6,
-      padT + 34,
-    );
-  }, [t0, dt, size, colors]);
+    // The two points
+    ctx.fillStyle = tokens.cyan;
+    for (const p of [pA, pB]) {
+      ctx.beginPath();
+      ctx.arc(p.px, p.py, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // Axis names
+    drawLabel(ctx, "t", padL + plotW, padT + plotH + 14, {
+      bounds,
+      color: tokens.textMute,
+      align: "right",
+    });
+    drawLabel(ctx, "x", padL - 8, padT, {
+      bounds,
+      color: tokens.textMute,
+      align: "right",
+      baseline: "top",
+    });
+  }, [tA, tB, secantSlope, width, height, tokens]);
 
   return (
     <div ref={containerRef} className="w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block"
-      />
-      <div className="mt-2 flex flex-col gap-2 px-2">
-        <div className="flex items-center gap-3">
-          <label className="w-16 text-sm text-[var(--color-fg-3)]">t</label>
-          <input
-            type="range"
+      <div className="mx-auto" style={{ width }}>
+        <canvas
+          ref={canvasRef}
+          role="img"
+          aria-label={t("aria")}
+          className={SCENE_CANVAS_CLASS}
+          style={{ width, height }}
+        />
+        <SceneReadout
+          items={[
+            {
+              label: t("secant"),
+              value: secantSlope.toFixed(3),
+              color: "var(--color-cyan)",
+            },
+            { label: t("tangent"), value: tangentSlope.toFixed(3) },
+          ]}
+        />
+        <SceneControlGroup>
+          <SceneSlider
+            label="t"
+            ariaLabel={t("time")}
+            value={t0}
             min={0.2}
             max={2.4}
             step={0.01}
-            value={t0}
-            onChange={(e) => setT0(parseFloat(e.target.value))}
-            className="flex-1 accent-[#6FB8C6]"
+            onChange={setT0}
+            display={t0.toFixed(2)}
           />
-          <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
-            {t0.toFixed(2)}
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <label className="w-16 text-sm text-[var(--color-fg-3)]">Δt</label>
-          <input
-            type="range"
+          <SceneSlider
+            label="Δt"
+            ariaLabel={t("interval")}
+            value={dt}
             min={0.01}
             max={1.5}
             step={0.01}
-            value={dt}
-            onChange={(e) => setDt(parseFloat(e.target.value))}
-            className="flex-1 accent-[#6FB8C6]"
+            onChange={setDt}
+            display={dt.toFixed(2)}
           />
-          <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
-            {dt.toFixed(2)}
-          </span>
-        </div>
+        </SceneControlGroup>
       </div>
     </div>
   );

@@ -15,7 +15,15 @@
  *   - components/physics/einsteins-field-equations/efe-split-screen-scene.tsx (RT, responsive split panels)
  */
 
-import { useEffect, useMemo, useRef, useState, type RefObject } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
 import { useThemeColors, type ThemeColors } from "@/lib/hooks/use-theme-colors";
 
 export interface SceneTokens {
@@ -147,6 +155,35 @@ export function applyDpr(
 }
 
 /**
+ * Per-frame variant of `applyDpr` for animated scenes: resizes the backing
+ * store only when the size actually changed, otherwise just clears it.
+ * (`applyDpr` reallocates the canvas on every call, which is fine for a
+ * static scene but wasteful sixty times a second.)
+ */
+export function syncCanvas(
+  canvas: HTMLCanvasElement,
+  W: number,
+  H: number,
+): CanvasRenderingContext2D | null {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+  const dpr = typeof window !== "undefined" ? window.devicePixelRatio || 1 : 1;
+  const bw = Math.max(1, Math.round(W * dpr));
+  const bh = Math.max(1, Math.round(H * dpr));
+  if (canvas.width !== bw || canvas.height !== bh) {
+    canvas.width = bw;
+    canvas.height = bh;
+  } else {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, bw, bh);
+  }
+  canvas.style.width = `${W}px`;
+  canvas.style.height = `${H}px`;
+  ctx.setTransform(bw / W, 0, 0, bh / H, 0, 0);
+  return ctx;
+}
+
+/**
  * Standard scene container className.
  *
  * The canonical placement for a scene is INSIDE a `<SceneCard>`, which
@@ -178,6 +215,8 @@ export const SCENE_CANVAS_CLASS = "block";
  * Combine with `applyDpr(canvas, width, height)` inside the draw effect
  * so the canvas stays sharp across DPR + theme transitions.
  */
+export type SceneFullViewMode = "width" | "ratio" | "fill";
+
 export interface UseSceneSizeOptions {
   /** height = width × ratio, capped at maxHeight. Default 0.55. */
   ratio?: number;
@@ -187,6 +226,73 @@ export interface UseSceneSizeOptions {
   minHeight?: number;
   /** Initial width before ResizeObserver fires. Default 720. */
   initialWidth?: number;
+  /**
+   * How the canvas uses the full-view popup:
+   * - "width" (default): keep the container's width; height follows `ratio`,
+   *   up to the height available. Safe for any scene.
+   * - "ratio": the largest canvas at exactly `ratio` that fits. The canvas can
+   *   be narrower than the container, so the scene must centre it and its
+   *   controls (`<div className="mx-auto" style={{ width }}>`).
+   * - "fill": the whole width and the whole available height. For drawings
+   *   that adapt to any shape (stacked graphs, the ramp).
+   */
+  fullView?: SceneFullViewMode;
+}
+
+/**
+ * Where a scene is currently shown. `<SceneCard>` provides it; scenes read it
+ * through `useSceneSize`, so a scene never needs to know about the popup.
+ */
+export interface SceneView {
+  /** True while the figure is shown in the full-view popup. */
+  expanded: boolean;
+  /** Height in px the whole scene (canvas + controls) may use when expanded. */
+  availableHeight: number | null;
+}
+
+export const SceneViewContext = createContext<SceneView>({
+  expanded: false,
+  availableHeight: null,
+});
+
+export function useSceneView(): SceneView {
+  return useContext(SceneViewContext);
+}
+
+/**
+ * Pure sizing rule behind `useSceneSize`.
+ *
+ * Inline: width follows the container, height = width × ratio clamped to
+ * [minHeight, maxHeight].
+ *
+ * Full view (`availableHeight` set): `maxHeight` no longer applies; the limit
+ * is the height left after the scene's own controls (`chromeHeight`). See
+ * `UseSceneSizeOptions.fullView` for the three modes. In every mode the
+ * result is at least as tall as `minHeight`, so a full view is never shorter
+ * than the inline figure at the same width.
+ */
+export function computeSceneSize(args: {
+  containerWidth: number;
+  ratio: number;
+  maxHeight: number;
+  minHeight: number;
+  availableHeight?: number | null;
+  chromeHeight?: number;
+  fullView?: SceneFullViewMode;
+}): { width: number; height: number } {
+  const { containerWidth, ratio, maxHeight, minHeight } = args;
+  if (args.availableHeight != null && args.availableHeight > 0) {
+    const room = Math.max(minHeight, args.availableHeight - (args.chromeHeight ?? 0));
+    const mode = args.fullView ?? "width";
+    if (mode === "fill") return { width: containerWidth, height: room };
+    const width =
+      mode === "ratio" ? Math.max(1, Math.min(containerWidth, room / ratio)) : containerWidth;
+    return { width, height: Math.min(room, Math.max(minHeight, width * ratio)) };
+  }
+  return {
+    width: containerWidth,
+    height: Math.max(minHeight, Math.min(containerWidth * ratio, maxHeight)),
+  };
 }
 
 export function useSceneSize<T extends HTMLElement>(
@@ -197,27 +303,50 @@ export function useSceneSize<T extends HTMLElement>(
   const maxHeight = opts.maxHeight ?? SCENE_HEIGHT_TALL;
   const minHeight = opts.minHeight ?? 220;
   const initialWidth = opts.initialWidth ?? SCENE_WIDTH_DEFAULT;
+  const fullView = opts.fullView ?? "width";
+  const view = useSceneView();
+  const availableHeight = view.expanded ? view.availableHeight : null;
 
   const [size, setSize] = useState({
     width: initialWidth,
     height: Math.min(initialWidth * ratio, maxHeight),
   });
+  // Canvas height as last rendered — lets us work out how much of the
+  // container is controls/readouts rather than canvas.
+  const renderedHeightRef = useRef(size.height);
+  renderedHeightRef.current = size.height;
 
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
+    const measure = (containerWidth: number) => {
+      if (containerWidth <= 0) return;
+      const chromeHeight = Math.max(
+        0,
+        el.getBoundingClientRect().height - renderedHeightRef.current,
+      );
+      const next = computeSceneSize({
+        containerWidth,
+        ratio,
+        maxHeight,
+        minHeight,
+        availableHeight,
+        chromeHeight,
+        fullView,
+      });
+      setSize((prev) =>
+        Math.abs(prev.width - next.width) < 0.5 &&
+        Math.abs(prev.height - next.height) < 0.5
+          ? prev
+          : next,
+      );
+    };
     const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          const h = Math.max(minHeight, Math.min(w * ratio, maxHeight));
-          setSize({ width: w, height: h });
-        }
-      }
+      for (const entry of entries) measure(entry.contentRect.width);
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [containerRef, ratio, maxHeight, minHeight]);
+  }, [containerRef, ratio, maxHeight, minHeight, availableHeight, fullView]);
 
   return size;
 }
@@ -339,6 +468,68 @@ export function drawHudReadout(
   ctx.fillText(value, x + labelW + 4, y);
   ctx.restore();
   return y + lineHeight;
+}
+
+export interface DrawLabelOptions {
+  /** Canvas logical size — the label is kept fully inside it. */
+  bounds: { width: number; height: number };
+  color: string;
+  font?: string;
+  /** Which point of the text box (x, y) refers to. Default "left" / "middle". */
+  align?: "left" | "center" | "right";
+  baseline?: "top" | "middle" | "bottom";
+  /** Fill drawn behind the text so lines passing under it stay readable. */
+  plate?: string;
+  /** Gap kept between the label and the canvas edge. Default 4. */
+  margin?: number;
+  /** Text direction. Default "ltr" (maths and symbols); pass "rtl" for RTL prose. */
+  direction?: CanvasDirection;
+}
+
+/**
+ * Draw a text label that can never be clipped by the canvas edge: the text is
+ * measured and its box is shifted back inside `bounds` if needed. Returns the
+ * box actually used, so callers can avoid stacking labels on top of it.
+ */
+export function drawLabel(
+  ctx: CanvasRenderingContext2D,
+  text: string,
+  x: number,
+  y: number,
+  opts: DrawLabelOptions,
+): { x: number; y: number; width: number; height: number } {
+  const margin = opts.margin ?? 4;
+  const padX = opts.plate ? 4 : 0;
+  const padY = opts.plate ? 2 : 0;
+  ctx.save();
+  ctx.font = opts.font ?? FONT_LABEL;
+  const metrics = ctx.measureText(text);
+  const textW = metrics.width;
+  const textH =
+    (metrics.actualBoundingBoxAscent || 9) + (metrics.actualBoundingBoxDescent || 3);
+  const boxW = textW + padX * 2;
+  const boxH = textH + padY * 2;
+
+  const align = opts.align ?? "left";
+  const baseline = opts.baseline ?? "middle";
+  let left = align === "left" ? x : align === "center" ? x - boxW / 2 : x - boxW;
+  let top = baseline === "top" ? y : baseline === "middle" ? y - boxH / 2 : y - boxH;
+  left = Math.min(Math.max(left, margin), Math.max(margin, opts.bounds.width - margin - boxW));
+  top = Math.min(Math.max(top, margin), Math.max(margin, opts.bounds.height - margin - boxH));
+
+  if (opts.plate) {
+    ctx.fillStyle = opts.plate;
+    ctx.fillRect(left, top, boxW, boxH);
+  }
+  ctx.fillStyle = opts.color;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  // Explicit direction: on RTL pages a canvas inherits `rtl`, which would
+  // misplace the brackets in a label such as "x(t)".
+  ctx.direction = opts.direction ?? "ltr";
+  ctx.fillText(text, left + padX, top + boxH / 2);
+  ctx.restore();
+  return { x: left, y: top, width: boxW, height: boxH };
 }
 
 /** Draw a section title in monospace caps. */

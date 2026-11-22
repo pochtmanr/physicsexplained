@@ -25,7 +25,10 @@ vi.mock("@/components/content/term", () => ({
 }));
 
 import { describe, it, expect, afterEach, beforeAll } from "vitest";
-import { render, screen, cleanup, waitFor } from "@testing-library/react";
+import { render as rtlRender, screen, cleanup, waitFor } from "@testing-library/react";
+import type { ReactElement } from "react";
+import { NextIntlClientProvider } from "next-intl";
+import scenes from "@/messages/en/scenes.json";
 import type { Block } from "@/lib/content/blocks";
 import { ContentBlocks } from "@/components/content/content-blocks";
 
@@ -84,6 +87,16 @@ beforeAll(() => {
 
 // globals: false in vitest.config → auto-cleanup is off; clean the DOM manually.
 afterEach(() => cleanup());
+
+// Figures render inside <SceneCard>, which reads its labels from next-intl —
+// in the app every page is under the locale layout's provider.
+function render(ui: ReactElement) {
+  return rtlRender(
+    <NextIntlClientProvider locale="en" messages={{ scenes }}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+}
 
 describe("<ContentBlocks>", () => {
   it("renders a section with a paragraph child", () => {

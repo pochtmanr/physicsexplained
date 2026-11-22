@@ -11,13 +11,17 @@ export interface UseAnimationFrameOptions {
   onFrame: FrameCallback;
   /** If true, ignores visibility and always runs (default false) */
   alwaysOn?: boolean;
+  /** If true, no frames are requested until it turns false again (default false) */
+  paused?: boolean;
 }
 
 /**
  * Runs a requestAnimationFrame loop that:
  *  - calls onFrame with (elapsedSeconds, deltaSeconds)
- *  - pauses automatically when the referenced element scrolls out of view
- *  - accumulates elapsed only while visible, so scrolling away and back
+ *  - stops requesting frames while the referenced element is out of view,
+ *    while the tab is hidden, or while `paused` is true — and restarts when
+ *    all three clear
+ *  - accumulates elapsed only while running, so scrolling away and back
  *    never produces a position jump in downstream physics
  *  - caps per-frame dt to avoid big jumps when the tab is backgrounded
  *    then refocused
@@ -25,6 +29,7 @@ export interface UseAnimationFrameOptions {
  *
  * Note: this does NOT respect reduced-motion — the consumer should check
  * useReducedMotion() and either skip rendering or render a single frame.
+ * `useScenePlayback` does that for you.
  */
 const MAX_DT_SECONDS = 0.1;
 
@@ -32,12 +37,16 @@ export function useAnimationFrame({
   elementRef,
   onFrame,
   alwaysOn = false,
+  paused = false,
 }: UseAnimationFrameOptions) {
   const visibleRef = useRef(alwaysOn);
+  const pausedRef = useRef(paused);
   const rafRef = useRef<number | null>(null);
   const lastRef = useRef<number | null>(null);
   const elapsedRef = useRef(0);
   const onFrameRef = useRef(onFrame);
+  /** Starts the loop if it should be running and is not already. */
+  const wakeRef = useRef<() => void>(() => {});
 
   // Keep latest callback without re-starting the loop
   useEffect(() => {
@@ -45,14 +54,22 @@ export function useAnimationFrame({
   }, [onFrame]);
 
   useEffect(() => {
+    pausedRef.current = paused;
+    if (!paused) wakeRef.current();
+  }, [paused]);
+
+  useEffect(() => {
     const el = elementRef.current;
 
+    const shouldRun = () =>
+      visibleRef.current && !pausedRef.current && !document.hidden;
+
     const tick = (now: number) => {
-      if (!visibleRef.current) {
-        // Paused — drop the last timestamp so the next visible frame
-        // starts with dt = 0 instead of the accumulated gap
+      if (!shouldRun()) {
+        // Stop the loop. Dropping the last timestamp makes the next frame
+        // after a wake start with dt = 0 instead of the accumulated gap.
+        rafRef.current = null;
         lastRef.current = null;
-        rafRef.current = requestAnimationFrame(tick);
         return;
       }
 
@@ -62,38 +79,48 @@ export function useAnimationFrame({
       const dt = Math.min(rawDt, MAX_DT_SECONDS);
       elapsedRef.current += dt;
       onFrameRef.current(elapsedRef.current, dt);
+      // onFrame may have paused us (e.g. playback reached its end).
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    if (alwaysOn) {
+    const wake = () => {
+      if (rafRef.current === null && shouldRun()) {
+        lastRef.current = null;
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+    wakeRef.current = wake;
+
+    const stop = () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+      lastRef.current = null;
+    };
+
+    document.addEventListener("visibilitychange", wake);
+
+    let observer: IntersectionObserver | null = null;
+    if (alwaysOn || typeof IntersectionObserver === "undefined") {
       visibleRef.current = true;
-      rafRef.current = requestAnimationFrame(tick);
-      return () => {
-        if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-      };
+      wake();
+    } else if (el) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (!entry) return;
+          visibleRef.current = entry.isIntersecting;
+          if (entry.isIntersecting) wake();
+        },
+        { threshold: 0.05 },
+      );
+      observer.observe(el);
     }
 
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry) return;
-        visibleRef.current = entry.isIntersecting;
-        if (entry.isIntersecting) {
-          // Reset timer on re-enter so dt starts fresh at 0
-          lastRef.current = null;
-        }
-      },
-      { threshold: 0.05 },
-    );
-
-    observer.observe(el);
-    rafRef.current = requestAnimationFrame(tick);
-
     return () => {
-      observer.disconnect();
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      document.removeEventListener("visibilitychange", wake);
+      observer?.disconnect();
+      wakeRef.current = () => {};
+      stop();
     };
   }, [elementRef, alwaysOn]);
 }

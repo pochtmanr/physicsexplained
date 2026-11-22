@@ -9,3 +9,15 @@ export type {
   ParallelTransportPath,
 } from "./ManifoldCanvas";
 export * from "./scene-tokens";
+export { useScenePlayback, LOOP_HOLD_SECONDS } from "./use-scene-playback";
+export type {
+  PlaybackStatus,
+  ScenePlayback,
+  UseScenePlaybackOptions,
+} from "./use-scene-playback";
+export { SceneControls } from "./scene-controls";
+export type { SceneControlsProps } from "./scene-controls";
+export { SceneSlider, SceneControlGroup } from "./scene-slider";
+export type { SceneSliderProps } from "./scene-slider";
+export { SceneReadout } from "./scene-readout";
+export type { SceneReadoutItem } from "./scene-readout";

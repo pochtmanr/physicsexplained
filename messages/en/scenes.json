@@ -1,0 +1,48 @@
+{
+  "card": {
+    "expand": "Expand figure",
+    "close": "Close",
+    "figure": "Figure"
+  },
+  "controls": {
+    "play": "Play",
+    "pause": "Pause",
+    "replay": "Replay",
+    "loop": "Loop",
+    "scrub": "Time"
+  },
+  "freeFall": {
+    "aria": "A hammer and a feather dropped side by side from the same height",
+    "hammer": "hammer",
+    "feather": "feather",
+    "air": "Air resistance",
+    "vacuum": "Vacuum",
+    "normalAir": "Air",
+    "slowMotion": "½× speed",
+    "hammerLands": "hammer lands",
+    "featherLands": "feather lands",
+    "featherSpeed": "feather speed",
+    "noteVacuum": "No air: both fall at the same rate.",
+    "noteAir": "Drag slows the feather; the hammer barely notices."
+  },
+  "inclinedPlane": {
+    "aria": "A ball rolling down a ramp, with marks at equal time intervals",
+    "angle": "Angle (θ)",
+    "intervals": "distances 1 : 3 : 5 : 7 : 9",
+    "acceleration": "a = g·sin θ",
+    "rollTime": "roll time"
+  },
+  "kinematicsGraph": {
+    "aria": "A ball moving along a track, with graphs of position, velocity and acceleration against time",
+    "position": "initial position x₀",
+    "velocity": "initial velocity v₀",
+    "acceleration": "acceleration a"
+  },
+  "tangentZoom": {
+    "aria": "A position-time curve with a secant line through two points",
+    "time": "time t",
+    "interval": "interval Δt",
+    "secant": "secant slope Δx/Δt",
+    "tangent": "tangent slope at t"
+  }
+}

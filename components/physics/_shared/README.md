@@ -26,7 +26,7 @@ Mirror those three when adding a new scene.
 
 5. **Controls use theme tokens.** Sliders: `accent-[var(--color-cyan)]`. Labels: `text-[var(--color-fg-3)]`. Active button: `border-[var(--color-cyan)] text-[var(--color-cyan)]`. Inactive: `border-[var(--color-fg-4)] text-[var(--color-fg-3)]`.
 
-6. **No animation if the scene is static.** For animated scenes, use `useAnimationFrame` (when re-renders are needed) or `useSceneTick` (ref-based, no re-renders).
+6. **No animation if the scene is static.** Animated scenes follow rules 7–13 below (`useScenePlayback`); `useAnimationFrame` and `useSceneTick` are the lower-level loops that older scenes still use directly.
 
 ### Skeleton
 
@@ -79,6 +79,36 @@ function draw(
   // ...your physics here, using tokens.cyan/magenta/amber/...
 }
 ```
+
+### Animated scenes: playback, controls, readouts
+
+The reference for an animated scene is `components/physics/free-fall-scene.tsx` (FIG.01c, hammer and feather). Copy it when converting a scene.
+
+7. **One clock: `useScenePlayback`.** Do not keep your own `startRef` / modulo loop. Give the hook a `duration` (scene seconds) and a `draw(t)` function. The scene plays once when it scrolls into view, holds its last frame, and waits for Replay; the reader can turn Loop on (the scene then holds for `LOOP_HOLD_SECONDS` before restarting). Nothing autoplays under `prefers-reduced-motion`, and no frames are requested while the scene is offscreen, the tab is hidden, or playback is paused or ended. `draw` is also called after every render, so resize, theme and parameter changes repaint a stopped scene.
+
+8. **One control bar: `<SceneControls playback={playback} />`.** Play/Pause, Replay, Loop and elapsed time. Pass `scrub` for a time scrubber, `note` for a short remark such as "½× speed". Do not hand-roll pause buttons.
+
+9. **Sliders are `<SceneSlider>`** inside a `<SceneControlGroup>`. The label is tied to the input; pass `ariaLabel` when the visible label is a bare symbol, and `display` for the formatted value with its unit.
+
+10. **Numbers go in `<SceneReadout>`, not on the canvas.** HTML readouts cannot collide with the drawing, wrap on narrow screens, are translated, and are read by assistive technology. Text that must stay in the canvas (axis ticks, object names) is drawn with `drawLabel`, which measures the text and keeps it inside the canvas; give it a `plate` when a curve can pass under it, and draw labels after the curves.
+
+11. **Per-frame drawing uses `syncCanvas`**, not `applyDpr` (which reallocates the canvas on every call).
+
+12. **Full view comes for free.** `<SceneCard>` moves the live scene into the popup, so state survives, and `useSceneSize` reads `SceneViewContext` and grows the canvas to fit the popup. For that to work: put `ref={containerRef}` on the element that wraps the canvas **and** its controls (their height is subtracted from the space available), wrap both in `<div className="mx-auto" style={{ width }}>`, and draw from `width`/`height` only — no pixel constants for overall layout. Choose `fullView`: `"ratio"` to keep the aspect ratio, `"fill"` when the drawing adapts to any shape; the default `"width"` is what unconverted scenes get.
+
+13. **Text is translated.** Visible strings and the canvas `aria-label` come from `useTranslations("scenes.<sceneName>")` (`messages/<locale>/scenes.json`). The canvas gets `role="img"`.
+
+Conversion checklist for an existing scene:
+
+- [ ] `useSceneTokens` + `useSceneSize` + `syncCanvas`/`applyDpr`; no hex literals, no private `ResizeObserver`
+- [ ] `useScenePlayback` + `<SceneControls>` if it animates; no self-restarting loop
+- [ ] sliders → `<SceneSlider>`; numeric readouts → `<SceneReadout>`; remaining canvas text → `drawLabel`
+- [ ] strings in `messages/en/scenes.json` and `messages/he/scenes.json`
+- [ ] checked at 360 px and 1280 px, dark and light, inline and in full view, at every slider extreme
+
+### Inventory (measured 2026-11-22)
+
+531 visual elements in 527 figure slots across 183 topics. By behaviour: animation with controls 252, static drawing that redraws on input 149, looping animation without controls 92, fully static 38, playground 1. By rendering: Canvas 2D 488 (+18 through the shared spacetime/manifold/circuit primitives), SVG 11, JSXGraph 11, plain DOM 2. Converted to the pattern above: the four figures of `classical-mechanics/motion-in-a-straight-line`.
 
 ### Anti-patterns (forbidden)
 

@@ -1,209 +1,204 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import {
+  SCENE_CANVAS_CLASS,
+  SceneControlGroup,
+  SceneControls,
+  SceneReadout,
+  SceneSlider,
+  drawLabel,
+  hexToRgba,
+  syncCanvas,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
 
-const RATIO = 0.55;
-const MAX_HEIGHT = 360;
 const G = 9.80665;
 const ANGLE_REF_DEG = 18;
+/** Roll time at the reference angle, in seconds. */
 const TMAX_REF = 2.75;
+const BALL_RADIUS = 9;
+
+/**
+ * Roll time scales with 1/√(sin θ), matching a = g·sin θ on a ramp of fixed
+ * length; at the reference angle it equals TMAX_REF.
+ */
+function rollTime(angleDeg: number): number {
+  const ref = Math.sin((ANGLE_REF_DEG * Math.PI) / 180);
+  return TMAX_REF * Math.sqrt(ref / Math.sin((angleDeg * Math.PI) / 180));
+}
 
 export function InclinedPlaneScene() {
+  const t = useTranslations("scenes.inclinedPlane");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: 360,
+    minHeight: 240,
+    initialWidth: 640,
+    // The ramp is sized from both width and height, so any shape works; on a
+    // phone this lets the full view use the screen's height.
+    fullView: "fill",
+  });
   const [angleDeg, setAngleDeg] = useState(18);
-  const [size, setSize] = useState({ width: 640, height: 360 });
-  const phaseRef = useRef<number>(0);
-  const prevTMaxRef = useRef<number | null>(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(container);
-    return () => ro.disconnect();
-  }, []);
+  const angle = (angleDeg * Math.PI) / 180;
+  const tMax = rollTime(angleDeg);
 
-  useAnimationFrame({
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (_t, dt) => {
+    duration: tMax,
+    draw: (time) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = syncCanvas(canvas, width, height);
       if (!ctx) return;
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
-
-      const angle = (angleDeg * Math.PI) / 180;
-      const a = G * Math.sin(angle);
+      const bounds = { width, height };
 
       const pad = 28;
-      const rampLen = Math.min(width - pad * 2 - 20, 640);
+      // Headroom above the ramp top for the ball, its glow and the tick labels.
+      const headroom = 44;
       const originX = pad + 10;
       const originY = height - pad;
+      // The ramp must fit both ways: across the width and under the top edge.
+      const rampLen = Math.min(
+        (width - originX - pad - 10) / Math.cos(angle),
+        (originY - headroom) / Math.sin(angle),
+      );
       const endX = originX + rampLen * Math.cos(angle);
       const endY = originY - rampLen * Math.sin(angle);
 
-      // Traversal time scales with 1/sqrt(sinθ) so bigger angles = faster roll,
-      // matching a = g·sinθ. At the reference angle we match TMAX_REF.
-      const angleRefRad = (ANGLE_REF_DEG * Math.PI) / 180;
-      const tMax =
-        TMAX_REF * Math.sqrt(Math.sin(angleRefRad) / Math.sin(angle));
-      const totalCycle = tMax + 1.0;
-
-      // On angle change, rescale phase so the ball's fractional position on
-      // the ramp stays continuous — no teleporting when dragging the slider.
-      const prevTMax = prevTMaxRef.current;
-      if (prevTMax !== null && prevTMax !== tMax) {
-        if (phaseRef.current <= prevTMax) {
-          phaseRef.current = (phaseRef.current / prevTMax) * tMax;
-        }
-      }
-      prevTMaxRef.current = tMax;
-
-      phaseRef.current = (phaseRef.current + dt) % totalCycle;
-      const tLocal = phaseRef.current;
-
-      const running = tLocal <= tMax;
-      const tRoll = Math.min(tLocal, tMax);
-      // Fraction along ramp f(tRoll) = (tRoll/tMax)^2
-      const f = (tRoll / tMax) * (tRoll / tMax);
-      const s = f * rampLen;
-
+      // Uniform acceleration from rest: fraction of the ramp covered = (t/tMax)².
+      const progress = Math.min(time / tMax, 1);
+      const s = progress * progress * rampLen;
       const ballX = endX - s * Math.cos(angle);
       const ballY = endY + s * Math.sin(angle);
 
-      ctx.clearRect(0, 0, width, height);
-
-      // Ground (floor line under the ramp base)
-      ctx.strokeStyle = colors.fg3;
+      // Ground
+      ctx.strokeStyle = tokens.gridHeavy;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(pad, originY);
       ctx.lineTo(width - pad, originY);
       ctx.stroke();
 
-      // Ramp (a thin line from bottom-left to top-right)
-      ctx.strokeStyle = colors.fg1;
+      // Ramp
+      ctx.strokeStyle = tokens.textDim;
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(originX, originY);
       ctx.lineTo(endX, endY);
       ctx.stroke();
 
-      // Right-angle bottom (subtle)
-      ctx.strokeStyle = colors.fg3;
+      // Vertical drop under the ramp top
+      ctx.strokeStyle = tokens.gridHeavy;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(originX, originY);
+      ctx.moveTo(endX, endY);
       ctx.lineTo(endX, originY);
       ctx.stroke();
 
-      // Stroboscopic marks (perpendicular to ramp, short ticks)
-      const nx = -Math.sin(angle); // normal to ramp (outward up-left)
-      const ny = -Math.cos(angle);
-      ctx.strokeStyle = colors.fg2;
-      ctx.lineWidth = 1;
-      ctx.font = "11px monospace";
-      ctx.fillStyle = colors.fg2;
-      ctx.textAlign = "center";
+      // Angle arc at the foot of the ramp
+      ctx.strokeStyle = tokens.axes;
+      ctx.beginPath();
+      ctx.arc(originX, originY, 26, -angle, 0);
+      ctx.stroke();
 
-      // Marks at fractional positions (n/5)^2 of rampLen, revealed as the
-      // roll progresses. Fully shown during the end-of-cycle pause.
-      const marksCount = Math.min(5, Math.floor(5 * (tRoll / tMax)));
+      // Stroboscopic marks at equal time steps: positions (n/5)² along the
+      // ramp, revealed as the ball passes them.
+      const nx = -Math.sin(angle); // unit normal, pointing up and away from the ramp
+      const ny = -Math.cos(angle);
       const markFractions = [1 / 25, 4 / 25, 9 / 25, 16 / 25, 1];
+      const ratios = [1, 3, 5, 7, 9];
+      const marksCount = Math.min(5, Math.floor(5 * progress + 1e-9));
+      let prevX = endX;
+      let prevY = endY;
       for (let i = 0; i < marksCount; i++) {
         const ms = markFractions[i] * rampLen;
         const mx = endX - ms * Math.cos(angle);
         const my = endY + ms * Math.sin(angle);
+        ctx.strokeStyle = tokens.axes;
         ctx.beginPath();
         ctx.moveTo(mx, my);
         ctx.lineTo(mx + nx * 10, my + ny * 10);
         ctx.stroke();
+        // Interval label, centred on the stretch between two marks.
+        drawLabel(ctx, String(ratios[i]), (prevX + mx) / 2 + nx * 22, (prevY + my) / 2 + ny * 22, {
+          bounds,
+          color: tokens.cyan,
+          align: "center",
+          font: tokens.fontHudSmall,
+        });
+        prevX = mx;
+        prevY = my;
       }
 
-      // Interval labels (1, 3, 5, 7, 9) between consecutive marks
-      const ratios = [1, 3, 5, 7, 9];
-      const prevPoint = { x: endX, y: endY };
-      for (let i = 0; i < marksCount; i++) {
-        const ms = markFractions[i] * rampLen;
-        const mx = endX - ms * Math.cos(angle);
-        const my = endY + ms * Math.sin(angle);
-        const midX = (prevPoint.x + mx) / 2;
-        const midY = (prevPoint.y + my) / 2;
-        ctx.fillStyle = "#6FB8C6";
-        ctx.fillText(String(ratios[i]), midX + nx * 22, midY + ny * 22 + 4);
-        prevPoint.x = mx;
-        prevPoint.y = my;
-      }
-
-      // Ball
-      if (running) {
-        ctx.shadowColor = "rgba(111, 184, 198, 0.6)";
+      // Ball, resting on the ramp surface
+      const cx = ballX + nx * BALL_RADIUS;
+      const cy = ballY + ny * BALL_RADIUS;
+      if (playback.status === "playing") {
+        ctx.shadowColor = hexToRgba(tokens.cyan, 0.6);
         ctx.shadowBlur = 14;
       }
-      ctx.fillStyle = "#6FB8C6";
+      ctx.fillStyle = tokens.cyan;
       ctx.beginPath();
-      ctx.arc(ballX, ballY, 9, 0, Math.PI * 2);
+      ctx.arc(cx, cy, BALL_RADIUS, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // Angle label near the origin
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "12px monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(`θ = ${angleDeg}°`, originX + 16, originY - 6);
-      ctx.fillText(
-        `a = g·sinθ = ${a.toFixed(2)} m/s²`,
-        originX + 16,
-        originY - 22,
-      );
-
-      // "Intervals: 1 : 3 : 5 : 7 : 9" caption top-right
-      ctx.fillStyle = colors.fg2;
-      ctx.textAlign = "right";
-      ctx.fillText("intervals 1 : 3 : 5 : 7 : 9", width - pad, pad);
+      // Caption, top-left: the one corner the ramp never reaches.
+      drawLabel(ctx, t("intervals"), pad, 18, {
+        bounds,
+        color: tokens.textMute,
+        direction: "inherit",
+      });
     },
   });
 
+  // Keep the ball at the same place on the ramp while the angle is dragged.
+  const changeAngle = (next: number) => {
+    playback.seek((playback.getTime() / tMax) * rollTime(next));
+    setAngleDeg(next);
+  };
+
   return (
     <div ref={containerRef} className="w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block"
-      />
-      <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-3)]">
-          Angle (θ)
-        </label>
-        <input
-          type="range"
-          min={5}
-          max={45}
-          step={1}
-          value={angleDeg}
-          onChange={(e) => setAngleDeg(parseFloat(e.target.value))}
-          className="flex-1 accent-[#6FB8C6]"
+      <div className="mx-auto" style={{ width }}>
+        <canvas
+          ref={canvasRef}
+          role="img"
+          aria-label={t("aria")}
+          className={SCENE_CANVAS_CLASS}
+          style={{ width, height }}
         />
-        <span className="w-10 text-right text-sm font-mono text-[var(--color-fg-1)]">
-          {angleDeg}°
-        </span>
+        <SceneControls playback={playback} />
+        <SceneReadout
+          items={[
+            { label: "θ", value: `${angleDeg}°` },
+            {
+              label: t("acceleration"),
+              value: `${(G * Math.sin(angle)).toFixed(2)} m/s²`,
+              color: "var(--color-cyan)",
+            },
+            { label: t("rollTime"), value: `${tMax.toFixed(2)} s` },
+          ]}
+        />
+        <SceneControlGroup>
+          <SceneSlider
+            label={t("angle")}
+            value={angleDeg}
+            min={5}
+            max={45}
+            step={1}
+            onChange={changeAngle}
+            display={`${angleDeg}°`}
+          />
+        </SceneControlGroup>
       </div>
     </div>
   );

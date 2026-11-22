@@ -1,118 +1,101 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
+import {
+  SCENE_CANVAS_CLASS,
+  SceneControlGroup,
+  SceneControls,
+  SceneReadout,
+  SceneSlider,
+  drawLabel,
+  hexToRgba,
+  syncCanvas,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
+import {
+  FEATHER_TAU,
+  HAMMER_TAU,
+  fallDistance,
+  fallSpeed,
+  fallTime,
+  tauAtAir,
+} from "@/lib/physics/free-fall-drag";
 
-const RATIO = 0.75;
-const MAX_HEIGHT = 420;
-const G = 9.80665;
+/** Drop height in metres. */
+const FALL_HEIGHT = 2.2;
+/** The drop lasts well under a second in vacuum, so it is shown at half speed. */
+const PLAYBACK_RATE = 0.5;
 
-// Simple linear drag: m·a = m·g − b·v → terminal v_t = m·g/b
-// Hammer: heavy, tiny drag → falls ~ as in vacuum
-// Feather: light, large drag/mass → low terminal velocity → drifts
-const FEATHER_TAU = 0.15;
-
-function positionWithDrag(t: number, tau: number, h: number) {
-  // With linear drag: y(t) = v_t * (t - tau*(1 - exp(-t/tau)))
-  // We scale by a time factor so fall looks right on screen.
-  const vt = G * tau;
-  const fallen = vt * (t - tau * (1 - Math.exp(-t / tau)));
-  return Math.min(fallen, h);
-}
-
-function positionVacuum(t: number, h: number) {
-  return Math.min(0.5 * G * t * t, h);
-}
-
+/**
+ * FIG.01c — hammer and feather. Reference scene for the scene kit: playback
+ * through `useScenePlayback`, the standard control bar, a parameter slider
+ * and HTML readouts. Copy this file when converting another animated scene.
+ */
 export function FreeFallScene() {
+  const t = useTranslations("scenes.freeFall");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
-  const [airOn, setAirOn] = useState(true);
-  const [size, setSize] = useState({ width: 500, height: 400 });
-  const startRef = useRef<number | null>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.75,
+    maxHeight: 420,
+    minHeight: 260,
+    initialWidth: 500,
+    fullView: "ratio",
+  });
+  /** Air density as a percentage of normal air: 0 = vacuum, 100 = sea level. */
+  const [airPct, setAirPct] = useState(100);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(container);
-    return () => ro.disconnect();
-  }, []);
+  const hammerTau = tauAtAir(HAMMER_TAU, airPct / 100);
+  const featherTau = tauAtAir(FEATHER_TAU, airPct / 100);
+  const hammerLands = fallTime(FALL_HEIGHT, hammerTau);
+  const featherLands = fallTime(FALL_HEIGHT, featherTau);
+  const duration = Math.max(hammerLands, featherLands);
 
-  // Reset on toggle
-  useEffect(() => {
-    startRef.current = null;
-  }, [airOn]);
-
-  useAnimationFrame({
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (t) => {
+    duration,
+    rate: PLAYBACK_RATE,
+    draw: (time) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = syncCanvas(canvas, width, height);
       if (!ctx) return;
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
-
-      if (startRef.current === null) startRef.current = t;
-      const tLocal = t - startRef.current;
-
-      ctx.clearRect(0, 0, width, height);
+      const bounds = { width, height };
 
       const padX = 30;
-      const topY = 40;
-      const floorY = height - 28;
+      const topY = 44;
+      const floorY = height - 16;
       const fallPx = floorY - topY;
+      const hammerX = width * 0.3;
+      const featherX = width * 0.7;
 
-      // World units: map 0..fallH meters → 0..fallPx pixels
-      const fallH = 2.2; // metres of drop to animate
+      const hammerM = Math.min(fallDistance(time, hammerTau), FALL_HEIGHT);
+      const featherM = Math.min(fallDistance(time, featherTau), FALL_HEIGHT);
+      // Objects are drawn standing on the floor, so offset by their half-height.
+      const hammerY = topY + (hammerM / FALL_HEIGHT) * (fallPx - 12);
+      const featherY = topY + (featherM / FALL_HEIGHT) * (fallPx - 10);
 
-      // Hammer time-scaled: use real seconds → slow down by factor
-      const tSim = tLocal * 0.9;
-
-      const hammerM = positionVacuum(tSim, fallH);
-      const featherM = airOn
-        ? positionWithDrag(tSim, FEATHER_TAU, fallH)
-        : positionVacuum(tSim, fallH);
-
-      // restart when hammer lands (with a short pause)
-      if (hammerM >= fallH && featherM >= fallH) {
-        if (tSim > (airOn ? 6 : 2)) {
-          startRef.current = t;
-        }
+      // Air: faint tint over the drop zone, denser with more air.
+      if (airPct > 0) {
+        ctx.fillStyle = hexToRgba(tokens.blue, 0.02 + 0.08 * (airPct / 100));
+        ctx.fillRect(padX, topY, width - padX * 2, fallPx);
       }
 
-      const hammerY = topY + (hammerM / fallH) * fallPx;
-      const featherY = topY + (featherM / fallH) * fallPx;
-
-      const hammerX = width * 0.33;
-      const featherX = width * 0.67;
-
-      // Floor line
-      ctx.strokeStyle = colors.fg2;
+      // Floor
+      ctx.strokeStyle = tokens.axes;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(padX, floorY);
       ctx.lineTo(width - padX, floorY);
       ctx.stroke();
 
-      // Ceiling (release line)
-      ctx.strokeStyle = colors.fg3;
+      // Release line
+      ctx.strokeStyle = tokens.gridHeavy;
       ctx.setLineDash([3, 3]);
       ctx.beginPath();
       ctx.moveTo(padX, topY);
@@ -121,84 +104,103 @@ export function FreeFallScene() {
       ctx.setLineDash([]);
 
       // Column divider
-      ctx.strokeStyle = colors.fg3;
-      ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(width / 2, topY - 10);
       ctx.lineTo(width / 2, floorY);
       ctx.stroke();
 
-      // Labels above
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "12px monospace";
-      ctx.textAlign = "center";
-      ctx.fillText("hammer", hammerX, topY - 14);
-      ctx.fillText("feather", featherX, topY - 14);
+      drawLabel(ctx, t("hammer"), hammerX, topY - 22, {
+        bounds,
+        color: tokens.textDim,
+        align: "center",
+        direction: "inherit",
+      });
+      drawLabel(ctx, t("feather"), featherX, topY - 22, {
+        bounds,
+        color: tokens.textDim,
+        align: "center",
+        direction: "inherit",
+      });
 
-      // Hammer (grey rounded rect)
-      ctx.fillStyle = "#A0A8B4";
+      // Hammer: handle + head
+      ctx.fillStyle = tokens.textDim;
       ctx.beginPath();
       ctx.roundRect(hammerX - 10, hammerY - 12, 20, 24, 3);
       ctx.fill();
-      // hammer head
       ctx.fillRect(hammerX - 16, hammerY - 14, 32, 8);
 
-      // Feather (thin teardrop)
-      ctx.fillStyle = "#E4C27A";
+      // Feather: teardrop vane + spine
+      ctx.fillStyle = tokens.amber;
       ctx.beginPath();
       ctx.moveTo(featherX, featherY - 16);
-      ctx.quadraticCurveTo(
-        featherX + 10,
-        featherY - 4,
-        featherX,
-        featherY + 10,
-      );
-      ctx.quadraticCurveTo(
-        featherX - 10,
-        featherY - 4,
-        featherX,
-        featherY - 16,
-      );
+      ctx.quadraticCurveTo(featherX + 10, featherY - 4, featherX, featherY + 10);
+      ctx.quadraticCurveTo(featherX - 10, featherY - 4, featherX, featherY - 16);
       ctx.fill();
-      // spine
-      ctx.strokeStyle = "#8A6F40";
+      ctx.strokeStyle = tokens.bg;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(featherX, featherY - 14);
       ctx.lineTo(featherX, featherY + 9);
       ctx.stroke();
-
-      // Status
-      ctx.fillStyle = colors.fg2;
-      ctx.font = "11px monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(
-        airOn ? "with air resistance" : "in vacuum",
-        padX,
-        floorY + 20,
-      );
-      ctx.textAlign = "right";
-      ctx.fillText(`g = 9.81 m/s²`, width - padX, floorY + 20);
     },
   });
 
+  // A new air density is a new experiment: back to the top and drop again.
+  const changeAir = (pct: number) => {
+    setAirPct(pct);
+    playback.restart();
+  };
+
+  const featherSpeed = fallSpeed(Math.min(playback.time, featherLands), featherTau);
+
   return (
     <div ref={containerRef} className="w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block"
-      />
-      <div className="mt-2 flex items-center gap-3 px-2">
-        <label className="text-sm text-[var(--color-fg-3)]">Air</label>
-        <Button active={airOn} onClick={() => setAirOn((v) => !v)}>
-          {airOn ? "on" : "off"}
-        </Button>
-        <span className="ml-2 text-xs text-[var(--color-fg-3)]">
-          {airOn
-            ? "drag slows the feather"
-            : "vacuum — both fall at the same rate"}
-        </span>
+      <div className="mx-auto" style={{ width }}>
+        <canvas
+          ref={canvasRef}
+          role="img"
+          aria-label={t("aria")}
+          className={SCENE_CANVAS_CLASS}
+          style={{ width, height }}
+        />
+        <SceneControls playback={playback} note={t("slowMotion")} />
+        <SceneReadout
+          items={[
+            { label: t("hammerLands"), value: `${hammerLands.toFixed(2)} s` },
+            {
+              label: t("featherLands"),
+              value: `${featherLands.toFixed(2)} s`,
+              color: "var(--color-amber)",
+            },
+            {
+              label: t("featherSpeed"),
+              value: `${featherSpeed.toFixed(2)} m/s`,
+              color: "var(--color-amber)",
+            },
+          ]}
+        />
+        <SceneControlGroup>
+          <SceneSlider
+            label={t("air")}
+            value={airPct}
+            min={0}
+            max={100}
+            step={5}
+            onChange={changeAir}
+            display={`${airPct} %`}
+          />
+          <div className="flex flex-wrap items-center gap-2">
+            <Button active={airPct === 0} onClick={() => changeAir(0)}>
+              {t("vacuum")}
+            </Button>
+            <Button active={airPct === 100} onClick={() => changeAir(100)}>
+              {t("normalAir")}
+            </Button>
+            <span className="text-xs text-[var(--color-fg-3)]">
+              {airPct === 0 ? t("noteVacuum") : t("noteAir")}
+            </span>
+          </div>
+        </SceneControlGroup>
       </div>
     </div>
   );
