@@ -1,6 +1,16 @@
 import { describe, it, expect, afterEach, beforeAll, vi } from "vitest";
 import { render, screen, cleanup, act } from "@testing-library/react";
-import { SymmetryTriptychScene } from "@/components/physics/symmetry-triptych-scene";
+import { NextIntlClientProvider } from "next-intl";
+import scenes from "@/messages/en/scenes.json";
+import { SymmetryTriptychScene, type SymmetryMode } from "@/components/physics/symmetry-triptych-scene";
+
+function renderScene(mode?: SymmetryMode) {
+  return render(
+    <NextIntlClientProvider locale="en" messages={{ scenes }}>
+      <SymmetryTriptychScene mode={mode} />
+    </NextIntlClientProvider>,
+  );
+}
 
 beforeAll(() => {
   if (typeof window !== "undefined" && !window.matchMedia) {
@@ -45,21 +55,21 @@ afterEach(() => {
 
 describe("SymmetryTriptychScene", () => {
   it("renders the three tab buttons by default", () => {
-    render(<SymmetryTriptychScene />);
+    renderScene();
     expect(screen.getByRole("button", { name: /time → energy/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /space → momentum/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /rotation → angular L/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /rotation → angular momentum/i })).toBeInTheDocument();
   });
 
   it("hides the tab buttons when mode is a fixed mode", () => {
-    render(<SymmetryTriptychScene mode="space" />);
+    renderScene("space");
     expect(screen.queryByRole("button", { name: /time → energy/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /space → momentum/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /rotation → angular L/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /rotation → angular momentum/i })).not.toBeInTheDocument();
   });
 
   it("hides the tab buttons when mode is auto", () => {
-    render(<SymmetryTriptychScene mode="auto" />);
+    renderScene("auto");
     expect(screen.queryByRole("button", { name: /time → energy/i })).not.toBeInTheDocument();
   });
 });

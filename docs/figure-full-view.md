@@ -180,8 +180,8 @@ the axes, in `fontHudSmall`. Colour: the curve's accent.
 
 The mark on HTML elements is the `.figure-link` class with
 `data-link-active="true"`: 12% cyan tint and a 60% cyan outline, drawn with
-outline and shadow only, so nothing moves. An entry marked from the figure
-scrolls into view in the guide.
+outline and shadow only, so nothing moves. The link only highlights;
+nothing scrolls, on any screen.
 
 Every key in a guide's `readouts` and `controls` should have a counterpart in
 the scene. If a readout has no drawn counterpart, the HTML readout alone is

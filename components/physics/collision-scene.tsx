@@ -1,227 +1,318 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
-  pairKE,
-  pairP,
-  restitutionCollision,
-} from "@/lib/physics/momentum";
+  SCENE_CANVAS_CLASS,
+  SceneControlGroup,
+  SceneControls,
+  ScenePanel,
+  SceneReadout,
+  SceneSlider,
+  SceneStage,
+  drawFocusRing,
+  drawLabel,
+  syncCanvas,
+  type ScenePlayback,
+  useSceneHover,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
+import { pairKE, pairP, restitutionCollision } from "@/lib/physics/momentum";
 
-const RATIO = 0.55;
+/** Mass of A, the reference, in kg. */
+const MASS_A = 1;
+/** A's speed before the collision, m/s (rightward); B starts at rest. */
+const V_A0 = 2;
+const V_B0 = 0;
+/** Length of the drawn track, in metres. */
+const TRACK = 6;
+/** Where A and B start along the track, in metres. */
+const START_A = 0.5;
+const START_B = TRACK * 0.55;
+/** Seconds shown after the collision, at most (less if a block reaches the end). */
+const AFTER = 2.5;
+/** Inline height cap; the blocks grow past it in full view. */
 const MAX_HEIGHT = 340;
 
+/** Horizontal arrow from x0 to x1 at height y, head at x1. */
+function arrow(
+  ctx: CanvasRenderingContext2D,
+  x0: number,
+  x1: number,
+  y: number,
+  color: string,
+  lineWidth: number,
+  headLength: number,
+  headHalf: number,
+) {
+  const dir = Math.sign(x1 - x0) || 1;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = lineWidth;
+  ctx.beginPath();
+  ctx.moveTo(x0, y);
+  ctx.lineTo(x1, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x1 - dir * headLength, y - headHalf);
+  ctx.lineTo(x1 - dir * headLength, y + headHalf);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/**
+ * FIG.06b — block A slides into block B, at rest, with an adjustable mass
+ * ratio and coefficient of restitution. Total momentum stays fixed; kinetic
+ * energy drops unless the collision is elastic.
+ *
+ * The motion is a function of time, so a slider change redraws the same
+ * moment with the new outcome. The run ends a moment after the collision, or
+ * earlier if a block would leave the track.
+ */
 export function CollisionScene() {
+  const t = useTranslations("scenes.collision");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: MAX_HEIGHT,
+    minHeight: 160,
+    initialWidth: 640,
+    // The track stretches to any width and the blocks grow with the height.
+    fullView: "fill",
+  });
   const [restitution, setRestitution] = useState(1);
   const [massRatio, setMassRatio] = useState(1); // m_B / m_A
-  const [size, setSize] = useState({ width: 640, height: 340 });
-  const startRef = useRef<number | null>(null);
+  const playbackRef = useRef<ScenePlayback | null>(null);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(container);
-    return () => ro.disconnect();
-  }, []);
+  const massB = MASS_A * massRatio;
+  const { vA: vAf, vB: vBf } = restitutionCollision(MASS_A, V_A0, massB, V_B0, restitution);
 
-  useEffect(() => {
-    startRef.current = null;
-  }, [restitution, massRatio]);
+  // Text and offsets scale with `u`; the blocks and velocity arrows with `o`,
+  // which also follows the canvas height.
+  const scale = tokens.scale;
+  const u = (n: number) => n * scale;
+  const objectScale = Math.min(2.6, Math.max(scale, height / MAX_HEIGHT));
+  const o = (n: number) => n * objectScale;
 
-  useAnimationFrame({
+  const padX = u(40);
+  const mToPx = (width - 2 * padX) / TRACK;
+  const floorY = height * 0.45 + o(30);
+  const sideA = o(20 + Math.cbrt(MASS_A) * 6);
+  const sideB = o(20 + Math.cbrt(massB) * 6);
+  const pxPerMps = o(20);
+  const toPx = (x: number) => padX + x * mToPx;
+  const toM = (px: number) => (px - padX) / mToPx;
+
+  // Collision geometry, in metres: the blocks touch when their centres are
+  // half a side each apart.
+  const startA = Math.max(START_A, sideA / 2 / mToPx);
+  const contactGap = (sideA + sideB) / 2 / mToPx;
+  const tCol = Math.max(0, (START_B - startA - contactGap) / V_A0);
+  const xACol = START_B - contactGap;
+
+  // After the collision, stop before a block (or its arrow) leaves the track.
+  let after = AFTER;
+  if (vBf > 1e-9) {
+    const maxB = toM(Math.min(width - padX - sideB / 2, width - u(8) - vBf * pxPerMps));
+    after = Math.min(after, (maxB - START_B) / vBf);
+  }
+  if (vAf < -1e-9) {
+    const minA = toM(Math.max(padX + sideA / 2, u(8) - vAf * pxPerMps));
+    after = Math.min(after, (xACol - minA) / -vAf);
+  }
+  after = Math.max(0, after);
+  const duration = tCol + after;
+
+  /** Centres (m) and velocities at scene time `time`. */
+  const stateAt = (time: number) => {
+    if (time < tCol) {
+      return { xA: startA + V_A0 * time, xB: START_B, vA: V_A0, vB: V_B0, hit: false };
+    }
+    const dt = Math.min(time, duration) - tCol;
+    return { xA: xACol + vAf * dt, xB: START_B + vBf * dt, vA: vAf, vB: vBf, hit: true };
+  };
+
+  const blockHit = (px: number, py: number, cx: number, side: number, reach: number) =>
+    Math.abs(px - cx) <= side / 2 + reach && py >= floorY - side - reach && py <= floorY + reach;
+
+  // A block (or its arrow) means its velocity.
+  const hover = useSceneHover(canvasRef, (px, py) => {
+    const s = stateAt(playbackRef.current?.getTime() ?? 0);
+    const reach = u(9);
+    const arrowY = floorY - Math.max(sideA, sideB) - u(14);
+    const onArrow = (cx: number, v: number) =>
+      Math.abs(v) > 1e-3 &&
+      Math.abs(py - arrowY) <= reach &&
+      px >= Math.min(cx, cx + v * pxPerMps) - reach &&
+      px <= Math.max(cx, cx + v * pxPerMps) + reach;
+    const cxA = toPx(s.xA);
+    const cxB = toPx(s.xB);
+    if (blockHit(px, py, cxA, sideA, reach) || onArrow(cxA, s.vA)) return "vA";
+    if (blockHit(px, py, cxB, sideB, reach) || onArrow(cxB, s.vB)) return "vB";
+    return null;
+  });
+  const { activeKey } = hover;
+
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (t) => {
+    duration,
+    draw: (time) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = syncCanvas(canvas, width, height);
       if (!ctx) return;
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
-
-      if (startRef.current === null) startRef.current = t;
-      const tLocal = t - startRef.current;
-
-      ctx.clearRect(0, 0, width, height);
-
-      const mA = 1;
-      const mB = massRatio;
-      const vA0 = 2; // m/s rightward
-      const vB0 = 0;
-
-      // Positions in metres
-      const track = 6; // metres
-      const startXA = 0.5;
-      const startXB = track * 0.55;
-
-      const { vA: vAf, vB: vBf } = restitutionCollision(
-        mA,
-        vA0,
-        mB,
-        vB0,
-        restitution,
-      );
-
-      // Time to collision (their gap closes at vA0)
-      const gap0 = startXB - startXA - 0.6;
-      const tCol = gap0 / vA0;
-      const cycleEnd = tCol + 2.5;
-      if (tLocal > cycleEnd) startRef.current = t;
-
-      let xA = 0;
-      let xB = 0;
-      if (tLocal < tCol) {
-        xA = startXA + vA0 * tLocal;
-        xB = startXB;
-      } else {
-        const dt = tLocal - tCol;
-        xA = startXA + vA0 * tCol + vAf * dt;
-        xB = startXB + vBf * dt;
-      }
-
-      const padX = 40;
-      const trackY = height * 0.45;
-      const mToPxX = (width - 2 * padX) / track;
+      const bounds = { width, height };
+      const s = stateAt(time);
+      const cxA = toPx(s.xA);
+      const cxB = toPx(s.xB);
 
       // Track
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.gridHeavy;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(padX, trackY + 30);
-      ctx.lineTo(width - padX, trackY + 30);
+      ctx.moveTo(padX, floorY);
+      ctx.lineTo(width - padX, floorY);
       ctx.stroke();
 
-      // Draw bodies as squares, size scales with cbrt(mass)
-      const rA = 20 + Math.cbrt(mA) * 6;
-      const rB = 20 + Math.cbrt(mB) * 6;
-      const pxA = padX + xA * mToPxX;
-      const pxB = padX + xB * mToPxX;
-
-      ctx.fillStyle = "#E4C27A";
-      ctx.fillRect(pxA - rA / 2, trackY + 30 - rA, rA, rA);
-      ctx.fillStyle = "#6FB8C6";
-      ctx.fillRect(pxB - rB / 2, trackY + 30 - rB, rB, rB);
-
-      // Labels
-      ctx.font = "12px monospace";
-      ctx.textAlign = "center";
-      ctx.fillStyle = colors.fg1;
-      ctx.fillText(`m_A = 1.0`, pxA, trackY + 52);
-      ctx.fillText(`m_B = ${mB.toFixed(2)}`, pxB, trackY + 52);
-
-      // Header: current momenta, KE, and conservation
-      const pNow = pairP(
-        mA,
-        tLocal < tCol ? vA0 : vAf,
-        mB,
-        tLocal < tCol ? vB0 : vBf,
-      );
-      const keNow = pairKE(
-        mA,
-        tLocal < tCol ? vA0 : vAf,
-        mB,
-        tLocal < tCol ? vB0 : vBf,
-      );
-      const ke0 = pairKE(mA, vA0, mB, vB0);
-      const keLostPct = Math.max(0, 1 - keNow / ke0) * 100;
-
-      ctx.textAlign = "left";
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "13px monospace";
-      ctx.fillText(`p_total = ${pNow.toFixed(2)} kg·m/s    (constant)`, padX, 24);
-      ctx.fillText(
-        `KE_now  = ${keNow.toFixed(2)} J   (−${keLostPct.toFixed(0)}% to heat/sound)`,
-        padX,
-        42,
-      );
-
-      // Velocity arrows (post-collision phase)
-      const arrowY = trackY + 30 - Math.max(rA, rB) - 14;
-      const drawArrow = (
-        x: number,
-        v: number,
-        color: string,
-      ) => {
-        if (Math.abs(v) < 1e-3) return;
-        const len = v * 20;
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 2;
+      // The point of contact, while restitution is pointed at.
+      if (activeKey === "restitution") {
+        const cx = toPx(START_B) - sideB / 2;
+        ctx.save();
+        ctx.strokeStyle = tokens.cyan;
+        ctx.lineWidth = u(1.5);
+        ctx.setLineDash([u(4), u(4)]);
         ctx.beginPath();
-        ctx.moveTo(x, arrowY);
-        ctx.lineTo(x + len, arrowY);
+        ctx.moveTo(cx, floorY + u(4));
+        ctx.lineTo(cx, floorY - Math.max(sideA, sideB) - u(28));
         ctx.stroke();
-        ctx.beginPath();
-        const dir = Math.sign(len);
-        ctx.moveTo(x + len, arrowY);
-        ctx.lineTo(x + len - 6 * dir, arrowY - 4);
-        ctx.lineTo(x + len - 6 * dir, arrowY + 4);
-        ctx.closePath();
-        ctx.fillStyle = color;
-        ctx.fill();
+        ctx.restore();
+        drawLabel(ctx, `e = ${restitution.toFixed(2)}`, cx, floorY - Math.max(sideA, sideB) - u(36), {
+          bounds,
+          color: tokens.cyan,
+          align: "center",
+          font: tokens.fontHudSmall,
+          plate: tokens.bg,
+          scale,
+        });
+      }
+
+      // Blocks, sitting on the track; side grows with the cube root of the mass.
+      ctx.fillStyle = tokens.amber;
+      ctx.fillRect(cxA - sideA / 2, floorY - sideA, sideA, sideA);
+      ctx.fillStyle = tokens.cyan;
+      ctx.fillRect(cxB - sideB / 2, floorY - sideB, sideB, sideB);
+      if (activeKey === "vA") {
+        drawFocusRing(ctx, cxA, floorY - sideA / 2, sideA * 0.75 + u(4), tokens.amber, scale);
+      }
+      if (activeKey === "vB" || activeKey === "ratio") {
+        drawFocusRing(ctx, cxB, floorY - sideB / 2, sideB * 0.75 + u(4), tokens.cyan, scale);
+      }
+
+      // Velocity arrows above the blocks.
+      const arrowY = floorY - Math.max(sideA, sideB) - u(14);
+      const drawVelocity = (cx: number, v: number, color: string, focused: boolean) => {
+        if (Math.abs(v) < 1e-3) return;
+        arrow(ctx, cx, cx + v * pxPerMps, arrowY, color, o(focused ? 3 : 2), o(6), o(4));
       };
-      drawArrow(pxA, tLocal < tCol ? vA0 : vAf, "#E4C27A");
-      drawArrow(pxB, tLocal < tCol ? vB0 : vBf, "#6FB8C6");
+      drawVelocity(cxA, s.vA, tokens.amber, activeKey === "vA");
+      drawVelocity(cxB, s.vB, tokens.cyan, activeKey === "vB");
+
+      // Masses under the blocks.
+      const labelY = floorY + u(18);
+      drawLabel(ctx, `m_A = ${MASS_A.toFixed(1)}`, cxA, labelY, {
+        bounds,
+        color: activeKey === "vA" ? tokens.textBright : tokens.textDim,
+        align: "center",
+        font: tokens.fontHud,
+      });
+      drawLabel(ctx, `m_B = ${massB.toFixed(2)}`, cxB, labelY, {
+        bounds,
+        color:
+          activeKey === "ratio" ? tokens.cyan : activeKey === "vB" ? tokens.textBright : tokens.textDim,
+        align: "center",
+        font: tokens.fontHud,
+      });
     },
   });
+  // The hit test above runs between renders and needs the live clock.
+  playbackRef.current = playback;
+
+  const now = stateAt(playback.getTime());
+  const pNow = pairP(MASS_A, now.vA, massB, now.vB);
+  const keNow = pairKE(MASS_A, now.vA, massB, now.vB);
+  const ke0 = pairKE(MASS_A, V_A0, massB, V_B0);
+  const keLost = Math.max(0, 1 - keNow / ke0) * 100;
+  // Never show "-0.00".
+  const fmt = (v: number) => (Math.abs(v) < 0.005 ? "0.00" : v.toFixed(2));
 
   return (
-    <div ref={containerRef} className="w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block"
-      />
-      <div className="mt-2 flex flex-col gap-3 px-2">
-        <div className="flex items-center gap-3">
-          <label className="w-24 text-sm text-[var(--color-fg-3)]">
-            restitution e
-          </label>
-          <input
-            type="range"
+    <div ref={containerRef} className="scene-root w-full pb-4">
+      <div className="mx-auto" style={{ width }}>
+        <SceneStage>
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={t("aria")}
+            className={SCENE_CANVAS_CLASS}
+            style={{ width, height }}
+          />
+        </SceneStage>
+        <ScenePanel>
+          <SceneControls playback={playback} scrub scrubKey="scrub" />
+          <SceneReadout
+            items={[
+              {
+                label: "v_A",
+                value: `${fmt(now.vA)} m/s`,
+                color: "var(--color-amber)",
+                guideKey: "vA",
+              },
+              {
+                label: "v_B",
+                value: `${fmt(now.vB)} m/s`,
+                color: "var(--color-cyan)",
+                guideKey: "vB",
+              },
+              {
+                label: "p_total",
+                value: `${fmt(pNow)} kg·m/s`,
+                guideKey: "momentum",
+              },
+              {
+                label: "KE",
+                value: `${keNow.toFixed(2)} J (−${keLost.toFixed(0)}%)`,
+                guideKey: "energy",
+              },
+            ]}
+          />
+        </ScenePanel>
+        <SceneControlGroup>
+          <SceneSlider
+            label={t("restitution")}
+            guideKey="restitution"
+            value={restitution}
             min={0}
             max={1}
             step={0.01}
-            value={restitution}
-            onChange={(e) => setRestitution(parseFloat(e.target.value))}
-            className="flex-1 accent-[#6FB8C6]"
+            onChange={setRestitution}
+            display={restitution.toFixed(2)}
           />
-          <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
-            {restitution.toFixed(2)}
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <label className="w-24 text-sm text-[var(--color-fg-3)]">
-            mass ratio m_B / m_A
-          </label>
-          <input
-            type="range"
+          <SceneSlider
+            label={t("ratio")}
+            guideKey="ratio"
+            value={massRatio}
             min={0.25}
             max={4}
             step={0.05}
-            value={massRatio}
-            onChange={(e) => setMassRatio(parseFloat(e.target.value))}
-            className="flex-1 accent-[#6FB8C6]"
+            onChange={setMassRatio}
+            display={massRatio.toFixed(2)}
           />
-          <span className="w-12 text-right text-sm font-mono text-[var(--color-fg-1)]">
-            {massRatio.toFixed(2)}
-          </span>
-        </div>
+        </SceneControlGroup>
       </div>
     </div>
   );

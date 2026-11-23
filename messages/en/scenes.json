@@ -1,4 +1,300 @@
 {
+  "work": {
+    "aria": "A crate pushed at a steady speed along a floor by a constant force F, with the distance d it has moved and the work W = F·d filling a bar",
+    "guide": {
+      "items": {
+        "force": {
+          "label": "Force F",
+          "text": "Your push on the crate, a constant 20 N, drawn as the magenta arrow on its back. It points along the motion, so all of it counts towards the work."
+        },
+        "displacement": {
+          "label": "Displacement d",
+          "text": "How far the crate has moved since it started, marked by the dashed line under the floor. It grows steadily to 5 m over the 5 s run."
+        },
+        "work": {
+          "label": "Work W = F·d",
+          "text": "The energy your push has handed to the crate so far, in joules: newtons times metres. The magenta bar fills in step with d and reaches 100 J at the end."
+        },
+        "scrub": {
+          "label": "Time",
+          "text": "Drag to any moment of the push. Halfway along, the bar is half full: the work grows in proportion to the distance."
+        }
+      },
+      "formulas": {
+        "work": "Work done by a constant force along the motion: force times distance.",
+        "angle": "A force at angle θ to the path: only its component along the motion does work."
+      },
+      "try": {
+        "1": "Drag the time to 2.5 s. The crate has moved 2.50 m and the work is 50 J, half the bar.",
+        "2": "Compare t = 1 s with t = 4 s: four times the distance, four times the work, because F stays the same.",
+        "3": "Point at the arrow. It is parallel to the floor, so cos θ = 1. The same 20 N pushed downwards at 60° would count only half, and the run would end at 50 J."
+      },
+      "limits": "The push is constant and points along the floor. Friction from the floor, which keeps the crate at a steady speed, does an equal amount of negative work; the bar counts only the work of the push."
+    }
+  },
+  "energyBowl": {
+    "aria": "A ball swinging in a parabolic bowl, with a bar that splits its energy into kinetic, potential and heat",
+    "budget": "ENERGY BUDGET",
+    "heatShort": "HEAT",
+    "formulaConserved": "E_total = KE + PE",
+    "noteConserved": "(conserved)",
+    "formulaFriction": "E_total = KE + PE + heat",
+    "noteFriction": "(friction bleeds energy away)",
+    "ke": "Kinetic KE",
+    "pe": "Potential PE",
+    "heat": "Heat",
+    "friction": "Friction",
+    "guide": {
+      "items": {
+        "ke": {
+          "label": "Kinetic energy KE",
+          "text": "Energy of motion, ½mv², as a share of the 4.09 J the ball starts with: the cyan part of the bar. It peaks as the ball crosses the bottom and is zero at each turning point."
+        },
+        "pe": {
+          "label": "Potential energy PE",
+          "text": "Energy of height, mgy, measured from the bottom of the bowl: the gold part of the bar. It is largest at the turning points, where the ball stops for an instant."
+        },
+        "heat": {
+          "label": "Heat",
+          "text": "Energy that friction has turned into thermal motion of the bowl and the ball: the red part. It only ever grows. KE + PE + heat always fills the whole bar."
+        },
+        "friction": {
+          "label": "Friction",
+          "text": "How quickly friction drains the swing. At 0 the ball swings for ever without loss. You can change it while the ball moves."
+        }
+      },
+      "formulas": {
+        "mechanical": "Mechanical energy, kinetic plus potential. It stays constant while only gravity does work.",
+        "ledger": "With friction the heat Q joins the ledger, and the total is still the energy the ball started with."
+      },
+      "try": {
+        "1": "With friction at 0, watch the bar: cyan and gold trade places twice in every back-and-forth, and no red appears.",
+        "2": "Set friction to 0.050 and replay. By the end of the 15 s run about 58% of the energy has become heat.",
+        "3": "Mid-run, drag friction back to 0. The swing stops shrinking, but the heat already made stays: the red part never gives anything back."
+      },
+      "limits": "Friction is modelled as a steady fading of the swing, not as a force that depends on the ball's weight and speed. Only the ball's sideways speed counts towards its kinetic energy, which is close for a shallow bowl, and the ball slides without rolling."
+    }
+  },
+  "power": {
+    "aria": "Two engines push identical crates the same distance with the same force; the fast one arrives in 3 s, the slow one in 7 s, and a gauge on each track shows its power",
+    "fastLabel": "fast engine — same W, less t",
+    "slowLabel": "slow engine — same W, more t",
+    "fastPower": "Fast engine P",
+    "slowPower": "Slow engine P",
+    "guide": {
+      "items": {
+        "work": {
+          "label": "Work W = F·d",
+          "text": "What each engine does to its crate: a 20 N push over 6 m, 120 J. It is the same for both, however long they take."
+        },
+        "fastPower": {
+          "label": "Fast engine",
+          "text": "Covers the 6 m in 3 s, so it delivers 120 J / 3 s = 40 W. Its gauge, on the upper track, is full."
+        },
+        "slowPower": {
+          "label": "Slow engine",
+          "text": "Takes 7 s for the same 6 m and the same 120 J: 120 J / 7 s ≈ 17.1 W. Its gauge fills 3/7 of the way."
+        },
+        "scrub": {
+          "label": "Time",
+          "text": "Drag to any moment. From 3 s on the fast crate waits at the end while the slow one is still on its way."
+        }
+      },
+      "formulas": {
+        "average": "Average power: the work done divided by the time it took.",
+        "instant": "Power at an instant, for a force F whose point of application moves at speed v."
+      },
+      "try": {
+        "1": "Let the run play. The fast crate arrives at 3 s, the slow one at 7 s, each after 120 J of work.",
+        "2": "Divide the two powers: 40 W / 17.1 W ≈ 2.33, the same as 7 s / 3 s. For the same work, power goes as one over the time.",
+        "3": "Drag the time to 3 s. The slow crate is 3/7 of the way along, and its engine has done 17.1 W × 3 s ≈ 51 J so far."
+      },
+      "limits": "Each crate moves at a steady speed under a steady 20 N push, so each engine's power is constant: P = F·v. Starting from rest, and the friction that would keep a pushed crate at a steady speed, are left out."
+    }
+  },
+  "centerOfMass": {
+    "aria": "Two unequal masses on a rigid rod spin about their centre of mass, which glides along a straight line",
+    "com": "COM",
+    "ratio": "Mass ratio m₁ / m₂",
+    "guide": {
+      "items": {
+        "r1": {
+          "label": "Distance r₁",
+          "text": "How far the heavy mass m₁ sits from the centre of mass, on a 1 m rod. The heavier it is, the closer the centre of mass moves to it, and the smaller the circle it turns on."
+        },
+        "r2": {
+          "label": "Distance r₂",
+          "text": "How far the light mass m₂ (1 kg) sits from the centre of mass. r₁ + r₂ is always the whole rod, 1 m; the light mass takes the larger share and swings round the wider circle."
+        },
+        "balance": {
+          "label": "m₁·r₁ = m₂·r₂",
+          "text": "The two products are always equal: that is what puts the centre of mass where it is. The rod balances there, like a seesaw on its pivot."
+        },
+        "com": {
+          "label": "Centre of mass",
+          "text": "The magenta dot. However the rod spins, it moves along the dashed line at a constant speed: no outside force acts, so the total momentum, M·V_CM, cannot change."
+        },
+        "ratio": {
+          "label": "Mass ratio m₁ / m₂",
+          "text": "The heavy mass as a multiple of the light one, from 1 (equal masses) to 4. It can be changed while the rod spins."
+        },
+        "scrub": {
+          "label": "Time bar",
+          "text": "Drag it to stop the motion at any instant and compare where the two masses and the centre of mass are."
+        }
+      },
+      "formulas": {
+        "balance": "The centre of mass divides the rod in the inverse ratio of the masses.",
+        "momentum": "The total momentum is the total mass times the velocity of the centre of mass."
+      },
+      "try": {
+        "1": "Set the ratio to 1. The centre of mass sits exactly midway, and both masses turn on the same circle.",
+        "2": "Set it to 4. The centre of mass moves to within 0.2 m of the heavy mass, which now barely circles, while the light mass swings 0.8 m out.",
+        "3": "Watch the magenta dot at any ratio. The masses loop and swing, but the dot never leaves the straight line or changes speed."
+      },
+      "limits": "The rod is rigid and weightless, the masses are points, and nothing outside acts on them: no gravity, no friction. With gravity the centre of mass would follow a parabola instead of a line, still untouched by the spin."
+    }
+  },
+  "collision": {
+    "aria": "Block A slides into block B, at rest, and the two move off according to their masses and the restitution",
+    "restitution": "Restitution e",
+    "ratio": "Mass ratio m_B / m_A",
+    "guide": {
+      "items": {
+        "vA": {
+          "label": "Velocity of A",
+          "text": "Block A (1 kg, amber) arrives at 2 m/s. After the collision it may stop, keep going more slowly, or bounce back with a negative velocity, depending on B's mass and on e."
+        },
+        "vB": {
+          "label": "Velocity of B",
+          "text": "Block B (cyan) starts at rest. The collision gives it a push to the right; the lighter it is, the faster it leaves."
+        },
+        "momentum": {
+          "label": "Total momentum",
+          "text": "m_A·v_A + m_B·v_B. It stays at 2 kg·m/s before, during and after the collision, whatever the mass ratio and whatever e: the forces between the blocks are equal and opposite."
+        },
+        "energy": {
+          "label": "Kinetic energy",
+          "text": "The total ½mv² now, and the share lost since the start. It begins at 2 J. With e = 1 nothing is lost; below 1 the missing energy has gone into heat, sound and deformation."
+        },
+        "restitution": {
+          "label": "Restitution e",
+          "text": "The speed at which the blocks separate as a fraction of the speed at which they approached. 1 is elastic, 0 means they stick together."
+        },
+        "ratio": {
+          "label": "Mass ratio m_B / m_A",
+          "text": "B's mass as a multiple of A's 1 kg, from 0.25 to 4. The block's size grows with its mass."
+        },
+        "scrub": {
+          "label": "Time bar",
+          "text": "Drag it to stop the run just before or just after the impact and compare the readouts."
+        }
+      },
+      "formulas": {
+        "momentum": "Momentum before the collision equals momentum after, for any collision.",
+        "restitution": "The coefficient of restitution: separation speed over approach speed."
+      },
+      "try": {
+        "1": "Leave e at 1 and the ratio at 1. A stops dead and B leaves at 2 m/s: the cue-ball shot.",
+        "2": "Slide e to 0. The blocks move off together at 1 m/s, and half the kinetic energy is gone, as m_B / (m_A + m_B) predicts.",
+        "3": "Set e back to 1 and the ratio to 4. A bounces back at −1.2 m/s and B leaves at 0.8 m/s; the total momentum still reads 2 kg·m/s."
+      },
+      "limits": "The blocks move in one dimension on a frictionless track, and the impact is instantaneous. A real collision lasts a few milliseconds, and e itself can depend on how fast the bodies meet."
+    }
+  },
+  "skaterSpin": {
+    "aria": "A figure skater seen from above, spinning with weights in her hands; pulling the arms in makes her spin faster",
+    "pullIn": "Arms in",
+    "guide": {
+      "items": {
+        "inertia": {
+          "label": "Moment of inertia I",
+          "text": "How hard she is to spin up: each bit of mass counts as m·r², so the hand weights far out at r dominate. Pulling the arms in from 1.30 m to 0.60 m shrinks I from about 11.9 to 2.6 kg·m²."
+        },
+        "omega": {
+          "label": "Angular velocity ω",
+          "text": "How fast she turns, in radians per second. It starts at 2 rad/s with the arms out and is always L/I: halve I and ω doubles."
+        },
+        "angularMomentum": {
+          "label": "Angular momentum L = I·ω",
+          "text": "The product stays at 23.86 kg·m²/s whatever the arms do, because the ice exerts no torque about the vertical axis. Seen from above, L points straight out of the page along the axis."
+        },
+        "energy": {
+          "label": "Rotational kinetic energy",
+          "text": "KE = ½·I·ω² = L²/(2I). With L fixed, a smaller I means more energy: it rises as the arms come in. The extra energy is work done by her shoulder muscles pulling the weights inward."
+        },
+        "pullIn": {
+          "label": "Arms in",
+          "text": "Draws the hand weights toward the axis, from r = 1.30 m (arms out) to r = 0.60 m (arms in). It can be moved while she spins."
+        }
+      },
+      "formulas": {
+        "conservation": "No external torque, so the product of I and ω cannot change.",
+        "energy": "At fixed L, energy goes up as I goes down."
+      },
+      "try": {
+        "1": "Pull the arms all the way in. ω climbs from 2.00 to about 9.1 rad/s while L stays at 23.86 kg·m²/s.",
+        "2": "Watch KE as you move the slider: about 24 J with the arms out, about 109 J with them in. Then push the arms back out and the energy falls again.",
+        "3": "Set r to about 0.92 m. I is then half its starting value, about 6 kg·m², and ω has doubled to 4 rad/s."
+      },
+      "limits": "The skater is a body with I = 0.1 kg·m² plus two point weights on massless arms, and the ice is perfectly frictionless. A real skater's arms have mass spread along them, and skates do feel a little friction, so her spin slowly dies away."
+    }
+  },
+  "symmetryTriptych": {
+    "aria": "Two identical setups side by side, shifted in time, in space or in angle, moving in lockstep",
+    "timeLeft": "starts at t = 0",
+    "timeRight": "starts at t = 0.5 s",
+    "spaceLeft": "at x",
+    "spaceRight": "at x + Δx",
+    "rotationLeft": "at angle θ",
+    "rotationRight": "at θ + 45°",
+    "conservedLabel": "Conserved",
+    "time": {
+      "tab": "time → energy",
+      "symmetry": "Time translation",
+      "conserved": "energy",
+      "caption": "Same pendulum, different start times. The physics cannot tell them apart, so energy is conserved."
+    },
+    "space": {
+      "tab": "space → momentum",
+      "symmetry": "Space translation",
+      "conserved": "momentum",
+      "caption": "Same spring, different places. The physics cannot tell them apart, so momentum is conserved."
+    },
+    "rotation": {
+      "tab": "rotation → angular momentum",
+      "symmetry": "Rotation",
+      "conserved": "angular momentum",
+      "caption": "Same rotator, different orientations. The physics cannot tell them apart, so angular momentum is conserved."
+    },
+    "guide": {
+      "items": {
+        "shift": {
+          "label": "The transformation",
+          "text": "How the right setup differs from the left: started half a second later, moved along x, or turned by 45°. Apart from that shift the two move exactly alike, frame after frame."
+        },
+        "conserved": {
+          "label": "Conserved quantity",
+          "text": "What Noether's theorem pairs with that symmetry: energy for a shift in time, momentum for a shift in space, angular momentum for a rotation."
+        },
+        "symmetry": {
+          "label": "Symmetry",
+          "text": "Picks one of the three continuous symmetries of mechanics. Each can be applied by any amount, however small, which is what the theorem needs."
+        }
+      },
+      "formulas": {
+        "time": "If the Lagrangian does not depend on time, energy is constant.",
+        "space": "If it does not depend on position, the momentum conjugate to it is constant.",
+        "rotation": "If it does not depend on orientation, angular momentum is constant."
+      },
+      "try": {
+        "1": "In the time panel, follow both bobs for a few swings. The right one repeats exactly what the left one did half a second earlier.",
+        "2": "Switch to space. The two masses move as one: shifting the whole setup along x changes nothing about how it oscillates.",
+        "3": "Switch to rotation and point at a rotator. The faded copy shows it without the 45° turn: the two spin at the same rate, only the starting angle differs."
+      },
+      "limits": "The setups are drawn, not simulated: each copy runs the same motion, shifted, which is exactly what the symmetry promises. A real experiment on Earth breaks some of these symmetries, for instance gravity picks out a direction, so only the symmetries the whole system has lead to conserved quantities."
+    }
+  },
   "velocityTriangle": {
     "aria": "A particle moving round a circle, with its velocity now and a moment later drawn tail to tail",
     "constantSpeed": "The speed stays the same; only the direction of v turns.",
