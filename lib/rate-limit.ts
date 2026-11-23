@@ -12,15 +12,22 @@ import { getServiceClient } from "@/lib/supabase-server";
  */
 
 /**
- * Extract the best-guess client IP from request headers. Vercel populates
- * x-forwarded-for (client first) and x-real-ip. Falls back to "unknown" so a
- * missing header collapses all such requests into one bucket rather than
- * silently disabling the limit.
+ * Client IP as seen by the reverse proxy. nginx sets X-Real-IP to the socket
+ * address and overwrites X-Forwarded-For with it (physics-proxy.conf), so
+ * X-Real-IP is preferred. If only X-Forwarded-For is present, the LAST entry
+ * is used: proxies append, so earlier entries are whatever the client sent.
+ * Falls back to "unknown" so a missing header collapses all such requests into
+ * one bucket rather than silently disabling the limit.
  */
 export function getClientIp(h: Headers): string {
+  const real = h.get("x-real-ip")?.trim();
+  if (real) return real;
   const xff = h.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return h.get("x-real-ip") ?? "unknown";
+  if (xff) {
+    const hops = xff.split(",").map((p) => p.trim()).filter(Boolean);
+    if (hops.length) return hops[hops.length - 1];
+  }
+  return "unknown";
 }
 
 /**

@@ -1,6 +1,8 @@
 "use server";
 
+import { headers } from "next/headers";
 import { getServerSupabase } from "@/lib/supabase/server";
+import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export interface NewsletterResult {
   ok: boolean;
@@ -19,6 +21,16 @@ export async function subscribeToNewsletter(
     return { ok: false, message: "Please enter a valid email." };
   }
 
+  const limit = await enforceIpRateLimit({
+    routeKey: "newsletter",
+    max: 5,
+    windowMs: 60 * 60 * 1000,
+    ip: getClientIp(await headers()),
+  });
+  if (!limit.ok) {
+    return { ok: false, message: "Too many attempts. Please try again later." };
+  }
+
   const supabase = getServerSupabase();
 
   const { error } = await supabase
@@ -28,7 +40,7 @@ export async function subscribeToNewsletter(
   if (error) {
     // 23505 = unique_violation on email
     if (error.code === "23505") {
-      return { ok: true, message: "You're already subscribed." };
+      return { ok: true, message: "You're in — welcome aboard." };
     }
     console.error("[newsletter] insert failed:", error);
     return { ok: false, message: "Something went wrong. Please try again." };
