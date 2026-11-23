@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import { HtmlShell } from "@/app/html-shell";
+import { defaultLocale } from "@/i18n/config";
 
 export default function NotFound() {
   return (
+    <HtmlShell locale={defaultLocale}>
     <main className="mx-auto max-w-[720px] px-6 py-32 text-center">
       <div className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[var(--color-magenta)]">
         ERROR · 404
@@ -20,5 +23,6 @@ export default function NotFound() {
         Return to origin
       </Link>
     </main>
+    </HtmlShell>
   );
 }

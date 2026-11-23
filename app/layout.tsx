@@ -1,28 +1,6 @@
 import "./globals.css";
 import type { Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
-import localFont from "next/font/local";
-import { getLocale } from "next-intl/server";
-import { getDirection } from "@/i18n/config";
 import { SITE } from "@/lib/seo/config";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
-
-const archiveGrotesk = localFont({
-  src: "./fonts/archive-grotesk.otf",
-  variable: "--font-display",
-  display: "swap",
-});
 
 export const metadata = {
   metadataBase: new URL(SITE.baseUrl),
@@ -64,31 +42,9 @@ export const viewport: Viewport = {
   ],
 };
 
-// Runs before hydration to prevent a flash of the wrong theme.
-const noFlashScript = `(function(){try{var t=localStorage.getItem('physics-theme');if(t!=='light'&&t!=='dark'){t='dark';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();`;
-
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const locale = await getLocale();
-  const dir = getDirection(locale);
-
-  return (
-    <html
-      lang={locale}
-      dir={dir}
-      data-theme="dark"
-      className={`${inter.variable} ${jetbrainsMono.variable} ${archiveGrotesk.variable} h-full`}
-      suppressHydrationWarning
-    >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: noFlashScript }} />
-      </head>
-      <body className="min-h-full flex flex-col font-sans antialiased">
-        {children}
-      </body>
-    </html>
-  );
+// The <html> shell lives in app/html-shell.tsx and is rendered by the locale
+// layout, which knows the locale from the URL. Keeping it out of here lets the
+// pages under [locale] be prerendered.
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return children;
 }

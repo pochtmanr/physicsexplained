@@ -148,6 +148,10 @@ function readTopicRefs(value: unknown): TopicRefLike[] {
     .filter((x): x is TopicRefLike => x !== null);
 }
 
+// Every valid slug is in the registry below, so an unknown one is a 404
+// without a database round-trip.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
     GLOSSARY.map((t) => ({ locale, slug: t.slug }))

@@ -10,6 +10,7 @@ import { FooterGate } from "@/components/layout/footer-gate";
 import { HtmlDirSync } from "@/components/layout/html-dir-sync";
 import { RouteScrollManager } from "@/components/layout/route-scroll-manager";
 import { RouteProgress } from "@/components/layout/route-progress";
+import { HtmlShell } from "@/app/html-shell";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -28,6 +29,7 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
+    <HtmlShell locale={locale}>
     <NextIntlClientProvider messages={messages}>
       <HtmlDirSync />
       <RouteScrollManager />
@@ -40,5 +42,6 @@ export default async function LocaleLayout({
         <Footer />
       </FooterGate>
     </NextIntlClientProvider>
+    </HtmlShell>
   );
 }

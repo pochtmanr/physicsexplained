@@ -13,6 +13,10 @@ import type { MajorWork, TopicRef } from "@/lib/content/types";
 import { makeTopicMetadata } from "@/lib/seo/topic-metadata";
 import { TopicPageSeo } from "@/components/seo/topic-page-seo";
 
+// Every valid slug is in the registry below, so an unknown one is a 404
+// without a database round-trip.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return locales.flatMap((locale) =>
     PHYSICISTS.map((p) => ({ locale, slug: p.slug }))

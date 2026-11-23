@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { ShareButtons } from "./share-buttons";
 
 interface Props {
@@ -34,11 +35,14 @@ export function PlaygroundShell({
             </span>
           )}
         </div>
-        <ShareButtons
-          shareTitle={shareTitle}
-          sceneId={sceneId}
-          aiPromptKey={aiPromptKey}
-        />
+        {/* Reads the query string, which is unknown when the page is prebuilt. */}
+        <Suspense fallback={null}>
+          <ShareButtons
+            shareTitle={shareTitle}
+            sceneId={sceneId}
+            aiPromptKey={aiPromptKey}
+          />
+        </Suspense>
       </div>
       {children}
     </>
