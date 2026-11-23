@@ -15,6 +15,9 @@ import { DEFAULT_MODEL_ID, findModel } from "@/lib/ask/types";
 import type { NeutralMessage } from "@/lib/ask/provider";
 import { checkQuota, type BillingRow } from "@/lib/billing/quota";
 import { weightedTokens } from "@/lib/ask/pricing";
+import { acquireStreamSlot } from "@/lib/ask/stream-lock";
+import { usageForInterruptedStream } from "@/lib/ask/partial-usage";
+import type { UsageRow } from "@/lib/ask/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,7 +25,7 @@ export const dynamic = "force-dynamic";
 const BodySchema = z.object({
   conversationId: z.string().uuid().nullable().optional(),
   message: z.string().min(1).max(4000),
-  locale: z.string().default("en"),
+  locale: z.string().max(16).default("en"),
   modelId: z.string().default(DEFAULT_MODEL_ID),
 });
 
@@ -128,6 +131,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "RATE_LIMITED", reason: rlRes.reason }, { status: 429 });
   }
 
+  // Quota was read above and is charged when the answer ends, so only one
+  // stream per user may be in flight; otherwise a burst of parallel requests
+  // would all pass the same check.
+  const releaseSlot = await acquireStreamSlot(user.id);
+  if (!releaseSlot) {
+    return NextResponse.json(
+      { error: "RATE_LIMITED", reason: "An answer is already in progress. Wait for it to finish, then try again." },
+      { status: 429 },
+    );
+  }
+
   let conversationId = body.conversationId ?? undefined;
   let dedupedExisting = false;
   if (!conversationId) {
@@ -156,7 +170,10 @@ export async function POST(req: Request) {
         .from("ask_conversations")
         .insert({ user_id: user.id, locale: body.locale, title: initialTitle })
         .select("id").single();
-      if (error) return NextResponse.json({ error: "DB_ERR", message: error.message }, { status: 500 });
+      if (error) {
+        releaseSlot();
+        return NextResponse.json({ error: "DB_ERR", message: error.message }, { status: 500 });
+      }
       conversationId = data.id as string;
     }
   }
@@ -273,7 +290,10 @@ export async function POST(req: Request) {
 
       let assistantText = "";
       let flagged = false;
-      let finalUsage: { model: string; inputTokens: number; outputTokens: number; cachedTokens: number; costMicros: number } | null = null;
+      let finalUsage: UsageRow | null = null;
+      // Running total reported by the provider; used to charge for a stream
+      // that ends before the pipeline's final usage event.
+      let reportedUsage: UsageRow | null = null;
 
       // Mirror of the client's ProgressTree state. We rebuild it from the same
       // pipeline events the client receives and stash the finished snapshot in
@@ -299,6 +319,7 @@ export async function POST(req: Request) {
             history: pipelineHistory,
             systemTail,
             signal: upstreamAbort.signal,
+            onUsage: (u) => { reportedUsage = u; },
           },
           body.message,
         )) {
@@ -361,60 +382,83 @@ export async function POST(req: Request) {
         clearInterval(watchdog);
         req.signal.removeEventListener("abort", onClientAbort);
         try {
-          if (finalUsage) {
-            const toolsSnapshot = progressSteps.size
-              ? Array.from(progressSteps.values()).map((s) => ({
-                  id: s.id,
-                  name: s.name,
-                  status: s.status,
-                  args: s.args,
-                  preview: s.preview,
-                  startedAt: s.startedAt,
-                  endedAt: s.endedAt,
-                }))
-              : undefined;
-            const meta: Record<string, unknown> = {};
-            if (flagged) meta.flagged = true;
-            if (toolsSnapshot) meta.tools = toolsSnapshot;
-            await db.from("ask_messages").insert({
-              conversation_id: conversationId,
-              role: "assistant",
-              content: { text: assistantText },
-              model: finalUsage.model,
-              input_tokens: finalUsage.inputTokens,
-              output_tokens: finalUsage.outputTokens,
-              cached_tokens: finalUsage.cachedTokens,
-              cost_usd_micros: finalUsage.costMicros,
-              meta: Object.keys(meta).length ? meta : null,
-            });
+          const isFree = (billingRow as BillingRow).plan === "free";
+          // A stream cut short (client disconnect, stall watchdog) never gets
+          // the final usage event, but the provider has still been paid for
+          // what it generated: charge for that instead of nothing.
+          const interrupted = !finalUsage;
+          const usage: UsageRow | null = finalUsage ?? usageForInterruptedStream({
+            model: model.id,
+            reported: reportedUsage,
+            assistantText,
+            promptChars: body.message.length + kept.reduce((n, k) => n + k.text.length, 0),
+          });
+          if (usage) {
+            if (!interrupted) {
+              const toolsSnapshot = progressSteps.size
+                ? Array.from(progressSteps.values()).map((s) => ({
+                    id: s.id,
+                    name: s.name,
+                    status: s.status,
+                    args: s.args,
+                    preview: s.preview,
+                    startedAt: s.startedAt,
+                    endedAt: s.endedAt,
+                  }))
+                : undefined;
+              const meta: Record<string, unknown> = {};
+              if (flagged) meta.flagged = true;
+              if (toolsSnapshot) meta.tools = toolsSnapshot;
+              await db.from("ask_messages").insert({
+                conversation_id: conversationId,
+                role: "assistant",
+                content: { text: assistantText },
+                model: usage.model,
+                input_tokens: usage.inputTokens,
+                output_tokens: usage.outputTokens,
+                cached_tokens: usage.cachedTokens,
+                cost_usd_micros: usage.costMicros,
+                meta: Object.keys(meta).length ? meta : null,
+              });
+            }
             await db.rpc("ask_increment_usage", {
               p_user_id: user.id,
               p_day: new Date().toISOString().slice(0, 10),
               p_messages: 1,
-              p_tokens_in: finalUsage.inputTokens + finalUsage.cachedTokens,
-              p_tokens_out: finalUsage.outputTokens,
+              p_tokens_in: usage.inputTokens + usage.cachedTokens,
+              p_tokens_out: usage.outputTokens,
               p_web_searches: 0,
               p_fetches: 0,
-              p_cost_micros: finalUsage.costMicros,
+              p_cost_micros: usage.costMicros,
             });
-            const weighted = weightedTokens(finalUsage.model, finalUsage.inputTokens, finalUsage.outputTokens);
-            await db.rpc("billing_increment", {
-              p_user_id: user.id,
-              p_weighted_tokens: weighted,
-              p_is_free: (billingRow as BillingRow).plan === "free",
-            });
-            await db.from("ask_conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
+            const weighted = weightedTokens(usage.model, usage.inputTokens, usage.outputTokens);
+            // A provider stall is not the user's doing: it must not use up one
+            // of a free user's questions. Paid plans are charged by tokens, and
+            // billing_increment rejects a non-positive amount.
+            const skipPlanCharge = isFree ? interrupted && watchdogFired : weighted <= 0;
+            if (!skipPlanCharge) {
+              await db.rpc("billing_increment", {
+                p_user_id: user.id,
+                p_weighted_tokens: weighted,
+                p_is_free: isFree,
+              });
+            }
+            if (!interrupted) {
+              await db.from("ask_conversations").update({ updated_at: new Date().toISOString() }).eq("id", conversationId);
 
-            // Fire-and-forget title after first exchange
-            const { count } = await db
-              .from("ask_messages").select("id", { count: "exact", head: true })
-              .eq("conversation_id", conversationId);
-            if (count === 2) {
-              void summarizeTitle(conversationId!, body.message, assistantText, model.classifier, model.provider).catch(() => {});
+              // Fire-and-forget title after first exchange
+              const { count } = await db
+                .from("ask_messages").select("id", { count: "exact", head: true })
+                .eq("conversation_id", conversationId);
+              if (count === 2) {
+                void summarizeTitle(conversationId!, body.message, assistantText, model.classifier, model.provider).catch(() => {});
+              }
             }
           }
         } catch {
           // swallow — stream should still close cleanly
+        } finally {
+          releaseSlot();
         }
         // Send "done" only after all DB writes (billing_increment in particular)
         // have committed. This guarantees the client's router.refresh() reloads
@@ -427,7 +471,7 @@ export async function POST(req: Request) {
           `in=${finalUsage?.inputTokens ?? 0} out=${finalUsage?.outputTokens ?? 0} ` +
           `cached=${finalUsage?.cachedTokens ?? 0}`,
         );
-        controller.close();
+        try { controller.close(); } catch { /* client already gone */ }
       }
     },
   });

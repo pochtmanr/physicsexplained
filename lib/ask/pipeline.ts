@@ -59,6 +59,12 @@ export interface PipelineDeps {
   history: NeutralMessage[];
   systemTail?: string;
   signal?: AbortSignal;
+  /**
+   * Called with the running total each time a provider reports usage, so the
+   * caller can still charge for a stream that is cut before the final `usage`
+   * chunk.
+   */
+  onUsage?: (usage: UsageRow) => void;
 }
 
 export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIterable<AnswerStreamChunk> {
@@ -154,7 +160,10 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
           }
           break;
         case "usage":
-          if (delta.usage) totalUsage = mergeUsage(totalUsage, delta.usage);
+          if (delta.usage) {
+            totalUsage = mergeUsage(totalUsage, delta.usage);
+            deps.onUsage?.(totalUsage);
+          }
           break;
         case "flag":
           if (delta.reason) yield { type: "flag", reason: delta.reason };
