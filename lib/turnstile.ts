@@ -8,9 +8,10 @@ import "server-only";
  * is enabled in the dashboard, so the auth flow only needs to *pass* the token
  * (see app/actions/auth.ts) — it does not call this helper.
  *
- * Fails OPEN when TURNSTILE_SECRET_KEY is unset so the site keeps working before
- * the keys are provisioned. Once the secret is set, a missing/invalid token is
- * rejected.
+ * Allows everything while TURNSTILE_SECRET_KEY is unset, so the site keeps
+ * working before the keys are provisioned (production logs a warning). Once
+ * the secret is set the check fails CLOSED: a missing or invalid token, or a
+ * failed call to Cloudflare, rejects the submission.
  */
 
 const SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
@@ -21,6 +22,8 @@ export interface TurnstileResult {
   reason?: string;
 }
 
+let warnedUnconfigured = false;
+
 export function isTurnstileConfigured(): boolean {
   return Boolean(process.env.TURNSTILE_SECRET_KEY);
 }
@@ -29,7 +32,13 @@ export async function verifyTurnstile(token: string, ip?: string): Promise<Turns
   const secret = process.env.TURNSTILE_SECRET_KEY;
 
   // Not configured yet → allow, so forms keep working during rollout.
-  if (!secret) return { ok: true };
+  if (!secret) {
+    if (process.env.NODE_ENV === "production" && !warnedUnconfigured) {
+      warnedUnconfigured = true;
+      console.warn("[turnstile] TURNSTILE_SECRET_KEY is not set: public forms have no CAPTCHA");
+    }
+    return { ok: true };
+  }
 
   if (!token) return { ok: false, reason: "missing-token" };
 
@@ -47,8 +56,9 @@ export async function verifyTurnstile(token: string, ip?: string): Promise<Turns
 
     if (!res.ok) {
       console.error(`[turnstile] siteverify HTTP ${res.status}`);
-      // Network/Cloudflare issue → fail open rather than lock out real users.
-      return { ok: true, reason: `siteverify-http-${res.status}` };
+      // A bot can't be told apart from a person without an answer: reject, the
+      // form shows its retry message.
+      return { ok: false, reason: `siteverify-http-${res.status}` };
     }
 
     const data = (await res.json()) as { success?: boolean; "error-codes"?: string[] };
@@ -57,7 +67,7 @@ export async function verifyTurnstile(token: string, ip?: string): Promise<Turns
     return { ok: false, reason: (data["error-codes"] ?? ["unknown"]).join(",") };
   } catch (err) {
     console.error("[turnstile] verify error:", err);
-    // Timeout / fetch failure → fail open.
-    return { ok: true, reason: "verify-exception" };
+    // Timeout / fetch failure → same as above.
+    return { ok: false, reason: "verify-exception" };
   }
 }
