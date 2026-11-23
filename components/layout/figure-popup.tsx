@@ -125,12 +125,6 @@ export function FigurePopup({
   const toggleGuide = () => {
     const next = !guideOpen;
     setGuideOpen(next);
-    // Stacked, the guide opens below the figure: bring its first card up.
-    if (next && !guideBeside) {
-      requestAnimationFrame(() =>
-        document.getElementById(guideId)?.scrollIntoView?.({ behavior: "smooth", block: "start" }),
-      );
-    }
     // The preference is about the roomy layout only: closing the sheet on
     // a phone must not hide the panel on a desktop later.
     if (guideHasRoom()) writeGuidePreference(next);
