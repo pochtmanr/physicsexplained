@@ -9,6 +9,12 @@ const EXPECTED_DISALLOWS = [
   "/account",
   "/sandbox",
   "/billing",
+  "/ask",
+  "/he/sign-in",
+  "/he/account",
+  "/he/sandbox",
+  "/he/billing",
+  "/he/ask",
 ];
 
 describe("robots.txt", () => {

@@ -1,13 +1,18 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/seo/config";
+import { defaultLocale, locales } from "@/i18n/config";
+
+// Paths under the default locale have no prefix; every other locale repeats
+// them under `/<locale>`.
+const PRIVATE_PAGES = ["/sign-in", "/account", "/sandbox", "/billing", "/ask"];
 
 const DISALLOWED_PATHS = [
   "/api/",
   "/auth/",
-  "/sign-in",
-  "/account",
-  "/sandbox",
-  "/billing",
+  ...PRIVATE_PAGES,
+  ...locales
+    .filter((l) => l !== defaultLocale)
+    .flatMap((l) => PRIVATE_PAGES.map((p) => `/${l}${p}`)),
 ];
 
 // AI assistants and their crawlers are explicitly welcome: being cited by
