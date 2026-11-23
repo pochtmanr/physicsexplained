@@ -26,7 +26,8 @@ const BodySchema = z.object({
   conversationId: z.string().uuid().nullable().optional(),
   message: z.string().min(1).max(4000),
   locale: z.string().max(16).default("en"),
-  modelId: z.string().default(DEFAULT_MODEL_ID),
+  // Accepted for older clients and ignored: the model is not a user choice.
+  modelId: z.string().max(80).optional(),
 });
 
 export async function POST(req: Request) {
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
   try { body = BodySchema.parse(await req.json()); }
   catch (e) { return NextResponse.json({ error: "BAD_REQUEST", message: (e as Error).message }, { status: 400 }); }
 
-  const model = findModel(body.modelId);
+  const model = findModel(DEFAULT_MODEL_ID);
   const db = getServiceClient();
 
   // `db` is the service-role client (no RLS), so a client-supplied id must be

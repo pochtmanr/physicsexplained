@@ -13,6 +13,9 @@ const MAX_HOPS = 6;
 // 800 via includes("mini"), which with any reasoning would yield an empty
 // response — the user-visible "loads forever, never returns" bug.
 function pickMaxTokens(modelId: string): number {
+  // Opus thinks before it answers and thinking counts toward the limit, so
+  // the cap covers both. It also bounds the cost of one hop.
+  if (modelId.includes("opus")) return 8000;
   if (modelId === "gpt-5") return 6000;
   if (modelId.startsWith("gpt-5-mini") || modelId.startsWith("gpt-5-nano")) return 4000;
   if (modelId.startsWith("o1") || modelId.startsWith("o3")) return 6000;
@@ -118,9 +121,6 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     // On the final hop, strip tools so the model is forced to answer from what
     // it already has. Avoids the "searched 5 times then dead-ended" UX.
     const isLastHop = hop === MAX_HOPS - 1;
-    const systemDynamicHop = isLastHop
-      ? [systemDynamic, "Final hop: tools are no longer available. Answer now with what you have."].filter(Boolean).join("\n\n")
-      : systemDynamic;
 
     const hopT0 = Date.now();
     if (process.env.ASK_SILENT !== "1") {
@@ -129,13 +129,15 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
     const stream = deps.provider.streamAnswer({
       model: deps.answererModel,
       system: systemFull,
-      systemDynamic: systemDynamicHop,
+      systemDynamic,
       messages,
-      tools: isLastHop ? [] : scopedTools,
+      tools: scopedTools,
+      forceAnswer: isLastHop,
       maxTokens: pickMaxTokens(deps.answererModel),
       signal: deps.signal,
     });
 
+    let rawAssistant: unknown[] | undefined;
     let firstDeltaLogged = false;
     for await (const delta of stream) {
       if (!firstDeltaLogged) {
@@ -168,6 +170,12 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
         case "flag":
           if (delta.reason) yield { type: "flag", reason: delta.reason };
           break;
+        case "activity":
+          yield { type: "activity" };
+          break;
+        case "assistant-raw":
+          rawAssistant = delta.raw;
+          break;
       }
     }
 
@@ -199,6 +207,7 @@ export async function* runPipeline(deps: PipelineDeps, userMsg: string): AsyncIt
         ...(assistantText ? [{ type: "text" as const, text: assistantText }] : []),
         ...pendingToolCalls.map((c) => ({ type: "tool_use" as const, id: c.id, name: c.name, input: c.input ?? {} })),
       ],
+      raw: rawAssistant,
     });
 
     // Run independent tool calls concurrently. Each has its own try/catch so

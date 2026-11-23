@@ -1,5 +1,6 @@
 // USD per million tokens. Micros = USD * 1_000_000 (so rate value = micros per token).
 export const MODEL_PRICING: Record<string, { in: number; out: number; cache: number }> = {
+  "claude-opus-5-5":   { in: 4,    out: 20,   cache: 0.2 },
   "claude-sonnet-4-6": { in: 3,    out: 15,   cache: 0.3 },
   "claude-haiku-4-5":  { in: 1,    out: 5,    cache: 0.1 },
   "claude-opus-4-7":   { in: 15,   out: 75,   cache: 1.5 },

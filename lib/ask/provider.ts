@@ -14,10 +14,19 @@ export type NeutralContent =
 export interface NeutralMessage {
   role: "user" | "assistant";
   content: NeutralContent[];
+  /**
+   * Assistant turns produced earlier in the same request, exactly as the
+   * provider returned them (thinking blocks included). The adapter that
+   * produced it sends it back unchanged in the tool loop; other adapters
+   * ignore it and use `content`.
+   */
+  raw?: unknown[];
 }
 
 export interface StreamDelta {
-  kind: "text-delta" | "tool-call-start" | "tool-call-end" | "stop" | "usage" | "flag";
+  kind: "text-delta" | "tool-call-start" | "tool-call-end" | "stop" | "usage" | "flag" | "activity" | "assistant-raw";
+  /** With "assistant-raw": the provider's own content blocks for this turn. */
+  raw?: unknown[];
   toolCallId?: string;
   toolName?: string;
   text?: string;
@@ -33,7 +42,12 @@ export interface AnswerRequest {
   messages: NeutralMessage[];
   tools?: JsonToolDef[];
   maxTokens: number;
-  temperature?: number;
+  /**
+   * Last hop of the tool loop: the model must answer now, without calling
+   * tools. Expressed per provider so the system prompt and the tool list stay
+   * identical across the hops of one request.
+   */
+  forceAnswer?: boolean;
   signal?: AbortSignal;
 }
 
@@ -41,6 +55,8 @@ export interface LLMProvider {
   streamAnswer(req: AnswerRequest): AsyncIterable<StreamDelta>;
   classify(classifierModel: string, system: string, user: string, labels: ClassifierLabel[]): Promise<ClassifierLabel>;
 }
+
+const FINAL_HOP_NOTE = "Final hop: tools are no longer available. Answer now with what you have.";
 
 // ───────────────────────── Anthropic adapter ─────────────────────────
 
@@ -65,14 +81,35 @@ class AnthropicProvider implements LLMProvider {
       name: t.name, description: t.description, input_schema: t.parameters,
     }));
 
-    const stream = this.client.messages.stream({
+    // Claude Opus 5.5: thinking is always on (adaptive) and thinking blocks
+    // are bound to the conversation that produced them. So within one request
+    // the history is append-only: earlier assistant turns go back exactly as
+    // returned, and the system prompt and tool list never change between hops.
+    const messages: unknown[] = req.messages.map((m) =>
+      m.role === "assistant" && m.raw ? { role: "assistant", content: m.raw } : { role: m.role, content: m.content },
+    );
+    if (req.forceAnswer) {
+      // Appended operator instruction rather than an edited system prompt.
+      messages.push({ role: "system", content: FINAL_HOP_NOTE });
+    }
+
+    const params = {
       model: req.model,
+      // Thinking counts toward max_tokens, so this covers thinking plus reply.
       max_tokens: req.maxTokens,
-      temperature: req.temperature ?? 0.3,
-      system: system as unknown as Anthropic.Messages.TextBlockParam[],
-      tools: tools as unknown as Anthropic.Messages.Tool[],
-      messages: req.messages as unknown as Anthropic.Messages.MessageParam[],
-    }, { signal: req.signal });
+      // No sampling parameters and no `thinking` field: this model rejects
+      // temperature and runs adaptive thinking by default. Effort is the
+      // control for how long it thinks; "low" keeps a chat tutor responsive.
+      output_config: { effort: "low" },
+      system,
+      tools,
+      ...(req.forceAnswer && tools.length ? { tool_choice: { type: "none" } } : {}),
+      messages,
+    };
+    const stream = this.client.messages.stream(
+      params as unknown as Anthropic.Messages.MessageStreamParams,
+      { signal: req.signal },
+    );
 
     const seenToolUses = new Map<string, string>(); // id -> name
     for await (const ev of stream) {
@@ -81,9 +118,17 @@ class AnthropicProvider implements LLMProvider {
         yield { kind: "tool-call-start", toolCallId: ev.content_block.id, toolName: ev.content_block.name };
       } else if (ev.type === "content_block_delta" && ev.delta.type === "text_delta") {
         yield { kind: "text-delta", text: ev.delta.text };
+      } else {
+        // Thinking and other events carry nothing to show, but they prove the
+        // provider is alive; the route's stall watchdog needs to see that.
+        yield { kind: "activity" };
       }
     }
     const final = await stream.finalMessage();
+    yield { kind: "assistant-raw", raw: final.content as unknown[] };
+    if ((final.stop_reason as string) === "refusal") {
+      yield { kind: "flag", reason: "anthropic-refusal" };
+    }
     for (const blk of final.content) {
       if (blk.type === "tool_use") {
         yield { kind: "tool-call-end", toolCallId: blk.id, toolName: blk.name, finalInput: blk.input };
@@ -127,9 +172,9 @@ class OpenAIProvider implements LLMProvider {
   }
 
   async *streamAnswer(req: AnswerRequest): AsyncIterable<StreamDelta> {
-    const systemParts = [req.system, req.systemDynamic].filter(Boolean).join("\n\n");
+    const systemParts = [req.system, req.systemDynamic, req.forceAnswer ? FINAL_HOP_NOTE : ""].filter(Boolean).join("\n\n");
     const openaiMessages = toOpenAIMessages(systemParts, req.messages);
-    const tools = (req.tools ?? []).map((t) => ({
+    const tools = (req.forceAnswer ? [] : req.tools ?? []).map((t) => ({
       type: "function" as const,
       function: { name: t.name, description: t.description, parameters: t.parameters as Record<string, unknown> },
     }));

@@ -3,6 +3,7 @@ import { MODEL_MULTIPLIERS, weightedTokens } from "@/lib/ask/pricing";
 
 describe("pricing multipliers", () => {
   it("assigns correct multiplier per model", () => {
+    expect(MODEL_MULTIPLIERS["claude-opus-5-5"]).toBe(1.3);
     expect(MODEL_MULTIPLIERS["claude-sonnet-4-6"]).toBe(1.0);
     expect(MODEL_MULTIPLIERS["claude-haiku-4-5"]).toBe(0.3);
     expect(MODEL_MULTIPLIERS["claude-opus-4-7"]).toBe(5.0);
