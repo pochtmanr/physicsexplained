@@ -4,16 +4,19 @@ import { SignInForm } from "@/components/auth/sign-in-form";
 import { HeroBackground } from "@/components/sections/hero-background";
 import { FramedCard } from "@/components/layout/framed-card";
 import { WIDE_CONTAINER } from "@/lib/layout";
+import { safeNextPath } from "@/lib/auth/safe-next";
+import { SITE } from "@/lib/seo/config";
 
 export default async function SignInPage({
   searchParams,
 }: {
   searchParams: Promise<{ next?: string }>;
 }) {
-  const { next } = await searchParams;
+  // `next` comes from the query string: keep it on this site.
+  const next = safeNextPath((await searchParams).next, SITE.baseUrl);
   const db = await getSsrClient();
   const { data: { user } } = await db.auth.getUser();
-  if (user) redirect(next ?? "/");
+  if (user) redirect(next);
 
   return (
     <section className="relative isolate overflow-hidden min-h-[calc(100vh-8rem)] flex items-center justify-center py-16">
@@ -37,7 +40,7 @@ export default async function SignInPage({
               </p>
             </div>
             <div className="mt-8">
-              <SignInForm next={next ?? "/"} />
+              <SignInForm next={next} />
             </div>
           </FramedCard>
         </div>
