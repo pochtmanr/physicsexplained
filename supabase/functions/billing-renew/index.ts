@@ -1,10 +1,17 @@
 // Deploy:
 //   supabase functions deploy billing-renew --no-verify-jwt
-//   supabase secrets set REVOLUT_ENV=production REVOLUT_API_KEY=sk_prod_...
-//   supabase functions schedule create billing-renew --cron "0 3 * * *"
+//   supabase secrets set REVOLUT_ENV=production REVOLUT_API_KEY=sk_prod_... BILLING_RENEW_SECRET=<long random>
+//
+// Schedule: once a day at 03:00 UTC. The caller MUST send the secret, or the
+// function refuses to run:
+//   curl -fsS -X POST -H "x-cron-secret: $BILLING_RENEW_SECRET" <functions-url>/billing-renew
+//
+// The function URL is public and JWT verification is off (the anon key is a
+// valid JWT anyway), so the shared secret is the only thing between the
+// internet and a run that charges customers' saved cards.
 //
 // Env (set via `supabase secrets set`):
-//   REVOLUT_ENV, REVOLUT_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+//   REVOLUT_ENV, REVOLUT_API_KEY, BILLING_RENEW_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.103.0";
 
@@ -23,6 +30,24 @@ const REVOLUT_API_BASE =
     ? "https://merchant.revolut.com/api"
     : "https://sandbox-merchant.revolut.com/api";
 const REVOLUT_API_KEY = mustEnv("REVOLUT_API_KEY");
+const BILLING_RENEW_SECRET = mustEnv("BILLING_RENEW_SECRET");
+
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
+
+/** Compare via digests so the time taken does not depend on where the strings differ. */
+async function secretMatches(given: string | null): Promise<boolean> {
+  if (!given) return false;
+  const enc = new TextEncoder();
+  const [a, b] = await Promise.all([
+    crypto.subtle.digest("SHA-256", enc.encode(given)),
+    crypto.subtle.digest("SHA-256", enc.encode(BILLING_RENEW_SECRET)),
+  ]);
+  const x = new Uint8Array(a), y = new Uint8Array(b);
+  let diff = 0;
+  for (let i = 0; i < x.length; i++) diff |= x[i] ^ y[i];
+  return diff === 0;
+}
 
 async function createRenewalOrder(amountCents: number, externalRef: string, token: string) {
   const res = await fetch(`${REVOLUT_API_BASE}/orders`, {
@@ -51,7 +76,10 @@ function addOneMonthIso(fromIso: string): string {
   return d.toISOString();
 }
 
-Deno.serve(async () => {
+Deno.serve(async (req) => {
+  if (req.method !== "POST") return json({ error: "method_not_allowed" }, 405);
+  if (!(await secretMatches(req.headers.get("x-cron-secret")))) return json({ error: "unauthorized" }, 401);
+
   const db = createClient(mustEnv("SUPABASE_URL"), mustEnv("SUPABASE_SERVICE_ROLE_KEY"));
 
   // A: Sweep canceled subscriptions past their cycle_end → downgrade to free.
@@ -77,10 +105,8 @@ Deno.serve(async () => {
     .from("billing_plans")
     .select("plan,amount_cents");
   if (planErr || !planRows) {
-    return new Response(
-      JSON.stringify({ error: "plan_price_lookup_failed", message: planErr?.message }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
-    );
+    console.error("[billing-renew] plan price lookup failed", planErr?.message);
+    return json({ error: "plan_price_lookup_failed" }, 500);
   }
   const priceByPlan: Record<string, number> = {};
   for (const row of planRows) priceByPlan[row.plan as string] = row.amount_cents as number;
@@ -90,7 +116,7 @@ Deno.serve(async () => {
   // — Apple auto-renews it and RevenueCat reports the outcome via the webhook.
   const { data: due } = await db
     .from("user_billing")
-    .select("user_id,plan,revolut_token")
+    .select("user_id,plan,revolut_token,next_charge_at")
     .eq("status", "active")
     .neq("plan", "free")
     .eq("provider", "revolut")
@@ -107,7 +133,31 @@ Deno.serve(async () => {
       results.push({ userId: row.user_id, ok: false, error: `unknown_plan:${row.plan}` });
       continue;
     }
-    const externalRef = `renew:${row.user_id}:${crypto.randomUUID()}`;
+    // Claim the row BEFORE charging: move next_charge_at forward in a single
+    // conditional UPDATE. If two runs overlap, only one of them matches the
+    // old due date, so only one goes on to create a Revolut order.
+    const dueAt = row.next_charge_at as string;
+    const nextAtIso = addOneMonthIso(nowIso);
+    const { data: claimed, error: claimErr } = await db
+      .from("user_billing")
+      .update({ next_charge_at: nextAtIso })
+      .eq("user_id", row.user_id)
+      .eq("status", "active")
+      .eq("provider", "revolut")
+      .eq("next_charge_at", dueAt)
+      .select("user_id");
+    if (claimErr) {
+      results.push({ userId: row.user_id, ok: false, error: `claim_failed: ${claimErr.message}` });
+      continue;
+    }
+    if (!claimed || claimed.length === 0) {
+      results.push({ userId: row.user_id, ok: true, error: "already_claimed" });
+      continue;
+    }
+
+    // One reference per billing period, so a duplicate would be visible as
+    // such in the Revolut dashboard.
+    const externalRef = `renew:${row.user_id}:${dueAt.slice(0, 10)}`;
     try {
       const order = await createRenewalOrder(amountCents, externalRef, row.revolut_token);
 
@@ -122,36 +172,25 @@ Deno.serve(async () => {
       });
       if (insertErr) throw new Error(`order_insert_failed: ${insertErr.message}`);
 
-      // C3: advance next_charge_at atomically so the next cron tick does
-      // not re-charge the same user. Tradeoff: if Revolut silently fails
-      // to deliver the webhook AND the order genuinely fails, we may miss
-      // a renewal — but the markPastDue path + manual retry handle that.
-      // We prefer "possible missed renewal" over "double charge".
-      const nextAtIso = addOneMonthIso(nowIso);
-      const { error: schedErr } = await db.rpc("billing_schedule_next_charge", {
-        p_user_id: row.user_id,
-        p_next_at: nextAtIso,
-      });
-      if (schedErr) {
-        console.error("[billing-renew] schedule next_charge failed", {
-          userId: row.user_id,
-          orderId: order.id,
-          error: schedErr.message,
-        });
-      }
-
       results.push({ userId: row.user_id, ok: true });
     } catch (e) {
       // Belt-and-suspenders: query B already filtered to provider='revolut', but
       // keep the guard here so an Apple row can never be flipped to past_due by
       // the Revolut cron.
-      await db.from("user_billing").update({ status: "past_due" })
+      // Put the due date back along with past_due, as before the claim.
+      await db.from("user_billing").update({ status: "past_due", next_charge_at: dueAt })
         .eq("user_id", row.user_id).eq("provider", "revolut");
       results.push({ userId: row.user_id, ok: false, error: (e as Error).message });
     }
   }
 
-  return new Response(JSON.stringify({ processed: results.length, results }), {
-    headers: { "Content-Type": "application/json" },
+  // Details go to the function log; the response carries counts only.
+  const failed = results.filter((r) => !r.ok);
+  for (const f of failed) console.error("[billing-renew] renewal failed", f);
+  return json({
+    processed: results.length,
+    charged: results.filter((r) => r.ok && !r.error).length,
+    skipped: results.filter((r) => r.ok && r.error).length,
+    failed: failed.length,
   });
 });
