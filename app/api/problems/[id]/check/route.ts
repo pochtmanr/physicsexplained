@@ -11,6 +11,7 @@ import { z } from "zod";
 import { verifyStep } from "@/lib/problems/verify";
 import { getCheckRouteDeps } from "./deps";
 import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
+import { acquireStreamSlot } from "@/lib/ask/stream-lock";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -84,35 +85,43 @@ export async function POST(req: Request, ctx: { params: Promise<{ id: string }> 
     return NextResponse.json({ verify });
   }
 
-  // Wrong step → maybe diagnose.
-  const quota = await deps.getQuota(user.id);
-  const isFree = quota.plan === "free";
-  if (isFree && quota.diagnosesUsedToday >= FREE_DIAGNOSES_PER_DAY) {
-    return NextResponse.json({ verify, quotaExhausted: true });
+  // Wrong step → maybe diagnose. One diagnosis per user at a time: the daily
+  // quota is read here and bumped after the model call, so parallel requests
+  // would otherwise all pass the same read.
+  const release = await acquireStreamSlot(`diagnose:${user.id}`, 15_000);
+  if (!release) return NextResponse.json({ verify, quotaExhausted: false });
+  try {
+    const quota = await deps.getQuota(user.id);
+    const isFree = quota.plan === "free";
+    if (isFree && quota.diagnosesUsedToday >= FREE_DIAGNOSES_PER_DAY) {
+      return NextResponse.json({ verify, quotaExhausted: true });
+    }
+
+    const strings = await deps.getProblemStrings(problemId, body.locale);
+    const stepStrings = strings?.steps[body.stepId];
+    if (!strings || !stepStrings) {
+      return NextResponse.json({ error: "STRINGS_MISSING" }, { status: 500 });
+    }
+
+    const diag = await deps.diagnoseStep({
+      problemStatement: strings.statement,
+      step,
+      stepPrompt: stepStrings.prompt,
+      commonMistakes: stepStrings.commonMistakes ?? [],
+      studentExpr: body.studentExpr,
+      canonicalValue: verify.canonicalValue,
+      studentValue: verify.studentValue,
+      locale: body.locale,
+    });
+
+    await deps.insertDiagnosis({ attemptId: attempt.id, cacheKey: diag.cacheKey, cacheHit: diag.cacheHit });
+
+    if (!diag.cacheHit) {
+      await deps.bumpDiagnosesQuota(user.id);
+    }
+
+    return NextResponse.json({ verify, diagnosis: diag.text });
+  } finally {
+    release();
   }
-
-  const strings = await deps.getProblemStrings(problemId, body.locale);
-  const stepStrings = strings?.steps[body.stepId];
-  if (!strings || !stepStrings) {
-    return NextResponse.json({ error: "STRINGS_MISSING" }, { status: 500 });
-  }
-
-  const diag = await deps.diagnoseStep({
-    problemStatement: strings.statement,
-    step,
-    stepPrompt: stepStrings.prompt,
-    commonMistakes: stepStrings.commonMistakes ?? [],
-    studentExpr: body.studentExpr,
-    canonicalValue: verify.canonicalValue,
-    studentValue: verify.studentValue,
-    locale: body.locale,
-  });
-
-  await deps.insertDiagnosis({ attemptId: attempt.id, cacheKey: diag.cacheKey, cacheHit: diag.cacheHit });
-
-  if (!diag.cacheHit) {
-    await deps.bumpDiagnosesQuota(user.id);
-  }
-
-  return NextResponse.json({ verify, diagnosis: diag.text });
 }

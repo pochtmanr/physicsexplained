@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import type { OcrResult } from "@/lib/problems/ocr";
 import { getOcrRouteDeps } from "./deps";
 import { enforceIpRateLimit, getClientIp } from "@/lib/rate-limit";
+import { acquireStreamSlot } from "@/lib/ask/stream-lock";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +38,13 @@ export async function POST(req: Request) {
     );
   }
 
+  // Refuse an oversized upload before reading it into memory. The multipart
+  // envelope adds a little to the image itself, hence the margin.
+  const declared = Number(req.headers.get("content-length") ?? 0);
+  if (declared > MAX_BYTES + 64 * 1024) {
+    return NextResponse.json({ error: "IMAGE_TOO_LARGE" }, { status: 413 });
+  }
+
   let form: FormData;
   try { form = await req.formData(); }
   catch { return NextResponse.json({ error: "BAD_REQUEST" }, { status: 400 }); }
@@ -46,7 +54,20 @@ export async function POST(req: Request) {
   if (!(file instanceof File)) return NextResponse.json({ error: "MISSING_IMAGE" }, { status: 400 });
   if (file.size > MAX_BYTES) return NextResponse.json({ error: "IMAGE_TOO_LARGE" }, { status: 413 });
 
-  const quota = await deps.getQuota(user.id);
+  // One OCR per user at a time: the daily quota is read here and bumped after
+  // the vision call, so parallel uploads would otherwise all pass the same read.
+  const release = await acquireStreamSlot(`ocr:${user.id}`, 0);
+  if (!release) return NextResponse.json({ error: "RATE_LIMITED" }, { status: 429 });
+  try {
+    return await runOcr(file, locale, user.id);
+  } finally {
+    release();
+  }
+}
+
+async function runOcr(file: File, locale: string, userId: string) {
+  const deps = getOcrRouteDeps();
+  const quota = await deps.getQuota(userId);
   const limit = quotaLimitFor(quota.plan);
   if (limit !== null && quota.ocrUsedToday >= limit) {
     return NextResponse.json({ error: "QUOTA_EXHAUSTED" }, { status: 402 });
@@ -64,6 +85,6 @@ export async function POST(req: Request) {
     return NextResponse.json(result, { status: 422 });
   }
 
-  await deps.bumpOcrQuota(user.id);
+  await deps.bumpOcrQuota(userId);
   return NextResponse.json(result);
 }

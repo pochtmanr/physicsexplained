@@ -83,16 +83,21 @@ export function _resetDiagnoserDeps(d: Partial<DiagnoserDeps>) {
   deps = { ...makeDefaultDeps(), ...d };
 }
 
-function makeCacheKey(stepId: string, normalizedExpr: string): string {
-  return createHash("sha256").update(`${stepId}:${normalizedExpr}`).digest("hex");
+/**
+ * The cache is shared by every student, so the key must cover everything the
+ * model is shown that a student controls: the expression exactly as it appears
+ * in the prompt, and the locale the answer is written in.
+ */
+function makeCacheKey(stepId: string, locale: string, promptExpr: string): string {
+  return createHash("sha256").update(`v2:${stepId}:${locale}:${promptExpr}`).digest("hex");
 }
 
-function buildUserMessage(input: DiagnoseInput): string {
+function buildUserMessage(input: DiagnoseInput, promptExpr: string): string {
   return [
     `Problem: ${input.problemStatement}`,
     `Step ${input.step.id} (${input.step.varName}): ${input.stepPrompt}`,
     `Canonical expression: ${input.step.canonicalExpr}`,
-    `Student expression: ${input.studentExpr}`,
+    `Student expression: ${promptExpr}`,
     `Numeric values at default inputs: canonical = ${input.canonicalValue}, student = ${input.studentValue}`,
     `Common mistakes for this step: ${input.commonMistakes.join("; ")}`,
     `Locale: ${input.locale}`,
@@ -100,8 +105,11 @@ function buildUserMessage(input: DiagnoseInput): string {
 }
 
 export async function diagnoseStep(input: DiagnoseInput): Promise<DiagnoseResult> {
-  const normalized = normalizeStudentExpr(input.studentExpr);
-  const cacheKey = makeCacheKey(input.step.id, normalized);
+  // The model sees the normalized expression, not the raw input: normalizing
+  // drops everything before the last "=", and text that is not part of the
+  // key must never reach a prompt whose answer other students will be served.
+  const promptExpr = normalizeStudentExpr(input.studentExpr);
+  const cacheKey = makeCacheKey(input.step.id, input.locale, promptExpr);
 
   const cached = await deps.cacheGet(cacheKey);
   if (cached) {
@@ -119,7 +127,7 @@ export async function diagnoseStep(input: DiagnoseInput): Promise<DiagnoseResult
     max_tokens: 200,
     temperature: 0.2,
     system: SYSTEM_PROMPT,
-    messages: [{ role: "user", content: buildUserMessage(input) }],
+    messages: [{ role: "user", content: buildUserMessage(input, promptExpr) }],
   });
 
   const text = res.content
