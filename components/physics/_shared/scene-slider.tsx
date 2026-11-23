@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, type ReactNode } from "react";
+import { useFigureLinkTarget } from "./figure-link";
 import { SceneRange } from "./scene-range";
 
 export interface SceneSliderProps {
@@ -22,6 +23,11 @@ export interface SceneSliderProps {
   display?: string;
   /** Accessible name when `label` is a bare symbol such as "a". */
   ariaLabel?: string;
+  /**
+   * Key of the guide entry that explains this control (see
+   * `lib/content/figure-guides.ts`). Links the two on hover in full view.
+   */
+  guideKey?: string;
 }
 
 /**
@@ -40,12 +46,17 @@ export function SceneSlider({
   onCommit,
   display,
   ariaLabel,
+  guideKey,
 }: SceneSliderProps) {
   const id = useId();
+  const { props: linkProps } = useFigureLinkTarget(guideKey, "scene");
   // Phone: label and value share a row, the track gets the full width below.
   // From `sm` up: label, track, value in one row.
   return (
-    <div className="grid grid-cols-[1fr_auto] items-center gap-x-3 sm:grid-cols-[minmax(3.5rem,auto)_1fr_minmax(4.5rem,auto)]">
+    <div
+      className="figure-link grid grid-cols-[1fr_auto] items-center gap-x-3 sm:grid-cols-[minmax(3.5rem,auto)_1fr_minmax(4.5rem,auto)]"
+      {...linkProps}
+    >
       <label htmlFor={id} className="text-sm text-[var(--color-fg-2)]">
         {label}
       </label>
@@ -77,5 +88,6 @@ export function SceneSlider({
 
 /** Vertical stack for a scene's sliders and control rows, below the canvas. */
 export function SceneControlGroup({ children }: { children: ReactNode }) {
-  return <div className="mt-3 flex flex-col gap-2 px-2">{children}</div>;
+  // `scene-panel`: a card in full view (globals.css), nothing inline.
+  return <div className="scene-panel mt-3 flex flex-col gap-2 px-2">{children}</div>;
 }

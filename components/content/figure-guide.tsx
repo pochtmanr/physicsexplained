@@ -14,6 +14,7 @@ import { getProblemStringsForLocale } from "@/lib/problems/strings";
 import { defaultLocale } from "@/i18n/config";
 import { ContentInline } from "@/components/content/content-inline";
 import { DifficultyChip } from "@/components/problems/difficulty-chip";
+import { FigureGuideItem as LinkedItem } from "@/components/content/figure-guide-item";
 
 export interface FigureGuideProps {
   guide: Guide;
@@ -21,14 +22,17 @@ export interface FigureGuideProps {
   prose: readonly Extract<Block, { type: "paragraph" }>[];
 }
 
-const HEADING = "text-[13px] font-medium text-[var(--color-fg-0)]";
+// Sizes come from the `--figure-fs-*` variables the full view sets (globals.css),
+// so guide text grows with the figure on a large screen.
+const HEADING = "text-[length:var(--figure-fs-13,13px)] font-medium text-[var(--color-fg-0)]";
 const ROW = "flex items-baseline justify-between gap-3 border-b border-[var(--color-fg-4)] py-2 last:border-b-0";
 // The negative margin gives the focus ring room without shifting the text.
 const ROW_LINK = `group ${ROW} -mx-2 rounded-[var(--radius-control)] px-2 outline-none transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-cyan)]/50 motion-reduce:transition-none`;
 
 function GuideSection({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="border-t border-[var(--color-fg-4)] px-4 py-5 first:border-t-0 sm:px-5">
+    // One card per section (docs/figure-full-view.md).
+    <section className="figure-card p-4">
       <h3 className={HEADING}>{title}</h3>
       <div className="mt-3">{children}</div>
     </section>
@@ -152,9 +156,10 @@ export async function FigureGuide({ guide, prose }: FigureGuideProps) {
   ).filter((problem) => problem !== null);
 
   const items = (list: readonly FigureGuideItem[]) => (
-    <dl className="space-y-3">
+    <dl className="space-y-1">
       {list.map((item) => (
-        <div key={item.key}>
+        // Linked on hover to the matching curve, readout or control.
+        <LinkedItem key={item.key} linkKey={item.key}>
           <dt className="flex items-center gap-2 font-mono text-xs text-[var(--color-fg-0)]">
             {/* The colour of the matching curve or readout, as a line sample;
                 the label itself stays in the text colour so it is readable
@@ -169,7 +174,7 @@ export async function FigureGuide({ guide, prose }: FigureGuideProps) {
             {scene(`items.${item.key}.label`)}
           </dt>
           <dd className="mt-1 text-[var(--color-fg-1)]">{scene(`items.${item.key}.text`)}</dd>
-        </div>
+        </LinkedItem>
       ))}
     </dl>
   );
@@ -182,7 +187,7 @@ export async function FigureGuide({ guide, prose }: FigureGuideProps) {
 
   return (
     // A readable measure where the guide is a wide sheet under the figure.
-    <div className="mx-auto max-w-[70ch] text-sm leading-relaxed text-[var(--color-fg-1)]">
+    <div className="figure-guide-body mx-auto flex max-w-[70ch] flex-col gap-3 p-3 text-sm leading-relaxed text-[var(--color-fg-1)]">
       {prose.length > 0 && (
         <GuideSection title={t("article")}>
           <div className="space-y-3 border-s-2 border-[var(--color-cyan-dim)] ps-3">
@@ -226,7 +231,7 @@ export async function FigureGuide({ guide, prose }: FigureGuideProps) {
               <li key={i} className="flex gap-3">
                 <span
                   aria-hidden="true"
-                  className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full border border-[var(--color-fg-4)] font-mono text-[10px] text-[var(--color-fg-2)]"
+                  className="mt-0.5 flex size-[1.45em] shrink-0 items-center justify-center rounded-full border border-[var(--color-fg-4)] font-mono text-[length:var(--figure-fs-10,10px)] text-[var(--color-fg-2)]"
                 >
                   {i + 1}
                 </span>
@@ -338,7 +343,7 @@ export async function FigureGuide({ guide, prose }: FigureGuideProps) {
 function ReferenceGroup({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div>
-      <h4 className="font-mono text-[10px] uppercase tracking-wider text-[var(--color-fg-2)]">
+      <h4 className="font-mono text-[length:var(--figure-fs-10,10px)] uppercase tracking-wider text-[var(--color-fg-2)]">
         {title}
       </h4>
       <div className="mt-1">{children}</div>

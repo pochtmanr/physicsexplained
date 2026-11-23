@@ -98,6 +98,8 @@ The reference for an animated scene is `components/physics/free-fall-scene.tsx` 
 
 12. **Full view comes for free.** `<SceneCard>` moves the live scene into the popup, so state survives, and `useSceneSize` reads `SceneViewContext` and grows the canvas to fit the popup. For that to work: put `ref={containerRef}` on the element that wraps the canvas **and** its controls (their height is subtracted from the space available), wrap both in `<div className="mx-auto" style={{ width }}>`, and draw from `width`/`height` only — no pixel constants for overall layout. Choose `fullView`: `"ratio"` to keep the aspect ratio, `"fill"` when the drawing adapts to any shape; the default `"width"` is what unconverted scenes get.
 
+    **How the full view looks is a standard of its own: [`docs/figure-full-view.md`](../../../docs/figure-full-view.md).** In short: the canvas goes in `<SceneStage>`, the playback bar and readouts in `<ScenePanel>` (cards in full view, plain blocks inline); every pixel size is multiplied by `tokens.scale` so text and objects grow on large screens; and readouts, sliders and the canvas (`useSceneHover`) carry the guide's keys so pointing at one side marks the other.
+
 13. **Text is translated.** Visible strings and the canvas `aria-label` come from `useTranslations("scenes.<sceneName>")` (`messages/<locale>/scenes.json`). The canvas gets `role="img"`.
 
 Conversion checklist for an existing scene:
@@ -108,6 +110,7 @@ Conversion checklist for an existing scene:
 - [ ] sliders → `<SceneSlider>`; numeric readouts → `<SceneReadout>`; remaining canvas text → `drawLabel`
 - [ ] strings in `messages/en/scenes.json` and `messages/he/scenes.json`
 - [ ] checked at 360 px and 1280 px, dark and light, inline and in full view, at every slider extreme
+- [ ] the full-view checklist in `docs/figure-full-view.md` (cards, scale, hover link)
 
 ### Inventory (measured 2026-11-22)
 

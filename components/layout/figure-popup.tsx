@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
 import { BookOpenText, X } from "lucide-react";
 import frame from "@/components/layout/corner-frame.module.css";
+import { figureTextScale } from "@/components/physics/_shared/scene-tokens";
 
 export interface FigurePopupProps {
   /** "FIG.01 — the pendulum" style caption, shown in the popup header */
@@ -29,6 +30,11 @@ export interface FigurePopupProps {
    * whole screen first.
    */
   initialGuide?: "auto" | "open";
+  /**
+   * Size multiplier for the figure (see `figureScale`); the popup's own text
+   * and the guide follow the damped `figureTextScale`. Default 1.
+   */
+  scale?: number;
 }
 
 /**
@@ -85,6 +91,7 @@ export function FigurePopup({
   onAvailableHeight,
   guide,
   initialGuide = "auto",
+  scale = 1,
 }: FigurePopupProps) {
   const t = useTranslations("scenes.card");
   const tGuide = useTranslations("scenes.guide");
@@ -190,7 +197,14 @@ export function FigurePopup({
       <div
         ref={panelRef}
         // The width cap keeps figure and guide together on very wide screens.
-        className={`popup-panel-enter relative flex h-dvh w-screen flex-col lg:h-[92dvh] lg:w-[96vw] lg:max-w-[1960px] ${frame.frame} bg-[var(--color-bg-1)] shadow-2xl`}
+        // Read by `.figure-popup-panel` in globals.css to size all text inside.
+        style={
+          {
+            "--figure-scale": scale,
+            "--figure-text-scale": figureTextScale(scale),
+          } as CSSProperties
+        }
+        className={`figure-popup-panel popup-panel-enter relative flex h-dvh w-screen flex-col lg:h-[92dvh] lg:w-[96vw] lg:max-w-[1960px] ${frame.frame} bg-[var(--color-bg-1)] shadow-2xl`}
       >
         <span className={`${frame.corner} ${frame.tl}`} aria-hidden="true" />
         <span className={`${frame.corner} ${frame.tr}`} aria-hidden="true" />
@@ -214,7 +228,7 @@ export function FigurePopup({
               title={guideOpen ? tGuide("hide") : tGuide("show")}
               // Pressed: accent border and tint, text in the text colour
               // (the accent alone is too faint for small text on white).
-              className={`-my-1.5 inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-control)] border px-2 py-1.5 font-mono text-[11px] uppercase tracking-wider outline-none transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50 motion-reduce:transition-none ${
+              className={`-my-1.5 inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-control)] border px-2 py-1.5 font-mono text-[length:var(--figure-fs-11,11px)] uppercase tracking-wider outline-none transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50 motion-reduce:transition-none ${
                 guideOpen
                   ? "border-[var(--color-cyan)] bg-[color-mix(in_srgb,var(--color-cyan)_14%,transparent)] text-[var(--color-fg-0)]"
                   : "border-[var(--color-fg-4)] text-[var(--color-fg-1)] hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-fg-0)]"
@@ -239,7 +253,8 @@ export function FigurePopup({
         <div className="figure-popup-body">
           <div
             ref={areaRef}
-            className="min-h-0 min-w-0 flex-1 overflow-auto p-3 sm:p-4 [scrollbar-width:thin]"
+            // Same inset as the guide column, so the cards on both sides line up.
+            className="min-h-0 min-w-0 flex-1 overflow-auto p-3 [scrollbar-width:thin]"
           >
             {/* `min-h-full` + the host's `m-auto`: a figure that fits is centred,
                 one that does not scrolls from its top instead of being cut off. */}

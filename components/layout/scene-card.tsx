@@ -13,8 +13,10 @@ import { BookOpenText, Maximize2 } from "lucide-react";
 import frame from "@/components/layout/corner-frame.module.css";
 import { FigurePopup } from "@/components/layout/figure-popup";
 import { Reveal } from "@/components/layout/reveal";
+import { FigureLinkProvider } from "@/components/physics/_shared/figure-link";
 import {
   SceneViewContext,
+  figureScale,
   type SceneView,
 } from "@/components/physics/_shared/scene-tokens";
 
@@ -73,6 +75,8 @@ export function SceneCard({
   const openerRef = useRef<HTMLButtonElement | null>(null);
   const [popupSlot, setPopupSlot] = useState<HTMLDivElement | null>(null);
   const [availableHeight, setAvailableHeight] = useState<number | null>(null);
+  /** Size multiplier for text and drawn objects; 1 while inline. */
+  const [scale, setScale] = useState(1);
   const homeRef = useRef<HTMLDivElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const expandRef = useRef<HTMLButtonElement>(null);
@@ -90,9 +94,26 @@ export function SceneCard({
     };
   }, [expanded, popupSlot]);
 
+  // Larger text and objects in full view on a large screen. A layout effect,
+  // so the first frame of the popup is already drawn at the right size.
+  useIsomorphicLayoutEffect(() => {
+    if (!expanded) {
+      setScale(1);
+      return;
+    }
+    const update = () => setScale(figureScale(window.innerWidth, window.innerHeight));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [expanded]);
+
   const view = useMemo<SceneView>(
-    () => ({ expanded, availableHeight: expanded ? availableHeight : null }),
-    [expanded, availableHeight],
+    () => ({
+      expanded,
+      availableHeight: expanded ? availableHeight : null,
+      scale: expanded ? scale : 1,
+    }),
+    [expanded, availableHeight, scale],
   );
 
   const close = () => {
@@ -108,6 +129,8 @@ export function SceneCard({
   };
 
   return (
+    // The hover link between figure and guide exists only where both show.
+    <FigureLinkProvider enabled={expanded && hasGuide}>
     <figure className={clsx("relative my-16 mx-auto", className)}>
       {/* The caption row also reserves room for the expand button, so the
           button never sits on top of the figure itself. */}
@@ -177,8 +200,10 @@ export function SceneCard({
           onAvailableHeight={setAvailableHeight}
           guide={guide}
           initialGuide={initialGuide}
+          scale={scale}
         />
       )}
     </figure>
+    </FigureLinkProvider>
   );
 }

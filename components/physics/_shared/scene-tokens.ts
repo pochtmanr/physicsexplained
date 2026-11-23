@@ -84,6 +84,12 @@ export interface SceneTokens {
   fontHudLarge: string;
   fontSection: string;
   fontLabel: string;
+  /**
+   * Size multiplier for everything drawn in pixels: 1 inline, up to
+   * `FIGURE_SCALE_MAX` in full view on a large screen. The fonts above are
+   * already multiplied by it; multiply paddings, radii and line widths too.
+   */
+  scale: number;
 
   /** Underlying theme colors — exposed so scenes can pass them to canvas
    *  primitives that take a `palette` prop (SpacetimeDiagramCanvas, ManifoldCanvas). */
@@ -96,6 +102,7 @@ export interface SceneTokens {
  */
 export function useSceneTokens(): SceneTokens {
   const colors = useThemeColors();
+  const scale = useSceneScale();
 
   return useMemo<SceneTokens>(
     () => ({
@@ -123,16 +130,22 @@ export function useSceneTokens(): SceneTokens {
       orange: colors.orange,
       green: colors.green,
 
-      fontHud: FONT_HUD,
-      fontHudSmall: FONT_HUD_SMALL,
-      fontHudLarge: FONT_HUD_LARGE,
-      fontSection: FONT_SECTION,
-      fontLabel: FONT_LABEL,
+      fontHud: sceneFont(12, scale),
+      fontHudSmall: sceneFont(11, scale),
+      fontHudLarge: sceneFont(13, scale),
+      fontSection: sceneFont(11, scale),
+      fontLabel: sceneFont(12, scale),
+      scale,
 
       colors,
     }),
-    [colors],
+    [colors, scale],
   );
+}
+
+/** Canvas font string for the scene typeface at `px` × `scale`. */
+export function sceneFont(px: number, scale = 1): string {
+  return `${Math.round(px * scale * 10) / 10}px ui-monospace, monospace`;
 }
 
 // ── Typography (fixed across themes) ───────────────────────────────────
@@ -255,15 +268,51 @@ export interface SceneView {
   expanded: boolean;
   /** Height in px the whole scene (canvas + controls) may use when expanded. */
   availableHeight: number | null;
+  /**
+   * Size multiplier for text and drawn objects: 1 inline, larger in full view
+   * on a large screen (see `figureScale`). Optional so a provider that does
+   * not care can leave it out.
+   */
+  scale?: number;
 }
 
 export const SceneViewContext = createContext<SceneView>({
   expanded: false,
   availableHeight: null,
+  scale: 1,
 });
 
 export function useSceneView(): SceneView {
   return useContext(SceneViewContext);
+}
+
+/** The current size multiplier (see `SceneView.scale`). */
+export function useSceneScale(): number {
+  return useContext(SceneViewContext).scale ?? 1;
+}
+
+/** Largest size multiplier the full view uses. */
+export const FIGURE_SCALE_MAX = 1.5;
+
+/**
+ * Size multiplier for a figure in full view, from the window size. 1 up to a
+ * 1330 × 870 window (phones, laptops), about 1.24 at 1920 × 1080, and the
+ * maximum from 2560 × 1440. The smaller of the two directions decides, so a
+ * wide but short window does not get text its height cannot hold.
+ * See docs/figure-full-view.md.
+ */
+export function figureScale(viewportWidth: number, viewportHeight: number): number {
+  const fit = Math.min(viewportWidth / 1330, viewportHeight / 870);
+  if (!Number.isFinite(fit)) return 1;
+  return Math.min(FIGURE_SCALE_MAX, Math.max(1, Math.round(fit * 100) / 100));
+}
+
+/**
+ * The same multiplier, damped by half, for HTML text (readouts, sliders, the
+ * guide): running text needs less enlargement than labels on a big canvas.
+ */
+export function figureTextScale(scale: number): number {
+  return 1 + (scale - 1) / 2;
 }
 
 /**
@@ -326,12 +375,9 @@ export function useSceneSize<T extends HTMLElement>(
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const measure = (containerWidth: number) => {
+    const measure = (containerWidth: number, containerHeight: number) => {
       if (containerWidth <= 0) return;
-      const chromeHeight = Math.max(
-        0,
-        el.getBoundingClientRect().height - renderedHeightRef.current,
-      );
+      const chromeHeight = Math.max(0, containerHeight - renderedHeightRef.current);
       const next = computeSceneSize({
         containerWidth,
         ratio,
@@ -349,7 +395,14 @@ export function useSceneSize<T extends HTMLElement>(
       );
     };
     const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) measure(entry.contentRect.width);
+      for (const entry of entries) {
+        // The layout height, not `getBoundingClientRect()`: that one is
+        // scaled by transforms, and the full view opens with a zoom, so it
+        // would read short while the animation runs and leave the figure a
+        // pixel or two too tall for good.
+        const box = entry.borderBoxSize?.[0];
+        measure(entry.contentRect.width, box ? box.blockSize : el.offsetHeight);
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -533,6 +586,8 @@ export interface DrawLabelOptions {
   margin?: number;
   /** Text direction. Default "ltr" (maths and symbols); pass "rtl" for RTL prose. */
   direction?: CanvasDirection;
+  /** Size multiplier for the plate padding and edge margin (`tokens.scale`). Default 1. */
+  scale?: number;
 }
 
 /**
@@ -547,9 +602,10 @@ export function drawLabel(
   y: number,
   opts: DrawLabelOptions,
 ): { x: number; y: number; width: number; height: number } {
-  const margin = opts.margin ?? 4;
-  const padX = opts.plate ? 4 : 0;
-  const padY = opts.plate ? 2 : 0;
+  const scale = opts.scale ?? 1;
+  const margin = (opts.margin ?? 4) * scale;
+  const padX = opts.plate ? 4 * scale : 0;
+  const padY = opts.plate ? 2 * scale : 0;
   ctx.save();
   ctx.font = opts.font ?? FONT_LABEL;
   const metrics = ctx.measureText(text);
@@ -579,6 +635,28 @@ export function drawLabel(
   ctx.fillText(text, left + padX, top + boxH / 2);
   ctx.restore();
   return { x: left, y: top, width: boxW, height: boxH };
+}
+
+/**
+ * Ring around a drawn object, to show it is the one a guide entry or readout
+ * is about (see `useSceneHover`).
+ */
+export function drawFocusRing(
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number,
+  radius: number,
+  color: string,
+  scale = 1,
+): void {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5 * scale;
+  ctx.setLineDash([3 * scale, 3 * scale]);
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.restore();
 }
 
 /** Draw a section title in monospace caps. */

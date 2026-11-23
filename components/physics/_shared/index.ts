@@ -24,3 +24,8 @@ export { SceneReadout } from "./scene-readout";
 export type { SceneReadoutItem } from "./scene-readout";
 export { SceneRange, rangeFraction } from "./scene-range";
 export type { SceneRangeProps } from "./scene-range";
+export { SceneStage, ScenePanel } from "./scene-stage";
+export { FigureLinkProvider, useFigureLink, useFigureLinkTarget } from "./figure-link";
+export type { FigureLink, FigureLinkActive, FigureLinkSource } from "./figure-link";
+export { useSceneHover } from "./use-scene-hover";
+export type { SceneHover, ScenePointer } from "./use-scene-hover";

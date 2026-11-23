@@ -4,6 +4,7 @@ import { useId, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Pause, Play, Repeat, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useFigureLinkTarget } from "./figure-link";
 import { SceneRange } from "./scene-range";
 import type { ScenePlayback } from "./use-scene-playback";
 
@@ -15,6 +16,9 @@ export interface SceneControlsProps {
   note?: ReactNode;
   /** Extra scene-specific buttons, placed after the standard ones. */
   children?: ReactNode;
+  /** Guide keys for the scrubber and the note, for the hover link in full view. */
+  scrubKey?: string;
+  noteKey?: string;
 }
 
 /**
@@ -22,8 +26,17 @@ export interface SceneControlsProps {
  * toggle and elapsed time, with an optional scrubber. Every animated scene
  * uses this bar so the controls look and behave the same across the site.
  */
-export function SceneControls({ playback, scrub = false, note, children }: SceneControlsProps) {
+export function SceneControls({
+  playback,
+  scrub = false,
+  note,
+  children,
+  scrubKey,
+  noteKey,
+}: SceneControlsProps) {
   const t = useTranslations("scenes.controls");
+  const { props: scrubLink } = useFigureLinkTarget(scrubKey, "scene");
+  const { props: noteLink } = useFigureLinkTarget(noteKey, "scene");
   const scrubId = useId();
   const { status, time, duration, loop } = playback;
   const playing = status === "playing";
@@ -60,23 +73,29 @@ export function SceneControls({ playback, scrub = false, note, children }: Scene
       </Button>
       {children}
       {canScrub && (
-        <SceneRange
-          id={scrubId}
-          min={0}
-          max={duration}
-          step={duration / 200}
-          value={Math.min(time, duration)}
-          onChange={(e) => playback.seek(parseFloat(e.target.value))}
-          aria-label={t("scrub")}
-          aria-valuetext={`${time.toFixed(1)} s`}
-          className="min-w-24 flex-1"
-        />
+        <span className="figure-link flex min-w-24 flex-1" {...scrubLink}>
+          <SceneRange
+            id={scrubId}
+            min={0}
+            max={duration}
+            step={duration / 200}
+            value={Math.min(time, duration)}
+            onChange={(e) => playback.seek(parseFloat(e.target.value))}
+            aria-label={t("scrub")}
+            aria-valuetext={`${time.toFixed(1)} s`}
+            className="w-full min-w-0"
+          />
+        </span>
       )}
       <span className="ms-auto flex items-baseline gap-2 font-mono text-xs text-[var(--color-fg-2)]">
         <span dir="ltr" className="tabular-nums">
           t = {time.toFixed(2)} s
         </span>
-        {note ? <span dir="auto">{note}</span> : null}
+        {note ? (
+          <span dir="auto" className="figure-link" {...noteLink}>
+            {note}
+          </span>
+        ) : null}
       </span>
     </div>
   );

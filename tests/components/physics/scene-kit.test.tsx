@@ -4,12 +4,19 @@ import { NextIntlClientProvider } from "next-intl";
 import { useRef } from "react";
 import scenes from "@/messages/en/scenes.json";
 import {
+  FIGURE_SCALE_MAX,
+  FigureLinkProvider,
   SceneControls,
+  SceneReadout,
   SceneSlider,
   computeSceneSize,
+  figureScale,
+  figureTextScale,
   formatTick,
   niceTicks,
   rangeFraction,
+  sceneFont,
+  useFigureLinkTarget,
   useScenePlayback,
 } from "@/components/physics/_shared";
 
@@ -529,5 +536,99 @@ describe("SceneRange fill", () => {
     const slider = screen.getByLabelText("Air");
     expect(slider).toHaveClass("scene-range");
     expect(slider.style.getPropertyValue("--range-frac")).toBe("0.25");
+  });
+});
+
+describe("full-view scale", () => {
+  it("is 1 on phones and laptops", () => {
+    expect(figureScale(390, 844)).toBe(1);
+    expect(figureScale(1280, 800)).toBe(1);
+    expect(figureScale(1330, 870)).toBe(1);
+  });
+
+  it("grows with the window and stops at the maximum", () => {
+    expect(figureScale(1920, 1080)).toBeCloseTo(1.24, 2);
+    expect(figureScale(2560, 1440)).toBe(FIGURE_SCALE_MAX);
+    expect(figureScale(5120, 2880)).toBe(FIGURE_SCALE_MAX);
+  });
+
+  it("follows the tighter direction, and survives a window with no size", () => {
+    // Very wide but short: the height decides.
+    expect(figureScale(3440, 900)).toBeCloseTo(1.03, 2);
+    expect(figureScale(0, 0)).toBe(1);
+    expect(figureScale(Number.NaN, 800)).toBe(1);
+  });
+
+  it("enlarges HTML text by half as much as the canvas", () => {
+    expect(figureTextScale(1)).toBe(1);
+    expect(figureTextScale(1.5)).toBe(1.25);
+  });
+
+  it("builds the canvas font at the scaled size, unchanged at scale 1", () => {
+    expect(sceneFont(12)).toBe("12px ui-monospace, monospace");
+    expect(sceneFont(11, 1.5)).toBe("16.5px ui-monospace, monospace");
+  });
+});
+
+describe("figure ↔ guide hover link", () => {
+  function GuideEntry({ linkKey }: { linkKey: string }) {
+    const { props } = useFigureLinkTarget(linkKey, "guide");
+    return (
+      <div data-testid={`guide-${linkKey}`} {...props}>
+        {linkKey}
+      </div>
+    );
+  }
+
+  const figure = (enabled: boolean) => (
+    <FigureLinkProvider enabled={enabled}>
+      <SceneReadout
+        items={[
+          { label: "x", value: "1.00 m", guideKey: "x" },
+          { label: "v", value: "2.00 m/s", guideKey: "v" },
+        ]}
+      />
+      <SceneSlider label="Air" value={25} min={0} max={100} onChange={() => {}} guideKey="air" />
+      <GuideEntry linkKey="x" />
+      <GuideEntry linkKey="air" />
+    </FigureLinkProvider>
+  );
+
+  // Found by value: the label "x" is also the text of its guide entry.
+  const VALUES: Record<string, string> = { x: "1.00 m", v: "2.00 m/s" };
+  const readout = (key: string) => screen.getByText(VALUES[key]).closest(".figure-link")!;
+
+  it("marks the guide entry while its readout is pointed at, and clears on leave", () => {
+    render(figure(true));
+    fireEvent.pointerEnter(readout("x"));
+    expect(screen.getByTestId("guide-x")).toHaveAttribute("data-link-active", "true");
+    expect(readout("x")).toHaveAttribute("data-link-active", "true");
+    expect(screen.getByTestId("guide-air")).not.toHaveAttribute("data-link-active");
+    expect(readout("v")).not.toHaveAttribute("data-link-active");
+    fireEvent.pointerLeave(readout("x"));
+    expect(screen.getByTestId("guide-x")).not.toHaveAttribute("data-link-active");
+  });
+
+  it("marks the control while its guide entry is pointed at", () => {
+    render(figure(true));
+    fireEvent.pointerEnter(screen.getByTestId("guide-air"));
+    expect(screen.getByLabelText("Air").closest(".figure-link")).toHaveAttribute(
+      "data-link-active",
+      "true",
+    );
+  });
+
+  it("keeps a mark made on one side when the pointer leaves the other", () => {
+    render(figure(true));
+    fireEvent.pointerEnter(screen.getByTestId("guide-x"));
+    fireEvent.pointerLeave(readout("v"));
+    expect(readout("x")).toHaveAttribute("data-link-active", "true");
+  });
+
+  it("does nothing where the link is off (inline, or a figure without a guide)", () => {
+    render(figure(false));
+    fireEvent.pointerEnter(readout("x"));
+    expect(screen.getByTestId("guide-x")).not.toHaveAttribute("data-link-active");
+    expect(readout("x")).not.toHaveAttribute("data-link-active");
   });
 });

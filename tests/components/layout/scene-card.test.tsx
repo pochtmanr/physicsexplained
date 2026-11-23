@@ -15,7 +15,11 @@ function Counter() {
   });
   const view = useSceneView();
   return (
-    <button onClick={() => setN((v) => v + 1)} data-expanded={view.expanded}>
+    <button
+      onClick={() => setN((v) => v + 1)}
+      data-expanded={view.expanded}
+      data-scale={view.scale}
+    >
       count {n}
     </button>
   );
@@ -42,6 +46,28 @@ afterEach(() => {
 });
 
 describe("SceneCard full view", () => {
+  it("enlarges the scene in full view on a large window, and only there", () => {
+    const { innerWidth, innerHeight } = window;
+    Object.assign(window, { innerWidth: 2560, innerHeight: 1440 });
+    try {
+      renderCard();
+      expect(screen.getByRole("button", { name: /count 0/ })).toHaveAttribute("data-scale", "1");
+      fireEvent.click(screen.getByRole("button", { name: "Expand figure" }));
+      const dialog = screen.getByRole("dialog");
+      expect(within(dialog).getByRole("button", { name: /count 0/ })).toHaveAttribute(
+        "data-scale",
+        "1.5",
+      );
+      // The popup's own text and the guide follow the damped scale.
+      const panel = dialog.querySelector<HTMLElement>(".figure-popup-panel")!;
+      expect(panel.style.getPropertyValue("--figure-text-scale")).toBe("1.25");
+      fireEvent.keyDown(window, { key: "Escape" });
+      expect(screen.getByRole("button", { name: /count 0/ })).toHaveAttribute("data-scale", "1");
+    } finally {
+      Object.assign(window, { innerWidth, innerHeight });
+    }
+  });
+
   it("keeps the scene's state when expanding and closing", () => {
     renderCard();
     // The scene mounts once on first render — no second mount behind a portal.

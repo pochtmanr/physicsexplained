@@ -22,6 +22,8 @@
 
   /* Control radius — buttons/keycaps. Slight rounding, still crisp. */
   --radius-control: 6px;
+  /* Card radius — the cards of a figure's full view (docs/figure-full-view.md). */
+  --radius-card: 12px;
 }
 
 /* Default (dark) theme — applies when no data-theme or data-theme="dark".
@@ -349,8 +351,9 @@ table tbody tr:last-child td {
 
 .scene-range {
   --range-frac: 0;
-  --range-thumb-size: 14px;
-  --range-track-size: 4px;
+  /* Larger in a figure's full view on a large screen; 1 everywhere else. */
+  --range-thumb-size: calc(14px * var(--figure-text-scale, 1));
+  --range-track-size: calc(4px * var(--figure-text-scale, 1));
   --range-fill: var(--color-fg-3);
   --range-thumb: var(--color-fg-2);
   --range-halo: 0px;
@@ -427,7 +430,7 @@ table tbody tr:last-child td {
 /* Fingers need a bigger target than a mouse pointer. */
 @media (pointer: coarse) {
   .scene-range {
-    --range-thumb-size: 20px;
+    --range-thumb-size: calc(20px * var(--figure-text-scale, 1));
     height: 2.75rem;
   }
 }
@@ -513,6 +516,82 @@ table tbody tr:last-child td {
   flex-direction: column;
   min-height: 0;
 }
+
+/* ── Full view: type scale ─────────────────────────────────────────────
+   `--figure-text-scale` is set on the panel by FigurePopup (1 on phones and
+   laptops, up to 1.25 on a 2K screen). Redefining Tailwind's own size
+   variables here makes every `text-xs` / `text-sm` / `text-base` inside the
+   full view follow it; the `--figure-fs-*` variables do the same for the few
+   fixed pixel sizes. Nothing outside the panel is affected.
+   See docs/figure-full-view.md. */
+.figure-popup-panel {
+  --text-xs: calc(0.75rem * var(--figure-text-scale, 1));
+  --text-sm: calc(0.875rem * var(--figure-text-scale, 1));
+  --text-base: calc(1rem * var(--figure-text-scale, 1));
+  --figure-fs-10: calc(10px * var(--figure-text-scale, 1));
+  --figure-fs-11: calc(11px * var(--figure-text-scale, 1));
+  --figure-fs-13: calc(13px * var(--figure-text-scale, 1));
+  /* One gap between cards and one inset inside them, on both sides of the
+     view: the same values as the guide's `gap-3` and `p-4`. */
+  --figure-gap: 0.75rem;
+  --figure-pad: 1rem;
+}
+
+/* ── Full view: cards ──────────────────────────────────────────────────
+   The figure's parts are separate rounded cards: the drawing, the playback
+   bar with its readouts, the sliders, and each section of the guide. Inline,
+   `.scene-stage` and `.scene-panel` are plain wrappers with no styling. */
+.figure-card,
+.figure-popup-body .scene-panel {
+  border: 1px solid var(--color-fg-4);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-fg-0) 2.5%, transparent);
+}
+/* A ring, not a border: the canvas keeps the exact width it was sized to. */
+.figure-popup-body .scene-stage {
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  box-shadow: 0 0 0 1px var(--color-fg-4);
+}
+.figure-popup-body .scene-panel {
+  margin-top: var(--figure-gap);
+  /* Tighter top and bottom than the sides: height is what the drawing needs. */
+  padding: calc(var(--figure-pad) * 0.625) var(--figure-pad);
+}
+/* The last card already ends the figure; no extra space under it. */
+.figure-popup-body .scene-root {
+  padding-bottom: 0;
+}
+/* The kit's own inline spacing gives way to the card's padding. */
+.figure-popup-body .scene-panel > * {
+  padding-inline: 0;
+}
+.figure-popup-body .scene-panel > :first-child {
+  margin-top: 0;
+}
+
+/* ── Figure ↔ guide hover link ─────────────────────────────────────────
+   An element that stands for a guide key (readout, slider, guide entry) is
+   marked while that key is pointed at on either side. Drawn with outline and
+   shadow only, so marking never moves anything. */
+.figure-link {
+  border-radius: var(--radius-control);
+  outline: 1px solid transparent;
+  outline-offset: 4px;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    outline-color var(--duration-fast) var(--ease-standard);
+}
+.figure-link[data-link-active="true"] {
+  background-color: color-mix(in srgb, var(--color-cyan) 12%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-cyan) 12%, transparent);
+  outline-color: color-mix(in srgb, var(--color-cyan) 60%, transparent);
+}
+/* A guide entry: room for the mark, and a pointer target with no gaps. */
+.figure-link-row {
+  padding-block: 0.375rem;
+}
 .figure-popup-guide {
   position: relative;
   flex: none;
@@ -532,11 +611,16 @@ table tbody tr:last-child td {
     flex-direction: row;
   }
   .figure-popup-guide {
-    width: clamp(320px, 31vw, 440px);
+    /* The cap grows with the text, so lines keep their length. */
+    width: clamp(320px, 31vw, calc(440px * var(--figure-text-scale, 1)));
     max-height: none;
     border-top: 0;
-    border-inline-start: 1px solid var(--color-fg-4);
+    /* No rule beside the figure: the guide's cards separate themselves. */
     box-shadow: none;
+  }
+  /* The figure's own inset already separates the two columns. */
+  .figure-guide-body {
+    padding-inline-start: 0;
   }
 }
 /* A phone held sideways: little width to share, so a narrower guide. */
@@ -566,6 +650,9 @@ table tbody tr:last-child td {
   .popup-panel-enter,
   .figure-popup-guide {
     animation: none;
+  }
+  .figure-link {
+    transition: none;
   }
   .reveal[data-reveal="waiting"] {
     opacity: 1;
