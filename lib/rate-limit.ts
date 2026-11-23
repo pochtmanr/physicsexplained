@@ -42,6 +42,9 @@ export function hashIp(ip: string): string {
   return createHash("sha256").update(`${pepper}|${ip}`).digest("hex");
 }
 
+/** PostgREST: the function is not in the schema cache (migration not applied). */
+const FUNCTION_NOT_FOUND = "PGRST202";
+
 export interface RateLimitOptions {
   /** Logical bucket name, e.g. "ask:stream" or "glossary-batch". */
   routeKey: string;
@@ -67,7 +70,13 @@ export interface RateLimitResult {
 /**
  * Count this IP's recent hits for `routeKey`; if under `max`, record the hit and
  * allow. Fails OPEN on DB error (returns ok) — a rate limiter must never take
- * the site down, and other layers (WAF, per-user quota, Turnstile) still apply.
+ * the site down, and other layers (nginx limit_req, per-user quota, Turnstile)
+ * still apply.
+ *
+ * Uses the `rate_limit_hit` database function (migration 0016), which counts
+ * and records in one serialised call. Until that migration is applied the
+ * function does not exist, and this falls back to a separate count and insert,
+ * which parallel requests can slip through.
  */
 export async function enforceIpRateLimit(opts: RateLimitOptions): Promise<RateLimitResult> {
   const { routeKey, max, windowMs } = opts;
@@ -76,6 +85,23 @@ export async function enforceIpRateLimit(opts: RateLimitOptions): Promise<RateLi
 
   try {
     const db = getServiceClient();
+
+    const rpc = await db.rpc("rate_limit_hit", {
+      p_route_key: routeKey,
+      p_ip_hash: ipHash,
+      p_max: max,
+      p_window_seconds: retryAfterSeconds,
+    });
+    if (!rpc.error) {
+      const row = (Array.isArray(rpc.data) ? rpc.data[0] : rpc.data) as { allowed?: boolean; hits?: number } | null;
+      if (row && typeof row.allowed === "boolean") {
+        return { ok: row.allowed, count: row.hits ?? 0, retryAfterSeconds };
+      }
+    } else if (rpc.error.code !== FUNCTION_NOT_FOUND) {
+      console.error(`[rate-limit] rate_limit_hit failed for ${routeKey}:`, rpc.error.message);
+      return { ok: true, count: 0, retryAfterSeconds };
+    }
+
     const windowStart = new Date(Date.now() - windowMs).toISOString();
 
     const { count, error } = await db
