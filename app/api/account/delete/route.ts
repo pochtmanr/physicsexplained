@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getRequestClient, getServiceClient } from "@/lib/supabase-server";
+import { rememberFreeUsage } from "@/lib/billing/deleted-usage";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,9 +30,11 @@ export async function POST(req: Request) {
   // left to ask. A read failure is not a reason to refuse the deletion.
   const { data: billing } = await svc
     .from("user_billing")
-    .select("plan,status")
+    .select("plan,status,free_questions_used,cycle_end")
     .eq("user_id", userId)
     .maybeSingle();
+  // Free questions already used this month follow the email to a new account.
+  await rememberFreeUsage(svc, user.email, billing);
   const hadActivePlan = billing?.status === "active" && billing?.plan !== "free";
 
   // Children before parents. `ask_messages` cascades from `ask_conversations`

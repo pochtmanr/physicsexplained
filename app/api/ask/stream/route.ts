@@ -16,6 +16,7 @@ import type { NeutralMessage } from "@/lib/ask/provider";
 import { checkQuota, type BillingRow } from "@/lib/billing/quota";
 import { weightedTokens } from "@/lib/ask/pricing";
 import { acquireStreamSlot } from "@/lib/ask/stream-lock";
+import { restoreFreeUsage } from "@/lib/billing/deleted-usage";
 import { usageForInterruptedStream } from "@/lib/ask/partial-usage";
 import type { UsageRow } from "@/lib/ask/types";
 
@@ -118,6 +119,15 @@ export async function POST(req: Request) {
       .lte("cycle_end", cycleStart.toISOString());
     row.free_questions_used = 0;
     row.cycle_end = cycleEnd.toISOString();
+  }
+  // A free account that has asked nothing yet may be a recreated one: carry
+  // over what the same email had used before deleting its previous account.
+  if (row.plan === "free" && row.free_questions_used === 0) {
+    const carried = await restoreFreeUsage(db, user.id, user.email);
+    if (carried) {
+      row.free_questions_used = carried.free_questions_used;
+      row.cycle_end = carried.cycle_end;
+    }
   }
   const quota = checkQuota(row);
   if (!quota.ok) {

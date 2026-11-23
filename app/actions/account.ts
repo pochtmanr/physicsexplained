@@ -2,6 +2,7 @@
 import { redirect } from "next/navigation";
 import { getSsrClient, getServiceClient } from "@/lib/supabase-server";
 import { composeSnapshot, type BillingSnapshot, type RawBilling } from "@/lib/billing/snapshot";
+import { rememberFreeUsage } from "@/lib/billing/deleted-usage";
 
 export async function loadBillingSnapshot(): Promise<BillingSnapshot | null> {
   const db = await getSsrClient();
@@ -41,6 +42,12 @@ export async function deleteAccount(confirmEmail: string): Promise<{ ok: false; 
 
   // Best-effort: stop any future Revolut charges by clearing the saved token.
   const svc = getServiceClient();
+  // Free questions already used this month follow the email to a new account.
+  const { data: usage } = await svc.from("user_billing")
+    .select("plan,free_questions_used,cycle_end")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  await rememberFreeUsage(svc, user.email, usage);
   await svc.from("user_billing")
     .update({ status: "canceled", canceled_at: new Date().toISOString(), revolut_token: null, next_charge_at: null })
     .eq("user_id", user.id);
