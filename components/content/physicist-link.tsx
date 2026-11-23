@@ -7,9 +7,18 @@ import { HoverCard } from "./hover-card";
 interface PhysicistLinkProps {
   slug: string;
   children?: ReactNode;
+  /**
+   * Show the short biography on hover (default). Turn off inside a
+   * scrolling panel, which would cut the preview off at its edges.
+   */
+  preview?: boolean;
 }
 
-export async function PhysicistLink({ slug, children }: PhysicistLinkProps) {
+export async function PhysicistLink({
+  slug,
+  children,
+  preview: showPreview = true,
+}: PhysicistLinkProps) {
   const locale = await getLocale();
   const entry = await getContentEntry("physicist", slug, locale);
   if (!entry) {
@@ -45,14 +54,13 @@ export async function PhysicistLink({ slug, children }: PhysicistLinkProps) {
     </span>
   );
 
-  return (
-    <HoverCard content={preview}>
-      <Link
-        href={`/physicists/${slug}`}
-        className="underline decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
-      >
-        {children ?? shortName}
-      </Link>
-    </HoverCard>
+  const link = (
+    <Link
+      href={`/physicists/${slug}`}
+      className="underline decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]"
+    >
+      {children ?? shortName}
+    </Link>
   );
+  return showPreview ? <HoverCard content={preview}>{link}</HoverCard> : link;
 }

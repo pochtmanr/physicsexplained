@@ -11,6 +11,9 @@ import {
   deriveProblemTitle,
   deriveTopicTitle,
 } from "@/lib/content/problem-title";
+import { getTranslations } from "next-intl/server";
+import { compareByDifficulty } from "@/lib/content/difficulty";
+import { DifficultyChip } from "@/components/problems/difficulty-chip";
 import { buttonVariants } from "@/components/ui/button";
 import { defaultLocale } from "@/i18n/config";
 import { buildPageMetadata } from "@/lib/seo/page-metadata";
@@ -23,14 +26,6 @@ import { EquationRail } from "@/components/problems/equation-rail";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
-
-const DIFFICULTY_ORDER = [
-  "easy",
-  "medium",
-  "hard",
-  "challenge",
-  "exam",
-] as const;
 
 export async function generateStaticParams() {
   return PROBLEMS.filter(
@@ -71,15 +66,12 @@ export default async function ProblemPage({ params }: PageProps) {
 
   const title = deriveProblemTitle(problemId, topic, problem.difficulty);
   const topicTitle = deriveTopicTitle(topic);
-  const eyebrow = `${problem.difficulty.toUpperCase()} · ${topicTitle.toUpperCase()}`;
+  const t = await getTranslations({ locale, namespace: "common.problems" });
+  const eyebrow = `${t(`difficulty.${problem.difficulty}`).toUpperCase()} · ${topicTitle.toUpperCase()}`;
 
   // Find the next problem in this topic, sorted by difficulty.
   // If we're on the last problem, fall back to undefined and the link is hidden.
-  const ordered = [...getProblemsForTopic(topic)].sort(
-    (a, b) =>
-      DIFFICULTY_ORDER.indexOf(a.difficulty) -
-      DIFFICULTY_ORDER.indexOf(b.difficulty),
-  );
+  const ordered = [...getProblemsForTopic(topic)].sort(compareByDifficulty);
   const currentIndex = ordered.findIndex((p) => p.id === problemId);
   const nextProblem =
     currentIndex >= 0 && currentIndex < ordered.length - 1
@@ -145,10 +137,11 @@ export default async function ProblemPage({ params }: PageProps) {
             href={`/${locale}/classical-mechanics/${topic}/problems/${nextProblem.id}`}
             className="group inline-flex items-center gap-2 text-[var(--color-cyan-dim)] transition-colors hover:text-[var(--color-cyan)]"
           >
-            <span className="text-[var(--color-fg-3)]">Next problem ·</span>
-            <span className="border border-[var(--color-cyan-dim)] px-2 py-0.5 text-[10px] tracking-wider text-[var(--color-cyan-dim)]">
-              {nextProblem.difficulty}
-            </span>
+            <span className="text-[var(--color-fg-3)]">{t("nextProblem")} ·</span>
+            <DifficultyChip
+              difficulty={nextProblem.difficulty}
+              label={t(`difficulty.${nextProblem.difficulty}`)}
+            />
             <span className="normal-case text-[var(--color-fg-0)] group-hover:text-[var(--color-cyan)]">
               {nextName}
             </span>

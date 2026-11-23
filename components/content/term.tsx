@@ -8,12 +8,17 @@ import { HoverCard } from "./hover-card";
 interface TermProps {
   slug: string;
   children?: ReactNode;
+  /**
+   * Show the definition on hover (default). Turn off inside a scrolling
+   * panel, which would cut the preview off at its edges.
+   */
+  preview?: boolean;
 }
 
 const LINK_CLASS =
   "underline decoration-dotted decoration-[var(--color-fg-4)] underline-offset-[3px] transition-colors duration-[180ms] ease-out hover:text-[var(--color-cyan)] hover:decoration-[var(--color-cyan)]";
 
-export async function Term({ slug, children }: TermProps) {
+export async function Term({ slug, children, preview: showPreview = true }: TermProps) {
   const locale = await getLocale();
 
   // 1. Try glossary first (existing behavior).
@@ -35,13 +40,12 @@ export async function Term({ slug, children }: TermProps) {
       </span>
     );
 
-    return (
-      <HoverCard content={preview}>
-        <Link href={`/dictionary/${slug}`} className={LINK_CLASS}>
-          {children ?? term}
-        </Link>
-      </HoverCard>
+    const link = (
+      <Link href={`/dictionary/${slug}`} className={LINK_CLASS}>
+        {children ?? term}
+      </Link>
     );
+    return showPreview ? <HoverCard content={preview}>{link}</HoverCard> : link;
   }
 
   // 2. Fall back to equations registry.

@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { useTranslations } from "next-intl";
-import { X } from "lucide-react";
+import { BookOpenText, X } from "lucide-react";
 import frame from "@/components/layout/corner-frame.module.css";
 
 export interface FigurePopupProps {
@@ -17,6 +17,55 @@ export interface FigurePopupProps {
   slotRef: (el: HTMLDivElement | null) => void;
   /** Reports the height in px available to the figure, and again on resize. */
   onAvailableHeight?: (height: number) => void;
+  /**
+   * Explanation shown with the figure: beside it when the window is wide (or
+   * a phone is held sideways), under it otherwise. The reader can hide it.
+   */
+  guide?: ReactNode;
+  /**
+   * "open" when the reader asked for the guide itself. "auto" (default)
+   * opens it only on a wide window, and remembers the reader's last choice
+   * there; on smaller screens it starts closed, so the figure gets the
+   * whole screen first.
+   */
+  initialGuide?: "auto" | "open";
+}
+
+/**
+ * Where the guide sits beside the figure instead of under it. Must match the
+ * media query on `.figure-popup-body` in globals.css.
+ */
+export const GUIDE_BESIDE_QUERY =
+  "(min-width: 1024px), (min-width: 900px) and (max-height: 760px), (orientation: landscape) and (min-width: 560px) and (max-height: 560px)";
+
+/**
+ * Where there is room to open the guide without being asked. In the short
+ * side-by-side layouts (a phone held sideways) the figure needs the space
+ * first, so the guide waits for the reader there, as it does when stacked.
+ */
+const GUIDE_ROOMY_QUERY = "(min-width: 1024px)";
+
+const GUIDE_PREFERENCE_KEY = "figure-guide";
+
+function guideHasRoom(): boolean {
+  return typeof window.matchMedia === "function" && window.matchMedia(GUIDE_ROOMY_QUERY).matches;
+}
+
+function readGuidePreference(): boolean {
+  try {
+    return window.localStorage.getItem(GUIDE_PREFERENCE_KEY) !== "closed";
+  } catch {
+    // Storage can be blocked (private mode, embedded views): default to open.
+    return true;
+  }
+}
+
+function writeGuidePreference(open: boolean) {
+  try {
+    window.localStorage.setItem(GUIDE_PREFERENCE_KEY, open ? "open" : "closed");
+  } catch {
+    // Not being able to remember the choice is harmless.
+  }
 }
 
 const FOCUSABLE =
@@ -34,14 +83,33 @@ export function FigurePopup({
   onClose,
   slotRef,
   onAvailableHeight,
+  guide,
+  initialGuide = "auto",
 }: FigurePopupProps) {
   const t = useTranslations("scenes.card");
+  const tGuide = useTranslations("scenes.guide");
+  const guideId = useId();
   const [mounted, setMounted] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    setMounted(true);
+    if (!guide) return;
+    setGuideOpen(initialGuide === "open" || (guideHasRoom() && readGuidePreference()));
+    // Decided once, when the popup opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const toggleGuide = () => {
+    const next = !guideOpen;
+    setGuideOpen(next);
+    // The preference is about the roomy layout only: closing the sheet on
+    // a phone must not hide the panel on a desktop later.
+    if (guideHasRoom()) writeGuidePreference(next);
+  };
 
   // Escape closes; Tab stays inside the dialog.
   useEffect(() => {
@@ -121,34 +189,76 @@ export function FigurePopup({
       />
       <div
         ref={panelRef}
-        className={`relative flex h-dvh w-screen flex-col lg:h-[92dvh] lg:w-[96vw] ${frame.frame} bg-[var(--color-bg-1)] shadow-2xl`}
+        // The width cap keeps figure and guide together on very wide screens.
+        className={`popup-panel-enter relative flex h-dvh w-screen flex-col lg:h-[92dvh] lg:w-[96vw] lg:max-w-[1960px] ${frame.frame} bg-[var(--color-bg-1)] shadow-2xl`}
       >
         <span className={`${frame.corner} ${frame.tl}`} aria-hidden="true" />
         <span className={`${frame.corner} ${frame.tr}`} aria-hidden="true" />
         <span className={`${frame.corner} ${frame.bl}`} aria-hidden="true" />
         <span className={`${frame.corner} ${frame.br}`} aria-hidden="true" />
         <div className="flex shrink-0 items-center justify-between gap-4 border-b border-[var(--color-fg-4)] px-4 py-3">
-          <span className="font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]">
+          {/* One line: a long caption must not take height from the figure. */}
+          <span
+            title={caption}
+            className="min-w-0 flex-1 truncate font-mono text-xs uppercase tracking-wider text-[var(--color-fg-2)]"
+          >
             {caption}
           </span>
+          {guide ? (
+            <button
+              type="button"
+              onClick={toggleGuide}
+              aria-expanded={guideOpen}
+              aria-controls={guideOpen ? guideId : undefined}
+              aria-label={tGuide("title")}
+              title={guideOpen ? tGuide("hide") : tGuide("show")}
+              // Pressed: accent border and tint, text in the text colour
+              // (the accent alone is too faint for small text on white).
+              className={`-my-1.5 inline-flex shrink-0 items-center gap-1.5 rounded-[var(--radius-control)] border px-2 py-1.5 font-mono text-[11px] uppercase tracking-wider outline-none transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)] focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50 motion-reduce:transition-none ${
+                guideOpen
+                  ? "border-[var(--color-cyan)] bg-[color-mix(in_srgb,var(--color-cyan)_14%,transparent)] text-[var(--color-fg-0)]"
+                  : "border-[var(--color-fg-4)] text-[var(--color-fg-1)] hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-fg-0)]"
+              }`}
+            >
+              <BookOpenText size={14} strokeWidth={1.6} aria-hidden="true" />
+              {/* The word gives way to the caption on narrow phones. */}
+              <span className="hidden min-[480px]:inline">{tGuide("title")}</span>
+            </button>
+          ) : null}
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label={t("close")}
             title={t("close")}
-            className="-m-2 shrink-0 p-2 text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-fg-0)]"
+            className="-m-2 shrink-0 rounded-[var(--radius-control)] p-2 text-[var(--color-fg-2)] outline-none transition-colors hover:text-[var(--color-fg-0)] focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-cyan)]/50"
           >
             <X size={18} strokeWidth={1.5} aria-hidden="true" />
           </button>
         </div>
-        <div
-          ref={areaRef}
-          className="min-h-0 flex-1 overflow-auto p-3 sm:p-4 [scrollbar-width:thin]"
-        >
-          {/* `min-h-full` + the host's `m-auto`: a figure that fits is centred,
-              one that does not scrolls from its top instead of being cut off. */}
-          <div ref={slotRef} className="flex min-h-full w-full" />
+        <div className="figure-popup-body">
+          <div
+            ref={areaRef}
+            className="min-h-0 min-w-0 flex-1 overflow-auto p-3 sm:p-4 [scrollbar-width:thin]"
+          >
+            {/* `min-h-full` + the host's `m-auto`: a figure that fits is centred,
+                one that does not scrolls from its top instead of being cut off. */}
+            <div ref={slotRef} className="flex min-h-full w-full" />
+          </div>
+          {/* Rendered only while open, so Tab never lands on hidden links.
+              The figure re-fits by itself: it watches its own width, and the
+              area above reports its new height. */}
+          {guide && guideOpen ? (
+            <aside
+              id={guideId}
+              aria-label={tGuide("title")}
+              // Focusable so the keyboard can scroll it.
+              tabIndex={0}
+              className="figure-popup-guide outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-cyan)]/50"
+            >
+              {guide}
+            </aside>
+          ) : null}
         </div>
       </div>
     </div>,

@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+
+// useLayoutEffect warns during server rendering; the effect is client-only.
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 export interface ThemeColors {
   fg0: string;
   fg1: string;
   fg2: string; // meta/muted (canvas labels, axis text) — backed by --color-fg-3
   fg3: string; // border/rule (gridlines, hairlines) — backed by --color-fg-4
+  fgLabel: string; // small readable text (axis numbers, units) — backed by --color-fg-2
   bg0: string;
   bg1: string;
   cyan: string;
@@ -25,6 +29,7 @@ const DARK_FALLBACK: ThemeColors = {
   fg1: "#B6C4D8",
   fg2: "#56687F",
   fg3: "#2A3448",
+  fgLabel: "#7D8DA6",
   bg0: "#1A1D24",
   bg1: "#1A1D24",
   cyan: "#6FB8C6",
@@ -49,6 +54,7 @@ function readColors(): ThemeColors {
     fg1: read("--color-fg-1", DARK_FALLBACK.fg1),
     fg2: read("--color-fg-3", DARK_FALLBACK.fg2),
     fg3: read("--color-fg-4", DARK_FALLBACK.fg3),
+    fgLabel: read("--color-fg-2", DARK_FALLBACK.fgLabel),
     bg0: read("--color-bg-0", DARK_FALLBACK.bg0),
     bg1: read("--color-bg-1", DARK_FALLBACK.bg1),
     cyan: read("--color-cyan", DARK_FALLBACK.cyan),
@@ -66,7 +72,9 @@ function readColors(): ThemeColors {
 export function useThemeColors(): ThemeColors {
   const [colors, setColors] = useState<ThemeColors>(DARK_FALLBACK);
 
-  useEffect(() => {
+  // Read the real theme before the browser paints: with a plain effect, a
+  // reader on the light theme would see one frame drawn in the dark fallback.
+  useIsomorphicLayoutEffect(() => {
     setColors(readColors());
 
     const observer = new MutationObserver(() => {

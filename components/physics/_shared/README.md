@@ -24,7 +24,7 @@ Mirror those three when adding a new scene.
 
 4. **DPR scaling.** Call `applyDpr(canvas, width, height)` once per redraw. The `width`/`height` you pass come from `useSceneSize`.
 
-5. **Controls use theme tokens.** Sliders: `accent-[var(--color-cyan)]`. Labels: `text-[var(--color-fg-3)]`. Active button: `border-[var(--color-cyan)] text-[var(--color-cyan)]`. Inactive: `border-[var(--color-fg-4)] text-[var(--color-fg-3)]`.
+5. **Controls use theme tokens.** Sliders: `<SceneSlider>` (or `<SceneRange>` for a bare range input) — never a raw `<input type="range">` with an `accent-*` class. They are neutral gray at rest and take the accent only on hover, focus and drag (`.scene-range` in `app/globals.css`), so a stack of sliders stays quiet. They always run left-to-right, even on right-to-left pages, so a slider moves the same way as the numeric axis it controls. Small readable canvas text (axis numbers, units) uses `tokens.textLabel`, which passes AA; `tokens.textMute` does not at 11px. Labels: `text-[var(--color-fg-3)]`. Active button: `border-[var(--color-cyan)] text-[var(--color-cyan)]`. Inactive: `border-[var(--color-fg-4)] text-[var(--color-fg-3)]`.
 
 6. **No animation if the scene is static.** Animated scenes follow rules 7–13 below (`useScenePlayback`); `useAnimationFrame` and `useSceneTick` are the lower-level loops that older scenes still use directly.
 
@@ -86,11 +86,13 @@ The reference for an animated scene is `components/physics/free-fall-scene.tsx` 
 
 7. **One clock: `useScenePlayback`.** Do not keep your own `startRef` / modulo loop. Give the hook a `duration` (scene seconds) and a `draw(t)` function. The scene plays once when it scrolls into view, holds its last frame, and waits for Replay; the reader can turn Loop on (the scene then holds for `LOOP_HOLD_SECONDS` before restarting). Nothing autoplays under `prefers-reduced-motion`, and no frames are requested while the scene is offscreen, the tab is hidden, or playback is paused or ended. `draw` is also called after every render, so resize, theme and parameter changes repaint a stopped scene.
 
+   **A parameter change never restarts the run.** If the motion is a function of time, `draw(t)` just uses the new value. If the change should bend the motion from where things are (drag, a force, a field), keep the state in a ref and pass `simulation: { step, reset, isDone }` instead of `duration`: the hook steps the state each frame, ends the run when `isDone()` is true and calls `reset()` on Replay. Step with the exact solution over `dt` where one exists (see `stepFall` in `lib/physics/free-fall-drag.ts`) so the result does not depend on frame rate. Such a scene cannot be scrubbed. When a change arrives after the run has ended, replay once from `<SceneSlider onCommit>` (on release), never from `onChange`.
+
 8. **One control bar: `<SceneControls playback={playback} />`.** Play/Pause, Replay, Loop and elapsed time. Pass `scrub` for a time scrubber, `note` for a short remark such as "½× speed". Do not hand-roll pause buttons.
 
 9. **Sliders are `<SceneSlider>`** inside a `<SceneControlGroup>`. The label is tied to the input; pass `ariaLabel` when the visible label is a bare symbol, and `display` for the formatted value with its unit.
 
-10. **Numbers go in `<SceneReadout>`, not on the canvas.** HTML readouts cannot collide with the drawing, wrap on narrow screens, are translated, and are read by assistive technology. Text that must stay in the canvas (axis ticks, object names) is drawn with `drawLabel`, which measures the text and keeps it inside the canvas; give it a `plate` when a curve can pass under it, and draw labels after the curves.
+10. **Numbers go in `<SceneReadout>`, not on the canvas.** HTML readouts cannot collide with the drawing, wrap on narrow screens, are translated, and are read by assistive technology. Text that must stay in the canvas (axis ticks, object names) is drawn with `drawLabel`, which measures the text and keeps it inside the canvas; give it a `plate` when a curve can pass under it, and draw labels after the curves. Axis scales use `niceTicks` + `formatTick` (round values, same rule everywhere), with the unit in the axis or graph label.
 
 11. **Per-frame drawing uses `syncCanvas`**, not `applyDpr` (which reallocates the canvas on every call).
 
@@ -102,6 +104,7 @@ Conversion checklist for an existing scene:
 
 - [ ] `useSceneTokens` + `useSceneSize` + `syncCanvas`/`applyDpr`; no hex literals, no private `ResizeObserver`
 - [ ] `useScenePlayback` + `<SceneControls>` if it animates; no self-restarting loop
+- [ ] no restart on parameter change (time-function `draw`, or `simulation` for stateful motion)
 - [ ] sliders → `<SceneSlider>`; numeric readouts → `<SceneReadout>`; remaining canvas text → `drawLabel`
 - [ ] strings in `messages/en/scenes.json` and `messages/he/scenes.json`
 - [ ] checked at 360 px and 1280 px, dark and light, inline and in full view, at every slider extreme

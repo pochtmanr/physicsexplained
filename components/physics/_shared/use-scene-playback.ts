@@ -19,13 +19,30 @@ import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
  */
 export type PlaybackStatus = "idle" | "playing" | "paused" | "ended";
 
-export interface UseScenePlaybackOptions {
+/**
+ * Motion that cannot be written as a function of time alone, because the
+ * reader can change a parameter while it runs. The scene keeps its own state
+ * (positions, velocities) and advances it one frame at a time, so a new
+ * parameter value bends the motion from where things are instead of starting
+ * a different run.
+ */
+export interface SceneSimulation {
+  /**
+   * Advance the state by `dt` scene seconds. `elapsed` is the scene time
+   * before the step.
+   */
+  step: (dt: number, elapsed: number) => void;
+  /** Put the state back to the start of the run. */
+  reset: () => void;
+  /** True once the run is over (for example, everything has landed). */
+  isDone: () => boolean;
+}
+
+interface PlaybackBaseOptions {
   /** Element whose visibility gates autoplay and frame requests. */
   elementRef: RefObject<HTMLElement | null>;
   /** Draws the frame for scene time `t` (seconds, already clamped to duration). */
   draw: (t: number) => void;
-  /** Length of one run in scene seconds. Omit for an open-ended scene. */
-  duration?: number;
   /** Scene seconds per real second (0.5 = half-speed slow motion). Default 1. */
   rate?: number;
   /** Start playing the first time the scene scrolls into view. Default true. */
@@ -33,6 +50,26 @@ export interface UseScenePlaybackOptions {
   /** Initial loop setting. Default false: play once, then hold. */
   loop?: boolean;
 }
+
+/** A run that is a function of time: `draw(t)` for `t` from 0 to `duration`. */
+interface TimedPlaybackOptions extends PlaybackBaseOptions {
+  /** Length of one run in scene seconds. Omit for an open-ended scene. */
+  duration?: number;
+  simulation?: undefined;
+}
+
+/**
+ * A run stepped from its own state, for a scene whose parameters can change
+ * mid-run. It ends when `simulation.isDone()` says so, so it takes no
+ * `duration`, and it cannot be scrubbed: its past depends on what the reader
+ * did.
+ */
+interface SimulatedPlaybackOptions extends PlaybackBaseOptions {
+  simulation: SceneSimulation;
+  duration?: undefined;
+}
+
+export type UseScenePlaybackOptions = TimedPlaybackOptions | SimulatedPlaybackOptions;
 
 export interface ScenePlayback {
   status: PlaybackStatus;
@@ -48,12 +85,10 @@ export interface ScenePlayback {
   /** Jump back to zero and play. */
   replay: () => void;
   /**
-   * Start the run again because a parameter changed (not because the reader
-   * pressed a button): plays from zero, or just rewinds to zero when the
-   * reader prefers reduced motion.
+   * Jump to scene time `t` without changing play/pause. A `simulation` scene
+   * can only go back to its start: `seek(0)` rewinds it, any other time is
+   * ignored.
    */
-  restart: () => void;
-  /** Jump to scene time `t` without changing play/pause. */
   seek: (t: number) => void;
   /** Exact current scene time (not throttled). */
   getTime: () => number;
@@ -83,11 +118,16 @@ function prefersReducedMotion(): boolean {
  * `draw` is called on every animation frame while playing and once after
  * every React render, so resize, theme and parameter changes repaint a paused
  * scene without any extra wiring.
+ *
+ * A parameter change never restarts the run. If the motion is a function of
+ * time, `draw(t)` simply uses the new value; if the change should bend the
+ * motion from where things are (drag, a force, a field), pass `simulation`.
  */
 export function useScenePlayback({
   elementRef,
   draw,
   duration,
+  simulation,
   rate = 1,
   autoplay = true,
   loop: initialLoop = false,
@@ -103,12 +143,26 @@ export function useScenePlayback({
   const autoplayedRef = useRef(false);
 
   // Latest values for the frame callback, which must not go stale.
-  const latest = useRef({ draw, duration, rate, loop });
-  latest.current = { draw, duration, rate, loop };
+  const latest = useRef({ draw, duration, simulation, rate, loop });
+  latest.current = { draw, duration, simulation, rate, loop };
 
   const clamp = useCallback((t: number) => {
     const d = latest.current.duration;
     return d === undefined ? Math.max(0, t) : Math.min(Math.max(0, t), d);
+  }, []);
+
+  /** Whether the run is over: by the simulation's own test, else by the clock. */
+  const isAtEnd = useCallback(() => {
+    const { duration: d, simulation: sim } = latest.current;
+    if (sim) return sim.isDone();
+    return d !== undefined && timeRef.current >= d;
+  }, []);
+
+  /** Back to the start of the run, state included. */
+  const rewind = useCallback(() => {
+    timeRef.current = 0;
+    holdRef.current = 0;
+    latest.current.simulation?.reset();
   }, []);
 
   const paint = useCallback(() => {
@@ -117,29 +171,40 @@ export function useScenePlayback({
 
   const jumpTo = useCallback(
     (t: number) => {
-      timeRef.current = Math.max(0, t);
+      if (latest.current.simulation) rewind();
+      else timeRef.current = Math.max(0, t);
       holdRef.current = 0;
       sinceDisplayRef.current = 0;
       setTime(clamp(timeRef.current));
       paint();
     },
-    [clamp, paint],
+    [clamp, paint, rewind],
   );
 
   useAnimationFrame({
     elementRef,
     paused: status !== "playing",
     onFrame: (_elapsed, dt) => {
-      const { duration: d, rate: r, loop: looping } = latest.current;
-      const atEnd = d !== undefined && timeRef.current >= d;
+      try {
+        advanceFrame(dt);
+      } catch (error) {
+        // A scene callback failed. Stop asking for frames, so the error is
+        // reported once and the controls show the scene as stopped, not
+        // "playing" with nothing moving.
+        setStatus("paused");
+        console.error("[scene] playback stopped: a step or draw callback threw", error);
+      }
+    },
+  });
 
-      if (atEnd) {
+  function advanceFrame(dt: number) {
+    {
+      const { simulation: sim, rate: r, loop: looping } = latest.current;
+
+      if (isAtEnd()) {
         if (looping) {
           holdRef.current += dt;
-          if (holdRef.current >= LOOP_HOLD_SECONDS) {
-            holdRef.current = 0;
-            timeRef.current = 0;
-          }
+          if (holdRef.current >= LOOP_HOLD_SECONDS) rewind();
         } else {
           setStatus("ended");
         }
@@ -148,16 +213,18 @@ export function useScenePlayback({
         return;
       }
 
-      timeRef.current += dt * r;
+      const advance = dt * r;
+      sim?.step(advance, timeRef.current);
+      timeRef.current += advance;
       sinceDisplayRef.current += dt;
-      const reachedEnd = d !== undefined && timeRef.current >= d;
+      const reachedEnd = isAtEnd();
       if (sinceDisplayRef.current >= DISPLAY_INTERVAL_SECONDS || reachedEnd) {
         sinceDisplayRef.current = 0;
         setTime(clamp(timeRef.current));
       }
       paint();
-    },
-  });
+    }
+  }
 
   // Repaint after every render: covers resize, theme, parameters, and the
   // paused / ended states where no animation frame is running.
@@ -196,10 +263,9 @@ export function useScenePlayback({
 
   const play = useCallback(() => {
     autoplayedRef.current = true;
-    const d = latest.current.duration;
-    if (d !== undefined && timeRef.current >= d) jumpTo(0);
+    if (isAtEnd()) jumpTo(0);
     setStatus("playing");
-  }, [jumpTo]);
+  }, [isAtEnd, jumpTo]);
 
   const pause = useCallback(() => {
     autoplayedRef.current = true;
@@ -212,14 +278,10 @@ export function useScenePlayback({
     setStatus("playing");
   }, [jumpTo]);
 
-  const restart = useCallback(() => {
-    autoplayedRef.current = true;
-    jumpTo(0);
-    setStatus(prefersReducedMotion() ? "paused" : "playing");
-  }, [jumpTo]);
-
   const seek = useCallback(
     (t: number) => {
+      // A simulation has no state for an arbitrary time; only its start.
+      if (latest.current.simulation && t > 0) return;
       autoplayedRef.current = true;
       jumpTo(t);
     },
@@ -236,13 +298,12 @@ export function useScenePlayback({
   // (or left at) its end has ended.
   useEffect(() => {
     setStatus((s) => {
-      if (duration === undefined) return s === "ended" ? "paused" : s;
-      const atEnd = timeRef.current >= duration;
+      const atEnd = isAtEnd();
       if (s === "ended" && !atEnd) return "paused";
       if (s === "paused" && atEnd) return "ended";
       return s;
     });
-  }, [duration, time]);
+  }, [duration, time, isAtEnd]);
 
   const toggle = useCallback(() => {
     if (status === "playing") pause();
@@ -262,10 +323,9 @@ export function useScenePlayback({
       pause,
       toggle,
       replay,
-      restart,
       seek,
       getTime,
     }),
-    [status, time, duration, loop, play, pause, toggle, replay, restart, seek, getTime],
+    [status, time, duration, loop, play, pause, toggle, replay, seek, getTime],
   );
 }

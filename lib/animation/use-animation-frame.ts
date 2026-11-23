@@ -78,9 +78,15 @@ export function useAnimationFrame({
       lastRef.current = now;
       const dt = Math.min(rawDt, MAX_DT_SECONDS);
       elapsedRef.current += dt;
-      onFrameRef.current(elapsedRef.current, dt);
-      // onFrame may have paused us (e.g. playback reached its end).
-      rafRef.current = requestAnimationFrame(tick);
+      try {
+        onFrameRef.current(elapsedRef.current, dt);
+      } finally {
+        // Always keep the loop's bookkeeping true, even if the callback
+        // throws: otherwise `rafRef` holds a spent id and `wake` can never
+        // start the loop again. onFrame may also have paused us (e.g.
+        // playback reached its end); the next tick sees that and stops.
+        rafRef.current = requestAnimationFrame(tick);
+      }
     };
 
     const wake = () => {

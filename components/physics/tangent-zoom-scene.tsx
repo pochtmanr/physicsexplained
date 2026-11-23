@@ -8,6 +8,8 @@ import {
   SceneReadout,
   SceneSlider,
   drawLabel,
+  formatTick,
+  niceTicks,
   syncCanvas,
   useSceneSize,
   useSceneTokens,
@@ -49,10 +51,10 @@ export function TangentZoomScene() {
     if (!ctx) return;
     const bounds = { width, height };
 
-    const padL = 30;
+    const padL = 50; // room for the x-axis numbers and the "t (s)" axis name
     const padR = 16;
     const padT = 16;
-    const padB = 26;
+    const padB = 30; // room for the t-axis numbers
     const plotW = width - padL - padR;
     const plotH = height - padT - padB;
     const xMax = x(T_MAX) + 0.3;
@@ -60,6 +62,24 @@ export function TangentZoomScene() {
       px: padL + ((tt - T_MIN) / (T_MAX - T_MIN)) * plotW,
       py: padT + plotH - (xx / xMax) * plotH,
     });
+
+    // Grid and scale: whole seconds across, round metres up.
+    const { ticks: xTicks, step: xStep } = niceTicks(0, xMax, 4);
+    ctx.strokeStyle = tokens.grid;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = T_MIN + 1; i <= T_MAX; i++) {
+      const { px } = toPx(i, 0);
+      ctx.moveTo(px, padT);
+      ctx.lineTo(px, padT + plotH);
+    }
+    for (const tick of xTicks) {
+      if (tick === 0) continue;
+      const { py } = toPx(0, tick);
+      ctx.moveTo(padL, py);
+      ctx.lineTo(padL + plotW, py);
+    }
+    ctx.stroke();
 
     // Axes
     ctx.strokeStyle = tokens.gridHeavy;
@@ -123,17 +143,39 @@ export function TangentZoomScene() {
     }
     ctx.restore();
 
-    // Axis names
-    drawLabel(ctx, "t", padL + plotW, padT + plotH + 14, {
+    // Axis numbers
+    for (let i = T_MIN; i <= T_MAX; i++) {
+      drawLabel(ctx, String(i), toPx(i, 0).px, padT + plotH + 14, {
+        bounds,
+        color: tokens.textLabel,
+        align: "center",
+        font: tokens.fontHudSmall,
+      });
+    }
+    for (const tick of xTicks) {
+      const { py } = toPx(0, tick);
+      if (tick === 0 || py < padT + 18) continue;
+      drawLabel(ctx, formatTick(tick, xStep), padL - 6, py, {
+        bounds,
+        color: tokens.textLabel,
+        align: "right",
+        font: tokens.fontHudSmall,
+      });
+    }
+
+    // Axis names, with units: in the left gutter, as in the other graphs.
+    drawLabel(ctx, "t (s)", padL - 12, padT + plotH + 14, {
       bounds,
-      color: tokens.textMute,
+      color: tokens.textLabel,
       align: "right",
+      font: tokens.fontHudSmall,
     });
-    drawLabel(ctx, "x", padL - 8, padT, {
+    drawLabel(ctx, "x (m)", padL - 6, padT, {
       bounds,
-      color: tokens.textMute,
+      color: tokens.textLabel,
       align: "right",
       baseline: "top",
+      font: tokens.fontHudSmall,
     });
   }, [tA, tB, secantSlope, width, height, tokens]);
 
@@ -149,12 +191,14 @@ export function TangentZoomScene() {
         />
         <SceneReadout
           items={[
+            // Three decimals: the point of the figure is watching the secant
+            // close in on the tangent, and the last steps are in the thousandths.
             {
               label: t("secant"),
-              value: secantSlope.toFixed(3),
+              value: `${secantSlope.toFixed(3)} m/s`,
               color: "var(--color-cyan)",
             },
-            { label: t("tangent"), value: tangentSlope.toFixed(3) },
+            { label: t("tangent"), value: `${tangentSlope.toFixed(3)} m/s` },
           ]}
         />
         <SceneControlGroup>
@@ -166,7 +210,7 @@ export function TangentZoomScene() {
             max={2.4}
             step={0.01}
             onChange={setT0}
-            display={t0.toFixed(2)}
+            display={`${t0.toFixed(2)} s`}
           />
           <SceneSlider
             label="Δt"
@@ -176,7 +220,7 @@ export function TangentZoomScene() {
             max={1.5}
             step={0.01}
             onChange={setDt}
-            display={dt.toFixed(2)}
+            display={`${dt.toFixed(2)} s`}
           />
         </SceneControlGroup>
       </div>

@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getServiceClient } from "@/lib/supabase-server";
 
 export interface EquationStrings {
@@ -8,7 +9,10 @@ export interface EquationStrings {
   commonMistakes: string;
 }
 
-export async function getEquationStringsForLocale(slug: string, locale: string): Promise<EquationStrings | null> {
+/** Cached per request/build pass: guides on one page often cite the same equation. */
+export const getEquationStringsForLocale = cache(loadEquationStrings);
+
+async function loadEquationStrings(slug: string, locale: string): Promise<EquationStrings | null> {
   const db = getServiceClient();
   const { data } = await db.from("equation_strings")
     .select("name, what_it_solves, when_to_use, when_not_to, common_mistakes")

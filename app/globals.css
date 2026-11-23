@@ -15,6 +15,11 @@
   --duration-base: 320ms;
   --duration-slow: 600ms;
 
+  /* Easing. `standard` for state changes on a control, `emphasized` for
+     things entering the page (fast start, long settle). */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+
   /* Control radius — buttons/keycaps. Slight rounding, still crisp. */
   --radius-control: 6px;
 }
@@ -47,6 +52,14 @@
   --color-purple: #A78BFA; /* tertiary accent */
   --color-orange: #FB923C; /* accelerated / non-inertial */
   --color-green:  #86EFAC; /* conserved / correct (alias of mint at lower saturation) */
+
+  /* Problem difficulty (DifficultyChip). Chosen to pass AA as 10px text on
+     the chip's own tinted background, and to stay distinct from each other. */
+  --difficulty-easy:      var(--color-green);
+  --difficulty-medium:    var(--color-amber);
+  --difficulty-hard:      var(--color-orange);
+  --difficulty-challenge: var(--color-red);
+  --difficulty-exam:      var(--color-purple);
 
   --color-grid: rgba(111, 184, 198, 0.08);
   --color-glow: rgba(111, 184, 198, 0.35); /* trial — matches cyan-dim */
@@ -104,6 +117,13 @@
   --color-purple: #6B3FA0;
   --color-orange: #B0531A;
   --color-green:  #15803D;
+
+  /* On white, the shared amber and orange both read as brown and fall just
+     short of AA on the chip tint: a yellower amber, a redder orange and a
+     deeper green keep the five levels apart. */
+  --difficulty-easy:   #116B33;
+  --difficulty-medium: #7A5E00;
+  --difficulty-hard:   #B4470F;
 
   --color-grid: rgba(90, 134, 147, 0.10);
   --color-glow: rgba(11, 114, 133, 0.28);
@@ -305,5 +325,249 @@ table tbody tr:last-child td {
 @media (prefers-reduced-motion: reduce) {
   .btn-tracer::before {
     transition: none;
+  }
+}
+
+/* ── Scene range slider ────────────────────────────────────────────────
+   One look for every scene slider and scrubber (see SceneRange). Neutral at
+   rest so a stack of sliders does not shout; the accent appears only while
+   the reader is pointing at, focusing or dragging one.
+
+   The two colours are registered properties so they can be transitioned and
+   inherited by the track and thumb pseudo-elements. `--range-frac` (0–1) is
+   set inline by the component. */
+@property --range-fill {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+@property --range-thumb {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: transparent;
+}
+
+.scene-range {
+  --range-frac: 0;
+  --range-thumb-size: 14px;
+  --range-track-size: 4px;
+  --range-fill: var(--color-fg-3);
+  --range-thumb: var(--color-fg-2);
+  --range-halo: 0px;
+  /* Filled length, measured to the centre of the thumb. */
+  --range-stop: calc(
+    var(--range-thumb-size) / 2 + (100% - var(--range-thumb-size)) * var(--range-frac)
+  );
+
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  height: 1.5rem;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  transition:
+    --range-fill var(--duration-fast) var(--ease-standard),
+    --range-thumb var(--duration-fast) var(--ease-standard);
+}
+
+.scene-range::-webkit-slider-runnable-track {
+  height: var(--range-track-size);
+  border-radius: calc(var(--range-track-size) / 2);
+  /* SceneRange is always left-to-right, so the fill always grows rightwards. */
+  background: linear-gradient(
+    to right,
+    var(--range-fill) var(--range-stop),
+    var(--color-fg-4) var(--range-stop)
+  );
+}
+
+.scene-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--range-thumb-size);
+  height: var(--range-thumb-size);
+  margin-top: calc((var(--range-track-size) - var(--range-thumb-size)) / 2);
+  border: 0;
+  border-radius: 50%;
+  background: var(--range-thumb);
+  box-shadow: 0 0 0 var(--range-halo) color-mix(in srgb, var(--color-cyan) 20%, transparent);
+  transition: box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.scene-range::-moz-range-track {
+  height: var(--range-track-size);
+  border-radius: calc(var(--range-track-size) / 2);
+  background: var(--color-fg-4);
+}
+
+.scene-range::-moz-range-progress {
+  height: var(--range-track-size);
+  border-radius: calc(var(--range-track-size) / 2);
+  background: var(--range-fill);
+}
+
+.scene-range::-moz-range-thumb {
+  width: var(--range-thumb-size);
+  height: var(--range-thumb-size);
+  border: 0;
+  border-radius: 50%;
+  background: var(--range-thumb);
+  box-shadow: 0 0 0 var(--range-halo) color-mix(in srgb, var(--color-cyan) 20%, transparent);
+  transition: box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+/* Pointing at it: only the thumb picks up the accent. */
+@media (hover: hover) {
+  .scene-range:hover {
+    --range-thumb: var(--color-cyan);
+  }
+}
+
+/* Fingers need a bigger target than a mouse pointer. */
+@media (pointer: coarse) {
+  .scene-range {
+    --range-thumb-size: 20px;
+    height: 2.75rem;
+  }
+}
+
+/* Keyboard focus and dragging: full accent, with a halo around the thumb. */
+.scene-range:focus-visible,
+.scene-range:active {
+  --range-fill: var(--color-cyan);
+  --range-thumb: var(--color-cyan);
+}
+.scene-range:focus-visible {
+  --range-halo: 4px;
+}
+.scene-range:active {
+  --range-halo: 5px;
+}
+
+.scene-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ── Reveal ────────────────────────────────────────────────────────────
+   One-time entrance for a block: fade and a short rise (see Reveal). The
+   animation runs from the stylesheet alone, so content appears even if
+   scripts never load. Blocks that start below the fold are held on their
+   first frame by the component until they scroll into view.
+
+   `backwards` only: nothing is left on the element afterwards, so a revealed
+   block gets no lingering transform (which would trap fixed-position
+   children and create a stacking context). */
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  animation: reveal-rise var(--duration-base) var(--ease-emphasized) backwards;
+  animation-delay: calc(var(--reveal-index, 0) * 60ms);
+}
+/* Held by the component until it scrolls into view. Dropping the attribute
+   switches the animation back on, so it always plays from its first frame,
+   however long the page took to become interactive. */
+.reveal[data-reveal="waiting"] {
+  animation: none;
+  opacity: 0;
+}
+/* Keyboard focus can land in a block before it has been scrolled to. */
+.reveal[data-reveal="waiting"]:focus-within {
+  opacity: 1;
+}
+/* Paper has no scrolling: nothing may be left waiting, transparent. */
+@media print {
+  .reveal,
+  .scene-enter,
+  .popup-panel-enter {
+    animation: none;
+  }
+  .reveal[data-reveal="waiting"] {
+    opacity: 1;
+  }
+}
+
+/* A scene replacing its loading placeholder: fade only, no movement, so the
+   canvas does not shift under the reader's pointer. */
+@keyframes scene-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.scene-enter {
+  animation: scene-enter var(--duration-base) var(--ease-standard) backwards;
+}
+
+/* ── Full view: figure and guide ───────────────────────────────────────
+   Stacked by default (phones, tablets held upright): the guide is a sheet
+   under the figure, capped so the figure keeps the larger share. Side by
+   side when the window is wide, and on a phone held sideways, where height
+   is the scarce dimension. The query must match GUIDE_BESIDE_QUERY in
+   figure-popup.tsx. */
+.figure-popup-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.figure-popup-guide {
+  position: relative;
+  flex: none;
+  /* The figure keeps at least ~380px under the header; the sheet takes what
+     is left, between a useful minimum and just under half the screen. */
+  max-height: clamp(168px, calc(100dvh - 430px), 46dvh);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  border-top: 1px solid var(--color-fg-4);
+  /* A soft edge over the figure says "this is a sheet, and it scrolls". */
+  box-shadow: 0 -12px 16px -12px color-mix(in srgb, var(--color-bg-0) 80%, transparent);
+  animation: scene-enter var(--duration-base) var(--ease-standard) backwards;
+}
+@media (min-width: 1024px), (min-width: 900px) and (max-height: 760px), (orientation: landscape) and (min-width: 560px) and (max-height: 560px) {
+  .figure-popup-body {
+    flex-direction: row;
+  }
+  .figure-popup-guide {
+    width: clamp(320px, 31vw, 440px);
+    max-height: none;
+    border-top: 0;
+    border-inline-start: 1px solid var(--color-fg-4);
+    box-shadow: none;
+  }
+}
+/* A phone held sideways: little width to share, so a narrower guide. */
+@media (orientation: landscape) and (max-height: 560px) and (max-width: 899px) {
+  .figure-popup-guide {
+    width: clamp(240px, 36vw, 440px);
+  }
+}
+
+/* The full-view panel grows out of the page instead of blinking in. */
+@keyframes popup-panel-in {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.popup-panel-enter {
+  animation: popup-panel-in var(--duration-base) var(--ease-emphasized) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-range,
+  .scene-range::-webkit-slider-thumb,
+  .scene-range::-moz-range-thumb {
+    transition: none;
+  }
+  .reveal,
+  .scene-enter,
+  .popup-panel-enter,
+  .figure-popup-guide {
+    animation: none;
+  }
+  .reveal[data-reveal="waiting"] {
+    opacity: 1;
   }
 }

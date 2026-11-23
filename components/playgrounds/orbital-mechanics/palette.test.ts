@@ -7,6 +7,7 @@ const COLORS: ThemeColors = {
   fg1: "#000",
   fg2: "#000",
   fg3: "#000",
+  fgLabel: "#7D8DA6",
   bg0: "#000",
   bg1: "#000",
   cyan: "#cyan",

@@ -9,7 +9,9 @@ import {
   SceneReadout,
   SceneSlider,
   drawLabel,
+  formatTick,
   hexToRgba,
+  niceTicks,
   syncCanvas,
   useScenePlayback,
   useSceneSize,
@@ -50,14 +52,16 @@ export function KinematicsGraphScene() {
       if (!ctx) return;
       const bounds = { width, height };
 
-      // Vertical layout, top to bottom: track strip, three graphs, tick row.
+      // Vertical layout, top to bottom: track strip, then three graphs, each
+      // under its own title row, then the time tick row.
       const graphX = 52; // left gutter for the y-axis numbers
       const graphW = width - graphX - 18;
-      const trackY = 26;
-      const graphsTop = 62;
-      const gap = 10;
+      const trackY = 22;
+      const graphsTop = 56;
+      const titleRow = 18; // titles sit above the plot, never over the data
+      const gap = 6;
       const tickRow = 22;
-      const graphH = (height - graphsTop - gap * 2 - tickRow) / 3;
+      const graphH = (height - graphsTop - (titleRow + gap) * 3 + gap - tickRow) / 3;
 
       // ---- 1D track ----
       ctx.strokeStyle = tokens.gridHeavy;
@@ -81,24 +85,37 @@ export function KinematicsGraphScene() {
       const xHi = xMax + margin;
       const toTrackPx = (xx: number) => graphX + ((xx - xLo) / (xHi - xLo)) * graphW;
 
-      // x = 0 marker
-      ctx.strokeStyle = tokens.axes;
-      ctx.setLineDash([2, 3]);
-      ctx.beginPath();
-      ctx.moveTo(toTrackPx(0), trackY - 10);
-      ctx.lineTo(toTrackPx(0), trackY + 10);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      drawLabel(ctx, "0", toTrackPx(0), trackY + 19, {
+      // Track scale: round positions in metres, with the origin picked out.
+      const { ticks: trackTicks, step: trackStep } = niceTicks(xLo, xHi, width > 480 ? 8 : 4);
+      for (const tick of trackTicks) {
+        const px = toTrackPx(tick);
+        const reach = tick === 0 ? 10 : 4;
+        ctx.strokeStyle = tokens.axes;
+        if (tick === 0) ctx.setLineDash([2, 3]);
+        ctx.beginPath();
+        ctx.moveTo(px, trackY - reach);
+        ctx.lineTo(px, trackY + reach);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        drawLabel(ctx, formatTick(tick, trackStep), px, trackY + 19, {
+          bounds,
+          color: tokens.textLabel,
+          align: "center",
+          font: tokens.fontHudSmall,
+        });
+      }
+      drawLabel(ctx, "x (m)", graphX - 12, trackY, {
         bounds,
-        color: tokens.textMute,
-        align: "center",
+        color: tokens.textLabel,
+        align: "right",
         font: tokens.fontHudSmall,
       });
 
-      // Ball
-      ctx.shadowColor = hexToRgba(tokens.cyan, 0.55);
-      ctx.shadowBlur = 12;
+      // Ball: glows only while it is moving.
+      if (playback.status === "playing") {
+        ctx.shadowColor = hexToRgba(tokens.cyan, 0.55);
+        ctx.shadowBlur = 12;
+      }
       ctx.fillStyle = tokens.cyan;
       ctx.beginPath();
       ctx.arc(toTrackPx(xAt(tCursor)), trackY, 8, 0, Math.PI * 2);
@@ -107,11 +124,12 @@ export function KinematicsGraphScene() {
 
       // ---- Three stacked graphs ----
       const drawGraph = (
-        yTop: number,
+        top: number,
         label: string,
         f: (tt: number) => number,
         accent: string,
       ) => {
+        const yTop = top + titleRow;
         const ys: number[] = [];
         for (let i = 0; i <= 40; i++) ys.push(f((i / 40) * T_MAX));
         const yLo0 = Math.min(0, ...ys);
@@ -123,6 +141,24 @@ export function KinematicsGraphScene() {
           px: graphX + (tt / T_MAX) * graphW,
           py: yTop + graphH - ((yy - yLo) / (yHi - yLo)) * graphH,
         });
+
+        // Grid: one line per whole second and per value tick.
+        const { ticks: yTicks, step: yStep } = niceTicks(yLo, yHi, graphH > 110 ? 4 : 3);
+        ctx.strokeStyle = tokens.grid;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 1; i <= T_MAX; i++) {
+          const gx = graphX + (i / T_MAX) * graphW;
+          ctx.moveTo(gx, yTop);
+          ctx.lineTo(gx, yTop + graphH);
+        }
+        for (const tick of yTicks) {
+          if (tick === 0) continue; // the zero line is drawn below
+          const gy = toPx(0, tick).py;
+          ctx.moveTo(graphX, gy);
+          ctx.lineTo(graphX + graphW, gy);
+        }
+        ctx.stroke();
 
         // Axes
         ctx.strokeStyle = tokens.gridHeavy;
@@ -170,49 +206,40 @@ export function KinematicsGraphScene() {
         ctx.arc(pt.px, pt.py, 4, 0, Math.PI * 2);
         ctx.fill();
 
-        // Text goes on last, on a plate, so the curve cannot run through it.
-        drawLabel(ctx, label, graphX + 6, yTop + 4, {
+        drawLabel(ctx, label, graphX, top + titleRow / 2 - 1, {
           bounds,
           color: tokens.textDim,
-          baseline: "top",
-          plate: hexToRgba(tokens.bg1, 0.85),
         });
-        drawLabel(ctx, yHi.toFixed(1), graphX - 5, yTop, {
-          bounds,
-          color: tokens.textMute,
-          align: "right",
-          baseline: "top",
-          font: tokens.fontHudSmall,
-        });
-        drawLabel(ctx, yLo.toFixed(1), graphX - 5, yTop + graphH, {
-          bounds,
-          color: tokens.textMute,
-          align: "right",
-          baseline: "bottom",
-          font: tokens.fontHudSmall,
-        });
+        for (const tick of yTicks) {
+          drawLabel(ctx, formatTick(tick, yStep), graphX - 6, toPx(0, tick).py, {
+            bounds,
+            color: tokens.textLabel,
+            align: "right",
+            font: tokens.fontHudSmall,
+          });
+        }
       };
 
       const g1Top = graphsTop;
-      const g2Top = g1Top + graphH + gap;
-      const g3Top = g2Top + graphH + gap;
-      drawGraph(g1Top, "x(t)", xAt, tokens.cyan);
-      drawGraph(g2Top, "v(t) = v₀ + a·t", vAt, tokens.mint);
-      drawGraph(g3Top, "a(t) = const", () => a, tokens.purple);
+      const g2Top = g1Top + titleRow + graphH + gap;
+      const g3Top = g2Top + titleRow + graphH + gap;
+      drawGraph(g1Top, "x(t)  (m)", xAt, tokens.cyan);
+      drawGraph(g2Top, "v(t) = v₀ + a·t  (m/s)", vAt, tokens.mint);
+      drawGraph(g3Top, "a(t) = const  (m/s²)", () => a, tokens.purple);
 
       // Time axis: numbers under the last graph, unit in the left gutter.
-      const tickY = g3Top + graphH + tickRow / 2 + 2;
+      const tickY = g3Top + titleRow + graphH + tickRow / 2 + 2;
       for (let i = 0; i <= T_MAX; i++) {
         drawLabel(ctx, String(i), graphX + (i / T_MAX) * graphW, tickY, {
           bounds,
-          color: tokens.textMute,
+          color: tokens.textLabel,
           align: "center",
           font: tokens.fontHudSmall,
         });
       }
       drawLabel(ctx, "t (s)", graphX - 12, tickY, {
         bounds,
-        color: tokens.textMute,
+        color: tokens.textLabel,
         align: "right",
         font: tokens.fontHudSmall,
       });

@@ -23,26 +23,183 @@
     "featherLands": "feather lands",
     "featherSpeed": "feather speed",
     "noteVacuum": "No air: both fall at the same rate.",
-    "noteAir": "Drag slows the feather; the hammer barely notices."
+    "noteAir": "Drag slows the feather; the hammer barely notices.",
+    "guide": {
+      "items": {
+        "air": {
+          "label": "Air resistance",
+          "text": "Strength of the drag, from none (vacuum) to normal sea-level air. You can change it while the objects are falling."
+        },
+        "hammerLands": {
+          "label": "Hammer lands",
+          "text": "When the hammer reaches the floor, 2.2 m below. Until it lands this is a forecast from its current height and speed; afterwards it is the measured time."
+        },
+        "featherLands": {
+          "label": "Feather lands",
+          "text": "The same for the feather. In normal air it lands long after the hammer; in vacuum the two times are identical."
+        },
+        "featherSpeed": {
+          "label": "Feather speed",
+          "text": "The feather's speed right now; once it has landed, the speed it hit the floor with. In air it levels off at a terminal speed, where drag balances weight: about 1.5 m/s in normal air."
+        },
+        "slowMotion": {
+          "label": "½× speed",
+          "text": "The drop is played at half speed so you can follow it. The times shown are real seconds."
+        }
+      },
+      "formulas": {
+        "drag": "Weight mg pulls down; drag bv pushes back harder the faster the object moves.",
+        "terminal": "When the two balance, the speed stops changing."
+      },
+      "try": {
+        "1": "Press Vacuum and replay. Hammer and feather land together, after 0.67 s.",
+        "2": "Press Vacuum, replay, and pause mid-fall. Press Air and play again. The feather brakes towards its terminal speed; the hammer barely changes.",
+        "3": "Find the air setting at which the feather takes about twice as long as the hammer."
+      },
+      "limits": "Drag is taken as proportional to speed. On a real feather or hammer in air it grows faster than that, closer to speed squared, and a feather also flutters."
+    }
+  },
+  "guide": {
+    "title": "Guide",
+    "show": "Show guide",
+    "hide": "Hide guide",
+    "open": "Open figure with guide",
+    "article": "From the article",
+    "readouts": "What the numbers mean",
+    "controls": "What you can change",
+    "formulas": "The relation at work",
+    "try": "Try this",
+    "references": "Go deeper",
+    "terms": "Dictionary",
+    "physicists": "Physicists",
+    "equations": "Equations",
+    "problems": "Practice",
+    "limits": "What this model leaves out"
   },
   "inclinedPlane": {
     "aria": "A ball rolling down a ramp, with marks at equal time intervals",
     "angle": "Angle (θ)",
     "intervals": "distances 1 : 3 : 5 : 7 : 9",
     "acceleration": "a = g·sin θ",
-    "rollTime": "roll time"
+    "rollTime": "roll time",
+    "guide": {
+      "items": {
+        "angle": {
+          "label": "Angle θ",
+          "text": "The tilt of the ramp. The steeper the ramp, the larger the part of gravity that acts along it: the acceleration along the slope is g·sin θ."
+        },
+        "acceleration": {
+          "label": "Acceleration a",
+          "text": "How quickly the ball gains speed along the ramp. The figure uses the ideal value g·sin θ, that of a body sliding without friction; a real rolling ball gains speed at 5/7 of that. Either way it depends on the angle only, not on the ball's mass."
+        },
+        "rollTime": {
+          "label": "Roll time",
+          "text": "Time to reach the bottom of the ramp, whose length is fixed. Quadruple the acceleration and the time halves."
+        },
+        "marks": {
+          "label": "1 : 3 : 5 : 7 : 9",
+          "text": "Distance covered in each equal slice of time, counted in units of the first one. The pattern is the same at every angle."
+        }
+      },
+      "formulas": {
+        "distance": "Distance from rest grows as the square of the time.",
+        "slope": "Only the part of gravity along the slope speeds the ball up."
+      },
+      "try": {
+        "1": "Set the angle to 5°, then to 45°. The ball gets quicker, but the marks keep the 1 : 3 : 5 : 7 : 9 pattern.",
+        "2": "Keep a running total of the numbers as they appear: 1, 4, 9, 16, 25. Total distance is the square of the number of intervals.",
+        "3": "Compare the roll time at 10° and at 44°. The acceleration is four times larger, and the time is half."
+      },
+      "limits": "The ball is treated as a body sliding without friction. Rolling inertia, friction and air drag are left out."
+    }
   },
   "kinematicsGraph": {
     "aria": "A ball moving along a track, with graphs of position, velocity and acceleration against time",
     "position": "initial position x₀",
     "velocity": "initial velocity v₀",
-    "acceleration": "acceleration a"
+    "acceleration": "acceleration a",
+    "guide": {
+      "items": {
+        "position": {
+          "label": "Initial position x₀",
+          "text": "Where the ball is at t = 0. Changing it slides the whole x(t) curve up or down."
+        },
+        "velocity": {
+          "label": "Initial velocity v₀",
+          "text": "How fast the ball moves at t = 0, and which way. It is the slope of x(t) at the start."
+        },
+        "acceleration": {
+          "label": "Acceleration a",
+          "text": "How quickly the velocity changes. It bends x(t) into a parabola and tilts v(t)."
+        },
+        "x": {
+          "label": "x",
+          "text": "Position now: the height of the top curve at the cursor."
+        },
+        "v": {
+          "label": "v",
+          "text": "Velocity now: the slope of x(t) at the cursor, and the height of the middle graph."
+        },
+        "a": {
+          "label": "a",
+          "text": "Acceleration now: the slope of v(t). It is constant here, so the bottom graph is a flat line."
+        },
+        "scrub": {
+          "label": "Time bar",
+          "text": "Drag it to stop on any instant and read all three graphs there."
+        }
+      },
+      "formulas": {
+        "position": "Position under constant acceleration.",
+        "velocity": "Velocity is the slope of x(t); acceleration is the slope of v(t)."
+      },
+      "try": {
+        "1": "Set a = 0. The x(t) curve becomes a straight line and v(t) goes flat.",
+        "2": "Set v₀ = 2 and a = −1. The ball stops for an instant at t = 2 s, where v(t) crosses zero and x(t) peaks, then comes back.",
+        "3": "Change x₀ only. The top curve slides up or down; v(t) and a(t) do not move at all."
+      },
+      "limits": "The acceleration never changes. If it did, a(t) would not be flat and x(t) would not be a parabola."
+    }
   },
   "tangentZoom": {
     "aria": "A position-time curve with a secant line through two points",
     "time": "time t",
     "interval": "interval Δt",
     "secant": "secant slope Δx/Δt",
-    "tangent": "tangent slope at t"
+    "tangent": "tangent slope at t",
+    "guide": {
+      "items": {
+        "time": {
+          "label": "Time t",
+          "text": "The instant you are asking about: the first point on the curve."
+        },
+        "interval": {
+          "label": "Interval Δt",
+          "text": "How far ahead the second point sits. A smaller Δt means a shorter stretch of motion to average over."
+        },
+        "secant": {
+          "label": "Secant slope Δx/Δt",
+          "text": "Average velocity between the two points: rise Δx over run Δt, the slope of the dashed line."
+        },
+        "tangent": {
+          "label": "Tangent slope at t",
+          "text": "Instantaneous velocity at t: the value the secant slope closes in on as Δt shrinks. For this curve v = t + 0.3, with t in seconds and v in m/s."
+        },
+        "curve": {
+          "label": "The curve",
+          "text": "Position against time for a body speeding up at 1 m/s²: x(t) = ½t² + 0.3t."
+        }
+      },
+      "formulas": {
+        "average": "Average velocity over an interval: the slope of the secant.",
+        "instant": "Velocity at an instant: the limit of that slope, the derivative."
+      },
+      "try": {
+        "1": "Set t to 1.4 s or less and drag Δt down to 0.01 s. The secant slope closes in on the tangent slope; the gap between them is always half of Δt.",
+        "2": "Keep Δt small and sweep t. The slope rises steadily: the body is accelerating.",
+        "3": "Set t = 1 s and Δt = 1 s. The average over that second, 1.8 m/s, is exactly the velocity at its midpoint, t = 1.5 s. That holds whenever the acceleration is constant."
+      },
+      "limits": "One fixed curve, with constant acceleration. Real motion can follow any curve; the step from secant to tangent is the same."
+    }
   }
 }

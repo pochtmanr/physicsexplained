@@ -4,6 +4,7 @@ import { useId, type ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Pause, Play, Repeat, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SceneRange } from "./scene-range";
 import type { ScenePlayback } from "./use-scene-playback";
 
 export interface SceneControlsProps {
@@ -59,9 +60,8 @@ export function SceneControls({ playback, scrub = false, note, children }: Scene
       </Button>
       {children}
       {canScrub && (
-        <input
+        <SceneRange
           id={scrubId}
-          type="range"
           min={0}
           max={duration}
           step={duration / 200}
@@ -69,10 +69,10 @@ export function SceneControls({ playback, scrub = false, note, children }: Scene
           onChange={(e) => playback.seek(parseFloat(e.target.value))}
           aria-label={t("scrub")}
           aria-valuetext={`${time.toFixed(1)} s`}
-          className="h-6 min-w-24 flex-1 accent-[var(--color-cyan)]"
+          className="min-w-24 flex-1"
         />
       )}
-      <span className="ms-auto flex items-baseline gap-2 font-mono text-xs text-[var(--color-fg-3)]">
+      <span className="ms-auto flex items-baseline gap-2 font-mono text-xs text-[var(--color-fg-2)]">
         <span dir="ltr" className="tabular-nums">
           t = {time.toFixed(2)} s
         </span>

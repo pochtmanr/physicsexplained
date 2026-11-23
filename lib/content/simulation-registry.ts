@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { createElement, type ComponentType } from "react";
+import { createElement, type AnimationEvent, type ComponentType } from "react";
 import { SceneSkeleton } from "@/components/layout/scene-skeleton";
 
 // `next/dynamic` with `ssr: false` makes each scene ship as its own async chunk
@@ -15,10 +15,34 @@ import { SceneSkeleton } from "@/components/layout/scene-skeleton";
 
 const loading = () => createElement(SceneSkeleton);
 
+/**
+ * Fades a scene in as it replaces the skeleton (`.scene-enter`, globals.css).
+ * The class is dropped once the fade has played: `SceneCard` moves the scene
+ * in the DOM for full view, and a node that is re-inserted restarts its CSS
+ * animations, which would fade the scene again on every open and close.
+ */
+function forgetEnter(event: AnimationEvent<HTMLDivElement>) {
+  if (event.target === event.currentTarget) event.currentTarget.classList.remove("scene-enter");
+}
+
+function withEnter<T extends ComponentType<any>>(Scene: T): ComponentType<any> {
+  const Entering = (props: any) =>
+    createElement(
+      "div",
+      { className: "scene-enter", onAnimationEnd: forgetEnter },
+      createElement(Scene, props),
+    );
+  Entering.displayName = `Entering(${Scene.displayName ?? Scene.name ?? "Scene"})`;
+  return Entering;
+}
+
 function lazyScene<T extends ComponentType<any>>(
   loader: () => Promise<{ default: T }>,
 ): ComponentType<any> {
-  return dynamic(loader, { ssr: false, loading });
+  return dynamic(() => loader().then((m) => ({ default: withEnter(m.default) })), {
+    ssr: false,
+    loading,
+  });
 }
 
 export const SIMULATION_REGISTRY: Record<string, ComponentType<any>> = {

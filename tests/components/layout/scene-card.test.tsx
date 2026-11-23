@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { NextIntlClientProvider } from "next-intl";
 import { useState } from "react";
@@ -101,5 +101,106 @@ describe("SceneCard full view", () => {
     );
     expect(screen.queryByRole("button", { name: "Expand figure" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: /count 0/ })).toBeInTheDocument();
+  });
+});
+
+describe("SceneCard guide", () => {
+  function renderWithGuide() {
+    return render(
+      <NextIntlClientProvider locale="en" messages={{ scenes }}>
+        <SceneCard caption="FIG.01 — test" guide={<a href="/dictionary/derivative">derivative</a>}>
+          <Counter />
+        </SceneCard>
+      </NextIntlClientProvider>,
+      { container: document.body },
+    );
+  }
+
+  /** Pretend the window is wide (room for the guide beside the figure) or not. */
+  function stubLayout(beside: boolean) {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: beside, addEventListener() {}, removeEventListener() {} })),
+    );
+  }
+
+  // The test environment has no storage; give it one that lasts a test.
+  beforeEach(() => {
+    const store = new Map<string, string>();
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      value: {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => void store.set(k, v),
+      },
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    Reflect.deleteProperty(window, "localStorage");
+  });
+
+  it("still works when storage is unavailable", () => {
+    Reflect.deleteProperty(window, "localStorage");
+    stubLayout(true);
+    renderWithGuide();
+    fireEvent.click(screen.getByRole("button", { name: "Expand figure" }));
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByRole("link", { name: "derivative" })).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Guide" }));
+    expect(within(dialog).queryByRole("link", { name: "derivative" })).toBeNull();
+  });
+
+  it("opens with the guide showing when the reader asks for the guide", () => {
+    stubLayout(false);
+    renderWithGuide();
+    fireEvent.click(screen.getByRole("button", { name: "Open figure with guide" }));
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByRole("link", { name: "derivative" })).toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: "Guide" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
+    );
+    // Closing gives focus back to the button that opened it.
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(screen.getByRole("button", { name: "Open figure with guide" })).toHaveFocus();
+  });
+
+  it("starts with the guide closed where it would sit under the figure", () => {
+    stubLayout(false);
+    renderWithGuide();
+    fireEvent.click(screen.getByRole("button", { name: "Expand figure" }));
+    const dialog = screen.getByRole("dialog");
+    const toggle = within(dialog).getByRole("button", { name: "Guide" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    // Not in the document at all, so Tab cannot reach its links.
+    expect(within(dialog).queryByRole("link", { name: "derivative" })).toBeNull();
+    fireEvent.click(toggle);
+    expect(within(dialog).getByRole("link", { name: "derivative" })).toBeInTheDocument();
+  });
+
+  it("starts with the guide open beside the figure, and remembers a reader who closed it", () => {
+    stubLayout(true);
+    renderWithGuide();
+    fireEvent.click(screen.getByRole("button", { name: "Expand figure" }));
+    let dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByRole("link", { name: "derivative" })).toBeInTheDocument();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Guide" }));
+    expect(within(dialog).queryByRole("link", { name: "derivative" })).toBeNull();
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    fireEvent.click(screen.getByRole("button", { name: "Expand figure" }));
+    dialog = screen.getByRole("dialog");
+    expect(within(dialog).queryByRole("link", { name: "derivative" })).toBeNull();
+    // The scene is still the one instance throughout.
+    expect(mounts).toBe(1);
+  });
+
+  it("has no guide controls for a figure without a guide", () => {
+    renderCard();
+    expect(screen.queryByRole("button", { name: "Open figure with guide" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Expand figure" }));
+    expect(within(screen.getByRole("dialog")).queryByRole("button", { name: "Guide" })).toBeNull();
   });
 });

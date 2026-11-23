@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, type ReactNode } from "react";
+import { SceneRange } from "./scene-range";
 
 export interface SceneSliderProps {
   /** Visible label, e.g. "Angle (θ)" or "v₀". */
@@ -10,6 +11,13 @@ export interface SceneSliderProps {
   max: number;
   step?: number;
   onChange: (value: number) => void;
+  /**
+   * Called when the reader lets go of the slider (pointer or key released,
+   * touch taken over by scrolling, or focus moved away), after any
+   * `onChange` calls. It can fire without a change, and more than once. Use it for work that should happen once per
+   * adjustment rather than on every step of a drag.
+   */
+  onCommit?: () => void;
   /** Text shown after the track, e.g. "18°" or "2.0 m/s". Defaults to the raw value. */
   display?: string;
   /** Accessible name when `label` is a bare symbol such as "a". */
@@ -17,9 +25,10 @@ export interface SceneSliderProps {
 }
 
 /**
- * The one range slider for scene parameters: label tied to the input, theme
- * accent colour, fixed-width value so the track does not jitter as digits
- * change. Stack several in a `<SceneControlGroup>`.
+ * The one range slider for scene parameters: label tied to the input,
+ * fixed-width value so the track does not jitter as digits change. Neutral
+ * at rest; track, thumb and value take the accent while it is being
+ * adjusted. Stack several in a `<SceneControlGroup>`.
  */
 export function SceneSlider({
   label,
@@ -28,18 +37,20 @@ export function SceneSlider({
   max,
   step = 1,
   onChange,
+  onCommit,
   display,
   ariaLabel,
 }: SceneSliderProps) {
   const id = useId();
+  // Phone: label and value share a row, the track gets the full width below.
+  // From `sm` up: label, track, value in one row.
   return (
-    <div className="grid grid-cols-[minmax(3.5rem,auto)_1fr_minmax(4.5rem,auto)] items-center gap-3">
-      <label htmlFor={id} className="text-sm text-[var(--color-fg-3)]">
+    <div className="grid grid-cols-[1fr_auto] items-center gap-x-3 sm:grid-cols-[minmax(3.5rem,auto)_1fr_minmax(4.5rem,auto)]">
+      <label htmlFor={id} className="text-sm text-[var(--color-fg-2)]">
         {label}
       </label>
-      <input
+      <SceneRange
         id={id}
-        type="range"
         min={min}
         max={max}
         step={step}
@@ -47,12 +58,16 @@ export function SceneSlider({
         aria-label={ariaLabel}
         aria-valuetext={display}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="h-6 w-full min-w-0 accent-[var(--color-cyan)]"
+        onPointerUp={onCommit}
+        onPointerCancel={onCommit}
+        onKeyUp={onCommit}
+        onBlur={onCommit}
+        className="peer order-last col-span-2 w-full min-w-0 sm:order-none sm:col-span-1"
       />
       <output
         htmlFor={id}
         dir="ltr"
-        className="text-end font-mono text-sm tabular-nums text-[var(--color-fg-1)]"
+        className="text-end font-mono text-sm tabular-nums text-[var(--color-fg-1)] transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)] peer-focus-visible:text-[var(--color-cyan)] peer-active:text-[var(--color-cyan)] motion-reduce:transition-none"
       >
         {display ?? value}
       </output>

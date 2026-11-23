@@ -21,7 +21,7 @@ export function SceneReadout({ items }: { items: SceneReadoutItem[] }) {
     <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-1 px-2 font-mono text-xs">
       {items.map((item, i) => (
         <div key={i} className="flex items-baseline gap-1.5">
-          <dt className="text-[var(--color-fg-3)]">{item.label}</dt>
+          <dt className="text-[var(--color-fg-2)]">{item.label}</dt>
           <dd
             dir="ltr"
             className="tabular-nums text-[var(--color-fg-1)]"

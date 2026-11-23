@@ -139,5 +139,18 @@
     "categoryTopic": "נושאים",
     "categoryPhysicist": "פיזיקאים",
     "categoryDictionary": "מילון"
+  },
+  "problems": {
+    "eyebrow": "תרגילים",
+    "heading": "תרגול בנושא זה",
+    "crossTopic": "רב־נושאי",
+    "nextProblem": "התרגיל הבא",
+    "difficulty": {
+      "easy": "קל",
+      "medium": "בינוני",
+      "hard": "קשה",
+      "challenge": "אתגר",
+      "exam": "מבחן"
+    }
   }
 }

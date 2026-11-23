@@ -65,3 +65,72 @@ export function fallTime(h: number, tau: number): number {
   }
   return (lo + hi) / 2;
 }
+
+/** A falling object: distance fallen (m) and downward speed (m/s). */
+export interface FallState {
+  x: number;
+  v: number;
+}
+
+/**
+ * Advance a falling object by `dt` seconds with time constant `tau`.
+ *
+ * This is the exact solution over the step, not an approximation, so the
+ * result does not depend on the frame rate. It starts from any state, which
+ * is what lets the drag change mid-fall: the object carries on from where it
+ * is and relaxes towards the new terminal speed.
+ */
+export function stepFall(state: FallState, dt: number, tau: number): FallState {
+  if (dt <= 0) return state;
+  if (!Number.isFinite(tau)) {
+    return { x: state.x + state.v * dt + 0.5 * G * dt * dt, v: state.v + G * dt };
+  }
+  const vt = G * tau;
+  // 1 − e^(−dt/τ), computed without cancellation when dt ≪ τ.
+  const decay = -Math.expm1(-dt / tau);
+  return {
+    x: state.x + vt * dt - (vt - state.v) * tau * decay,
+    v: state.v + (vt - state.v) * decay,
+  };
+}
+
+/**
+ * Time (s) for an object in `state` to reach distance `floor`; 0 if already
+ * there. Expects a falling object (`v` ≥ 0) and `tau` > 0.
+ */
+export function timeToFloor(state: FallState, floor: number, tau: number): number {
+  const d = floor - state.x;
+  if (d <= 0) return 0;
+  if (!Number.isFinite(tau)) {
+    return (-state.v + Math.sqrt(state.v * state.v + 2 * G * d)) / G;
+  }
+  // The speed heads for g·τ from whichever side it starts, so the object is
+  // never slower than it would be from rest: the from-rest bound holds.
+  let lo = 0;
+  let hi = d / (G * tau) + tau + Math.sqrt((2 * d) / G);
+  // Guard the bracket for inputs outside the stated range (moving upward).
+  for (let i = 0; i < 40 && stepFall(state, hi, tau).x < floor; i++) hi *= 2;
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (stepFall(state, mid, tau).x < floor) lo = mid;
+    else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+/**
+ * `stepFall`, stopping at `floor`. When the object lands during the step it
+ * is left resting on the floor and `landedAfter` is the time into the step
+ * at which it touched down; otherwise `landedAfter` is null.
+ */
+export function stepFallToFloor(
+  state: FallState,
+  dt: number,
+  tau: number,
+  floor: number,
+): { state: FallState; landedAfter: number | null } {
+  if (state.x >= floor) return { state: { x: floor, v: 0 }, landedAfter: 0 };
+  const next = stepFall(state, dt, tau);
+  if (next.x < floor) return { state: next, landedAfter: null };
+  return { state: { x: floor, v: 0 }, landedAfter: timeToFloor(state, floor, tau) };
+}

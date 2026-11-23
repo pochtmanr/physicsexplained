@@ -9,9 +9,10 @@ import {
   type ReactNode,
 } from "react";
 import { useTranslations } from "next-intl";
-import { Maximize2 } from "lucide-react";
+import { BookOpenText, Maximize2 } from "lucide-react";
 import frame from "@/components/layout/corner-frame.module.css";
 import { FigurePopup } from "@/components/layout/figure-popup";
+import { Reveal } from "@/components/layout/reveal";
 import {
   SceneViewContext,
   type SceneView,
@@ -28,6 +29,12 @@ export interface SceneCardProps {
   className?: string;
   /** Allow expanding the figure into a fullscreen popup (default: true) */
   expandable?: boolean;
+  /**
+   * Explanation of the figure, shown with it in full view (see
+   * `<FigureGuide>`). Adds a second button that opens the figure with the
+   * guide showing.
+   */
+  guide?: ReactNode;
 }
 
 // useLayoutEffect warns during server rendering; the effect is client-only.
@@ -55,9 +62,15 @@ export function SceneCard({
   hud,
   className,
   expandable = true,
+  guide,
 }: SceneCardProps) {
   const t = useTranslations("scenes.card");
+  const tGuide = useTranslations("scenes.guide");
+  const hasGuide = expandable && Boolean(guide);
   const [expanded, setExpanded] = useState(false);
+  const [initialGuide, setInitialGuide] = useState<"auto" | "open">("auto");
+  /** The button that opened the popup: focus goes back to it on close. */
+  const openerRef = useRef<HTMLButtonElement | null>(null);
   const [popupSlot, setPopupSlot] = useState<HTMLDivElement | null>(null);
   const [availableHeight, setAvailableHeight] = useState<number | null>(null);
   const homeRef = useRef<HTMLDivElement>(null);
@@ -85,7 +98,13 @@ export function SceneCard({
   const close = () => {
     setExpanded(false);
     setAvailableHeight(null);
-    expandRef.current?.focus();
+    (openerRef.current ?? expandRef.current)?.focus();
+  };
+
+  const open = (withGuide: boolean, opener: HTMLButtonElement) => {
+    openerRef.current = opener;
+    setInitialGuide(withGuide ? "open" : "auto");
+    setExpanded(true);
   };
 
   return (
@@ -96,7 +115,7 @@ export function SceneCard({
         <figcaption
           className={clsx(
             "mb-3 font-mono text-xs uppercase tracking-wider text-[var(--color-fg-3)]",
-            expandable && "pe-8",
+            expandable && (hasGuide ? "pe-32" : "pe-8"),
           )}
         >
           {caption}
@@ -104,19 +123,33 @@ export function SceneCard({
       ) : (
         expandable && <div className="mb-3 h-4" aria-hidden="true" />
       )}
+      {hasGuide && (
+        <button
+          type="button"
+          onClick={(e) => open(true, e.currentTarget)}
+          aria-label={tGuide("open")}
+          title={tGuide("open")}
+          // Labelled, unlike the expand icon: this is the way into the
+          // explanation, and a bare book glyph reads as decoration.
+          className="absolute end-10 top-0 -mt-1.5 inline-flex items-center gap-1.5 rounded-[var(--radius-control)] border border-[var(--color-fg-4)] px-2 py-1 font-mono text-[11px] uppercase tracking-wider text-[var(--color-fg-1)] outline-none transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)] hover:border-[var(--color-cyan-dim)] hover:text-[var(--color-fg-0)] focus-visible:ring-2 focus-visible:ring-[var(--color-cyan)]/50 motion-reduce:transition-none"
+        >
+          <BookOpenText size={14} strokeWidth={1.6} aria-hidden="true" />
+          {tGuide("title")}
+        </button>
+      )}
       {expandable && (
         <button
           ref={expandRef}
           type="button"
-          onClick={() => setExpanded(true)}
+          onClick={(e) => open(false, e.currentTarget)}
           aria-label={t("expand")}
           title={t("expand")}
-          className="absolute end-0 top-0 -m-2 p-2 text-[var(--color-fg-3)] transition-colors hover:text-[var(--color-fg-0)]"
+          className="absolute end-0 top-0 -m-2 p-2 text-[var(--color-fg-2)] transition-colors hover:text-[var(--color-fg-0)]"
         >
           <Maximize2 size={16} strokeWidth={1.5} aria-hidden="true" />
         </button>
       )}
-      <div className={`${frame.frame} bg-[var(--color-bg-1)]`}>
+      <Reveal className={`${frame.frame} bg-[var(--color-bg-1)]`}>
         <span className={`${frame.corner} ${frame.tl}`} aria-hidden="true" />
         <span className={`${frame.corner} ${frame.tr}`} aria-hidden="true" />
         <span className={`${frame.corner} ${frame.bl}`} aria-hidden="true" />
@@ -135,13 +168,15 @@ export function SceneCard({
             {hud}
           </div>
         )}
-      </div>
+      </Reveal>
       {expanded && (
         <FigurePopup
           caption={caption}
           onClose={close}
           slotRef={setPopupSlot}
           onAvailableHeight={setAvailableHeight}
+          guide={guide}
+          initialGuide={initialGuide}
         />
       )}
     </figure>

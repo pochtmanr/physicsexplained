@@ -6,18 +6,53 @@ import { SceneCard } from "@/components/layout/scene-card";
 import { EquationBlock } from "@/components/math/equation-block";
 import { Callout } from "@/components/layout/callout";
 import { FigureInner } from "@/components/content/figure-inner";
+import { FigureGuide } from "@/components/content/figure-guide";
+import { getFigureGuide, type FigureGuide as Guide } from "@/lib/content/figure-guides";
+
+type Paragraph = Extract<Block, { type: "paragraph" }>;
+
+/**
+ * The paragraphs an article wrote about a figure: up to `before` directly
+ * above it and `after` directly below it, among its siblings. Counting stops
+ * at anything that is not a paragraph, so a guide never quotes across an
+ * equation, a callout or another figure.
+ */
+export function figureProse(blocks: readonly Block[], index: number, guide: Guide): Paragraph[] {
+  const before: Paragraph[] = [];
+  for (let i = index - 1; i >= 0 && before.length < guide.prose.before; i--) {
+    const block = blocks[i];
+    if (block.type !== "paragraph") break;
+    before.unshift(block);
+  }
+  const after: Paragraph[] = [];
+  for (let i = index + 1; i < blocks.length && after.length < guide.prose.after; i++) {
+    const block = blocks[i];
+    if (block.type !== "paragraph") break;
+    after.push(block);
+  }
+  return [...before, ...after];
+}
 
 export function ContentBlocks({ blocks }: { blocks: Block[] }) {
   return (
     <>
       {blocks.map((block, i) => (
-        <BlockNode key={i} block={block} />
+        <BlockNode key={i} block={block} blocks={blocks} index={i} />
       ))}
     </>
   );
 }
 
-function BlockNode({ block }: { block: Block }) {
+function BlockNode({
+  block,
+  blocks,
+  index,
+}: {
+  block: Block;
+  /** The block's siblings and its place among them. */
+  blocks: readonly Block[];
+  index: number;
+}) {
   switch (block.type) {
     case "section":
       return (
@@ -53,12 +88,22 @@ function BlockNode({ block }: { block: Block }) {
       return null;
     }
 
-    case "figure":
+    case "figure": {
+      const guide =
+        block.content.kind === "simulation" ? getFigureGuide(block.content.component) : undefined;
       return (
-        <SceneCard caption={block.caption}>
+        <SceneCard
+          caption={block.caption}
+          guide={
+            guide ? (
+              <FigureGuide guide={guide} prose={figureProse(blocks, index, guide)} />
+            ) : undefined
+          }
+        >
           <FigureInner content={block.content} />
         </SceneCard>
       );
+    }
 
     case "callout":
       return (

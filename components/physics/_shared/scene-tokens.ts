@@ -41,6 +41,12 @@ export interface SceneTokens {
   textMute: string;
   /** Faint text — tertiary (theme fg-4). */
   textFaint: string;
+  /**
+   * Small text that must stay readable: axis numbers, units, scale labels.
+   * Passes AA on the scene background in both themes, which `textMute` does
+   * not at these sizes.
+   */
+  textLabel: string;
 
   // ── Grid + axes (derived from fg) ──────────────────────────────────────
   /** Light hairlines: alpha 0.5 of fg-4. */
@@ -100,6 +106,7 @@ export function useSceneTokens(): SceneTokens {
       textDim: colors.fg1,
       textMute: colors.fg2,
       textFaint: colors.fg3,
+      textLabel: colors.fgLabel,
 
       grid: hexToRgba(colors.fg3, 0.5),
       gridHeavy: colors.fg3,
@@ -445,6 +452,48 @@ export function drawArrow(
   ctx.closePath();
   ctx.fill();
   ctx.restore();
+}
+
+/**
+ * Round tick values for an axis running from `lo` to `hi`: multiples of 1, 2
+ * or 5 times a power of ten, about `target` of them. Returns the ticks and
+ * the step between them (use the step with `formatTick`).
+ */
+export function niceTicks(
+  lo: number,
+  hi: number,
+  target = 4,
+): { ticks: number[]; step: number } {
+  const span = hi - lo;
+  if (!(span > 0) || !Number.isFinite(span)) return { ticks: [lo], step: 1 };
+  const count = Number.isFinite(target) ? Math.min(20, Math.max(1, Math.round(target))) : 4;
+  const rough = span / count;
+  const power = Math.pow(10, Math.floor(Math.log10(rough)));
+  const lead = rough / power;
+  const step = (lead < 1.5 ? 1 : lead < 3.5 ? 2 : lead < 7.5 ? 5 : 10) * power;
+  const ticks: number[] = [];
+  // Index-based so repeated addition cannot drift (0.1 + 0.2 + …).
+  const first = Math.ceil(lo / step - 1e-9);
+  const last = Math.floor(hi / step + 1e-9);
+  // Ranges too extreme for doubles to count through (step underflowed to 0,
+  // or the indices are beyond exact integers): one tick instead of a hang.
+  if (
+    !(step > 0) ||
+    !Number.isFinite(step) ||
+    !Number.isSafeInteger(first) ||
+    !Number.isSafeInteger(last) ||
+    last - first > 100
+  ) {
+    return { ticks: [lo], step: 1 };
+  }
+  for (let i = first; i <= last; i++) ticks.push(i * step === 0 ? 0 : i * step);
+  return { ticks, step };
+}
+
+/** A tick value written with just enough decimals for its step ("0.5", "10"). */
+export function formatTick(value: number, step: number): string {
+  const decimals = Math.max(0, Math.min(6, -Math.floor(Math.log10(step) + 1e-9)));
+  return value.toFixed(decimals);
 }
 
 /** Draw a labeled HUD readout: "label: value" in monospace. */

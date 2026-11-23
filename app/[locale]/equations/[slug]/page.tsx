@@ -12,6 +12,9 @@ import { buildPageMetadata } from "@/lib/seo/page-metadata";
 import { truncateDescription } from "@/lib/seo/description";
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo/jsonld";
 import { JsonLd } from "@/components/seo/jsonld";
+import { getTranslations } from "next-intl/server";
+import { isProblemDifficulty } from "@/lib/content/difficulty";
+import { DifficultyChip } from "@/components/problems/difficulty-chip";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -49,6 +52,7 @@ export default async function EquationPage({ params }: PageProps) {
   if (!strings) notFound();
 
   const problems = await getProblemsForEquationFromDb(slug, locale);
+  const tProblems = await getTranslations({ locale, namespace: "common.problems" });
 
   const url = SITE.localizedUrl(`/equations/${slug}`, locale);
 
@@ -114,7 +118,16 @@ export default async function EquationPage({ params }: PageProps) {
                 <li key={p.id}>
                   <Link href={`/${locale}/classical-mechanics/${p.primary_topic_slug}/problems/${p.id}`}
                         className="text-cyan-400 hover:underline">
-                    [{p.difficulty}] {stmt.slice(0, 100)}…
+                    {isProblemDifficulty(p.difficulty) ? (
+                      <DifficultyChip
+                        difficulty={p.difficulty}
+                        label={tProblems(`difficulty.${p.difficulty}`)}
+                        className="me-2 align-middle"
+                      />
+                    ) : (
+                      `[${p.difficulty}] `
+                    )}
+                    {stmt.slice(0, 100)}…
                   </Link>
                 </li>
               );

@@ -139,5 +139,18 @@
     "categoryTopic": "Topics",
     "categoryPhysicist": "Physicists",
     "categoryDictionary": "Dictionary"
+  },
+  "problems": {
+    "eyebrow": "Problems",
+    "heading": "Practice on this topic",
+    "crossTopic": "Cross-topic",
+    "nextProblem": "Next problem",
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard",
+      "challenge": "Challenge",
+      "exam": "Exam"
+    }
   }
 }
