@@ -1,6 +1,7 @@
 import { z } from "zod";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { parse as parseMath, compile as compileMath } from "mathjs";
+import { checkSafeExpr } from "@/lib/math/safe-expr";
 import { getSceneEntry } from "./scene-catalog";
 import { GENERATED_SCENE_META } from "./scene-meta.generated";
 
@@ -13,15 +14,20 @@ export interface ToolsetDeps {
 
 const Kind = z.enum(["topic", "physicist", "glossary"]);
 
-const DENY_NODES = new Set(["FunctionAssignmentNode", "AssignmentNode", "ImportNode", "BlockNode"]);
+// Piecewise plots (`x > 0 ? 1 : 0`) are legitimate, so conditionals stay allowed.
+const PLOT_EXTRA_NODES = ["ConditionalNode", "RelationalNode"];
 
 function safeMathExpr(expr: string): { ok: true } | { ok: false; reason: string } {
   if (expr.length > 200) return { ok: false, reason: "Expression too long (max 200 chars)" };
   try {
     const root = parseMath(expr);
-    let bad: string | null = null;
-    root.traverse((node) => { if (DENY_NODES.has(node.type)) bad ??= node.type; });
-    if (bad) return { ok: false, reason: `Expression contains disallowed node ${bad}` };
+    const safe = checkSafeExpr(root, { extraNodeTypes: PLOT_EXTRA_NODES });
+    if (!safe.ok) {
+      return {
+        ok: false,
+        reason: `Expression uses ${safe.reason}. Use scalar arithmetic and standard functions (sin, cos, exp, log, sqrt, abs, ...).`,
+      };
+    }
     return { ok: true };
   } catch (e) {
     return { ok: false, reason: `Parse error: ${(e as Error).message}` };

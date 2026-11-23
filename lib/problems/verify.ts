@@ -2,6 +2,7 @@ import { create, all } from "mathjs";
 import { createHash } from "node:crypto";
 import type { ProblemStep } from "@/lib/content/types";
 import { normalizeStudentExpr } from "./normalize";
+import { checkSafeExpr } from "@/lib/math/safe-expr";
 
 const math = create(all, { number: "number" });
 
@@ -110,6 +111,11 @@ export function verifyStep({
     studentNode = math.parse(normalized);
   } catch (e) {
     return { ok: false, studentValue: NaN, canonicalValue: NaN, diff: NaN, parseError: (e as Error).message };
+  }
+  // Student input reaches this from an anonymous endpoint: scalar arithmetic only.
+  const safe = checkSafeExpr(studentNode);
+  if (!safe.ok) {
+    return { ok: false, studentValue: NaN, canonicalValue: NaN, diff: NaN, parseError: safe.reason };
   }
   try {
     canonicalNode = math.parse(step.canonicalExpr);

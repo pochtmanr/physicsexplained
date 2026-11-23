@@ -197,3 +197,31 @@ describe("verifyStep — student-input normalization", () => {
     expect(r.ok).toBe(true);
   });
 });
+
+describe("verifyStep — rejects input that is not scalar arithmetic", () => {
+  // Small sizes on purpose: the point is that these forms never reach evaluate().
+  const REJECTED = [
+    "1:5",
+    "zeros (3,3)",
+    "ones (2,2)",
+    "[1,2;3,4]",
+    "range (0,5)",
+    "createUnit (\"foo\")",
+    "f(x) = x",
+    "a = 5; a",
+    "{a: 1}",
+  ];
+
+  for (const expr of REJECTED) {
+    it(`rejects ${JSON.stringify(expr)}`, () => {
+      const r = verifyStep({ step: VX_STEP, studentExpr: expr, concreteInputs: { v_0: 20, theta: 0.5 } });
+      expect(r.ok).toBe(false);
+      expect(r.parseError).toMatch(/unsupported|expected|Unexpected|Undefined/i);
+    });
+  }
+
+  it("still accepts the functions students use", () => {
+    const r = verifyStep({ step: VX_STEP, studentExpr: "sqrt(v_0^2) * cos(theta) + abs(0)" });
+    expect(r.ok).toBe(true);
+  });
+});
