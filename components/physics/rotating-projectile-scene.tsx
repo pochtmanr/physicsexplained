@@ -1,219 +1,335 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useMemo, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import {
+  SCENE_CANVAS_CLASS,
+  SceneControlGroup,
+  SceneControls,
+  ScenePanel,
+  SceneReadout,
+  SceneSlider,
+  SceneStage,
+  drawArrow,
+  drawFocusRing,
+  drawLabel,
+  hexToRgba,
+  syncCanvas,
+  useSceneHover,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+  type ScenePlayback,
+} from "@/components/physics/_shared";
 import { coriolisAccel2D } from "@/lib/physics/rotating-frame";
 
-const MINI_W = 220;
-const MINI_H = 260;
-const PIX_PER_M = 18; // scale: 1 m = 18 px
+/** One panel at full inline size, in px; the two sit side by side. */
+const PANEL_W = 220;
+const PANEL_H = 260;
+const PANEL_GAP = 12;
+const GROUP_W = PANEL_W * 2 + PANEL_GAP;
+/** Room kept between the flight and a panel's edges (px, inline). */
+const PLOT_MARGIN = 10;
+/** Largest pixels per metre at full inline size; smaller when the flight needs room. */
+const PX_PER_M = 18;
 const G = 9.81; // m/s²
 const V0X = 6.0; // m/s — horizontal launch
 const V0Y = -8.5; // m/s — upward (canvas y grows downward)
 const FLIGHT_TIME = 1.85; // s
-const SUBSTEPS = 6;
+/** Integration step for the rotating-frame path (s). */
+const STEP = 1 / 600;
 
-const CYAN = "#6FB8C6";
-const MAGENTA = "#FF6ADE";
-
-interface RotState {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
+interface Path {
+  x: Float64Array;
+  y: Float64Array;
+  vx: Float64Array;
+  vy: Float64Array;
 }
 
-function freshRot(): RotState {
-  return { x: 0, y: 0, vx: V0X, vy: V0Y };
+/**
+ * The rotating-frame flight for one Ω: gravity plus the Coriolis term,
+ * stepped at a fixed small step (velocity first, then position) from the
+ * launch. Computed once per Ω, so the scene can draw any moment of it.
+ */
+function rotatingPath(omega: number): Path {
+  const n = Math.ceil(FLIGHT_TIME / STEP) + 1;
+  const path: Path = {
+    x: new Float64Array(n),
+    y: new Float64Array(n),
+    vx: new Float64Array(n),
+    vy: new Float64Array(n),
+  };
+  let x = 0;
+  let y = 0;
+  let vx = V0X;
+  let vy = V0Y;
+  for (let i = 0; i < n; i++) {
+    path.x[i] = x;
+    path.y[i] = y;
+    path.vx[i] = vx;
+    path.vy[i] = vy;
+    const aC = coriolisAccel2D({ omegaZ: omega }, { x: vx, y: vy });
+    // +G pulls towards +y, which is down on the canvas.
+    vx += aC.x * STEP;
+    vy += (aC.y + G) * STEP;
+    x += vx * STEP;
+    y += vy * STEP;
+  }
+  return path;
 }
 
+/** Index of the path sample at time `time`. */
+const sampleAt = (path: Path, time: number) =>
+  Math.min(path.x.length - 1, Math.max(0, Math.round(time / STEP)));
+
+/** The inertial-frame flight: a parabola. */
+const inertialAt = (time: number) => ({
+  x: V0X * time,
+  y: V0Y * time + 0.5 * G * time * time,
+});
+
+/** FIG.06d — the same launch seen from an inertial frame and from a rotating one. */
 export function RotatingProjectileScene() {
+  const t = useTranslations("scenes.rotatingProjectile");
   const containerRef = useRef<HTMLDivElement>(null);
-  const inertialCanvasRef = useRef<HTMLCanvasElement>(null);
-  const rotatingCanvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: PANEL_H / GROUP_W,
+    maxHeight: PANEL_H,
+    minHeight: 200,
+    initialWidth: GROUP_W,
+    // The two panels keep their shape and are centred in the canvas, so the
+    // full view can use the whole width of the cards.
+    fullView: "fill",
+  });
   const [omega, setOmega] = useState(1.5); // rad/s
-  const omegaRef = useRef(omega);
-  omegaRef.current = omega;
+  const path = useMemo(() => rotatingPath(omega), [omega]);
 
-  const tFlightRef = useRef(0);
-  const rotStateRef = useRef<RotState>(freshRot());
-  const inertialTrailRef = useRef<Array<{ x: number; y: number }>>([]);
-  const rotatingTrailRef = useRef<Array<{ x: number; y: number }>>([]);
-  const lastOmegaRef = useRef(omega);
+  // `u` for text, offsets and hairlines; the panels and what is drawn in them
+  // grow with the canvas (`k` for positions, `o` for sizes). Inline k ≤ 1
+  // and o = 1.
+  const u = (n: number) => n * tokens.scale;
+  const k = Math.min(width / GROUP_W, height / PANEL_H);
+  const objectScale = Math.min(2.6, Math.max(tokens.scale, k));
+  const o = (n: number) => n * objectScale;
+  const panelW = PANEL_W * k;
+  const panelH = PANEL_H * k;
+  const groupLeft = (width - GROUP_W * k) / 2;
+  const panelTop = (height - panelH) / 2;
+  const panels = [
+    { key: "g", left: groupLeft },
+    { key: "coriolis", left: groupLeft + (PANEL_W + PANEL_GAP) * k },
+  ] as const;
+  // The launch point sits at the centre of the area under the title, and the
+  // scale is chosen so the whole flight in both frames fits around it. A
+  // path bent by a large Ω can run left or below the launch, so both
+  // directions get the same room.
+  const plotTop = panelTop + Math.max(12 * k, u(26));
+  const plotBottom = panelTop + panelH - PLOT_MARGIN * k;
+  const extent = useMemo(() => {
+    let ex = V0X * FLIGHT_TIME;
+    let ey = (V0Y * V0Y) / (2 * G);
+    for (let i = 0; i < path.x.length; i++) {
+      ex = Math.max(ex, Math.abs(path.x[i]!));
+      ey = Math.max(ey, Math.abs(path.y[i]!));
+    }
+    const end = inertialAt(FLIGHT_TIME);
+    return { x: Math.max(ex, Math.abs(end.x)), y: Math.max(ey, Math.abs(end.y)) };
+  }, [path]);
+  const pxPerM = Math.min(
+    PX_PER_M * k,
+    (panelW / 2 - PLOT_MARGIN * k) / extent.x,
+    ((plotBottom - plotTop) / 2 - PLOT_MARGIN * k) / extent.y,
+  );
+  const originAt = (left: number) => ({
+    x: left + panelW / 2,
+    y: (plotTop + plotBottom) / 2,
+  });
+  const toPx = (left: number, p: { x: number; y: number }) => {
+    const origin = originAt(left);
+    return { x: origin.x + p.x * pxPerM, y: origin.y + p.y * pxPerM };
+  };
 
-  useAnimationFrame({
+  const playbackRef = useRef<ScenePlayback | null>(null);
+  // The launch point means the launch velocity; anywhere else in a panel
+  // means what shapes the path drawn there (gravity alone, or the Coriolis
+  // term on top of it).
+  const hover = useSceneHover(canvasRef, (px, py) => {
+    if (py < panelTop || py > panelTop + panelH) return null;
+    for (const panel of panels) {
+      if (px < panel.left || px > panel.left + panelW) continue;
+      const origin = originAt(panel.left);
+      if (Math.hypot(px - origin.x, py - origin.y) <= u(14)) return "v0";
+      return panel.key;
+    }
+    return null;
+  });
+  const { activeKey } = hover;
+  const focus =
+    activeKey === "g" ? "g" : activeKey === "coriolis" || activeKey === "omega" ? "coriolis" : null;
+
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (_t, dt) => {
-      // Reset trails when Ω changes mid-flight
-      if (lastOmegaRef.current !== omegaRef.current) {
-        tFlightRef.current = 0;
-        rotStateRef.current = freshRot();
-        inertialTrailRef.current = [];
-        rotatingTrailRef.current = [];
-        lastOmegaRef.current = omegaRef.current;
-      }
+    duration: FLIGHT_TIME,
+    draw: (time) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const ctx = syncCanvas(canvas, width, height);
+      if (!ctx) return;
+      const bounds = { width, height };
+      const last = sampleAt(path, time);
 
-      const inertialCanvas = inertialCanvasRef.current;
-      const rotatingCanvas = rotatingCanvasRef.current;
-      if (!inertialCanvas || !rotatingCanvas) return;
-      const ictx = inertialCanvas.getContext("2d");
-      const rctx = rotatingCanvas.getContext("2d");
-      if (!ictx || !rctx) return;
-      const dpr = window.devicePixelRatio || 1;
-      for (const c of [inertialCanvas, rotatingCanvas]) {
-        if (c.width !== MINI_W * dpr || c.height !== MINI_H * dpr) {
-          c.width = MINI_W * dpr;
-          c.height = MINI_H * dpr;
-          c.getContext("2d")?.setTransform(dpr, 0, 0, dpr, 0, 0);
-        }
-      }
+      for (const panel of panels) {
+        const { left } = panel;
+        const origin = originAt(left);
+        const isRotating = panel.key === "coriolis";
+        const color = isRotating ? tokens.magenta : tokens.cyan;
 
-      // Step rotating-frame physics
-      const r = rotStateRef.current;
-      const h = dt / SUBSTEPS;
-      for (let k = 0; k < SUBSTEPS; k++) {
-        if (tFlightRef.current >= FLIGHT_TIME) break;
-        const aC = coriolisAccel2D({ omegaZ: omegaRef.current }, { x: r.vx, y: r.vy });
-        // Gravity: positive y is downward in canvas-space; we stored V0Y as
-        // negative (upward). +G means "pull downward" → +y direction.
-        r.vx += aC.x * h;
-        r.vy += (aC.y + G) * h;
-        r.x += r.vx * h;
-        r.y += r.vy * h;
-        tFlightRef.current += h;
-      }
-
-      const tF = tFlightRef.current;
-      // Inertial-frame analytic position (no Coriolis): parabola
-      const ix = V0X * tF;
-      const iy = V0Y * tF + 0.5 * G * tF * tF;
-
-      // Origin in each canvas: bottom-left-ish
-      const oX = 30;
-      const oY = MINI_H - 30;
-
-      const ipx = oX + ix * PIX_PER_M;
-      const ipy = oY + iy * PIX_PER_M;
-      const rpx = oX + r.x * PIX_PER_M;
-      const rpy = oY + r.y * PIX_PER_M;
-
-      inertialTrailRef.current.push({ x: ipx, y: ipy });
-      rotatingTrailRef.current.push({ x: rpx, y: rpy });
-      if (inertialTrailRef.current.length > 800) inertialTrailRef.current.shift();
-      if (rotatingTrailRef.current.length > 800) rotatingTrailRef.current.shift();
-
-      // Reset cycle
-      if (tF >= FLIGHT_TIME) {
-        tFlightRef.current = 0;
-        rotStateRef.current = freshRot();
-        inertialTrailRef.current = [];
-        rotatingTrailRef.current = [];
-      }
-
-      // ----- Draw helper -----
-      const drawPanel = (
-        ctx: CanvasRenderingContext2D,
-        title: string,
-        trail: Array<{ x: number; y: number }>,
-        cur: { x: number; y: number },
-        color: string,
-      ) => {
-        ctx.clearRect(0, 0, MINI_W, MINI_H);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(left, panelTop, panelW, panelH);
+        ctx.clip();
 
         // Ground line
-        ctx.strokeStyle = colors.fg2;
+        ctx.strokeStyle = tokens.axes;
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(8, oY);
-        ctx.lineTo(MINI_W - 8, oY);
+        ctx.moveTo(left + 8 * k, origin.y);
+        ctx.lineTo(left + panelW - 8 * k, origin.y);
         ctx.stroke();
 
-        // Y-axis tick at the launch point
-        ctx.strokeStyle = colors.fg3;
+        // Vertical through the launch point, starting below the title.
+        ctx.strokeStyle = tokens.gridHeavy;
         ctx.beginPath();
-        ctx.moveTo(oX, 12);
-        ctx.lineTo(oX, oY);
+        ctx.moveTo(origin.x, plotTop);
+        ctx.lineTo(origin.x, plotBottom);
         ctx.stroke();
 
-        // Title
-        ctx.fillStyle = colors.fg1;
-        ctx.font = "11px monospace";
-        ctx.textAlign = "left";
-        ctx.fillText(title, 10, 16);
-
-        // Trail
-        if (trail.length > 1) {
-          ctx.strokeStyle = color;
-          ctx.lineWidth = 1.8;
-          ctx.beginPath();
-          ctx.moveTo(trail[0]!.x, trail[0]!.y);
-          for (let i = 1; i < trail.length; i++) {
-            ctx.lineTo(trail[i]!.x, trail[i]!.y);
+        // Path so far; the one pointed at is heavier, the other steps back.
+        ctx.strokeStyle = color;
+        ctx.lineWidth = o(focus === panel.key ? 3 : 1.8);
+        ctx.globalAlpha = focus !== null && focus !== panel.key ? 0.35 : 1;
+        ctx.beginPath();
+        if (isRotating) {
+          for (let i = 0; i <= last; i++) {
+            const p = toPx(left, { x: path.x[i]!, y: path.y[i]! });
+            if (i === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
           }
-          ctx.stroke();
+        } else {
+          const n = Math.max(2, Math.ceil(time * 120));
+          for (let i = 0; i <= n; i++) {
+            const p = toPx(left, inertialAt((i / n) * time));
+            if (i === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+          }
         }
+        ctx.stroke();
+        ctx.globalAlpha = 1;
 
-        // Current marker
+        // Current position
+        const cur = isRotating
+          ? toPx(left, { x: path.x[last]!, y: path.y[last]! })
+          : toPx(left, inertialAt(time));
         ctx.fillStyle = color;
-        ctx.shadowColor =
-          color === CYAN ? "rgba(111,184,198,0.55)" : "rgba(255,106,222,0.55)";
-        ctx.shadowBlur = 8;
+        ctx.shadowColor = hexToRgba(color, 0.55);
+        ctx.shadowBlur = o(8);
         ctx.beginPath();
-        ctx.arc(cur.x, cur.y, 5, 0, Math.PI * 2);
+        ctx.arc(cur.x, cur.y, o(5), 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
-      };
 
-      drawPanel(ictx, "inertial · parabola", inertialTrailRef.current, { x: ipx, y: ipy }, CYAN);
-      drawPanel(
-        rctx,
-        "rotating · spiral",
-        rotatingTrailRef.current,
-        { x: rpx, y: rpy },
-        MAGENTA,
-      );
+        if (focus === panel.key) {
+          drawFocusRing(ctx, cur.x, cur.y, o(5) + u(6), color, tokens.scale);
+        }
+        // The Coriolis term's direction at the ball: square to its velocity.
+        if (isRotating && activeKey === "coriolis") {
+          const a = coriolisAccel2D({ omegaZ: omega }, { x: path.vx[last]!, y: path.vy[last]! });
+          const mag = Math.hypot(a.x, a.y);
+          if (mag > 0) {
+            const len = o(5) + u(26);
+            drawArrow(ctx, cur.x, cur.y, cur.x + (a.x / mag) * len, cur.y + (a.y / mag) * len, color, u(2), u(8));
+          }
+        }
+        // Launch velocity, the same in both frames.
+        if (activeKey === "v0") {
+          const len = o(44) / Math.hypot(V0X, V0Y);
+          drawArrow(ctx, origin.x, origin.y, origin.x + V0X * len, origin.y + V0Y * len, tokens.textBright, u(2), u(8));
+          drawLabel(ctx, "v₀", origin.x + V0X * len + u(10), origin.y + V0Y * len, {
+            bounds,
+            color: tokens.textBright,
+            font: tokens.fontHudSmall,
+            plate: tokens.bg1,
+            scale: tokens.scale,
+          });
+        }
+
+        // Title, on a plate so the paths can pass under it.
+        drawLabel(ctx, isRotating ? t("rotatingTitle") : t("inertialTitle"), left + u(10), panelTop + u(14), {
+          bounds,
+          color: focus === panel.key ? tokens.textBright : tokens.textDim,
+          font: tokens.fontHudSmall,
+          direction: "inherit",
+        });
+        ctx.restore();
+      }
     },
   });
+  playbackRef.current = playback;
+
+  const now = sampleAt(path, playback.time);
+  const aC = coriolisAccel2D({ omegaZ: omega }, { x: path.vx[now]!, y: path.vy[now]! });
 
   return (
-    <div ref={containerRef} className="relative w-full pb-4">
-      <div className="mx-auto flex w-fit gap-3">
-        <canvas
-          ref={inertialCanvasRef}
-          style={{ width: MINI_W, height: MINI_H }}
-          className="block"
-        />
-        <canvas
-          ref={rotatingCanvasRef}
-          style={{ width: MINI_W, height: MINI_H }}
-          className="block"
-        />
-      </div>
-      <div className="pointer-events-none absolute right-2 top-2">
-        <div className="rounded-sm border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-[10px] leading-relaxed text-[var(--color-fg-1)] backdrop-blur-sm">
-          <div>v₀ = ({V0X.toFixed(1)}, {(-V0Y).toFixed(1)}) m/s</div>
-          <div>g = {G.toFixed(2)} m/s²</div>
-          <div>
-            Ω = <span style={{ color: MAGENTA }}>{omega.toFixed(2)}</span> rad/s
-          </div>
-        </div>
-      </div>
-      <div className="mt-3 flex items-center gap-3 px-2">
-        <label className="w-20 text-sm text-[var(--color-fg-3)]">Ω</label>
-        <input
-          type="range"
-          min={-3}
-          max={3}
-          step={0.05}
-          value={omega}
-          onChange={(e) => setOmega(parseFloat(e.target.value))}
-          className="flex-1 accent-[#FF6ADE]"
-        />
-        <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
-          {omega.toFixed(2)}
-        </span>
+    <div ref={containerRef} className="scene-root w-full pb-4">
+      <div className="mx-auto" style={{ width }}>
+        <SceneStage>
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={t("aria")}
+            className={SCENE_CANVAS_CLASS}
+            style={{ width, height }}
+          />
+        </SceneStage>
+        <ScenePanel>
+          <SceneControls playback={playback} scrub scrubKey="scrub" />
+          <SceneReadout
+            items={[
+              {
+                label: "v₀",
+                value: `(${V0X.toFixed(1)}, ${(-V0Y).toFixed(1)}) m/s`,
+                guideKey: "v0",
+              },
+              {
+                label: "g",
+                value: `${G.toFixed(2)} m/s²`,
+                color: "var(--color-cyan)",
+                guideKey: "g",
+              },
+              {
+                label: "|a_C|",
+                value: `${Math.hypot(aC.x, aC.y).toFixed(2)} m/s²`,
+                color: "var(--color-magenta)",
+                guideKey: "coriolis",
+              },
+            ]}
+          />
+        </ScenePanel>
+        <SceneControlGroup>
+          <SceneSlider
+            label="Ω"
+            ariaLabel={t("omega")}
+            guideKey="omega"
+            value={omega}
+            min={-3}
+            max={3}
+            step={0.05}
+            onChange={setOmega}
+            display={`${omega.toFixed(2)} rad/s`}
+          />
+        </SceneControlGroup>
       </div>
     </div>
   );

@@ -98,6 +98,9 @@ export function FigurePopup({
   const guideId = useId();
   const [mounted, setMounted] = useState(false);
   const [guideOpen, setGuideOpen] = useState(false);
+  // Beside the figure (its own column) or stacked (more cards under the
+  // figure's, in the same scroll).
+  const [guideBeside, setGuideBeside] = useState(true);
   const panelRef = useRef<HTMLDivElement>(null);
   const areaRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -110,9 +113,24 @@ export function FigurePopup({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (typeof window.matchMedia !== "function") return;
+    const query = window.matchMedia(GUIDE_BESIDE_QUERY);
+    const update = () => setGuideBeside(query.matches);
+    update();
+    query.addEventListener?.("change", update);
+    return () => query.removeEventListener?.("change", update);
+  }, []);
+
   const toggleGuide = () => {
     const next = !guideOpen;
     setGuideOpen(next);
+    // Stacked, the guide opens below the figure: bring its first card up.
+    if (next && !guideBeside) {
+      requestAnimationFrame(() =>
+        document.getElementById(guideId)?.scrollIntoView?.({ behavior: "smooth", block: "start" }),
+      );
+    }
     // The preference is about the roomy layout only: closing the sheet on
     // a phone must not hide the panel on a desktop later.
     if (guideHasRoom()) writeGuidePreference(next);
@@ -181,6 +199,23 @@ export function FigurePopup({
   }, [mounted, onAvailableHeight]);
 
   if (!mounted) return null;
+
+  // Rendered only while open, so Tab never lands on hidden links. The figure
+  // re-fits by itself: it watches its own width, and the scroll area reports
+  // its height.
+  const guidePanel =
+    guide && guideOpen ? (
+      <aside
+        id={guideId}
+        aria-label={tGuide("title")}
+        // Focusable so the keyboard can scroll it.
+        tabIndex={0}
+        data-flow={guideBeside ? "beside" : "stacked"}
+        className="figure-popup-guide outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-cyan)]/50"
+      >
+        {guide}
+      </aside>
+    ) : null;
 
   return createPortal(
     <div
@@ -259,21 +294,11 @@ export function FigurePopup({
             {/* `min-h-full` + the host's `m-auto`: a figure that fits is centred,
                 one that does not scrolls from its top instead of being cut off. */}
             <div ref={slotRef} className="flex min-h-full w-full" />
+            {/* Stacked: the guide's cards follow the figure's in one scroll,
+                so the figure keeps the whole screen until the reader scrolls. */}
+            {guideBeside ? null : guidePanel}
           </div>
-          {/* Rendered only while open, so Tab never lands on hidden links.
-              The figure re-fits by itself: it watches its own width, and the
-              area above reports its new height. */}
-          {guide && guideOpen ? (
-            <aside
-              id={guideId}
-              aria-label={tGuide("title")}
-              // Focusable so the keyboard can scroll it.
-              tabIndex={0}
-              className="figure-popup-guide outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[var(--color-cyan)]/50"
-            >
-              {guide}
-            </aside>
-          ) : null}
+          {guideBeside ? guidePanel : null}
         </div>
       </div>
     </div>,

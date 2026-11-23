@@ -1,197 +1,276 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useRef } from "react";
+import { useTranslations } from "next-intl";
+import {
+  SCENE_CANVAS_CLASS,
+  SceneControls,
+  ScenePanel,
+  SceneReadout,
+  SceneStage,
+  drawArrow,
+  drawFocusRing,
+  drawLabel,
+  hexToRgba,
+  syncCanvas,
+  type ScenePlayback,
+  useSceneHover,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
 import { centripetalAccel } from "@/lib/physics/circular-motion";
 
-const CANVAS_W = 320;
-const CANVAS_H = 320;
+/** Drawing size at which the figure has its reference proportions. */
+const REF_SIZE = 320;
 const RADIUS = 110;
 const PARTICLE_R = 7;
-const V_LEN = 80; // pixel length used for the |v| arrow on screen
-const V_PHYS = 1.5; // physical "speed" used in the readout (m/s, illustrative)
-const R_PHYS = 1.0; // physical "radius" (m)
-const PERIOD = 4; // seconds for one full lap
-const DTHETA = 0.45; // angular separation between v and v + dv (radians, large for clarity)
+/** Drawn length of the |v| arrow at the reference size. */
+const V_LEN = 80;
+/** Physical speed used in the readout (m/s, illustrative). */
+const V_PHYS = 1.5;
+/** Physical radius (m). */
+const R_PHYS = 1.0;
+/** Seconds for one full lap. */
+const PERIOD = 4;
+/** Angle between v and v + dv (radians), large for clarity. */
+const DTHETA = 0.45;
 
-const CYAN = "#6FB8C6";
-const MAGENTA = "#FF6ADE";
-
-function arrow(
-  ctx: CanvasRenderingContext2D,
-  x0: number,
-  y0: number,
-  x1: number,
-  y1: number,
-  color: string,
-  width = 2,
-  head = 8,
-) {
-  ctx.strokeStyle = color;
-  ctx.fillStyle = color;
-  ctx.lineWidth = width;
-  ctx.beginPath();
-  ctx.moveTo(x0, y0);
-  ctx.lineTo(x1, y1);
-  ctx.stroke();
-  const ang = Math.atan2(y1 - y0, x1 - x0);
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(
-    x1 - head * Math.cos(ang - Math.PI / 6),
-    y1 - head * Math.sin(ang - Math.PI / 6),
-  );
-  ctx.lineTo(
-    x1 - head * Math.cos(ang + Math.PI / 6),
-    y1 - head * Math.sin(ang + Math.PI / 6),
-  );
-  ctx.closePath();
-  ctx.fill();
+/** Distance from point (px, py) to the segment (x0, y0)–(x1, y1). */
+function segmentDistance(px: number, py: number, x0: number, y0: number, x1: number, y1: number) {
+  const dx = x1 - x0;
+  const dy = y1 - y0;
+  const len2 = dx * dx + dy * dy;
+  const s = len2 > 0 ? Math.min(1, Math.max(0, ((px - x0) * dx + (py - y0) * dy) / len2)) : 0;
+  return Math.hypot(px - (x0 + s * dx), py - (y0 + s * dy));
 }
 
+/**
+ * FIG.04a — the velocity triangle. A particle goes round at constant speed;
+ * its velocity v and the velocity a moment later, v + dv, drawn tail to tail,
+ * close a thin triangle whose third side dv points toward the centre.
+ */
 export function VelocityTriangleScene() {
+  const t = useTranslations("scenes.velocityTriangle");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
-  const [readout, setReadout] = useState({
-    v: V_PHYS,
-    dv: 0,
-    ac: centripetalAccel(V_PHYS, R_PHYS),
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 1,
+    maxHeight: REF_SIZE,
+    minHeight: 220,
+    initialWidth: REF_SIZE,
+    // The circle stays centred and is sized from the shorter side, so the
+    // full view can use any shape.
+    fullView: "fill",
   });
+  const playbackRef = useRef<ScenePlayback | null>(null);
 
-  useAnimationFrame({
+  const scale = tokens.scale;
+  const u = (n: number) => n * scale;
+  // The circle and arrows keep their 320 × 320 proportions and grow with the
+  // canvas in full view. Inline this is at most 1.
+  const objectScale = Math.min(2.6, Math.min(width, height) / REF_SIZE);
+  const o = (n: number) => n * objectScale;
+
+  const cx = width / 2;
+  const cy = height / 2;
+  const radius = o(RADIUS);
+  const vLen = o(V_LEN);
+  const particleR = o(PARTICLE_R);
+
+  /** Positions of everything drawn, at scene time `time`. */
+  const geometry = (time: number) => {
+    const theta = ((time % PERIOD) / PERIOD) * 2 * Math.PI;
+    const px = cx + radius * Math.cos(theta);
+    const py = cy + radius * Math.sin(theta);
+    // Tangent at θ (perpendicular to the radius, going round) and at θ + dθ.
+    const tx = -Math.sin(theta);
+    const ty = Math.cos(theta);
+    const tx2 = -Math.sin(theta + DTHETA);
+    const ty2 = Math.cos(theta + DTHETA);
+    return {
+      theta,
+      px,
+      py,
+      tipVx: px + vLen * tx,
+      tipVy: py + vLen * ty,
+      tipV2x: px + vLen * tx2,
+      tipV2y: py + vLen * ty2,
+    };
+  };
+
+  // The dv side first (it is the point of the figure), then the two velocity
+  // arrows, then the particle or the radius to it (the inward acceleration).
+  const hover = useSceneHover(canvasRef, (x, y) => {
+    const g = geometry(playbackRef.current?.getTime() ?? 0);
+    const reach = u(9);
+    if (segmentDistance(x, y, g.tipVx, g.tipVy, g.tipV2x, g.tipV2y) <= reach) return "dv";
+    if (
+      segmentDistance(x, y, g.px, g.py, g.tipVx, g.tipVy) <= reach ||
+      segmentDistance(x, y, g.px, g.py, g.tipV2x, g.tipV2y) <= reach
+    ) {
+      return "speed";
+    }
+    if (Math.hypot(x - g.px, y - g.py) <= particleR + reach) return "speed";
+    if (segmentDistance(x, y, cx, cy, g.px, g.py) <= reach) return "accel";
+    return null;
+  });
+  const { activeKey } = hover;
+
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (t) => {
+    draw: (time) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = syncCanvas(canvas, width, height);
       if (!ctx) return;
-
-      const dpr = window.devicePixelRatio || 1;
-      if (
-        canvas.width !== CANVAS_W * dpr ||
-        canvas.height !== CANVAS_H * dpr
-      ) {
-        canvas.width = CANVAS_W * dpr;
-        canvas.height = CANVAS_H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
-      const cx = CANVAS_W / 2;
-      const cy = CANVAS_H / 2;
-
-      // Angle of the particle on the circle, advancing once per PERIOD seconds
-      const theta = ((t % PERIOD) / PERIOD) * 2 * Math.PI;
-      // Particle position
-      const px = cx + RADIUS * Math.cos(theta);
-      const py = cy + RADIUS * Math.sin(theta);
-
-      // Tangent direction at theta (perpendicular to radius, going CCW)
-      // r̂ = (cos θ, sin θ)  ⇒  t̂ = (-sin θ, cos θ)
-      const tx = -Math.sin(theta);
-      const ty = Math.cos(theta);
-      // Tangent at theta + dθ
-      const tx2 = -Math.sin(theta + DTHETA);
-      const ty2 = Math.cos(theta + DTHETA);
-
-      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+      const bounds = { width, height };
+      const g = geometry(time);
+      const { px, py, tipVx, tipVy, tipV2x, tipV2y } = g;
+      const speedFocused = activeKey === "speed";
+      const dvFocused = activeKey === "dv";
+      const accelFocused = activeKey === "accel";
 
       // Circle (path)
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.textFaint;
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(cx, cy, RADIUS, 0, Math.PI * 2);
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
       ctx.stroke();
 
-      // Center dot
-      ctx.fillStyle = colors.fg2;
+      // Centre dot
+      ctx.fillStyle = tokens.textMute;
       ctx.beginPath();
-      ctx.arc(cx, cy, 2, 0, Math.PI * 2);
+      ctx.arc(cx, cy, o(2), 0, Math.PI * 2);
       ctx.fill();
 
-      // Radius line from centre to particle
-      ctx.strokeStyle = colors.fg3;
-      ctx.setLineDash([3, 3]);
+      // Radius from the centre to the particle
+      ctx.strokeStyle = accelFocused ? tokens.magenta : tokens.textFaint;
+      ctx.lineWidth = accelFocused ? u(1.5) : 1;
+      ctx.setLineDash([u(3), u(3)]);
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(px, py);
       ctx.stroke();
       ctx.setLineDash([]);
+      ctx.lineWidth = 1;
 
-      // v vector (cyan) — tangent at the particle
-      arrow(ctx, px, py, px + V_LEN * tx, py + V_LEN * ty, CYAN, 2);
-      ctx.fillStyle = CYAN;
-      ctx.font = "11px monospace";
-      ctx.textAlign = "left";
-      ctx.fillText("v", px + V_LEN * tx + 6, py + V_LEN * ty + 4);
+      // The inward acceleration, shown while it is pointed at: along the
+      // radius, toward the centre, the direction dv tends to as dθ → 0.
+      if (accelFocused) {
+        const ax = px + (cx - px) * 0.45;
+        const ay = py + (cy - py) * 0.45;
+        drawArrow(ctx, px, py, ax, ay, tokens.magenta, u(2), o(8));
+        drawLabel(ctx, "a_c = v²/r", ax, ay - u(12), {
+          bounds,
+          color: tokens.magenta,
+          align: "center",
+          font: tokens.fontLabel,
+          plate: tokens.bg1,
+          scale,
+        });
+      }
 
-      // v + dv vector (cyan, dashed) — drawn from same tail to show rotation
-      ctx.setLineDash([4, 3]);
-      arrow(
-        ctx,
-        px,
-        py,
-        px + V_LEN * tx2,
-        py + V_LEN * ty2,
-        CYAN,
-        1.5,
-      );
-      ctx.setLineDash([]);
-      ctx.fillStyle = CYAN;
-      ctx.fillText(
-        "v+dv",
-        px + V_LEN * tx2 + 6,
-        py + V_LEN * ty2 + 4,
-      );
+      // v (tangent at the particle)
+      drawArrow(ctx, px, py, tipVx, tipVy, tokens.cyan, speedFocused ? u(3) : u(2), o(8));
 
-      // dv vector (magenta) — closes the triangle from tip of v to tip of v+dv
-      const tipVx = px + V_LEN * tx;
-      const tipVy = py + V_LEN * ty;
-      const tipV2x = px + V_LEN * tx2;
-      const tipV2y = py + V_LEN * ty2;
-      arrow(ctx, tipVx, tipVy, tipV2x, tipV2y, MAGENTA, 2, 7);
-      ctx.fillStyle = MAGENTA;
-      ctx.fillText(
-        "dv",
-        (tipVx + tipV2x) / 2 + 6,
-        (tipVy + tipV2y) / 2 - 4,
-      );
+      // v + dv, dashed, from the same tail to show the rotation
+      ctx.save();
+      ctx.setLineDash([u(4), u(3)]);
+      drawArrow(ctx, px, py, tipV2x, tipV2y, tokens.cyan, speedFocused ? u(2.5) : u(1.5), o(8));
+      ctx.restore();
 
-      // Particle dot (drawn last, sits on top of arrow tails)
-      ctx.shadowColor = "rgba(111, 184, 198, 0.55)";
-      ctx.shadowBlur = 10;
-      ctx.fillStyle = CYAN;
+      // The angle dθ between them, shown with dv.
+      if (dvFocused) {
+        const a0 = Math.atan2(tipVy - py, tipVx - px);
+        ctx.strokeStyle = tokens.magenta;
+        ctx.lineWidth = u(1.5);
+        ctx.beginPath();
+        ctx.arc(px, py, vLen * 0.45, a0, a0 + DTHETA);
+        ctx.stroke();
+        ctx.lineWidth = 1;
+        const mid = a0 + DTHETA / 2;
+        drawLabel(
+          ctx,
+          `dθ = ${DTHETA.toFixed(2)} rad`,
+          px + vLen * 0.45 * Math.cos(mid),
+          py + vLen * 0.45 * Math.sin(mid),
+          { bounds, color: tokens.magenta, align: "center", font: tokens.fontLabel, plate: tokens.bg1, scale },
+        );
+      }
+
+      // dv closes the triangle, from the tip of v to the tip of v + dv
+      drawArrow(ctx, tipVx, tipVy, tipV2x, tipV2y, tokens.magenta, dvFocused ? u(3) : u(2), o(7));
+
+      // Particle dot, on top of the arrow tails
+      ctx.shadowColor = hexToRgba(tokens.cyan, 0.55);
+      ctx.shadowBlur = u(10);
+      ctx.fillStyle = tokens.cyan;
       ctx.beginPath();
-      ctx.arc(px, py, PARTICLE_R, 0, Math.PI * 2);
+      ctx.arc(px, py, particleR, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
+      if (speedFocused) drawFocusRing(ctx, px, py, particleR + u(6), tokens.cyan, scale);
 
-      // Update readout (cheap; React batches)
-      const dvMag = V_PHYS * DTHETA;
-      setReadout((prev) =>
-        Math.abs(prev.dv - dvMag) < 1e-9
-          ? prev
-          : { v: V_PHYS, dv: dvMag, ac: centripetalAccel(V_PHYS, R_PHYS) },
-      );
+      // Labels last, so the arrows never cover them.
+      drawLabel(ctx, "v", tipVx + u(6), tipVy + u(4), {
+        bounds,
+        color: tokens.cyan,
+        font: tokens.fontHudSmall,
+      });
+      drawLabel(ctx, "v+dv", tipV2x + u(6), tipV2y + u(4), {
+        bounds,
+        color: tokens.cyan,
+        font: tokens.fontHudSmall,
+      });
+      drawLabel(ctx, "dv", (tipVx + tipV2x) / 2 + u(6), (tipVy + tipV2y) / 2 - u(4), {
+        bounds,
+        color: tokens.magenta,
+        font: dvFocused ? tokens.fontHudLarge : tokens.fontHudSmall,
+      });
     },
   });
+  // The hit test runs between renders and needs the live clock.
+  playbackRef.current = playback;
 
   return (
-    <div ref={containerRef} className="relative w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: CANVAS_W, height: CANVAS_H }}
-        className="mx-auto block"
-      />
-      <div className="pointer-events-none absolute right-2 bottom-6">
-        <div className="rounded-sm border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-[10px] leading-relaxed text-[var(--color-fg-1)] backdrop-blur-sm">
-          <div>|v| = {readout.v.toFixed(2)} m/s (constant)</div>
-          <div>
-            |dv| = v·dθ = <span style={{ color: MAGENTA }}>{readout.dv.toFixed(2)}</span> m/s
-          </div>
-          <div>a_c = v²/r = {readout.ac.toFixed(2)} m/s²</div>
-        </div>
+    <div ref={containerRef} className="scene-root w-full pb-4">
+      <div className="mx-auto" style={{ width }}>
+        <SceneStage>
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={t("aria")}
+            className={SCENE_CANVAS_CLASS}
+            style={{ width, height }}
+          />
+        </SceneStage>
+        <ScenePanel>
+          <SceneControls playback={playback} />
+          <SceneReadout
+            items={[
+              {
+                label: "|v|",
+                value: `${V_PHYS.toFixed(2)} m/s`,
+                color: "var(--color-cyan)",
+                guideKey: "speed",
+              },
+              {
+                label: "|dv| = v·dθ",
+                value: `${(V_PHYS * DTHETA).toFixed(2)} m/s`,
+                color: "var(--color-magenta)",
+                guideKey: "dv",
+              },
+              {
+                label: "a_c = v²/r",
+                value: `${centripetalAccel(V_PHYS, R_PHYS).toFixed(2)} m/s²`,
+                guideKey: "accel",
+              },
+            ]}
+          />
+          <p className="mt-1 px-2 text-xs text-[var(--color-fg-2)]">{t("constantSpeed")}</p>
+        </ScenePanel>
       </div>
     </div>
   );

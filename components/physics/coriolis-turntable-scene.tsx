@@ -1,220 +1,292 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useRef } from "react";
+import { useTranslations } from "next-intl";
 import {
-  centrifugalAccel2D,
-  coriolisAccel2D,
-} from "@/lib/physics/rotating-frame";
+  SCENE_CANVAS_CLASS,
+  SceneControls,
+  ScenePanel,
+  SceneReadout,
+  SceneStage,
+  drawArrow,
+  drawFocusRing,
+  drawLabel,
+  hexToRgba,
+  syncCanvas,
+  useSceneHover,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+  type ScenePlayback,
+} from "@/components/physics/_shared";
+import { coriolisAccel2D } from "@/lib/physics/rotating-frame";
 
-const CANVAS_W = 380;
-const CANVAS_H = 380;
-const TURNTABLE_R = 160; // px
-const PIX_PER_M = 100; // 1 m = 100 px
-const OMEGA = 1.4; // rad/s
-const V0 = 0.8; // m/s — outward launch speed in lab frame
-const FLIGHT_TIME = 3.2; // s — full flight before reset
-const SUBSTEPS = 8; // for rotating-frame integration per displayed frame
+/** Side of the square drawing at full inline size, in px. */
+const BASE_SIZE = 380;
+/** Turntable radius at full inline size, in px. */
+const TURNTABLE_R = 160;
+/** Pixels per metre at full inline size. */
+const PX_PER_M = 100;
+/** Turntable spin rate (rad/s). */
+const OMEGA = 1.4;
+/** Outward launch speed in the lab frame (m/s). */
+const V0 = 0.8;
+/** One flight (s). */
+const FLIGHT_TIME = 3.2;
+/** Trail samples per second of flight. */
+const TRAIL_SAMPLES_PER_S = 90;
 
-const CYAN = "#6FB8C6";
-const MAGENTA = "#FF6ADE";
+type Vec = { x: number; y: number };
 
-interface State {
-  // Rotating-frame state (rider's frame)
-  rx: number;
-  ry: number;
-  rvx: number;
-  rvy: number;
-  // Time-since-launch
-  tFlight: number;
-  // Last Coriolis magnitude for HUD
-  aCoriolis: number;
-}
-
-function freshState(): State {
+/**
+ * The ball in the turntable's own frame at time `t`. With no real force it
+ * moves in a straight line in the lab, so in the rotating frame its position
+ * is that line turned back by Ω·t — the exact solution of the motion under
+ * the Coriolis and centrifugal terms, with no stepping error.
+ */
+function rotatingState(time: number): { r: Vec; v: Vec } {
+  const c = Math.cos(OMEGA * time);
+  const s = Math.sin(OMEGA * time);
+  const d = V0 * time;
   return {
-    rx: 0,
-    ry: 0,
-    rvx: V0, // launched along +x in lab; same instantaneous v in rotating frame at t=0
-    rvy: 0,
-    tFlight: 0,
-    aCoriolis: 0,
+    r: { x: d * c, y: -d * s },
+    v: { x: V0 * (c - OMEGA * time * s), y: -V0 * (s + OMEGA * time * c) },
   };
 }
 
+/** FIG.06b — a ball rolled outward on a turntable, drawn in both frames. */
 export function CoriolisTurntableScene() {
+  const t = useTranslations("scenes.coriolisTurntable");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
-  const stateRef = useRef<State>(freshState());
-  const labTrailRef = useRef<Array<{ x: number; y: number }>>([]);
-  const rotTrailRef = useRef<Array<{ x: number; y: number }>>([]);
-  const [hud, setHud] = useState({ aC: 0, t: 0 });
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 1,
+    maxHeight: BASE_SIZE,
+    minHeight: 260,
+    initialWidth: BASE_SIZE,
+    // The turntable is centred in whatever shape it gets.
+    fullView: "fill",
+  });
 
-  useAnimationFrame({
+  // `u` for text, offsets and hairlines; the turntable and the balls grow
+  // with the canvas (`k` for positions, `o` for sizes). Inline o = 1.
+  const u = (n: number) => n * tokens.scale;
+  const k = Math.min(width, height) / BASE_SIZE;
+  const objectScale = Math.min(2.6, Math.max(tokens.scale, k));
+  const o = (n: number) => n * objectScale;
+  const cx = width / 2;
+  const cy = height / 2;
+  const rimR = TURNTABLE_R * k;
+  const pxPerM = PX_PER_M * k;
+  const toPx = (p: Vec) => ({ x: cx + p.x * pxPerM, y: cy + p.y * pxPerM });
+
+  // Legend under the turntable's left edge, where it sat on the old 380 px
+  // canvas; it moves with the drawing as the canvas grows.
+  const legendX = cx - (BASE_SIZE / 2) * k + u(12);
+  const legendRotY = cy + (BASE_SIZE / 2) * k - u(14);
+  const legendLabY = legendRotY - u(14);
+
+  const playbackRef = useRef<ScenePlayback | null>(null);
+  const hover = useSceneHover(canvasRef, (px, py) => {
+    const time = playbackRef.current?.getTime() ?? 0;
+    const rot = toPx(rotatingState(time).r);
+    const lab = toPx({ x: V0 * time, y: 0 });
+    const reach = o(5) + u(9);
+    if (Math.hypot(px - rot.x, py - rot.y) <= reach) return "coriolis";
+    if (Math.hypot(px - lab.x, py - lab.y) <= reach) return "v0";
+    // The legend lines name the two paths.
+    if (px >= legendX - u(4) && px <= legendX + u(260)) {
+      if (Math.abs(py - legendLabY) <= u(7)) return "v0";
+      if (Math.abs(py - legendRotY) <= u(7)) return "coriolis";
+    }
+    // Near either path.
+    for (let i = 0; i <= 60; i++) {
+      const tau = (i / 60) * time;
+      const p = toPx(rotatingState(tau).r);
+      if (Math.hypot(px - p.x, py - p.y) <= u(9)) return "coriolis";
+    }
+    if (time > 0 && Math.abs(py - cy) <= u(9) && px >= cx && px <= lab.x) return "v0";
+    const d = Math.hypot(px - cx, py - cy);
+    if (Math.abs(d - rimR) <= u(9)) return "omega";
+    return null;
+  });
+  const { activeKey } = hover;
+
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (_t, dt) => {
+    duration: FLIGHT_TIME,
+    draw: (time) => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = syncCanvas(canvas, width, height);
       if (!ctx) return;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== CANVAS_W * dpr || canvas.height !== CANVAS_H * dpr) {
-        canvas.width = CANVAS_W * dpr;
-        canvas.height = CANVAS_H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
+      const bounds = { width, height };
 
-      const cx = CANVAS_W / 2;
-      const cy = CANVAS_H / 2;
-
-      const s = stateRef.current;
-
-      // Step rotating-frame physics with substeps for numerical stability
-      const h = dt / SUBSTEPS;
-      for (let k = 0; k < SUBSTEPS; k++) {
-        if (s.tFlight >= FLIGHT_TIME) break;
-        const v = { x: s.rvx, y: s.rvy };
-        const r = { x: s.rx, y: s.ry };
-        const aC = coriolisAccel2D({ omegaZ: OMEGA }, v);
-        const aCf = centrifugalAccel2D({ omegaZ: OMEGA }, r);
-        s.rvx += (aC.x + aCf.x) * h;
-        s.rvy += (aC.y + aCf.y) * h;
-        s.rx += s.rvx * h;
-        s.ry += s.rvy * h;
-        s.tFlight += h;
-        s.aCoriolis = Math.hypot(aC.x, aC.y);
-      }
-
-      // Lab-frame position (analytic): straight line at constant V0 along +x
-      const labX = V0 * s.tFlight;
-      const labY = 0;
-
-      // Append to trails (in canvas-space)
-      labTrailRef.current.push({
-        x: cx + labX * PIX_PER_M,
-        y: cy + labY * PIX_PER_M,
-      });
-      rotTrailRef.current.push({
-        x: cx + s.rx * PIX_PER_M,
-        y: cy + s.ry * PIX_PER_M,
-      });
-      if (labTrailRef.current.length > 600) labTrailRef.current.shift();
-      if (rotTrailRef.current.length > 600) rotTrailRef.current.shift();
-
-      // Reset on flight end
-      if (s.tFlight >= FLIGHT_TIME) {
-        stateRef.current = freshState();
-        labTrailRef.current = [];
-        rotTrailRef.current = [];
-      }
-
-      // ----- Draw -----
-      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-
-      // Turntable rim
-      ctx.strokeStyle = colors.fg2;
-      ctx.lineWidth = 2;
+      // Turntable rim; heavier while its spin rate is pointed at.
+      const rimFocused = activeKey === "omega";
+      ctx.strokeStyle = rimFocused ? tokens.textBright : tokens.axes;
+      ctx.lineWidth = o(rimFocused ? 3 : 2);
       ctx.beginPath();
-      ctx.arc(cx, cy, TURNTABLE_R, 0, Math.PI * 2);
+      ctx.arc(cx, cy, rimR, 0, Math.PI * 2);
       ctx.stroke();
 
       // Faint cross-axes
-      ctx.strokeStyle = colors.fg3;
+      ctx.strokeStyle = tokens.gridHeavy;
       ctx.lineWidth = 1;
-      ctx.setLineDash([3, 3]);
+      ctx.setLineDash([u(3), u(3)]);
       ctx.beginPath();
-      ctx.moveTo(cx - TURNTABLE_R, cy);
-      ctx.lineTo(cx + TURNTABLE_R, cy);
-      ctx.moveTo(cx, cy - TURNTABLE_R);
-      ctx.lineTo(cx, cy + TURNTABLE_R);
+      ctx.moveTo(cx - rimR, cy);
+      ctx.lineTo(cx + rimR, cy);
+      ctx.moveTo(cx, cy - rimR);
+      ctx.lineTo(cx, cy + rimR);
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Lab-frame trajectory (cyan, straight)
-      if (labTrailRef.current.length > 1) {
-        ctx.strokeStyle = CYAN;
-        ctx.lineWidth = 2;
+      // One path pointed at: it is drawn heavier, the other steps back.
+      const focus = activeKey === "v0" ? "lab" : activeKey === "coriolis" ? "rot" : null;
+      const pathStyle = (which: "lab" | "rot", color: string) => {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = o(focus === which ? 3 : 2);
+        ctx.globalAlpha = focus !== null && focus !== which ? 0.35 : 1;
+      };
+
+      const lab = toPx({ x: V0 * time, y: 0 });
+      const state = rotatingState(time);
+      const rot = toPx(state.r);
+
+      // Lab-frame path: straight out along the launch line.
+      if (time > 0) {
+        pathStyle("lab", tokens.cyan);
         ctx.beginPath();
-        ctx.moveTo(labTrailRef.current[0]!.x, labTrailRef.current[0]!.y);
-        for (let i = 1; i < labTrailRef.current.length; i++) {
-          ctx.lineTo(labTrailRef.current[i]!.x, labTrailRef.current[i]!.y);
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(lab.x, lab.y);
+        ctx.stroke();
+
+        // Rotating-frame path: the same line, curled by the turning frame.
+        pathStyle("rot", tokens.magenta);
+        const n = Math.max(2, Math.ceil(time * TRAIL_SAMPLES_PER_S));
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const p = toPx(rotatingState((i / n) * time).r);
+          if (i === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
         }
         ctx.stroke();
+        ctx.globalAlpha = 1;
       }
 
-      // Rotating-frame trajectory (magenta, curved)
-      if (rotTrailRef.current.length > 1) {
-        ctx.strokeStyle = MAGENTA;
-        ctx.lineWidth = 2;
+      const ball = (p: Vec, color: string) => {
+        ctx.fillStyle = color;
+        ctx.shadowColor = hexToRgba(color, 0.55);
+        ctx.shadowBlur = o(8);
         ctx.beginPath();
-        ctx.moveTo(rotTrailRef.current[0]!.x, rotTrailRef.current[0]!.y);
-        for (let i = 1; i < rotTrailRef.current.length; i++) {
-          ctx.lineTo(rotTrailRef.current[i]!.x, rotTrailRef.current[i]!.y);
-        }
-        ctx.stroke();
-      }
-
-      // Current ball position — lab (cyan)
-      ctx.fillStyle = CYAN;
-      ctx.shadowColor = "rgba(111,184,198,0.55)";
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.arc(cx + labX * PIX_PER_M, cy + labY * PIX_PER_M, 5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-
-      // Current ball position — rotating (magenta)
-      ctx.fillStyle = MAGENTA;
-      ctx.shadowColor = "rgba(255,106,222,0.55)";
-      ctx.shadowBlur = 8;
-      ctx.beginPath();
-      ctx.arc(cx + s.rx * PIX_PER_M, cy + s.ry * PIX_PER_M, 5, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
+        ctx.arc(p.x, p.y, o(5), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      };
+      ball(lab, tokens.cyan);
+      ball(rot, tokens.magenta);
 
       // Centre marker
-      ctx.fillStyle = colors.fg1;
+      ctx.fillStyle = tokens.textDim;
       ctx.beginPath();
-      ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+      ctx.arc(cx, cy, o(3), 0, Math.PI * 2);
       ctx.fill();
 
-      // Legend
-      ctx.font = "10px monospace";
-      ctx.textAlign = "left";
-      ctx.fillStyle = CYAN;
-      ctx.fillText("lab frame (straight)", 12, CANVAS_H - 28);
-      ctx.fillStyle = MAGENTA;
-      ctx.fillText("rotating frame (curved by Coriolis)", 12, CANVAS_H - 14);
+      // While the Coriolis acceleration is pointed at, show its direction on
+      // the ball: always square to the ball's velocity in the rotating frame.
+      if (activeKey === "coriolis") {
+        const a = coriolisAccel2D({ omegaZ: OMEGA }, state.v);
+        const mag = Math.hypot(a.x, a.y);
+        if (mag > 0) {
+          const len = o(5) + u(30);
+          drawArrow(
+            ctx,
+            rot.x,
+            rot.y,
+            rot.x + (a.x / mag) * len,
+            rot.y + (a.y / mag) * len,
+            tokens.magenta,
+            u(2),
+            u(8),
+          );
+          drawLabel(ctx, "a_C", rot.x + (a.x / mag) * (len + u(14)), rot.y + (a.y / mag) * (len + u(14)), {
+            bounds,
+            color: tokens.magenta,
+            align: "center",
+            font: tokens.fontHudSmall,
+            plate: tokens.bg1,
+            scale: tokens.scale,
+          });
+        }
+        drawFocusRing(ctx, rot.x, rot.y, o(5) + u(6), tokens.magenta, tokens.scale);
+      }
+      if (activeKey === "v0") {
+        drawFocusRing(ctx, lab.x, lab.y, o(5) + u(6), tokens.cyan, tokens.scale);
+      }
+      if (rimFocused) {
+        drawLabel(ctx, `Ω = ${OMEGA.toFixed(2)} rad/s`, cx, cy - rimR - u(12), {
+          bounds,
+          color: tokens.textBright,
+          align: "center",
+          font: tokens.fontHudSmall,
+          plate: tokens.bg1,
+          scale: tokens.scale,
+        });
+      }
 
-      // Cheap HUD update — only when value changes meaningfully
-      const aC = s.aCoriolis;
-      const tNow = s.tFlight;
-      setHud((prev) =>
-        Math.abs(prev.aC - aC) < 0.01 && Math.abs(prev.t - tNow) < 0.05
-          ? prev
-          : { aC, t: tNow },
-      );
+      // Legend
+      drawLabel(ctx, t("legendLab"), legendX, legendLabY, {
+        bounds,
+        color: tokens.cyan,
+        font: tokens.fontHudSmall,
+        direction: "inherit",
+      });
+      drawLabel(ctx, t("legendRotating"), legendX, legendRotY, {
+        bounds,
+        color: tokens.magenta,
+        font: tokens.fontHudSmall,
+        direction: "inherit",
+      });
     },
   });
+  playbackRef.current = playback;
+
+  const aC = coriolisAccel2D({ omegaZ: OMEGA }, rotatingState(playback.time).v);
 
   return (
-    <div ref={containerRef} className="relative w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: CANVAS_W, height: CANVAS_H }}
-        className="mx-auto block"
-      />
-      <div className="pointer-events-none absolute right-2 top-2">
-        <div className="rounded-sm border border-[var(--color-fg-4)] bg-[var(--color-bg-0)]/70 px-2 py-1 font-mono text-[10px] leading-relaxed text-[var(--color-fg-1)] backdrop-blur-sm">
-          <div>Ω = {OMEGA.toFixed(2)} rad/s</div>
-          <div>v₀ = {V0.toFixed(2)} m/s</div>
-          <div>
-            |a_C| = <span style={{ color: MAGENTA }}>{hud.aC.toFixed(2)}</span> m/s²
-          </div>
-          <div className="text-[var(--color-fg-3)]">t = {hud.t.toFixed(2)} s</div>
-        </div>
+    <div ref={containerRef} className="scene-root w-full pb-4">
+      <div className="mx-auto" style={{ width }}>
+        <SceneStage>
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={t("aria")}
+            className={SCENE_CANVAS_CLASS}
+            style={{ width, height }}
+          />
+        </SceneStage>
+        <ScenePanel>
+          <SceneControls playback={playback} scrub scrubKey="scrub" />
+          <SceneReadout
+            items={[
+              { label: "Ω", value: `${OMEGA.toFixed(2)} rad/s`, guideKey: "omega" },
+              {
+                label: "v₀",
+                value: `${V0.toFixed(2)} m/s`,
+                color: "var(--color-cyan)",
+                guideKey: "v0",
+              },
+              {
+                label: "|a_C|",
+                value: `${Math.hypot(aC.x, aC.y).toFixed(2)} m/s²`,
+                color: "var(--color-magenta)",
+                guideKey: "coriolis",
+              },
+            ]}
+          />
+        </ScenePanel>
       </div>
     </div>
   );

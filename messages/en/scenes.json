@@ -1,8 +1,451 @@
 {
+  "velocityTriangle": {
+    "aria": "A particle moving round a circle, with its velocity now and a moment later drawn tail to tail",
+    "constantSpeed": "The speed stays the same; only the direction of v turns.",
+    "guide": {
+      "items": {
+        "speed": {
+          "label": "Speed |v|",
+          "text": "The length of the velocity arrow. It never changes: the particle goes round at a steady 1.5 m/s. The dashed arrow is the velocity a moment later: the same length, turned through dθ."
+        },
+        "dv": {
+          "label": "Change dv",
+          "text": "The arrow that takes v to v + dv: the third side of the thin triangle. Its length is v·dθ. Here dθ = 0.45 rad, exaggerated so the triangle can be seen; as dθ shrinks, dv turns to point straight at the centre."
+        },
+        "accel": {
+          "label": "Acceleration a_c",
+          "text": "The change dv divided by the time it took. Since dθ = v·dt/r, this gives v²/r: 2.25 m/s² for 1.5 m/s on a 1 m circle. It points toward the centre."
+        }
+      },
+      "formulas": {
+        "triangle": "The short side of the thin triangle: the speed times the angle it turned through.",
+        "accel": "With Δθ = v·Δt / r, the change per unit time is v²/r, directed inward."
+      },
+      "try": {
+        "1": "Pause the figure at a few places round the circle. The dv arrow always points roughly toward the centre, wherever the particle is.",
+        "2": "Compare the readouts: |v| stays 1.50 m/s while dv is not zero. The velocity changes even though the speed does not.",
+        "3": "Point at the dashed radius. The acceleration v²/r lies along it, the direction dv approaches as dθ shrinks."
+      },
+      "limits": "The angle dθ is drawn large (0.45 rad, about 26°) so the triangle can be seen; the formula holds in the limit dθ → 0. The speed is constant: a particle speeding up along the circle would also have an acceleration along the tangent."
+    }
+  },
+  "centripetalForce": {
+    "aria": "Three bodies going round in circles, a ball on a string, the Earth round the Sun and a car on a curve, each pulled toward the centre",
+    "pivot": "pivot",
+    "sun": "Sun",
+    "axis": "axis",
+    "ballString": "ball + string",
+    "earthSun": "Earth + Sun",
+    "carRoad": "car + road",
+    "sameForce": "Same force, different names: T = F_g = f_s",
+    "guide": {
+      "items": {
+        "force": {
+          "label": "Force F",
+          "text": "The inward force needed to keep 1 kg on a 1 m circle at 2.5 m/s: m·v²/r = 6.25 N. The magenta arrows all show this one force."
+        },
+        "params": {
+          "label": "m, v, r",
+          "text": "Mass, speed and radius, the same in all three rows. With these fixed, the force required is fixed too, whatever supplies it."
+        },
+        "string": {
+          "label": "Ball on a string",
+          "text": "Tension T in the string plays the role. Cut the string and the ball leaves along the tangent."
+        },
+        "gravity": {
+          "label": "Earth and Sun",
+          "text": "The Sun's gravity F_g plays the role. Without it the Earth would carry on in a straight line."
+        },
+        "friction": {
+          "label": "Car on a curve",
+          "text": "Static friction f_s between tyres and road plays the role. On ice it falls away and the car slides off along the tangent."
+        }
+      },
+      "formulas": {
+        "force": "The force any circular motion needs, pointing to the centre.",
+        "newton": "Newton's second law with the centripetal acceleration a = v²/r."
+      },
+      "try": {
+        "1": "Follow one body for a full lap. Its force arrow turns with it and always points at the centre.",
+        "2": "Point at each row in turn. The force has a different name and a different cause, but the same size.",
+        "3": "Work out the force if the speed doubled to 5 m/s: four times as much, 25 N, from the string, the gravity or the road."
+      },
+      "limits": "The rows share the same numbers to make the point; a real planet, car and ball differ by many orders of magnitude. The bodies move at constant speed, and the curve is drawn flat: on a banked road part of the normal force also points inward."
+    }
+  },
+  "angularVelocity": {
+    "aria": "A wheel turning, with the velocity of one point on its rim",
+    "period": "Period T",
+    "guide": {
+      "items": {
+        "period": {
+          "label": "Period T",
+          "text": "Time for one full turn. A shorter period means a faster wheel."
+        },
+        "omega": {
+          "label": "Angular velocity ω",
+          "text": "Angle swept per second, in radians: ω = 2π/T. Every point of the wheel, near the hub as much as on the rim, turns at this same rate."
+        },
+        "speed": {
+          "label": "Rim speed v",
+          "text": "How fast the rim point moves along its circle: v = ωR. Its direction is along the tangent, as the arrow shows."
+        },
+        "radius": {
+          "label": "Radius R",
+          "text": "Distance of the tracked point from the axis, 1 m. A point twice as far out moves twice as fast at the same ω."
+        }
+      },
+      "formulas": {
+        "omega": "One turn is 2π radians, swept in one period.",
+        "speed": "The farther a point is from the axis, the faster it moves."
+      },
+      "try": {
+        "1": "Set T to 1.00 s. ω becomes 2π ≈ 6.28 rad/s and the rim point moves at 6.28 m/s.",
+        "2": "Double the period from 1 s to 2 s. Both ω and v halve.",
+        "3": "Change T while the wheel turns. It speeds up or slows down from where it is, with no jump."
+      },
+      "limits": "The wheel is rigid and turns at a steady rate; a real wheel speeding up would also have an angular acceleration. Only the rim point is tracked: a point nearer the hub shares ω but moves more slowly, in proportion to its distance."
+    }
+  },
+  "newtonsCannon": {
+    "aria": "Newton's cannon on a mountain top, firing a ball horizontally round the Earth",
+    "earth": "Earth",
+    "muzzle": "Muzzle v₀",
+    "realEarth": "real Earth v_orb",
+    "path": "path",
+    "suborbital": "sub-orbital — falls to ground",
+    "circular": "circular orbit",
+    "elliptical": "elliptical orbit",
+    "guide": {
+      "items": {
+        "muzzle": {
+          "label": "Muzzle speed v₀",
+          "text": "Launch speed of the ball, in units of the circular-orbit speed. Below 1 the ball comes down; at 1 it goes round; above 1 it swings out on an ellipse."
+        },
+        "vOrb": {
+          "label": "Orbital speed v_orb",
+          "text": "The speed at which the fall and the curve of the Earth match: v_orb = √(GM/R). The figure uses units in which it is 1."
+        },
+        "real": {
+          "label": "Real Earth",
+          "text": "The same speed for the real Earth near its surface: about 7.9 km/s, ignoring the air."
+        },
+        "regime": {
+          "label": "Path",
+          "text": "What the ball does at this speed: falls back to the ground (magenta), circles at launch height, or follows an ellipse that comes back to the cannon."
+        }
+      },
+      "formulas": {
+        "balance": "Gravity supplies exactly the centripetal force of a circle.",
+        "orbit": "Solved for the speed, it does not depend on the ball's mass."
+      },
+      "try": {
+        "1": "Raise v₀ slowly from 0.60. The landing point moves round the Earth, farther with every step.",
+        "2": "Set v₀ to 1.000. The ball circles at the height it was fired from and never lands.",
+        "3": "Set v₀ to 1.20. The path is an ellipse: the ball climbs away from the Earth and comes back to the cannon."
+      },
+      "limits": "No air, and the Earth's gravity is that of a point mass, GM/r²; the mountain top is just above the surface. The units are scaled so that v_orb = 1; the real value is in the readout. Above √2 ≈ 1.41 v_orb the ball would escape, beyond the slider's range."
+    }
+  },
+  "carousel": {
+    "aria": "A ball rolled outward across a spinning carousel, seen from the ground or from a rider's seat",
+    "omega": "spin Ω",
+    "riderRadius": "rider radius",
+    "ballDistance": "ball distance",
+    "frame": "Frame",
+    "outside": "Outside",
+    "rider": "Rider",
+    "noteOutside": "From the ground the ball goes straight; the carousel turns under it.",
+    "noteRider": "From the seat the carousel stands still and the ball curves away.",
+    "guide": {
+      "items": {
+        "omega": {
+          "label": "Spin Ω",
+          "text": "How fast the carousel turns: 0.90 radians per second, about one turn every 7 s. In the outside view the spokes and the rider go round at this rate."
+        },
+        "riderRadius": {
+          "label": "Rider radius",
+          "text": "How far the rider (cyan) sits from the centre. To stay on that circle the rider needs an inward pull of Ω²r ≈ 0.73 m/s², which the seat supplies; from the seat it feels like an outward push of the same size."
+        },
+        "ballDistance": {
+          "label": "Ball distance",
+          "text": "How far the ball (magenta) has rolled from the centre. It grows steadily, at 0.60 m/s, in both views: the two frames disagree about the shape of the path, not about how far out the ball is."
+        },
+        "frame": {
+          "label": "Frame",
+          "text": "Whose picture you see. Outside: the ground, an inertial frame. Rider: the carousel itself, turned back so that it stands still."
+        },
+        "scrub": {
+          "label": "Time bar",
+          "text": "Drag it to stop the flight at any instant, then switch frames to compare the same moment from both points of view."
+        }
+      },
+      "formulas": {
+        "centrifugal": "The outward acceleration a rider seems to feel at distance r from the axis.",
+        "angle": "The angle the carousel has turned by time t. The rider's view undoes exactly this turn."
+      },
+      "try": {
+        "1": "Watch the outside view: the ball runs along a straight line while the cyan radius sweeps round. Switch to the rider's view: the same ball now curls away to one side.",
+        "2": "Drag the time bar to 2.5 s, when the ball reaches the rim, and switch frames. Its distance from the centre is 1.50 m in both.",
+        "3": "In the rider's view, notice that the ball starts out along the cyan radius and then falls behind it, against the direction the carousel turns."
+      },
+      "limits": "No friction and no real force act on the ball, so its path from the ground is exactly straight. A real ball rolling on a carousel is dragged along by friction and curves less in the rider's view."
+    }
+  },
+  "coriolisTurntable": {
+    "aria": "A ball rolled outward from the centre of a turntable: a straight path in the lab and a curved path in the turntable's frame",
+    "legendLab": "lab frame (straight)",
+    "legendRotating": "rotating frame (curved by Coriolis)",
+    "guide": {
+      "items": {
+        "omega": {
+          "label": "Ω",
+          "text": "The turntable's spin rate, 1.40 rad/s: one turn in about 4.5 s. The faster the spin, the tighter the path in the rotating frame curls."
+        },
+        "v0": {
+          "label": "v₀",
+          "text": "The launch speed, 0.80 m/s straight out from the centre. In the lab (cyan) the ball keeps this velocity, because no force acts on it."
+        },
+        "coriolis": {
+          "label": "|a_C|",
+          "text": "Size of the Coriolis acceleration: 2Ω times the ball's speed in the turntable's frame. It starts at 2.24 m/s² and grows, because the farther out the ball is, the faster the table moves under it."
+        },
+        "scrub": {
+          "label": "Time bar",
+          "text": "Drag it to any instant and compare where the two descriptions have put the ball."
+        }
+      },
+      "formulas": {
+        "coriolis": "Square to the velocity in the rotating frame, so on its own it only bends the path.",
+        "path": "The turntable's view is the straight lab path turned back by the angle the table has turned."
+      },
+      "try": {
+        "1": "Watch the magenta path bend against the direction of spin while the cyan path stays straight. Both leave the centre with the same velocity.",
+        "2": "Drag the time bar back to the start: |a_C| reads 2.24 m/s², which is 2Ωv₀. Drag it forward and watch it grow.",
+        "3": "Stop at 2 s. The cyan ball is 1.6 m out, at the rim; the magenta ball is just as far from the centre, only in another direction."
+      },
+      "limits": "The turntable is frictionless, so nothing in the lab pushes the ball. The curved path includes the centrifugal term as well as the Coriolis one; near the centre the Coriolis part dominates."
+    }
+  },
+  "coriolisGlobe": {
+    "aria": "The northern hemisphere seen from above the North Pole, with winds curling to the right and a ring at the chosen latitude",
+    "northPole": "N pole",
+    "equator": "equator",
+    "latitude": "Latitude",
+    "period": "Foucault period",
+    "rate": "precession",
+    "never": "∞ (no precession)",
+    "note": "Cyan: northern winds curl right. Magenta: southern winds curl left.",
+    "guide": {
+      "items": {
+        "latitude": {
+          "label": "Latitude",
+          "text": "Where on Earth you stand, from 0° at the equator to 90° at the pole. The dashed cyan ring marks it on the map; the period and the precession rate both follow from it."
+        },
+        "period": {
+          "label": "Foucault period",
+          "text": "How long a Foucault pendulum takes to turn its plane of swing a full circle: one sidereal day (23.93 h) divided by sin(latitude). About 32 h in Paris; at the equator it never turns."
+        },
+        "rate": {
+          "label": "Precession",
+          "text": "How many degrees the plane of swing turns each hour: 15° × sin(latitude). About 11°/h in Paris, 15°/h at the pole."
+        }
+      },
+      "formulas": {
+        "foucault": "Only the part of the Earth's spin about the local vertical turns the pendulum.",
+        "vertical": "That part of the rotation: zero at the equator, all of it at the pole."
+      },
+      "try": {
+        "1": "Set the latitude to 90°: the period is one sidereal day, 23.93 h, and the plane turns 15° per hour.",
+        "2": "Set it to 49°, about the latitude of Paris, where Foucault hung his pendulum: roughly 32 h for a full turn, 11° per hour.",
+        "3": "Slide the latitude down to 0°. The period goes to infinity: at the equator the plane of swing does not turn at all."
+      },
+      "limits": "A schematic map: the arrows show which way motion is deflected, not real winds, and the southern arrows are drawn on a band near the rim rather than on a second hemisphere. The period is for an ideal pendulum, with no elliptical swing."
+    }
+  },
+  "rotatingProjectile": {
+    "aria": "The same launch drawn twice: a parabola in an inertial frame and a curling path in a rotating frame",
+    "inertialTitle": "inertial · parabola",
+    "rotatingTitle": "rotating · spiral",
+    "omega": "Rotation rate Ω",
+    "guide": {
+      "items": {
+        "v0": {
+          "label": "Launch velocity v₀",
+          "text": "The same in both panels: 6.0 m/s across and 8.5 m/s up. The two flights start identically and then part."
+        },
+        "g": {
+          "label": "Gravity g",
+          "text": "The only force in the inertial panel (cyan), so the path there is a parabola. It acts in the rotating panel too."
+        },
+        "coriolis": {
+          "label": "|a_C|",
+          "text": "Size of the Coriolis acceleration in the rotating panel (magenta): 2|Ω| times the ball's speed. It turns the velocity without changing its size, so the path curls."
+        },
+        "omega": {
+          "label": "Rotation rate Ω",
+          "text": "How fast the frame turns. Its sign is the sense of rotation: reversing it mirrors the curl. At Ω = 0 both panels draw the same parabola."
+        },
+        "scrub": {
+          "label": "Time bar",
+          "text": "Drag it to stop both flights at the same instant and compare them."
+        }
+      },
+      "formulas": {
+        "rotating": "Newton's second law in the rotating panel: gravity plus the Coriolis term. The centrifugal term is left out here.",
+        "coriolis": "Faster balls, and faster-turning frames, are bent harder."
+      },
+      "try": {
+        "1": "Set Ω to 0 and replay: both panels draw the same parabola.",
+        "2": "Set Ω to 3 rad/s, then to −3 rad/s. The path curls one way, then its mirror image the other way.",
+        "3": "Pause mid-flight and drag Ω slowly: the whole magenta path reshapes, while the cyan one does not move."
+      },
+      "limits": "A model in one plane: the frame turns about an axis square to the picture, gravity keeps a fixed direction in the rotating frame, and the centrifugal term is left out. On the real Earth the effect over a shell's flight is far smaller: metres of deflection over many kilometres."
+    }
+  },
   "card": {
     "expand": "Expand figure",
     "close": "Close",
     "figure": "Figure"
+  },
+  "frictionRamp": {
+    "aria": "A block on a ramp whose angle and friction can be changed; it stays put below the critical angle and slides above it",
+    "angle": "Angle θ",
+    "muStatic": "Static friction coefficient μs",
+    "critical": "critical angle",
+    "holds": "STATIC — block holds",
+    "slides": "SLIDING",
+    "guide": {
+      "items": {
+        "critical": {
+          "label": "Critical angle θc",
+          "text": "The steepest angle at which static friction can still hold the block: tan θc = μs. It is drawn as the dashed line from the foot of the ramp. Tilt the ramp past it and the block breaks loose."
+        },
+        "muKinetic": {
+          "label": "Kinetic coefficient μk",
+          "text": "The friction coefficient once the block is sliding. Here it is always three quarters of μs, so a block that has broken loose keeps going on a slope that could not have started it."
+        },
+        "acceleration": {
+          "label": "Acceleration a",
+          "text": "How quickly the block gains speed down the slope: the pull of gravity along it, g·sin θ, minus kinetic friction, μk·g·cos θ. It is zero while the block is held. The mass cancels, so it does not matter how heavy the block is."
+        },
+        "speed": {
+          "label": "Speed v",
+          "text": "The block's speed along the ramp; at the foot, the speed it arrived with. The ramp stands for 6 m of slope."
+        },
+        "angle": {
+          "label": "Angle θ",
+          "text": "The tilt of the ramp. Below the critical angle nothing happens; above it the block slides. You can change it while the block is moving."
+        },
+        "muStatic": {
+          "label": "Static coefficient μs",
+          "text": "How strongly the surfaces grip while at rest. It sets the critical angle, so the dashed line climbs as you raise it."
+        }
+      },
+      "formulas": {
+        "threshold": "The block stays put while the pull along the slope is below the most that static friction can give.",
+        "slide": "Once sliding, the block accelerates with what is left of gravity after kinetic friction."
+      },
+      "try": {
+        "1": "Keep μs at 0.40 and raise the angle slowly. The block holds until 21.8°, the critical angle, and slides as soon as you let go above it.",
+        "2": "Set the angle to 30° so the block slides, then raise μs above 0.58. The dashed line passes the ramp; replay, and the block now stays put.",
+        "3": "While a block is sliding, lower the angle to 15°. Kinetic friction now outweighs the pull along the slope and the block brakes to a stop."
+      },
+      "limits": "Friction is taken to be exactly μ times the normal force, with μk fixed at three quarters of μs and independent of speed. Real surfaces stick and slip, and their coefficients change with speed, temperature and wear."
+    }
+  },
+  "terminalVelocity": {
+    "aria": "A sphere sinking through a fluid beside a graph of its speed against time, which levels off at terminal velocity",
+    "drag": "Drag b",
+    "dragArrow": "drag",
+    "note": "Thicker fluid, larger b, lower terminal velocity. The curve approaches vt exponentially with time constant τ = m / b.",
+    "guide": {
+      "items": {
+        "speed": {
+          "label": "Speed v",
+          "text": "How fast the sphere is sinking right now: the height of the trace at the moving dot. It rises quickly at first and then levels off."
+        },
+        "terminal": {
+          "label": "Terminal velocity vt",
+          "text": "The speed at which drag balances weight, vt = mg/b, drawn as the dashed line at the top of the graph. The sphere approaches it but, in this model, never quite reaches it."
+        },
+        "tau": {
+          "label": "Time constant τ",
+          "text": "τ = m/b sets how quickly the speed levels off: after one τ the sphere is at 63% of vt, after three at 95%. The run shown lasts four time constants."
+        },
+        "forces": {
+          "label": "Drag and weight",
+          "text": "The two forces on the sphere, to one scale. Weight mg pulls down and does not change; drag pushes up and grows with speed until the two arrows are equal."
+        },
+        "drag": {
+          "label": "Drag coefficient b",
+          "text": "How strongly the fluid resists motion, in N·s/m: larger for a thicker fluid or a bigger sphere. The sphere's mass is fixed at 20 g."
+        },
+        "scrub": {
+          "label": "Time slider",
+          "text": "Drag it to stop at any moment of the fall and read the speed there."
+        }
+      },
+      "formulas": {
+        "motion": "Weight pulls down; drag pushes back in proportion to the speed.",
+        "solution": "Starting from rest, the speed climbs exponentially towards vt."
+      },
+      "try": {
+        "1": "Point at the τ readout, then follow the curve to the dashed line. At one τ the speed is 63% of vt.",
+        "2": "Set b to 0.5. The sphere reaches its terminal velocity of 0.39 m/s in a fraction of a second.",
+        "3": "Set b to 0.01. The early part of the curve is almost a straight line, free fall at v = g·t, before the drag catches up."
+      },
+      "limits": "Drag is taken as proportional to speed, which holds for slow motion in a viscous fluid. Buoyancy is left out, and the sphere's position in the column is drawn to scale with the distance fallen, not in metres."
+    }
+  },
+  "dragRegimes": {
+    "aria": "Drag force against speed on log-log axes: the linear Stokes term, the quadratic Newton term and their sum",
+    "stokes": "Stokes b",
+    "newton": "Newton k",
+    "speedAxis": "velocity  v  (m/s)",
+    "forceAxis": "drag force  F  (N)",
+    "legendLinear": "F_lin = b·v   (Stokes)",
+    "legendQuadratic": "F_quad = k·v²   (Newton)",
+    "legendTotal": "F_total = b·v + k·v²",
+    "note": "Low v: the Stokes line dominates (slope 1). High v: the Newton line takes over (slope 2). The cyan total follows whichever term is larger. Reynolds number ≈ 1 marks the knee.",
+    "guide": {
+      "items": {
+        "crossover": {
+          "label": "Crossover v×",
+          "text": "The speed at which the two terms are equal, b·v = k·v², so v× = b/k. At that point each term is half the total. It stands in for a Reynolds number of about 1, where viscosity stops being the main cause of drag."
+        },
+        "linear": {
+          "label": "Stokes term b·v",
+          "text": "Drag from viscosity, the dashed amber line. On log-log axes it is a straight line of slope 1: ten times the speed, ten times the force."
+        },
+        "quadratic": {
+          "label": "Newton term k·v²",
+          "text": "Drag from pushing fluid out of the way, the dashed magenta line. Slope 2: ten times the speed, a hundred times the force."
+        },
+        "total": {
+          "label": "Total drag",
+          "text": "What the object actually feels, the solid cyan curve: the sum of the two terms. It follows the Stokes line at low speed and the Newton line at high speed, with a bend between."
+        },
+        "b": {
+          "label": "Stokes b",
+          "text": "The linear coefficient, larger for a more viscous fluid. Raising it lifts the slope-1 line and moves the crossover to higher speed."
+        },
+        "k": {
+          "label": "Newton k",
+          "text": "The quadratic coefficient, ½ρC_dA, larger for a denser fluid or a bigger, blunter object. Raising it lifts the slope-2 line and moves the crossover to lower speed."
+        }
+      },
+      "formulas": {
+        "total": "The two kinds of drag add.",
+        "crossover": "They are equal at one speed, set by the ratio of the coefficients."
+      },
+      "try": {
+        "1": "Point at the total curve far to the left and far to the right. It lies on the Stokes line at one end and on the Newton line at the other.",
+        "2": "Raise b to 1.000 with k at 0.050. The crossover moves to 20 m/s: a viscous fluid keeps the Stokes regime going to higher speeds.",
+        "3": "Set b and k equal. The crossover sits at exactly 1 m/s whatever their common value."
+      },
+      "limits": "The total is the plain sum of a linear and a quadratic term with fixed coefficients. In a real fluid the drag coefficient itself changes with the Reynolds number, and the change between regimes is not this smooth."
+    }
   },
   "controls": {
     "play": "Play",
@@ -10,6 +453,122 @@
     "replay": "Replay",
     "loop": "Loop",
     "scrub": "Time"
+  },
+  "firstLaw": {
+    "aria": "A block pushed once and left to coast along a floor with friction",
+    "mu": "Friction μ",
+    "friction": "friction a = −μg",
+    "stopDistance": "stops after",
+    "noteFrictionless": "No friction: once moving, the block never slows.",
+    "noteSlowing": "Friction slows the block down.",
+    "noteRest": "At rest: friction has taken all of its speed.",
+    "guide": {
+      "items": {
+        "velocity": {
+          "label": "Velocity v",
+          "text": "The block's speed, shown by the cyan arrow above it. It was pushed off at 3.2 m/s; with no friction the arrow keeps its length forever. Past 12 m the block comes round to the start of the track again."
+        },
+        "friction": {
+          "label": "Friction deceleration −μg",
+          "text": "How fast friction takes speed away, the red arrow behind the block: μ times g, with g about 9.8 m/s². It is the same at every speed and points against the motion; once the block stops, it vanishes."
+        },
+        "stopDistance": {
+          "label": "Stops after",
+          "text": "How far the 3.2 m/s push carries the block before friction stops it: v₀²/(2μg). Halve μ and the distance doubles; at μ = 0 there is no stop."
+        },
+        "mu": {
+          "label": "Friction μ",
+          "text": "The coefficient of kinetic friction between block and floor, from 0 (perfectly smooth) to 0.5 (rough). The hatching under the floor grows with it. You can change it while the block slides."
+        }
+      },
+      "formulas": {
+        "decel": "Friction is the only horizontal force, so it alone sets the acceleration: against the motion, the same at every speed.",
+        "stop": "The distance a push of speed v₀ carries the block before it comes to rest."
+      },
+      "try": {
+        "1": "Drag μ to 0 and replay. The arrow never shrinks and the block goes round and round: motion at constant velocity needs no force.",
+        "2": "Set μ = 0.1, then 0.2. The block stops after 5.22 m, then after 2.61 m: twice the friction, half the distance.",
+        "3": "Replay, and while the block slides drag μ down to 0. It stops slowing and keeps whatever speed it had at that moment."
+      },
+      "limits": "Friction is taken as constant once the block moves; real surfaces grip harder just before sliding starts (static friction), and air drag is left out. The block slides without tipping or spinning."
+    }
+  },
+  "fMa": {
+    "aria": "A ball pushed by a constant force along a 10 m track",
+    "force": "Force F",
+    "mass": "Mass m",
+    "guide": {
+      "items": {
+        "acceleration": {
+          "label": "Acceleration a = F/m",
+          "text": "How quickly the ball gains speed, in m/s². It is the force divided by the mass and stays constant for the whole run, as long as you leave the sliders alone."
+        },
+        "velocity": {
+          "label": "Velocity v",
+          "text": "The ball's speed right now. It starts at zero and grows by a every second, so it rises in a straight line with time."
+        },
+        "position": {
+          "label": "Position x",
+          "text": "Distance from the start, read on the metre marks under the track. Starting from rest it grows as ½at², so the ball covers more ground every second. The run ends at 10 m."
+        },
+        "force": {
+          "label": "Force F",
+          "text": "The constant push on the ball, shown by the arrow at its right; the arrow's length follows F. You can change it while the ball moves."
+        },
+        "mass": {
+          "label": "Mass m",
+          "text": "How much the ball resists being accelerated; the drawn ball grows with it. The same force on twice the mass gives half the acceleration."
+        }
+      },
+      "formulas": {
+        "second": "The net force on a body is its mass times its acceleration.",
+        "position": "Distance covered from rest under a constant acceleration."
+      },
+      "try": {
+        "1": "Set F = 4 N and m = 2 kg: a = 2.00 m/s². Now double both. The acceleration does not change.",
+        "2": "Halve the mass and replay. The ball reaches 10 m in 1/√2 of the time, about 0.71 of it.",
+        "3": "Mid-run, drag the force down to 0.5 N. The ball keeps moving but gains speed far more slowly: a force changes velocity, it is not needed to keep it."
+      },
+      "limits": "One force only, constant and horizontal. The ball moves without friction, drag or rolling, so all of F goes into speeding it up."
+    }
+  },
+  "actionReaction": {
+    "aria": "Two skaters on ice push off each other and glide apart",
+    "ratio": "Mass ratio m_B / m_A",
+    "guide": {
+      "items": {
+        "vA": {
+          "label": "Velocity of A",
+          "text": "Skater A (60 kg, amber) moves left, so the velocity is negative. It is set by the push alone: v_A = −J/m_A, with the push impulse J = 60 kg·m/s, so A always leaves at 1 m/s."
+        },
+        "vB": {
+          "label": "Velocity of B",
+          "text": "Skater B (cyan) moves right at J/m_B. Make B heavier and it leaves more slowly; make it lighter and it flies off."
+        },
+        "momentum": {
+          "label": "Total momentum",
+          "text": "m_A·v_A + m_B·v_B. Both start at rest, so it starts at zero, and the equal and opposite forces keep it at zero during and after the push, whatever the masses."
+        },
+        "forces": {
+          "label": "The force pair",
+          "text": "The red arrows during the push: B pushes A to the left, A pushes B to the right. They are equal in size and act on different bodies, so they never cancel each other."
+        },
+        "ratio": {
+          "label": "Mass ratio m_B / m_A",
+          "text": "B's mass as a multiple of A's 60 kg, from 0.25 (15 kg) to 4 (240 kg)."
+        }
+      },
+      "formulas": {
+        "third": "The force A exerts on B is equal and opposite to the force B exerts on A.",
+        "momentum": "Equal and opposite impulses from rest: the speeds are in inverse proportion to the masses."
+      },
+      "try": {
+        "1": "Leave the ratio at 1. The two skaters glide apart at the same speed, mirror images of each other.",
+        "2": "Set the ratio to 4. B, four times heavier, leaves at a quarter of A's speed: 0.25 m/s against 1 m/s.",
+        "3": "Try any ratio and watch the last readout. The total momentum stays at zero throughout."
+      },
+      "limits": "The push is a constant force for 0.35 s with the same impulse every time, and the ice is frictionless. Real skaters push with a force that rises and falls, and friction with the ice slowly brakes them."
+    }
   },
   "freeFall": {
     "aria": "A hammer and a feather dropped side by side from the same height",
@@ -75,6 +634,148 @@
     "equations": "Equations",
     "problems": "Practice",
     "limits": "What this model leaves out"
+  },
+  "vectorAddition": {
+    "aria": "Two vectors a and b drawn from the same origin, with their sum a + b as the diagonal of the parallelogram they span",
+    "direction": "direction",
+    "reset": "Reset",
+    "hint": "Drag the green or purple tip; the cyan sum follows.",
+    "guide": {
+      "items": {
+        "a": {
+          "label": "Vector a",
+          "text": "The green arrow, written as its two components (aₓ, a_y), followed by its length |a|. The length comes from Pythagoras: √(aₓ² + a_y²)."
+        },
+        "b": {
+          "label": "Vector b",
+          "text": "The purple arrow, in the same form. Both arrows start at the origin, so each one is fixed by where its tip is."
+        },
+        "sum": {
+          "label": "Sum a + b",
+          "text": "The cyan arrow. Its components are the components of a and b added one by one. Its length is usually less than |a| + |b|; it equals that only when the two point the same way."
+        },
+        "direction": {
+          "label": "Direction",
+          "text": "The angle of the sum, measured anticlockwise from the positive x axis, from −180° to 180°."
+        },
+        "parallelogram": {
+          "label": "Parallelogram",
+          "text": "The dashed sides are copies of a and b moved to the other's tip. Going along a and then b, or b and then a, ends at the same point: the tip of the sum."
+        },
+        "drag": {
+          "label": "Drag the tips",
+          "text": "Drag the round handle at the end of a or b anywhere in the square from −6 to 6 on each axis. Reset puts both back to (4, 2) and (2, 3)."
+        }
+      },
+      "formulas": {
+        "sum": "Vectors add component by component.",
+        "magnitude": "The length of a vector from its components."
+      },
+      "try": {
+        "1": "Drag b to (−4, −2). The sum shrinks to nothing: b is a reversed.",
+        "2": "Point a and b the same way. Only then is |a + b| equal to |a| + |b|.",
+        "3": "Make a and b perpendicular, for example (3, 0) and (0, 4). The sum has length 5, the hypotenuse of a 3-4-5 triangle."
+      },
+      "limits": "Only vectors in a plane, both drawn from the origin. In the article the grid is stretched sideways, so the drawn angle can differ from the direction shown; in full view one unit has the same length on both axes."
+    }
+  },
+  "projectile": {
+    "aria": "A ball launched at an angle follows a parabola; arrows show its constant horizontal and changing vertical velocity",
+    "angle": "Angle (θ)",
+    "speed": "Speed (v)",
+    "range": "range",
+    "peak": "peak",
+    "flightTime": "time of flight",
+    "guide": {
+      "items": {
+        "vx": {
+          "label": "Horizontal velocity vₓ",
+          "text": "The green arrow at the ball. No force acts sideways, so it keeps the value it had at launch for the whole flight."
+        },
+        "vy": {
+          "label": "Vertical velocity v_y",
+          "text": "The purple arrow. Gravity takes 9.81 m/s off it every second: it is positive on the way up, zero at the top and negative on the way down."
+        },
+        "range": {
+          "label": "Range R",
+          "text": "How far the ball lands from where it was launched, at the same height. It is largest at 45°."
+        },
+        "peak": {
+          "label": "Peak height H",
+          "text": "The highest point of the arc, reached halfway through the flight, when the vertical velocity is zero."
+        },
+        "flightTime": {
+          "label": "Time of flight T",
+          "text": "How long the ball is in the air. It depends only on the vertical part of the launch velocity, v·sin θ."
+        },
+        "g": {
+          "label": "g",
+          "text": "The acceleration of gravity near the Earth's surface. It pulls straight down and is the same for every ball."
+        },
+        "angle": {
+          "label": "Angle θ",
+          "text": "The launch angle above the horizontal, shown by the cyan arrow at the origin. You can change it during the flight; the ball keeps its place along the new arc."
+        },
+        "speed": {
+          "label": "Speed v",
+          "text": "The launch speed, the length of the cyan arrow. Range and height grow with its square."
+        }
+      },
+      "formulas": {
+        "path": "Eliminating t from x(t) and y(t) leaves a quadratic in x: a parabola that opens downward.",
+        "range": "Horizontal speed times time of flight, folded into one sine."
+      },
+      "try": {
+        "1": "Set the angle to 45°. At 18 m/s the range is 33.04 m; no other angle goes as far.",
+        "2": "Try 30° and then 60°. The range is 28.61 m both times, but the 60° shot climbs three times as high.",
+        "3": "Watch the green arrow during a flight. It never changes length, while the purple one shrinks, flips and grows."
+      },
+      "limits": "No air, flat ground, and launch and landing at the same height. A real ball loses speed to drag and comes down steeper than it went up."
+    }
+  },
+  "monkeyHunter": {
+    "aria": "A cannon aimed straight at a monkey on a branch; the monkey lets go as the dart is fired and both fall together",
+    "speed": "Dart speed",
+    "fire": "Fire",
+    "aim": "aim",
+    "meetTime": "meet after",
+    "noMeet": "no meeting",
+    "drop": "fallen",
+    "statusReady": "Ready: the monkey lets go at the shot.",
+    "statusFlight": "Dart in flight, monkey in free fall.",
+    "statusHit": "Hit: the dart meets the monkey.",
+    "statusMiss": "Too slow: the monkey reaches the ground before the dart arrives.",
+    "hint": "The cannon always aims straight at the monkey; change the speed and fire again.",
+    "guide": {
+      "items": {
+        "aim": {
+          "label": "Aim angle",
+          "text": "The dashed line from the cannon to the monkey. The monkey hangs 9 m away and 5 m up, so the aim is 29.1° above the horizontal, whatever the speed."
+        },
+        "meetTime": {
+          "label": "Meet after",
+          "text": "When the dart reaches the monkey's side of the scene: the distance 9 m divided by the horizontal part of the dart's velocity. A faster dart gets there sooner."
+        },
+        "drop": {
+          "label": "Fallen",
+          "text": "How far each has fallen since the shot, ½gt². The dart falls this far below its aim line, and the monkey this far below the branch: the same distance, so they stay level."
+        },
+        "speed": {
+          "label": "Dart speed",
+          "text": "Changes when they meet, not whether. Below about 10.2 m/s the monkey reaches the ground first."
+        }
+      },
+      "formulas": {
+        "meet": "Time for the dart to cover the horizontal distance D.",
+        "drop": "Both fall this far below where they would be without gravity."
+      },
+      "try": {
+        "1": "Fire at 16 m/s. They meet after 0.64 s, about 2 m below the branch.",
+        "2": "Fire at 28 m/s. They meet sooner and higher, only 0.66 m below the branch.",
+        "3": "Lower the speed until the shot misses. Above about 10.2 m/s the dart always hits."
+      },
+      "limits": "No air, and both treated as points. The scene stops when they meet or when one of them reaches the ground."
+    }
   },
   "inclinedPlane": {
     "aria": "A ball rolling down a ramp, with marks at equal time intervals",

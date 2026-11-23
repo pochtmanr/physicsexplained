@@ -1,192 +1,294 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useAnimationFrame } from "@/lib/animation/use-animation-frame";
-import { useThemeColors } from "@/lib/hooks/use-theme-colors";
+import { useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
+import {
+  SCENE_CANVAS_CLASS,
+  SceneControlGroup,
+  SceneControls,
+  ScenePanel,
+  SceneReadout,
+  SceneSlider,
+  SceneStage,
+  drawFocusRing,
+  drawLabel,
+  hexToRgba,
+  syncCanvas,
+  useSceneHover,
+  useScenePlayback,
+  useSceneSize,
+  useSceneTokens,
+} from "@/components/physics/_shared";
 import { acceleration } from "@/lib/physics/newton";
 
-const RATIO = 0.55;
-const MAX_HEIGHT = 340;
+/** Length of the track, in metres; the run ends when the ball reaches it. */
 const TRACK_METRES = 10;
+/** Inline height cap; objects grow past it in full view. */
+const MAX_HEIGHT = 340;
+/** Pixels per metre (at scale 1) from which the track gains 1 m marks. Never inline. */
+const FINE_TRACK_PX_PER_METRE = 100;
 
+interface Run {
+  /** Distance from the start, metres. */
+  x: number;
+  /** Speed, m/s. */
+  v: number;
+}
+
+const atRest = (): Run => ({ x: 0, v: 0 });
+
+/** Horizontal arrow from x0 to x1 at height y, head at x1. */
+function arrow(
+  ctx: CanvasRenderingContext2D,
+  x0: number,
+  x1: number,
+  y: number,
+  color: string,
+  lineWidth: number,
+  headLength: number,
+  headHalf: number,
+) {
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = lineWidth;
+  ctx.beginPath();
+  ctx.moveTo(x0, y);
+  ctx.lineTo(x1, y);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x1, y);
+  ctx.lineTo(x1 - headLength, y - headHalf);
+  ctx.lineTo(x1 - headLength, y + headHalf);
+  ctx.closePath();
+  ctx.fill();
+}
+
+/**
+ * FIG.03b — a constant force on a ball that starts at rest: a = F/m.
+ *
+ * Force and mass can be changed while the ball moves, so its position and
+ * speed are stepped from where they are (`simulation`), exactly for a
+ * constant acceleration over each step, instead of restarting the run.
+ */
 export function FMaScene() {
+  const t = useTranslations("scenes.fMa");
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colors = useThemeColors();
-  const [force, setForce] = useState(4); // Newtons
+  const tokens = useSceneTokens();
+  const { width, height } = useSceneSize(containerRef, {
+    ratio: 0.55,
+    maxHeight: MAX_HEIGHT,
+    minHeight: 150,
+    initialWidth: 640,
+    // The track stretches to any width and the ball grows with the height.
+    fullView: "fill",
+  });
+  const [force, setForce] = useState(4); // N
   const [mass, setMass] = useState(2); // kg
-  const [size, setSize] = useState({ width: 640, height: 340 });
-  const startRef = useRef<number | null>(null);
+  const reducedMotion = useReducedMotion();
+  const runRef = useRef<Run>(atRest());
+  /** A knob was changed after the run ended and it has not been replayed. */
+  const staleRunRef = useRef(false);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const w = entry.contentRect.width;
-        if (w > 0) {
-          setSize({ width: w, height: Math.min(w * RATIO, MAX_HEIGHT) });
-        }
-      }
-    });
-    ro.observe(container);
-    return () => ro.disconnect();
-  }, []);
+  const a = acceleration(force, mass);
 
-  // Reset whenever the knobs change
-  useEffect(() => {
-    startRef.current = null;
-  }, [force, mass]);
+  // Text, ticks and hairlines scale with `u`; the ball and its arrow with
+  // `o`, which also follows the canvas height.
+  const scale = tokens.scale;
+  const u = (n: number) => n * scale;
+  const objectScale = Math.min(2.6, Math.max(scale, height / MAX_HEIGHT));
+  const o = (n: number) => n * objectScale;
 
-  useAnimationFrame({
+  const padX = u(30);
+  const floorY = height - u(30) - o(30);
+  const plotLeft = padX;
+  const plotRight = width - padX;
+  const trackW = plotRight - plotLeft;
+  const pxPerMetre = trackW / TRACK_METRES;
+  const toPx = (metres: number) => plotLeft + Math.min(metres, TRACK_METRES) * pxPerMetre;
+  const ballR = o(8 + Math.sqrt(mass) * 4);
+  const ballY = floorY - ballR - o(2);
+  const arrowLen = o(Math.min(90, force * 10));
+  const tickRowBottom = floorY + u(26);
+
+  // The ball (its mass), the force arrow, or the track's metre marks.
+  const hover = useSceneHover(canvasRef, (px, py) => {
+    const ballX = toPx(runRef.current.x);
+    const reach = u(9);
+    if (Math.hypot(px - ballX, py - ballY) <= ballR + reach) return "mass";
+    const x0 = ballX + ballR + o(2);
+    if (px >= x0 && px <= x0 + arrowLen + reach && Math.abs(py - ballY) <= reach) return "force";
+    if (px >= plotLeft - reach && px <= plotRight + reach && py >= floorY - u(4) && py <= tickRowBottom) {
+      return "position";
+    }
+    return null;
+  });
+  const { activeKey } = hover;
+
+  const playback = useScenePlayback({
     elementRef: containerRef,
-    onFrame: (t) => {
+    simulation: {
+      step: (dt) => {
+        const { x, v } = runRef.current;
+        const nextX = x + v * dt + 0.5 * a * dt * dt;
+        if (nextX >= TRACK_METRES) {
+          // Arrive exactly at the end, with the speed the constant force gives there.
+          runRef.current = { x: TRACK_METRES, v: Math.sqrt(v * v + 2 * a * (TRACK_METRES - x)) };
+        } else {
+          runRef.current = { x: nextX, v: v + a * dt };
+        }
+      },
+      reset: () => {
+        runRef.current = atRest();
+      },
+      isDone: () => runRef.current.x >= TRACK_METRES,
+    },
+    draw: () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const ctx = canvas.getContext("2d");
+      const ctx = syncCanvas(canvas, width, height);
       if (!ctx) return;
-      const { width, height } = size;
-      const dpr = window.devicePixelRatio || 1;
-      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        ctx.scale(dpr, dpr);
-      }
-
-      if (startRef.current === null) startRef.current = t;
-      const tLocal = t - startRef.current;
-
-      ctx.clearRect(0, 0, width, height);
-
-      const a = acceleration(force, mass);
-
-      // Loop: find time to traverse TRACK_METRES, then restart
-      // x(t) = 0.5 * a * t^2  ⇒  t_end = sqrt(2L/a)
-      const tEnd = a > 0 ? Math.sqrt((2 * TRACK_METRES) / a) : Infinity;
-      if (tLocal > tEnd + 0.5) {
-        startRef.current = t;
-      }
-      const tUsed = Math.min(tLocal, tEnd);
-      const x = 0.5 * a * tUsed * tUsed;
-      const v = a * tUsed;
-
-      const padX = 30;
-      const floorY = height - 60;
-      const plotLeft = padX;
-      const plotRight = width - padX;
-      const trackW = plotRight - plotLeft;
+      const bounds = { width, height };
+      const { x } = runRef.current;
 
       // Floor
-      ctx.strokeStyle = colors.fg2;
+      ctx.strokeStyle = tokens.axes;
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(plotLeft, floorY);
       ctx.lineTo(plotRight, floorY);
       ctx.stroke();
 
-      // Metre ticks
-      ctx.strokeStyle = colors.fg3;
-      ctx.fillStyle = colors.fg3;
-      ctx.font = "10px monospace";
-      ctx.textAlign = "center";
+      // Metre marks, numbered every 2 m; single metres once there is room.
+      const positionFocused = activeKey === "position";
+      ctx.strokeStyle = positionFocused ? tokens.cyan : tokens.gridHeavy;
+      ctx.lineWidth = positionFocused ? u(1.5) : 1;
+      if (pxPerMetre >= u(FINE_TRACK_PX_PER_METRE)) {
+        ctx.beginPath();
+        for (let m = 1; m < TRACK_METRES; m += 2) {
+          ctx.moveTo(toPx(m), floorY);
+          ctx.lineTo(toPx(m), floorY + u(3));
+        }
+        ctx.stroke();
+      }
       for (let m = 0; m <= TRACK_METRES; m += 2) {
-        const px = plotLeft + (m / TRACK_METRES) * trackW;
+        const px = toPx(m);
         ctx.beginPath();
         ctx.moveTo(px, floorY);
-        ctx.lineTo(px, floorY + 6);
+        ctx.lineTo(px, floorY + u(6));
         ctx.stroke();
-        ctx.fillText(`${m}`, px, floorY + 18);
+        drawLabel(ctx, m === TRACK_METRES ? `${m} m` : `${m}`, px, floorY + u(18), {
+          bounds,
+          color: positionFocused ? tokens.cyan : tokens.textLabel,
+          align: "center",
+          font: tokens.fontHudSmall,
+        });
+      }
+      ctx.lineWidth = 1;
+
+      const ballX = toPx(x);
+
+      // Distance covered, while the position is pointed at.
+      if (positionFocused && x > 0) {
+        ctx.strokeStyle = tokens.cyan;
+        ctx.lineWidth = u(1.5);
+        ctx.setLineDash([u(4), u(3)]);
+        ctx.beginPath();
+        ctx.moveTo(plotLeft, floorY - u(4));
+        ctx.lineTo(ballX, floorY - u(4));
+        ctx.stroke();
+        ctx.setLineDash([]);
       }
 
-      // Ball — radius grows with sqrt(mass) for visual feedback
-      const ballR = 8 + Math.sqrt(mass) * 4;
-      const ballX =
-        plotLeft + Math.min(x, TRACK_METRES) / TRACK_METRES * trackW;
-      const ballY = floorY - ballR - 2;
+      // Force arrow: length follows F.
+      const forceFocused = activeKey === "force" || activeKey === "acceleration";
+      const x0 = ballX + ballR + o(2);
+      arrow(ctx, x0, x0 + arrowLen, ballY, tokens.cyan, o(forceFocused ? 3 : 2), o(6), o(4));
 
-      // Force arrow — length scales with F
-      const arrowLen = Math.min(90, force * 10);
-      ctx.strokeStyle = "#6FB8C6";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      const aY = ballY;
-      const aX0 = ballX + ballR + 2;
-      const aX1 = aX0 + arrowLen;
-      ctx.moveTo(aX0, aY);
-      ctx.lineTo(aX1, aY);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.moveTo(aX1, aY);
-      ctx.lineTo(aX1 - 6, aY - 4);
-      ctx.lineTo(aX1 - 6, aY + 4);
-      ctx.closePath();
-      ctx.fillStyle = "#6FB8C6";
-      ctx.fill();
-
-      // Ball with glow
-      ctx.shadowColor = "rgba(111, 184, 198, 0.5)";
-      ctx.shadowBlur = 14;
-      ctx.fillStyle = "#E6EDF7";
+      // Ball with glow; its size follows the mass.
+      ctx.shadowColor = hexToRgba(tokens.cyan, 0.5);
+      ctx.shadowBlur = o(14);
+      ctx.fillStyle = tokens.textBright;
       ctx.beginPath();
       ctx.arc(ballX, ballY, ballR, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
-
-      // Readouts
-      ctx.fillStyle = colors.fg1;
-      ctx.font = "13px monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(`F = ${force.toFixed(1)} N`, plotLeft, 22);
-      ctx.fillText(`m = ${mass.toFixed(1)} kg`, plotLeft, 40);
-      ctx.fillText(`a = F/m = ${a.toFixed(2)} m/s²`, plotLeft, 58);
-      ctx.textAlign = "right";
-      ctx.fillText(`v = ${v.toFixed(2)} m/s`, plotRight, 22);
-      ctx.fillText(`x = ${Math.min(x, TRACK_METRES).toFixed(2)} m`, plotRight, 40);
+      if (activeKey === "mass") {
+        drawFocusRing(ctx, ballX, ballY, ballR + u(6), tokens.textBright, scale);
+      }
     },
   });
 
+  // A new force or mass never restarts a run in progress: the next step uses
+  // the new acceleration. A finished run has nothing left to show the change
+  // on, so it starts again once the reader lets go of the slider.
+  const change = (setter: (n: number) => void, current: number) => (next: number) => {
+    if (next === current) return;
+    setter(next);
+    if (playback.status === "ended") staleRunRef.current = true;
+  };
+  const commit = () => {
+    if (!staleRunRef.current) return;
+    staleRunRef.current = false;
+    if (playback.status !== "ended") return;
+    if (reducedMotion) playback.seek(0);
+    else playback.replay();
+  };
+
+  const { x, v } = runRef.current;
+
   return (
-    <div ref={containerRef} className="w-full pb-4">
-      <canvas
-        ref={canvasRef}
-        style={{ width: size.width, height: size.height }}
-        className="block"
-      />
-      <div className="mt-2 flex flex-col gap-2 px-2">
-        <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-3)]">
-            Force F
-          </label>
-          <input
-            type="range"
+    <div ref={containerRef} className="scene-root w-full pb-4">
+      <div className="mx-auto" style={{ width }}>
+        <SceneStage>
+          <canvas
+            ref={canvasRef}
+            role="img"
+            aria-label={t("aria")}
+            className={SCENE_CANVAS_CLASS}
+            style={{ width, height }}
+          />
+        </SceneStage>
+        <ScenePanel>
+          <SceneControls playback={playback} />
+          <SceneReadout
+            items={[
+              {
+                label: "a = F/m",
+                value: `${a.toFixed(2)} m/s²`,
+                color: "var(--color-cyan)",
+                guideKey: "acceleration",
+              },
+              { label: "v", value: `${v.toFixed(2)} m/s`, guideKey: "velocity" },
+              { label: "x", value: `${x.toFixed(2)} m`, guideKey: "position" },
+            ]}
+          />
+        </ScenePanel>
+        <SceneControlGroup>
+          <SceneSlider
+            label={t("force")}
+            guideKey="force"
+            value={force}
             min={0.5}
             max={10}
             step={0.1}
-            value={force}
-            onChange={(e) => setForce(parseFloat(e.target.value))}
-            className="flex-1 accent-[#6FB8C6]"
+            onChange={change(setForce, force)}
+            onCommit={commit}
+            display={`${force.toFixed(1)} N`}
           />
-          <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
-            {force.toFixed(1)} N
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <label className="w-20 text-sm text-[var(--color-fg-3)]">
-            Mass m
-          </label>
-          <input
-            type="range"
+          <SceneSlider
+            label={t("mass")}
+            guideKey="mass"
+            value={mass}
             min={0.5}
             max={8}
             step={0.1}
-            value={mass}
-            onChange={(e) => setMass(parseFloat(e.target.value))}
-            className="flex-1 accent-[#6FB8C6]"
+            onChange={change(setMass, mass)}
+            onCommit={commit}
+            display={`${mass.toFixed(1)} kg`}
           />
-          <span className="w-16 text-right text-sm font-mono text-[var(--color-fg-1)]">
-            {mass.toFixed(1)} kg
-          </span>
-        </div>
+        </SceneControlGroup>
       </div>
     </div>
   );

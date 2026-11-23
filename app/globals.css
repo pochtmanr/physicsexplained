@@ -595,16 +595,24 @@ table tbody tr:last-child td {
 .figure-popup-guide {
   position: relative;
   flex: none;
-  /* The figure keeps at least ~380px under the header; the sheet takes what
-     is left, between a useful minimum and just under half the screen. */
-  max-height: clamp(168px, calc(100dvh - 430px), 46dvh);
+  animation: scene-enter var(--duration-base) var(--ease-standard) backwards;
+}
+/* Stacked (phones, tablets held upright): the guide is not a sheet but more
+   cards after the figure's, in the same scroll, with the same gap. */
+.figure-popup-guide[data-flow="stacked"] {
+  width: 100%;
+  margin-top: var(--figure-gap);
+  scroll-margin-top: var(--figure-gap);
+}
+.figure-popup-guide[data-flow="stacked"] .figure-guide-body {
+  max-width: none;
+  padding: 0;
+}
+/* Beside the figure: its own column, scrolling on its own. */
+.figure-popup-guide[data-flow="beside"] {
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  border-top: 1px solid var(--color-fg-4);
-  /* A soft edge over the figure says "this is a sheet, and it scrolls". */
-  box-shadow: 0 -12px 16px -12px color-mix(in srgb, var(--color-bg-0) 80%, transparent);
-  animation: scene-enter var(--duration-base) var(--ease-standard) backwards;
 }
 @media (min-width: 1024px), (min-width: 900px) and (max-height: 760px), (orientation: landscape) and (min-width: 560px) and (max-height: 560px) {
   .figure-popup-body {
@@ -613,10 +621,6 @@ table tbody tr:last-child td {
   .figure-popup-guide {
     /* The cap grows with the text, so lines keep their length. */
     width: clamp(320px, 31vw, calc(440px * var(--figure-text-scale, 1)));
-    max-height: none;
-    border-top: 0;
-    /* No rule beside the figure: the guide's cards separate themselves. */
-    box-shadow: none;
   }
   /* The figure's own inset already separates the two columns. */
   .figure-guide-body {

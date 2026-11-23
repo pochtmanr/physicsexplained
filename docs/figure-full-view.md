@@ -30,7 +30,7 @@ The shell is `components/layout/figure-popup.tsx` + `.figure-popup-*` in
 | Part | Rule |
 | --- | --- |
 | Panel | Whole screen below `lg`; `96vw × 92dvh`, max width 1960px from `lg` up. Square corner-frame, as on the rest of the site. |
-| Guide | Beside the figure when the window is wide (`GUIDE_BESIDE_QUERY`), a sheet under it otherwise. Width `clamp(320px, 31vw, 440px × text scale)`. |
+| Guide | Beside the figure when the window is wide (`GUIDE_BESIDE_QUERY`); otherwise its cards follow the figure's cards in the same scroll (no split view). Width `clamp(320px, 31vw, 440px × text scale)`. |
 | Insets | One value everywhere: `0.75rem` around the figure column, around the guide column, and between any two cards (`--figure-gap`). The guide column drops its inner side inset, so the gap between the two columns is the same `0.75rem`. |
 | Height | The figure never scrolls when it can fit: `useSceneSize` gives the canvas what is left after the scene's own cards. |
 
